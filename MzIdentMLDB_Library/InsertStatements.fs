@@ -46,8 +46,8 @@ module InsertStatements =
 
         let addOptionToList (typeCollection : List<'a>) (optionOfType : 'a option) =
             match optionOfType with
-            | Some x -> addToList typeCollection x
-            | None -> typeCollection
+            |Some x -> addToList typeCollection x
+            |None -> typeCollection
 
         let addOptionCollectionToList (inputCollection : List<'a>) (input : seq<'a> option) =
             match input with
