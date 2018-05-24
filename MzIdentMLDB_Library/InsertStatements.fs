@@ -2462,22 +2462,26 @@ module InsertStatements =
     module test =
     //Apply functions
         
-        #r "System.ComponentModel.DataAnnotations.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\netstandard.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\SQLitePCLRaw.batteries_v2.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\MzIdentML_Library.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+        //#r "System.ComponentModel.DataAnnotations.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\netstandard.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.IO.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Remotion.Linq.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.core.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+        //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
 
 
         open ObjectHandlers
         open ManipulateDataContextAndDB
-
+        open InitializeStandardDB
 
         let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
 
@@ -2486,7 +2490,9 @@ module InsertStatements =
         let termII = TermHandler.addName termI "Test"
         let ontologyI = OntologyHandler.init("I")
         let termIII = TermHandler.addOntology termII ontologyI
-        let addTermtoContext = TermHandler.addToContext context termIII
+        let ontologyII = OntologyHandler.addTerm ontologyI termIII
+        let addOntologyToContext = OntologyHandler.addToContext context ontologyII
+        let addTermToContext = TermHandler.addToContext context termIII
 
         let cvParam = CVParamHandler.init("Test", termIII)
         let addCVtoContext = CVParamHandler.addToContext context cvParam
@@ -2507,5 +2513,7 @@ module InsertStatements =
         context.Database.EnsureCreated()
 
         insertWithExceptionCheck context
+
+        initStandardDB context
 
 
