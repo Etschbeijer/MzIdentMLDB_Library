@@ -73,6 +73,18 @@
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BioFSharp">
+      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BioFSharp.IO">
+      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Care">
+      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Care.IO">
+      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.IO.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\packages\FSharp.Data.XMLProvider.2.3.14159\lib\net40\FSharp.Data.dll</HintPath>
     </Reference>
