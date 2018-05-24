@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MzIdentMLDB_Library", "MzIdentMLDB_Library\MzIdentMLDB_Library.fsproj", "{80415330-01F7-4701-B0EE-A4AB1A02019A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80415330-01F7-4701-B0EE-A4AB1A02019A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80415330-01F7-4701-B0EE-A4AB1A02019A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80415330-01F7-4701-B0EE-A4AB1A02019A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80415330-01F7-4701-B0EE-A4AB1A02019A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EE7FB382-5C3F-498A-8BE4-852E2017CD55}
+	EndGlobalSection
+EndGlobal
