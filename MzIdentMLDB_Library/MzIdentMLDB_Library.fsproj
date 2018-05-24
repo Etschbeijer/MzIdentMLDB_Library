@@ -56,7 +56,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="DataContext.fs" />
     <Compile Include="InsertStatements.fs" />
-    <Compile Include="MzIdentML_Version1.2_Parser.fs" />
+    <Compile Include="MzIdentML_XML_Parser.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Content Include="Ontologies\Pride.txt" />
