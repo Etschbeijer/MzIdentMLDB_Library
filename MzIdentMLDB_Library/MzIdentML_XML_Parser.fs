@@ -11,7 +11,7 @@ module XMLParsing =
 
     open FSharp.Data
 
-    type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
+    type SchemePeptideShaker = XmlProvider<Schema = "C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
     //let  samplePeptideShaker = SchemePeptideShaker.Load("..\ExampleFile\PeptideShaker_mzid_1_2_example.txt") 
 
 

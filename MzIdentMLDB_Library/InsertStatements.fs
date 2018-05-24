@@ -2461,7 +2461,7 @@ module InsertStatements =
             context.SaveChanges()
 
     //module test =
-    ////Apply functions
+    //    ////Apply functions
         
     //    //#r "System.ComponentModel.DataAnnotations.dll"
     //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\netstandard.dll"
@@ -2473,16 +2473,16 @@ module InsertStatements =
     //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
     //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Remotion.Linq.dll"
     //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.core.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
     //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
     //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
-    //    //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
-    //    //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\packages\FSharp.Data.2.4.6\lib\net45\FSharp.Data.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\packages\FSharp.Data.Xsd.1.0.2\lib\net45\FSharp.Data.Xsd.dll"
+    //    #r "System.Xml.Linq.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
 
-
-    //    open ObjectHandlers
-    //    open ManipulateDataContextAndDB
-    //    open InitializeStandardDB
+    //    //    open ObjectHandlers
+    //    //    open ManipulateDataContextAndDB
+    //    //    open InitializeStandardDB
 
     //    let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
 
@@ -2517,4 +2517,36 @@ module InsertStatements =
 
     //    initStandardDB context
 
+    //    type Test =
+    //        {
+    //         ID : int
+    //         Name : string
+    //         Detail : string
+    //        }
 
+    //    type TestHandler =
+    //            static member init
+    //                (
+    //                    id        : int,
+    //                    ?name     : string,
+    //                    ?detail   : string
+    //                ) =
+    //                let name' :string= defaultArg name null
+    //                let detail'    = defaultArg detail null
+    //                {
+    //                    ID         = id;
+    //                    Name       = name';
+    //                    Detail     = detail'
+    //                }
+    
+
+    //    let transformOption (item : 'a option) =
+    //        match item with
+    //        |Some x -> x
+    //        |None -> Unchecked.defaultof<'a>
+
+    //    TestHandler.init(0,transformOption(Some("test")) ,"string")
+    //    TestHandler.init(0)
+    //    TestHandler.init(0,transformOption(None) ,"string")
+
+    //    let xmlCVParams = SchemePeptideShaker.Load("..\ExampleFile\PeptideShaker_mzid_1_2_example.mzid")
