@@ -116,11 +116,11 @@ module InsertStatements =
                static member addName
                     (term:Term) (name:string) =
                     term.Name <- name
-                    term
+
                static member addOntology
                     (term:Term) (ontology:Ontology) =
                     term.Ontology <- ontology
-                    term
+
                 static member addToContext (context:MzIdentMLContext) (item:Term) =
                         addToContextWithExceptionCheck context item
 
@@ -144,19 +144,19 @@ module InsertStatements =
                 static member addTerm
                     (ontology:Ontology) (term:Term) =
                     let result = ontology.Terms <- addToList ontology.Terms term
-                    ontology
+                    result
 
                 static member addTerms
                     (ontology:Ontology) (terms:seq<Term>) =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
-                    ontology
+                    result
 
                 static member addToContext (context:MzIdentMLContext) (item:Ontology) =
                     addToContextWithExceptionCheck context item
 
                 static member insertIntoDB (context:MzIdentMLContext) (item:Ontology) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                    (addToContextWithExceptionCheck context item) |> ignore
+                    insertWithExceptionCheck context
             
         type CVParamHandler =
 
@@ -2455,66 +2455,66 @@ module InsertStatements =
 
             let userOntology =
                     OntologyHandler.init("UserParam")
-            OntologyHandler.addToContext context psims |> ignore
+            OntologyHandler.addToContext context userOntology |> ignore
 
             context.Database.EnsureCreated() |> ignore
             context.SaveChanges()
 
-    module test =
-    //Apply functions
+    //module test =
+    ////Apply functions
         
-        //#r "System.ComponentModel.DataAnnotations.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\netstandard.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.IO.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Remotion.Linq.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.core.dll"
-        #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
-        //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+    //    //#r "System.ComponentModel.DataAnnotations.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\netstandard.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\BioFSharp.IO.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\Remotion.Linq.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.core.dll"
+    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentMLDB_Library\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+    //    //#r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
 
 
-        open ObjectHandlers
-        open ManipulateDataContextAndDB
-        open InitializeStandardDB
+    //    open ObjectHandlers
+    //    open ManipulateDataContextAndDB
+    //    open InitializeStandardDB
 
-        let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
+    //    let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
 
-        //Term and Ontology
-        let termI = TermHandler.init("I")
-        let termII = TermHandler.addName termI "Test"
-        let ontologyI = OntologyHandler.init("I")
-        let termIII = TermHandler.addOntology termI ontologyI
-        let ontologyII = OntologyHandler.addTerm ontologyI termI
-        //let addOntologyToContext = OntologyHandler.addToContext context (OntologyHandler.addTerm ontologyI termI)
-        let addTermToContext = TermHandler.addToContext context termI
+    //    //Term and Ontology
+    //    let termI = TermHandler.init("I")
+    //    let termII = TermHandler.addName termI "Test"
+    //    let ontologyI = OntologyHandler.init("I")
+    //    let termIII = TermHandler.addOntology termI ontologyI
+    //    let ontologyII = OntologyHandler.addTerm ontologyI termI
+    //    //let addOntologyToContext = OntologyHandler.addToContext context (OntologyHandler.addTerm ontologyI termI)
+    //    let addTermToContext = TermHandler.addToContext context termI
 
-        let cvParam = CVParamHandler.init("Test", termI)
-        let addCVtoContext = CVParamHandler.addToContext context cvParam
+    //    let cvParam = CVParamHandler.init("Test", termI)
+    //    let addCVtoContext = CVParamHandler.addToContext context cvParam
 
-        let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
-        let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
-        let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
-        let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
-        let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
-        let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
+    //    let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
+    //    let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
+    //    let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
+    //    let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
+    //    let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
+    //    let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
 
-        let person = PersonHandler.init(0)
-        let addpersonToContext = PersonHandler.addToContext context person
+    //    let person = PersonHandler.init(0)
+    //    let addpersonToContext = PersonHandler.addToContext context person
 
-        let organization = OrganizationHandler.init(0)
-        let addOrganizationToContext = OrganizationHandler.addToContext context organization
+    //    let organization = OrganizationHandler.init(0)
+    //    let addOrganizationToContext = OrganizationHandler.addToContext context organization
 
-        context.Database.EnsureCreated()
+    //    context.Database.EnsureCreated()
 
-        insertWithExceptionCheck context
+    //    insertWithExceptionCheck context
 
-        initStandardDB context
+    //    initStandardDB context
 
 
