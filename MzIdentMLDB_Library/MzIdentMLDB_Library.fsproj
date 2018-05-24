@@ -71,19 +71,23 @@
     <None Include="XML_Files\MzIdentMLScheme.xsd" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
+    <None Include="BioFSharp_Stuff\BioFSharp.dll" />
+    <None Include="BioFSharp_Stuff\BioFSharp.IO.dll" />
+    <None Include="BioFSharp_Stuff\FSharp.Care.dll" />
+    <None Include="BioFSharp_Stuff\FSharp.Care.IO.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.dll</HintPath>
+      <HintPath>BioFSharp_Stuff\BioFSharp.dll</HintPath>
     </Reference>
     <Reference Include="BioFSharp.IO">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\BioFSharp.IO.dll</HintPath>
+      <HintPath>BioFSharp_Stuff\BioFSharp.IO.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Care">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.dll</HintPath>
+      <HintPath>BioFSharp_Stuff\FSharp.Care.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Care.IO">
-      <HintPath>..\..\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\FSharp.Care.IO.dll</HintPath>
+      <HintPath>BioFSharp_Stuff\FSharp.Care.IO.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\packages\FSharp.Data.XMLProvider.2.3.14159\lib\net40\FSharp.Data.dll</HintPath>
