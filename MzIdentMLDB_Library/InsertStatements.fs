@@ -2405,102 +2405,102 @@ module InsertStatements =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
-    //    module initializeStandardDB =
-    //        open BioFSharp.IO
-    //        open FSharp.Care.IO
+        module InitializeStandardDB =
+            open BioFSharp.IO
+            open FSharp.Care.IO
 
-    //        ///Define reader for OboFile
-    //        let fromFileObo (filePath : string) =
-    //            FileIO.readFile filePath
-    //            |> Obo.parseOboTerms
+            ///Define reader for OboFile
+            let fromFileObo (filePath : string) =
+                FileIO.readFile filePath
+                |> Obo.parseOboTerms
 
-    //        let fromPsiMS =
-    //            fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
+            let fromPsiMS =
+                fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
 
-    //        let fromPride =
-    //            fromFileObo (fileDir + "\Ontologies\Pride.txt")
+            let fromPride =
+                fromFileObo (fileDir + "\Ontologies\Pride.txt")
 
-    //        let fromUniMod =
-    //            fromFileObo (fileDir + "\Ontologies\Unimod.txt")
+            let fromUniMod =
+                fromFileObo (fileDir + "\Ontologies\Unimod.txt")
 
-    //        let fromUnit_Ontology =
-    //            fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
+            let fromUnit_Ontology =
+                fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
 
-    //        let initStandardDB (context : MzIdentMLContext) =
-    //            let terms_PsiMS =
-    //                fromPsiMS
-    //                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-    //            let psims = OntologyHandler.init ("Psi-MS", terms_PsiMS)
-    //            OntologyHandler.addToContext context psims |> ignore
+            let initStandardDB (context : MzIdentMLContext) =
+                let terms_PsiMS =
+                    fromPsiMS
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                let psims = OntologyHandler.init ("Psi-MS", terms_PsiMS)
+                OntologyHandler.addToContext context psims |> ignore
 
-    //            let terms_Pride =
-    //                fromPsiMS
-    //                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-    //            let psims = OntologyHandler.init ("Pride", terms_Pride)
-    //            OntologyHandler.addToContext context psims |> ignore
+                let terms_Pride =
+                    fromPsiMS
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                let psims = OntologyHandler.init ("Pride", terms_Pride)
+                OntologyHandler.addToContext context psims |> ignore
 
-    //            let terms_Unimod =
-    //                fromPsiMS
-    //                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-    //            let psims = OntologyHandler.init ("Unimod", terms_Unimod)
-    //            OntologyHandler.addToContext context psims |> ignore
+                let terms_Unimod =
+                    fromPsiMS
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                let psims = OntologyHandler.init ("Unimod", terms_Unimod)
+                OntologyHandler.addToContext context psims |> ignore
 
-    //            let terms_Unit_Ontology =
-    //                fromPsiMS
-    //                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-    //            let psims = OntologyHandler.init ("Unit_Ontology", terms_Unit_Ontology)
-    //            OntologyHandler.addToContext context psims |> ignore
+                let terms_Unit_Ontology =
+                    fromPsiMS
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                let psims = OntologyHandler.init ("Unit_Ontology", terms_Unit_Ontology)
+                OntologyHandler.addToContext context psims |> ignore
 
-    //            context.Database.EnsureCreated() |> ignore
-    //            context.SaveChanges()
+                context.Database.EnsureCreated() |> ignore
+                context.SaveChanges()
 
-    //module test =
-    ////Apply functions
+    module test =
+    //Apply functions
         
-    //    #r "System.ComponentModel.DataAnnotations.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\netstandard.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\SQLitePCLRaw.batteries_v2.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\MzIdentML_Library.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
-    //    #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
+        #r "System.ComponentModel.DataAnnotations.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\netstandard.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\SQLitePCLRaw.batteries_v2.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\MzIdentML_Library.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.dll"
+        #r @"C:\Users\PatrickB\Source\Repos\MZIdentMLDB\TestDataBankPersonenVerzeichnis\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
 
 
-    //    open ObjectHandlers
-    //    open ManipulateDataContextAndDB
+        open ObjectHandlers
+        open ManipulateDataContextAndDB
 
 
-    //    let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
+        let context = configureSQLiteContextMzIdentML "C:\Users\PatrickB\Source\Repos\Test.db"
 
-    //    //Term and Ontology
-    //    let termI = TermHandler.init("I")
-    //    let termII = TermHandler.addName termI "Test"
-    //    let ontologyI = OntologyHandler.init("I")
-    //    let termIII = TermHandler.addOntology termII ontologyI
-    //    let addTermtoContext = TermHandler.addToContext context termIII
+        //Term and Ontology
+        let termI = TermHandler.init("I")
+        let termII = TermHandler.addName termI "Test"
+        let ontologyI = OntologyHandler.init("I")
+        let termIII = TermHandler.addOntology termII ontologyI
+        let addTermtoContext = TermHandler.addToContext context termIII
 
-    //    let cvParam = CVParamHandler.init("Test", termIII)
-    //    let addCVtoContext = CVParamHandler.addToContext context cvParam
+        let cvParam = CVParamHandler.init("Test", termIII)
+        let addCVtoContext = CVParamHandler.addToContext context cvParam
 
-    //    let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
-    //    let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
-    //    let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
-    //    let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
-    //    let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
-    //    let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
+        let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
+        let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
+        let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
+        let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
+        let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
+        let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
 
-    //    let person = PersonHandler.init(0)
-    //    let addpersonToContext = PersonHandler.addToContext context person
+        let person = PersonHandler.init(0)
+        let addpersonToContext = PersonHandler.addToContext context person
 
-    //    let organization = OrganizationHandler.init(0)
-    //    let addOrganizationToContext = OrganizationHandler.addToContext context organization
+        let organization = OrganizationHandler.init(0)
+        let addOrganizationToContext = OrganizationHandler.addToContext context organization
 
-    //    context.Database.EnsureCreated()
+        context.Database.EnsureCreated()
 
-    //    insertWithExceptionCheck context
+        insertWithExceptionCheck context
 
 
