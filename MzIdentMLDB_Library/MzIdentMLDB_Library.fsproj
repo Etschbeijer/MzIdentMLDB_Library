@@ -56,6 +56,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="DataContext.fs" />
     <Compile Include="InsertStatements.fs" />
+    <Compile Include="MzIdentML_Version1.2_Parser.fs" />
     <Content Include="Ontologies\Pride.txt" />
     <Content Include="Ontologies\Psi-MS.txt" />
     <Content Include="Ontologies\Unimod.txt" />
@@ -72,6 +73,12 @@
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\packages\FSharp.Data.XMLProvider.2.3.14159\lib\net40\FSharp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Data.Xsd">
+      <HintPath>..\packages\FSharp.Data.Xsd.1.0.2\lib\net45\FSharp.Data.Xsd.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Sqlite">
       <HintPath>..\packages\Microsoft.Data.Sqlite.Core.2.0.1\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
@@ -164,6 +171,7 @@
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.7\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
