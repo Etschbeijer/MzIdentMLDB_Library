@@ -92,6 +92,11 @@ module InsertStatements =
         open ManipulateDataContextAndDB
         open SubFunctions
 
+        let setOption (addFunction:'a ->'b->unit) (object:'a) (item:'b option) =
+            match item with
+            |Some x -> addFunction object x
+            |None -> ()
+
         type TermHandler =
                static member init
                     (
@@ -112,12 +117,10 @@ module InsertStatements =
                     (term:Term) (name:string) =
                     term.Name <- name
                     term
-
                static member addOntology
                     (term:Term) (ontology:Ontology) =
                     term.Ontology <- ontology
                     term
-
                 static member addToContext (context:MzIdentMLContext) (item:Term) =
                         addToContextWithExceptionCheck context item
 
@@ -182,17 +185,14 @@ module InsertStatements =
                static member addValue
                     (cvParam:CVParam) (value:string) =
                     cvParam.Value <- value
-                    cvParam
 
                static member addUnit
                     (cvParam:CVParam) (unit:Term) =
                     cvParam.Unit <- unit
-                    cvParam
 
                static member addUnitName
                     (cvParam:CVParam) (unitName:string) =
                     cvParam.UnitName <- unitName
-                    cvParam
 
                 static member addToContext (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item)
@@ -2454,7 +2454,8 @@ module InsertStatements =
             OntologyHandler.addToContext context psims |> ignore
 
             let userOntology =
-                OntologyHandler.init("UserParam")
+                    OntologyHandler.init("UserParam")
+            OntologyHandler.addToContext context psims |> ignore
 
             context.Database.EnsureCreated() |> ignore
             context.SaveChanges()
@@ -2489,12 +2490,12 @@ module InsertStatements =
         let termI = TermHandler.init("I")
         let termII = TermHandler.addName termI "Test"
         let ontologyI = OntologyHandler.init("I")
-        let termIII = TermHandler.addOntology termII ontologyI
-        let ontologyII = OntologyHandler.addTerm ontologyI termIII
-        let addOntologyToContext = OntologyHandler.addToContext context ontologyII
-        let addTermToContext = TermHandler.addToContext context termIII
+        let termIII = TermHandler.addOntology termI ontologyI
+        let ontologyII = OntologyHandler.addTerm ontologyI termI
+        //let addOntologyToContext = OntologyHandler.addToContext context (OntologyHandler.addTerm ontologyI termI)
+        let addTermToContext = TermHandler.addToContext context termI
 
-        let cvParam = CVParamHandler.init("Test", termIII)
+        let cvParam = CVParamHandler.init("Test", termI)
         let addCVtoContext = CVParamHandler.addToContext context cvParam
 
         let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)

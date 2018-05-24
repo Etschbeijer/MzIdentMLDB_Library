@@ -7,11 +7,7 @@ open System.Collections.Generic
 //open BioFSharp.IO
 
 
-module xmlParsing =
-
-    //#r @"..\packages\FSharp.Data.2.4.6\lib\net45\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data.Xsd.1.0.2\lib\net45\FSharp.Data.Xsd.dll"
-    //#r "System.Xml.Linq.dll"
+module XMLParsing =
 
     open FSharp.Data
 
@@ -276,9 +272,12 @@ module xmlParsing =
     //           )
     //       else createUserParam null null null null
 
-    //let cvParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
-    //    CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.CvRef),0 , mzIdentMLXML.Value, (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession), mzIdentMLXML.UnitName)
-
+    let cvParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
+        let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.CvRef))
+        let addValue = setOption CVParamHandler.addValue init mzIdentMLXML.Value
+        let addUnit = CVParamHandler.addUnit init (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession)
+        let addUnitName = setOption CVParamHandler.addUnitName init mzIdentMLXML.UnitName
+        init
 
     //let convertToEntityInputSpectrumIdentifications (mzIdentMLXML : SchemePeptideShaker.InputSpectrumIdentifications []) =
     //    mzIdentMLXML
