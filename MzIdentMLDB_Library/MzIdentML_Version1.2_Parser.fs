@@ -193,6 +193,29 @@ module xmlParsing =
     //                        then Seq.item 0 item
     //                        else createTermCustom "NoEntry" "NoEntry"))
 
+    let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
+        query {
+            for i in dbContext.Term do
+                if i.ID = termID then
+                    select (i)
+              }
+        |> (fun item -> if (Seq.length item) > 0 
+                            then Seq.item 0 item
+                            else TermHandler.init(null))
+
+    let takeTermEntryOption (dbContext : MzIdentMLContext) (termID : string option) =
+        match termID with
+            | Some x -> 
+                query {
+                    for i in dbContext.Term do
+                        if i.ID = x then
+                            select (i)
+                      }
+                |> (fun item -> if (Seq.length item) > 0 
+                                    then Seq.item 0 item
+                                    else TermHandler.init(null))
+            | None -> TermHandler.init(null)
+
     //let takeTermID (dbContext : MzIdentMLContext) xmlTermIDList =
     //    xmlTermIDList
     //    |> (fun xmlTermItem ->
@@ -253,17 +276,9 @@ module xmlParsing =
     //           )
     //       else createUserParam null null null null
 
-    //let convertToEntityCVs (mzIdentMLXML : SchemePeptideShaker.MzIdentMl) =  
-    //    mzIdentMLXML.CvList
-    //        |> Array.map (fun cvItem -> (createCV  cvItem.FullName
-    //                                               cvItem.Uri
-    //                                               (if cvItem.Version.IsSome 
-    //                                                  then cvItem.Version.Value 
-    //                                                  else null
-    //                                               )
-                                              
-    //                                    )
-    //                      ) |> List
+    //let cvParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
+    //    CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.CvRef),0 , mzIdentMLXML.Value, (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession), mzIdentMLXML.UnitName)
+
 
     //let convertToEntityInputSpectrumIdentifications (mzIdentMLXML : SchemePeptideShaker.InputSpectrumIdentifications []) =
     //    mzIdentMLXML
