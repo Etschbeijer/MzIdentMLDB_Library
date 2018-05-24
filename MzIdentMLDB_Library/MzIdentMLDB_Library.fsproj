@@ -57,6 +57,8 @@
     <Compile Include="DataContext.fs" />
     <Compile Include="InsertStatements.fs" />
     <Compile Include="MzIdentML_Version1.2_Parser.fs" />
+    <None Include="Script.fsx" />
+    <Content Include="packages.config" />
     <Content Include="Ontologies\Pride.txt" />
     <Content Include="Ontologies\Psi-MS.txt" />
     <Content Include="Ontologies\Unimod.txt" />
@@ -66,8 +68,6 @@
     <None Include="XML_Files\MzIdentMLScheme1_2.xsd" />
     <Content Include="XML_Files\PeptideShaker_mzid_1_2_example.txt" />
     <Content Include="XML_Files\PeptideShaker_Scheme.txt" />
-    <None Include="Script.fsx" />
-    <Content Include="packages.config" />
     <None Include="XML_Files\MzIdentMLScheme.xsd" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid" />
     <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
