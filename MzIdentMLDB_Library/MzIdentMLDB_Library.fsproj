@@ -56,8 +56,20 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="DataContext.fs" />
     <Compile Include="InsertStatements.fs" />
+    <Content Include="Ontologies\Pride.txt" />
+    <Content Include="Ontologies\Psi-MS.txt" />
+    <Content Include="Ontologies\Unimod.txt" />
+    <Content Include="Ontologies\Unit_Ontology.txt" />
+    <Content Include="XML_Files\MzIdentMLScheme - Copy.txt" />
+    <Content Include="XML_Files\MzIdentMLScheme1_2.txt" />
+    <None Include="XML_Files\MzIdentMLScheme1_2.xsd" />
+    <Content Include="XML_Files\PeptideShaker_mzid_1_2_example.txt" />
+    <Content Include="XML_Files\PeptideShaker_Scheme.txt" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <None Include="XML_Files\MzIdentMLScheme.xsd" />
+    <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid" />
+    <None Include="XML_Files\PeptideShaker_mzid_1_2_example.mzid.gz" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

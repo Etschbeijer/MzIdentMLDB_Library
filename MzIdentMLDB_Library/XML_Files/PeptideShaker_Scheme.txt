@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MzIdentML id="PeptideShaker v1.12.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://psidev.info/psi/pi/mzIdentML/1.2 http://www.psidev.info/files/mzIdentML1.2.0.xsd" xmlns="http://psidev.info/psi/pi/mzIdentML/1.2" version="1.2.0" creationDate="2016-07-27T17:43:47">
+	<cvList>
+		<cv id="PSI-MS" uri="https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo" fullName="PSI-MS"/>
+		<cv id="UNIMOD" uri="http://www.unimod.org/obo/unimod.obo" fullName="UNIMOD"/>
+		<cv id="UO" uri="https://raw.githubusercontent.com/bio-ontology-research-group/unit-ontology/master/unit.obo" fullName="UNIT-ONTOLOGY"/>
+		<cv id="PRIDE" uri="https://github.com/PRIDE-Utilities/pride-ontology/blob/master/pride_cv.obo" fullName="PRIDE"/>
+	</cvList>
+	<AnalysisSoftwareList>
+		<AnalysisSoftware name="PeptideShaker" version="1.12.2" id="ID_software" uri="http://compomics.github.io/projects/peptide-shaker.html">
+			<ContactRole contact_ref="PS_DEV">
+				<Role>
+					<cvParam cvRef="PSI-MS" accession="MS:1001267" name="software vendor"/>
+				</Role>
+			</ContactRole>
+			<SoftwareName>
+				<cvParam cvRef="PSI-MS" accession="MS:1002458" name="PeptideShaker"/>
+			</SoftwareName>
+			<Customizations>No customisations</Customizations>
+		</AnalysisSoftware>
+	</AnalysisSoftwareList>
+	<Provider id="PROVIDER">
+		<ContactRole contact_ref="PROVIDER">
+			<Role>
+				<cvParam cvRef="PSI-MS" accession="MS:1001271" name="researcher"/>
+			</Role>
+		</ContactRole>
+	</Provider>
+	<AuditCollection>
+		<Person firstName="test" lastName="test" id="PROVIDER">
+			<cvParam cvRef="PSI-MS" accession="MS:1000587" name="contact address" value="test"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000588" name="contact URL" value="test"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000589" name="contact email" value="test"/>
+			<Affiliation organization_ref="ORG_DOC_OWNER"/>
+		</Person>
+		<Organization name="test" id="ORG_DOC_OWNER">
+			<cvParam cvRef="PSI-MS" accession="MS:1000586" name="contact name" value="test"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000587" name="contact address" value="test"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000588" name="contact URL" value="test"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000589" name="contact email" value="test"/>
+		</Organization>
+		<Organization name="PeptideShaker developers" id="PS_DEV">
+			<cvParam cvRef="PSI-MS" accession="MS:1000586" name="contact name" value="PeptideShaker developers"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000587" name="contact address" value="Proteomics Unit, Building for Basic Biology, University of Bergen, Jonas Liesvei 91, N-5009 Bergen, Norway"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000588" name="contact URL" value="http://compomics.github.io/projects/peptide-shaker.html"/>
+			<cvParam cvRef="PSI-MS" accession="MS:1000589" name="contact email" value="peptide-shaker@googlegroups.com"/>
+		</Organization>
+	</AuditCollection>
+	<SequenceCollection>
+		<DBSequence id="P27348" accession="P27348" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1433T_HUMAN 14-3-3 protein theta OS=Homo sapiens GN=YWHAQ PE=1 SV=1"/>
+		</DBSequence>
+		<DBSequence id="P27348_REVERSED" accession="P27348_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1433T_HUMAN 14-3-3 protein theta OS=Homo sapiens GN=YWHAQ PE=1 SV=1-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="P30443" accession="P30443" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A01_HUMAN HLA class I histocompatibility antigen, A-1 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1"/>
+		</DBSequence>
+		<DBSequence id="P30443_REVERSED" accession="P30443_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A01_HUMAN HLA class I histocompatibility antigen, A-1 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="P01892" accession="P01892" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A02_HUMAN HLA class I histocompatibility antigen, A-2 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1"/>
+		</DBSequence>
+		<DBSequence id="P01892_REVERSED" accession="P01892_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A02_HUMAN HLA class I histocompatibility antigen, A-2 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="Q96QU6" accession="Q96QU6" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A1L1_HUMAN 1-aminocyclopropane-1-carboxylate synthase-like protein 1 OS=Homo sapiens GN=ACCS PE=1 SV=1"/>
+		</DBSequence>
+		<DBSequence id="Q96QU6_REVERSED" accession="Q96QU6_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A1L1_HUMAN 1-aminocyclopropane-1-carboxylate synthase-like protein 1 OS=Homo sapiens GN=ACCS PE=1 SV=1-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="P18462" accession="P18462" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A25_HUMAN HLA class I histocompatibility antigen, A-25 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1"/>
+		</DBSequence>
+		<DBSequence id="P18462_REVERSED" accession="P18462_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A25_HUMAN HLA class I histocompatibility antigen, A-25 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=1-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="P30512" accession="P30512" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A29_HUMAN HLA class I histocompatibility antigen, A-29 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=2"/>
+		</DBSequence>
+		<DBSequence id="P30512_REVERSED" accession="P30512_REVERSED" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1A29_HUMAN HLA class I histocompatibility antigen, A-29 alpha chain OS=Homo sapiens GN=HLA-A PE=1 SV=2-REVERSED"/>
+		</DBSequence>
+		<DBSequence id="P27348" accession="P27348" searchDatabase_ref="SearchDB_1" >
+			<cvParam cvRef="PSI-MS" accession="MS:1001088" name="protein description" value="1433T_HUMAN 14-3-3 protein theta OS=Homo sapiens GN=YWHAQ PE=1 SV=1"/>
+		</DBSequence>
+		<Peptide id="QHVMFSKSMIFTKGCER_15.99491461956-ATAA-4_15.99491461956-ATAA-9">
+			<PeptideSequence>QHVMFSKSMIFTKGCER</PeptideSequence>
+			<Modification monoisotopicMassDelta="57.021464" residues="C" location="15" >
+				<cvParam cvRef="UNIMOD" accession="UNIMOD:4" name="Carbamidomethyl"/>
+			</Modification>
+			<Modification monoisotopicMassDelta="15.994915" residues="M" location="4" >
+				<cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation"/>
+			</Modification>
+			<Modification monoisotopicMassDelta="15.994915" residues="M" location="9" >
+				<cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation"/>
+			</Modification>
+		</Peptide>
+		<Peptide id="SQIHDIVIVGGSTR">
+			<PeptideSequence>SQIHDIVLVGGSTR</PeptideSequence>
+		</Peptide>
+		<Peptide id="SIDDEDVDENEDDVYGNSSGRK">
+			<PeptideSequence>SIDDEDVDENEDDVYGNSSGRK</PeptideSequence>
+		</Peptide>
+		<Peptide id="FQGQDTIIDYTIR">
+			<PeptideSequence>FQGQDTILDYTLR</PeptideSequence>
+		</Peptide>
+		<Peptide id="QHITIHTRQRFSK_-17.026549101009998">
+			<PeptideSequence>QHLTLHTRQRFSK</PeptideSequence>
+			<Modification monoisotopicMassDelta="-17.026549" residues="Q" location="0" >
+				<cvParam cvRef="UNIMOD" accession="UNIMOD:28" name="Gln-&gt;pyro-Glu"/>
+			</Modification>
+		</Peptide>
+		<PeptideEvidence isDecoy="false" pre="R" post="V" start="340" end="352" peptide_ref="SIQFVDWCPTGFK" dBSequence_ref="P68363" id="PepEv_1" />
+		<PeptideEvidence isDecoy="false" pre="R" post="V" start="340" end="352" peptide_ref="SIQFVDWCPTGFK" dBSequence_ref="P68366" id="PepEv_2" />
+	</SequenceCollection>
+	<AnalysisCollection>
+		<SpectrumIdentification spectrumIdentificationList_ref="SIL_1" spectrumIdentificationProtocol_ref="SearchProtocol_1" id="SpecIdent_1">
+			<InputSpectra spectraData_ref="qExactive01819.mgf"/>
+			<SearchDatabaseRef searchDatabase_ref="SearchDB_1"/>
+		</SpectrumIdentification>
+		<ProteinDetection proteinDetectionProtocol_ref="PeptideShaker_1" proteinDetectionList_ref="Protein_groups" id="PD_1">
+			<InputSpectrumIdentifications spectrumIdentificationList_ref="SIL_1"/>
+			<InputSpectrumIdentifications spectrumIdentificationList_ref="SIL_1"/>
+		</ProteinDetection>
+	</AnalysisCollection>
+	<AnalysisProtocolCollection>
+		<SpectrumIdentificationProtocol analysisSoftware_ref="ID_software" id="SearchProtocol_1">
+			<SearchType>
+				<cvParam cvRef="PSI-MS" accession="MS:1001083" name="ms-ms search"/>
+			</SearchType>
+			<AdditionalSearchParams>
+				<cvParam cvRef="PSI-MS" accession="MS:1001211" name="parent mass type mono"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1001256" name="fragment mass type mono"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002492" name="consensus scoring"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002490" name="peptide-level scoring"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002497" name="group PSMs by sequence with modifications"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002491" name="modification localization scoring"/>
+			</AdditionalSearchParams>
+			<ModificationParams>
+				<SearchModification residues="C" massDelta="57.021464" fixedMod= "true" >
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:4" name="Carbamidomethyl"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="0"/>
+				</SearchModification>
+				<SearchModification residues="M" massDelta="15.994915" fixedMod= "false" >
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="1"/>
+				</SearchModification>
+				<SearchModification residues="." massDelta="42.010565" fixedMod= "false" >
+					<SpecificityRules>
+						<cvParam cvRef="PSI-MS" accession="MS:1002057" name="modification specificity protein N-term"/>
+					</SpecificityRules>
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:1" name="Acetyl"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="2"/>
+				</SearchModification>
+				<SearchModification residues="E" massDelta="-18.010565" fixedMod= "false" >
+					<SpecificityRules>
+						<cvParam cvRef="PSI-MS" accession="MS:1001189" name="modification specificity peptide N-term"/>
+					</SpecificityRules>
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:27" name="Glu-&gt;pyro-Glu"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="3"/>
+				</SearchModification>
+				<SearchModification residues="Q" massDelta="-17.026549" fixedMod= "false" >
+					<SpecificityRules>
+						<cvParam cvRef="PSI-MS" accession="MS:1001189" name="modification specificity peptide N-term"/>
+					</SpecificityRules>
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:28" name="Gln-&gt;pyro-Glu"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="4"/>
+				</SearchModification>
+				<SearchModification residues="C" massDelta="-17.026549" fixedMod= "false" >
+					<SpecificityRules>
+						<cvParam cvRef="PSI-MS" accession="MS:1001189" name="modification specificity peptide N-term"/>
+					</SpecificityRules>
+					<cvParam cvRef="UNIMOD" accession="UNIMOD:385" name="Ammonia-loss"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002504" name="modification index" value="4"/>
+				</SearchModification>
+			</ModificationParams>
+			<Enzymes independent="false">
+				<Enzyme missedCleavages="2" semiSpecific="false" id="Enz1" name="Trypsin">
+					<EnzymeName>
+						<cvParam cvRef="PSI-MS" accession="MS:1001251" name="Trypsin"/>
+					</EnzymeName>
+				</Enzyme>
+			</Enzymes>
+			<FragmentTolerance>
+				<cvParam accession="MS:1001412" cvRef="PSI-MS" unitCvRef="UO" unitName="dalton" unitAccession="UO:0000221" value="0.02" name="search tolerance plus value" />
+				<cvParam accession="MS:1001413" cvRef="PSI-MS" unitCvRef="UO" unitName="dalton" unitAccession="UO:0000221" value="0.02" name="search tolerance minus value" />
+			</FragmentTolerance>
+			<ParentTolerance>
+				<cvParam accession="MS:1001412" cvRef="PSI-MS" unitCvRef="UO" unitName="parts per million" unitAccession="UO:0000169" value="10.0" name="search tolerance plus value" />
+				<cvParam accession="MS:1001413" cvRef="PSI-MS" unitCvRef="UO" unitName="parts per million" unitAccession="UO:0000169" value="10.0" name="search tolerance minus value" />
+			</ParentTolerance>
+			<Threshold>
+				<cvParam cvRef="PSI-MS" accession="MS:1001364" name="peptide sequence-level global FDR" value="1.0"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002350" name="PSM-level global FDR" value="1.0"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002567" name="phosphoRS score threshold" value="95.0"/>
+				<cvParam cvRef="PSI-MS" accession="MS:1002557" name="D-Score threshold" value="95.0"/>
+			</Threshold>
+		</SpectrumIdentificationProtocol>
+		<ProteinDetectionProtocol analysisSoftware_ref="ID_software" id="PeptideShaker_1">
+			<Threshold>
+				<cvParam cvRef="PSI-MS" accession="MS:1002369" name="protein group-level global FDR" value="0.01"/>
+			</Threshold>
+		</ProteinDetectionProtocol>
+	</AnalysisProtocolCollection>
+	<DataCollection>
+		<Inputs>
+			<SourceFile location="file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/.PeptideShaker_unzip_temp/searchgui_out_PeptideShaker_temp/qExactive01819.omx" id="SourceFile_1">
+				<FileFormat>
+					<cvParam cvRef="PSI-MS" accession="MS:1001400" name="OMSSA xml format"/>
+				</FileFormat>
+			</SourceFile>
+			<SourceFile location="file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/.PeptideShaker_unzip_temp/searchgui_out_PeptideShaker_temp/qExactive01819.t.xml" id="SourceFile_2">
+				<FileFormat>
+					<cvParam cvRef="PSI-MS" accession="MS:1001401" name="X!Tandem xml format"/>
+				</FileFormat>
+			</SourceFile>
+			<SearchDatabase numDatabaseSequences="40400" location="file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta" id="SearchDB_1">
+				<FileFormat>
+					<cvParam cvRef="PSI-MS" accession="MS:1001348" name="FASTA format"/>
+				</FileFormat>
+				<DatabaseName>
+					<userParam name="uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta"/>
+				</DatabaseName>
+				<cvParam cvRef="PSI-MS" accession="MS:1001073" name="database type amino acid"/>
+			</SearchDatabase>
+			<SpectraData location="file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/qExactive01819.mgf" id="qExactive01819.mgf" name="qExactive01819.mgf">
+				<FileFormat>
+					<cvParam cvRef="PSI-MS" accession="MS:1001062" name="Mascot MGF format"/>
+				</FileFormat>
+				<SpectrumIDFormat>
+					<cvParam cvRef="PSI-MS" accession="MS:1000774" name="multiple peak list nativeID format"/>
+				</SpectrumIDFormat>
+			</SpectraData>
+		</Inputs>
+		<AnalysisData>
+			<SpectrumIdentificationList id="SIL_1">
+				<FragmentationTable>
+					<Measure id="Measure_MZ">
+						<cvParam cvRef="PSI-MS" accession="MS:1001225" name="product ion m/z" unitCvRef="PSI-MS" unitAccession="MS:1000040" unitName="m/z" />
+					</Measure>
+					<Measure id="Measure_Int">
+						<cvParam cvRef="PSI-MS" accession="MS:1001226" name="product ion intensity" unitCvRef="PSI-MS" unitAccession="MS:1000131" unitName="number of detector counts"/>
+					</Measure>
+					<Measure id="Measure_Error">
+						<cvParam cvRef="PSI-MS" accession="MS:1001227" name="product ion m/z error" unitCvRef="PSI-MS" unitAccession="MS:1000040" unitName="m/z"/>
+					</Measure>
+				</FragmentationTable>
+				<SpectrumIdentificationResult spectraData_ref="qExactive01819.mgf" spectrumID="index=11104" id="SIR_1">
+					<SpectrumIdentificationItem passThreshold="false" rank="1" peptide_ref="QKAQAAATVVK" calculatedMassToCharge="372.22414551864216" experimentalMassToCharge="372.228240966797" chargeState="3" id="SII_1_1">
+						<PeptideEvidenceRef peptideEvidence_ref="PepEv_1499"/>
+						<Fragmentation>
+							<IonType charge="1" index="1">
+								<FragmentArray measure_ref="Measure_MZ" values="129.0547943"/>
+								<FragmentArray measure_ref="Measure_Int" values="28729.93359375"/>
+								<FragmentArray measure_ref="Measure_Error" values="-0.011059672092017081"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001224" name="frag: b ion"/>
+							</IonType>
+							<IonType charge="2" index="7">
+								<FragmentArray measure_ref="Measure_MZ" values="335.2040405"/>
+								<FragmentArray measure_ref="Measure_Int" values="79480.2734375"/>
+								<FragmentArray measure_ref="Measure_Error" values="0.016477451487901362"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001224" name="frag: b ion"/>
+							</IonType>
+							<IonType charge="1" index="1">
+								<FragmentArray measure_ref="Measure_MZ" values="147.1169434"/>
+								<FragmentArray measure_ref="Measure_Int" values="7425.9086914063"/>
+								<FragmentArray measure_ref="Measure_Error" values="0.004139235487969017"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001220" name="frag: y ion"/>
+							</IonType>
+							<IonType charge="2" index="3">
+								<FragmentArray measure_ref="Measure_MZ" values="173.1325073"/>
+								<FragmentArray measure_ref="Measure_Int" values="7528.9462890625"/>
+								<FragmentArray measure_ref="Measure_Error" values="0.004053071347954074"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001220" name="frag: y ion"/>
+							</IonType>
+						</Fragmentation>
+						<cvParam cvRef="PSI-MS" accession="MS:1002466" name="PeptideShaker PSM score" value="0.0"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002467" name="PeptideShaker PSM confidence" value="0.0"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002469" name="PeptideShaker peptide confidence" value="4.0000000000000036"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002468" name="PeptideShaker peptide score" value="-0.0"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002500" name="peptide passes threshold" value="false"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002520" name="peptide group ID" value="QKAQAAATVVK"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001328" name="OMSSA:evalue" value="68.145917448381"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001117" name="theoretical mass" value="1113.6506071554904" unitCvRef="UO" unitAccession="UO:0000221" unitName="dalton"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002540" name="PeptideShaker PSM confidence type" value="Not Validated"/>
+					</SpectrumIdentificationItem>
+					<cvParam cvRef="PSI-MS" accession="MS:1000796" name="spectrum title" value="qExactive01819.13825.13825. File:&quot;qExactive01819.raw&quot;, NativeID:&quot;controllerType=0 controllerNumber=1 scan=13825&quot;"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1000894" name="retention time" value="3266.09664" unitCvRef="UO" unitAccession="UO:0000010" unitName="second"/>
+				</SpectrumIdentificationResult>
+				<SpectrumIdentificationResult spectraData_ref="qExactive01819.mgf" spectrumID="index=7911" id="SIR_2">
+					<SpectrumIdentificationItem passThreshold="true" rank="1" peptide_ref="AATFFGEVVK_42.0105646837" calculatedMassToCharge="555.7951319066772" experimentalMassToCharge="555.795202023611" chargeState="2" id="SII_2_1">
+						<PeptideEvidenceRef peptideEvidence_ref="PepEv_5631"/>
+						<PeptideEvidenceRef peptideEvidence_ref="PepEv_5631"/>
+						<Fragmentation>
+							<IonType charge="1" index="3 4 5">
+								<FragmentArray measure_ref="Measure_MZ" values="268.1288147 415.1979675 562.2642822"/>
+								<FragmentArray measure_ref="Measure_Int" values="12310.8095703125 5884.296875 684.6715087891"/>
+								<FragmentArray measure_ref="Measure_Error" values="-3.678046420532155E-4 3.7108236790572846E-4 -0.0017281306220411352"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001224" name="frag: b ion"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1000336" name="neutral loss" value="H2O"/>
+							</IonType>
+							<IonType charge="1" index="1 2 3 4 5">
+								<FragmentArray measure_ref="Measure_MZ" values="114.0549927 185.0919952 286.1390686 433.2084351 580.2753906"/>
+								<FragmentArray measure_ref="Measure_Int" values="998.9344482422 9834.7421875 8135.5971679688 6020.33203125 983.686706543"/>
+								<FragmentArray measure_ref="Measure_Error" values="3.776477798567157E-5 -7.35199320160973E-5 -6.785883421116523E-4 2.739986678648165E-4 -0.0011844143219832404"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001224" name="frag: b ion"/>
+							</IonType>
+							<IonType charge="1" index="1 2 3 4 5 6 7 8">
+								<FragmentArray measure_ref="Measure_MZ" values="147.1127625 246.1810608 345.2488403 474.2874756 531.3149414 678.3822021 825.4490356 926.4985352"/>
+								<FragmentArray measure_ref="Measure_Int" values="5991.3251953125 5155.31640625 2722.7824707031 725.7612304688 11122.650390625 19193.193359375 12635.595703125 3338.2199707031"/>
+								<FragmentArray measure_ref="Measure_Error" values="-4.1664512025363365E-5 -1.572775020406425E-4 -7.916904921216883E-4 -0.004749478462144907 0.0012526009678595074 9.938797791164689E-5 -0.0014810250121399804 3.4010657782346243E-4"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001220" name="frag: y ion"/>
+							</IonType>
+							<IonType charge="1" index="1">
+								<FragmentArray measure_ref="Measure_MZ" values="130.0863953"/>
+								<FragmentArray measure_ref="Measure_Int" values="2904.3640136719"/>
+								<FragmentArray measure_ref="Measure_Error" values="1.402364979696813E-4"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001220" name="frag: y ion"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1000336" name="neutral loss" value="H3N"/>
+							</IonType>
+							<IonType charge="1" index="4 5">
+								<FragmentArray measure_ref="Measure_MZ" values="120.0808411"/>
+								<FragmentArray measure_ref="Measure_Int" values="14483.125"/>
+								<FragmentArray measure_ref="Measure_Error" values="6.53397579810644E-5"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001239" name="frag: immonium ion"/>
+							</IonType>
+							<IonType charge="1" index="4 8">
+								<FragmentArray measure_ref="Measure_MZ" values="456.2924194 908.4766235"/>
+								<FragmentArray measure_ref="Measure_Int" values="2783.4250488281 752.3065185547"/>
+								<FragmentArray measure_ref="Measure_Error" values="0.010759005237900965 -0.011006909722254932"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1001220" name="frag: y ion"/>
+								<cvParam cvRef="PSI-MS" accession="MS:1000336" name="neutral loss" value="H2O"/>
+							</IonType>
+						</Fragmentation>
+						<cvParam cvRef="PSI-MS" accession="MS:1002466" name="PeptideShaker PSM score" value="24.12"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002467" name="PeptideShaker PSM confidence" value="98.35"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002536" name="D-Score" value="2:99.6124031007752:1:true"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002469" name="PeptideShaker peptide confidence" value="100.0"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002468" name="PeptideShaker peptide score" value="100.0"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002500" name="peptide passes threshold" value="true"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002520" name="peptide group ID" value="AATFFGEVVK_42.0105646837"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001330" name="X!Tandem:expect" value="0.0067"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001117" name="theoretical mass" value="1109.5757108797304" unitCvRef="UO" unitAccession="UO:0000221" unitName="dalton"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002540" name="PeptideShaker PSM confidence type" value="Confident"/>
+					</SpectrumIdentificationItem>
+					<cvParam cvRef="PSI-MS" accession="MS:1000796" name="spectrum title" value="qExactive01819.10418.10418.2 File:&quot;qExactive01819.raw&quot;, NativeID:&quot;controllerType=0 controllerNumber=1 scan=10418&quot;"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1000894" name="retention time" value="2496.56568" unitCvRef="UO" unitAccession="UO:0000010" unitName="second"/>
+				</SpectrumIdentificationResult>
+			</SpectrumIdentificationList>
+			<ProteinDetectionList id="Protein_groups">
+				<ProteinAmbiguityGroup id="PAG_0">
+					<ProteinDetectionHypothesis id="PAG_0_1" dBSequence_ref="O75947" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4952">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5365_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_1026">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6246_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.19"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_626">
+					<ProteinDetectionHypothesis id="PAG_626_1" dBSequence_ref="P62136" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3060">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_640_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_2443">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3576_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.09"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_627">
+					<ProteinDetectionHypothesis id="PAG_627_1" dBSequence_ref="P46087" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4360">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_954_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5616">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2373_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.04"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Doubtful"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_628">
+					<ProteinDetectionHypothesis id="PAG_628_1" dBSequence_ref="A6NN90" passThreshold="false">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3030">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3812_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.0"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="0.18"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="0.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Not Validated"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="false"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_629">
+					<ProteinDetectionHypothesis id="PAG_629_1" dBSequence_ref="P07737" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5088">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_391_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1051_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1215_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5264_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6170_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3779">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_897_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2112_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4600">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1013_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_1515">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1877_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4885_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5159">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3276_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5029_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_767">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3527_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_2513">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3920_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5606_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5509">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4020_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_687">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5677_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3397">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6006_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.5"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+					<ProteinDetectionHypothesis id="PAG_629_1" dBSequence_ref="P07737" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5088">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_391_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1051_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1215_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5264_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6170_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3779">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_897_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2112_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4600">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1013_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_1515">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1877_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4885_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5159">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3276_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5029_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_767">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3527_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_2513">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3920_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5606_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5509">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4020_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_687">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5677_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3397">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6006_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.5"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_669">
+					<ProteinDetectionHypothesis id="PAG_669_1" dBSequence_ref="P53621" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_1772">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1909_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5649">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1964_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3713">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4167_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5406">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5579_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4709">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5987_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.05"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_735">
+					<ProteinDetectionHypothesis id="PAG_735_1" dBSequence_ref="Q9P2K9" passThreshold="false">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_1195">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_27_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_346_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_861_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_873_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_900_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1668_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2368_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2479_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2668_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2927_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3334_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3549_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5116_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.0"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="0.18"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="0.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Not Validated"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="false"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_736">
+					<ProteinDetectionHypothesis id="PAG_736_1" dBSequence_ref="P46013" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3245">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_839_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5547">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_885_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5548">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_885_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_203">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3160_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_204">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3160_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.01"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_749">
+					<ProteinDetectionHypothesis id="PAG_749_1" dBSequence_ref="Q6GYQ0_REVERSED" passThreshold="false">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_5102">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_59_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_863_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1004_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1262_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1371_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1590_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1868_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1873_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1974_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2398_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2586_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2880_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3009_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3108_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3725_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4141_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4152_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4377_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4881_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5449_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5752_1"/>
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_6318_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.0"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="0.18"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="0.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Not Validated"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="false"/>
+				</ProteinAmbiguityGroup>
+				<ProteinAmbiguityGroup id="PAG_2178">
+					<ProteinDetectionHypothesis id="PAG_2178_1" dBSequence_ref="P21796" passThreshold="true">
+						<PeptideHypothesis peptideEvidence_ref="PepEv_2464">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_596_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_877">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_665_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_3333">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_1958_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_2260">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_2823_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4208">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_3459_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_286">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_4038_1"/>
+						</PeptideHypothesis>
+						<PeptideHypothesis peptideEvidence_ref="PepEv_4570">
+							<SpectrumIdentificationItemRef spectrumIdentificationItem_ref="SII_5355_1"/>
+						</PeptideHypothesis>
+						<cvParam cvRef="PSI-MS" accession="MS:1002403" name="group representative"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1002401" name="leading protein"/>
+						<cvParam cvRef="PSI-MS" accession="MS:1001093" name="sequence coverage" value="0.31"/>
+					</ProteinDetectionHypothesis>
+					<cvParam cvRef="PSI-MS" accession="MS:1002470" name="PeptideShaker protein group score" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002471" name="PeptideShaker protein group confidence" value="100.0"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002542" name="PeptideShaker protein confidence type" value="Confident"/>
+					<cvParam cvRef="PSI-MS" accession="MS:1002415" name="protein group passes threshold" value="true"/>
+				</ProteinAmbiguityGroup>
+				<cvParam cvRef="PSI-MS" accession="MS:1002404" name="count of identified proteins" value="1201"/>
+			</ProteinDetectionList>
+		</AnalysisData>
+	</DataCollection>
+</MzIdentML>
