@@ -2436,22 +2436,25 @@ module InsertStatements =
             OntologyHandler.addToContext context psims |> ignore
 
             let terms_Pride =
-                fromPsiMS
+                fromPride
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
             let psims = OntologyHandler.init ("Pride", terms_Pride)
             OntologyHandler.addToContext context psims |> ignore
 
             let terms_Unimod =
-                fromPsiMS
+                fromUniMod
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
             let psims = OntologyHandler.init ("Unimod", terms_Unimod)
             OntologyHandler.addToContext context psims |> ignore
 
             let terms_Unit_Ontology =
-                fromPsiMS
+                fromUnit_Ontology
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
             let psims = OntologyHandler.init ("Unit_Ontology", terms_Unit_Ontology)
             OntologyHandler.addToContext context psims |> ignore
+
+            let userOntology =
+                OntologyHandler.init("UserParam")
 
             context.Database.EnsureCreated() |> ignore
             context.SaveChanges()
