@@ -57,7 +57,7 @@
     <Compile Include="DataContext.fs" />
     <Compile Include="InsertStatements.fs" />
     <Compile Include="MzIdentML_XML_Parser.fs" />
-    <None Include="Script.fsx" />
+    <None Include="Testing.fsx" />
     <Content Include="packages.config" />
     <Content Include="Ontologies\Pride.txt" />
     <Content Include="Ontologies\Psi-MS.txt" />
