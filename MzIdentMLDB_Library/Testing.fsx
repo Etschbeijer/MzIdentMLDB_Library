@@ -17,6 +17,7 @@
 #r "System.Xml.Linq.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
 
+open MzIdentMLDataBase.DataContext.DataContext
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
@@ -94,5 +95,23 @@ let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\Pep
 
 let xmlTest = xmlCVParams.AnalysisProtocolCollection.ProteinDetectionProtocol.Value.Threshold.CvParams
 
-xmlTest
-|> Array.map (fun item -> convertToEntity_CVParam context item)
+let test =
+    xmlTest
+    |> Array.map (fun item -> convertToEntity_CVParam context item)
+test.Length
+test
+let testTerm =
+    xmlTest
+    |> Array.map (fun item -> takeTermEntry context item.Accession)
+
+let testi (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
+    let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.Accession))
+    init
+
+let testii =
+    xmlTest
+    |> Array.map (fun item -> testi context item)
+
+let testiii =
+    xmlTest
+    |> Array.map (fun item -> CVParamHandler.addValue testii.[0] item.Value.Value)

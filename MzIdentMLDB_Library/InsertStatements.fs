@@ -80,7 +80,7 @@ module InsertStatements =
                     false
 
         let fileDir = __SOURCE_DIRECTORY__
-        let standardDBPathSQLite = fileDir + "..\Databases\Test.db"
+        let standardDBPathSQLite = fileDir + "\Databases\Test.db"
 
         let configureSQLiteContextMzIdentML path = 
             let optionsBuilder = new DbContextOptionsBuilder<MzIdentMLContext>()
@@ -92,10 +92,10 @@ module InsertStatements =
         open ManipulateDataContextAndDB
         open SubFunctions
 
-        let setOption (addFunction:'a ->'b->unit) (object:'a) (item:'b option) =
+        let setOption (addFunction:'a ->'b->'a) (object:'a) (item:'b option) =
             match item with
             |Some x -> addFunction object x
-            |None -> ()
+            |None -> object
 
         type TermHandler =
                static member init
@@ -116,10 +116,12 @@ module InsertStatements =
                static member addName
                     (term:Term) (name:string) =
                     term.Name <- name
+                    term
 
                static member addOntology
                     (term:Term) (ontology:Ontology) =
                     term.Ontology <- ontology
+                    term
 
                 static member addToContext (context:MzIdentMLContext) (item:Term) =
                         addToContextWithExceptionCheck context item
@@ -144,12 +146,12 @@ module InsertStatements =
                 static member addTerm
                     (ontology:Ontology) (term:Term) =
                     let result = ontology.Terms <- addToList ontology.Terms term
-                    result
+                    ontology
 
                 static member addTerms
                     (ontology:Ontology) (terms:seq<Term>) =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
-                    result
+                    ontology
 
                 static member addToContext (context:MzIdentMLContext) (item:Ontology) =
                     addToContextWithExceptionCheck context item
@@ -185,14 +187,17 @@ module InsertStatements =
                static member addValue
                     (cvParam:CVParam) (value:string) =
                     cvParam.Value <- value
+                    cvParam
 
                static member addUnit
                     (cvParam:CVParam) (unit:Term) =
                     cvParam.Unit <- unit
+                    cvParam
 
                static member addUnitName
                     (cvParam:CVParam) (unitName:string) =
                     cvParam.UnitName <- unitName
+                    cvParam
 
                 static member addToContext (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item)
@@ -224,10 +229,12 @@ module InsertStatements =
                static member addName
                     (organization:Organization) (name:string) =
                     organization.Name <- name
+                    organization
 
                static member addParent
                     (organization:Organization) (parent:string) =
                     organization.Parent <- parent
+                    organization
 
                static member addDetail
                     (organization:Organization) (detail:CVParam) =
