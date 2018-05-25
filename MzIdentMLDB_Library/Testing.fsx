@@ -7,9 +7,9 @@
 #r @"..\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll"
-#r @"..\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\Remotion.Linq.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.core.dll"
+#r @"..\MzIdentMLDB_Library\bin\Debug\SQLitePCLRaw.batteries_v2.dll"
 //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.dll"
 //#r @"C:\Users\PatrickB\Source\Repos\MzIdentML_Library\MzIdentML_Library\bin\Debug\netstandard2.0\FSharp.Care.IO.dll"
 #r @"..\packages\FSharp.Data.2.4.6\lib\net45\FSharp.Data.dll"
@@ -22,7 +22,7 @@ open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 open MzIdentMLDataBase.XMLParsing
 
-let context = configureSQLiteContextMzIdentML "C:\Users\Patrick\source\repos\Test.db"
+let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 
 //Term and Ontology
 let termI = TermHandler.init("I")
@@ -49,6 +49,7 @@ let addpersonToContext = PersonHandler.addToContext context person
 let organization = OrganizationHandler.init(0)
 let addOrganizationToContext = OrganizationHandler.addToContext context organization
 
+context.Database.ProviderName
 context.Database.EnsureCreated()
 
 insertWithExceptionCheck context
@@ -87,4 +88,11 @@ TestHandler.init(0,transformOption(Some("test")) ,"string")
 TestHandler.init(0)
 TestHandler.init(0,transformOption(None) ,"string")
 
-let xmlCVParams = SchemePeptideShaker.Load("..\ExampleFile\PeptideShaker_mzid_1_2_example.mzid")
+//XMLParser
+
+let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
+
+let xmlTest = xmlCVParams.AnalysisProtocolCollection.ProteinDetectionProtocol.Value.Threshold.CvParams
+
+xmlTest
+|> Array.map (fun item -> convertToEntity_CVParam context item)

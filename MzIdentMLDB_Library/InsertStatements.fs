@@ -80,7 +80,7 @@ module InsertStatements =
                     false
 
         let fileDir = __SOURCE_DIRECTORY__
-        let standardDBPathSQLite = fileDir + "\Ontologies_Terms\Test.db"
+        let standardDBPathSQLite = fileDir + "..\Databases\Test.db"
 
         let configureSQLiteContextMzIdentML path = 
             let optionsBuilder = new DbContextOptionsBuilder<MzIdentMLContext>()

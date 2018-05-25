@@ -272,7 +272,7 @@ module XMLParsing =
     //           )
     //       else createUserParam null null null null
 
-    let cvParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
+    let convertToEntity_CVParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
         let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.CvRef))
         let addValue = setOption CVParamHandler.addValue init mzIdentMLXML.Value
         let addUnit = CVParamHandler.addUnit init (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession)
