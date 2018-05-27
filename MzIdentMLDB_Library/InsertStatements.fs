@@ -92,7 +92,7 @@ module InsertStatements =
         open ManipulateDataContextAndDB
         open SubFunctions
 
-        let setOption (addFunction:'a ->'b->'a) (object:'a) (item:'b option) =
+        let setOption (addFunction:'a->'b->'a) (object:'a) (item:'b option) =
             match item with
             |Some x -> addFunction object x
             |None -> object

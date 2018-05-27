@@ -1,5 +1,6 @@
 ﻿namespace MzIdentMLDataBase
 
+open DataContext.EntityTypes
 open DataContext.DataContext
 open InsertStatements.ObjectHandlers
 //open System.Collections.Generic
@@ -212,6 +213,8 @@ module XMLParsing =
                                     else TermHandler.init(null))
             | None -> TermHandler.init(null)
 
+    
+
     //let takeTermID (dbContext : MzIdentMLContext) xmlTermIDList =
     //    xmlTermIDList
     //    |> (fun xmlTermItem ->
@@ -228,61 +231,126 @@ module XMLParsing =
     //Define insertStatements for standardDB////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //let convertToEntityUserParams (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.UserParam []) =   
-    //    mzIdentMLXML
-    //        |> Array.map (fun userParamItem -> (createUserParam (if userParamItem.Value.IsSome 
-    //                                                                then userParamItem.Value.Value 
-    //                                                                else null)
-    //                                                            //(if userParamItem.Type.IsSome 
-    //                                                            //    then userParamItem.Type.Value 
-    //                                                            //    else null)
-    //                                                            (if userParamItem.UnitCvRef.IsSome 
-    //                                                                then takeTermID dbContext userParamItem.UnitCvRef.Value
-    //                                                                else null)
-    //                                                            //(if userParamItem.UnitAccession.IsSome 
-    //                                                            //    then takeTermID dbContext userParamItem.UnitAccession.Value
-    //                                                            //    else null)
-    //                                                            (if userParamItem.UnitName.IsSome 
-    //                                                                then userParamItem.UnitName.Value 
-    //                                                                else null)
-    //                                                            userParamItem.Name
-    //                                           )
-    //                     ) |> List
+    let convertOptionToEntity (converter:MzIdentMLContext->'a->'b) (dbContext:MzIdentMLContext) (mzIdentMLXML:'a option) =
+        match mzIdentMLXML with
+        |Some x -> converter dbContext x
+        |None -> Unchecked.defaultof<'b>
 
-    //let convertToEntityUserParam  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.UserParam option) =   
-    //    if mzIdentMLXML.IsSome
-    //       then mzIdentMLXML.Value
-    //            |> (fun userParamItem -> (createUserParam (if userParamItem.Value.IsSome 
-    //                                                          then userParamItem.Value.Value 
-    //                                                          else null)
-    //                                                      //(if userParamItem.Type.IsSome 
-    //                                                      //    then userParamItem.Type.Value 
-    //                                                      //    else null)
-    //                                                      (if userParamItem.UnitCvRef.IsSome 
-    //                                                          then takeTermID dbContext userParamItem.UnitCvRef.Value
-    //                                                          else null)
-    //                                                      //(if userParamItem.UnitAccession.IsSome 
-    //                                                      //    then takeTermID dbContext userParamItem.UnitAccession.Value
-    //                                                      //    else null)
-    //                                                      (if userParamItem.UnitName.IsSome 
-    //                                                          then userParamItem.UnitName.Value 
-    //                                                          else null)
-    //                                                      userParamItem.Name
-    //                                 )
-    //           )
-    //       else createUserParam null null null null
-
-    let convertToEntity_CVParam (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
+    let convertToEntity_CVParam (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.Accession))
         let addValue = setOption CVParamHandler.addValue init mzIdentMLXML.Value
         let addUnit = CVParamHandler.addUnit addValue (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession)
         let addUnitName = setOption CVParamHandler.addUnitName addUnit mzIdentMLXML.UnitName
         addUnitName
 
+    let convertToEntity_UserParam (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.UserParam) =
+        let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext (if mzIdentMLXML.UnitAccession.IsSome then mzIdentMLXML.UnitAccession.Value else null)))
+        let addValue = setOption CVParamHandler.addValue init mzIdentMLXML.Value
+        let addUnit = CVParamHandler.addUnit addValue (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession)
+        let addUnitName = setOption CVParamHandler.addUnitName addUnit mzIdentMLXML.UnitName
+        addUnitName
+
+    let chooseUserOrCVParamOption (dbContext:MzIdentMLContext) (cvParam:SchemePeptideShaker.CvParam option) (userParam:SchemePeptideShaker.UserParam option) =
+        match cvParam with
+        |Some x -> convertToEntity_CVParam dbContext x
+        |None -> convertToEntity_UserParam dbContext userParam.Value
+
+    let convertToEntityOption_CVParam (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.CvParam option) =
+        convertOptionToEntity convertToEntity_CVParam dbContext mzIdentMLXML
+
+    let test =
+        SchemePeptideShaker.SpectrumIdentificationProtocol
+
+    let convertToEntity_ContactRole (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.ContactRole) =
+        ContactRoleHandler.init(mzIdentMLXML.ContactRef, convertToEntity_CVParam dbContext mzIdentMLXML.Role.CvParam)
+
+    let convertToEntity_AnalysisSoftware (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.AnalysisSoftware) =
+        let init = AnalysisSoftwareHandler.init((chooseUserOrCVParamOption dbContext mzIdentMLXML.SoftwareName.CvParam mzIdentMLXML.SoftwareName.UserParam))
+        let addName = setOption AnalysisSoftwareHandler.addName init mzIdentMLXML.Name
+        let addURI = setOption AnalysisSoftwareHandler.addURI addName mzIdentMLXML.Uri
+        let addVersion = setOption AnalysisSoftwareHandler.addVersion addURI mzIdentMLXML.Version
+        let addCustomizations = setOption AnalysisSoftwareHandler.addCustomization addVersion mzIdentMLXML.Customizations
+        let addAnalysisSoftwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper addCustomizations (convertOptionToEntity convertToEntity_ContactRole dbContext mzIdentMLXML.ContactRole)
+        addAnalysisSoftwareDeveloper
+
+    let convertToEntity_Filter (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.Filter) =
+        let init = FilterHandler.init(chooseUserOrCVParamOption dbContext mzIdentMLXML.FilterType.CvParam mzIdentMLXML.FilterType.UserParam)
+        let addIncludes = 
+            FilterHandler.addIncludes 
+                init
+                (Array.append
+                    (mzIdentMLXML.Include.Value.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
+                    (mzIdentMLXML.Include.Value.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
+                )
+        let addExcludes = 
+            FilterHandler.addExcludes
+                addIncludes
+                (Array.append
+                    (mzIdentMLXML.Exclude.Value.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
+                    (mzIdentMLXML.Exclude.Value.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
+                )
+        addExcludes
+
+    let convertToEntity_SpectrumIdentificationProtocol (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.Enzyme) =
+        let init = EnzymeHandler.init()
+        let addName = setOption EnzymeHandler.addName init mzIdentMLXML.Name
+        let addCTermGain = setOption EnzymeHandler.addCTermGain addName mzIdentMLXML.CTermGain
+        let addNTermGain = setOption EnzymeHandler.addNTermGain addCTermGain mzIdentMLXML.NTermGain
+        let addMinDistance = setOption EnzymeHandler.addMinDistance addNTermGain mzIdentMLXML.MinDistance
+        let addMissedCleave = setOption EnzymeHandler.addMissedCleavages addMinDistance mzIdentMLXML.MissedCleavages
+        let addSemiSpec = setOption EnzymeHandler.addSemiSpecific addMissedCleave mzIdentMLXML.SemiSpecific
+        let addSiteReg = setOption EnzymeHandler.addSiteRegexc addSemiSpec mzIdentMLXML.SiteRegexp
+        let addEnzymeName = 
+            EnzymeHandler.addEnzymeNames
+                addSiteReg
+                (match mzIdentMLXML.EnzymeName with
+                |Some x -> Array.append
+                            (x.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
+                            (x.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
+                |None -> Unchecked.defaultof<CVParam[]>
+                )
+        addEnzymeName
+
+    let convertToEntity_SpectrumIdentificationProtocol (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.SpectrumIdentificationProtocol) =
+        let init =
+            SpectrumIdentificationProtocolHandler.init
+                (
+                convertToEntity_AnalysisSoftware dbContext mzIdentMLXML.AnalysisSoftwareRef, 
+                chooseUserOrCVParamOption dbContext mzIdentMLXML.SearchType.CvParam mzIdentMLXML.SearchType.UserParam, 
+                Array.append 
+                    (mzIdentMLXML.Threshold.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item)) 
+                    (mzIdentMLXML.Threshold.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
+                )
+        let addName = setOption SpectrumIdentificationProtocolHandler.addName init mzIdentMLXML.Name
+        let addDatabaseFilter = 
+            SpectrumIdentificationProtocolHandler.addDatabaseFilters
+                addName 
+                (match mzIdentMLXML.DatabaseFilters with
+                |Some x -> x.Filters |> Array.map (fun filter -> convertToEntity_Filter dbContext filter)
+                |None -> Unchecked.defaultof<Filter[]>
+                )
+        let addEnzymes =
+            SpectrumIdentificationProtocolHandler.addEnzymes 
+                addDatabaseFilter
+                (match mzIdentMLXML.Enzymes with 
+                |Some x -> x.Enzymes
+                           |> Array.map (fun enzyme -> convertToEntity_SpectrumIdentificationProtocol dbContext enzyme)
+                |None -> Unchecked.defaultof<Enzyme[]>
+                )
+        let addIndepent_Enzymes = 
+            SpectrumIdentificationProtocolHandler.addIndependent_Enzymes 
+                addEnzymes 
+                (match mzIdentMLXML.Enzymes with
+                    |Some x -> match x.Independent with
+                               |Some x -> x
+                               |None -> Unchecked.defaultof<bool>
+                    |None -> Unchecked.defaultof<bool>
+                )
+        addDatabaseFilter
     //let convertToEntityInputSpectrumIdentifications (mzIdentMLXML : SchemePeptideShaker.InputSpectrumIdentifications []) =
     //    mzIdentMLXML
     //        |> Array.map (fun inputSpectrumIdentificationsItem -> createInputSpectrumIdentification inputSpectrumIdentificationsItem.SpectrumIdentificationListRef) |> List
-
+    
     //let convertToEntityProteinDetection  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.ProteinDetection option) =
     //    if mzIdentMLXML.IsSome
     //        then mzIdentMLXML.Value 
@@ -325,48 +393,6 @@ module XMLParsing =
     //                                                                                    |> convertToEntitySearchDatabaseRef
     //                                                                                  )
     //                 ) |> List
-
-    //let convertToEntityAnalysisParamsCVParams  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam []) =
-    //    mzIdentMLXML
-    //        |> Array.map (fun cvParamItem -> (createAnalysisParamsParam (*cvParamItem.Name*)
-    //                                                                    //cvParamItem.Accession 
-    //                                                                    (if cvParamItem.Value.IsSome 
-    //                                                                        then cvParamItem.Value.Value 
-    //                                                                        else null)
-    //                                                                    (takeTermID dbContext cvParamItem.CvRef)
-    //                                                                    //(if cvParamItem.UnitName.IsSome then cvParamItem.UnitName.Value else null)
-    //                                                                    (if cvParamItem.UnitCvRef.IsSome 
-    //                                                                        then (takeTermID dbContext cvParamItem.UnitCvRef.Value) 
-    //                                                                        else null)
-    //                                                                    //(if cvParamItem.UnitAccession.IsSome then cvParamItem.UnitAccession.Value else null)
-    //                                         )
-    //                     ) |> List
-
-    //let convertToEntityAnalysisParams  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.AnalysisParams option) = 
-    //    (if mzIdentMLXML.IsSome 
-    //        then (convertToEntityAnalysisParamsCVParams dbContext mzIdentMLXML.Value.CvParams),
-    //             (convertToEntityUserParams dbContext mzIdentMLXML.Value.UserParams)
-    //        else null,null
-    //    )
-                                                    
-
-    //let convertToEntityThresholdOfProteinDetectionCVParams  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam []) =
-    //    mzIdentMLXML
-    //        |> Array.map (fun cvParamItem -> (createThresholdParam  (*cvParamItem.Name*)
-    //                                                                //cvParamItem.Accession 
-    //                                                                (if cvParamItem.Value.IsSome then cvParamItem.Value.Value else null)
-    //                                                                (takeTermID dbContext cvParamItem.CvRef)
-    //                                                                (if cvParamItem.UnitCvRef.IsSome then (takeTermID dbContext cvParamItem.UnitCvRef.Value) else null)
-    //                                                                (if cvParamItem.UnitName.IsSome then cvParamItem.UnitName.Value else null)
-    //                                          )
-    //                     ) |> List
-
-
-    //let convertToEntityThresholdOfProteinDetection  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.Threshold) =  
-    //    mzIdentMLXML
-    //        |> (fun thresholdItem -> (convertToEntityThresholdOfProteinDetectionCVParams dbContext thresholdItem.CvParams),
-    //                                 (convertToEntityUserParams dbContext thresholdItem.UserParams)
-    //           )
 
     //let convertToEntityAdditionalSearchParamsCVParams  (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam []) =   
     //    mzIdentMLXML
