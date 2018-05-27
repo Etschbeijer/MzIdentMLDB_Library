@@ -11,7 +11,7 @@ module DataContext =
 
     module EntityTypes =
 
-        //Type definitions
+        //and definitions
 
         type [<CLIMutable>] 
             Term =
@@ -26,13 +26,14 @@ module DataContext =
         and [<CLIMutable>] 
             Ontology = 
             {
-                ID             : string
-                mutable Terms  : List<Term>
-                RowVersion     : DateTime
+                ID                : string
+                mutable Terms     : List<Term>
+                RowVersion        : DateTime
+                mutable MzIdentML : MzIdentML
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
             CVParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -46,21 +47,21 @@ module DataContext =
             }
 
         /////A single entry from an ontology or a controlled vocabulary.
-        //type [<CLIMutable>] 
+        //and [<CLIMutable>] 
         //    UserParam =
         //    {
         //     [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
         //     ID         : int
         //     Name       : string
         //     Value      : string
-        //     Type       : string
+        //     and       : string
         //     Unit       : Term
         //     UnitName   : string
         //     RowVersion : DateTime 
         //    }
 
         ///Organizations are entities like companies, universities, government agencies.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Organization =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -74,7 +75,7 @@ module DataContext =
                 }
 
         ///A person's name and contact details.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Person =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -93,7 +94,7 @@ module DataContext =
                 }
 
         ///The software used for performing the analyses.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
             ContactRole =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -102,11 +103,11 @@ module DataContext =
                 Person     : Person
                 //
                 Role       : CVParam
-                RowVersion : DateTime 
+                RowVersion : DateTime
             }
 
         ///The software used for performing the analyses.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
             AnalysisSoftware =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -117,23 +118,24 @@ module DataContext =
                 mutable Customizations : string
                 mutable ContactRole    : ContactRole
                 SoftwareName           : CVParam
-                RowVersion             : DateTime 
+                RowVersion             : DateTime
+                mutable MzIdentML      : MzIdentML
             }
 
         ///References to the individual component samples within a mixed parent sample.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SubSample =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID                  : int
                 //Formerly Sample_Ref
-                mutable SubSampleID : string
+                mutable Sample      : Sample
                 //
                 RowVersion          : DateTime
                 }
 
         ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Sample =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -142,11 +144,12 @@ module DataContext =
                 mutable ContactRoles : List<ContactRole>
                 mutable SubSamples   : List<SubSample>
                 mutable Details      : List<CVParam>
-                RowVersion          : DateTime
+                RowVersion           : DateTime
+                mutable MzIdentML    : MzIdentML
                 }
 
         ///A molecule modification specification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Modification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -160,7 +163,7 @@ module DataContext =
                 }
 
         ///A modification where one residue is substituted by another (amino acid change).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SubstitutionModification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -174,7 +177,7 @@ module DataContext =
                 }
 
         ///One (poly)peptide (a sequence with modifications).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Peptide =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -185,10 +188,11 @@ module DataContext =
                 mutable SubstitutionModifications : List<SubstitutionModification>
                 mutable Details                   : List<CVParam>
                 RowVersion                        : DateTime
+                mutable MzIdentML                 : MzIdentML
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 TranslationTable =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -199,7 +203,7 @@ module DataContext =
                 }
 
         ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Measure =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -210,7 +214,7 @@ module DataContext =
                 }
 
         ///The specification of a single residue within the mass table.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Residue =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -221,7 +225,7 @@ module DataContext =
                 }
 
         ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 AmbiguousResidue =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -232,7 +236,7 @@ module DataContext =
                 }
 
         ///The masses of residues used in the search.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 MassTable =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -245,8 +249,8 @@ module DataContext =
                 RowVersion               : DateTime
                 }
 
-        ///The values of this particular measure, corresponding to the index defined in ion type.
-        type [<CLIMutable>] 
+        ///The values of this particular measure, corresponding to the index defined in ion and.
+        and [<CLIMutable>] 
                 Value =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -255,8 +259,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///An array of values for a given type of measure and for a particular ion type, in parallel to the index of ions identified.
-        type [<CLIMutable>] 
+        ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
+        and [<CLIMutable>] 
                 FragmentArray =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -267,7 +271,7 @@ module DataContext =
                 }
 
         ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Index =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -276,20 +280,20 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///IonType defines the index of fragmentation ions being reported, importing a CV term for the Type of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
-        type [<CLIMutable>] 
+        ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
+        and [<CLIMutable>] 
                 IonType =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                    : int
-                mutable Index         : List<Index>
-                mutable FragmentArray : List<FragmentArray>
-                Details               : List<CVParam>
-                RowVersion            : DateTime
+                ID                     : int
+                mutable Index          : List<Index>
+                mutable FragmentArrays : List<FragmentArray>
+                Details                : List<CVParam>
+                RowVersion             : DateTime
                 }
 
         ///A data set containing spectra data (consisting of one or more spectra).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectraData =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -300,20 +304,24 @@ module DataContext =
                 FileFormat                          : CVParam
                 SpectrumIDFormat                    : CVParam
                 RowVersion                          : DateTime
+                mutable Inputs                      : Inputs
+                mutable SpectrumIdentification      : SpectrumIdentification
                 }
 
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
-        type [<CLIMutable>] 
-                SpecificityRules =
+        and [<CLIMutable>]
+                //Formerly Specificityrules
+                SpecificityRule =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID         : int
                 Details    : List<CVParam>
                 RowVersion : DateTime
-                }    
+                }  
+                //
 
         ///Specification of a search modification as parameter for a spectra search.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SearchModification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -321,13 +329,13 @@ module DataContext =
                 FixedMod                 : bool
                 MassDelta                : float
                 Residues                 : string
-                mutable SpecificityRules : List<SpecificityRules>
+                mutable SpecificityRules : List<SpecificityRule>
                 Details                  : List<CVParam>
                 RowVersion               : DateTime
                 }
 
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Enzyme =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -344,7 +352,7 @@ module DataContext =
                 }
 
         ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Filter =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -356,7 +364,7 @@ module DataContext =
                 }
 
         ///The frames in which the nucleic acid sequence has been translated as a space separated list.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Frame =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -366,7 +374,7 @@ module DataContext =
                 }
 
         ///The parameters and settings of a SpectrumIdentification analysis.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationProtocol =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -375,7 +383,7 @@ module DataContext =
                 //Formerly AnalysisSoftware_Ref
                 AnalysisSoftware               : AnalysisSoftware
                 //
-                SearchType                     : CVParam
+                SearchType                      : CVParam
                 mutable AdditionalSearchParams : List<CVParam>
                 mutable ModificationParams     : List<SearchModification>
                 //Formerly Enzymes
@@ -392,10 +400,11 @@ module DataContext =
                 mutable TranslationTables      : List<TranslationTable>
                 //
                 RowVersion                     : DateTime
+                mutable MzIdentML              : MzIdentML
                 }
 
         ///A database for searching mass spectra.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SearchDatabase =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -411,88 +420,95 @@ module DataContext =
                 DatabaseName                        : CVParam
                 mutable Details                     : List<CVParam>
                 RowVersion                          : DateTime
+                mutable SpectrumIdentification      : SpectrumIdentification
+                mutable Inputs                      : Inputs
                 }
 
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 DBSequence =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID               : int
-                mutable Name     : string
-                Accession        : string
-                SearchDatabase   : SearchDatabase
-                mutable Sequence : string
-                mutable Length   : int
-                mutable Details  : List<CVParam>
-                RowVersion       : DateTime
+                ID                : int
+                mutable Name      : string
+                Accession         : string
+                SearchDatabase    : SearchDatabase
+                mutable Sequence  : string
+                mutable Length    : int
+                mutable Details   : List<CVParam>
+                RowVersion        : DateTime
+                mutable MzIdentML : MzIdentML
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 PeptideEvidence =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : int
-                mutable Name             : string
+                ID                                 : int
+                mutable Name                       : string
                 //Formerly DBSequence_Ref
-                DBSequence               : DBSequence
+                DBSequence                         : DBSequence
                 //
                 //Formerly Peptide_Ref
-                Peptide                  : Peptide
+                Peptide                            : Peptide
                 //
-                mutable Start            : int
-                mutable End              : int
-                mutable Pre              : string
-                mutable Post             : string
-                mutable Frame            : Frame
-                mutable IsDecoy          : bool
+                mutable Start                      : int
+                mutable End                        : int
+                mutable Pre                        : string
+                mutable Post                       : string
+                mutable Frame                      : Frame
+                mutable IsDecoy                    : bool
                 //Formerly TranslationTable_Ref
-                mutable TranslationTable : TranslationTable
+                mutable TranslationTable           : TranslationTable
                 //
-                mutable Details          : List<CVParam>
-                RowVersion               : DateTime
+                mutable Details                    : List<CVParam>
+                RowVersion                         : DateTime
+                mutable SpectrumIdentificationItem : SpectrumIdentificationItem
+                mutable MzIdentML                  : MzIdentML
                 }
 
         ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationItem =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : int
-                mutable Name                   : string
-                mutable Sample                 : Sample
-                mutable MassTable              : MassTable
-                PassThreshold                  : bool
-                Rank                           : int
-                mutable PeptideEvidences       : List<PeptideEvidence>
-                mutable Fragmentations         : List<IonType>
-                Peptide                        : Peptide
-                ChargeState                    : int
-                ExperimentalMassToCharge       : float
-                mutable CalculatedMassToCharge : float
-                mutable CalculatedPI           : float
-                mutable Details                : List<CVParam>
-                RowVersion                     : DateTime
+                ID                                   : int
+                mutable Name                         : string
+                mutable Sample                       : Sample
+                mutable MassTable                    : MassTable
+                PassThreshold                        : bool
+                Rank                                 : int
+                mutable PeptideEvidences             : List<PeptideEvidence>
+                mutable Fragmentations               : List<IonType>
+                Peptide                              : Peptide
+                ChargeState                          : int
+                ExperimentalMassToCharge             : float
+                mutable CalculatedMassToCharge       : float
+                mutable CalculatedPI                 : float
+                mutable Details                      : List<CVParam>
+                RowVersion                           : DateTime
+                mutable SpectrumIdentificationResult : SpectrumIdentificationResult
                 }
 
         ///All identifications made from searching one spectrum.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationResult =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                         : int
-                mutable Name               : string
-                SpectraData                : SpectraData
-                SpectrumID                 : string
-                SpectrumIdentificationItem : List<SpectrumIdentificationItem>
-                mutable Details            : List<CVParam>
-                RowVersion                 : DateTime
+                ID                                 : int
+                mutable Name                       : string
+                SpectraData                        : SpectraData
+                SpectrumID                         : string
+                SpectrumIdentificationItem         : List<SpectrumIdentificationItem>
+                mutable Details                    : List<CVParam>
+                RowVersion                         : DateTime
+                mutable SpectrumIdentificationList : SpectrumIdentificationList
                 }
 
         ///Represents the set of all search results from SpectrumIdentification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationList =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -507,7 +523,7 @@ module DataContext =
 
 
         ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results and the protocol that is run.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -523,10 +539,12 @@ module DataContext =
                 SearchDatabase                 : List<SearchDatabase>
                 //
                 RowVersion                     : DateTime
+                mutable ProteinDetection       : ProteinDetection
+                mutable MzIdentML              : MzIdentML
                 }
 
         ///The parameters and settings of a SpectrumIdentification analysis.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetectionProtocol =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -539,7 +557,7 @@ module DataContext =
                 }
 
         ///A file from which this mzIdentML instance was created.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SourceFile =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -550,10 +568,11 @@ module DataContext =
                 FileFormat                          : CVParam
                 mutable Details                     : List<CVParam>
                 RowVersion                          : DateTime
+                mutable Inputs                      : Inputs
                 }
 
         ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Inputs =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -565,7 +584,7 @@ module DataContext =
                 }
 
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 PeptideHypothesis =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -576,7 +595,7 @@ module DataContext =
                 }
 
         ///A single result of the ProteinDetection analysis (i.e. a protein).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetectionHypothesis =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -590,7 +609,7 @@ module DataContext =
                 }
 
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinAmbiguityGroup =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -602,7 +621,7 @@ module DataContext =
                 }
 
         ///The protein list resulting from a protein detection process.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetectionList =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -614,7 +633,7 @@ module DataContext =
                 }
 
         ///Data sets generated by the analyses, including peptide and protein lists.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 AnalysisData =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -625,7 +644,7 @@ module DataContext =
                 }
 
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetection =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -639,7 +658,7 @@ module DataContext =
                 }
 
         ///Any bibliographic references associated with the file.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 BiblioGraphicReference =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -656,10 +675,11 @@ module DataContext =
                 mutable Volume      : string
                 mutable Year        : int
                 RowVersion          : DateTime
+                mutable MzIdentML   : MzIdentML
                 }
 
         ///The Provider of the mzIdentML record in terms of the contact and software.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Provider =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -673,7 +693,7 @@ module DataContext =
                 }
 
         ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results (spectrum identifications or protein detection results). 
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 MzIdentML =
                 {
                 ID                               : int
@@ -816,7 +836,7 @@ module DataContext =
 
                 [<DefaultValue>] 
                 val mutable m_IonType : DbSet<IonType>
-                member public this.IonType with get() = this.m_IonType
+                member public this.Iontype with get() = this.m_IonType
                                                         and set value = this.m_IonType <- value
 
                 [<DefaultValue>] 
@@ -840,9 +860,9 @@ module DataContext =
                                                                         and set value = this.m_SpectrumIdentificationList <- value
 
                 [<DefaultValue>] 
-                val mutable m_SpecificityRules : DbSet<SpecificityRules>
-                member public this.SpecificityRules with get() = this.m_SpecificityRules
-                                                                and set value = this.m_SpecificityRules <- value
+                val mutable m_SpecificityRule : DbSet<SpecificityRule>
+                member public this.SpecificityRule with get() = this.m_SpecificityRule
+                                                                and set value = this.m_SpecificityRule <- value
 
                 [<DefaultValue>] 
                 val mutable m_SearchModification : DbSet<SearchModification>

@@ -133,14 +133,17 @@ module InsertStatements =
         type OntologyHandler =
                static member init
                     (
-                        id     : string,
-                        ?terms : seq<Term>
+                        id         : string,
+                        ?terms     : seq<Term>,
+                        ?mzIdentML : MzIdentML
                     ) =
                     let terms'     = convertOptionToList terms
+                    let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
-                        ID         = id;
-                        Terms      = terms';
-                        RowVersion = DateTime.Now
+                        Ontology.ID         = id;
+                        Ontology.Terms      = terms';
+                        Ontology.RowVersion = DateTime.Now
+                        Ontology.MzIdentML  = mzIdentML'
                     }
 
                 static member addTerm
@@ -151,6 +154,11 @@ module InsertStatements =
                 static member addTerms
                     (ontology:Ontology) (terms:seq<Term>) =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
+                    ontology
+
+                static member addMzIdentML
+                    (ontology:Ontology) (mzIdentML:MzIdentML) =
+                    let result = ontology.MzIdentML <- mzIdentML
                     ontology
 
                 static member addToContext (context:MzIdentMLContext) (item:Ontology) =
@@ -350,7 +358,8 @@ module InsertStatements =
                         ?uri               : string,
                         ?version           : string,
                         ?customizations    : string,
-                        ?softwareDeveloper : ContactRole
+                        ?softwareDeveloper : ContactRole,
+                        ?mzIdentML         : MzIdentML
                     ) =
                     let id'             = defaultArg id 0
                     let name'           = defaultArg name null
@@ -358,6 +367,7 @@ module InsertStatements =
                     let version'        = defaultArg version null
                     let customizations' = defaultArg customizations null
                     let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
+                    let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         AnalysisSoftware.ID             = id';
                         AnalysisSoftware.Name           = name';
@@ -367,6 +377,7 @@ module InsertStatements =
                         AnalysisSoftware.ContactRole    = contactRole';
                         AnalysisSoftware.SoftwareName   = softwareName;
                         AnalysisSoftware.RowVersion     = DateTime.Now
+                        AnalysisSoftware.MzIdentML      = mzIdentML'
                     }
                static member addName
                     (analysisSoftware:AnalysisSoftware) (name:string) =
@@ -393,6 +404,11 @@ module InsertStatements =
                     analysisSoftware.ContactRole <- analysisSoftwareDeveloper
                     analysisSoftware
 
+               static member addMzIdentML
+                    (analysisSoftware:AnalysisSoftware) (mzIdentML:MzIdentML) =
+                    analysisSoftware.MzIdentML <- mzIdentML
+                    analysisSoftware
+
                 static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item)
 
@@ -403,20 +419,21 @@ module InsertStatements =
         type SubSampleHandler =
                static member init
                     (
-                        ?id                  : int,
-                        ?subSampleID        : string
+                        ?id          : int,
+                        ?sample      : Sample
                     ) =
                     let id'          = defaultArg id 0
-                    let subSampleID' = defaultArg subSampleID null
+                    let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
                     {
                         SubSample.ID          = id';
-                        SubSample.SubSampleID = subSampleID';
-                        SubSample.RowVersion  = DateTime.Now
+                        SubSample.Sample      = Sample';
+                        SubSample.RowVersion  = DateTime.Now    
                     }
 
-               static member addName
-                    (subSample:SubSample) (subSampleID:string) =
-                    subSample.SubSampleID <- subSampleID
+               static member addSample
+                    (subSample:SubSample) (sampleID:Sample) =
+                    subSample.Sample <- sampleID
+                    subSample
 
                static member addToContext (context:MzIdentMLContext) (item:SubSample) =
                     (addToContextWithExceptionCheck context item)
@@ -432,13 +449,15 @@ module InsertStatements =
                         ?name         : string,
                         ?contactRoles : seq<ContactRole>,
                         ?subSamples   : seq<SubSample>,
-                        ?details      : seq<CVParam>
+                        ?details      : seq<CVParam>,
+                        ?mzIdentML    : MzIdentML
                     ) =
                     let id'           = defaultArg id 0
                     let name'         = defaultArg name null
                     let contactRoles' = convertOptionToList contactRoles
                     let subSamples'   = convertOptionToList subSamples
                     let details'      = convertOptionToList details
+                    let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         Sample.ID           = id'
                         Sample.Name         = name'
@@ -446,11 +465,13 @@ module InsertStatements =
                         Sample.SubSamples   = subSamples'
                         Sample.Details      = details'
                         Sample.RowVersion   = DateTime.Now
+                        Sample.MzIdentML    = mzIdentML'
                     }
 
                static member addName
-                    (subSample:SubSample) (subSampleID:string) =
-                    subSample.SubSampleID <- subSampleID
+                    (sample:Sample) (name:string) =
+                    sample.Name <- name
+                    sample
 
                static member addContactRole
                     (sample:Sample) (contactRole:ContactRole) =
@@ -517,18 +538,22 @@ module InsertStatements =
                static member addResidues
                     (modification:Modification) (residues:string) =
                     modification.Residues <- residues
+                    modification
 
                static member addLocation
                     (modification:Modification) (location:int) =
                     modification.Location <- location
+                    modification
 
                static member addMonoIsotopicMassDelta
                     (modification:Modification) (monoIsotopicMassDelta:float) =
                     modification.MonoIsotopicMassDelta <- monoIsotopicMassDelta
+                    modification
 
                static member addAvgMassDelta
                     (modification:Modification) (avgMassDelta:float) =
                     modification.AvgMassDelta <- avgMassDelta
+                    modification
 
                static member addToContext (context:MzIdentMLContext) (item:Modification) =
                     (addToContextWithExceptionCheck context item)
@@ -564,14 +589,17 @@ module InsertStatements =
                static member addLocation
                     (substitutionModification:SubstitutionModification) (location:int) =
                     substitutionModification.Location <- location
+                    substitutionModification
 
                static member addMonoIsotopicMassDelta
                     (substitutionModification:SubstitutionModification) (monoIsotopicMassDelta:float) =
                     substitutionModification.MonoIsotopicMassDelta <- monoIsotopicMassDelta
+                    substitutionModification
 
                static member addAvgMassDelta
                     (substitutionModification:SubstitutionModification) (avgMassDelta:float) =
                     substitutionModification.AvgMassDelta <- avgMassDelta
+                    substitutionModification
 
                static member addToContext (context:MzIdentMLContext) (item:SubstitutionModification) =
                     (addToContextWithExceptionCheck context item)
@@ -588,13 +616,15 @@ module InsertStatements =
                         ?name                      : string,                    
                         ?modifications             : seq<Modification>,
                         ?substitutionModifications : seq<SubstitutionModification>,
-                        ?details                   : seq<CVParam>
+                        ?details                   : seq<CVParam>,
+                        ?mzIdentML                 : MzIdentML
                     ) =
                     let id'                        = defaultArg id 0
                     let name'                      = defaultArg name null
                     let modifications'             = convertOptionToList modifications
                     let substitutionModifications' = convertOptionToList substitutionModifications
                     let details'                   = convertOptionToList details
+                    let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         Peptide.ID                        = id'
                         Peptide.Name                      = name'
@@ -603,11 +633,13 @@ module InsertStatements =
                         Peptide.SubstitutionModifications = substitutionModifications'
                         Peptide.Details                   = details'
                         Peptide.RowVersion                = DateTime.Now
+                        Peptide.MzIdentML                 = mzIdentML'
                     }
 
                static member addName
                     (peptide:Peptide) (name:string) =
                     peptide.Name <- name
+                    peptide
 
                static member addModification
                     (peptide:Peptide) (modification:Modification) =
@@ -639,6 +671,11 @@ module InsertStatements =
                     let result = peptide.Details <- addCollectionToList peptide.Details details
                     peptide
 
+               static member addMzIdentML
+                    (peptide:Peptide) (mzIdentML:MzIdentML) =
+                    peptide.MzIdentML <- mzIdentML
+                    peptide
+
                static member addToContext (context:MzIdentMLContext) (item:Peptide) =
                     (addToContextWithExceptionCheck context item)
 
@@ -665,6 +702,12 @@ module InsertStatements =
                static member addName
                     (translationTable:TranslationTable) (name:string) =
                     translationTable.Name <- name
+                    translationTable
+
+               static member addDetail
+                    (translationTable:TranslationTable) (detail:CVParam) =
+                    let result = translationTable.Details <- addToList translationTable.Details detail
+                    translationTable
 
                static member addDetails
                     (translationTable:TranslationTable) (details:seq<CVParam>) =
@@ -697,6 +740,7 @@ module InsertStatements =
                static member addName
                     (measure:Measure) (name:string) =
                     measure.Name <- name
+                    measure
 
                static member addToContext (context:MzIdentMLContext) (item:Measure) =
                     (addToContextWithExceptionCheck context item)
@@ -777,6 +821,7 @@ module InsertStatements =
                static member addName
                     (measure:Measure) (name:string) =
                     measure.Name <- name
+                    measure
 
                static member addToContext (context:MzIdentMLContext) (item:MassTable) =
                     (addToContextWithExceptionCheck context item)
@@ -859,11 +904,11 @@ module InsertStatements =
                     let index'         = convertOptionToList index
                     let fragmentArray' = convertOptionToList fragmentArray
                     {
-                        IonType.ID            = id'
-                        IonType.Index         = index'
-                        IonType.FragmentArray = fragmentArray'
-                        IonType.Details       = details |> List
-                        IonType.RowVersion    = DateTime.Now
+                        IonType.ID             = id'
+                        IonType.Index          = index'
+                        IonType.FragmentArrays = fragmentArray'
+                        IonType.Details        = details |> List
+                        IonType.RowVersion     = DateTime.Now
                     }
 
                static member addIndex
@@ -878,12 +923,12 @@ module InsertStatements =
 
                static member addFragmentArray
                     (ionType:IonType) (fragmentArray:FragmentArray) =
-                    let result = ionType.FragmentArray <- addToList ionType.FragmentArray fragmentArray
+                    let result = ionType.FragmentArrays <- addToList ionType.FragmentArrays fragmentArray
                     ionType
 
                static member addFragmentArrays
                     (ionType:IonType) (fragmentArrays:seq<FragmentArray>) =
-                    let result = ionType.FragmentArray <- addCollectionToList ionType.FragmentArray fragmentArrays
+                    let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                     ionType
 
                static member addToContext (context:MzIdentMLContext) (item:IonType) =
@@ -901,11 +946,15 @@ module InsertStatements =
                         spectrumIDFormat             : CVParam,
                         ?id                          : int,
                         ?name                        : string,
-                        ?externalFormatDocumentation : string
+                        ?externalFormatDocumentation : string,
+                        ?inputs                      : Inputs,
+                        ?spectrumIdentification      : SpectrumIdentification
                     ) =
                     let id'                          = defaultArg id 0
                     let name'                        = defaultArg name null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                    let inputs'                      = defaultArg inputs Unchecked.defaultof<Inputs>
+                    let spectrumIdentification'      = defaultArg spectrumIdentification Unchecked.defaultof<SpectrumIdentification>
                     {
                         SpectraData.ID                          = id'
                         SpectraData.Name                        = name'
@@ -914,15 +963,29 @@ module InsertStatements =
                         SpectraData.FileFormat                  = fileFormat
                         SpectraData.SpectrumIDFormat            = spectrumIDFormat
                         SpectraData.RowVersion                  = DateTime.Now
+                        SpectraData.Inputs                      = inputs'
+                        SpectraData.SpectrumIdentification      = spectrumIdentification'
                     }
 
                static member addName
                     (spectraData:SpectraData) (name:string) =
                     spectraData.Name <- name
+                    spectraData
 
                static member addExternalFormatDocumentation
                     (spectraData:SpectraData) (externalFormatDocumentation:string) =
                     spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
+                    spectraData
+
+               static member addInputs
+                    (spectraData:SpectraData) (inputs:Inputs) =
+                    spectraData.Inputs <- inputs
+                    spectraData
+
+               static member addSpectrumIdentification
+                    (spectraData:SpectraData) (spectrumIdentification:SpectrumIdentification) =
+                    spectraData.SpectrumIdentification <- spectrumIdentification
+                    spectraData
 
                static member addToContext (context:MzIdentMLContext) (item:SpectraData) =
                     (addToContextWithExceptionCheck context item)
@@ -939,14 +1002,14 @@ module InsertStatements =
                     ) =
                     let id'   = defaultArg id 0
                     {
-                        SpecificityRules.ID         = id'
-                        SpecificityRules.Details    = details |> List
-                        SpecificityRules.RowVersion = DateTime.Now
+                        SpecificityRule.ID         = id'
+                        SpecificityRule.Details    = details |> List
+                        SpecificityRule.RowVersion = DateTime.Now
                     }
-               static member addToContext (context:MzIdentMLContext) (item:SpecificityRules) =
+               static member addToContext (context:MzIdentMLContext) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SpecificityRules) =
+               static member insert (context:MzIdentMLContext) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -958,7 +1021,7 @@ module InsertStatements =
                         residues          : string,
                         details           : List<CVParam>,
                         ?id               : int,
-                        ?specificityRules : seq<SpecificityRules>
+                        ?specificityRules : seq<SpecificityRule>
                     ) =
                     let id'               = defaultArg id 0
                     let specificityRules' = convertOptionToList specificityRules
@@ -973,12 +1036,12 @@ module InsertStatements =
                     }
 
                static member addSpecificityRule
-                    (searchModification:SearchModification) (specificityRule:SpecificityRules) =
+                    (searchModification:SearchModification) (specificityRule:SpecificityRule) =
                     let result = searchModification.SpecificityRules <- addToList searchModification.SpecificityRules specificityRule
                     searchModification
 
                static member addSpecificityRules
-                    (searchModification:SearchModification) (specificityRules:seq<SpecificityRules>) =
+                    (searchModification:SearchModification) (specificityRules:seq<SpecificityRule>) =
                     let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                     searchModification
 
@@ -1158,7 +1221,8 @@ module InsertStatements =
                         ?parentTolerance        : seq<CVParam>,
                         ?databaseFilters        : seq<Filter>,
                         ?frames                 : seq<Frame>,
-                        ?translationTable       : seq<TranslationTable>
+                        ?translationTable       : seq<TranslationTable>,
+                        ?mzIdentML              : MzIdentML
                     ) =
                     let id'                     = defaultArg id 0
                     let name'                   = defaultArg name null
@@ -1172,6 +1236,7 @@ module InsertStatements =
                     let databaseFilters'        = convertOptionToList databaseFilters
                     let frames'                 = convertOptionToList frames
                     let translationTable'       = convertOptionToList translationTable
+                    let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         SpectrumIdentificationProtocol.ID                     = id'
                         SpectrumIdentificationProtocol.Name                   = name'
@@ -1189,6 +1254,7 @@ module InsertStatements =
                         SpectrumIdentificationProtocol.Frames                 = frames'
                         SpectrumIdentificationProtocol.TranslationTables      = translationTable'
                         SpectrumIdentificationProtocol.RowVersion             = DateTime.Now
+                        SpectrumIdentificationProtocol.MzIdentML              = mzIdentML'
                     }
 
                static member addName
@@ -1291,6 +1357,11 @@ module InsertStatements =
                     let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
                     spectrumIdentificationProtocol
 
+               static member addMzIdentML
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentML:MzIdentML) =
+                    spectrumIdentificationProtocol.MzIdentML <- mzIdentML
+                    spectrumIdentificationProtocol
+
                static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1311,7 +1382,9 @@ module InsertStatements =
                         ?releaseDate                 : DateTime,
                         ?version                     : string,
                         ?externalFormatDocumentation : string,
-                        ?details                     : seq<CVParam>             
+                        ?details                     : seq<CVParam>,
+                        ?spectrumIdentification      : SpectrumIdentification,
+                        ?inputs                      : Inputs
                     ) =
                     let id'                          = defaultArg id 0
                     let name'                        = defaultArg name null
@@ -1321,6 +1394,8 @@ module InsertStatements =
                     let version'                     = defaultArg version null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
                     let details'                     = convertOptionToList details
+                    let spectrumIdentification'      = defaultArg spectrumIdentification Unchecked.defaultof<SpectrumIdentification>
+                    let inputs'                      = defaultArg inputs Unchecked.defaultof<Inputs>
                     {
                         SearchDatabase.ID                          = id';
                         SearchDatabase.Name                        = name';
@@ -1334,35 +1409,54 @@ module InsertStatements =
                         SearchDatabase.DatabaseName                = databaseName;
                         SearchDatabase.Details                     =  details';
                         SearchDatabase.RowVersion                  = DateTime.Now.Date
+                        SearchDatabase.SpectrumIdentification      = spectrumIdentification'
+                        SearchDatabase.Inputs                      = inputs'
+
                     }
 
                static member addName
                     (searchDatabase:SearchDatabase) (name:string) =
                     searchDatabase.Name <- name
+                    searchDatabase
 
                static member addNumDatabaseSequences
                     (searchDatabase:SearchDatabase) (numDatabaseSequences:string) =
                     searchDatabase.NumDatabaseSequences <- numDatabaseSequences
+                    searchDatabase
 
                static member addNumResidues
                     (searchDatabase:SearchDatabase) (numResidues:string) =
                     searchDatabase.NumResidues <- numResidues
+                    searchDatabase
 
                static member addReleaseDate
                     (searchDatabase:SearchDatabase) (releaseDate:DateTime) =
                     searchDatabase.ReleaseDate <- releaseDate
+                    searchDatabase
 
                static member addVersion
                     (searchDatabase:SearchDatabase) (version:string) =
                     searchDatabase.Version <- version
+                    searchDatabase
 
                static member addExternalFormatDocumentation
                     (searchDatabase:SearchDatabase) (externalFormatDocumentation:string) =
                     searchDatabase.Version <- externalFormatDocumentation
+                    searchDatabase
 
                static member addDetails
                     (searchDatabase:SearchDatabase) (details:seq<CVParam>) =
                     let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
+                    searchDatabase
+
+               static member addSpectrumIdentification
+                    (searchDatabase:SearchDatabase) (spectrumIdentification:SpectrumIdentification) =
+                    searchDatabase.SpectrumIdentification <- spectrumIdentification
+                    searchDatabase
+
+               static member addInputs
+                    (searchDatabase:SearchDatabase) (inputs:Inputs) =
+                    searchDatabase.Inputs <- inputs
                     searchDatabase
 
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
@@ -1381,13 +1475,15 @@ module InsertStatements =
                         ?name          : string,
                         ?sequence      : string,
                         ?length        : int,
-                        ?details       : seq<CVParam>                
+                        ?details       : seq<CVParam>,
+                        ?mzIdentML     : MzIdentML
                     ) =
                     let id'       = defaultArg id 0
                     let name'     = defaultArg name null
                     let sequence' = defaultArg sequence null
                     let length'   = defaultArg length Unchecked.defaultof<int>
                     let details'  = convertOptionToList details
+                    let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         DBSequence.ID             = id';
                         DBSequence.Name           = name';
@@ -1397,19 +1493,23 @@ module InsertStatements =
                         DBSequence.Length         = length';
                         DBSequence.Details        = details';
                         DBSequence.RowVersion     = DateTime.Now
+                        DBSequence.MzIdentML      = mzIdentML'
                     }
 
                static member addName
                     (dbSequence:DBSequence) (name:string) =
                     dbSequence.Name <- name
+                    dbSequence
 
                static member addSequence
                     (dbSequence:DBSequence) (sequence:string) =
                     dbSequence.Sequence <- sequence
+                    dbSequence
 
                static member addLength
                     (dbSequence:DBSequence) (length:int) =
                     dbSequence.Length <- length
+                    dbSequence
 
                static member addDetail
                     (dbSequence:DBSequence) (detail:CVParam) =
@@ -1420,6 +1520,10 @@ module InsertStatements =
                     (dbSequence:DBSequence) (details:seq<CVParam>) =
                     let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                     dbSequence
+
+               static member addMzIdentML
+                    (dbSequence:DBSequence) (mzIdentML:MzIdentML) =
+                    dbSequence.MzIdentML <- mzIdentML
 
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
@@ -1432,77 +1536,91 @@ module InsertStatements =
         type PeptideEvidenceHandler =
                static member init
                     (
-                        dbSequence        : DBSequence,
-                        peptide           : Peptide,
-                        ?id               : int,
-                        ?name             : string,
-                        ?start            : int,
-                        ?end'             : int,
-                        ?pre              : string,
-                        ?post             : string,
-                        ?frame            : Frame,
-                        ?isDecoy          : bool,
-                        ?translationTable : TranslationTable,
-                        ?details          : seq<CVParam>           
+                        dbSequence                  : DBSequence,
+                        peptide                     : Peptide,
+                        ?id                         : int,
+                        ?name                       : string,
+                        ?start                      : int,
+                        ?end'                       : int,
+                        ?pre                        : string,
+                        ?post                       : string,
+                        ?frame                      : Frame,
+                        ?isDecoy                    : bool,
+                        ?translationTable           : TranslationTable,
+                        ?details                    : seq<CVParam>,
+                        ?spectrumIdentificationItem : SpectrumIdentificationItem,
+                        ?mzIdentML                  : MzIdentML
                     ) =
-                    let id'               = defaultArg id 0
-                    let name'             = defaultArg name null
-                    let start'            = defaultArg start Unchecked.defaultof<int>
-                    let end''             = defaultArg end' Unchecked.defaultof<int>
-                    let pre'              = defaultArg pre null
-                    let post'             = defaultArg post null
-                    let frame'            = defaultArg frame Unchecked.defaultof<Frame>
-                    let isDecoy'          = defaultArg isDecoy Unchecked.defaultof<bool>
-                    let translationTable' = defaultArg translationTable Unchecked.defaultof<TranslationTable>
-                    let details'          = convertOptionToList details
+                    let id'                         = defaultArg id 0
+                    let name'                       = defaultArg name null
+                    let start'                      = defaultArg start Unchecked.defaultof<int>
+                    let end''                       = defaultArg end' Unchecked.defaultof<int>
+                    let pre'                        = defaultArg pre null
+                    let post'                       = defaultArg post null
+                    let frame'                      = defaultArg frame Unchecked.defaultof<Frame>
+                    let isDecoy'                    = defaultArg isDecoy Unchecked.defaultof<bool>
+                    let translationTable'           = defaultArg translationTable Unchecked.defaultof<TranslationTable>
+                    let details'                    = convertOptionToList details
+                    let spectrumIdentificationItem' = defaultArg spectrumIdentificationItem Unchecked.defaultof<SpectrumIdentificationItem>
+                    let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
-                        PeptideEvidence.ID               = id'
-                        PeptideEvidence.Name             = name'
-                        PeptideEvidence.DBSequence       = dbSequence
-                        PeptideEvidence.Peptide          = peptide
-                        PeptideEvidence.Start            = start'
-                        PeptideEvidence.End              = end''
-                        PeptideEvidence.Pre              = pre'
-                        PeptideEvidence.Post             = post'
-                        PeptideEvidence.Frame            = frame'
-                        PeptideEvidence.IsDecoy          = isDecoy'
-                        PeptideEvidence.TranslationTable = translationTable'
-                        PeptideEvidence.Details          = details'
-                        PeptideEvidence.RowVersion       = DateTime.Now
+                        PeptideEvidence.ID                         = id'
+                        PeptideEvidence.Name                       = name'
+                        PeptideEvidence.DBSequence                 = dbSequence
+                        PeptideEvidence.Peptide                    = peptide
+                        PeptideEvidence.Start                      = start'
+                        PeptideEvidence.End                        = end''
+                        PeptideEvidence.Pre                        = pre'
+                        PeptideEvidence.Post                       = post'
+                        PeptideEvidence.Frame                      = frame'
+                        PeptideEvidence.IsDecoy                    = isDecoy'
+                        PeptideEvidence.TranslationTable           = translationTable'
+                        PeptideEvidence.Details                    = details'
+                        PeptideEvidence.RowVersion                 = DateTime.Now
+                        PeptideEvidence.SpectrumIdentificationItem = spectrumIdentificationItem'
+                        PeptideEvidence.MzIdentML                  = mzIdentML'
                     }
 
                static member addName
                     (peptideEvidence:PeptideEvidence) (name:string) =
                     peptideEvidence.Name <- name
+                    peptideEvidence
 
                static member addStart
                     (peptideEvidence:PeptideEvidence) (start:int) =
                     peptideEvidence.Start <- start
+                    peptideEvidence
 
                static member addEnd 
                     (peptideEvidence:PeptideEvidence) (end':int) =
                     peptideEvidence.End  <- end'
+                    peptideEvidence
 
                static member addPre
                     (peptideEvidence:PeptideEvidence) (pre:string) =
                     peptideEvidence.Pre <- pre
+                    peptideEvidence
 
                static member addPost
                     (peptideEvidence:PeptideEvidence) (post:string) =
                     peptideEvidence.Post <- post
+                    peptideEvidence
 
                static member addFrame
                     (peptideEvidence:PeptideEvidence) (frame:Frame) =
                     peptideEvidence.Frame <- frame
+                    peptideEvidence
 
                static member addIsDecoy
                     (peptideEvidence:PeptideEvidence) (isDecoy:bool) =
                     peptideEvidence.IsDecoy <- isDecoy
+                    peptideEvidence
 
                static member addTranslationTable
                     (peptideEvidence:PeptideEvidence) (translationTable:TranslationTable) =
                     peptideEvidence.TranslationTable <- translationTable
-            
+                    peptideEvidence
+
                static member addDetail
                     (peptideEvidence:PeptideEvidence) (detail:CVParam) =
                     let result = peptideEvidence.Details <- addToList peptideEvidence.Details detail
@@ -1511,6 +1629,16 @@ module InsertStatements =
                static member addDetails
                     (peptideEvidence:PeptideEvidence) (details:seq<CVParam>) =
                     let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
+                    peptideEvidence
+
+               static member addSpectrumIdentificationItem
+                    (peptideEvidence:PeptideEvidence) (spectrumIdentificationItem:SpectrumIdentificationItem) =
+                    peptideEvidence.SpectrumIdentificationItem <- spectrumIdentificationItem
+                    peptideEvidence
+
+               static member addMzIdentML
+                    (peptideEvidence:PeptideEvidence) (mzIdentML:MzIdentML) =
+                    peptideEvidence.MzIdentML <- mzIdentML
                     peptideEvidence
 
                 static member addToContext (context:MzIdentMLContext) (item:PeptideEvidence) =
@@ -1523,60 +1651,66 @@ module InsertStatements =
         type SpectrumIdentificationItemHandler =
                static member init
                     (
-                        peptide                  : Peptide,
-                        chargeState              : int,
-                        experimentalMassToCharge : float,
-                        passThreshold            : bool,
-                        rank                     : int,
-                        ?id                      : int,
-                        ?name                    : string,
-                        ?sample                  : Sample,
-                        ?massTable               : MassTable,
-                        ?peptideEvidences        : seq<PeptideEvidence>,
-                        ?fragmentations          : seq<IonType>,
-                        ?calculatedMassToCharge  : float,
-                        ?calculatedPI            : float,
-                        ?details                 : seq<CVParam>
+                        peptide                       : Peptide,
+                        chargeState                   : int,
+                        experimentalMassToCharge      : float,
+                        passThreshold                 : bool,
+                        rank                          : int,
+                        ?id                           : int,
+                        ?name                         : string,
+                        ?sample                       : Sample,
+                        ?massTable                    : MassTable,
+                        ?peptideEvidences             : seq<PeptideEvidence>,
+                        ?fragmentations               : seq<IonType>,
+                        ?calculatedMassToCharge       : float,
+                        ?calculatedPI                 : float,
+                        ?details                      : seq<CVParam>,
+                        ?spectrumIdentificationResult : SpectrumIdentificationResult
                     ) =
-                    let id'                     = defaultArg id 0
-                    let name'                   = defaultArg name null
-                    let sample'                 = defaultArg sample Unchecked.defaultof<Sample>
-                    let massTable'              = defaultArg massTable Unchecked.defaultof<MassTable>
-                    let peptideEvidences'       = convertOptionToList peptideEvidences
-                    let fragmentations'         = convertOptionToList fragmentations
-                    let calculatedMassToCharge' = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
-                    let calculatedPI'           = defaultArg calculatedPI Unchecked.defaultof<float>
-                    let details'                = convertOptionToList details
+                    let id'                           = defaultArg id 0
+                    let name'                         = defaultArg name null
+                    let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
+                    let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
+                    let peptideEvidences'             = convertOptionToList peptideEvidences
+                    let fragmentations'               = convertOptionToList fragmentations
+                    let calculatedMassToCharge'       = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
+                    let calculatedPI'                 = defaultArg calculatedPI Unchecked.defaultof<float>
+                    let details'                      = convertOptionToList details
+                    let spectrumIdentificationResult' = defaultArg spectrumIdentificationResult Unchecked.defaultof<SpectrumIdentificationResult>
                     {
-                        SpectrumIdentificationItem.ID                       = id'
-                        SpectrumIdentificationItem.Name                     = name'
-                        SpectrumIdentificationItem.Sample                   = sample'
-                        SpectrumIdentificationItem.MassTable                = massTable'
-                        SpectrumIdentificationItem.PassThreshold            = passThreshold
-                        SpectrumIdentificationItem.Rank                     = rank
-                        SpectrumIdentificationItem.PeptideEvidences         = peptideEvidences'
-                        SpectrumIdentificationItem.Fragmentations           = fragmentations'
-                        SpectrumIdentificationItem.Peptide                  = peptide
-                        SpectrumIdentificationItem.ChargeState              = chargeState
-                        SpectrumIdentificationItem.ExperimentalMassToCharge = experimentalMassToCharge
-                        SpectrumIdentificationItem.CalculatedMassToCharge   = calculatedMassToCharge'
-                        SpectrumIdentificationItem.CalculatedPI             = calculatedPI'
-                        SpectrumIdentificationItem.Details                  = details'
-                        SpectrumIdentificationItem.RowVersion               = DateTime.Now
+                        SpectrumIdentificationItem.ID                           = id'
+                        SpectrumIdentificationItem.Name                         = name'
+                        SpectrumIdentificationItem.Sample                       = sample'
+                        SpectrumIdentificationItem.MassTable                    = massTable'
+                        SpectrumIdentificationItem.PassThreshold                = passThreshold
+                        SpectrumIdentificationItem.Rank                         = rank
+                        SpectrumIdentificationItem.PeptideEvidences             = peptideEvidences'
+                        SpectrumIdentificationItem.Fragmentations               = fragmentations'
+                        SpectrumIdentificationItem.Peptide                      = peptide
+                        SpectrumIdentificationItem.ChargeState                  = chargeState
+                        SpectrumIdentificationItem.ExperimentalMassToCharge     = experimentalMassToCharge
+                        SpectrumIdentificationItem.CalculatedMassToCharge       = calculatedMassToCharge'
+                        SpectrumIdentificationItem.CalculatedPI                 = calculatedPI'
+                        SpectrumIdentificationItem.Details                      = details'
+                        SpectrumIdentificationItem.RowVersion                   = DateTime.Now
+                        SpectrumIdentificationItem.SpectrumIdentificationResult = spectrumIdentificationResult'
                     }
 
                static member addName
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (name:string) =
                     spectrumIdentificationItem.Name <- name
+                    spectrumIdentificationItem
 
                static member addSample
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (sample:Sample) =
                     spectrumIdentificationItem.Sample <- sample 
+                    spectrumIdentificationItem
 
                static member addMassTable
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (massTable:MassTable) =
                     spectrumIdentificationItem.MassTable <- massTable
-   
+                    spectrumIdentificationItem
+
                static member addPeptideEvidence
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (peptideEvidence:PeptideEvidence) =
                     let result = spectrumIdentificationItem.PeptideEvidences <- addToList spectrumIdentificationItem.PeptideEvidences peptideEvidence
@@ -1600,10 +1734,12 @@ module InsertStatements =
                static member addCalculatedMassToCharge
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedMassToCharge:float) =
                     spectrumIdentificationItem.CalculatedMassToCharge <- calculatedMassToCharge
+                    spectrumIdentificationItem
 
                static member addCalculatedPI
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedPI:float) =
                     spectrumIdentificationItem.CalculatedPI <- calculatedPI
+                    spectrumIdentificationItem
 
                static member addDetail
                     (spectrumIdentificationItem:SpectrumIdentificationItem) (detail:CVParam) =
@@ -1615,6 +1751,10 @@ module InsertStatements =
                     let result = spectrumIdentificationItem.Details <- addCollectionToList spectrumIdentificationItem.Details details
                     spectrumIdentificationItem
 
+               static member addSpectrumIdentificationResult
+                    (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
+                    spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
+
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1625,16 +1765,18 @@ module InsertStatements =
         type SpectrumIdentificationResultHandler =
                static member init
                     (
-                        spectraData                : SpectraData,
-                        spectrumID                 : string,
-                        spectrumIdentificationItem : seq<SpectrumIdentificationItem>,
-                        ?id                        : int,
-                        ?name                      : string,
-                        ?details                   : seq<CVParam>              
+                        spectraData                 : SpectraData,
+                        spectrumID                  : string,
+                        spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
+                        ?id                         : int,
+                        ?name                       : string,
+                        ?details                    : seq<CVParam>,
+                        ?spectrumIdentificationList : SpectrumIdentificationList
                     ) =
-                    let id'       = defaultArg id 0
-                    let name'     = defaultArg name null
-                    let details'  = convertOptionToList details
+                    let id'                         = defaultArg id 0
+                    let name'                       = defaultArg name null
+                    let details'                    = convertOptionToList details
+                    let spectrumIdentificationList' = defaultArg spectrumIdentificationList Unchecked.defaultof<SpectrumIdentificationList>
                     {
                         SpectrumIdentificationResult.ID                         = id'
                         SpectrumIdentificationResult.Name                       = name'
@@ -1643,11 +1785,13 @@ module InsertStatements =
                         SpectrumIdentificationResult.SpectrumIdentificationItem = spectrumIdentificationItem |> List
                         SpectrumIdentificationResult.Details                    = details'
                         SpectrumIdentificationResult.RowVersion                 = DateTime.Now
+                        SpectrumIdentificationResult.SpectrumIdentificationList = spectrumIdentificationList'
                     }
 
                static member addName
                     (spectrumIdentificationResult:SpectrumIdentificationResult) (name:string) =
                     spectrumIdentificationResult.Name <- name
+                    spectrumIdentificationResult
 
                static member addDetail
                     (spectrumIdentificationResult:SpectrumIdentificationResult) (detail:CVParam) =
@@ -1658,6 +1802,10 @@ module InsertStatements =
                     (spectrumIdentificationResult:DBSequence) (details:seq<CVParam>) =
                     let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
                     spectrumIdentificationResult
+
+               static member addSpectrumIdentificationList
+                    (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
+                    spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
 
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item)
@@ -1694,10 +1842,12 @@ module InsertStatements =
                static member addName
                     (spectrumIdentificationList:SpectrumIdentificationList) (name:string) =
                     spectrumIdentificationList.Name <- name
+                    spectrumIdentificationList
 
                static member addNumSequencesSearched
                     (spectrumIdentificationList:SpectrumIdentificationList) (numSequencesSearched:int) =
                     spectrumIdentificationList.NumSequencesSearched <- numSequencesSearched
+                    spectrumIdentificationList
 
                static member addFragmentationTable
                     (spectrumIdentificationList:SpectrumIdentificationList) (fragmentationTable:Measure) =
@@ -1735,11 +1885,15 @@ module InsertStatements =
                         searchDatabase                 : seq<SearchDatabase>,
                         ?id                            : int,
                         ?name                          : string,
-                        ?activityDate                  : DateTime
+                        ?activityDate                  : DateTime,
+                        ?mzIdentML                     : MzIdentML,
+                        ?proteinDetection              : ProteinDetection
                     ) =
-                    let id'           = defaultArg id 0
-                    let name'         = defaultArg name null
-                    let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
+                    let id'               = defaultArg id 0
+                    let name'             = defaultArg name null
+                    let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
+                    let proteinDetection' = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
+                    let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         SpectrumIdentification.ID                             = id'
                         SpectrumIdentification.Name                           = name'
@@ -1749,15 +1903,19 @@ module InsertStatements =
                         SpectrumIdentification.SpectraData                    = spectraData |> List
                         SpectrumIdentification.SearchDatabase                 = searchDatabase |> List
                         SpectrumIdentification.RowVersion                     = DateTime.Now
+                        SpectrumIdentification.ProteinDetection               = proteinDetection'
+                        SpectrumIdentification.MzIdentML                      = mzIdentML'
                     }
 
                static member addName
                     (spectrumIdentificationList:SpectrumIdentification) (name:string) =
                     spectrumIdentificationList.Name <- name
+                    spectrumIdentificationList
 
                static member addNumSequencesSearched
                     (spectrumIdentificationList:SpectrumIdentification) (activityDate:DateTime) =
                     spectrumIdentificationList.ActivityDate <- activityDate
+                    spectrumIdentificationList
 
                static member addDetail
                     (spectrumIdentificationList:SpectrumIdentificationList) (detail:CVParam) =
@@ -1768,6 +1926,15 @@ module InsertStatements =
                     (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<CVParam>) =
                     let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
+
+               static member addProteinDetection
+                    (spectrumIdentificationList:SpectrumIdentification) (proteinDetection:ProteinDetection) =
+                    spectrumIdentificationList.ProteinDetection <- proteinDetection
+                    spectrumIdentificationList
+
+               static member addMzIdentML
+                    (spectrumIdentificationList:SpectrumIdentification) (mzIdentML:MzIdentML) =
+                    spectrumIdentificationList.MzIdentML <- mzIdentML
 
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentification) =
                         (addToContextWithExceptionCheck context item)
@@ -1800,6 +1967,7 @@ module InsertStatements =
                static member addName
                     (proteinDetectionProtocol:ProteinDetectionProtocol) (name:string) =
                     proteinDetectionProtocol.Name <- name
+                    proteinDetectionProtocol
 
                static member addAnalysisParam
                     (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParam:CVParam) =
@@ -1826,12 +1994,14 @@ module InsertStatements =
                         ?id                          : int,
                         ?name                        : string,
                         ?externalFormatDocumentation : string,
-                        ?details                     : seq<CVParam>
+                        ?details                     : seq<CVParam>,
+                        ?inputs                      : Inputs
                     ) =
                     let id'                          = defaultArg id 0
                     let name'                        = defaultArg name null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
                     let details'                     = convertOptionToList details
+                    let inputs'                      = defaultArg inputs Unchecked.defaultof<Inputs>
                     {
                         SourceFile.ID                          = id'
                         SourceFile.Name                        = name'
@@ -1840,15 +2010,18 @@ module InsertStatements =
                         SourceFile.FileFormat                  = fileFormat
                         SourceFile.Details                     = details'
                         SourceFile.RowVersion                  = DateTime.Now
+                        SourceFile.Inputs                      = inputs'
                     }
 
                static member addName
                     (sourceFile:SourceFile) (name:string) =
                     sourceFile.Name <- name
+                    sourceFile
 
                static member addExternalFormatDocumentation
                     (sourceFile:SourceFile) (externalFormatDocumentation:string) =
                     sourceFile.ExternalFormatDocumentation <- externalFormatDocumentation
+                    sourceFile
 
                static member addDetail
                     (sourceFile:SourceFile) (detail:CVParam) =
@@ -1859,6 +2032,10 @@ module InsertStatements =
                     (sourceFile:SourceFile) (details:seq<CVParam>) =
                     let result = sourceFile.Details <- addCollectionToList sourceFile.Details details
                     sourceFile
+
+               static member addInputs
+                    (sourceFile:SourceFile) (inputs:Inputs) =
+                    sourceFile.Inputs <- inputs
 
                 static member addToContext (context:MzIdentMLContext) (item:SourceFile) =
                         (addToContextWithExceptionCheck context item)
@@ -1961,6 +2138,7 @@ module InsertStatements =
                static member addName
                     (proteinDetectionHypothesis:ProteinDetectionHypothesis) (name:string) =
                     proteinDetectionHypothesis.Name <- name
+                    proteinDetectionHypothesis
 
                static member addDetail
                     (proteinDetectionHypothesis:ProteinDetectionHypothesis) (detail:CVParam) =
@@ -2001,6 +2179,7 @@ module InsertStatements =
                static member addName
                     (proteinAmbiguityGroup:ProteinAmbiguityGroup) (name:string) =
                     proteinAmbiguityGroup.Name <- name
+                    proteinAmbiguityGroup
 
                static member addDetail
                     (proteinAmbiguityGroup:ProteinAmbiguityGroup) (detail:CVParam) =
@@ -2042,6 +2221,7 @@ module InsertStatements =
                static member addName
                     (proteinDetectionList:ProteinDetectionList) (name:string) =
                     proteinDetectionList.Name <- name
+                    proteinDetectionList
 
                static member addProteinAmbiguityGroup
                     (proteinDetectionList:ProteinDetectionList) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
@@ -2089,6 +2269,7 @@ module InsertStatements =
                static member addProteinDetectionList
                     (analysisData:AnalysisData) (proteinDetectionList:ProteinDetectionList) =
                     analysisData.ProteinDetectionList <- proteinDetectionList
+                    analysisData
 
                 static member addToContext (context:MzIdentMLContext) (item:AnalysisData) =
                         (addToContextWithExceptionCheck context item)
@@ -2123,10 +2304,12 @@ module InsertStatements =
                static member addName
                     (proteinDetection:ProteinDetection) (name:string) =
                     proteinDetection.Name <- name
+                    proteinDetection
 
                static member addActivityDate
                     (proteinDetection:ProteinDetection) (activityDate:DateTime) =
                     proteinDetection.ActivityDate <- activityDate
+                    proteinDetection
 
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item)
@@ -2149,7 +2332,8 @@ module InsertStatements =
                         ?publisher   : string,
                         ?title       : string,
                         ?volume      : string,
-                        ?year        : int
+                        ?year        : int,
+                        ?mzIdentML   : MzIdentML
                     ) =
                     let id'          = defaultArg id 0
                     let name'        = defaultArg name null
@@ -2163,6 +2347,7 @@ module InsertStatements =
                     let title'       = defaultArg title null
                     let volume'      = defaultArg volume null
                     let year'        = defaultArg year Unchecked.defaultof<int>
+                    let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         BiblioGraphicReference.ID          = id'
                         BiblioGraphicReference.Name        = name'
@@ -2177,43 +2362,58 @@ module InsertStatements =
                         BiblioGraphicReference.Volume      = volume'
                         BiblioGraphicReference.Year        = year'
                         BiblioGraphicReference.RowVersion  = DateTime.Now
+                        BiblioGraphicReference.MzIdentML   = mzIdentML'
                     }
 
                static member addName
                     (biblioGraphicReference:BiblioGraphicReference) (name:string) =
                     biblioGraphicReference.Name <- name
+                    biblioGraphicReference
 
                static member addAuthors
                     (biblioGraphicReference:BiblioGraphicReference) (authors:string) =
                     biblioGraphicReference.Authors <- authors
+                    biblioGraphicReference
 
                static member addDOI
                     (biblioGraphicReference:BiblioGraphicReference) (doi:string) =
                     biblioGraphicReference.DOI <- doi
+                    biblioGraphicReference
 
                static member addIssue
                     (biblioGraphicReference:BiblioGraphicReference) (issue:string) =
                     biblioGraphicReference.Issue <- issue
+                    biblioGraphicReference
 
                static member addPublication
                     (biblioGraphicReference:BiblioGraphicReference) (publication:string) =
                     biblioGraphicReference.Publication <- publication
+                    biblioGraphicReference
 
                static member addPublisher
                     (biblioGraphicReference:BiblioGraphicReference) (publisher:string) =
                     biblioGraphicReference.Publisher <- publisher
+                    biblioGraphicReference
 
                static member addTitle
                     (biblioGraphicReference:BiblioGraphicReference) (title:string) =
                     biblioGraphicReference.Title <- title
+                    biblioGraphicReference
 
                static member addVolume
                     (biblioGraphicReference:BiblioGraphicReference) (volume:string) =
                     biblioGraphicReference.Volume <- volume
+                    biblioGraphicReference
 
                static member addYear
                     (biblioGraphicReference:BiblioGraphicReference) (year:int) =
                     biblioGraphicReference.Year <- year
+                    biblioGraphicReference
+
+               static member addMzIdentML
+                    (biblioGraphicReference:BiblioGraphicReference) (mzIdentML:MzIdentML) =
+                    biblioGraphicReference.MzIdentML <- mzIdentML
+                    biblioGraphicReference
 
                 static member addToContext (context:MzIdentMLContext) (item:BiblioGraphicReference) =
                         (addToContextWithExceptionCheck context item)
