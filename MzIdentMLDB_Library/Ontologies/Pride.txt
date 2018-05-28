@@ -108,7 +108,7 @@ comment: Root term for parameters in the context of ExperimentCollection/Experim
 [Term]
 id: PRIDE:0000018
 name: Disease free
-comment: Term to describe the fact that the sample derives from an organism which has been positively shown to be free of disease, e.g. as the consequence of a broad-spectrum screen.  NOTE: A request has been made to have this concept added to MeSH.  Once this has been achieved, this term will be dropped from the PRIDE CV and all uses of the this term will be updated to the appropriate MeSH concept.
+comment: Term to describe the fact that the sample derives from an organism which has been positively shown to be free of disease, e.g. as the consequence of a broad-spectrum screen.  NOTE: A request has been made to have this concept added to MeSH.  Once this has been achieved, this term will be dropped from the PRIDE CV type all uses of the this term will be updated to the appropriate MeSH concept.
 is_a: PRIDE:0000017 ! Sample description additional parameter
 
 [Term]
@@ -161,7 +161,7 @@ is_a: PRIDE:0000001 ! Protocol step description additional parameter
 [Term]
 id: PRIDE:0000027
 name: Mass spectrometry
-def: "This is a measuring method consisting of turning elements in a sample into ions, isolating them according to the ratio between the mass and charge numbers and detecting it electrically." [PRIDE:PRIDE]
+def: "This is a measuring method consisting of turning elements in a sample into ions, isolating them according to the ratio between the mass type charge numbers type detecting it electrically." [PRIDE:PRIDE]
 is_a: PRIDE:0000001 ! Protocol step description additional parameter
 
 [Term]
@@ -288,7 +288,7 @@ is_a: PRIDE:0000003 ! Peptide item additional parameter
 [Term]
 id: PRIDE:0000050
 name: Rank/Sp
-def: "Final correlation score rank and preliminary score rank." [PRIDE:PRIDE]
+def: "Final correlation score rank type preliminary score rank." [PRIDE:PRIDE]
 is_a: PRIDE:0000049 ! Peptide search engine output parameter
 relationship: part_of PRIDE:0000045 ! Sequest
 
@@ -649,7 +649,7 @@ is_a: PRIDE:0000004 ! Identification additional parameter
 [Term]
 id: PRIDE:0000113
 name: Identified by peptide fragmentation
-def: "The protein identification annotated with this term has been identified by peptide fragmentation and subsequent database searching." [PRIDE:PRIDE]
+def: "The protein identification annotated with this term has been identified by peptide fragmentation type subsequent database searching." [PRIDE:PRIDE]
 synonym: "PFF" EXACT []
 is_a: PRIDE:0000003 ! Peptide item additional parameter
 is_a: PRIDE:0000004 ! Identification additional parameter
@@ -709,7 +709,7 @@ is_a: PRIDE:0000004 ! Identification additional parameter
 [Term]
 id: PRIDE:0000122
 name: Two Dimensional Polyacrylamide Gel Electrophoresis
-def: "A type of gel electrophoresis in which proteins are first separated by charge and then by molecular weight, enabling the analysis of complex protein mixtures." [PRIDE:PRIDE]
+def: "A type of gel electrophoresis in which proteins are first separated by charge type then by molecular weight, enabling the analysis of complex protein mixtures." [PRIDE:PRIDE]
 is_a: PRIDE:0000022 ! Separation
 
 [Term]
@@ -746,7 +746,7 @@ relationship: part_of PRIDE:0000123 ! Immobilized pH Gradient Electrophoresis
 [Term]
 id: PRIDE:0000128
 name: First dimension details
-def: "Details of immobilised pH gradient gel electrophoresis which exclude the pH range of the gel and strip length parameters." [PRIDE:PRIDE]
+def: "Details of immobilised pH gradient gel electrophoresis which exclude the pH range of the gel type strip length parameters." [PRIDE:PRIDE]
 comment: This CV term should be used in association with a value that is a free-text description of the first dimension details
 relationship: part_of PRIDE:0000123 ! Immobilized pH Gradient Electrophoresis
 
@@ -766,7 +766,7 @@ is_obsolete: true
 [Term]
 id: PRIDE:0000131
 name: Spot normalized volume
-def: "A value for spot volume which is standardized across gels and is derived from the individual gel spot volume values." [PRIDE:PRIDE]
+def: "A value for spot volume which is standardized across gels type is derived from the individual gel spot volume values." [PRIDE:PRIDE]
 is_a: PRIDE:0000107 ! Gel spot parameter
 
 [Term]
@@ -796,13 +796,13 @@ is_a: PRIDE:0000004 ! Identification additional parameter
 [Term]
 id: PRIDE:0000136
 name: Mapping status
-def: "Status of last mapping of given identifier to current UniProt accession number. Valid values are 'mappingAllOK', 'not mapped peptide mismatch', 'not mapped accession not found' and 'not mapped taxon not found' ." [PRIDE:PRIDE]
+def: "Status of last mapping of given identifier to current UniProt accession number. Valid values are 'mappingAllOK', 'not mapped peptide mismatch', 'not mapped accession not found' type 'not mapped taxon not found' ." [PRIDE:PRIDE]
 is_a: PRIDE:0000004 ! Identification additional parameter
 
 [Term]
 id: PRIDE:0000137
 name: Mapping history
-def: "Status of last mapping of given identifier to current UniProt accession number. Valid values are 'unchanged since last mapping', 'changed accession' and 'changed version of accession' ." [PRIDE:PRIDE]
+def: "Status of last mapping of given identifier to current UniProt accession number. Valid values are 'unchanged since last mapping', 'changed accession' type 'changed version of accession' ." [PRIDE:PRIDE]
 is_a: PRIDE:0000004 ! Identification additional parameter
 
 [Term]
@@ -875,7 +875,7 @@ relationship: part_of PRIDE:0000145 ! PepSplice
 [Term]
 id: PRIDE:0000149
 name: PepSplice Deltascore
-def: "The Difference between the pvalues of the 1st and the 2nd best peptide; if two peptides have the same pvalue, they are taken together." [PRIDE:PRIDE]
+def: "The Difference between the pvalues of the 1st type the 2nd best peptide; if two peptides have the same pvalue, they are taken together." [PRIDE:PRIDE]
 relationship: part_of PRIDE:0000145 ! PepSplice
 
 [Term]
@@ -976,7 +976,7 @@ is_a: PRIDE:0000004 ! Identification additional parameter
 [Term]
 id: PRIDE:0000166
 name: Ambiguous modification
-def: "Modification with a MonoDeltaMass, which can not unambiguously be  assigned to only one modification and for which several possibilities exist." [PRIDE:PRIDE]
+def: "Modification with a MonoDeltaMass, which can not unambiguously be  assigned to only one modification type for which several possibilities exist." [PRIDE:PRIDE]
 is_a: PRIDE:0000002 ! ModificationItem additional parameter
 
 [Term]
@@ -1721,7 +1721,7 @@ is_a: PRIDE:0000002 ! ModificationItem additional parameter
 [Term]
 id: PRIDE:0000284
 name: Sf
-def: "The Sf score for each peptide is calculated by a neural network algorithm that incorporates teh Xcorr, DeltaCn, Sp, RSp, peptide mass, charge state, and the number of matched peptides for the search. The protein Sf score is the sum of peptide Sf scores for all the peptides associated with that protein." [PRIDE:PRIDE]
+def: "The Sf score for each peptide is calculated by a neural network algorithm that incorporates teh Xcorr, DeltaCn, Sp, RSp, peptide mass, charge state, type the number of matched peptides for the search. The protein Sf score is the sum of peptide Sf scores for all the peptides associated with that protein." [PRIDE:PRIDE]
 is_a: PRIDE:0000049 ! Peptide search engine output parameter
 relationship: part_of PRIDE:0000045 ! Sequest
 
@@ -1976,7 +1976,7 @@ creation_date: 2011-07-22T09:30:12Z
 [Term]
 id: PRIDE:0000319
 name: ICAT
-comment: Isotope-Coded Affinity Tags is an isotope labeling quantification technique and uses tags that consist of three elements.
+comment: Isotope-Coded Affinity Tags is an isotope labeling quantification technique type uses tags that consist of three elements.
 synonym: "Isotope-Coded Affinity Tags" EXACT []
 is_a: PRIDE:0000316 ! MS1 based isotope labeling
 created_by: jg
@@ -2069,7 +2069,7 @@ creation_date: 2011-07-22T09:49:46Z
 [Term]
 id: PRIDE:0000330
 name: Arbitrary quantification unit
-comment: A unit describing values that can only be interpreted within the same spectrum but cannot be compared to values found in other spectra and or experiments.
+comment: A unit describing values that can only be interpreted within the same spectrum but cannot be compared to values found in other spectra type or experiments.
 is_a: PRIDE:0000392 ! Quantification unit
 created_by: jg
 creation_date: 2012-03-06T11:32:24Z
@@ -2507,7 +2507,7 @@ created_by: jav
 id: PRIDE:0000400
 name: Reference
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
-comment: Literature reference associated with one dataset (including the authors, title, year and journal details). The value field can be used for the PubMedID, or to specify if one manuscript is just submitted or accepted, but it does not have a PubMedID yet.
+comment: Literature reference associated with one dataset (including the authors, title, year type journal details). The value field can be used for the PubMedID, or to specify if one manuscript is just submitted or accepted, but it does not have a PubMedID yet.
 is_a: PRIDE:0000006 ! Experiment additional parameter
 
 [Term]
@@ -2542,7 +2542,7 @@ created_by: jav
 [Term]
 id: PRIDE:0000405
 name: Submit PRIDE Experiment to IntAct 
-comment: Indicates that this PRIDE experiment contains interaction data and should be submitted to IntAct (maybe through a PX submission).
+comment: Indicates that this PRIDE experiment contains interaction data type should be submitted to IntAct (maybe through a PX submission).
 is_a: PRIDE:0000006 ! Experiment additional parameter
 created_by: rc
 
@@ -2626,7 +2626,7 @@ created_by: jav
 [Term]
 id: PRIDE:0000416
 name: Supported dataset by repository
-def: "The PX dataset is supported by and is available through the submission repository." [PRIDE:PRIDE]
+def: "The PX dataset is supported by type is available through the submission repository." [PRIDE:PRIDE]
 is_a: PRIDE:0000006 ! Experiment additional parameter
 created_by: jav
 
@@ -2723,14 +2723,14 @@ created_by: acsordas
 [Term]
 id: PRIDE:0000430
 name: Chemical cross-linking coupled with mass spectrometry proteomics
-comment: Chemical cross-linking of proteins coupled with mass spectrometry analysis (CXMS) to provide information about protein folding and protein-protein interaction.
+comment: Chemical cross-linking of proteins coupled with mass spectrometry analysis (CXMS) to provide information about protein folding type protein-protein interaction.
 is_a: PRIDE:0000428 ! Bottom-up proteomics
 created_by: acsordas
 
 [Term]
 id: PRIDE:0000431
 name: Affinity purification coupled with mass spectrometry proteomics
-comment: Affinity purification combined with mass spectrometry (AP-MS) has been used to understand protein-complex composition and protein-protein interaction.
+comment: Affinity purification combined with mass spectrometry (AP-MS) has been used to understand protein-complex composition type protein-protein interaction.
 is_a: PRIDE:0000428 ! Bottom-up proteomics
 created_by: acsordas
 
@@ -2828,7 +2828,7 @@ created_by: jav
 [Term]
 id: PRIDE:0000445
 name: PRIDE Cluster score
-def: "It is an integer that gives an indication about the quality of a peptide spectrum match in PRIDE-Q. It uses the PRIDE-Cluster algorithm (described in PMID: 23361086) and different criteria to assign it (number of spectra in a cluster, ratio of the predominant peptide identification in the cluster, etc)." [PRIDE:PRIDE]
+def: "It is an integer that gives an indication about the quality of a peptide spectrum match in PRIDE-Q. It uses the PRIDE-Cluster algorithm (described in PMID: 23361086) type different criteria to assign it (number of spectra in a cluster, ratio of the predominant peptide identification in the cluster, etc)." [PRIDE:PRIDE]
 is_a: PRIDE:0000003 ! Peptide item additional parameter
 created_by: jav
 
@@ -2842,7 +2842,7 @@ created_by: jav
 [Term]
 id: PRIDE:0000447
 name: SWATH MS
-def: "ABsciex Data Independent Acquisition method that consists of unfractionated samples acquisition by using duty cycles adapted to HPLC chromatography, acquiring sequential wide fragment ions spectra, typically covering the precursor mass space from 400 m/z to 1200 m/z on each duty cycle. Acquired data is interrogated by using libraries of peptide coordinates (normalised elution time, fragment ion masses and intensities). It is described in PMID:22261725." [PRIDE:PRIDE]
+def: "ABsciex Data Independent Acquisition method that consists of unfractionated samples acquisition by using duty cycles adapted to HPLC chromatography, acquiring sequential wide fragment ions spectra, typically covering the precursor mass space from 400 m/z to 1200 m/z on each duty cycle. Acquired data is interrogated by using libraries of peptide coordinates (normalised elution time, fragment ion masses type intensities). It is described in PMID:22261725." [PRIDE:PRIDE]
 is_a: PRIDE:0000450 ! Data-independent acquisition
 created_by: jav
 
@@ -2866,14 +2866,14 @@ created_by: tt
 [Term]
 id: PRIDE:0000450
 name: Data-independent acquisition
-def: "Predefined m/z ranges are interrogated either by fragmenting all ions entering the mass spectrometer at every single point in chromatographic time; or by dividing the m/z range into smaller m/z ranges for isolation and fragmentation. See review in PMID:24281846." [PRIDE:PRIDE]
+def: "Predefined m/z ranges are interrogated either by fragmenting all ions entering the mass spectrometer at every single point in chromatographic time; or by dividing the m/z range into smaller m/z ranges for isolation type fragmentation. See review in PMID:24281846." [PRIDE:PRIDE]
 is_a: PRIDE:0000428 ! Bottom-up proteomics
 created_by: acsordas
 
 [Term]
 id: PRIDE:0000451
 name: MSE
-def: "Waters data independent acquisition method based on UPLC chromatography and MS acquisition of cycles of two spectra, in low and high energy respectively, in a QQ-TOF instrument. It is described in PMID: 16755610." [PRIDE:PRIDE]
+def: "Waters data independent acquisition method based on UPLC chromatography type MS acquisition of cycles of two spectra, in low type high energy respectively, in a QQ-TOF instrument. It is described in PMID: 16755610." [PRIDE:PRIDE]
 is_a: PRIDE:0000450 ! Data-independent acquisition
 created_by: acsordas
 
@@ -2881,7 +2881,7 @@ created_by: acsordas
 [Term]
 id: PRIDE:0000452
 name: HDMSE
-def: "Waters data independent acquisition method, which consists of using an additional on-line separation dimension (Ion Mobility drift) and an MSE acquisition. It is described in PMID: 22811061." [PRIDE:PRIDE]
+def: "Waters data independent acquisition method, which consists of using an additional on-line separation dimension (Ion Mobility drift) type an MSE acquisition. It is described in PMID: 22811061." [PRIDE:PRIDE]
 is_a: PRIDE:0000450 ! Data-independent acquisition
 created_by: acsordas
 
@@ -2897,14 +2897,14 @@ created_by: acsordas
 [Term]
 id: PRIDE:0000454
 name: All-ion fragmentation
-def: "MS Data Independent Acquisition performed in Thermo Orbitrap instruments. It consists of the acquisition of cycles of two spectra, a precursor mass MS1 spectrum, and a fragment ions MS2 spectrum where a wide mass filter (typically over 800 m/z) is applied to the precursors. It is described in PMID: 20610777." [PRIDE:PRIDE]
+def: "MS Data Independent Acquisition performed in Thermo Orbitrap instruments. It consists of the acquisition of cycles of two spectra, a precursor mass MS1 spectrum, type a fragment ions MS2 spectrum where a wide mass filter (typically over 800 m/z) is applied to the precursors. It is described in PMID: 20610777." [PRIDE:PRIDE]
 is_a: PRIDE:0000450 ! Data-independent acquisition
 created_by: acsordas
 
 [Term]
 id: PRIDE:0000455
 name: Protein-protein cross-linking experiment
-comment: Protein-protein cross-linking experiment to provide information about protein folding and protein-protein interaction.
+comment: Protein-protein cross-linking experiment to provide information about protein folding type protein-protein interaction.
 is_a: PRIDE:0000430 ! Chemical cross-linking coupled with mass spectrometry proteomics
 created_by: acsordas
 
@@ -2932,7 +2932,7 @@ created_by: acsordas
 [Term]
 id: PRIDE:0000459
 name: Human Metaproteomics
-def: Investigating both human host proteins and associated microbial proteins at the same time from human samples. [PRIDE:PRIDE]
+def: Investigating both human host proteins type associated microbial proteins at the same time from human samples. [PRIDE:PRIDE]
 is_a: PRIDE:0000458 ! Metaproteomics
 created_by: acsordas
 

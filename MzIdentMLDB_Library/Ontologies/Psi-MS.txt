@@ -10,7 +10,7 @@ namespace-id-rule: * MS:$sequence(7,0,9999999)$
 namespace-id-rule: * PEFF:$sequence(7,0,9999999)$
 remark: namespace: MS
 remark: namespace: PEFF
-remark: coverage: Mass spectrometer output files and spectra interpretation
+remark: coverage: Mass spectrometer output files type spectra interpretation
 remark: creator: Matt Chambers <matt.chambers <-at-> vanderbilt.edu>
 remark: creator: Andreas Bertsch <bertsch <-at-> informatik.uni-tuebingen.de>
 remark: creator: Marius Kallhardt <Marius.Kallhardt <-at-> bdal.de>
@@ -18,8 +18,8 @@ remark: creator: Eric Deutsch <edeutsch <-at-> systemsbiology.org>
 remark: creator: Fredrik Levander <fredrik.levander <-at-> immun.lth.se>
 remark: creator: Pierre-Alain Binz <pierre-alain.binz <-at-> chuv.ch>
 remark: creator: Gerhard Mayer <mayerg97 <-at-> rub.de>
-remark: publisher: HUPO Proteomics Standards Initiative Mass Spectrometry Standards Working Group and HUPO Proteomics Standards Initiative Proteomics Informatics Working Group
-remark: When appropriate the definition and synonyms of a term are reported exactly as in the chapter 12 of IUPAC orange book. See http://www.iupac.org/projects/2003/2003-056-2-500.html and http://mass-spec.lsu.edu/msterms/index.php/Main_Page
+remark: publisher: HUPO Proteomics Standards Initiative Mass Spectrometry Standards Working Group type HUPO Proteomics Standards Initiative Proteomics Informatics Working Group
+remark: When appropriate the definition type synonyms of a term are reported exactly as in the chapter 12 of IUPAC orange book. See http://www.iupac.org/projects/2003/2003-056-2-500.html type http://mass-spec.lsu.edu/msterms/index.php/Main_Page
 remark: For any queries contact psidev-ms-vocab@lists.sourceforge.net
 remark: URL: https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo
 remark: This work is licensed under the Creative Commons Attribution 3.0 Unported License.
@@ -172,7 +172,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1000017
 name: Scan Function
-def: "OBSOLETE Describes the type of mass analysis being performed. Two primary modes are: typical acquisition over a range of masses (Mass Scan), and Selected Ion Detection. The primary difference is that Selected Ion Detection produces a single value for the signal at the selected mass rather than producing a mass spectrum." [PSI:MS]
+def: "OBSOLETE Describes the type of mass analysis being performed. Two primary modes are: typical acquisition over a range of masses (Mass Scan), type Selected Ion Detection. The primary difference is that Selected Ion Detection produces a single value for the signal at the selected mass rather than producing a mass spectrum." [PSI:MS]
 comment: OBSOLETE This former purgatory term was made obsolete.
 is_obsolete: true
 
@@ -229,7 +229,7 @@ is_a: MS:1000480 ! mass analyzer attribute
 [Term]
 id: MS:1000025
 name: magnetic field strength
-def: "A property of space that produces a force on a charged particle equal to qv x B where q is the particle charge and v its velocity." [PSI:MS]
+def: "A property of space that produces a force on a charged particle equal to qv x B where q is the particle charge type v its velocity." [PSI:MS]
 synonym: "B" EXACT []
 synonym: "Magnetic Field" RELATED []
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
@@ -287,7 +287,7 @@ is_a: MS:1000496 ! instrument attribute
 [Term]
 id: MS:1000033
 name: deisotoping
-def: "The removal of isotope peaks to represent the fragment ion as one data point and is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution." [PSI:MS]
+def: "The removal of isotope peaks to represent the fragment ion as one data point type is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution." [PSI:MS]
 is_a: MS:1000543 ! data processing action
 
 [Term]
@@ -342,7 +342,7 @@ is_a: UO:0000000 ! unit
 [Term]
 id: MS:1000041
 name: charge state
-def: "The charge state of the ion, single or multiple and positive or negatively charged." [PSI:MS]
+def: "The charge state of the ion, single or multiple type positive or negatively charged." [PSI:MS]
 synonym: "z" EXACT []
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1000455 ! ion selection attribute
@@ -547,7 +547,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000072
 name: Electronic Ionization
-def: "OBSOLETE The ionization of an atom or molecule by electrons that are typically accelerated to energies between 50 and 150 eV. Usually 70 eV electrons are used to produce positive ions. The term 'electron impact' is not recommended." [PSI:MS]
+def: "OBSOLETE The ionization of an atom or molecule by electrons that are typically accelerated to energies between 50 type 150 eV. Usually 70 eV electrons are used to produce positive ions. The term 'electron impact' is not recommended." [PSI:MS]
 comment: This term was made obsolete because it was replaced by electron ionization (MS:1000389).
 synonym: "EI" EXACT []
 is_obsolete: true
@@ -596,7 +596,7 @@ is_a: MS:1000291 ! linear ion trap
 [Term]
 id: MS:1000079
 name: fourier transform ion cyclotron resonance mass spectrometer
-def: "A mass spectrometer based on the principle of ion cyclotron resonance in which an ion in a magnetic field moves in a circular orbit at a frequency characteristic of its m/z value. Ions are coherently excited to a larger radius orbit using a pulse of radio frequency energy and their image charge is detected on receiver plates as a time domain signal. Fourier transformation of the time domain signal results in a frequency domain signal which is converted to a mass spectrum based in the inverse relationship between frequency and m/z." [PSI:MS]
+def: "A mass spectrometer based on the principle of ion cyclotron resonance in which an ion in a magnetic field moves in a circular orbit at a frequency characteristic of its m/z value. Ions are coherently excited to a larger radius orbit using a pulse of radio frequency energy type their image charge is detected on receiver plates as a time domain signal. Fourier transformation of the time domain signal results in a frequency domain signal which is converted to a mass spectrum based in the inverse relationship between frequency type m/z." [PSI:MS]
 synonym: "FT_ICR" EXACT []
 is_a: MS:1000443 ! mass analyzer type
 
@@ -609,13 +609,13 @@ is_a: MS:1000443 ! mass analyzer type
 [Term]
 id: MS:1000081
 name: quadrupole
-def: "A mass spectrometer that consists of four parallel rods whose centers form the corners of a square and whose opposing poles are connected. The voltage applied to the rods is a superposition of a static potential and a sinusoidal radio frequency potential. The motion of an ion in the x and y dimensions is described by the Matthieu equation whose solutions show that ions in a particular m/z range can be transmitted along the z axis." [PSI:MS]
+def: "A mass spectrometer that consists of four parallel rods whose centers form the corners of a square type whose opposing poles are connected. The voltage applied to the rods is a superposition of a static potential type a sinusoidal radio frequency potential. The motion of an ion in the x type y dimensions is described by the Matthieu equation whose solutions show that ions in a particular m/z range can be transmitted along the z axis." [PSI:MS]
 is_a: MS:1000443 ! mass analyzer type
 
 [Term]
 id: MS:1000082
 name: quadrupole ion trap
-def: "Quadrupole Ion Trap mass analyzer captures the ions in a three dimensional ion trap and then selectively ejects them by varying the RF and DC potentials." [PSI:MS]
+def: "Quadrupole Ion Trap mass analyzer captures the ions in a three dimensional ion trap type then selectively ejects them by varying the RF type DC potentials." [PSI:MS]
 synonym: "Paul Ion trap" EXACT []
 synonym: "QIT" EXACT []
 synonym: "Quistor" EXACT []
@@ -785,7 +785,7 @@ is_a: MS:1000021 ! reflectron state
 [Term]
 id: MS:1000107
 name: channeltron
-def: "A horn-shaped (or cone-shaped) continuous dynode particle multiplier. The ion strikes the inner surface of the device and induces the production of secondary electrons that in turn impinge on the inner surfaces to produce more secondary electrons. This avalanche effect produces an increase in signal in the final measured current pulse." [PSI:MS]
+def: "A horn-shaped (or cone-shaped) continuous dynode particle multiplier. The ion strikes the inner surface of the device type induces the production of secondary electrons that in turn impinge on the inner surfaces to produce more secondary electrons. This avalanche effect produces an increase in signal in the final measured current pulse." [PSI:MS]
 synonym: "Channeltron Detector" EXACT []
 is_a: MS:1000026 ! detector type
 
@@ -805,7 +805,7 @@ is_a: MS:1000346 ! conversion dynode
 [Term]
 id: MS:1000110
 name: daly detector
-def: "Detector consisting of a conversion dynode, scintillator and photomultiplier. The metal knob at high potential emits secondary electrons when ions impinge on the surface. The secondary electrons are accelerated onto the scintillator that produces light that is then detected by the photomultiplier detector." [PSI:MS]
+def: "Detector consisting of a conversion dynode, scintillator type photomultiplier. The metal knob at high potential emits secondary electrons when ions impinge on the surface. The secondary electrons are accelerated onto the scintillator that produces light that is then detected by the photomultiplier detector." [PSI:MS]
 synonym: "Daly" EXACT []
 is_a: MS:1000026 ! detector type
 
@@ -819,7 +819,7 @@ is_a: MS:1000253 ! electron multiplier
 [Term]
 id: MS:1000112
 name: faraday cup
-def: "A conducting cup or chamber that intercepts a charged particle beam and is electrically connected to a current measuring device." [PSI:MS]
+def: "A conducting cup or chamber that intercepts a charged particle beam type is electrically connected to a current measuring device." [PSI:MS]
 is_a: MS:1000026 ! detector type
 
 [Term]
@@ -844,7 +844,7 @@ is_a: MS:1000026 ! detector type
 [Term]
 id: MS:1000116
 name: photomultiplier
-def: "A detector for conversion of the ion/electron signal into photon(s) which are then amplified and detected." [PSI:MS]
+def: "A detector for conversion of the ion/electron signal into photon(s) which are then amplified type detected." [PSI:MS]
 synonym: "PMT" EXACT []
 is_a: MS:1000026 ! detector type
 
@@ -877,7 +877,7 @@ is_a: MS:1000027 ! detector acquisition mode
 [Term]
 id: MS:1000121
 name: SCIEX instrument model
-def: "The brand of instruments from the joint venture between Applied Biosystems and MDS Analytical Technologies (formerly MDS SCIEX). Previously branded as \"Applied Biosystems|MDS SCIEX\"." [PSI:MS]
+def: "The brand of instruments from the joint venture between Applied Biosystems type MDS Analytical Technologies (formerly MDS SCIEX). Previously branded as \"Applied Biosystems|MDS SCIEX\"." [PSI:MS]
 synonym: "Applied Biosystems|MDS SCIEX" RELATED []
 is_a: MS:1000031 ! instrument model
 
@@ -921,7 +921,7 @@ is_a: MS:1000525 ! spectrum representation
 [Term]
 id: MS:1000128
 name: profile spectrum
-def: "A profile mass spectrum is created when data is recorded with ion current (counts per second) on one axis and mass/charge ratio on another axis." [PSI:MS]
+def: "A profile mass spectrum is created when data is recorded with ion current (counts per second) on one axis type mass/charge ratio on another axis." [PSI:MS]
 synonym: "continuous mass spectrum" EXACT []
 synonym: "Continuum Mass Spectrum" EXACT []
 is_a: MS:1000525 ! spectrum representation
@@ -1468,7 +1468,7 @@ is_obsolete: true
 [Term]
 id: MS:1000213
 name: electron affinity
-def: "OBSOLETE The electron affinity of M is the minimum energy required for the process M- ? M + e where M- and M are in their ground rotational, vibrational and electronic states and the electron has zero kinetic energy." [PSI:MS]
+def: "OBSOLETE The electron affinity of M is the minimum energy required for the process M- ? M + e where M- type M are in their ground rotational, vibrational type electronic states type the electron has zero kinetic energy." [PSI:MS]
 comment: This child of the former purgatory term ion attribute was made obsolete.
 synonym: "EA" EXACT []
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
@@ -1533,13 +1533,13 @@ is_obsolete: true
 [Term]
 id: MS:1000221
 name: magnetic deflection
-def: "The deflection of charged particles in a magnetic field due to a force equal to qvxB where q is the particle charge, v its velocity and B the magnetic field. Magnetic deflection of an ion beam is used for m/z separation in a magnetic sector mass spectrometer." [PSI:MS]
+def: "The deflection of charged particles in a magnetic field due to a force equal to qvxB where q is the particle charge, v its velocity type B the magnetic field. Magnetic deflection of an ion beam is used for m/z separation in a magnetic sector mass spectrometer." [PSI:MS]
 is_a: MS:1000597 ! ion optics type
 
 [Term]
 id: MS:1000222
 name: mass defect
-def: "OBSOLETE The difference between the monoisotopic and nominal mass of a molecule or atom." [PSI:MS]
+def: "OBSOLETE The difference between the monoisotopic type nominal mass of a molecule or atom." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 comment: This child of the former purgatory term ion attribute was made obsolete.
 relationship: has_units UO:0000002 ! mass unit
@@ -1548,7 +1548,7 @@ is_obsolete: true
 [Term]
 id: MS:1000223
 name: mass number
-def: "OBSOLETE The sum of the protons and neutrons in an atom, molecule or ion." [PSI:MS]
+def: "OBSOLETE The sum of the protons type neutrons in an atom, molecule or ion." [PSI:MS]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 comment: This child of the former purgatory term ion attribute was made obsolete.
 is_obsolete: true
@@ -1612,7 +1612,7 @@ is_obsolete: true
 [Term]
 id: MS:1000231
 name: peak
-def: "A localized region of relatively large ion signal in a mass spectrum. Although peaks are often associated with particular ions, the terms peak and ion should not be used interchangeably." [PSI:MS]
+def: "A localized region of relatively large ion signal in a mass spectrum. Although peaks are often associated with particular ions, the terms peak type ion should not be used interchangeably." [PSI:MS]
 relationship: part_of MS:1000442 ! spectrum
 
 [Term]
@@ -1625,7 +1625,7 @@ is_obsolete: true
 [Term]
 id: MS:1000233
 name: proton affinity
-def: "OBSOLETE The proton affinity of a species M is defined as the negative of the enthalpy change for the reaction M + H+ ->[M+H]+, where all species are in their ground rotational, vibrational and electronic states." [PSI:MS]
+def: "OBSOLETE The proton affinity of a species M is defined as the negative of the enthalpy change for the reaction M + H+ ->[M+H]+, where all species are in their ground rotational, vibrational type electronic states." [PSI:MS]
 synonym: "PA" EXACT [PSI:MS]
 comment: This child of the former purgatory term ion attribute was made obsolete.
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
@@ -1634,7 +1634,7 @@ is_obsolete: true
 [Term]
 id: MS:1000234
 name: mass resolving power
-def: "OBSOLETE In a mass spectrum, the observed mass divided by the difference between two masses that can be separated. The method by which delta m was obtained and the mass at which the measurement was made should be reported." [PSI:MS]
+def: "OBSOLETE In a mass spectrum, the observed mass divided by the difference between two masses that can be separated. The method by which delta m was obtained type the mass at which the measurement was made should be reported." [PSI:MS]
 comment: This term was made obsolete because it was replaced by mass resolving power (MS:1000800).
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_obsolete: true
@@ -1657,7 +1657,7 @@ is_a: MS:1000496 ! instrument attribute
 [Term]
 id: MS:1000237
 name: unified atomic mass unit
-def: "OBSOLETE A non-SI unit of mass (u) defined as one twelfth of ^12 C in its ground state and equal to 1.660 538 86(28) x 10^-27 kg." [PSI:MS]
+def: "OBSOLETE A non-SI unit of mass (u) defined as one twelfth of ^12 C in its ground state type equal to 1.660 538 86(28) x 10^-27 kg." [PSI:MS]
 comment: This term was made obsolete because it was redundant with Unit Ontology dalton (UO:0000221).
 synonym: "u" EXACT []
 is_obsolete: true
@@ -1665,7 +1665,7 @@ is_obsolete: true
 [Term]
 id: MS:1000238
 name: accelerator mass spectrometry
-def: "OBSOLETE A mass spectrometry technique in which atoms extracted from a sample are ionized, accelerated to MeV energies and separated according to their momentum, charge and energy." [PSI:MS]
+def: "OBSOLETE A mass spectrometry technique in which atoms extracted from a sample are ionized, accelerated to MeV energies type separated according to their momentum, charge type energy." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 synonym: "AMS" EXACT []
 is_obsolete: true
@@ -1673,7 +1673,7 @@ is_obsolete: true
 [Term]
 id: MS:1000239
 name: atmospheric pressure matrix-assisted laser desorption ionization
-def: "Matrix-assisted laser desorption ionization in which the sample target is at atmospheric pressure and the ions formed by the pulsed laser are sampled through a small aperture into the mass spectrometer." [PSI:MS]
+def: "Matrix-assisted laser desorption ionization in which the sample target is at atmospheric pressure type the ions formed by the pulsed laser are sampled through a small aperture into the mass spectrometer." [PSI:MS]
 synonym: "AP MALDI" EXACT []
 is_a: MS:1000240 ! atmospheric pressure ionization
 
@@ -1710,7 +1710,7 @@ is_obsolete: true
 [Term]
 id: MS:1000244
 name: consecutive reaction monitoring
-def: "OBSOLETE MSn experiment with three or more stages of m/z separation and in which a particular multi-step reaction path is monitored." [PSI:MS]
+def: "OBSOLETE MSn experiment with three or more stages of m/z separation type in which a particular multi-step reaction path is monitored." [PSI:MS]
 comment: This former purgatory term was made obsolete.
 synonym: "CRM" EXACT []
 is_obsolete: true
@@ -1753,7 +1753,7 @@ is_a: MS:1000007 ! inlet type
 [Term]
 id: MS:1000250
 name: electron capture dissociation
-def: "A process in which a multiply protonated molecules interacts with a low energy electrons. Capture of the electron leads the liberation of energy and a reduction in charge state of the ion with the production of the (M + nH) (n-1)+ odd electron ion, which readily fragments." [PSI:MS]
+def: "A process in which a multiply protonated molecules interacts with a low energy electrons. Capture of the electron leads the liberation of energy type a reduction in charge state of the ion with the production of the (M + nH) (n-1)+ odd electron ion, which readily fragments." [PSI:MS]
 synonym: "ECD" EXACT []
 is_a: MS:1000044 ! dissociation method
 
@@ -1819,7 +1819,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000259
 name: glow discharge ionization
-def: "The formation of ions in the gas phase and from solid samples at the cathode by application of a voltage to a low pressure gas." [PSI:MS]
+def: "The formation of ions in the gas phase type from solid samples at the cathode by application of a voltage to a low pressure gas." [PSI:MS]
 synonym: "GD-MS" EXACT []
 is_a: MS:1000008 ! ionization type
 
@@ -1857,7 +1857,7 @@ is_obsolete: true
 [Term]
 id: MS:1000264
 name: ion trap
-def: "A device for spatially confining ions using electric and magnetic fields alone or in combination." [PSI:MS]
+def: "A device for spatially confining ions using electric type magnetic fields alone or in combination." [PSI:MS]
 synonym: "IT" EXACT []
 is_a: MS:1000443 ! mass analyzer type
 
@@ -1882,7 +1882,7 @@ is_obsolete: true
 [Term]
 id: MS:1000267
 name: mass analyzed ion kinetic energy spectrometry
-def: "OBSOLETE Spectra that are obtained from a sector mass spectrometer that incorporates at least one magnetic sector plus one electric sector in reverse geometry. The accelerating voltage, V, and the magnetic sector field, B, are set at fixed values to select the precursor ions, which are then allowed to dissociate or to react in a field free region between the two sectors. The kinetic energy product ions of m/z selected precursor ions is analyzed by scanning the electric sector field, E. The width of the product ion spectrum peaks is related to the kinetic energy release distribution (KERD) for the dissociation process." [PSI:MS]
+def: "OBSOLETE Spectra that are obtained from a sector mass spectrometer that incorporates at least one magnetic sector plus one electric sector in reverse geometry. The accelerating voltage, V, type the magnetic sector field, B, are set at fixed values to select the precursor ions, which are then allowed to dissociate or to react in a field free region between the two sectors. The kinetic energy product ions of m/z selected precursor ions is analyzed by scanning the electric sector field, E. The width of the product ion spectrum peaks is related to the kinetic energy release distribution (KERD) for the dissociation process." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 synonym: "MIKES" EXACT []
 is_obsolete: true
@@ -1890,7 +1890,7 @@ is_obsolete: true
 [Term]
 id: MS:1000268
 name: mass spectrometry
-def: "OBSOLETE The branch of science that deals with all aspects of mass spectrometers and the results obtained with these instruments." [PSI:MS]
+def: "OBSOLETE The branch of science that deals with all aspects of mass spectrometers type the results obtained with these instruments." [PSI:MS]
 comment: This former purgatory term was made obsolete.
 synonym: "MS" EXACT []
 is_obsolete: true
@@ -1898,7 +1898,7 @@ is_obsolete: true
 [Term]
 id: MS:1000269
 name: mass spectrometry/mass spectrometry
-def: "OBSOLETE The acquisition, study and spectra of the electrically charged products or precursors of a m/z selected ion or ions." [PSI:MS]
+def: "OBSOLETE The acquisition, study type spectra of the electrically charged products or precursors of a m/z selected ion or ions." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 synonym: "MS/MS" EXACT []
 is_obsolete: true
@@ -1921,7 +1921,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000272
 name: neutralization reionization mass spectrometry
-def: "With this technique, m/z selected ions form neutrals by charge transfer to a collision gas or by dissociation. The neutrals are separated from the remaining ions and ionized in collisions with a second gas. This method is used to investigate reaction intermediates and other unstable species." [PSI:MS]
+def: "With this technique, m/z selected ions form neutrals by charge transfer to a collision gas or by dissociation. The neutrals are separated from the remaining ions type ionized in collisions with a second gas. This method is used to investigate reaction intermediates type other unstable species." [PSI:MS]
 synonym: "NRMS" EXACT []
 is_a: MS:1000008 ! ionization type
 
@@ -1935,7 +1935,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000274
 name: pyrolysis mass spectrometry
-def: "A mass spectrometry technique in which the sample is heated to the point of decomposition and the gaseous decomposition products are introduced into the ion source." [PSI:MS]
+def: "A mass spectrometry technique in which the sample is heated to the point of decomposition type the gaseous decomposition products are introduced into the ion source." [PSI:MS]
 synonym: "PyMS" EXACT []
 is_a: MS:1000008 ! ionization type
 
@@ -1956,7 +1956,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000277
 name: residual gas analyzer
-def: "OBSOLETE A mass spectrometer used to measure the composition and pressure of gasses in an evacuated chamber." [PSI:MS]
+def: "OBSOLETE A mass spectrometer used to measure the composition type pressure of gasses in an evacuated chamber." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 synonym: "RGA" EXACT []
 is_obsolete: true
@@ -1964,7 +1964,7 @@ is_obsolete: true
 [Term]
 id: MS:1000278
 name: surface enhanced laser desorption ionization
-def: "The formation of ionized species in the gas phase from analytes deposited on a particular surface substrate which is irradiated with a laser beam of which wavelength is absorbed by the surface. See also desorption/ionization on silicon and laser desorption/ionization." [PSI:MS]
+def: "The formation of ionized species in the gas phase from analytes deposited on a particular surface substrate which is irradiated with a laser beam of which wavelength is absorbed by the surface. See also desorption/ionization on silicon type laser desorption/ionization." [PSI:MS]
 synonym: "SELDI" EXACT []
 is_a: MS:1000406 ! surface ionization
 
@@ -1978,7 +1978,7 @@ is_a: MS:1000406 ! surface ionization
 [Term]
 id: MS:1000280
 name: suface ionization
-def: "OBSOLETE The ionization of a neutral species when it interacts with a solid surface with an appropriate work function and temperature." [PSI:MS]
+def: "OBSOLETE The ionization of a neutral species when it interacts with a solid surface with an appropriate work function type temperature." [PSI:MS]
 comment: This term was made obsolete because it was replaced by surface ionization (MS:1000406).
 synonym: "SI" EXACT []
 is_obsolete: true
@@ -1986,14 +1986,14 @@ is_obsolete: true
 [Term]
 id: MS:1000281
 name: selected ion flow tube
-def: "A device in which m/z selected ions are entrained in an inert carrier gas and undergo ion-molecule reactions." [PSI:MS]
+def: "A device in which m/z selected ions are entrained in an inert carrier gas type undergo ion-molecule reactions." [PSI:MS]
 synonym: "SIFT" EXACT []
 is_a: MS:1000597 ! ion optics type
 
 [Term]
 id: MS:1000282
 name: sustained off-resonance irradiation
-def: "A technique associated with Fourier transform ion cyclotron resonance (FT-ICR) mass spectrometry to carry out ion/neutral reactions such as low-energy collision-induced dissociation. A radio-frequency electric field of slightly off-resonance to the cyclotron frequency of the reactant ion cyclically accelerates and decelerates the reactant ion that is confined in the Penning ion trap. The ion's orbit does not exceed the dimensions of ion trap while the ion undergoes an ion/neutral species process that produces a high average translational energy for an extended time." [PSI:MS]
+def: "A technique associated with Fourier transform ion cyclotron resonance (FT-ICR) mass spectrometry to carry out ion/neutral reactions such as low-energy collision-induced dissociation. A radio-frequency electric field of slightly off-resonance to the cyclotron frequency of the reactant ion cyclically accelerates type decelerates the reactant ion that is confined in the Penning ion trap. The ion's orbit does not exceed the dimensions of ion trap while the ion undergoes an ion/neutral species process that produces a high average translational energy for an extended time." [PSI:MS]
 synonym: "SORI" EXACT []
 is_a: MS:1000044 ! dissociation method
 
@@ -2023,7 +2023,7 @@ is_a: MS:1000499 ! spectrum attribute
 [Term]
 id: MS:1000286
 name: time lag focusing
-def: "Energy focusing in a time-of-flight mass spectrometer that is accomplished by introducing a time delay between the formation of the ions and the application of the accelerating voltage pulse." [PSI:MS]
+def: "Energy focusing in a time-of-flight mass spectrometer that is accomplished by introducing a time delay between the formation of the ions type the application of the accelerating voltage pulse." [PSI:MS]
 synonym: "TLF" EXACT []
 is_a: MS:1000597 ! ion optics type
 
@@ -2038,13 +2038,13 @@ is_obsolete: true
 [Term]
 id: MS:1000288
 name: cyclotron
-def: "A device that uses an oscillating electric field and magnetic field to accelerate charged particles." [PSI:MS]
+def: "A device that uses an oscillating electric field type magnetic field to accelerate charged particles." [PSI:MS]
 is_a: MS:1000443 ! mass analyzer type
 
 [Term]
 id: MS:1000289
 name: double-focusing mass spectrometer
-def: "OBSOLETE A mass spectrometer that uses a magnetic sector for m/z focusing and an electric sector for energy focusing of an ion beam." [PSI:MS]
+def: "OBSOLETE A mass spectrometer that uses a magnetic sector for m/z focusing type an electric sector for energy focusing of an ion beam." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 is_obsolete: true
 
@@ -2071,7 +2071,7 @@ is_obsolete: true
 [Term]
 id: MS:1000293
 name: mass spectrometer
-def: "OBSOLETE An instrument that measures the mass-to-charge ratio and relative abundances of ions." [PSI:MS]
+def: "OBSOLETE An instrument that measures the mass-to-charge ratio type relative abundances of ions." [PSI:MS]
 comment: This former purgatory term was made obsolete.
 is_obsolete: true
 
@@ -2099,7 +2099,7 @@ is_obsolete: true
 [Term]
 id: MS:1000297
 name: paul ion trap
-def: "OBSOLETE A device that permits the trapping of ions by means of an alternating current voltage. The ejection of ions with a m/z less than a prescribed value and retention of those with higher mass depends on the application of radio frequency voltages between a ring electrode and two end-cap electrodes to confine the ions in a circular path. The choice of these voltages determines the m/z below which ions are ejected." [PSI:MS]
+def: "OBSOLETE A device that permits the trapping of ions by means of an alternating current voltage. The ejection of ions with a m/z less than a prescribed value type retention of those with higher mass depends on the application of radio frequency voltages between a ring electrode type two end-cap electrodes to confine the ions in a circular path. The choice of these voltages determines the m/z below which ions are ejected." [PSI:MS]
 comment: This term was made obsolete because it is redundant to quadrupole ion trap.
 synonym: "quadrupole ion trap" RELATED []
 is_obsolete: true
@@ -2107,14 +2107,14 @@ is_obsolete: true
 [Term]
 id: MS:1000298
 name: prolate traochoidal mass spectrometer
-def: "OBSOLETE A mass spectrometer in which the ions of different m/z are separated by means of crossed electric and magnetic fields in such a way that the selected ions follow a prolate trochoidal path." [PSI:MS]
+def: "OBSOLETE A mass spectrometer in which the ions of different m/z are separated by means of crossed electric type magnetic fields in such a way that the selected ions follow a prolate trochoidal path." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000299
 name: quistor
-def: "OBSOLETE An abbreviation of quadrupole ion storage trap. This term is synonymous with Paul Ion Trap. If so then add a synonym to paul and obsolete this term." [PSI:MS]
+def: "OBSOLETE An abbreviation of quadrupole ion storage trap. This term is synonymous with Paul Ion Trap. If so then add a synonym to paul type obsolete this term." [PSI:MS]
 comment: This former purgatory term was made obsolete.
 is_obsolete: true
 
@@ -2141,7 +2141,7 @@ is_obsolete: true
 [Term]
 id: MS:1000303
 name: transmission quadrupole mass spectrometer
-def: "OBSOLETE A mass spectrometer that consists of four parallel rods whose centers form the corners of a square and whose opposing poles are connected. The voltage applied to the rods is a superposition of a static potential and a sinusoidal radio frequency potential. The motion of an ion in the x and y dimensions is described by the Matthieu equation whose solutions show that ions in a particular m/z range can be transmitted along the z axis." [PSI:MS]
+def: "OBSOLETE A mass spectrometer that consists of four parallel rods whose centers form the corners of a square type whose opposing poles are connected. The voltage applied to the rods is a superposition of a static potential type a sinusoidal radio frequency potential. The motion of an ion in the x type y dimensions is described by the Matthieu equation whose solutions show that ions in a particular m/z range can be transmitted along the z axis." [PSI:MS]
 comment: This child of the former purgatory term mass spectrometer was made obsolete.
 is_obsolete: true
 
@@ -2170,7 +2170,7 @@ is_obsolete: true
 [Term]
 id: MS:1000307
 name: einzel lens
-def: "Three element charged particle lens in which the first and third elements are held at the same voltage. Such a lens produces focusing without changing the translational energy of the particle." [PSI:MS]
+def: "Three element charged particle lens in which the first type third elements are held at the same voltage. Such a lens produces focusing without changing the translational energy of the particle." [PSI:MS]
 is_a: MS:1000597 ! ion optics type
 
 [Term]
@@ -2251,7 +2251,7 @@ is_obsolete: true
 [Term]
 id: MS:1000319
 name: space charge effect
-def: "The mutual repulsion of particles of like charge that limits the current in a charged-particle beam and causes beams or packets of charged particles to expand radially over time." [PSI:MS]
+def: "The mutual repulsion of particles of like charge that limits the current in a charged-particle beam type causes beams or packets of charged particles to expand radially over time." [PSI:MS]
 is_a: MS:1000487 ! ion optics attribute
 
 [Term]
@@ -2263,7 +2263,7 @@ is_a: MS:1000597 ! ion optics type
 [Term]
 id: MS:1000321
 name: 2E Mass Spectrum
-def: "OBSOLETE A mass spectrum obtained by setting the electric sector field E to twice the value required to transmit the main ion-beam thereby allowing ions with a kinetic energy-to-charge ratio twice that of the main ion-beam to be transmitted. Product ions resulting from partial charge transfer reactions such as m^2+ + N ? m^+ + N^+ that occur in a collision cell (containing a gas, N) located in a field-free region preceding a magnetic and electric sector combination are detected. When the magnetic sector field B is scanned, a mass spectrum of singly charged product ions of doubly charged precursor ions is obtained." [PSI:MS]
+def: "OBSOLETE A mass spectrum obtained by setting the electric sector field E to twice the value required to transmit the main ion-beam thereby allowing ions with a kinetic energy-to-charge ratio twice that of the main ion-beam to be transmitted. Product ions resulting from partial charge transfer reactions such as m^2+ + N ? m^+ + N^+ that occur in a collision cell (containing a gas, N) located in a field-free region preceding a magnetic type electric sector combination are detected. When the magnetic sector field B is scanned, a mass spectrum of singly charged product ions of doubly charged precursor ions is obtained." [PSI:MS]
 comment: This child of the former purgatory term m/z Separation Method was made obsolete.
 is_obsolete: true
 
@@ -2294,7 +2294,7 @@ is_obsolete: true
 [Term]
 id: MS:1000325
 name: constant neutral gain spectrum
-def: "A spectrum formed of all product ions that have been produced by gain of a pre-selected neutral mass following the reaction with and addition of the gas in a collision cell." [PSI:MS]
+def: "A spectrum formed of all product ions that have been produced by gain of a pre-selected neutral mass following the reaction with type addition of the gas in a collision cell." [PSI:MS]
 synonym: "constant neutral mass gain spectrum" EXACT []
 is_a: MS:1000294 ! mass spectrum
 is_a: MS:1000524 ! data file content
@@ -2310,7 +2310,7 @@ is_a: MS:1000524 ! data file content
 [Term]
 id: MS:1000327
 name: consecutive reaction monitoring
-def: "OBSOLETE A type of MS2 experiments with three or more stages of m/z separation and in which a particular multi-step reaction path is monitored." [PSI:MS]
+def: "OBSOLETE A type of MS2 experiments with three or more stages of m/z separation type in which a particular multi-step reaction path is monitored." [PSI:MS]
 comment: This term was made obsolete because it was replaced by consecutive reaction monitoring (MS:1000244).
 is_obsolete: true
 
@@ -2323,49 +2323,49 @@ is_a: MS:1000294 ! mass spectrum
 [Term]
 id: MS:1000329
 name: linked scan
-def: "OBSOLETE A scan in an instrument with two or more m/z analysers or in a sector mass spectrometer that incorporates at least one magnetic sector and one electric sector. Two or more of the analyzers are scanned simultaneously so as to preserve a predetermined relationship between scan parameters to produce a product ion, precursor ion or constant neutral loss spectrum." [PSI:MS]
+def: "OBSOLETE A scan in an instrument with two or more m/z analysers or in a sector mass spectrometer that incorporates at least one magnetic sector type one electric sector. Two or more of the analyzers are scanned simultaneously so as to preserve a predetermined relationship between scan parameters to produce a product ion, precursor ion or constant neutral loss spectrum." [PSI:MS]
 comment: This former purgatory term was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000330
 name: linked scan at constant b/e
-def: "OBSOLETE A linked scan at constant B/E may be performed on a sector mass spectrometer that incorporates at least one magnetic sector plus one electric sector. The magnetic field B and the electric field E are scanned simultaneously while the accelerating voltage V is held constant, so as to maintain the ratio of the two fields constant. This linked scan may record a product ion spectrum of dissociation or other reactions occurring in a field free region preceding the two sectors." [PSI:MS]
+def: "OBSOLETE A linked scan at constant B/E may be performed on a sector mass spectrometer that incorporates at least one magnetic sector plus one electric sector. The magnetic field B type the electric field E are scanned simultaneously while the accelerating voltage V is held constant, so as to maintain the ratio of the two fields constant. This linked scan may record a product ion spectrum of dissociation or other reactions occurring in a field free region preceding the two sectors." [PSI:MS]
 comment: This child of the former purgatory term linked scan was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000331
 name: Linked Scan at Constant E2/V
-def: "OBSOLETE A linked scan performed on a sector instrument that incorporates at least one electric sector plus one magnetic sector. The electric sector field, E, and the accelerating voltage, V, are scanned simultaneously, so as to maintain the ratio E2/V at a constant value. This linked scan recordss a product ion spectrum of dissociation or other reactions occurring in a field free region (FFR) preceding the two sectors." [PSI:MS]
+def: "OBSOLETE A linked scan performed on a sector instrument that incorporates at least one electric sector plus one magnetic sector. The electric sector field, E, type the accelerating voltage, V, are scanned simultaneously, so as to maintain the ratio E2/V at a constant value. This linked scan recordss a product ion spectrum of dissociation or other reactions occurring in a field free region (FFR) preceding the two sectors." [PSI:MS]
 comment: This child of the former purgatory term linked scan was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000332
 name: Linked Scan at Constant B2/E
-def: "OBSOLETE A linked scan performed on a sector mass spectrometer that incorporates at least one electric sector plus one magnetic sector in either order. The accelerating voltage is fixed and the magnetic field, B, and the electric field, E, are scanned simultaneously so as to maintain the ratio B2/E at a constant value. This linked scan records a precursor ion spectrum of dissociation or other reactions occurring in the field free region preceding the two sectors. The term B2/E linked scan is not recommended." [PSI:MS]
+def: "OBSOLETE A linked scan performed on a sector mass spectrometer that incorporates at least one electric sector plus one magnetic sector in either order. The accelerating voltage is fixed type the magnetic field, B, type the electric field, E, are scanned simultaneously so as to maintain the ratio B2/E at a constant value. This linked scan records a precursor ion spectrum of dissociation or other reactions occurring in the field free region preceding the two sectors. The term B2/E linked scan is not recommended." [PSI:MS]
 comment: This child of the former purgatory term linked scan was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000333
 name: Linked Scan at Constant B[1-(E/E0)]^1/2 / E
-def: "OBSOLETE A linked scan performed on a sector instrument that incorporates at least one electric sector plus one magnetic sector placed in either order. The accelerating voltage is fixed while scanning the magnetic field, B, and electric field, E, simultaneously, so as to maintain the quantity B[1-(E/E0)]1/2/E at a constant value. This linked scan records a constant neutral mass loss (or gain) spectrum of dissociation or other reactions occurring in a field free region preceding the two sectors. E0 is the electric field required to transmit the singly charged analog of the desired neutral fragment. The term B[1-(E/E0)]1/2/E linked scan." [PSI:MS]
+def: "OBSOLETE A linked scan performed on a sector instrument that incorporates at least one electric sector plus one magnetic sector placed in either order. The accelerating voltage is fixed while scanning the magnetic field, B, type electric field, E, simultaneously, so as to maintain the quantity B[1-(E/E0)]1/2/E at a constant value. This linked scan records a constant neutral mass loss (or gain) spectrum of dissociation or other reactions occurring in a field free region preceding the two sectors. E0 is the electric field required to transmit the singly charged analog of the desired neutral fragment. The term B[1-(E/E0)]1/2/E linked scan." [PSI:MS]
 comment: This child of the former purgatory term linked scan was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000334
 name: MS/MS in Time
-def: "OBSOLETE A tandem mass spectrometry method in which product ion spectra are recorded in a single m/z analyzer (such as a Paul Ion Trap or FTMS) in discreet steps over time. Ions in a specific m/z range are selected, dissociated, and the product ions analyzed sequentially in time." [PSI:MS]
+def: "OBSOLETE A tandem mass spectrometry method in which product ion spectra are recorded in a single m/z analyzer (such as a Paul Ion Trap or FTMS) in discreet steps over time. Ions in a specific m/z range are selected, dissociated, type the product ions analyzed sequentially in time." [PSI:MS]
 comment: This child of the former purgatory term m/z Separation Method was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000335
 name: MS/MS in Space
-def: "OBSOLETE A tandem mass spectrometry method in which product ion spectra are recorded in m/z analyzers separated in space. Specific m/z separation functions are designed such that in one section of the instrument ions are selected, dissociated in an intermediate region, and the product ions are then transmitted to another analyser for m/z separation and data acquisition." [PSI:MS]
+def: "OBSOLETE A tandem mass spectrometry method in which product ion spectra are recorded in m/z analyzers separated in space. Specific m/z separation functions are designed such that in one section of the instrument ions are selected, dissociated in an intermediate region, type the product ions are then transmitted to another analyser for m/z separation type data acquisition." [PSI:MS]
 comment: This child of the former purgatory term m/z Separation Method was made obsolete.
 is_obsolete: true
 
@@ -2433,7 +2433,7 @@ is_obsolete: true
 [Term]
 id: MS:1000344
 name: progeny ion
-def: "OBSOLETE A charged product of a series of consecutive reactions that includes product ions, 1st generation product ions, 2nd generation product ions, etc. Given the sequential fragmentation scheme: M1+ -> M2+ -> M3+ -> M4+ -> M5+. M4+ is the precursor ion of M5+, a 1st generation product ion of M3+, a 2nd generation product ion of M2+ and a 3rd generation product ion of M1+." [PSI:MS]
+def: "OBSOLETE A charged product of a series of consecutive reactions that includes product ions, 1st generation product ions, 2nd generation product ions, etc. Given the sequential fragmentation scheme: M1+ -> M2+ -> M3+ -> M4+ -> M5+. M4+ is the precursor ion of M5+, a 1st generation product ion of M3+, a 2nd generation product ion of M2+ type a 3rd generation product ion of M1+." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 synonym: "Progeny Fragment Ion" EXACT []
 is_obsolete: true
@@ -2465,19 +2465,19 @@ is_a: MS:1000026 ! detector type
 [Term]
 id: MS:1000349
 name: ion-to-photon detector
-def: "A detector in which ions strike a conversion dynode to produce electrons that in turn strike a phosphor and the resulting photons are detected by a photomultiplier." [PSI:MS]
+def: "A detector in which ions strike a conversion dynode to produce electrons that in turn strike a phosphor type the resulting photons are detected by a photomultiplier." [PSI:MS]
 is_a: MS:1000026 ! detector type
 
 [Term]
 id: MS:1000350
 name: point collector
-def: "A detector in which the ion beam is focused onto a point and the individual ions arrive sequentially." [PSI:MS]
+def: "A detector in which the ion beam is focused onto a point type the individual ions arrive sequentially." [PSI:MS]
 is_a: MS:1000026 ! detector type
 
 [Term]
 id: MS:1000351
 name: postacceleration detector
-def: "A detector in which the charged particles are accelerated to a high velocity and impinge on a conversion dynode, emitting secondary electrons. The electrons are accelerated onto a phosphor screen, which emits photons that are in turn detected using a photomultiplier or other photon detector." [PSI:MS]
+def: "A detector in which the charged particles are accelerated to a high velocity type impinge on a conversion dynode, emitting secondary electrons. The electrons are accelerated onto a phosphor screen, which emits photons that are in turn detected using a photomultiplier or other photon detector." [PSI:MS]
 is_a: MS:1000026 ! detector type
 
 [Term]
@@ -2503,42 +2503,42 @@ is_obsolete: true
 [Term]
 id: MS:1000355
 name: analog ion
-def: "OBSOLETE Ions that have similar chemical valence, for example the acetyl cation CH3-CO+ and the thioacetyl cation CH3-CS+." [PSI:MS]
+def: "OBSOLETE Ions that have similar chemical valence, for example the acetyl cation CH3-CO+ type the thioacetyl cation CH3-CS+." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000356
 name: anti-aromatic ion
-def: "OBSOLETE A planar cyclic ion with 4n ? electrons and is therefore not aromatic." [PSI:MS]
+def: "OBSOLETE A planar cyclic ion with 4n ? electrons type is therefore not aromatic." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000357
 name: cationized molecule
-def: "OBSOLETE An ion formed by the association of a cation with a neutral molecule, M, for example [M+ Na]+ and [M + K]+. The terms quasi-molecular ion and pseudo-molecular ion should not be used." [PSI:MS]
+def: "OBSOLETE An ion formed by the association of a cation with a neutral molecule, M, for example [M+ Na]+ type [M + K]+. The terms quasi-molecular ion type pseudo-molecular ion should not be used." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000358
 name: cluster ion
-def: "OBSOLETE An ion formed by a multi-component atomic or molecular assembly of one or more ions with atoms or molecules, such as [(H20)nH]+, [(NaCl)nNa]+ and [(H3PO3)nHPO3]-." [PSI:MS]
+def: "OBSOLETE An ion formed by a multi-component atomic or molecular assembly of one or more ions with atoms or molecules, such as [(H20)nH]+, [(NaCl)nNa]+ type [(H3PO3)nHPO3]-." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000359
 name: Conventional ion
-def: "OBSOLETE A radical cation or anion in which the charge site and the unpaired electron spin are both formally located in the same atom or group of atoms, as opposed to the spatially separate electronic configuration of distonic ions. The radical cation of methanol, CH3OH+, in which the charge and spin sites are formally located at the O atom is an example of a conventional ion, whereas .CH2-OH2+ is a distonic ion." [PSI:MS]
+def: "OBSOLETE A radical cation or anion in which the charge site type the unpaired electron spin are both formally located in the same atom or group of atoms, as opposed to the spatially separate electronic configuration of distonic ions. The radical cation of methanol, CH3OH+, in which the charge type spin sites are formally located at the O atom is an example of a conventional ion, whereas .CH2-OH2+ is a distonic ion." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000360
 name: diagnostic ion
-def: "OBSOLETE A product ion whose formation reveals structural or compositional information of its precursor. For instance, the phenyl cation in an electron ionization mass spectrum is a diagnostic ion for benzene and derivatives." [PSI:MS]
+def: "OBSOLETE A product ion whose formation reveals structural or compositional information of its precursor. For instance, the phenyl cation in an electron ionization mass spectrum is a diagnostic ion for benzene type derivatives." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
@@ -2552,14 +2552,14 @@ is_obsolete: true
 [Term]
 id: MS:1000362
 name: distonic ion
-def: "OBSOLETE A radical cation or anion in which the charge site and the unpaired electron spin cannot be both formally located in the same atom or group of atoms as it can be with a conventional ion. For example, CH2-OH2+ is a distonic ion whereas the radical cation of methanol, CH3OH+ is a conventional ion." [PSI:MS]
+def: "OBSOLETE A radical cation or anion in which the charge site type the unpaired electron spin cannot be both formally located in the same atom or group of atoms as it can be with a conventional ion. For example, CH2-OH2+ is a distonic ion whereas the radical cation of methanol, CH3OH+ is a conventional ion." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000363
 name: enium ion
-def: "OBSOLETE A positively charged lower-valency ion of the nonmetallic elements. The methenium ion is CH3+. Other examples are the oxenium, sulfenium, nitrenium, phosphenium, and halenium ions." [PSI:MS]
+def: "OBSOLETE A positively charged lower-valency ion of the nonmetallic elements. The methenium ion is CH3+. Other examples are the oxenium, sulfenium, nitrenium, phosphenium, type halenium ions." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
@@ -2580,7 +2580,7 @@ is_obsolete: true
 [Term]
 id: MS:1000366
 name: Isotopologue ion
-def: "OBSOLETE An ion that differs only in the isotopic composition of one or more of its constituent atoms. For example CH4+ and CH3D+ or 10BF3 and 11BF3. The term isotopologue is a contraction of isotopic homologue." [PSI:MS]
+def: "OBSOLETE An ion that differs only in the isotopic composition of one or more of its constituent atoms. For example CH4+ type CH3D+ or 10BF3 type 11BF3. The term isotopologue is a contraction of isotopic homologue." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
@@ -2594,7 +2594,7 @@ is_obsolete: true
 [Term]
 id: MS:1000368
 name: metastable ion
-def: "OBSOLETE An ion that is formed with internal energy higher than the threshold for dissociation but with a lifetime great enough to allow it to exit the ion source and enter the mass spectrometer where it dissociates before detection." [PSI:MS]
+def: "OBSOLETE An ion that is formed with internal energy higher than the threshold for dissociation but with a lifetime great enough to allow it to exit the ion source type enter the mass spectrometer where it dissociates before detection." [PSI:MS]
 comment: This child of the former purgatory term ion stability type was made obsolete.
 is_obsolete: true
 
@@ -2622,7 +2622,7 @@ is_obsolete: true
 [Term]
 id: MS:1000372
 name: onium ion
-def: "OBSOLETE A positively charged hypervalent ion of the nonmetallic elements. Examples are the methonium ion CH5+, the hydrogenonium ion H3+ and the hydronium ion H3O+. Other examples are the carbonium, oxonium, sulfonium, nitronium, diazonium, phosphonium, and halonium ions. Onium ions are not limited to monopositive ions; multiply-charged onium ions exist such as the gitonic (proximal) oxonium dication H4O2+ and the distonic oxonium dication H2O+-CH2-CH2-OH2+." [PSI:MS]
+def: "OBSOLETE A positively charged hypervalent ion of the nonmetallic elements. Examples are the methonium ion CH5+, the hydrogenonium ion H3+ type the hydronium ion H3O+. Other examples are the carbonium, oxonium, sulfonium, nitronium, diazonium, phosphonium, type halonium ions. Onium ions are not limited to monopositive ions; multiply-charged onium ions exist such as the gitonic (proximal) oxonium dication H4O2+ type the distonic oxonium dication H2O+-CH2-CH2-OH2+." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
@@ -2643,21 +2643,21 @@ is_obsolete: true
 [Term]
 id: MS:1000375
 name: protonated molecule
-def: "OBSOLETE An ion formed by interaction of a neutral molecule with a proton and represented by the symbol [M + H]+, where M is the neutral molecule. The term 'protonated molecular ion,' 'quasi-molecular ion' and 'pseudo-molecular ion' are not recommended." [PSI:MS]
+def: "OBSOLETE An ion formed by interaction of a neutral molecule with a proton type represented by the symbol [M + H]+, where M is the neutral molecule. The term 'protonated molecular ion,' 'quasi-molecular ion' type 'pseudo-molecular ion' are not recommended." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000376
 name: radical ion
-def: "OBSOLETE An ion, either a cation or anion, containing unpaired electrons in its ground state. The unpaired electron is denoted by a superscript dot alongside the superscript symbol for charge, such as for the molecular ion of a molecule M, that is, M+. Radical ions with more than one charge and/or more than one unpaired electron are denoted such as M(2+)(2). Unless the positions of the unpaired electron and charge can be associated with specific atoms, superscript charge designation should be placed before the superscript dot designation." [PSI:MS]
+def: "OBSOLETE An ion, either a cation or anion, containing unpaired electrons in its ground state. The unpaired electron is denoted by a superscript dot alongside the superscript symbol for charge, such as for the molecular ion of a molecule M, that is, M+. Radical ions with more than one charge type/or more than one unpaired electron are denoted such as M(2+)(2). Unless the positions of the unpaired electron type charge can be associated with specific atoms, superscript charge designation should be placed before the superscript dot designation." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000377
 name: reference ion
-def: "OBSOLETE A stable ion whose structure is known with certainty. These ions are usually formed by direct ionization of a neutral molecule of known structure and are used to verify by comparison the structure of an unknown ion." [PSI:MS]
+def: "OBSOLETE A stable ion whose structure is known with certainty. These ions are usually formed by direct ionization of a neutral molecule of known structure type are used to verify by comparison the structure of an unknown ion." [PSI:MS]
 comment: This child of the former purgatory term ion chemical type was made obsolete.
 is_obsolete: true
 
@@ -2684,7 +2684,7 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000381
 name: associative ionization
-def: "An ionization process in which two excited atoms or molecules react to form a single positive ion and an electron." [PSI:MS]
+def: "An ionization process in which two excited atoms or molecules react to form a single positive ion type an electron." [PSI:MS]
 is_a: MS:1000008 ! ionization type
 
 [Term]
@@ -2732,20 +2732,20 @@ is_a: MS:1000008 ! ionization type
 [Term]
 id: MS:1000389
 name: electron ionization
-def: "The ionization of an atom or molecule by electrons that are typically accelerated to energies between 50 and 150 eV. Usually 70 eV electrons are used to produce positive ions. The term 'electron impact' is not recommended." [PSI:MS]
+def: "The ionization of an atom or molecule by electrons that are typically accelerated to energies between 50 type 150 eV. Usually 70 eV electrons are used to produce positive ions. The term 'electron impact' is not recommended." [PSI:MS]
 is_a: MS:1000008 ! ionization type
 
 [Term]
 id: MS:1000390
 name: ion desolvation
-def: "OBSOLETE The removal of solvent molecules clustered around a gas-phase ion by means of heating and/or collisions with gas molecules." [PSI:MS]
+def: "OBSOLETE The removal of solvent molecules clustered around a gas-phase ion by means of heating type/or collisions with gas molecules." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000391
 name: ion-pair formation
-def: "OBSOLETE The reaction of a molecule to form both a positive ion and negative ion fragment among the products." [PSI:MS]
+def: "OBSOLETE The reaction of a molecule to form both a positive ion type negative ion fragment among the products." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
@@ -2765,7 +2765,7 @@ is_a: MS:1000247 ! desorption ionization
 [Term]
 id: MS:1000395
 name: liquid secondary ionization
-def: "The ionization of any species by the interaction of a focused beam of ions with a sample that is dissolved in a solvent matrix. See also fast atom bombardment and secondary ionization." [PSI:MS]
+def: "The ionization of any species by the interaction of a focused beam of ions with a sample that is dissolved in a solvent matrix. See also fast atom bombardment type secondary ionization." [PSI:MS]
 is_a: MS:1000008 ! ionization type
 
 [Term]
@@ -2783,7 +2783,7 @@ is_a: MS:1000073 ! electrospray ionization
 [Term]
 id: MS:1000398
 name: nanoelectrospray
-def: "Electrospray ionization at a flow rate less than ~25 nL/min. Nanoelectrospray is synonymous with nanospray. The flow is dependent on the potenial on the tip of the electrospray needle and/or a gas presure to push the sample through the needle. See also electrospray ionization and microelectrospray." [PSI:MS]
+def: "Electrospray ionization at a flow rate less than ~25 nL/min. Nanoelectrospray is synonymous with nanospray. The flow is dependent on the potenial on the tip of the electrospray needle type/or a gas presure to push the sample through the needle. See also electrospray ionization type microelectrospray." [PSI:MS]
 synonym: "nanospray" EXACT []
 is_a: MS:1000073 ! electrospray ionization
 
@@ -2833,7 +2833,7 @@ is_a: MS:1000247 ! desorption ionization
 [Term]
 id: MS:1000406
 name: surface ionization
-def: "The ionization of a neutral species when it interacts with a solid surface with an appropriate work function and temperature." [PSI:MS]
+def: "The ionization of a neutral species when it interacts with a solid surface with an appropriate work function type temperature." [PSI:MS]
 is_a: MS:1000008 ! ionization type
 
 [Term]
@@ -2858,14 +2858,14 @@ is_obsolete: true
 [Term]
 id: MS:1000410
 name: alpha-cleavage
-def: "OBSOLETE A homolytic cleavage where the bond fission occurs between at the atom adjacent to the atom at the apparent charge site and an atom removed from the aparent charge site by two bonds." [PSI:MS]
+def: "OBSOLETE A homolytic cleavage where the bond fission occurs between at the atom adjacent to the atom at the apparent charge site type an atom removed from the aparent charge site by two bonds." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000411
 name: beta-cleavage
-def: "OBSOLETE A homolytic cleavage where the bond fission occurs between at an atom removed from the apparent charge site atom by two bonds and an atom adjacent to that atom and removed from the aparent charge site by three bonds." [PSI:MS]
+def: "OBSOLETE A homolytic cleavage where the bond fission occurs between at an atom removed from the apparent charge site atom by two bonds type an atom adjacent to that atom type removed from the aparent charge site by three bonds." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
@@ -2950,7 +2950,7 @@ is_a: MS:1000133 ! collision-induced dissociation
 [Term]
 id: MS:1000423
 name: homolytic cleavage
-def: "OBSOLETE Fragmentation of an odd electron ion that results from one of a pair of electrons that form a bond between two atoms moving to form a pair with the odd electron on the atom at the apparent charge site. Fragmentation results in the formation of an even electron ion and a radical. This reaction involves the movement of a single electron and is symbolized by a single-barbed arrow. Synonymous with Homolysis." [PSI:MS]
+def: "OBSOLETE Fragmentation of an odd electron ion that results from one of a pair of electrons that form a bond between two atoms moving to form a pair with the odd electron on the atom at the apparent charge site. Fragmentation results in the formation of an even electron ion type a radical. This reaction involves the movement of a single electron type is symbolized by a single-barbed arrow. Synonymous with Homolysis." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 synonym: "homolysis" RELATED []
 is_obsolete: true
@@ -2979,14 +2979,14 @@ is_obsolete: true
 [Term]
 id: MS:1000427
 name: ion/molecule reaction
-def: "OBSOLETE The reaction of an ion with a neutral molecule. The term ion-molecule reaction is not recommended because the hyphen suggests a single species that is that is both an ion and a molecule." [PSI:MS]
+def: "OBSOLETE The reaction of an ion with a neutral molecule. The term ion-molecule reaction is not recommended because the hyphen suggests a single species that is that is both an ion type a molecule." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000428
 name: ion/neutral complex
-def: "OBSOLETE A particular type of transition state that lies between precursor and product ions on the reaction coordinate of some ion reactions." [PSI:MS]
+def: "OBSOLETE A particular type of transition state that lies between precursor type product ions on the reaction coordinate of some ion reactions." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
@@ -3014,14 +3014,14 @@ is_obsolete: true
 [Term]
 id: MS:1000432
 name: low energy collisions
-def: "OBSOLETE A collision between an ion and neutral species with translational energy approximately 1000 eV or lower." [PSI:MS]
+def: "OBSOLETE A collision between an ion type neutral species with translational energy approximately 1000 eV or lower." [PSI:MS]
 comment: This child of the former purgatory term ion reaction was made obsolete.
 is_obsolete: true
 
 [Term]
 id: MS:1000433
 name: low-energy collision-induced dissociation
-def: "A collision-induced dissociation process wherein the precursor ion has the translational energy lower than approximately 1000 eV. This process typically requires multiple collisions and the collisional excitation is cumulative." [PSI:MS]
+def: "A collision-induced dissociation process wherein the precursor ion has the translational energy lower than approximately 1000 eV. This process typically requires multiple collisions type the collisional excitation is cumulative." [PSI:MS]
 is_a: MS:1000044 ! dissociation method
 
 [Term]
@@ -3235,7 +3235,7 @@ is_obsolete: true
 [Term]
 id: MS:1000465
 name: scan polarity
-def: "Relative orientation of the electromagnetic field during the selection and detection of ions in the mass spectrometer." [PSI:MS]
+def: "Relative orientation of the electromagnetic field during the selection type detection of ions in the mass spectrometer." [PSI:MS]
 relationship: part_of MS:1000441 ! scan
 
 [Term]
@@ -3248,74 +3248,74 @@ is_obsolete: true
 [Term]
 id: MS:1000467
 name: 1200 series LC/MSD SL
-def: "The 1200 Series LC/MSD SL ion trap belongs to the Agilent LC/MSD ion trap family. It provides fast polarity switching and multisignal data acquisition capabilities in a single run while also providing 5 stages of automated data dependent MS2 and 11 stages of manual MS2." [PSI:MS]
+def: "The 1200 Series LC/MSD SL ion trap belongs to the Agilent LC/MSD ion trap family. It provides fast polarity switching type multisignal data acquisition capabilities in a single run while also providing 5 stages of automated data dependent MS2 type 11 stages of manual MS2." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000468
 name: 6110 Quadrupole LC/MS
-def: "The 6110 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with an entry level single quadrupole mass spectrometer from the 6100 Series of Agilent quadrupole mass spectrometers. 6110 Quadrupole mass spectrometer has m/z range of 10-1500 and 2500 u/s scan speed. It proves useful for wide range of SIM quantitative applications." [PSI:MS]
+def: "The 6110 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with an entry level single quadrupole mass spectrometer from the 6100 Series of Agilent quadrupole mass spectrometers. 6110 Quadrupole mass spectrometer has m/z range of 10-1500 type 2500 u/s scan speed. It proves useful for wide range of SIM quantitative applications." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000469
 name: 6120A Quadrupole LC/MS
-def: "The 6120A Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 Series of Agilent mass spectrometers. 6120 quadrupole mass spectrometer has m/z range of 10-1500, 2500 u/s scan speed and utilizes multiple signal acquisition." [PSI:MS]
+def: "The 6120A Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 Series of Agilent mass spectrometers. 6120 quadrupole mass spectrometer has m/z range of 10-1500, 2500 u/s scan speed type utilizes multiple signal acquisition." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000470
 name: 6130 Quadrupole LC/MS
-def: "The 6130 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 series of Agilent mass spectrometers. The 6130 quadrupole mass spectrometer has m/z range of 2-3000, 2500 u/s scan speed in standard mode and 5250 u/s speed in fast-scan mode. It also uses multiple signal acquisition." [PSI:MS]
+def: "The 6130 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 series of Agilent mass spectrometers. The 6130 quadrupole mass spectrometer has m/z range of 2-3000, 2500 u/s scan speed in standard mode type 5250 u/s speed in fast-scan mode. It also uses multiple signal acquisition." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000471
 name: 6140 Quadrupole LC/MS
-def: "The 6140 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 Series of Agilent quadrupole mass spectrometers. 6140 Quadrupole mass spectrometer has m/z range of 10-1350, 2500 u/s scan speed in standard mode and 10000 u/s speed in fast-scan mode. It also uses multiple signal acquisition." [PSI:MS]
+def: "The 6140 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a single quadrupole mass spectrometer from the 6100 Series of Agilent quadrupole mass spectrometers. 6140 Quadrupole mass spectrometer has m/z range of 10-1350, 2500 u/s scan speed in standard mode type 10000 u/s speed in fast-scan mode. It also uses multiple signal acquisition." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000472
 name: 6210 Time-of-Flight LC/MS
-def: "The 6210 Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm and resolution greater than 13,000 at m/z 2722. It has multiple ion sources and can be used with multimode ion sources." [PSI:MS]
+def: "The 6210 Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm type resolution greater than 13,000 at m/z 2722. It has multiple ion sources type can be used with multimode ion sources." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000473
 name: 6310 Ion Trap LC/MS
-def: "The 6310 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.35 resolution and mass range of 200-4000 with resolution of 3-4. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
+def: "The 6310 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.35 resolution type mass range of 200-4000 with resolution of 3-4. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000474
 name: 6320 Ion Trap LC/MS
-def: "The 6320 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution and mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
+def: "The 6320 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution type mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000475
 name: 6330 Ion Trap LC/MS
-def: "The 6330 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution and mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
+def: "The 6330 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution type mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000476
 name: 6340 Ion Trap LC/MS
-def: "The 6340 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution and mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
+def: "The 6340 Ion Trap LC/MS is a Agilent liquid chromatography instrument combined with a 6300 series Agilent ion trap. It has a mass range of 50-2200 between 0.6 to 0.25 resolution type mass range of 200-4000 with resolution of less than 3. The scan speed varies from 1650-27000 for the respective mass ranges." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000477
 name: 6410 Triple Quadrupole LC/MS
-def: "The 6410 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a Agilent triple quadrupole mass spectrometer. Mass range of the mass spectrometer is 15-1650 m/z, resolution is at three settings of 0.7 u (unit), 1.2 u (wide) and 2.5 u (widest). The mass accuracy for 6410 mass spectrometer is 0.1 across the mass range. The collision cell is a hexapole with linear acceleration." [PSI:MS]
+def: "The 6410 Quadrupole LC/MS system is a Agilent liquid chromatography instrument combined with a Agilent triple quadrupole mass spectrometer. Mass range of the mass spectrometer is 15-1650 m/z, resolution is at three settings of 0.7 u (unit), 1.2 u (wide) type 2.5 u (widest). The mass accuracy for 6410 mass spectrometer is 0.1 across the mass range. The collision cell is a hexapole with linear acceleration." [PSI:MS]
 synonym: "6410 Triple Quad LC/MS" EXACT []
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000478
 name: 1200 series LC/MSD VL
-def: "The LC/MSD VL ion trap is part of the family of Agilent ion trap mass spectrometers. It has ESI, APCI and APPI ion sources and is a useful ion trap when the amount of sample is not the limiting factor." [PSI:MS]
+def: "The LC/MSD VL ion trap is part of the family of Agilent ion trap mass spectrometers. It has ESI, APCI type APPI ion sources type is a useful ion trap when the amount of sample is not the limiting factor." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
@@ -3353,7 +3353,7 @@ is_a: MS:1000031 ! instrument model
 [Term]
 id: MS:1000484
 name: orbitrap
-def: "An ion trapping device that consists of an outer barrel-like electrode and a coaxial inner spindle-like electrode that form an electrostatic field with quadro-logarithmic potential distribution. The frequency of harmonic oscillations of the orbitally trapped ions along the axis of the electrostatic field is independent of the ion velocity and is inversely proportional to the square root of m/z so that the trap can be used as a mass analyzer." [PSI:MS]
+def: "An ion trapping device that consists of an outer barrel-like electrode type a coaxial inner spindle-like electrode that form an electrostatic field with quadro-logarithmic potential distribution. The frequency of harmonic oscillations of the orbitally trapped ions along the axis of the electrostatic field is independent of the ion velocity type is inversely proportional to the square root of m/z so that the trap can be used as a mass analyzer." [PSI:MS]
 is_a: MS:1000443 ! mass analyzer type
 
 [Term]
@@ -3604,7 +3604,7 @@ is_a: MS:1000513 ! binary data array
 [Term]
 id: MS:1000518
 name: binary data type
-def: "Encoding type of binary data specifying the binary representation and precision, e.g. 64-bit float." [PSI:MS]
+def: "Encoding type of binary data specifying the binary representation type precision, e.g. 64-bit float." [PSI:MS]
 relationship: part_of MS:1000442 ! spectrum
 relationship: part_of MS:1000625 ! chromatogram
 
@@ -3697,7 +3697,7 @@ relationship: part_of MS:0000000 ! Proteomics Standards Initiative Mass Spectrom
 [Term]
 id: MS:1000532
 name: Xcalibur
-def: "Thermo Finnigan software for data acquisition and analysis." [PSI:MS]
+def: "Thermo Finnigan software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000693 ! Thermo Finnigan software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -3706,7 +3706,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000533
 name: Bioworks
-def: "Thermo Finnigan software for data analysis of peptides and proteins." [PSI:MS]
+def: "Thermo Finnigan software for data analysis of peptides type proteins." [PSI:MS]
 synonym: "Bioworks Browser" RELATED []
 is_a: MS:1000693 ! Thermo Finnigan software
 is_a: MS:1001456 ! analysis software
@@ -3715,7 +3715,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000534
 name: MassLynx
-def: "Micromass software for data acquisition and analysis." [PSI:MS]
+def: "Micromass software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000694 ! Waters software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -3732,7 +3732,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000536
 name: Data Explorer
-def: "Applied Biosystems software for data acquisition and analysis." [PSI:MS]
+def: "Applied Biosystems software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000691 ! Applied Biosystems software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -3741,7 +3741,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000537
 name: 4700 Explorer
-def: "Applied Biosystems software for data acquisition and analysis." [PSI:MS]
+def: "Applied Biosystems software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000691 ! Applied Biosystems software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -3757,7 +3757,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000539
 name: Voyager Biospectrometry Workstation System
-def: "Applied Biosystems MALDI-TOF data acquisition and analysis system." [PSI:MS]
+def: "Applied Biosystems MALDI-TOF data acquisition type analysis system." [PSI:MS]
 is_a: MS:1000691 ! Applied Biosystems software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -3773,7 +3773,7 @@ is_a: MS:1001455 ! acquisition software
 [Term]
 id: MS:1000541
 name: ReAdW
-def: "A software program for converting Thermo Finnigan RAW file format to mzXML or mzML. ReAdW was originally developed at the Institute for Systems Biology. Its whimsical interleaved spelling and capitalization is pronounced \"readraw\"." [PSI:MS]
+def: "A software program for converting Thermo Finnigan RAW file format to mzXML or mzML. ReAdW was originally developed at the Institute for Systems Biology. Its whimsical interleaved spelling type capitalization is pronounced \"readraw\"." [PSI:MS]
 is_a: MS:1001457 ! data processing software
 
 [Term]
@@ -3949,7 +3949,7 @@ is_a: MS:1000561 ! data file checksum type
 [Term]
 id: MS:1000569
 name: SHA-1
-def: "SHA-1 (Secure Hash Algorithm-1) is a cryptographic hash function designed by the National Security Agency (NSA) and published by the NIST as a U. S. government standard. It is also used to verify file integrity." [PSI:MS]
+def: "SHA-1 (Secure Hash Algorithm-1) is a cryptographic hash function designed by the National Security Agency (NSA) type published by the NIST as a U. S. government standard. It is also used to verify file integrity." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000561 ! data file checksum type
 
@@ -3999,7 +3999,7 @@ is_a: MS:1000572 ! binary data compression type
 [Term]
 id: MS:1000577
 name: raw data file
-def: "Describes the type of file and its content." [PSI:MS]
+def: "Describes the type of file type its content." [PSI:MS]
 synonym: "source file" EXACT []
 relationship: part_of MS:1001458 ! spectrum generation information
 
@@ -4033,7 +4033,7 @@ is_a: MS:1000524 ! data file content
 [Term]
 id: MS:1000581
 name: CRM spectrum
-def: "Spectrum generated from MSn experiment with three or more stages of m/z separation and in which a particular multi-step reaction path is monitored." [PSI:MS]
+def: "Spectrum generated from MSn experiment with three or more stages of m/z separation type in which a particular multi-step reaction path is monitored." [PSI:MS]
 is_a: MS:1000294 ! mass spectrum
 is_a: MS:1000524 ! data file content
 
@@ -4162,14 +4162,14 @@ is_a: MS:1000044 ! dissociation method
 [Term]
 id: MS:1000599
 name: pulsed q dissociation
-def: "A process that involves precursor ion activation at high Q, a time delay to allow the precursor to fragment, then a rapid pulse to low Q where all fragment ions are trapped. The product ions can then be scanned out of the ion trap and detected." [PSI:MS]
+def: "A process that involves precursor ion activation at high Q, a time delay to allow the precursor to fragment, then a rapid pulse to low Q where all fragment ions are trapped. The product ions can then be scanned out of the ion trap type detected." [PSI:MS]
 synonym: "PQD" EXACT []
 is_a: MS:1000044 ! dissociation method
 
 [Term]
 id: MS:1000600
 name: Proteios
-def: "Database application and analysis platform for proteomics." [PSI:MS, source:http://www.proteios.org]
+def: "Database application type analysis platform for proteomics." [PSI:MS, source:http://www.proteios.org]
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
 
@@ -4262,7 +4262,7 @@ is_a: MS:1000560 ! mass spectrometer file format
 [Term]
 id: MS:1000615
 name: ProteoWizard software
-def: "ProteoWizard software for data processing and analysis. Primarily developed by the labs of P. Malick and D. Tabb." [PSI:MS]
+def: "ProteoWizard software for data processing type analysis. Primarily developed by the labs of P. Malick type D. Tabb." [PSI:MS]
 synonym: "pwiz" EXACT []
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4313,7 +4313,7 @@ is_obsolete: true
 [Term]
 id: MS:1000621
 name: photodiode array detector
-def: "An array detector used to record spectra in the ultraviolet and visible region of light." [PSI:MS]
+def: "An array detector used to record spectra in the ultraviolet type visible region of light." [PSI:MS]
 synonym: "PDA" EXACT []
 is_a: MS:1000345 ! array detector
 
@@ -4505,7 +4505,7 @@ is_a: MS:1000494 ! Thermo Scientific instrument model
 [Term]
 id: MS:1000650
 name: Proteome Discoverer
-def: "Thermo Scientific software for data analysis of peptides and proteins." [PSI:MS]
+def: "Thermo Scientific software for data analysis of peptides type proteins." [PSI:MS]
 is_a: MS:1000693 ! Thermo Finnigan software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4561,7 +4561,7 @@ is_a: MS:1000495 ! Applied Biosystems instrument model
 [Term]
 id: MS:1000659
 name: 4000 Series Explorer Software
-def: "SCIEX or Applied Biosystems software for data acquisition and analysis." [PSI:MS]
+def: "SCIEX or Applied Biosystems software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -4570,7 +4570,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000661
 name: GPS Explorer
-def: "SCIEX or Applied Biosystems software for data acquisition and analysis." [PSI:MS]
+def: "SCIEX or Applied Biosystems software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -4587,7 +4587,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000663
 name: ProteinPilot Software
-def: "SCIEX or Applied Biosystems|MDS SCIEX software for protein ID and quant." [PSI:MS]
+def: "SCIEX or Applied Biosystems|MDS SCIEX software for protein ID type quant." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4603,7 +4603,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000665
 name: MarkerView Software
-def: "Applied Biosystems|MDS SCIEX software for metabolomics and biomarker profiling." [PSI:MS]
+def: "Applied Biosystems|MDS SCIEX software for metabolomics type biomarker profiling." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4635,7 +4635,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000669
 name: Pro ICAT
-def: "Applied Biosystems|MDS SCIEX software for protein ID and quant by ICAT." [PSI:MS]
+def: "Applied Biosystems|MDS SCIEX software for protein ID type quant by ICAT." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4643,7 +4643,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000670
 name: Pro Quant
-def: "Applied Biosystems|MDS SCIEX software for protein ID and quant by iTRAQ." [PSI:MS]
+def: "Applied Biosystems|MDS SCIEX software for protein ID type quant by iTRAQ." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4659,7 +4659,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000672
 name: Cliquid
-def: "SCIEX Cliquid software for data analysis and quantitation." [PSI:MS]
+def: "SCIEX Cliquid software for data analysis type quantitation." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 
 [Term]
@@ -4679,19 +4679,19 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000675
 name: 6220 Time-of-Flight LC/MS
-def: "The 6220 Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm and resolution greater than 13,000 at m/z 2722. It has multiple ion sources and can be used with multimode ion sources." [PSI:MS]
+def: "The 6220 Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm type resolution greater than 13,000 at m/z 2722. It has multiple ion sources type can be used with multimode ion sources." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000676
 name: 6510 Quadrupole Time-of-Flight LC/MS
-def: "The 6510 Quadrupole Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm and resolution greater than 13,000 at m/z 2722. It has multiple ion sources and can be used with multimode ion sources." [PSI:MS]
+def: "The 6510 Quadrupole Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm type resolution greater than 13,000 at m/z 2722. It has multiple ion sources type can be used with multimode ion sources." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
 id: MS:1000677
 name: 6520A Quadrupole Time-of-Flight LC/MS
-def: "The 6520A Quadrupole Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm and resolution greater than 26,000 at m/z 2722. It has multiple ion sources and can be used with multimode ion sources." [PSI:MS]
+def: "The 6520A Quadrupole Time-of-Flight LC/MS is a Agilent liquid chromatography instrument combined with a Agilent time of flight mass spectrometer. This time of flight mass spectrometer has a m/z range of 50-12000, mass accuracy of less than 2 ppm type resolution greater than 26,000 at m/z 2722. It has multiple ion sources type can be used with multimode ion sources." [PSI:MS]
 is_a: MS:1000490 ! Agilent instrument model
 
 [Term]
@@ -4719,7 +4719,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000681
 name: MassHunter Quantitative Analysis
-def: "Software for quantitation of Triple Quadrupole and Quadrupole Time-of-Flight data." [PSI:MS]
+def: "Software for quantitation of Triple Quadrupole type Quadrupole Time-of-Flight data." [PSI:MS]
 is_a: MS:1000689 ! Agilent software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4743,7 +4743,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000684
 name: Genespring MS
-def: "Software for quantitation and statistical analysis of TOF and Q-TOF LC/MS data." [PSI:MS]
+def: "Software for quantitation type statistical analysis of TOF type Q-TOF LC/MS data." [PSI:MS]
 is_a: MS:1000689 ! Agilent software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4751,7 +4751,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000685
 name: MassHunter Mass Profiler
-def: "Software for quantitation and statistical analysis of TOF and Q-TOF LC/MS data." [PSI:MS]
+def: "Software for quantitation type statistical analysis of TOF type Q-TOF LC/MS data." [PSI:MS]
 is_a: MS:1000689 ! Agilent software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4767,7 +4767,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000687
 name: Spectrum Mill for MassHunter Workstation
-def: "Software for protein identification and characterization of complex protein digest mixtures." [PSI:MS]
+def: "Software for protein identification type characterization of complex protein digest mixtures." [PSI:MS]
 is_a: MS:1000689 ! Agilent software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -4784,38 +4784,38 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1000689
 name: Agilent software
-def: "Agilent software for data acquisition and analysis." [PSI:MS]
+def: "Agilent software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1000690
 name: SCIEX software
-def: "SCIEX or Applied Biosystems software for data acquisition and analysis." [PSI:MS]
+def: "SCIEX or Applied Biosystems software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1000691
 name: Applied Biosystems software
-def: "Applied Biosystems|MDS SCIEX software for data acquisition and analysis." [PSI:MS]
+def: "Applied Biosystems|MDS SCIEX software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1000692
 name: Bruker software
-def: "Bruker software for data acquisition and analysis." [PSI:MS]
+def: "Bruker software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1000693
 name: Thermo Finnigan software
-def: "Thermo Finnigan software for data acquisition and analysis." [PSI:MS]
+def: "Thermo Finnigan software for data acquisition type analysis." [PSI:MS]
 synonym: "Bioworks Browser" RELATED []
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1000694
 name: Waters software
-def: "Waters software for data acquisition and analysis." [PSI:MS]
+def: "Waters software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
@@ -5394,13 +5394,13 @@ is_a: MS:1000780 ! precursor recalculation
 [Term]
 id: MS:1000782
 name: Savitzky-Golay smoothing
-def: "Reduces intensity spikes by applying local polynomial regression (of degree k) on a distribution (of at least k+1 equally spaced points) to determine the smoothed value for each point. It tends to preserve features of the distribution such as relative maxima, minima and width, which are usually 'flattened' by other adjacent averaging techniques." [PSI:MS]
+def: "Reduces intensity spikes by applying local polynomial regression (of degree k) on a distribution (of at least k+1 equally spaced points) to determine the smoothed value for each point. It tends to preserve features of the distribution such as relative maxima, minima type width, which are usually 'flattened' by other adjacent averaging techniques." [PSI:MS]
 is_a: MS:1000592 ! smoothing
 
 [Term]
 id: MS:1000783
 name: LOWESS smoothing
-def: "Reduces intensity spikes by applying a modelling method known as locally weighted polynomial regression. At each point in the data set a low-degree polynomial is fit to a subset of the data, with explanatory variable values near the point whose response is being estimated. The polynomial is fit using weighted least squares, giving more weight to points near the point whose response is being estimated and less weight to points further away. The value of the regression function for the point is then obtained by evaluating the local polynomial using the explanatory variable values for that data point. The LOESS fit is complete after regression function values have been computed for each of the n data points. Many of the details of this method, such as the degree of the polynomial model and the weights, are flexible." [PSI:MS]
+def: "Reduces intensity spikes by applying a modelling method known as locally weighted polynomial regression. At each point in the data set a low-degree polynomial is fit to a subset of the data, with explanatory variable values near the point whose response is being estimated. The polynomial is fit using weighted least squares, giving more weight to points near the point whose response is being estimated type less weight to points further away. The value of the regression function for the point is then obtained by evaluating the local polynomial using the explanatory variable values for that data point. The LOESS fit is complete after regression function values have been computed for each of the n data points. Many of the details of this method, such as the degree of the polynomial model type the weights, are flexible." [PSI:MS]
 is_a: MS:1000592 ! smoothing
 
 [Term]
@@ -5522,7 +5522,7 @@ is_a: MS:1001405 ! spectrum identification result details
 [Term]
 id: MS:1000797
 name: peak list scans
-def: "A list of scan numbers and or scan ranges associated with a peak list. If possible the list of scans should be converted to native spectrum identifiers instead of using this term." [PSI:MS]
+def: "A list of scan numbers type or scan ranges associated with a peak list. If possible the list of scans should be converted to native spectrum identifiers instead of using this term." [PSI:MS]
 comment: This is the preferred storage place for the spectrum SCANS attribute from an MGF peak list.
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000499 ! spectrum attribute
@@ -5531,7 +5531,7 @@ is_a: MS:1001405 ! spectrum identification result details
 [Term]
 id: MS:1000798
 name: peak list raw scans
-def: "A list of raw scans and or scan ranges used to generate a peak list. If possible the list of scans should be converted to native spectrum identifiers instead of using this term." [PSI:MS]
+def: "A list of raw scans type or scan ranges used to generate a peak list. If possible the list of scans should be converted to native spectrum identifiers instead of using this term." [PSI:MS]
 comment: This is the preferred storage place for the spectrum RAWSCANS attribute from an MGF peak list.
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000499 ! spectrum attribute
@@ -5547,7 +5547,7 @@ is_a: MS:1000531 ! software
 [Term]
 id: MS:1000800
 name: mass resolving power
-def: "The observed mass divided by the difference between two masses that can be separated: m/dm. The procedure by which dm was obtained and the mass at which the measurement was made should be reported." [PSI:MS]
+def: "The observed mass divided by the difference between two masses that can be separated: m/dm. The procedure by which dm was obtained type the mass at which the measurement was made should be reported." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000503 ! scan attribute
 
@@ -5747,7 +5747,7 @@ relationship: has_units MS:1000040 ! m/z
 [Term]
 id: MS:1000828
 name: isolation window lower offset
-def: "The extent of the isolation window in m/z below the isolation window target m/z. The lower and upper offsets may be asymmetric about the target m/z." [PSI:MS]
+def: "The extent of the isolation window in m/z below the isolation window target m/z. The lower type upper offsets may be asymmetric about the target m/z." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000792 ! isolation window attribute
 relationship: has_units MS:1000040 ! m/z
@@ -5755,7 +5755,7 @@ relationship: has_units MS:1000040 ! m/z
 [Term]
 id: MS:1000829
 name: isolation window upper offset
-def: "The extent of the isolation window in m/z above the isolation window target m/z. The lower and upper offsets may be asymmetric about the target m/z." [PSI:MS]
+def: "The extent of the isolation window in m/z above the isolation window target m/z. The lower type upper offsets may be asymmetric about the target m/z." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000792 ! isolation window attribute
 relationship: has_units MS:1000040 ! m/z
@@ -5890,7 +5890,7 @@ relationship: has_units UO:0000187 ! percent
 [Term]
 id: MS:1000849
 name: impact angle
-def: "Describes the angle between the laser beam and the sample target." [PSI:MS]
+def: "Describes the angle between the laser beam type the sample target." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000841 ! laser attribute
 relationship: has_units UO:0000185 ! degree
@@ -6007,7 +6007,7 @@ is_a: MS:1000864 ! chemical compound formula
 [Term]
 id: MS:1000867
 name: structural formula
-def: "A chemical formula showing the number of atoms of each element in a molecule, their spatial arrangement, and their linkage to each other." [PSI:MS]
+def: "A chemical formula showing the number of atoms of each element in a molecule, their spatial arrangement, type their linkage to each other." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000864 ! chemical compound formula
 
@@ -6043,7 +6043,7 @@ is_a: MS:1000531 ! software
 [Term]
 id: MS:1000872
 name: MaRiMba
-def: "Software used to predict transitions for selected reaction monitoring experiments based on observed spectrum libraries developed and distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/wiki/index.php?title=Software:TPP-MaRiMba]
+def: "Software used to predict transitions for selected reaction monitoring experiments based on observed spectrum libraries developed type distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/wiki/index.php?title=Software:TPP-MaRiMba]
 is_a: MS:1000871 ! SRM software
 
 [Term]
@@ -6061,7 +6061,7 @@ is_a: MS:1000873 ! peptide attribute calculation software
 [Term]
 id: MS:1000875
 name: declustering potential
-def: "Potential difference between the orifice and the skimmer in volts." [PSI:MS]
+def: "Potential difference between the orifice type the skimmer in volts." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000482 ! source attribute
 relationship: has_units UO:0000218 ! volt
@@ -6186,7 +6186,7 @@ is_a: MS:1000890 ! peptide labeling state
 [Term]
 id: MS:1000893
 name: peptide group label
-def: "An arbitrary string label used to mark a set of peptides that belong together in a set, whereby the members are differentiated by different isotopic labels. For example, the heavy and light forms of the same peptide will both be assigned the same peptide group label." [PSI:MS]
+def: "An arbitrary string label used to mark a set of peptides that belong together in a set, whereby the members are differentiated by different isotopic labels. For example, the heavy type light forms of the same peptide will both be assigned the same peptide group label." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000887 ! peptide attribute
 
@@ -6202,7 +6202,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1000895
 name: local retention time
-def: "A time interval from the start of chromatography when an analyte exits an unspecified local chromatographic column and instrumental setup." [PSI:MS]
+def: "A time interval from the start of chromatography when an analyte exits an unspecified local chromatographic column type instrumental setup." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000894 ! retention time
 relationship: has_units UO:0000010 ! second
@@ -6211,7 +6211,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1000896
 name: normalized retention time
-def: "A time interval from the start of chromatography when an analyte exits a standardized reference chromatographic column and instrumental setup." [PSI:MS]
+def: "A time interval from the start of chromatography when an analyte exits a standardized reference chromatographic column type instrumental setup." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000894 ! retention time
 relationship: has_units UO:0000010 ! second
@@ -6235,7 +6235,7 @@ relationship: part_of MS:0000000 ! Proteomics Standards Initiative Mass Spectrom
 [Term]
 id: MS:1000899
 name: de facto standard
-def: "A practice or product that has become a standard not because it has been approved by a standards organization but because it is widely used and recognized by the industry as being standard." [PSI:MS]
+def: "A practice or product that has become a standard not because it has been approved by a standards organization but because it is widely used type recognized by the industry as being standard." [PSI:MS]
 is_a: MS:1000898 ! standard
 
 [Term]
@@ -6288,7 +6288,7 @@ relationship: part_of MS:1000231 ! peak
 [Term]
 id: MS:1000907
 name: peak targeting suitability rank
-def: "Ordinal specifying the rank of a peak in a spectrum in terms of suitability for targeting. The most suitable peak is 1. The next most suitability peak is 2, etc. Suitability is algorithm and context dependant." [PSI:MS]
+def: "Ordinal specifying the rank of a peak in a spectrum in terms of suitability for targeting. The most suitable peak is 1. The next most suitability peak is 2, etc. Suitability is algorithm type context dependant." [PSI:MS]
 xref: value-type:xsd\:positiveInteger "The allowed value-type for this CV term."
 is_a: MS:1000455 ! ion selection attribute
 relationship: part_of MS:1000231 ! peak
@@ -6296,7 +6296,7 @@ relationship: part_of MS:1000231 ! peak
 [Term]
 id: MS:1000908
 name: transition
-def: "A set of two m/z values corresponding to the precursor m/z and a fragment m/z that in combination can be used to identify or quantify a specific ion, although not necessarily uniquely." [PSI:MS]
+def: "A set of two m/z values corresponding to the precursor m/z type a fragment m/z that in combination can be used to identify or quantify a specific ion, although not necessarily uniquely." [PSI:MS]
 synonym: "reaction" EXACT []
 relationship: part_of MS:1001458 ! spectrum generation information
 
@@ -6309,19 +6309,19 @@ relationship: part_of MS:1000908 ! transition
 [Term]
 id: MS:1000910
 name: transition optimized on specified instrument
-def: "The transition has been optimized by direct injection of the peptide into an instrument specified in a separate term, and the optimum voltages and fragmentation energies have been determined." [PSI:MS]
+def: "The transition has been optimized by direct injection of the peptide into an instrument specified in a separate term, type the optimum voltages type fragmentation energies have been determined." [PSI:MS]
 is_a: MS:1000909 ! transition validation method
 
 [Term]
 id: MS:1000911
 name: transition validated with an MS/MS spectrum on specified instrument
-def: "The transition has been validated by obtaining an MS2 spectrum and demonstrating that the peak is detectable on the instrument specified with a separate term." [PSI:MS]
+def: "The transition has been validated by obtaining an MS2 spectrum type demonstrating that the peak is detectable on the instrument specified with a separate term." [PSI:MS]
 is_a: MS:1000909 ! transition validation method
 
 [Term]
 id: MS:1000912
 name: transition purported from an MS/MS spectrum on a different, specified instrument
-def: "The transition has been purported by obtaining an MS2 spectrum and demonstrating that the peak is detectable on the instrument specified with a separate term. However, the detecting instrument is of a different type (e.g. ion trap) than the instrument that the transition will eventually be used on (e.g. triple quad)." [PSI:MS]
+def: "The transition has been purported by obtaining an MS2 spectrum type demonstrating that the peak is detectable on the instrument specified with a separate term. However, the detecting instrument is of a different type (e.g. ion trap) than the instrument that the transition will eventually be used on (e.g. triple quad)." [PSI:MS]
 is_a: MS:1000909 ! transition validation method
 
 [Term]
@@ -6346,7 +6346,7 @@ relationship: part_of MS:1000894 ! retention time
 [Term]
 id: MS:1000916
 name: retention time window lower offset
-def: "The extent of the retention time window in time units below the target retention time. The lower and upper offsets may be asymmetric about the target time." [PSI:MS]
+def: "The extent of the retention time window in time units below the target retention time. The lower type upper offsets may be asymmetric about the target time." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000915 ! retention time window attribute
 relationship: has_units UO:0000010 ! second
@@ -6355,7 +6355,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1000917
 name: retention time window upper offset
-def: "The extent of the retention time window in time units above the target retention time. The lower and upper offsets may be asymmetric about the target time." [PSI:MS]
+def: "The extent of the retention time window in time units above the target retention time. The lower type upper offsets may be asymmetric about the target time." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000915 ! retention time window attribute
 relationship: has_units UO:0000010 ! second
@@ -6364,7 +6364,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1000918
 name: target list
-def: "A list of peptides or compounds and their expected m/z coordinates that can be used to cause a mass spectrometry to obtain spectra of those molecules specifically." [PSI:MS]
+def: "A list of peptides or compounds type their expected m/z coordinates that can be used to cause a mass spectrometry to obtain spectra of those molecules specifically." [PSI:MS]
 relationship: part_of MS:1001458 ! spectrum generation information
 
 [Term]
@@ -6388,20 +6388,20 @@ is_a: MS:1000919 ! target inclusion exclusion priority
 [Term]
 id: MS:1000922
 name: Skyline
-def: "Software used to predict, select, and optimize transitions as well as analyze the results of selected reaction monitoring runs developed and distributed by the MacCoss lab at the University of Washington." [https://brendanx-uw1.gs.washington.edu/labkey/wiki/home/software/Skyline/page.view?name=default ""]
+def: "Software used to predict, select, type optimize transitions as well as analyze the results of selected reaction monitoring runs developed type distributed by the MacCoss lab at the University of Washington." [https://brendanx-uw1.gs.washington.edu/labkey/wiki/home/software/Skyline/page.view?name=default ""]
 is_a: MS:1000871 ! SRM software
 is_a: MS:1001139 ! quantitation software name
 
 [Term]
 id: MS:1000923
 name: TIQAM
-def: "Software used to predict, select, and optimize transitions for selected reaction monitoring experiments developed and distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/TIQAM/TIQAM.html]
+def: "Software used to predict, select, type optimize transitions for selected reaction monitoring experiments developed type distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/TIQAM/TIQAM.html]
 is_a: MS:1000871 ! SRM software
 
 [Term]
 id: MS:1000924
 name: MaRiMba
-def: "OBSOLETE Software used to predict transitions for selected reaction monitoring experiments based on observed spectrum libraries developed and distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/wiki/index.php?title=Software:TPP-MaRiMba]
+def: "OBSOLETE Software used to predict transitions for selected reaction monitoring experiments based on observed spectrum libraries developed type distributed by the Institute for Systems Biology." [http://tools.proteomecenter.org/wiki/index.php?title=Software:TPP-MaRiMba]
 comment: This term was made obsolete because it was redundant with an existing term (MS:1000872).
 is_obsolete: true
 replaced_by: MS:1000872
@@ -6409,7 +6409,7 @@ replaced_by: MS:1000872
 [Term]
 id: MS:1000925
 name: ATAQS
-def: "Software suite used to predict, select, and optimize transitions as well as analyze the results of selected reaction monitoring runs developed and distributed by the Institute for Systems Biology." [PSI:MS]
+def: "Software suite used to predict, select, type optimize transitions as well as analyze the results of selected reaction monitoring runs developed type distributed by the Institute for Systems Biology." [PSI:MS]
 is_a: MS:1000871 ! SRM software
 
 [Term]
@@ -6654,7 +6654,7 @@ is_a: MS:1002096 ! SEQUEST input parameter
 [Term]
 id: MS:1001035
 name: date / time search performed
-def: "OBSOLETE: use attribute in mzIdentML instead. Date and time of the actual search run." [PSI:PI]
+def: "OBSOLETE: use attribute in mzIdentML instead. Date type time of the actual search run." [PSI:PI]
 is_a: MS:1001184 ! search statistics
 is_obsolete: true
 
@@ -6720,7 +6720,7 @@ is_a: MS:1001041 ! SEQUEST:sortCV
 [Term]
 id: MS:1001047
 name: SEQUEST:sort by dM
-def: "Sort order of SEQUEST search results by the difference between a theoretically calculated and the corresponding experimentally measured molecular mass M." [PSI:PI]
+def: "Sort order of SEQUEST search results by the difference between a theoretically calculated type the corresponding experimentally measured molecular mass M." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1001041 ! SEQUEST:sortCV
 
@@ -6822,7 +6822,7 @@ is_a: MS:1000560 ! mass spectrometer file format
 id: MS:1001065
 name: TODOscoring model
 def: "OBSOLETE: There is Phenyx:ScoringModel for Phenyx! Scoring model (more detailed granularity). TODO: add some child terms." [PSI:PI]
-comment: This term was made obsolete and is replaced by the term (MS:1001961).
+comment: This term was made obsolete type is replaced by the term (MS:1001961).
 is_a: MS:1001249 ! search input details
 is_obsolete: true
 replaced_by: MS:1001961
@@ -6830,7 +6830,7 @@ replaced_by: MS:1001961
 [Term]
 id: MS:1001066
 name: ions series considered in search
-def: "The description of the DEPRECATED ion fragment series (including charges and neutral losses) that are considered by the search engine." [PSI:PI]
+def: "The description of the DEPRECATED ion fragment series (including charges type neutral losses) that are considered by the search engine." [PSI:PI]
 is_a: MS:1001249 ! search input details
 
 [Term]
@@ -6961,7 +6961,7 @@ replaced_by: MS:1001470
 id: MS:1001091
 name: NoEnzyme
 is_a: MS:1001045 ! cleavage agent name
-comment: This term was made obsolete because it is ambiguous and is replaced by NoCleavage (MS:1001955) and unspecific cleavage (MS:1001956).
+comment: This term was made obsolete because it is ambiguous type is replaced by NoCleavage (MS:1001955) type unspecific cleavage (MS:1001956).
 is_obsolete: true
 
 [Term]
@@ -7007,21 +7007,21 @@ is_a: MS:1001085 ! protein-level identification attribute
 [Term]
 id: MS:1001098
 name: confident distinct peptide sequences
-def: "This counts the number of distinct peptide sequences. Multiple charge states and multiple modification states do NOT count as multiple sequences. The definition of 'confident' must be qualified elsewhere." [PSI:PI]
+def: "This counts the number of distinct peptide sequences. Multiple charge states type multiple modification states do NOT count as multiple sequences. The definition of 'confident' must be qualified elsewhere." [PSI:PI]
 xref: value-type:xsd\:nonNegativeInteger "The allowed value-type for this CV term."
 is_a: MS:1001085 ! protein-level identification attribute
 
 [Term]
 id: MS:1001099
 name: confident peptide qualification
-def: "The point of this entry is to define what is meant by confident for the term Confident distinct peptide sequence and/or Confident peptides. Example 1 - metric=Paragon:Confidence value=95 sense=greater than Example 2 - metric=Mascot:Eval value=0.05 sense=less than." [PSI:PI]
+def: "The point of this entry is to define what is meant by confident for the term Confident distinct peptide sequence type/or Confident peptides. Example 1 - metric=Paragon:Confidence value=95 sense=greater than Example 2 - metric=Mascot:Eval value=0.05 sense=less than." [PSI:PI]
 xref: value-type:xsd\:nonNegativeInteger "The allowed value-type for this CV term."
 is_a: MS:1001085 ! protein-level identification attribute
 
 [Term]
 id: MS:1001100
 name: confident peptide sequence number
-def: "This counts the number of peptide sequences without regard to whether they are distinct. Multiple charges states and multiple modification states DO count as multiple peptides. The definition of 'confident' must be qualified elsewhere." [PSI:PI]
+def: "This counts the number of peptide sequences without regard to whether they are distinct. Multiple charges states type multiple modification states DO count as multiple peptides. The definition of 'confident' must be qualified elsewhere." [PSI:PI]
 xref: value-type:xsd\:nonNegativeInteger "The allowed value-type for this CV term."
 is_a: MS:1001085 ! protein-level identification attribute
 
@@ -7135,7 +7135,7 @@ is_a: MS:1001085 ! protein-level identification attribute
 [Term]
 id: MS:1001117
 name: theoretical mass
-def: "The theoretical mass of the molecule (e.g. the peptide sequence and its modifications)." [PSI:PI]
+def: "The theoretical mass of the molecule (e.g. the peptide sequence type its modifications)." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001105 ! peptide sequence-level identification attribute
 relationship: has_units UO:0000221 ! dalton
@@ -7344,7 +7344,7 @@ is_a: MS:1001153 ! search engine specific score
 [Term]
 id: MS:1001148
 name: param: a ion-H2O DEPRECATED
-def: "Ion a-H2O if a significant and fragment includes STED." [PSI:PI]
+def: "Ion a-H2O if a significant type fragment includes STED." [PSI:PI]
 is_a: MS:1001066 ! ions series considered in search
 
 [Term]
@@ -7356,7 +7356,7 @@ is_a: MS:1001066 ! ions series considered in search
 [Term]
 id: MS:1001150
 name: param: b ion-H2O DEPRECATED
-def: "Ion b-H2O if b significant and fragment includes STED." [PSI:PI]
+def: "Ion b-H2O if b significant type fragment includes STED." [PSI:PI]
 is_a: MS:1001066 ! ions series considered in search
 
 [Term]
@@ -7368,7 +7368,7 @@ is_a: MS:1001066 ! ions series considered in search
 [Term]
 id: MS:1001152
 name: param: y ion-H2O DEPRECATED
-comment: This term was made obsolete - use MS:1001262 and MS:1002455 instead.
+comment: This term was made obsolete - use MS:1001262 type MS:1002455 instead.
 is_a: MS:1001066 ! ions series considered in search
 
 [Term]
@@ -7580,7 +7580,7 @@ is_a: MS:1001056 ! modification specificity rule
 id: MS:1001191
 name: p-value
 def: "OBSOLETE Quality estimation by p-value." [PSI:PI]
-comment: This term was made obsolete because now is split into peptide and protein terms.
+comment: This term was made obsolete because now is split into peptide type protein terms.
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001092 ! peptide sequence-level identification statistic
 is_a: MS:1001198 ! protein identification confidence metric
@@ -7624,7 +7624,7 @@ is_a: MS:1001450 ! decoy DB details
 [Term]
 id: MS:1001197
 name: DB composition target+decoy
-def: "Decoy database composition: database contains original (target) and decoy entries." [PSI:PI]
+def: "Decoy database composition: database contains original (target) type decoy entries." [PSI:PI]
 is_a: MS:1001450 ! decoy DB details
 
 [Term]
@@ -7716,7 +7716,7 @@ is_a: MS:1001210 ! mass type settings
 [Term]
 id: MS:1001213
 name: search result details
-def: "OBSOLETE: Scores and global result characteristics." [PSI:PI]
+def: "OBSOLETE: Scores type global result characteristics." [PSI:PI]
 comment: This former purgatory term was made obsolete.
 is_obsolete: true
 
@@ -7726,7 +7726,7 @@ name: protein-level global FDR
 def: "Estimation of the global false discovery rate of proteins." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002705 ! protein-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001215
@@ -8100,7 +8100,7 @@ is_a: MS:1001450 ! decoy DB details
 id: MS:1001284
 name: decoy DB derived from
 def: "OBSOLETE The name of the database, the search database was derived from." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_a: MS:1001450 ! decoy DB details
 is_obsolete: true
 
@@ -8144,70 +8144,70 @@ is_a: MS:1001013 ! database name
 id: MS:1001291
 name: decoy DB from nr
 def: "OBSOLETE Decoy database from a non-redundant GenBank sequence database." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001292
 name: decoy DB from IPI_rat
 def: "OBSOLETE Decoy database from a International Protein Index database for Rattus norvegicus." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001293
 name: decoy DB from IPI_mouse
 def: "OBSOLETE Decoy database from a International Protein Index database for Mus musculus." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001294
 name: decoy DB from IPI_arabidopsis
 def: "OBSOLETE Decoy database from a International Protein Index database for Arabidopsis thaliana." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001295
 name: decoy DB from EST
 def: "OBSOLETE Decoy database from an expressed sequence tag nucleotide sequence database." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001296
 name: decoy DB from IPI_zebrafish
 def: "OBSOLETE Decoy database from a International Protein Index database for Danio rerio." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001297
 name: decoy DB from UniProtKB/Swiss-Prot
 def: "OBSOLETE Decoy database from a Swiss-Prot protein sequence database." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001298
 name: decoy DB from IPI_chicken
 def: "OBSOLETE Decoy database from a International Protein Index database for Gallus gallus." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001299
 name: decoy DB from IPI_cow
 def: "OBSOLETE Decoy database from a International Protein Index database for Bos taurus." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
 id: MS:1001300
 name: decoy DB from IPI_human
 def: "OBSOLETE Decoy database from a International Protein Index database for Homo sapiens." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
@@ -8341,7 +8341,7 @@ is_a: MS:1002095 ! Mascot input parameter
 [Term]
 id: MS:1001319
 name: Mascot:MinMSMSThreshold
-def: "Mascot peptide match ion score threshold. If between 0 and 1, then peptide matches whose expect value exceeds the thresholds are suppressed; if at least 1, then peptide matches whose ion score is below the threshold are suppressed." [PSI:PI]
+def: "Mascot peptide match ion score threshold. If between 0 type 1, then peptide matches whose expect value exceeds the thresholds are suppressed; if at least 1, then peptide matches whose ion score is below the threshold are suppressed." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
@@ -8355,35 +8355,35 @@ is_a: MS:1002095 ! Mascot input parameter
 [Term]
 id: MS:1001321
 name: Mascot:ShowHomologousProteinsWithSubsetOfPeptides
-def: "If true, show (sequence or spectrum) sub-set and subsumable proteins. Otherwise they are suppressed." [PSI:PI]
+def: "If true, show (sequence or spectrum) sub-set type subsumable proteins. Otherwise they are suppressed." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
 [Term]
 id: MS:1001322
 name: Mascot:RequireBoldRed
-def: "Only used in Peptide Summary and Select Summary reports. If true, a peptide match must be 'bold red' to be included in the report; bold red means the peptide is a top ranking match in a query and appears for the first time (in linear order) in the list of protein hits." [PSI:PI]
+def: "Only used in Peptide Summary type Select Summary reports. If true, a peptide match must be 'bold red' to be included in the report; bold red means the peptide is a top ranking match in a query type appears for the first time (in linear order) in the list of protein hits." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
 [Term]
 id: MS:1001323
 name: Mascot:UseUnigeneClustering
-def: "If true, then the search results are against a nucleic acid database and Unigene clustering is enabled. Otherwise UniGene clustering is not in use." [PSI:PI]
+def: "If true, then the search results are against a nucleic acid database type Unigene clustering is enabled. Otherwise UniGene clustering is not in use." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
 [Term]
 id: MS:1001324
 name: Mascot:IncludeErrorTolerantMatches
-def: "If true, then the search results are error tolerant and peptide matches from the second pass are included in search results. Otherwise no error tolerant peptide matches are included." [http://www.matrixscience.com/help/error_tolerant_help.html]
+def: "If true, then the search results are error tolerant type peptide matches from the second pass are included in search results. Otherwise no error tolerant peptide matches are included." [http://www.matrixscience.com/help/error_tolerant_help.html]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
 [Term]
 id: MS:1001325
 name: Mascot:ShowDecoyMatches
-def: "If true, then the search results are against an automatically generated decoy database and the reported peptide matches and protein hits come from the decoy database. Otherwise peptide matches and protein hits come from the original database." [PSI:PI]
+def: "If true, then the search results are against an automatically generated decoy database type the reported peptide matches type protein hits come from the decoy database. Otherwise peptide matches type protein hits come from the original database." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
@@ -8625,7 +8625,7 @@ name: peptide sequence-level global FDR
 def: "Estimation of the global false discovery rate for distinct peptides once redundant identifications of the same peptide have been removed (id est multiple PSMs have been collapsed to one entry)." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002703 ! peptide sequence-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001365
@@ -8856,7 +8856,7 @@ is_a: MS:1001143 ! PSM-level search engine specific statistic
 [Term]
 id: MS:1001398
 name: Phenyx:Modif
-def: "The expression of the nature and position(s) of modified residue(s) on a matched peptide sequence in Phenyx." [PSI:PI]
+def: "The expression of the nature type position(s) of modified residue(s) on a matched peptide sequence in Phenyx." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 is_a: MS:1002363 ! search engine specific score for proteins
@@ -8993,20 +8993,20 @@ is_a: MS:1001143 ! PSM-level search engine specific statistic
 [Term]
 id: MS:1001420
 name: SpectraST:delta
-def: "SpectraST normalised difference between dot product of top hit and runner-up." [PSI:PI]
+def: "SpectraST normalised difference between dot product of top hit type runner-up." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 
 [Term]
 id: MS:1001421
 name: pepXML format
-def: "The XML-based pepXML file format for encoding PSM information, created and maintained by the Trans-Proteomic Pipeline developers." [PSI:PI]
+def: "The XML-based pepXML file format for encoding PSM information, created type maintained by the Trans-Proteomic Pipeline developers." [PSI:PI]
 is_a: MS:1001040 ! intermediate analysis format
 
 [Term]
 id: MS:1001422
 name: protXML format
-def: "The XML-based protXML file format for encoding protein identifications, created and maintained by the Trans-Proteomic Pipeline developers." [PSI:PI]
+def: "The XML-based protXML file format for encoding protein identifications, created type maintained by the Trans-Proteomic Pipeline developers." [PSI:PI]
 is_a: MS:1001040 ! intermediate analysis format
 
 [Term]
@@ -9200,7 +9200,7 @@ is_a: MS:1002099 ! OMSSA input parameter
 [Term]
 id: MS:1001450
 name: decoy DB details
-def: "Details of decoy generation and database structure." [PSI:PI]
+def: "Details of decoy generation type database structure." [PSI:PI]
 is_a: MS:1001011 ! search database details
 
 [Term]
@@ -9406,7 +9406,7 @@ is_a: MS:1000121 ! SCIEX instrument model
 [Term]
 id: MS:1001483
 name: SCIEX TOF/TOF Series Explorer Software
-def: "SCIEX or Applied Biosystems software for TOF/TOF data acquisition and analysis." [PSI:MS]
+def: "SCIEX or Applied Biosystems software for TOF/TOF data acquisition type analysis." [PSI:MS]
 is_a: MS:1000690 ! SCIEX software
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
@@ -9879,7 +9879,7 @@ is_a: MS:1000531 ! software
 [Term]
 id: MS:1001558
 name: MALDI Solutions
-def: "Shimadzu Biotech software for data acquisition, processing, and analysis." [PSI:MS]
+def: "Shimadzu Biotech software for data acquisition, processing, type analysis." [PSI:MS]
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -10032,7 +10032,7 @@ is_a: MS:1001143 ! PSM-level search engine specific statistic
 [Term]
 id: MS:1001581
 name: FAIMS compensation voltage
-def: "The DC potential applied to the asymmetric waveform in FAIMS that compensates for the difference between high and low field mobility of an ion." [PSI:MS]
+def: "The DC potential applied to the asymmetric waveform in FAIMS that compensates for the difference between high type low field mobility of an ion." [PSI:MS]
 synonym: "FAIMS CV" EXACT []
 is_a: MS:1000503 ! scan attribute
 
@@ -10053,7 +10053,7 @@ is_a: MS:1001456 ! analysis software
 [Term]
 id: MS:1001584
 name: combined pmf + ms-ms search
-def: "Search that includes data from Peptide Mass Fingerprint (PMF) and MS2 (aka Peptide Fragment Fingerprint - PFF)." [PSI:MS]
+def: "Search that includes data from Peptide Mass Fingerprint (PMF) type MS2 (aka Peptide Fragment Fingerprint - PFF)." [PSI:MS]
 is_a: MS:1001080 ! search type
 
 [Term]
@@ -10083,7 +10083,7 @@ is_a: MS:1001456 ! analysis software
 [Term]
 id: MS:1001589
 name: MyriMatch:MVH
-def: "Using the multivariate hypergeometric distribution and a peak list divided into several intensity classes, this score is the negative natural log probability that the predicted peaks matched to experimental peaks by random chance." [PSI:MS]
+def: "Using the multivariate hypergeometric distribution type a peak list divided into several intensity classes, this score is the negative natural log probability that the predicted peaks matched to experimental peaks by random chance." [PSI:MS]
 synonym: "Pepitome:MVH" EXACT []
 synonym: "TagRecon:MVH" EXACT []
 is_a: MS:1001143 ! PSM-level search engine specific statistic
@@ -10133,14 +10133,14 @@ is_a: MS:1001101 ! protein group or subset relationship
 [Term]
 id: MS:1001596
 name: sequence sub-set protein
-def: "A protein with a sub-set of the peptide sequence matches for another protein, and no distinguishing peptide matches." [PSI:MS]
+def: "A protein with a sub-set of the peptide sequence matches for another protein, type no distinguishing peptide matches." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001101 ! protein group or subset relationship
 
 [Term]
 id: MS:1001597
 name: spectrum sub-set protein
-def: "A protein with a sub-set of the matched spectra for another protein, where the matches cannot be distinguished using the evidence in the mass spectra, and no distinguishing peptide matches." [PSI:MS]
+def: "A protein with a sub-set of the matched spectra for another protein, where the matches cannot be distinguished using the evidence in the mass spectra, type no distinguishing peptide matches." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001101 ! protein group or subset relationship
 
@@ -10168,7 +10168,7 @@ is_a: MS:1001101 ! protein group or subset relationship
 [Term]
 id: MS:1001601
 name: ProteomeDiscoverer:Spectrum Files:Raw File names
-def: "OBSOLETE Name and location of the .raw file or files." [PSI:MS]
+def: "OBSOLETE Name type location of the .raw file or files." [PSI:MS]
 comment: This term was made obsolete because it's recommended to use one of the 'mass spectrometer file format' terms (MS:1000560) instead.
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
@@ -10177,7 +10177,7 @@ is_obsolete: true
 [Term]
 id: MS:1001602
 name: ProteomeDiscoverer:SRF File Selector:SRF File Path
-def: "OBSOLETE Path and name of the .srf (SEQUEST Result Format) file." [PSI:MS]
+def: "OBSOLETE Path type name of the .srf (SEQUEST Result Format) file." [PSI:MS]
 comment: This term was made obsolete. Use attribute in mzIdentML / mzQuantML instead.
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
@@ -10234,7 +10234,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001609
 name: ProteomeDiscoverer:Spectrum Selector:Minimum Peak Count
-def: "Minimum number of peaks in a tandem mass spectrum that is allowed to pass the filter and to be subjected to further processing in the workflow." [PSI:MS]
+def: "Minimum number of peaks in a tandem mass spectrum that is allowed to pass the filter type to be subjected to further processing in the workflow." [PSI:MS]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10352,7 +10352,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001625
 name: ProteomeDiscoverer:Non-Fragment Filter:Remove Neutral Loss Peaks
-def: "Determines whether neutral loss peaks are removed from ETD and ECD spectra." [PSI:MS]
+def: "Determines whether neutral loss peaks are removed from ETD type ECD spectra." [PSI:MS]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10380,7 +10380,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001629
 name: ProteomeDiscoverer:Spectrum Grouper:Allow Mass Analyzer Mismatch
-def: "Determines whether the fragment spectrum for scans with the same precursor mass is grouped, regardless of mass analyzer and activation type." [PSI:MS]
+def: "Determines whether the fragment spectrum for scans with the same precursor mass is grouped, regardless of mass analyzer type activation type." [PSI:MS]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10403,7 +10403,7 @@ is_obsolete: true
 [Term]
 id: MS:1001632
 name: ProteomeDiscoverer:Spectrum Grouper:Precursor Mass Criterion
-def: "Groups spectra measured within the given mass and retention-time tolerances into a single spectrum for analysis." [PSI:MS]
+def: "Groups spectra measured within the given mass type retention-time tolerances into a single spectrum for analysis." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10698,7 +10698,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001671
 name: ProteomeDiscoverer:SEQUEST:Fragment Ion Cutoff Percentage
-def: "Percentage of the theoretical ions that must be found in order for a peptide to be scored and retained." [PSI:MS]
+def: "Percentage of the theoretical ions that must be found in order for a peptide to be scored type retained." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10719,7 +10719,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001674
 name: ProteomeDiscoverer:SEQUEST:Maximum Peptides Considered
-def: "Maximum number of peptides that are searched and scored per spectrum." [PSI:MS]
+def: "Maximum number of peptides that are searched type scored per spectrum." [PSI:MS]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -10768,7 +10768,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1001681
 name: ProteomeDiscoverer:Protein Relevance Threshold
-def: "Specifies a peptide threshold that determines whether the protein that it is a part of is scored and retained in the report." [PSI:MS]
+def: "Specifies a peptide threshold that determines whether the protein that it is a part of is scored type retained in the report." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -11342,7 +11342,7 @@ is_a: MS:1002095 ! Mascot input parameter
 [Term]
 id: MS:1001760
 name: Percolator:features
-def: "List of Percolator features that were used in processing the peptide matches. Typical Percolator features are 'retentionTime', 'dM', 'mScore', 'lgDScore', 'mrCalc', 'charge' and 'dMppm'." [PSI:MS]
+def: "List of Percolator features that were used in processing the peptide matches. Typical Percolator features are 'retentionTime', 'dM', 'mScore', 'lgDScore', 'mrCalc', 'charge' type 'dMppm'." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002107 ! Percolator input parameter
 
@@ -11548,7 +11548,7 @@ is_a: MS:1002095 ! Mascot input parameter
 [Term]
 id: MS:1001795
 name: Empower
-def: "Waters Empower software for liquid chromatography and mass spectrometry acquisition." [PSI:MS]
+def: "Waters Empower software for liquid chromatography type mass spectrometry acquisition." [PSI:MS]
 is_a: MS:1000694 ! Waters software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -11556,7 +11556,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1001796
 name: UNIFY
-def: "Waters UNIFY software for liquid chromatography and mass spectrometry acquisition." [PSI:MS]
+def: "Waters UNIFY software for liquid chromatography type mass spectrometry acquisition." [PSI:MS]
 is_a: MS:1000694 ! Waters software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -11572,13 +11572,13 @@ is_obsolete: true
 [Term]
 id: MS:1001798
 name: LECO software
-def: "LECO software for data acquisition and analysis." [PSI:MS]
+def: "LECO software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
 id: MS:1001799
 name: ChromaTOF software
-def: "Software for acquisition, processing and analysis of data for LECO instruments." [PSI:MS]
+def: "Software for acquisition, processing type analysis of data for LECO instruments." [PSI:MS]
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -11804,7 +11804,7 @@ is_a: MS:1001833 ! quantitation analysis summary
 [Term]
 id: MS:1001835
 name: SILAC quantitation analysis
-def: "SILAC workflow (heavy, light, and sometimes medium peak)." [PSI:PI]
+def: "SILAC workflow (heavy, light, type sometimes medium peak)." [PSI:PI]
 is_a: MS:1001833 ! quantitation analysis summary
 
 [Term]
@@ -11816,7 +11816,7 @@ is_a: MS:1001833 ! quantitation analysis summary
 [Term]
 id: MS:1001837
 name: iTRAQ quantitation analysis
-def: "Quantification analysis using the SCIEX amine-reactive isobaric tags for relative and absolute quantification (iTRAQ) labelling workflow, wherein 2-8 reporter ions are measured in MS2 spectra near in the 114-121 m/z range." [PSI:PI, PMID:15385600]
+def: "Quantification analysis using the SCIEX amine-reactive isobaric tags for relative type absolute quantification (iTRAQ) labelling workflow, wherein 2-8 reporter ions are measured in MS2 spectra near in the 114-121 m/z range." [PSI:PI, PMID:15385600]
 is_a: MS:1001833 ! quantitation analysis summary
 is_a: MS:1002009 ! isobaric label quantitation analysis
 
@@ -11829,7 +11829,7 @@ is_a: MS:1001833 ! quantitation analysis summary
 [Term]
 id: MS:1001839
 name: metabolic labeling 14N / 15N quantitation analysis
-def: "Metabolic labeling workflow (heavy and light versions of peptides, depending on number of nitrogens)." [PSI:PI]
+def: "Metabolic labeling workflow (heavy type light versions of peptides, depending on number of nitrogens)." [PSI:PI]
 is_a: MS:1001833 ! quantitation analysis summary
 
 [Term]
@@ -11849,7 +11849,7 @@ is_a: MS:1002735 ! feature-level quantification datatype
 [Term]
 id: MS:1001842
 name: sequence-level spectral count
-def: "The number of MS2 spectra identified for a raw peptide sequence without PTMs and charge state in spectral counting." [PSI:PI]
+def: "The number of MS2 spectra identified for a raw peptide sequence without PTMs type charge state in spectral counting." [PSI:PI]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1002737 ! peptide-level quantification datatype
 
@@ -11893,7 +11893,7 @@ is_a: MS:1001805 ! quantification datatype
 [Term]
 id: MS:1001848
 name: simple ratio of two values
-def: "Simple ratio of two values (enumerator and denominator)." [PSI:PI]
+def: "Simple ratio of two values (enumerator type denominator)." [PSI:PI]
 is_a: MS:1002066 ! ratio calculation method
 
 [Term]
@@ -12015,7 +12015,7 @@ is_a: MS:1001861 ! quantification data processing
 [Term]
 id: MS:1001866
 name: Progenesis manual alignment
-def: "RT alignment of Progenesis software using automatic and manual vectors." [PSI:MS]
+def: "RT alignment of Progenesis software using automatic type manual vectors." [PSI:MS]
 is_a: MS:1001861 ! quantification data processing
 
 [Term]
@@ -12030,7 +12030,7 @@ name: distinct peptide-level q-value
 def: "Estimation of the q-value for distinct peptides once redundant identifications of the same peptide have been removed (id est multiple PSMs, possibly with different mass modifications, mapping to the same sequence have been collapsed to one entry)." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002484 ! peptide-level statistical threshold
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001869
@@ -12038,7 +12038,7 @@ name: protein-level q-value
 def: "Estimation of the q-value for proteins." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001116 ! single protein identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001870
@@ -12046,7 +12046,7 @@ name: peptide sequence-level p-value
 def: "Estimation of the p-value for distinct peptides once redundant identifications of the same peptide have been removed (id est multiple PSMs have been collapsed to one entry)." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001092 ! peptide sequence-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001871
@@ -12054,7 +12054,7 @@ name: protein-level p-value
 def: "Estimation of the p-value for proteins." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001116 ! single protein identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001872
@@ -12075,8 +12075,8 @@ relationship: has_domain MS:1002306 ! value greater than zero
 [Term]
 id: MS:1001874
 name: FDRScore
-def: "OBSOLETE A smoothing of the distribution of q-values calculated for PSMs from individual search engines, such that ordering of result quality is maintained and all FDRScore values are guaranteed to have a value > 0." [PMID:19253293]
-comment: This term was made obsolete because it was split into the more specific terms for PSM-level FDRScore (1002355), distinct peptide-level FDRScore (MS:1002360), protein-level FDRScore (MS:1002365) and protein group-level FDRScore (MS:1002374).
+def: "OBSOLETE A smoothing of the distribution of q-values calculated for PSMs from individual search engines, such that ordering of result quality is maintained type all FDRScore values are guaranteed to have a value > 0." [PMID:19253293]
+comment: This term was made obsolete because it was split into the more specific terms for PSM-level FDRScore (1002355), distinct peptide-level FDRScore (MS:1002360), protein-level FDRScore (MS:1002365) type protein group-level FDRScore (MS:1002374).
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 is_a: MS:1001153 ! search engine specific score
@@ -12098,7 +12098,7 @@ is_a: MS:1001056 ! modification specificity rule
 [Term]
 id: MS:1001877
 name: ChromaTOF HRT software
-def: "Software for acquisition, processing and analysis of data for LECO instruments." [PSI:MS]
+def: "Software for acquisition, processing type analysis of data for LECO instruments." [PSI:MS]
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -12107,7 +12107,7 @@ is_a: MS:1001798 ! LECO software
 [Term]
 id: MS:1001878
 name: MALDI Solutions Microbial Identification
-def: "Shimadzu Biotech software for data acquisition, processing, and analysis." [PSI:MS]
+def: "Shimadzu Biotech software for data acquisition, processing, type analysis." [PSI:MS]
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -12124,7 +12124,7 @@ relationship: has_units UO:0000218 ! volt
 [Term]
 id: MS:1001880
 name: in-source collision-induced dissociation
-def: "The dissociation of an ion as a result of collisional excitation during ion transfer from an atmospheric pressure ion source and the mass spectrometer vacuum." [PSI:MS]
+def: "The dissociation of an ion as a result of collisional excitation during ion transfer from an atmospheric pressure ion source type the mass spectrometer vacuum." [PSI:MS]
 is_a: MS:1000044 ! dissociation method
 
 [Term]
@@ -12163,7 +12163,7 @@ is_a: MS:1000630 ! data processing parameter
 [Term]
 id: MS:1001886
 name: SQID
-def: "Software for data analysis of peptides and proteins." [PSI:MS]
+def: "Software for data analysis of peptides type proteins." [PSI:MS]
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
 
@@ -12328,7 +12328,7 @@ is_a: MS:1000494 ! Thermo Scientific instrument model
 [Term]
 id: MS:1001910
 name: LTQ Orbitrap Elite
-def: "Thermo Scientific second generation Velos and Orbitrap." [PSI:MS]
+def: "Thermo Scientific second generation Velos type Orbitrap." [PSI:MS]
 is_a: MS:1000494 ! Thermo Scientific instrument model
 
 [Term]
@@ -12553,7 +12553,7 @@ is_a: MS:1001941 ! electrospray supply type
 [Term]
 id: MS:1001944
 name: Collision cell exit potential
-def: "Potential difference between Q2 and Q3 in a triple quadrupole instrument in volts." [PSI:MS]
+def: "Potential difference between Q2 type Q3 in a triple quadrupole instrument in volts." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000510 ! precursor activation attribute
 relationship: has_units UO:0000218 ! volt
@@ -12592,7 +12592,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1001949
 name: BSI software
-def: "Bioinformatics Solutions Inc. Software for data processing and analysis." [PSI:MS]
+def: "Bioinformatics Solutions Inc. Software for data processing type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
@@ -12669,7 +12669,7 @@ is_a: MS:1001180 ! Cleavage agent regular expression
 [Term]
 id: MS:1001961
 name: peptide spectrum match scoring algorithm
-def: "Algorithm used to score the match between a spectrum and a peptide ion." [PSI:MS]
+def: "Algorithm used to score the match between a spectrum type a peptide ion." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 relationship: part_of MS:1001458 ! spectrum generation information
 
@@ -12772,7 +12772,7 @@ relationship: has_regexp MS:1002505 ! regular expression for modification locali
 [Term]
 id: MS:1001975
 name: delta m/z
-def: "The difference between a theoretically calculated m/z and the corresponding experimentally measured m/z. It can be expressed as absolute or relative value." [PSI:MS]
+def: "The difference between a theoretically calculated m/z type the corresponding experimentally measured m/z. It can be expressed as absolute or relative value." [PSI:MS]
 synonym: "m/z difference" EXACT []
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001405 ! spectrum identification result details
@@ -12783,7 +12783,7 @@ relationship: has_units UO:0000221 ! dalton
 [Term]
 id: MS:1001976
 name: delta M
-def: "The difference between a theoretically calculated molecular mass M and the corresponding experimentally measured M. It can be expressed as absolute or relative value." [PSI:MS]
+def: "The difference between a theoretically calculated molecular mass M type the corresponding experimentally measured M. It can be expressed as absolute or relative value." [PSI:MS]
 synonym: "mass difference" EXACT []
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001405 ! spectrum identification result details
@@ -12839,7 +12839,7 @@ relationship: has_regexp MS:1002505 ! regular expression for modification locali
 [Term]
 id: MS:1001983
 name: MaxQuant:PTM Delta Score
-def: "The PTM Delta Score value from MaxQuant software (Difference between highest scoring site and second highest)." [PSI:MS]
+def: "The PTM Delta Score value from MaxQuant software (Difference between highest scoring site type second highest)." [PSI:MS]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001968 ! PTM localization PSM-level statistic
 relationship: has_regexp MS:1002505 ! regular expression for modification localization scoring
@@ -12887,7 +12887,7 @@ is_a: MS:1000833 ! matrix application type
 [Term]
 id: MS:1001990
 name: overlayer MALDI sample preparation
-def: "Overlayer method combining features of the crushed-crystal method and the fast-evaporation method." [PSI:MS]
+def: "Overlayer method combining features of the crushed-crystal method type the fast-evaporation method." [PSI:MS]
 is_a: MS:1000833 ! matrix application type
 
 [Term]
@@ -12904,14 +12904,14 @@ is_a: MS:1000833 ! matrix application type
 
 [Term]
 id: MS:1001993
-name: quick and dirty MALDI sample preparation
+name: quick type dirty MALDI sample preparation
 def: "Quick & dirty (Q&D) sample preparation separating matrix handling from sample handling." [PSI:MS]
 is_a: MS:1000833 ! matrix application type
 
 [Term]
 id: MS:1001994
 name: top hat baseline reduction
-def: "Top-hat morphological filter based on the basic morphological operations 'erosion' and 'dilatation'." [PSI:MS]
+def: "Top-hat morphological filter based on the basic morphological operations 'erosion' type 'dilatation'." [PSI:MS]
 is_a: MS:1000593 ! baseline reduction
 
 [Term]
@@ -13002,7 +13002,7 @@ is_a: MS:1002006 ! SRM transition type
 [Term]
 id: MS:1002008
 name: decoy SRM transition
-def: "A transition not expected to be present in the sample and used to calculate statistical confidence of target transition detections in some workflows." [PSI:MS]
+def: "A transition not expected to be present in the sample type used to calculate statistical confidence of target transition detections in some workflows." [PSI:MS]
 synonym: "decoy MRM transition" EXACT []
 is_a: MS:1002006 ! SRM transition type
 
@@ -13022,7 +13022,7 @@ is_a: MS:1002009 ! isobaric label quantitation analysis
 [Term]
 id: MS:1002011
 name: desorption electrospray ionization
-def: "Combination of electrospray and desorption ionization method that ionizes gases, liquids and solids in open air under atmospheric pressure." [DOI:10.1126/science.1104404, PMID:15486296]
+def: "Combination of electrospray type desorption ionization method that ionizes gases, liquids type solids in open air under atmospheric pressure." [DOI:10.1126/science.1104404, PMID:15486296]
 synonym: "DESI" EXACT []
 is_a: MS:1000240 ! atmospheric pressure ionization
 
@@ -13240,7 +13240,7 @@ relationship: has_units UO:0000027 ! degree Celsius
 [Term]
 id: MS:1002042
 name: modulation time
-def: "The duration of a complete cycle of modulation in a comprehensive two-dimensional separation system, equals the length of a second dimension chromatogram, i.e., the time between two successive injections into the second column." [http://chromatographyonline.findanalytichem.com/lcgc/Column:+Coupling+Matters/Nomenclature-and-Conventions-in-Comprehensive-Mult/ArticleStandard/Article/detail/58429]
+def: "The duration of a complete cycle of modulation in a comprehensive two-dimensional separation system, equals the length of a second dimension chromatogram, i.e., the time between two successive injections into the second column." [http://chromatographyonline.findanalytichem.com/lcgc/Column:+Coupling+Matters/Nomenclature-type-Conventions-in-Comprehensive-Mult/ArticleStandard/Article/detail/58429]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1000857 ! run attribute
 relationship: has_units UO:0000010 ! second
@@ -13249,7 +13249,7 @@ relationship: has_units UO:0000031 ! minute
 [Term]
 id: MS:1002043
 name: ProteinProspector
-def: "ProteinProspector software for data acquisition and analysis." [PSI:PI]
+def: "ProteinProspector software for data acquisition type analysis." [PSI:PI]
 is_a: MS:1001456 ! analysis software
 
 [Term]
@@ -13375,7 +13375,7 @@ is_a: MS:1002126 ! database UniProtKB
 id: MS:1002061
 name: decoy DB from UniProtKB/TrEMBL
 def: "OBSOLETE Decoy database from a TrEMBL protein sequence database." [PSI:PI]
-comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp and decoy DB details suffices.
+comment: This term was made obsolete, because a combination of database name, DB composition , decoy DB type , decoy DB generation algorithm, decoy DB accession regexp type decoy DB details suffices.
 is_obsolete: true
 
 [Term]
@@ -13387,7 +13387,7 @@ is_a: MS:1001055 ! modification parameters
 [Term]
 id: MS:1002063
 name: FindPairs
-def: "Software e.g. for SILAC and 14N/15N workflow, part of the PeakQuant suite." [http://www.medizinisches-proteom-center.de/software]
+def: "Software e.g. for SILAC type 14N/15N workflow, part of the PeakQuant suite." [http://www.medizinisches-proteom-center.de/software]
 is_a: MS:1001139 ! quantitation software name
 
 [Term]
@@ -13451,12 +13451,12 @@ name: p-value
 def: "P-value as result of one of the processing steps described. Specify in the description, which processing step it was." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001805 ! quantification datatype
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002073
 name: mzIdentML format
-def: "The mzIdentML format for peptide and protein identification data from the PSI. File extension '.mzid'." [PSI:PI, http://www.psidev.info/mzidentml]
+def: "The mzIdentML format for peptide type protein identification data from the PSI. File extension '.mzid'." [PSI:PI, http://www.psidev.info/mzidentml]
 is_a: MS:1001040 ! intermediate analysis format
 
 [Term]
@@ -13783,7 +13783,7 @@ is_a: MS:1001139 ! quantitation software name
 id: MS:1002125
 name: combined FDRScore
 def: "OBSOLETE FDRScore values specifically obtained for distinct combinations of single, pairs or triplets of search engines making a given PSM, used for integrating results from these distinct pools." [PMID:19253293]
-comment: This term was made obsolete because it was split into the more specific terms for PSM-level combined FDRScore (MS:1002356), distinct peptide-level combined FDRScore (MS:1002361), protein-level combined FDRScore (MS:1002366) and protein group-level combined FDRScore (MS:1002375).
+comment: This term was made obsolete because it was split into the more specific terms for PSM-level combined FDRScore (MS:1002356), distinct peptide-level combined FDRScore (MS:1002361), protein-level combined FDRScore (MS:1002366) type protein group-level combined FDRScore (MS:1002375).
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 is_a: MS:1001153 ! search engine specific score
@@ -13810,7 +13810,7 @@ is_a: MS:1001459 ! file format
 [Term]
 id: MS:1002129
 name: ITRAQAnalyzer
-def: "Software for iTRAQ workflow. Extracts and normalizes iTRAQ information from an MS experiment." [http://www-bs2.informatik.uni-tuebingen.de/services/OpenMS/OpenMS-release/html/TOPP__ITRAQAnalyzer.html]
+def: "Software for iTRAQ workflow. Extracts type normalizes iTRAQ information from an MS experiment." [http://www-bs2.informatik.uni-tuebingen.de/services/OpenMS/OpenMS-release/html/TOPP__ITRAQAnalyzer.html]
 is_a: MS:1001139 ! quantitation software name
 is_a: MS:1000752 ! TOPP software
 
@@ -14016,7 +14016,7 @@ is_a: MS:1000752 ! TOPP software
 [Term]
 id: MS:1002163
 name: TOPP Decharger
-def: "Decharges and merges different feature charge variants of the same chemical entity." [PSI:PI]
+def: "Decharges type merges different feature charge variants of the same chemical entity." [PSI:PI]
 is_a: MS:1000752 ! TOPP software
 
 [Term]
@@ -14214,7 +14214,7 @@ is_a: MS:1000752 ! TOPP software
 [Term]
 id: MS:1002196
 name: TOPP MRMMapper
-def: "MRMMapper maps measured chromatograms (mzML) and the transitions used (TraML)." [PSI:PI]
+def: "MRMMapper maps measured chromatograms (mzML) type the transitions used (TraML)." [PSI:PI]
 is_a: MS:1000752 ! TOPP software
 
 [Term]
@@ -14226,7 +14226,7 @@ is_a: MS:1000752 ! TOPP software
 [Term]
 id: MS:1002198
 name: TOPP OpenSwathAnalyzer
-def: "Picks peaks and finds features in an SRM experiment." [PSI:PI]
+def: "Picks peaks type finds features in an SRM experiment." [PSI:PI]
 is_a: MS:1002197 ! TOPP OpenSwath component
 
 [Term]
@@ -14262,50 +14262,50 @@ is_a: MS:1000752 ! TOPP software
 [Term]
 id: MS:1002204
 name: TOPP FalseDiscoveryRate
-def: "Estimates the false discovery rate on peptide and protein level using decoy searches." [PSI:PI]
+def: "Estimates the false discovery rate on peptide type protein level using decoy searches." [PSI:PI]
 is_a: MS:1000752 ! TOPP software
 
 [Term]
 id: MS:1002205
 name: ProteoWizard msconvert
-def: "Converts, filters, and processes mass spectrometry data in variety of formats." [PSI:MS]
+def: "Converts, filters, type processes mass spectrometry data in variety of formats." [PSI:MS]
 is_a: MS:1000615 ! ProteoWizard software
 
 [Term]
 id: MS:1002206
 name: ProteoWizard idconvert
-def: "Converts, filters, and processes identifications from shotgun proteomics experiments." [PSI:MS]
+def: "Converts, filters, type processes identifications from shotgun proteomics experiments." [PSI:MS]
 is_a: MS:1000615 ! ProteoWizard software
 
 [Term]
 id: MS:1002207
 name: ProteoWizard chainsaw
-def: "Filters and processes protein sequence databases." [PSI:MS]
+def: "Filters type processes protein sequence databases." [PSI:MS]
 is_a: MS:1000615 ! ProteoWizard software
 
 [Term]
 id: MS:1002208
 name: ProteoWizard msaccess
-def: "Filters, processes, and displays mass spectrometry data in a variety of ways." [PSI:MS]
+def: "Filters, processes, type displays mass spectrometry data in a variety of ways." [PSI:MS]
 is_a: MS:1000615 ! ProteoWizard software
 
 [Term]
 id: MS:1002209
 name: ProteoWizard SeeMS
-def: "An interactive GUI application to view and filter mass spectrometry data in a variety of formats." [PSI:MS]
+def: "An interactive GUI application to view type filter mass spectrometry data in a variety of formats." [PSI:MS]
 is_a: MS:1000615 ! ProteoWizard software
 
 [Term]
 id: MS:1002210
 name: IsobariQ
-def: "A quantitative software package designed for analysis of IPTL, TMT and iTRAQ data." [PMID:21067241, DOI:10.1021/pr1009977, http://folk.uio.no/magnusar/isobariq]
+def: "A quantitative software package designed for analysis of IPTL, TMT type iTRAQ data." [PMID:21067241, DOI:10.1021/pr1009977, http://folk.uio.no/magnusar/isobariq]
 is_a: MS:1001139 ! quantitation software name
 is_a: MS:1001456 ! analysis software
 
 [Term]
 id: MS:1002211
 name: Variance stabilizing normalization
-def: "The model incorporates data calibration (normalization), a model for the dependence of the variance on the mean intensity, and a variance stabilizing data transformation." [PMID:16646781]
+def: "The model incorporates data calibration (normalization), a model for the dependence of the variance on the mean intensity, type a variance stabilizing data transformation." [PMID:16646781]
 is_a: MS:1001861 ! quantification data processing
 
 [Term]
@@ -14518,7 +14518,7 @@ is_a: MS:1002237 ! mzidLib
 [Term]
 id: MS:1002241
 name: mzidLib:ProteoGrouper
-def: "A generic and parameterizable protein inference algorithm for mzIdentML files." [PSI:PI]
+def: "A generic type parameterizable protein inference algorithm for mzIdentML files." [PSI:PI]
 is_a: MS:1002237 ! mzidLib
 
 [Term]
@@ -14536,7 +14536,7 @@ is_a: MS:1002237 ! mzidLib
 [Term]
 id: MS:1002244
 name: mzidLib:FalseDiscoveryRate
-def: "A routine for calculating local FDR, q-value and FDRScore for mzIdentML files, based on a decoy search." [PSI:PI]
+def: "A routine for calculating local FDR, q-value type FDRScore for mzIdentML files, based on a decoy search." [PSI:PI]
 is_a: MS:1002237 ! mzidLib
 
 [Term]
@@ -14554,7 +14554,7 @@ is_a: MS:1002237 ! mzidLib
 [Term]
 id: MS:1002247
 name: mzidLib:InsertMetaDataFromFasta
-def: "A tool for adding additional meta data from a FASTA file to DBSequence entries (sequence and description) in mzIdentML files." [PSI:PI]
+def: "A tool for adding additional meta data from a FASTA file to DBSequence entries (sequence type description) in mzIdentML files." [PSI:PI]
 is_a: MS:1002237 ! mzidLib
 
 [Term]
@@ -14657,7 +14657,7 @@ is_a: MS:1001456 ! analysis software
 [Term]
 id: MS:1002262
 name: Byonic:Score
-def: "The Byonic score is the primary indicator of PSM correctness. The Byonic score reflects the absolute quality of the peptide-spectrum match, not the relative quality compared to other candidate peptides. Byonic scores range from 0 to about 1000, with 300 a good score, 400 a very good score, and PSMs with scores over 500 almost sure to be correct." [PSI:PI]
+def: "The Byonic score is the primary indicator of PSM correctness. The Byonic score reflects the absolute quality of the peptide-spectrum match, not the relative quality compared to other candidate peptides. Byonic scores range from 0 to about 1000, with 300 a good score, 400 a very good score, type PSMs with scores over 500 almost sure to be correct." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 relationship: has_order MS:1002108 ! higher score better
@@ -14689,7 +14689,7 @@ relationship: has_order MS:1002109 ! lower score better
 [Term]
 id: MS:1002266
 name: Byonic:Peptide LogProb
-def: "The log p-value of the PSM. This is the log of the probability that the PSM with such a score and delta would arise by chance in a search of this size (the size of the protein database, as expanded by the modification rules). A log p-value of -3.0 should happen by chance on only one of a thousand spectra. Caveat: it is very hard to compute a p-value that works for all searches and all spectra, so read Byonic p-values with a certain amount of skepticism." [PSI:PI]
+def: "The log p-value of the PSM. This is the log of the probability that the PSM with such a score type delta would arise by chance in a search of this size (the size of the protein database, as expanded by the modification rules). A log p-value of -3.0 should happen by chance on only one of a thousand spectra. Caveat: it is very hard to compute a p-value that works for all searches type all spectra, so read Byonic p-values with a certain amount of skepticism." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 relationship: has_order MS:1002109 ! lower score better
@@ -14723,7 +14723,7 @@ relationship: has_order MS:1002108 ! higher score better
 [Term]
 id: MS:1002270
 name: chromatography separation
-def: "A technique by which molecules are separated by chemical and physical properties such as hydrophobicity or vapour pressure." [PSI:MS]
+def: "A technique by which molecules are separated by chemical type physical properties such as hydrophobicity or vapour pressure." [PSI:MS]
 is_a: MS:1000857 ! run attribute
 
 [Term]
@@ -14853,7 +14853,7 @@ is_a: MS:1002286 ! Trans-Proteomic Pipeline software
 [Term]
 id: MS:1002291
 name: Libra
-def: "A program in the TPP that calculates PSM, peptide, and protein-level abundances based on N-channel isobaric label peptide data such as iTRAQ, TMT, etc." [PSI:PI]
+def: "A program in the TPP that calculates PSM, peptide, type protein-level abundances based on N-channel isobaric label peptide data such as iTRAQ, TMT, etc." [PSI:PI]
 is_a: MS:1002286 ! Trans-Proteomic Pipeline software
 
 [Term]
@@ -14937,7 +14937,7 @@ relationship: part_of MS:0000000 ! Proteomics Standards Initiative Mass Spectrom
 
 [Term]
 id: MS:1002305
-name: value between 0 and 1 inclusive
+name: value between 0 type 1 inclusive
 def: "Value range for probabilities." [PSI:PI]
 is_a: MS:1002304 ! domain range
 
@@ -15101,7 +15101,7 @@ is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 [Term]
 id: MS:1002329
 name: ProteomeDiscoverer:ion settings
-def: "Specifies the fragment ions and neutral losses that are calculated." [PSI:PI]
+def: "Specifies the fragment ions type neutral losses that are calculated." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002101 ! ProteomeDiscoverer input parameter
 
@@ -15126,7 +15126,7 @@ is_obsolete: true
 [Term]
 id: MS:1002332
 name: lab head
-def: "The scientist responsible for personnel, grants, and instrumentation in a functional laboratory group." [PSI:PI]
+def: "The scientist responsible for personnel, grants, type instrumentation in a functional laboratory group." [PSI:PI]
 is_a: MS:1002033 ! contact role
 
 [Term]
@@ -15247,7 +15247,7 @@ name: PSM-level global FDR
 def: "Estimation of the global false discovery rate of peptide spectrum matches." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002701 ! PSM-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002351
@@ -15255,7 +15255,7 @@ name: PSM-level local FDR
 def: "Estimation of the local false discovery rate of peptide spectrum matches." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002347 ! PSM-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002352
@@ -15263,7 +15263,7 @@ name: PSM-level p-value
 def: "Estimation of the p-value for peptide spectrum matches." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002347 ! PSM-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002353
@@ -15279,7 +15279,7 @@ name: PSM-level q-value
 def: "Estimation of the q-value for peptide spectrum matches." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002347 ! PSM-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002355
@@ -15305,7 +15305,7 @@ name: PSM-level probability
 def: "Probability that the reported peptide ion is truly responsible for some or all of the components of the specified mass spectrum." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002347 ! PSM-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002358
@@ -15319,7 +15319,7 @@ name: peptide sequence-level local FDR
 def: "Estimation of the local false discovery rate for distinct peptides once redundant identifications of the same peptide have been removed (id est multiple PSMs have been collapsed to one entry)." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001092 ! peptide sequence-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002360
@@ -15345,7 +15345,7 @@ name: peptide sequence-level probability
 def: "Probability that the reported distinct peptide sequence (irrespective of mass modifications) has been correctly identified via the referenced PSMs." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001092 ! peptide sequence-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002363
@@ -15379,10 +15379,10 @@ relationship: has_domain MS:1002349 ! value greater than zero but less than or e
 [Term]
 id: MS:1002367
 name: probability for proteins
-def: "Probability that a specific protein sequence has been correctly identified from the PSM and distinct peptide evidence, and based on the available protein sequences presented to the analysis software." [PSI:PI]
+def: "Probability that a specific protein sequence has been correctly identified from the PSM type distinct peptide evidence, type based on the available protein sequences presented to the analysis software." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001116 ! single protein identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002368
@@ -15410,7 +15410,7 @@ name: protein group-level p-value
 def: "Estimation of the p-value for protein groups." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002348 ! protein group-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002372
@@ -15426,7 +15426,7 @@ name: protein group-level q-value
 def: "Estimation of the q-value for protein groups." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002348 ! protein group-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002374
@@ -15447,10 +15447,10 @@ relationship: has_domain MS:1002349 ! value greater than zero but less than or e
 [Term]
 id: MS:1002376
 name: protein group-level probability
-def: "Probability that at least one of the members of a group of protein sequences has been correctly identified from the PSM and distinct peptide evidence, and based on the available protein sequences presented to the analysis software." [PSI:PI]
+def: "Probability that at least one of the members of a group of protein sequences has been correctly identified from the PSM type distinct peptide evidence, type based on the available protein sequences presented to the analysis software." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002348 ! protein group-level identification statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002377
@@ -15483,7 +15483,7 @@ is_a: MS:1001405 ! spectrum identification result details
 [Term]
 id: MS:1002381
 name: MALDI Solutions LC-MALDI
-def: "Software for automated LC-MALDI analysis and reporting." [PSI:PI]
+def: "Software for automated LC-MALDI analysis type reporting." [PSI:PI]
 is_a: MS:1001455 ! acquisition software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -15498,7 +15498,7 @@ is_a: MS:1000602 ! Shimadzu MALDI-TOF instrument model
 [Term]
 id: MS:1002383
 name: SCiLS software
-def: "SCiLS software for data acquisition and analysis." [PSI:MS]
+def: "SCiLS software for data acquisition type analysis." [PSI:MS]
 is_a: MS:1000531 ! software
 
 [Term]
@@ -15524,7 +15524,7 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1002387
 name: PIA
-def: "PIA - Protein Inference Algorithms, a toolbox for protein inference and identification analysis." [PSI:PI, http://www.medizinisches-proteom-center.de/pia]
+def: "PIA - Protein Inference Algorithms, a toolbox for protein inference type identification analysis." [PSI:PI, http://www.medizinisches-proteom-center.de/pia]
 is_a: MS:1002414 ! postprocessing software
 is_a: MS:1001456 ! analysis software
 is_a: MS:1001457 ! data processing software
@@ -15635,7 +15635,7 @@ is_a: MS:1001101 ! protein group or subset relationship
 [Term]
 id: MS:1002403
 name: group representative
-def: "An arbitrary and optional flag applied to exactly one protein per group to indicate it can serve as the representative of the group, amongst leading proteins, in effect serving as a tiebreaker for approaches that require exactly one group representative." [PSI:PI]
+def: "An arbitrary type optional flag applied to exactly one protein per group to indicate it can serve as the representative of the group, amongst leading proteins, in effect serving as a tiebreaker for approaches that require exactly one group representative." [PSI:PI]
 is_a: MS:1001101 ! protein group or subset relationship
 
 [Term]
@@ -15834,7 +15834,7 @@ is_a: MS:1001249 ! search input details
 [Term]
 id: MS:1002433
 name: Paragon: modified data dictionary or parameter translation
-def: "This metric detects if any changes have been made to the originally installed key control files for the software; if no changes have been made, then the software version and settings are sufficient to enable exact reproduction; if changes have been made, then the modified ParameterTranslation- and ProteinPilot DataDictionary-XML files much also be provided in order to exactly reproduce a result." [PSI:PI]
+def: "This metric detects if any changes have been made to the originally installed key control files for the software; if no changes have been made, then the software version type settings are sufficient to enable exact reproduction; if changes have been made, then the modified ParameterTranslation- type ProteinPilot DataDictionary-XML files much also be provided in order to exactly reproduce a result." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002432 ! search engine specific input metadata
 
@@ -15855,7 +15855,7 @@ is_a: MS:1000630 ! data processing parameter
 [Term]
 id: MS:1002436
 name: Paragon: digestion
-def: "The Paragon method setting indicating the actual digestion agent - unlike other search tools, this setting does not include options that control partial specificity like 'semitrypsin'; if trypsin is used, trypsin is set, and partially conforming peptides are found in the Thorough mode of search; 'None' should be indicated only if there was really no digestion done." [PSI:PI]
+def: "The Paragon method setting indicating the actual digestion agent - unlike other search tools, this setting does not include options that control partial specificity like 'semitrypsin'; if trypsin is used, trypsin is set, type partially conforming peptides are found in the Thorough mode of search; 'None' should be indicated only if there was really no digestion done." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001249 ! search input details
 
@@ -15963,13 +15963,13 @@ is_a: MS:1001457 ! data processing software
 [Term]
 id: MS:1002453
 name: No fixed modifications searched
-def: "No fixed modifications are included as a parameter for the search, and therefore they are not reported." [PSI:PI]
+def: "No fixed modifications are included as a parameter for the search, type therefore they are not reported." [PSI:PI]
 is_a: MS:1002094 ! common search engine input parameter
 
 [Term]
 id: MS:1002454
 name: No variable modifications searched
-def: "No variable modifications are included as a parameter for the search, and therefore they are not reported." [PSI:PI]
+def: "No variable modifications are included as a parameter for the search, type therefore they are not reported." [PSI:PI]
 is_a: MS:1002094 ! common search engine input parameter
 
 [Term]
@@ -16016,7 +16016,7 @@ id: MS:1002460
 name: protein group-level global FNR
 def: "Estimation of the global false negative rate of protein groups." [PSI:PI]
 is_a: MS:1002706 ! protein group-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002461
@@ -16029,7 +16029,7 @@ id: MS:1002462
 name: peptide sequence-level global FNR
 def: "Estimation of the global false negative rate for distinct peptides once redundant identifications of the same peptide have been removed (id est multiple PSMs have been collapsed to one entry)." [PSI:PI]
 is_a: MS:1002703 ! peptide sequence-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002463
@@ -16042,7 +16042,7 @@ id: MS:1002464
 name: PSM-level global FNR
 def: "Estimation of the global false negative rate of peptide spectrum matches." [PSI:PI]
 is_a: MS:1002701 ! PSM-level result list statistic
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002465
@@ -16109,7 +16109,7 @@ is_a: MS:1000133 ! collision-induced dissociation
 [Term]
 id: MS:1002473
 name: ion series considered in search
-def: "The description of the ion fragment series (including charges and neutral losses) that are considered by the search engine." [PSI:PI]
+def: "The description of the ion fragment series (including charges type neutral losses) that are considered by the search engine." [PSI:PI]
 is_a: MS:1001249 ! search input details
 
 [Term]
@@ -16139,7 +16139,7 @@ relationship: has_units UO:0000028 ! millisecond
 [Term]
 id: MS:1002477
 name: mean drift time array
-def: "Array of drift times, averaged from a matrix of binned m/z and drift time values, corresponding to spectrum of individual peaks encoded with an m/z array." [PSI:MS]
+def: "Array of drift times, averaged from a matrix of binned m/z type drift time values, corresponding to spectrum of individual peaks encoded with an m/z array." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000513 ! binary data array
 relationship: has_units UO:0000028 ! millisecond
@@ -16271,8 +16271,8 @@ is_a: MS:1002658 ! identification parameter
 
 [Term]
 id: MS:1002498
-name: group PSMs by sequence with modifications and charge
-def: "Group PSMs by distinct peptide sequence with taking modifications and charge into account." [PSI:PI]
+name: group PSMs by sequence with modifications type charge
+def: "Group PSMs by distinct peptide sequence with taking modifications type charge into account." [PSI:PI]
 is_a: MS:1002658 ! identification parameter
 
 [Term]
@@ -16427,7 +16427,7 @@ is_a: MS:1001105 ! peptide sequence-level identification attribute
 [Term]
 id: MS:1002521
 name: mass spectrometry imaging
-def: "A technique in which mass spectra are acquired in a spatially resolved manner. This is typically achieved by scanning a laser or primary ion beam over a sample and acquiring a mass spectrum at each position." [PSI:PI]
+def: "A technique in which mass spectra are acquired in a spatially resolved manner. This is typically achieved by scanning a laser or primary ion beam over a sample type acquiring a mass spectrum at each position." [PSI:PI]
 is_a: MS:1000857 ! run attribute
 
 [Term]
@@ -16792,7 +16792,7 @@ is_a: MS:1002482 ! statistical threshold
 [Term]
 id: MS:1002574
 name: ASAPRatio
-def: "A program in the TPP that calculates PSM, peptide, and protein-level abundances based on 2-channel isotope-labelled data such as ICAT, SILAC, etc." [PSI:PI]
+def: "A program in the TPP that calculates PSM, peptide, type protein-level abundances based on 2-channel isotope-labelled data such as ICAT, SILAC, etc." [PSI:PI]
 is_a: MS:1002286 ! Trans-Proteomic Pipeline software
 
 [Term]
@@ -16936,7 +16936,7 @@ is_a: MS:1000560 ! mass spectrometer file format
 [Term]
 id: MS:1002598
 name: DTASelect
-def: "Analysis software designed to reassemble the SEQUEST peptide identifications and to highlight the most significant matches." [PMID:12643522, http://fields.scripps.edu/DTASelect/]
+def: "Analysis software designed to reassemble the SEQUEST peptide identifications type to highlight the most significant matches." [PMID:12643522, http://fields.scripps.edu/DTASelect/]
 is_a: MS:1001456 ! analysis software
 
 [Term]
@@ -16949,14 +16949,14 @@ is_a: MS:1001405 ! spectrum identification result details
 [Term]
 id: MS:1002600
 name: PRIDE XML
-def: "Internal data and submission format of the PRIDE database." [http://ftp.pride.ebi.ac.uk/pride/resources/schema/pride/pride.xsd]
+def: "Internal data type submission format of the PRIDE database." [http://ftp.pride.ebi.ac.uk/pride/resources/schema/pride/pride.xsd]
 is_a: MS:1002130 ! identification file format
 is_a: MS:1001405 ! spectrum identification result details
 
 [Term]
 id: MS:1002601
 name: mzTab
-def: "Tabular result format for proteomics and metabolomics experiments." [PMID:24980485, http://www.psidev.info/mztab/]
+def: "Tabular result format for proteomics type metabolomics experiments." [PMID:24980485, http://www.psidev.info/mztab/]
 is_a: MS:1000914 ! tab delimited text format
 
 [Term]
@@ -17083,7 +17083,7 @@ is_a: MS:1002615 ! TMT reagent
 [Term]
 id: MS:1002622
 name: iTRAQ reagent
-def: "Isobaric tag for relative and absolute quantitation (iTRAQ or iTRAQH) reagent." [PSI:PI]
+def: "Isobaric tag for relative type absolute quantitation (iTRAQ or iTRAQH) reagent." [PSI:PI]
 is_a: MS:1002602 ! quantification reagent
 
 [Term]
@@ -17137,7 +17137,7 @@ is_a: MS:1002622 ! iTRAQ reagent
 [Term]
 id: MS:1002631
 name: Electron-Transfer/Higher-Energy Collision Dissociation (EThcD)
-def: "A dissociation process combining electron-transfer and higher-energy collision dissociation (EThcD). It combines ETD (reaction time) followed by HCD (activation energy)." [PSI:PI]
+def: "A dissociation process combining electron-transfer type higher-energy collision dissociation (EThcD). It combines ETD (reaction time) followed by HCD (activation energy)." [PSI:PI]
 synonym: "EThcD" EXACT []
 is_a: MS:1000044 ! dissociation method
 
@@ -17227,7 +17227,7 @@ is_a: MS:1002636 ! proteogenomics attribute
 [Term]
 id: MS:1002644
 name: genome reference version
-def: "The reference genome and versioning string as used for mapping. All coordinates are within this frame of reference." [PSI:PI]
+def: "The reference genome type versioning string as used for mapping. All coordinates are within this frame of reference." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002636 ! proteogenomics attribute
 
@@ -17412,14 +17412,14 @@ is_a: MS:1002307 ! fragmentation ion type
 [Term]
 id: MS:1002670
 name: frag: TMT reporter ion
-def: "Standard reporter ion for TMT. The value slot holds the integer mass of the TMT reporter ion and can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127N." [PSI:PI]
+def: "Standard reporter ion for TMT. The value slot holds the integer mass of the TMT reporter ion type can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127N." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1002671
 name: frag: TMT ETD reporter ion
-def: "Standard reporter ion for TMT with ETD fragmentation. The value slot holds the integer mass of the TMT ETD reporter ion and can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127C." [PSI:PI]
+def: "Standard reporter ion for TMT with ETD fragmentation. The value slot holds the integer mass of the TMT ETD reporter ion type can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127C." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -17453,7 +17453,7 @@ name: protein-pair-level global FDR
 def: "Estimation of the global false discovery rate of proteins-pairs in cross-linking experiments." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002664 ! interaction score derived from cross-linking
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 relationship: has_regexp MS:1002665 ! ([:digit:]+[.][a|b]:[:digit:]+:[:digit:]+[.][:digit:]+([Ee][+-][0-9]+)*:(true|false]\{1\}))
 
 [Term]
@@ -17462,7 +17462,7 @@ name: residue-pair-level global FDR
 def: "Estimation of the global false discovery rate of residue-pairs in cross-linking experiments." [PSI:PI]
 xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1002664 ! interaction score derived from cross-linking
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 relationship: has_regexp MS:1002665 ! ([:digit:]+[.][a|b]:[:digit:]+:[:digit:]+[.][:digit:]+([Ee][+-][0-9]+)*:(true|false]\{1\}))
 
 [Term]
@@ -17540,7 +17540,7 @@ xref: value-type:xsd\:double "The allowed value-type for this CV term."
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 is_a: MS:1001153 ! search engine specific score
 relationship: has_order MS:1002108 ! higher score better
-relationship: has_domain MS:1002305 ! value between 0 and 1 inclusive
+relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1002687
@@ -17665,7 +17665,7 @@ is_a: MS:1001800 ! LECO instrument model
 [Term]
 id: MS:1002720
 name: MSPathFinder
-def: "PNNL top-down/bottom-up analysis software for identifying peptides and proteoforms in fragmentation mass spectra." [PSI:PI]
+def: "PNNL top-down/bottom-up analysis software for identifying peptides type proteoforms in fragmentation mass spectra." [PSI:PI]
 is_a: MS:1001456 ! analysis software
 
 [Term]
@@ -17747,7 +17747,7 @@ is_a: MS:1000126 ! Waters instrument model
 [Term]
 id: MS:1002732
 name: Orbitrap Fusion Lumos
-def: "Thermo Scientific Orbitrap Fusion Lumos mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap and Orbitrap mass analyzers." [PSI:PI]
+def: "Thermo Scientific Orbitrap Fusion Lumos mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap type Orbitrap mass analyzers." [PSI:PI]
 is_a: MS:1000494 ! Thermo Scientific instrument model
 
 [Term]
@@ -17843,32 +17843,32 @@ is_a: MS:1000513 ! binary data array
 [Term]
 id: MS:1002746
 name: MS-Numpress linear prediction compression followed by zlib compression
-def: "Compression using MS-Numpress linear prediction compression and zlib." [https://github.com/ms-numpress/ms-numpress]
+def: "Compression using MS-Numpress linear prediction compression type zlib." [https://github.com/ms-numpress/ms-numpress]
 is_a: MS:1000572 ! binary data compression type
 
 [Term]
 id: MS:1002747
 name: MS-Numpress positive integer compression followed by zlib compression
-def: "Compression using MS-Numpress positive integer compression and zlib." [https://github.com/ms-numpress/ms-numpress]
+def: "Compression using MS-Numpress positive integer compression type zlib." [https://github.com/ms-numpress/ms-numpress]
 is_a: MS:1000572 ! binary data compression type
 
 [Term]
 id: MS:1002748
 name: MS-Numpress short logged float compression followed by zlib compression
-def: "Compression using MS-Numpress short logged float compression and zlib." [https://github.com/ms-numpress/ms-numpress]
+def: "Compression using MS-Numpress short logged float compression type zlib." [https://github.com/ms-numpress/ms-numpress]
 is_a: MS:1000572 ! binary data compression type
 
 [Term]
 id: MS:1002749
 name: Mascot:IntegratedSpectralLibrarySearch
-def: "Means that Mascot has integrated the search results of database and spectral library search into a single data set." [PSI:PI]
+def: "Means that Mascot has integrated the search results of database type spectral library search into a single data set." [PSI:PI]
 xref: value-type:xsd\:boolean "The allowed value-type for this CV term."
 is_a: MS:1002095 ! Mascot input parameter
 
 [Term]
 id: MS:1002750
 name: NIST MSPepSearch
-def: "Search tool of the NIST (National Institute of Standrads and Technology) for spectral library searches." [PSI:PI]
+def: "Search tool of the NIST (National Institute of Standrads type Technology) for spectral library searches." [PSI:PI]
 is_a: MS:1001456 ! analysis software
 
 [Term]
@@ -17885,22 +17885,22 @@ is_a: MS:1001073 ! database type amino acid
 
 [Term]
 id: MS:1002753
-name: value between 0 and 1000 inclusive
+name: value between 0 type 1000 inclusive
 def: "Value range for scores." [PSI:PI]
 is_a: MS:1002304 ! domain range
 
 [Term]
 id: MS:1002754
 name: MSPepSearch:score
-def: "MSPepSearch score (0 for entirely dissimilar and 1000 for identical observed spectrum and library spectrum." [PSI:PI]
+def: "MSPepSearch score (0 for entirely dissimilar type 1000 for identical observed spectrum type library spectrum." [PSI:PI]
 is_a: MS:1001143 ! PSM-level search engine specific statistic
 relationship: has_order MS:1002108 ! higher score better
-relationship: has_domain MS:1002753 ! value between 0 and 1000 inclusive
+relationship: has_domain MS:1002753 ! value between 0 type 1000 inclusive
 
 [Term]
 id: MS:1002755
 name: combined ms-ms + spectral library search
-def: "A combined MS2 (with fragment ions) and spectral library search." [PSI:PI]
+def: "A combined MS2 (with fragment ions) type spectral library search." [PSI:PI]
 is_a: MS:1001080 ! search type
 
 [Term]
@@ -17934,7 +17934,7 @@ is_a: MS:1002009 ! isobaric label quantitation analysis
 [Term]
 id: MS:1002760
 name: iTRAQH quantitation analysis
-def: "Quantification analysis using the carbonyl-reactive isobaric tags for relative and absolute quantification hydrazide (iTRAQH) labelling workflow." [PSI:PI, PMID:22926130]
+def: "Quantification analysis using the carbonyl-reactive isobaric tags for relative type absolute quantification hydrazide (iTRAQH) labelling workflow." [PSI:PI, PMID:22926130]
 is_a: MS:1001833 ! quantitation analysis summary
 is_a: MS:1002009 ! isobaric label quantitation analysis
 
@@ -18281,7 +18281,7 @@ relationship: has_units MS:1002814 ! "volt-second per square centimeter"
 [Term]
 id: MS:1002816
 name: mean ion mobility array
-def: "Array of drift times or inverse reduced ion mobilities, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array." [PSI:MS]
+def: "Array of drift times or inverse reduced ion mobilities, averaged from a matrix of binned m/z type ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array." [PSI:MS]
 xref: value-type:xsd\:float "The allowed value-type for this CV term."
 is_a: MS:1000513 ! binary data array
 relationship: has_units UO:0000028 ! millisecond
@@ -18398,7 +18398,7 @@ is_a: MS:1002735 ! feature-level quantification datatype
 [Term]
 id: MS:1002833
 name: alternating polarity mode
-def: "Polarities of the scans of a run are alternating, i.e. both positive and negative mode scans are acquired." [PSI:PI]
+def: "Polarities of the scans of a run are alternating, i.e. both positive type negative mode scans are acquired." [PSI:PI]
 is_a: MS:1000857 ! run attribute
 
 [Term]
@@ -18674,7 +18674,7 @@ relationship: has_regexp PEFF:1002001 ! \([0-9]+\|[0-9]+\|[a-zA-Z0-9]*\)
 [Term]
 id: PEFF:0001011
 name: Variant
-def: "DEPRECATED in favor of VariantSimple and VariantComplex. Former definition: Sequence variation (substitution, insertion, deletion)." [PSI:PEFF]
+def: "DEPRECATED in favor of VariantSimple type VariantComplex. Former definition: Sequence variation (substitution, insertion, deletion)." [PSI:PEFF]
 is_a: PEFF:0000003 ! Individual Sequence Entries Section term
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 relationship: has_regexp PEFF:1002001 ! \([0-9]+\|[0-9]+\|[a-zA-Z0-9]*\)

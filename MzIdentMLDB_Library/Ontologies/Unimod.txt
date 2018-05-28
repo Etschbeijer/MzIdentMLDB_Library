@@ -27,7 +27,7 @@ xref: spec_1_hidden "0"
 xref: spec_1_site "K"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Multiple"
-xref: spec_1_misc_notes "PT and GIST acetyl light"
+xref: spec_1_misc_notes "PT type GIST acetyl light"
 xref: spec_2_group "2"
 xref: spec_2_hidden "0"
 xref: spec_2_site "N-term"
@@ -212,7 +212,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:5
 name: Carbamyl
 def: "Carbamylation." [PMID:12203680, RESID:AA0343, PMID:10978403, RESID:AA0332, URL:http\://www.ionsource.com/Card/carbam/carbam.htm, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=5]
-comment: Carbamylation is an irreversible process of non-enzymatic modification of proteins by the breakdown products of urea isocyanic acid reacts with the N-term of a proteine or side chains of lysine and arginine residues.
+comment: Carbamylation is an irreversible process of non-enzymatic modification of proteins by the breakdown products of urea isocyanic acid reacts with the N-term of a proteine or side chains of lysine type arginine residues.
 xref: record_id "5"
 xref: delta_mono_mass "43.005814"
 xref: delta_avge_mass "43.0247"
@@ -719,7 +719,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:26
 name: Pyro-carbamidomethyl
 def: "S-carbamoylmethylcysteine cyclization (N-terminus)." [PMID:12643538, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=26]
-comment: Cyclisation of N-term Carbamidomethyl-Cys or Carboxymethyl-Cys. The delta is relative to Cys. For a delta relative to alkylated Cys, see Ammonia-loss and Dehydrated.
+comment: Cyclisation of N-term Carbamidomethyl-Cys or Carboxymethyl-Cys. The delta is relative to Cys. For a delta relative to alkylated Cys, see Ammonia-loss type Dehydrated.
 synonym: "Carboxymethyl-Cys cyclization (N-terminus) Carbamidomethyl-Cys cyclization (N-terminus)" []
 xref: record_id "26"
 xref: delta_mono_mass "39.994915"
@@ -1499,7 +1499,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:46
 name: PyridoxalPhosphate
 def: "Pyridoxal phosphate." [RESID:AA0119, FindMod:PLP, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=46]
-comment: The co-enzyme derivative of vitamin B6. Forms Schiff\'s bases of substrate amino acids during catalysis of transamination, decarboxylation and racemisation reactions.
+comment: The co-enzyme derivative of vitamin B6. Forms Schiff\'s bases of substrate amino acids during catalysis of transamination, decarboxylation type racemisation reactions.
 xref: record_id "46"
 xref: delta_mono_mass "229.014009"
 xref: delta_avge_mass "229.1266"
@@ -1584,7 +1584,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:49
 name: Phosphopantetheine
 def: "Phosphopantetheine." [RESID:AA0150, FindMod:PPAN, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=49]
-comment: Protein which contains at least one phosphopantetheine as the prosthetic group. In acyl carrier proteins (ACP) for example, it serves as a \'swinging arm\' for the attachment of activated fatty acid and amino-acid groups.
+comment: Protein which contains at least one phosphopantetheine as the prosthetic group. In acyl carrier proteins (ACP) for example, it serves as a \'swinging arm\' for the attachment of activated fatty acid type amino-acid groups.
 xref: record_id "49"
 xref: delta_mono_mass "340.085794"
 xref: delta_avge_mass "340.3330"
@@ -1686,7 +1686,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:53
 name: HNE
 def: "4-hydroxynonenal (HNE)." [PMID:11327326, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=53]
-comment: A lipid-type modification. HNE forms a Michael addition product on Cysteine, Histidine and Lysines. Unusually, it doesn\'t replace a hydrogen on the amino acid side chain.
+comment: A lipid-type modification. HNE forms a Michael addition product on Cysteine, Histidine type Lysines. Unusually, it doesn\'t replace a hydrogen on the amino acid side chain.
 xref: record_id "53"
 xref: delta_mono_mass "156.115030"
 xref: delta_avge_mass "156.2221"
@@ -2726,7 +2726,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:126
 name: Xlink:DTSSP[88]
-def: "Cleaved and reduced DSP/DTSSP crosslinker." [URL:https\://tools.thermofisher.com/content/sfs/manuals/MAN0011280_DTSSP_DSP_UG.pdf, PMID:322714, PMID:3155470, PMID:957432, PMID:8457554, PMID:11710128, PMID:1262347, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=126]
+def: "Cleaved type reduced DSP/DTSSP crosslinker." [URL:https\://tools.thermofisher.com/content/sfs/manuals/MAN0011280_DTSSP_DSP_UG.pdf, PMID:322714, PMID:3155470, PMID:957432, PMID:8457554, PMID:11710128, PMID:1262347, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=126]
 comment: Can also be the product of reaction with EZ-Link Sulfo-NHS-SS-Biotin (Sulfosuccinimidyl 2-(biotinamido)-ethyl-1, 3-dithiopropionate) followed by reduction with DTT.
 synonym: "(Was Thioacyl)" []
 xref: record_id "126"
@@ -4049,8 +4049,8 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:176
 name: BHT
-def: "Michael addition of BHT quinone methide to Cysteine and Lysine." [PMID:9448752, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=176]
-comment: BHT metabolism has been studied in rats and mice in relation to tumor promotion.
+def: "Michael addition of BHT quinone methide to Cysteine type Lysine." [PMID:9448752, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=176]
+comment: BHT metabolism has been studied in rats type mice in relation to tumor promotion.
 synonym: "Butylated Hydroxytoluene" []
 xref: record_id "176"
 xref: delta_mono_mass "218.167065"
@@ -4086,7 +4086,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:178
 name: DAET
 def: "Phosphorylation to amine thiol." [PMID:12216740, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=178]
-comment: DAET = 2-(dimethylamino)ethanethiol; The phosphorylation to amine is the beta elimination of phosphate and Michael addition of 2-(dimethylamino)ethanethiol to the site.
+comment: DAET = 2-(dimethylamino)ethanethiol; The phosphorylation to amine is the beta elimination of phosphate type Michael addition of 2-(dimethylamino)ethanethiol to the site.
 synonym: "b-elimination thiol derivatization" []
 xref: record_id "178"
 xref: delta_mono_mass "87.050655"
@@ -4187,7 +4187,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:187
 name: 2HPG
 def: "Bis(hydroxphenylglyoxal) arginine." [PMID:11698400, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=187]
-comment: OH-PGO and PGO react with arginine at a stoichiometry of 2:1.
+comment: OH-PGO type PGO react with arginine at a stoichiometry of 2:1.
 xref: record_id "187"
 xref: delta_mono_mass "282.052824"
 xref: delta_avge_mass "282.2476"
@@ -4703,7 +4703,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:214
 name: iTRAQ4plex
-def: "Representative mass and accurate mass for 116 & 117." [URL:http\://docs.appliedbiosystems.com/pebiodocs/04351918.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=214]
+def: "Representative mass type accurate mass for 116 & 117." [URL:http\://docs.appliedbiosystems.com/pebiodocs/04351918.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=214]
 comment: Different channels have the same nominal mass but slightly different exact masses. Use this value for all channels for quantitation purposes. mTRAQ heavy is identical to iTRAQ4plex 117.
 synonym: "AKA iTRAQ4plex116/7 Applied Biosystems iTRAQ(TM) multiplexed quantitation chemistry" []
 xref: record_id "214"
@@ -4856,7 +4856,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:255
 name: Delta:H(4)C(2)
 def: "Acetaldehyde +28." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=255]
-comment: Reduction of Schiff base formed between K amino group and acetaldehyde.
+comment: Reduction of Schiff base formed between K amino group type acetaldehyde.
 xref: record_id "255"
 xref: delta_mono_mass "28.031300"
 xref: delta_avge_mass "28.0532"
@@ -5069,7 +5069,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:264
 name: PET
 def: "Phosphorylation to pyridyl thiol." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=264]
-comment: PET = 2-[4-pyridyl]ethanethiol. This modification is a chemical derivative, based on a alkaline catalysed beta-elimination of phosphoserines and phosphothreonines and subsequent 1,4-addition of 2-[4-pyridine]ethanethiol. These modified serines and threonines produce in MS/MS a characteristic fragment which can be used for precursor-ion-scan experiments.
+comment: PET = 2-[4-pyridyl]ethanethiol. This modification is a chemical derivative, based on a alkaline catalysed beta-elimination of phosphoserines type phosphothreonines type subsequent 1,4-addition of 2-[4-pyridine]ethanethiol. These modified serines type threonines produce in MS/MS a characteristic fragment which can be used for precursor-ion-scan experiments.
 synonym: "b-elimination PET derivatisation" []
 xref: record_id "264"
 xref: delta_mono_mass "121.035005"
@@ -5601,19 +5601,19 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "C-term"
 xref: spec_1_position "Protein C-term"
 xref: spec_1_classification "Chemical derivative"
-xref: spec_1_misc_notes "EDC-coupled modification of D, E and C-terminus"
+xref: spec_1_misc_notes "EDC-coupled modification of D, E type C-terminus"
 xref: spec_2_group "2"
 xref: spec_2_hidden "1"
 xref: spec_2_site "D"
 xref: spec_2_position "Anywhere"
 xref: spec_2_classification "Chemical derivative"
-xref: spec_2_misc_notes "EDC-coupled modification of D, E and C-terminus"
+xref: spec_2_misc_notes "EDC-coupled modification of D, E type C-terminus"
 xref: spec_3_group "3"
 xref: spec_3_hidden "1"
 xref: spec_3_site "E"
 xref: spec_3_position "Anywhere"
 xref: spec_3_classification "Chemical derivative"
-xref: spec_3_misc_notes "EDC-coupled modification of D, E and C-terminus"
+xref: spec_3_misc_notes "EDC-coupled modification of D, E type C-terminus"
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -5663,7 +5663,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:292
 name: IodoU-AMP
 def: "(Iodo)-uracil MP." [PMID:11567090, PMID:11112526, PMID:6540775, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=292]
-comment: One note about this chemistry is that for W you have to take care of O2 big time (and extract the I-uracil monophosphate with organics to get rid of residual iodide).
+comment: One note about this chemistry is that for W you have to take care of O2 big time (type extract the I-uracil monophosphate with organics to get rid of residual iodide).
 synonym: "UV induced linkage of Iodo-U-amp with WFY" []
 xref: record_id "292"
 xref: delta_mono_mass "322.020217"
@@ -6436,7 +6436,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:323
 name: Xlink:B10621
-def: "Bis-((N-iodoacetyl)piperazinyl)sulfonerhodamine." [URL:https\://www.thermofisher.com/us/en/home/references/molecular-probes-the-handbook/crosslinking-and-photoactivatable-reagents/chemical-crosslinking-reagents.html#head2, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=323]
+def: "Bis-((N-iodoacetyl)piperazinyl)sulfonerhodamine." [URL:https\://www.thermofisher.com/us/en/home/references/molecular-probes-the-handbook/crosslinking-type-photoactivatable-reagents/chemical-crosslinking-reagents.html#head2, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=323]
 comment: Discontinued Invitrogen X-link reagent.
 synonym: "BSR monolink" []
 xref: record_id "323"
@@ -6459,7 +6459,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:324
 name: Xlink:DTBP[87]
-def: "Cleaved and reduced DTBP crosslinker." [PMID:770170, URL:http\://tools.thermofisher.com/content/sfs/manuals/MAN0011314_ImidoesterCrsLnk_DMA_DMP_DMS_DTBP_UG.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=324]
+def: "Cleaved type reduced DTBP crosslinker." [PMID:770170, URL:http\://tools.thermofisher.com/content/sfs/manuals/MAN0011314_ImidoesterCrsLnk_DMA_DMP_DMS_DTBP_UG.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=324]
 comment: Imidoester cross-linker.
 synonym: "dimethyl 3,3'-dithiobispropionimidate" []
 xref: record_id "324"
@@ -6693,7 +6693,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:335
 name: HNE+Delta:H(2)
 def: "Reduced 4-Hydroxynonenal." [PMID:11910026, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=335]
-comment: Michael addition adduct of 4-hydroxynonenal with histidine, cystein and lysine residues stabilized by reduction with NaBH4.
+comment: Michael addition adduct of 4-hydroxynonenal with histidine, cystein type lysine residues stabilized by reduction with NaBH4.
 xref: record_id "335"
 xref: delta_mono_mass "158.130680"
 xref: delta_avge_mass "158.2380"
@@ -7206,7 +7206,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:364
 name: ICPL:13C(6)
 def: "Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, heavy form." [URL:http\://www.bdal.de/life-science-tools/care-consumables-more/icpl-kit.html, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=364]
-comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling and Lys-specific labeling is applied.
+comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling type Lys-specific labeling is applied.
 xref: record_id "364"
 xref: delta_mono_mass "111.041593"
 xref: delta_avge_mass "111.0500"
@@ -7240,7 +7240,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:365
 name: ICPL
 def: "Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, light form." [URL:http\://www.bdal.de/life-science-tools/care-consumables-more/icpl-kit.html, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=365]
-comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling and Lys-specific labeling is applied.
+comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling type Lys-specific labeling is applied.
 xref: record_id "365"
 xref: delta_mono_mass "105.021464"
 xref: delta_avge_mass "105.0941"
@@ -7620,7 +7620,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:387
 name: Phycocyanobilin
 def: "Phycocyanobilin." [RESID:AA0258, RESID:AA0131, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=387]
-comment: Phycocyanobilin and phycobiliviolin have different structures but the same empirical formula.
+comment: Phycocyanobilin type phycobiliviolin have different structures but the same empirical formula.
 synonym: "phycobiliviolin" []
 xref: record_id "387"
 xref: delta_mono_mass "586.279135"
@@ -9604,7 +9604,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:498
 name: BHTOH
 def: "Michael addition of t-butyl hydroxylated BHT (BHTOH) to C, H or K." [PMID:16533022, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=498]
-comment: BHTOH is formed upon metabolism of BHT with P450 enzymes. The BHTOH is further metabolized to its quinone methide (electrophile) which reacts with -SH and -NH2 groups.
+comment: BHTOH is formed upon metabolism of BHT with P450 enzymes. The BHTOH is further metabolized to its quinone methide (electrophile) which reacts with -SH type -NH2 groups.
 synonym: "t-butyl hydroxylated BHT" []
 xref: record_id "498"
 xref: delta_mono_mass "234.161980"
@@ -9914,7 +9914,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:514
 name: PropylNAGthiazoline
 def: "Propyl-1,2-dideoxy-2\'-methyl-alpha-D-glucopyranoso-[2,1-d]-Delta2\'-thiazoline." [PMID:15795231, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=514]
-comment: In a recent publication (see reference), we have shown that family 84 glycoside hydrolases contain a deep pocket beneath the 2-acetamido group of its substrate (N-acetyl-glucosamine). With this strucual feature in mind, we have designed a specific inhibitor that contains a chloride group appended to the end of the propyl chain on a known inhibitor termed propyl-NAG-thiazoline. We have shown kinetically that this molecule is a potent suicide inhibitor of this enzyme famiy and now wish to know the precise residue which is acting as the nucleophile to dispace the choride atom. We have included all residues that are in the vacinity of the chloride atom that could potentially act in a nucleophilic manner.
+comment: In a recent publication (see reference), we have shown that family 84 glycoside hydrolases contain a deep pocket beneath the 2-acetamido group of its substrate (N-acetyl-glucosamine). With this strucual feature in mind, we have designed a specific inhibitor that contains a chloride group appended to the end of the propyl chain on a known inhibitor termed propyl-NAG-thiazoline. We have shown kinetically that this molecule is a potent suicide inhibitor of this enzyme famiy type now wish to know the precise residue which is acting as the nucleophile to dispace the choride atom. We have included all residues that are in the vacinity of the chloride atom that could potentially act in a nucleophilic manner.
 xref: record_id "514"
 xref: delta_mono_mass "232.064354"
 xref: delta_avge_mass "232.2768"
@@ -10081,7 +10081,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:525
 name: CLIP_TRAQ_2
 def: "CLIP_TRAQ_2." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=525]
-comment: CLIP-TRAQ-2 H(17) C(10) C13 N(3) O(4) is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 141.0983 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 113 or 114 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. and Overall, C.M. ; in preparation).
+comment: CLIP-TRAQ-2 H(17) C(10) C13 N(3) O(4) is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 141.0983 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 113 or 114 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. type Overall, C.M. ; in preparation).
 synonym: "CLIP_TRAQ_double" []
 xref: record_id "525"
 xref: delta_mono_mass "141.098318"
@@ -10375,7 +10375,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:536
 name: CLIP_TRAQ_3
 def: "CLIP_TRAQ_3." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=536]
-comment: CLIP_TRAQ_3 (H(20) C(11) C13 N(3) O(4) is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 155.1 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 127 or 128 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. and Overall, C.M. ; in preparation).
+comment: CLIP_TRAQ_3 (H(20) C(11) C13 N(3) O(4) is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 155.1 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 127 or 128 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. type Overall, C.M. ; in preparation).
 xref: record_id "536"
 xref: delta_mono_mass "271.148736"
 xref: delta_avge_mass "271.2976"
@@ -10408,7 +10408,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:537
 name: CLIP_TRAQ_4
 def: "CLIP_TRAQ_4." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=537]
-comment: CLIP_TRAQ_4 is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 128.1 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 100 or 101 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. and Overall, C.M. ; in preparation).
+comment: CLIP_TRAQ_4 is an in-house made compound that reacts with primary amines through a N-hydroxysuccinimide group leading to a 128.1 Da mass shift (monoisotopic) in MS mode. The reporter ion in MS/MS mode can either be 100 or 101 m/z depending on the position of isotopic C13 in the molecule. (Fahlman, R. type Overall, C.M. ; in preparation).
 xref: record_id "537"
 xref: delta_mono_mass "244.101452"
 xref: delta_avge_mass "244.2292"
@@ -13446,7 +13446,7 @@ id: UNIMOD:685
 name: NA-LNO2
 def: "Nitroalkylation by Nitro Linoleic Acid." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=685]
 comment: Reversible post-translational modification of proteins by nitrated fatty acids.
-synonym: "Michael addition of nitro-linoleic acid to Cys and His" []
+synonym: "Michael addition of nitro-linoleic acid to Cys type His" []
 xref: record_id "685"
 xref: delta_mono_mass "325.225309"
 xref: delta_avge_mass "325.4430"
@@ -13474,7 +13474,7 @@ id: UNIMOD:686
 name: NA-OA-NO2
 def: "Nitroalkylation by Nitro Oleic Acid." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=686]
 comment: Reversible post-translational modification of proteins by nitrated fatty acids.
-synonym: "Michael addition of nitro-oleic acid to Cys and His" []
+synonym: "Michael addition of nitro-oleic acid to Cys type His" []
 xref: record_id "686"
 xref: delta_mono_mass "327.240959"
 xref: delta_avge_mass "327.4589"
@@ -13501,7 +13501,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:687
 name: ICPL:2H(4)
 def: "Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, medium form." [URL:http\://www.bdal.de/life-science-tools/care-consumables-more/icpl-kit.html, PMID:15602776, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=687]
-comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling and Lys-specific labeling is applied.
+comment: Attention: As the digest is typically applied AFTER ICPL_light/heavy labeling, only ProteinN-term labeling type Lys-specific labeling is applied.
 xref: record_id "687"
 xref: delta_mono_mass "109.046571"
 xref: delta_avge_mass "109.1188"
@@ -13636,7 +13636,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:720
 name: HNE-Delta:H(2)O
 def: "Dehydrated 4-hydroxynonenal." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=720]
-comment: Mass Spectroscopic Characterization of Protein Modification by 4-Hydroxy-2-(E)-nonenal and 4-Oxo-2-(E)-nonenal.
+comment: Mass Spectroscopic Characterization of Protein Modification by 4-Hydroxy-2-(E)-nonenal type 4-Oxo-2-(E)-nonenal.
 xref: record_id "720"
 xref: delta_mono_mass "138.104465"
 xref: delta_avge_mass "138.2069"
@@ -13668,7 +13668,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:721
 name: 4-ONE
 def: "4-Oxononenal (ONE)." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=721]
-comment: Covalent adduction of nucleophilic amino acids by 4-hydroxynonenal and 4-oxononenal.
+comment: Covalent adduction of nucleophilic amino acids by 4-hydroxynonenal type 4-oxononenal.
 xref: record_id "721"
 xref: delta_mono_mass "154.099380"
 xref: delta_avge_mass "154.2063"
@@ -13959,7 +13959,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:730
 name: iTRAQ8plex
-def: "Representative mass and accurate mass for 113, 114, 116 & 117." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=730]
+def: "Representative mass type accurate mass for 113, 114, 116 & 117." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=730]
 comment: Other 4 channels have the same nominal mass but slightly different exact mass. For quantitation purposes, use this entry for all channels.
 synonym: "Applied Biosystems iTRAQ(TM) multiplexed quantitation chemistry AKA iTRAQ8plex:13C(7)15N(1)" []
 xref: record_id "730"
@@ -14063,7 +14063,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:734
 name: Ethanolamine
 def: "Carboxyl modification with ethanolamine." [PMID:2, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=734]
-comment: Carbodiimide mediated blocking of free carboxylic acids (Asp/Glu sidechains and C-termini) with ethanolamine; reaction yields an amide-bond between the carboxylic acid of the peptide/protein and the primary amine of ethanolamine; reaction irreversibly modifies carboxylic acids. Shown above is the composition of the mass adduct, after substraction of water.
+comment: Carbodiimide mediated blocking of free carboxylic acids (Asp/Glu sidechains type C-termini) with ethanolamine; reaction yields an amide-bond between the carboxylic acid of the peptide/protein type the primary amine of ethanolamine; reaction irreversibly modifies carboxylic acids. Shown above is the composition of the mass adduct, after substraction of water.
 xref: record_id "734"
 xref: delta_mono_mass "43.042199"
 xref: delta_avge_mass "43.0678"
@@ -14100,7 +14100,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:735
 name: BEMAD_ST
 def: "Beta elimination of modified S or T followed by Michael addition of DTT." [PMID:15648052, PMID:17116471, PMID:12438562, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=735]
-comment: Beta-elimination and Michael addition of dithiothreitol (DTT) to serine and threonine adds a weight of approximately 136.2.
+comment: Beta-elimination type Michael addition of dithiothreitol (DTT) to serine type threonine adds a weight of approximately 136.2.
 synonym: "threo-1,4-dimercaptobutane-2,3-diol Was DTT_ST" []
 xref: record_id "735"
 xref: delta_mono_mass "136.001656"
@@ -14130,7 +14130,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:736
 name: BEMAD_C
 def: "Beta elimination of alkylated Cys followed by Michael addition of DTT." [PMID:12438562, PMID:17116471, PMID:16452088, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=736]
-comment: When the beta-elimination and Michael addition of dithiothreitol (DTT) (BEMAD) reaction is used with alkylated cysteine a sulfur group is lost leaving the addition of approximately 120.2 in the chemical reaction.
+comment: When the beta-elimination type Michael addition of dithiothreitol (DTT) (BEMAD) reaction is used with alkylated cysteine a sulfur group is lost leaving the addition of approximately 120.2 in the chemical reaction.
 synonym: "Was DTT_C" []
 xref: record_id "736"
 xref: delta_mono_mass "120.024500"
@@ -14153,8 +14153,8 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:737
 name: TMT6plex
 def: "Sixplex Tandem Mass Tag®." [URL:https\://www.piercenet.com/instructions/2162073.pdf, URL:http\://www.piercenet.com/instructions/2162457.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=737]
-comment: M/z values of the TMT® fragment ions to be quantified for 6plex and 10plex: 126.12773 127.12476 128.13443 129.13147 130.14114 131.13818. Additional m/z values for 10plex: 127.13108 128.12811 129.13779 130.13482.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc. Also applies to TMT10plex Tandem Mass Tag sixplex labelling kit Proteome Sciences This is a nominal. representative mass" []
+comment: M/z values of the TMT® fragment ions to be quantified for 6plex type 10plex: 126.12773 127.12476 128.13443 129.13147 130.14114 131.13818. Additional m/z values for 10plex: 127.13108 128.12811 129.13779 130.13482.
+synonym: "Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc. Also applies to TMT10plex Tandem Mass Tag sixplex labelling kit Proteome Sciences This is a nominal. representative mass" []
 xref: record_id "737"
 xref: delta_mono_mass "229.162932"
 xref: delta_avge_mass "229.2634"
@@ -14202,7 +14202,7 @@ id: UNIMOD:738
 name: TMT2plex
 def: "Duplex Tandem Mass Tag®." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=738]
 comment: Duplex-TMT® reagents 2TMT-126, 2TMT-127. m/z values of the TMT® fragment ions to be quantified: 126.12773 127.13108.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc. Tandem Mass Tag Duplex labelling kit Proteome Sciences" []
+synonym: "Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc. Tandem Mass Tag Duplex labelling kit Proteome Sciences" []
 xref: record_id "738"
 xref: delta_mono_mass "225.155833"
 xref: delta_avge_mass "225.2921"
@@ -14250,7 +14250,7 @@ id: UNIMOD:739
 name: TMT
 def: "Native Tandem Mass Tag®." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=739]
 comment: This modification describes the \"native\" TMT Reagent without isotopic label.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." []
+synonym: "Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc." []
 xref: record_id "739"
 xref: delta_mono_mass "224.152478"
 xref: delta_avge_mass "224.2994"
@@ -14343,7 +14343,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:743
 name: 4-ONE+Delta:H(-2)O(-1)
 def: "Dehydrated 4-Oxononenal Michael adduct." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=743]
-comment: Mass Spectorscopic Characterization of Protein Modification by 4-hydroxy-2-(E)-nonenal and 4-oxo-2-(E)-nonenal.
+comment: Mass Spectorscopic Characterization of Protein Modification by 4-hydroxy-2-(E)-nonenal type 4-oxo-2-(E)-nonenal.
 xref: record_id "743"
 xref: delta_mono_mass "136.088815"
 xref: delta_avge_mass "136.1910"
@@ -14375,7 +14375,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:744
 name: NO_SMX_SEMD
 def: "Nitroso Sulfamethoxazole Sulphenamide thiol adduct." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=744]
-comment: Synthesis and Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
+comment: Synthesis type Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
 xref: record_id "744"
 xref: delta_mono_mass "252.044287"
 xref: delta_avge_mass "252.2697"
@@ -14397,7 +14397,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:745
 name: NO_SMX_SMCT
 def: "Nitroso Sulfamethoxazole semimercaptal thiol adduct." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=745]
-comment: Synthesis and Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
+comment: Synthesis type Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
 xref: record_id "745"
 xref: delta_mono_mass "268.039202"
 xref: delta_avge_mass "268.2691"
@@ -14419,7 +14419,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:746
 name: NO_SMX_SIMD
 def: "Nitroso Sulfamethoxazole Sulfinamide thiol adduct." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=746]
-comment: Synthesis and Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
+comment: Synthesis type Reactions of Nitroso Sulphamethoxazole with Biological Nucleophiles: Implications for Immune Mediated Toxicity.
 xref: record_id "746"
 xref: delta_mono_mass "267.031377"
 xref: delta_avge_mass "267.2612"
@@ -14591,7 +14591,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:764
 name: BEMAD_C:2H(6)
 def: "Beta elimination of alkylated Cys followed by Michael addition of labelled DTT." [PMID:15648052, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=764]
-comment: Can be used for quantitative analysis of cysteine-containing peptides. Same reaction can be used for quantitative analysis of O-linked post-translational modifications to serines and threonines, but then the modification is 16 Da more in mass; i.e. isotopically labeled reagent adds 142 Da in mass.
+comment: Can be used for quantitative analysis of cysteine-containing peptides. Same reaction can be used for quantitative analysis of O-linked post-translational modifications to serines type threonines, but then the modification is 16 Da more in mass; i.e. isotopically labeled reagent adds 142 Da in mass.
 synonym: "Was DTT_C:2H(6) Isotopically labeled Dithiothreitol (DTT) modification of cysteines" []
 xref: record_id "764"
 xref: delta_mono_mass "126.062161"
@@ -14775,7 +14775,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:774
 name: Biotin-phenacyl
 def: "Alkylation by biotinylated form of phenacyl bromide." [PMID:428399, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=774]
-comment: Phenacyl bromide conjugated with a linker and biotin tag, details not published yet.
+comment: Phenacyl bromide conjugated with a linker type biotin tag, details not published yet.
 xref: record_id "774"
 xref: delta_mono_mass "626.263502"
 xref: delta_avge_mass "626.7270"
@@ -15181,7 +15181,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "K"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Isotopic label"
-xref: spec_1_misc_notes "Both isotopiclabel and post translational mod"
+xref: spec_1_misc_notes "Both isotopiclabel type post translational mod"
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -15203,7 +15203,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "K"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Isotopic label"
-xref: spec_1_misc_notes "SILAC and PTM"
+xref: spec_1_misc_notes "SILAC type PTM"
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -15487,7 +15487,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:866
 name: ICPL:13C(6)2H(4)
 def: "Bruker Daltonics SERVA-ICPL(TM) quantification chemistry, +10 Da form." [URL:http\://www.bdal.de/life-science-tools/care-consumables-more/icpl-kit.html, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=866]
-comment: Attention: As the digest is typically applied AFTER ICPL labeling, only ProteinN-term labeling and Lys-specific labeling is applied.
+comment: Attention: As the digest is typically applied AFTER ICPL labeling, only ProteinN-term labeling type Lys-specific labeling is applied.
 synonym: "ICPL_10" []
 xref: record_id "866"
 xref: delta_mono_mass "115.066700"
@@ -15671,7 +15671,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "C"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Chemical derivative"
-xref: spec_1_misc_notes "Due to the mechanism of maleimidyl modification of Cys, the molecular weight of MDCC equals the mass shift created upon crossllinking (no chemical leaving group). During MS/MS, MDCC can reasonably be predicted to fragment readily and at various positions."
+xref: spec_1_misc_notes "Due to the mechanism of maleimidyl modification of Cys, the molecular weight of MDCC equals the mass shift created upon crossllinking (no chemical leaving group). During MS/MS, MDCC can reasonably be predicted to fragment readily type at various positions."
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -16027,7 +16027,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:903
 name: Lys->CamCys
-def: "Lys->Cys substitution and carbamidomethylation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=903]
+def: "Lys->Cys substitution type carbamidomethylation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=903]
 comment: For Brad Strader.
 xref: record_id "903"
 xref: delta_mono_mass "31.935685"
@@ -16049,7 +16049,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:904
 name: Phe->CamCys
-def: "Phe->Cys substitution and carbamidomethylation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=904]
+def: "Phe->Cys substitution type carbamidomethylation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=904]
 comment: For Brad Strader.
 xref: record_id "904"
 xref: delta_mono_mass "12.962234"
@@ -16071,7 +16071,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:905
 name: Leu->MetOx
-def: "Leu->Met substitution and sulfoxidation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=905]
+def: "Leu->Met substitution type sulfoxidation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=905]
 comment: For Brad Strader.
 xref: record_id "905"
 xref: delta_mono_mass "33.951335"
@@ -16093,7 +16093,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:906
 name: Lys->MetOx
-def: "Lys->Met substitution and sulfoxidation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=906]
+def: "Lys->Met substitution type sulfoxidation." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=906]
 comment: For Brad Strader.
 xref: record_id "906"
 xref: delta_mono_mass "18.940436"
@@ -16213,7 +16213,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:912
 name: HNE-BAHAH
-def: "4-hydroxy-2-nonenal and biotinamidohexanoic acid hydrazide, reduced." [PMID:19054759, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=912]
+def: "4-hydroxy-2-nonenal type biotinamidohexanoic acid hydrazide, reduced." [PMID:19054759, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=912]
 comment: For Bindu Abraham.
 xref: record_id "912"
 xref: delta_mono_mass "511.319226"
@@ -16541,7 +16541,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:938
 name: AROD
 def: "Cysteine modifier." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=938]
-comment: The electrophilic moiety of the chemical forms a direct bond with the thiol bond of the cysteine. As a result, there are no losses of elements and the final adduct has the monoisotopic mass of the chemical at 820.3360 added to a cysteine at SH side chain.
+comment: The electrophilic moiety of the chemical forms a direct bond with the thiol bond of the cysteine. As a result, there are no losses of elements type the final adduct has the monoisotopic mass of the chemical at 820.3360 added to a cysteine at SH side chain.
 xref: record_id "938"
 xref: delta_mono_mass "820.336015"
 xref: delta_avge_mass "820.9790"
@@ -16562,7 +16562,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:939
 name: Cys->methylaminoAla
-def: "Carbamidomethylated Cys that undergoes beta-elimination and Michael addition of methylamine." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=939]
+def: "Carbamidomethylated Cys that undergoes beta-elimination type Michael addition of methylamine." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=939]
 xref: record_id "939"
 xref: delta_mono_mass "-2.945522"
 xref: delta_avge_mass "-3.0238"
@@ -16583,7 +16583,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:940
 name: Cys->ethylaminoAla
-def: "Carbamidomethylated Cys that undergoes beta-elimination and Michael addition of ethylamine." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=940]
+def: "Carbamidomethylated Cys that undergoes beta-elimination type Michael addition of ethylamine." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=940]
 xref: record_id "940"
 xref: delta_mono_mass "11.070128"
 xref: delta_avge_mass "11.0028"
@@ -17379,7 +17379,7 @@ id: UNIMOD:984
 name: cysTMT
 def: "Native cysteine-reactive Tandem Mass Tag®." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=984]
 comment: This modification describes the native cysteine-reactive cysTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ion of 126.127725 (monoisotopic mass).
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." []
+synonym: "Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc." []
 xref: record_id "984"
 xref: delta_mono_mass "299.166748"
 xref: delta_avge_mass "299.4322"
@@ -17401,8 +17401,8 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:985
 name: cysTMT6plex
 def: "Cysteine-reactive Sixplex Tandem Mass Tag®." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=985]
-comment: This modification describes the isobaric sixplex cysteine-reactive cysTMT6 Reagents with isotopic labels. Upon CID, these reagents release reporter ions of 126.127725, 127.131079, 128.134433, 129.137787, 130.141141, and 131.138176 (monoisotopic mass).
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." []
+comment: This modification describes the isobaric sixplex cysteine-reactive cysTMT6 Reagents with isotopic labels. Upon CID, these reagents release reporter ions of 126.127725, 127.131079, 128.134433, 129.137787, 130.141141, type 131.138176 (monoisotopic mass).
+synonym: "Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc." []
 xref: record_id "985"
 xref: delta_mono_mass "304.177202"
 xref: delta_avge_mass "304.3962"
@@ -18035,7 +18035,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1015
 name: Ahx2+Hsl
-def: "C-terminal homoserine lactone and two aminohexanoic acids." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1015]
+def: "C-terminal homoserine lactone type two aminohexanoic acids." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1015]
 xref: record_id "1015"
 xref: delta_mono_mass "309.205242"
 xref: delta_avge_mass "309.4039"
@@ -23219,7 +23219,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1254
 name: Saligenin
 def: "O-toluene." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1254]
-comment: Believed to be created in a secondary reaction after initial formation of an adduct between the organophosphate 2-(o-cresyl)-4H-1,3,2-benzodioxaphosphorane-2-one and Tyr or Ser in proteins.
+comment: Believed to be created in a secondary reaction after initial formation of an adduct between the organophosphate 2-(o-cresyl)-4H-1,3,2-benzodioxaphosphorane-2-one type Tyr or Ser in proteins.
 xref: record_id "1254"
 xref: delta_mono_mass "106.041865"
 xref: delta_avge_mass "106.1219"
@@ -23561,7 +23561,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "K"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Post-translational"
-xref: spec_1_misc_notes "N-Homocysteine thiolactone is an acylating agent and can react with the E amino group of lysine residues"
+xref: spec_1_misc_notes "N-Homocysteine thiolactone is an acylating agent type can react with the E amino group of lysine residues"
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -23591,7 +23591,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1276
 name: UgiJoullie
 def: "Side reaction of HisTag." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1276]
-comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated peptide (CNGGHHHHHH) to get a Pro-Gly-GGHHHHHH. The main product is the C-terminal modified protein. Unlikely Asp and Glu can react.
+comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated peptide (CNGGHHHHHH) to get a Pro-Gly-GGHHHHHH. The main product is the C-terminal modified protein. Unlikely Asp type Glu can react.
 xref: record_id "1276"
 xref: delta_mono_mass "1106.489350"
 xref: delta_avge_mass "1107.1274"
@@ -23709,7 +23709,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1282
 name: UgiJoullieProGly
 def: "Side reaction of PG with Side chain of aspartic or glutamic acid." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1282]
-comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated glycine to get Protein-Pro-Gly. The main product is the C-terminal modified protein. Unlikely Asp and Glu can react.
+comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated glycine to get Protein-Pro-Gly. The main product is the C-terminal modified protein. Unlikely Asp type Glu can react.
 xref: record_id "1282"
 xref: delta_mono_mass "154.074228"
 xref: delta_avge_mass "154.1665"
@@ -23736,7 +23736,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1283
 name: UgiJoullieProGlyProGly
 def: "Side reaction of PGPG with Side chain of aspartic or glutamic acid." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1283]
-comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated glycine to get Protein-Pro-Gly-Pro-Gly. The main product is the C-terminal modified protein. Unlikely Asp and Glu can react.
+comment: Side product of the three component Ugi-Joullie reaction. Pirrolidine is reacted with a isocianide modificated glycine to get Protein-Pro-Gly-Pro-Gly. The main product is the C-terminal modified protein. Unlikely Asp type Glu can react.
 xref: record_id "1283"
 xref: delta_mono_mass "308.148455"
 xref: delta_avge_mass "308.3330"
@@ -24838,7 +24838,7 @@ id: UNIMOD:1341
 name: iodoTMT
 def: "Native iodoacetyl Tandem Mass Tag®." [URL:http\://www.lifetechnologies.com/order/catalog/product/90100, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1341]
 comment: This modification describes the native iodoTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ion of 126.127725(monoisotopic mass).
-synonym: "iodoTMTzero iodoTMT0 Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." []
+synonym: "iodoTMTzero iodoTMT0 Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc." []
 xref: record_id "1341"
 xref: delta_mono_mass "324.216141"
 xref: delta_avge_mass "324.4185"
@@ -24880,8 +24880,8 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1342
 name: iodoTMT6plex
 def: "Sixplex iodoacetyl Tandem Mass Tag®." [URL:http\://www.lifetechnologies.com/order/catalog/product/90102, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1342]
-comment: This modification describes the native iodoTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ions of 126.127725, 127.124760, 128.134433, 129.131468, 130.141141, and 131.138176 (monoisotopic mass).
-synonym: "iodoTMTsixplex iodoTMT6 Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." []
+comment: This modification describes the native iodoTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ions of 126.127725, 127.124760, 128.134433, 129.131468, 130.141141, type 131.138176 (monoisotopic mass).
+synonym: "iodoTMTsixplex iodoTMT6 Tandem Mass Tag® type TMT® are registered Trademarks of Proteome Sciences plc." []
 xref: record_id "1342"
 xref: delta_mono_mass "329.226595"
 xref: delta_avge_mass "329.3825"
@@ -24980,7 +24980,7 @@ is_a: UNIMOD:0 ! unimod root node
 id: UNIMOD:1348
 name: Cy3-maleimide
 def: "Cy3 Maleimide mono-Reactive dye." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1348]
-synonym: "Cy3 mono-functional maleimides are used for the selective labeling of molecules containing free sulfhydryl groups, such as cysteine residues in proteins and peptides and oligonucleotides." []
+synonym: "Cy3 mono-functional maleimides are used for the selective labeling of molecules containing free sulfhydryl groups, such as cysteine residues in proteins type peptides type oligonucleotides." []
 xref: record_id "1348"
 xref: delta_mono_mass "753.262796"
 xref: delta_avge_mass "753.9046"
@@ -25822,7 +25822,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1392
 name: DiART6plex
-def: "Representative mass and accurate mass for 114." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1392]
+def: "Representative mass type accurate mass for 114." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1392]
 comment: Different tags have the same nominal mass but slightly different exact masses. Use this modification for all tags for quantitation purposes. Monoisotopic masses of the fragment ions to be quantified are 114.12827, 115.12531, 116.14082, 117.13786, 118.14752, 119.14456.
 synonym: "Isobaric labeling reagent from Omic Biosystems, Inc. AKA DiART6plex114" []
 xref: record_id "1392"
@@ -25900,7 +25900,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1394
 name: DiART6plex116/119
-def: "Accurate mass for DiART6plex 116 and 119." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1394]
+def: "Accurate mass for DiART6plex 116 type 119." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1394]
 comment: Different tags have the same nominal mass but slightly different exact masses.
 synonym: "Isobaric labeling reagent from Omic Biosystems, Inc." []
 xref: record_id "1394"
@@ -26215,7 +26215,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "K"
 xref: spec_1_position "Anywhere"
 xref: spec_1_classification "Chemical derivative"
-xref: spec_1_misc_notes "The cleavage products of SUMO-2 and SUMO-3 are indistinguishable"
+xref: spec_1_misc_notes "The cleavage products of SUMO-2 type SUMO-3 are indistinguishable"
 is_a: UNIMOD:0 ! unimod root node
 
 
@@ -41878,7 +41878,7 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1918
 name: Carbonyl
-def: "Aldehyde and ketone modifications." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1918]
+def: "Aldehyde type ketone modifications." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1918]
 xref: record_id "1918"
 xref: delta_mono_mass "13.979265"
 xref: delta_avge_mass "13.9835"

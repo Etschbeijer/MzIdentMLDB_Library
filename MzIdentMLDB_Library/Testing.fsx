@@ -162,8 +162,9 @@ let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\Pep
 let convertOrganization (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Organization) =
     let init = OrganizationHandler.init()
     let addName = OrganizationHandler.addName init xmlType.Name.Value
-    let addDetails = OrganizationHandler.addDetails addName (xmlType.CvParams |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession),0, item.Value.Value)))
-    addDetails
+    addName
+    //let addDetails = OrganizationHandler.addDetails addName (xmlType.CvParams |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession),0, item.Value.Value)))
+    //addDetails
 
 let organizations =
     xmlCVParams.AuditCollection.Value.Organizations
@@ -182,7 +183,7 @@ let convertPerson (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Pers
 
 let persons =
     xmlCVParams.AuditCollection.Value.Persons
-    |> Array.map (fun person -> convertPerson context person -2147482640)
+    |> Array.map (fun person -> convertPerson context person -2147482644)
     |> Array.map (fun item -> context.Add item)
 
 persons

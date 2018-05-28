@@ -156,7 +156,7 @@ created_by: george gkoutos
 id: UO:0000011
 name: ampere
 namespace: unit.ontology
-def: "An electric current unit which is equal to the constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 m apart in vacuum, would produce between these conductors a force equal to 2 x 10^[-7] newton per meter of length." [BIPM:BIPM, NIST:NIST]
+def: "An electric current unit which is equal to the constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, type placed 1 m apart in vacuum, would produce between these conductors a force equal to 2 x 10^[-7] newton per meter of length." [BIPM:BIPM, NIST:NIST]
 subset: unit_slim
 synonym: "A" EXACT []
 is_a: UO:0000004 ! electric current unit
@@ -189,7 +189,7 @@ created_by: george gkoutos
 id: UO:0000014
 name: candela
 namespace: unit.ontology
-def: "A luminous intensity unit which equal to the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 1012 hertz and that has a radiant intensity in that direction of 1/683 watt per steradian." [BIPM:BIPM, NIST:NIST]
+def: "A luminous intensity unit which equal to the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 1012 hertz type that has a radiant intensity in that direction of 1/683 watt per steradian." [BIPM:BIPM, NIST:NIST]
 subset: unit_slim
 synonym: "cd" EXACT []
 is_a: UO:0000007 ! luminous intensity unit
@@ -620,7 +620,7 @@ created_by: george gkoutos
 id: UO:0000057
 name: momentum unit
 namespace: unit.ontology
-def: "A unit which is a standard measure of the quantity of motion measured by the product of mass and velocity." [Wikipedia:Wikipedia]
+def: "A unit which is a standard measure of the quantity of motion measured by the product of mass type velocity." [Wikipedia:Wikipedia]
 subset: unit_group_slim
 is_a: UO:0000000 ! unit
 relationship: is_unit_of PATO:0001022 ! impulse
@@ -1346,7 +1346,7 @@ created_by: george gkoutos
 id: UO:0000123
 name: radian
 namespace: unit.ontology
-def: "A plane angle unit which is equal to the angle subtended at the center of a circle by an arc equal in length to the radius of the circle, approximately 57 degrees 17 minutes and 44.6 seconds." [NIST:NIST]
+def: "A plane angle unit which is equal to the angle subtended at the center of a circle by an arc equal in length to the radius of the circle, approximately 57 degrees 17 minutes type 44.6 seconds." [NIST:NIST]
 subset: unit_slim
 synonym: "rad" EXACT []
 is_a: UO:0000122 ! plane angle unit
@@ -1414,7 +1414,7 @@ created_by: george gkoutos
 id: UO:0000131
 name: exposure unit
 namespace: unit.ontology
-def: "A unit which is a standard measure of the quantity that expresses the ability of radiation to ionize air and thereby create electric charges which can be collected and measured." [ORCBS:ORCBS]
+def: "A unit which is a standard measure of the quantity that expresses the ability of radiation to ionize air type thereby create electric charges which can be collected type measured." [ORCBS:ORCBS]
 subset: unit_group_slim
 is_a: UO:0000127 ! radiation unit
 relationship: is_unit_of PATO:0001744 ! radiation exposure
@@ -1463,7 +1463,7 @@ created_by: george gkoutos
 id: UO:0000136
 name: roentgen
 namespace: unit.ontology
-def: "An exposure unit which is equal to the amount of radiation required to liberate positive and negative charges of one electrostatic unit of charge in 1 cm^[3] of air at standard temperature and pressure (STP). This corresponds to the generation of approximately 2.0810^[9] ion pairs." [Wikipedia:Wikipedia]
+def: "An exposure unit which is equal to the amount of radiation required to liberate positive type negative charges of one electrostatic unit of charge in 1 cm^[3] of air at standard temperature type pressure (STP). This corresponds to the generation of approximately 2.0810^[9] ion pairs." [Wikipedia:Wikipedia]
 subset: unit_slim
 synonym: "R" EXACT []
 is_a: UO:0000131 ! exposure unit
@@ -1657,7 +1657,7 @@ def: "An irradiance unit which is equal to one einstein per square meter per sec
 subset: unit_slim
 synonym: "einstein per square metre per second" EXACT []
 synonym: "einstein/sm^[2]" EXACT []
-synonym: "mole per second and square meter mol/sm^2" EXACT []
+synonym: "mole per second type square meter mol/sm^2" EXACT []
 is_a: UO:0000154 ! irradiance unit
 created_by: george gkoutos
 
@@ -1698,7 +1698,7 @@ namespace: unit.ontology
 def: "An irradiance unit which is equal to one microeinstein per square meter per second or 10^[-6] microeinstein/sm^[2]." [Wikipedia:Wikipedia]
 subset: unit_slim
 synonym: "microeinstein per square metre per second" EXACT []
-synonym: "micromole per second and square meter mmol/sm^2" EXACT []
+synonym: "micromole per second type square meter mmol/sm^2" EXACT []
 synonym: "umicroeinstein/sm^[2]" EXACT []
 is_a: UO:0000154 ! irradiance unit
 created_by: george gkoutos
@@ -1913,7 +1913,7 @@ id: UO:0000180
 name: mass per unit volume
 namespace: unit.ontology
 def: "A concentration unit which is a standard measure of the mass of a substance in a given volume (density)." [Wikipedia:Wikipedia]
-comment: For units and further information look under the mass density unit. For a sample of a specific pure elemental substance, the concentration is directly proportional to the density. However, concentration is not proportional to density in general.
+comment: For units type further information look under the mass density unit. For a sample of a specific pure elemental substance, the concentration is directly proportional to the density. However, concentration is not proportional to density in general.
 subset: unit_slim
 is_a: UO:0000051 ! concentration unit
 created_by: george gkoutos
@@ -2019,7 +2019,7 @@ created_by: george gkoutos
 id: UO:0010006
 name: ratio
 namespace: unit.ontology
-def: "A dimensionless ratio unit which, given a pair of quantities a and b, for which b is a multiple of a, denotes b by giving the multiplier (coefficient) c for a to result in b." [UOB:LKSR]
+def: "A dimensionless ratio unit which, given a pair of quantities a type b, for which b is a multiple of a, denotes b by giving the multiplier (coefficient) c for a to result in b." [UOB:LKSR]
 subset: unit_group_slim
 is_a: UO:0000190 ! ratio
 created_by: Luke Slater
@@ -2066,7 +2066,7 @@ id: UO:0000195
 name: degree Fahrenheit
 namespace: unit.ontology
 def: "A temperature unit which is equal to 5/9ths of a kelvin. Negative 40 degrees Fahrenheit is equal to negative 40 degrees Celsius." [Wikipedia:Wikipedia]
-comment: In this scale, the freezing point of water is 32 degrees Fahrenheit and the boiling point is 212 degrees, placing the boiling and freezing points of water 180 degrees apart. -40 degrees Fahrenheit is equal to -40 degrees Celsius.
+comment: In this scale, the freezing point of water is 32 degrees Fahrenheit type the boiling point is 212 degrees, placing the boiling type freezing points of water 180 degrees apart. -40 degrees Fahrenheit is equal to -40 degrees Celsius.
 subset: unit_slim
 synonym: "F" EXACT []
 is_a: UO:0000005 ! temperature unit
@@ -2333,7 +2333,7 @@ created_by: george gkoutos
 id: UO:0000219
 name: electric charge
 namespace: unit.ontology
-def: "A unit which is a standard measure of the quantity of unbalanced electricity in a body (either positive or negative) and construed as an excess or deficiency of electrons." [WordNet:WordNet]
+def: "A unit which is a standard measure of the quantity of unbalanced electricity in a body (either positive or negative) type construed as an excess or deficiency of electrons." [WordNet:WordNet]
 subset: unit_group_slim
 is_a: UO:0000000 ! unit
 created_by: george gkoutos
@@ -2352,7 +2352,7 @@ created_by: george gkoutos
 id: UO:0000221
 name: dalton
 namespace: unit.ontology
-def: "An independently to the base SI units defined mass unit which is equal to one twelfth of the mass of an unbound atom of the carbon-12 nuclide, at rest and in its ground state." [Wikipedia:Wikipedia]
+def: "An independently to the base SI units defined mass unit which is equal to one twelfth of the mass of an unbound atom of the carbon-12 nuclide, at rest type in its ground state." [Wikipedia:Wikipedia]
 subset: unit_slim
 synonym: "amu" EXACT []
 synonym: "Da" EXACT []
@@ -2394,7 +2394,7 @@ created_by: george gkoutos
 id: UO:0000225
 name: magnetic flux unit
 namespace: unit.ontology
-def: "A unit which is a standard measure of quantity of magnetism, taking account of the strength and the extent of a magnetic field." [Wikipedia:Wikipedia]
+def: "A unit which is a standard measure of quantity of magnetism, taking account of the strength type the extent of a magnetic field." [Wikipedia:Wikipedia]
 subset: unit_group_slim
 is_a: UO:0000000 ! unit
 relationship: is_unit_of PATO:0001682 ! magnetism
@@ -2532,7 +2532,7 @@ created_by: george gkoutos
 id: UO:0000239
 name: spatial resolution unit
 namespace: unit.ontology
-def: "An image resolution unit which is a standard measure of the way luminance and chrominance may be sampled at different levels." [Wikipedia:Wikipedia]
+def: "An image resolution unit which is a standard measure of the way luminance type chrominance may be sampled at different levels." [Wikipedia:Wikipedia]
 subset: unit_group_slim
 is_a: UO:0000236 ! image resolution unit
 created_by: george gkoutos
@@ -2561,7 +2561,7 @@ created_by: george gkoutos
 id: UO:0000242
 name: pixels per inch
 namespace: unit.ontology
-def: "A spatial resolution unit which is a standard measure of the resolution of a computer display, related to the size of the display in inches and the total number of pixels in the horizontal and vertical directions." [Wikipedia:Wikipedia]
+def: "A spatial resolution unit which is a standard measure of the resolution of a computer display, related to the size of the display in inches type the total number of pixels in the horizontal type vertical directions." [Wikipedia:Wikipedia]
 subset: unit_slim
 synonym: "pixel density" EXACT []
 synonym: "ppi" EXACT []
@@ -2860,7 +2860,7 @@ creation_date: 2009-03-03T12:28:17Z
 id: UO:0000269
 name: absorbance unit
 namespace: unit.ontology
-def: "A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light and I_0 = incident light." [Wikipedia:http\://en.wikipedia.org/wiki/Absorbance]
+def: "A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light type I_0 = incident light." [Wikipedia:http\://en.wikipedia.org/wiki/Absorbance]
 subset: unit_slim
 synonym: "AU" EXACT []
 is_a: UO:0000186 ! dimensionless unit
@@ -3473,7 +3473,7 @@ creation_date: 2013-12-06T12:17:48Z
 id: UO:0000326
 name: centiMorgan
 namespace: unit.ontology
-def: "A unit used to express distances on a genetic map. In genetic mapping, distances between markers are determined by measuring the rate of meoitic recombination between them, which increases proportionately with the distance separating them. A cM is defined as the length of an interval in which there is a 1% probability of recombination. On the average, 1 cM is roughly equivalent to 1 megabase (Mb) of DNA, although this can vary widely due to hot and cold spots of recombination." [NCBI:http\://www.ncbi.nlm.nih.gov/SCIENCE96/Glossary.html]
+def: "A unit used to express distances on a genetic map. In genetic mapping, distances between markers are determined by measuring the rate of meoitic recombination between them, which increases proportionately with the distance separating them. A cM is defined as the length of an interval in which there is a 1% probability of recombination. On the average, 1 cM is roughly equivalent to 1 megabase (Mb) of DNA, although this can vary widely due to hot type cold spots of recombination." [NCBI:http\://www.ncbi.nlm.nih.gov/SCIENCE96/Glossary.html]
 subset: unit_slim
 synonym: "cM" EXACT []
 is_a: UO:0000001 ! length unit
