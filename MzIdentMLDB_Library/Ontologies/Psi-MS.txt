@@ -18833,3 +18833,5 @@ name: \(Complete|Fragment|[a-z0-9A-Z]+)
 def: "Regular expression for the Sequence Status." [PSI:PEFF]
 is_a: MS:1002479 ! regular expression
 
+
+

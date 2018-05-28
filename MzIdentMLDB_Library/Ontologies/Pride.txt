@@ -2963,3 +2963,5 @@ name: Parallel Reaction Monitoring (PRM)
 def: Using Selected Reaction Monitoring (SRM) with parallel detection of all transitions in a single analysis. [PRIDE:PRIDE]
 is_a: PRIDE:0000311 ! Selected Reaction Monitoring
 
+
+

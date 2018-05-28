@@ -142,8 +142,8 @@ module InsertStatements =
                     {
                         Ontology.ID         = id;
                         Ontology.Terms      = terms';
+                        //Ontology.MzIdentML  = mzIdentML';
                         Ontology.RowVersion = DateTime.Now
-                        Ontology.MzIdentML  = mzIdentML'
                     }
 
                 static member addTerm
@@ -156,10 +156,10 @@ module InsertStatements =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                     ontology
 
-                static member addMzIdentML
-                    (ontology:Ontology) (mzIdentML:MzIdentML) =
-                    let result = ontology.MzIdentML <- mzIdentML
-                    ontology
+                //static member addMzIdentML
+                //    (ontology:Ontology) (mzIdentML:MzIdentML) =
+                //    let result = ontology.MzIdentML <- mzIdentML
+                //    ontology
 
                 static member addToContext (context:MzIdentMLContext) (item:Ontology) =
                     addToContextWithExceptionCheck context item
@@ -2475,8 +2475,8 @@ module InsertStatements =
                         ?name                          : string,
                         ?analysisSoftwares             : seq<AnalysisSoftware>,
                         ?provider                      : Provider,
-                        ?person                        : Person,
-                        ?organization                  : Organization,
+                        ?persons                       : seq<Person>,
+                        ?organizations                 : seq<Organization>,
                         ?samples                       : seq<Sample>,
                         ?dbSequences                   : seq<DBSequence>,
                         ?peptides                      : seq<Peptide>,
@@ -2489,8 +2489,8 @@ module InsertStatements =
                     let name'                     = defaultArg name null
                     let analysisSoftwares'        = convertOptionToList analysisSoftwares
                     let provider'                 = defaultArg provider Unchecked.defaultof<Provider>
-                    let person'                   = defaultArg person Unchecked.defaultof<Person>
-                    let organization'             = defaultArg organization Unchecked.defaultof<Organization>
+                    let persons'                  = convertOptionToList persons
+                    let organization'             = convertOptionToList organizations
                     let samples'                  = convertOptionToList samples
                     let dbSequences'              = convertOptionToList dbSequences
                     let peptides'                 = convertOptionToList peptides
@@ -2505,8 +2505,8 @@ module InsertStatements =
                         MzIdentML.Ontologies                     = ontologies |> List
                         MzIdentML.AnalysisSoftwares              = analysisSoftwares'
                         MzIdentML.Provider                       = provider'
-                        MzIdentML.Person                         = person'
-                        MzIdentML.Organization                   = organization'
+                        MzIdentML.Persons                        = persons'
+                        MzIdentML.Organizations                  = organization'
                         MzIdentML.Samples                        = samples'
                         MzIdentML.DBSequences                    = dbSequences'
                         MzIdentML.Peptides                       = peptides'
@@ -2524,6 +2524,7 @@ module InsertStatements =
                static member addName
                     (mzIdentML:MzIdentML) (name:string) =
                     mzIdentML.Name <- name
+                    mzIdentML
 
                static member addAnalysisSoftware
                     (mzIdentML:MzIdentML) (analysisSoftware:AnalysisSoftware) =
@@ -2538,14 +2539,27 @@ module InsertStatements =
                static member addProvider
                     (mzIdentML:MzIdentML) (provider:Provider) =
                     mzIdentML.Provider <- provider
+                    mzIdentML
 
                static member addPerson
                     (mzIdentML:MzIdentML) (person:Person) =
-                    mzIdentML.Person <- person
+                    let result = mzIdentML.Persons <- addToList mzIdentML.Persons person
+                    mzIdentML
+
+               static member addPersons
+                    (mzIdentML:MzIdentML) (persons:seq<Person>) =
+                    let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
+                    mzIdentML
 
                static member addOrganization
                     (mzIdentML:MzIdentML) (organization:Organization) =
-                    mzIdentML.Organization <- organization
+                    let result = mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
+                    mzIdentML
+
+               static member addOrganizations
+                    (mzIdentML:MzIdentML) (organizations:seq<Organization>) =
+                    let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
+                    mzIdentML
 
                static member addSample
                     (mzIdentML:MzIdentML) (sample:Sample) =
@@ -2590,10 +2604,12 @@ module InsertStatements =
                static member addProteinDetection
                     (mzIdentML:MzIdentML) (proteinDetection:ProteinDetection) =
                     mzIdentML.ProteinDetection <- proteinDetection
+                    mzIdentML
 
                static member addProteinDetectionProtocol
                     (mzIdentML:MzIdentML) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+                    mzIdentML
 
                static member addBiblioGraphicReference
                     (mzIdentML:MzIdentML) (biblioGraphicReference:BiblioGraphicReference) =
@@ -2636,29 +2652,37 @@ module InsertStatements =
             fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
 
         let initStandardDB (context : MzIdentMLContext) =
-            let terms_PsiMS =
-                fromPsiMS
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-            let psims = OntologyHandler.init ("Psi-MS", terms_PsiMS)
-            OntologyHandler.addToContext context psims |> ignore
+            let psiMS =
+                let terms_PsiMS =
+                    fromPsiMS
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                    |> Seq.toArray
+                let tmp = OntologyHandler.init("Psi-MS", terms_PsiMS)
+                OntologyHandler.addToContext context tmp
 
-            let terms_Pride =
-                fromPride
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-            let psims = OntologyHandler.init ("Pride", terms_Pride)
-            OntologyHandler.addToContext context psims |> ignore
+            let pride =
+                let terms_Pride =
+                    fromPride
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                    |> Seq.toArray
+                let tmp = OntologyHandler.init("Pride", terms_Pride)
+                OntologyHandler.addToContext context tmp
 
-            let terms_Unimod =
-                fromUniMod
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-            let psims = OntologyHandler.init ("Unimod", terms_Unimod)
-            OntologyHandler.addToContext context psims |> ignore
+            let unimod =
+                let terms_Unimod =
+                    fromUniMod
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                    |> Seq.toArray
+                let tmp = OntologyHandler.init("Unimod", terms_Unimod)
+                OntologyHandler.addToContext context tmp
 
-            let terms_Unit_Ontology =
-                fromUnit_Ontology
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-            let psims = OntologyHandler.init ("Unit_Ontology", terms_Unit_Ontology)
-            OntologyHandler.addToContext context psims |> ignore
+            let unit_Ontology =
+                let terms_Unit_Ontology =
+                    fromUniMod
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+                    |> Seq.toArray
+                let tmp = OntologyHandler.init("Unit_Ontology", terms_Unit_Ontology)
+                OntologyHandler.addToContext context tmp
 
             let userOntology =
                     OntologyHandler.init("UserParam")

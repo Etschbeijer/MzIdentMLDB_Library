@@ -28,8 +28,8 @@ module DataContext =
             {
                 ID                : string
                 mutable Terms     : List<Term>
+                //mutable MzIdentML : MzIdentML
                 RowVersion        : DateTime
-                mutable MzIdentML : MzIdentML
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
@@ -707,8 +707,8 @@ module DataContext =
                 //
                 mutable Provider                 : Provider
                 //Formerly AuditCollection
-                mutable Person                   : Person
-                mutable Organization             : Organization
+                mutable Persons                  : List<Person>
+                mutable Organizations            : List<Organization>
                 //
                 //Formerly AnalysisSampleCollection
                 mutable Samples                  : List<Sample>
