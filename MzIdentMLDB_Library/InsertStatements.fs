@@ -103,15 +103,15 @@ module InsertStatements =
                static member init
                     (
                         id        : string,
-                        ?name     : string
-                        //?ontology : Ontology  
+                        ?name     : string,
+                        ?ontology : Ontology  
                     ) =
                     let name'      = defaultArg name null
-                    //let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
+                    let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
                     {
                         ID         = id;
                         Name       = name';
-                        //Ontology   = ontology';
+                        Ontology   = ontology';
                         RowVersion = DateTime.Now
                     }
 
@@ -119,16 +119,20 @@ module InsertStatements =
                     (term:Term) (name:string) =
                     term.Name <- name
                     term
+                    
+               static member addOntology
+                    (term:Term) (ontology:Ontology) =
+                    term.Ontology <- ontology
+                    term
 
-               //static member addOntology
-               //     (term:Term) (ontology:Ontology) =
-               //     term.Ontology <- ontology
-               //     term
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
 
-                static member addToContext (context:MzIdentMLContext) (item:Term) =
+               static member addToContext (context:MzIdentMLContext) (item:Term) =
                         addToContextWithExceptionCheck context item
 
-                static member addAndInsert (context:MzIdentMLContext) (item:Term) =
+               static member addAndInsert (context:MzIdentMLContext) (item:Term) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
         
@@ -163,6 +167,14 @@ module InsertStatements =
                 //    let result = ontology.MzIdentML <- mzIdentML
                 //    ontology
 
+               static member findOntologyByID
+                    (context:MzIdentMLContext) (ontologyID:string) =
+                    context.Ontology.Find(ontologyID)
+
+                static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
                 static member addToContext (context:MzIdentMLContext) (item:Ontology) =
                     addToContextWithExceptionCheck context item
 
@@ -176,12 +188,12 @@ module InsertStatements =
                     (
                         name      : string,
                         term      : Term,
-                        ?id       : int,
+                        ?id       : string,
                         ?value    : string,
                         ?unit     : Term,
                         ?unitName : string
                     ) =
-                    let id'       = defaultArg id 0
+                    let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                     let value'    = defaultArg value null
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName null
@@ -209,22 +221,30 @@ module InsertStatements =
                     cvParam.UnitName <- unitName
                     cvParam
 
-                static member addToContext (context:MzIdentMLContext) (item:CVParam) =
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:CVParam) =
+               static member insert (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
         type OrganizationHandler =
                static member init
                     (
-                        ?id      : int,
+                        ?id      : string,
                         ?name    : string,
                         ?details : seq<CVParam>,
                         ?parent  : string
                     ) =
-                    let id'      = defaultArg id 0
+                    let id'      = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'    = defaultArg name null
                     let details' = convertOptionToList details
                     let parent'  = defaultArg parent null
@@ -256,6 +276,14 @@ module InsertStatements =
                     let result = organization.Details <- addCollectionToList organization.Details details
                     organization
 
+               static member findOrganizationByID
+                    (context:MzIdentMLContext) (organizationID:string) =
+                    context.Organization.Find(organizationID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Organization) =
                     (addToContextWithExceptionCheck context item)
 
@@ -266,7 +294,7 @@ module InsertStatements =
         type PersonHandler =
                static member init
                     (
-                        ?id             : int,
+                        ?id             : string,
                         ?name           : string,
                         ?firstName      : string,
                         ?midInitials    : string,
@@ -274,7 +302,7 @@ module InsertStatements =
                         ?contactDetails : seq<CVParam>,
                         ?organizations  : seq<Organization> 
                     ) =
-                    let id'          = defaultArg id 0
+                    let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'        = defaultArg name null
                     let firstName'   = defaultArg firstName null
                     let midInitials' = defaultArg midInitials null
@@ -329,10 +357,22 @@ module InsertStatements =
                     let result = person.Organizations <- addCollectionToList person.Organizations organizations
                     person
 
-                static member addToContext (context:MzIdentMLContext) (item:Person) =
+               static member findPersonByID
+                    (context:MzIdentMLContext) (personID:string) =
+                    context.Person.Find(personID)
+
+               static member findOrganizationByID
+                    (context:MzIdentMLContext) (organizationID:string) =
+                    context.Organization.Find(organizationID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
+               static member addToContext (context:MzIdentMLContext) (item:Person) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:Person) =
+               static member insert (context:MzIdentMLContext) (item:Person) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -341,9 +381,9 @@ module InsertStatements =
                     (   
                         person : Person, 
                         role   : CVParam,
-                        ?id    : int
+                        ?id    : string
                     ) =
-                    let id' = defaultArg id 0
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                          ContactRole.ID         = id'
                          ContactRole.Person     = person
@@ -351,11 +391,30 @@ module InsertStatements =
                          ContactRole.RowVersion = DateTime.Now.Date
                     }
 
+               static member findContactRoleByID
+                    (context:MzIdentMLContext) (contactRoleID:string) =
+                    context.ContactRole.Find(contactRoleID)
+
+               static member findPersonByID
+                    (context:MzIdentMLContext) (personID:string) =
+                    context.Person.Find(personID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ContactRole) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member insert (context:MzIdentMLContext) (item:ContactRole) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
         type AnalysisSoftwareHandler =
                static member init
                     (
                         softwareName       : CVParam,
-                        ?id                : int,
+                        ?id                : string,
                         ?name              : string,
                         ?uri               : string,
                         ?version           : string,
@@ -363,7 +422,7 @@ module InsertStatements =
                         ?softwareDeveloper : ContactRole
                         ////?mzIdentML         : MzIdentML
                     ) =
-                    let id'             = defaultArg id 0
+                    let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'           = defaultArg name null
                     let uri'            = defaultArg uri null
                     let version'        = defaultArg version null
@@ -410,20 +469,32 @@ module InsertStatements =
                //     analysisSoftware.MzIdentML <- mzIdentML
                //     analysisSoftware
 
-                static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
+               static member findAnalysisSoftwareByID
+                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
+                    context.AnalysisSoftware.Find(analysisSoftwareID)
+
+               static member findContactRoleByID
+                    (context:MzIdentMLContext) (contactRoleID:string) =
+                    context.ContactRole.Find(contactRoleID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
+               static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:AnalysisSoftware) =
+               static member insert (context:MzIdentMLContext) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
         type SubSampleHandler =
                static member init
                     (
-                        ?id          : int,
+                        ?id          : string,
                         ?sample      : Sample
                     ) =
-                    let id'          = defaultArg id 0
+                    let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                     let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
                     {
                         SubSample.ID          = id';
@@ -436,6 +507,14 @@ module InsertStatements =
                     subSample.Sample <- sampleID
                     subSample
 
+               static member findSubSampleByID
+                    (context:MzIdentMLContext) (subSampleID:string) =
+                    context.SubSample.Find(subSampleID)
+
+               static member findSampleByID
+                    (context:MzIdentMLContext) (sampleID:string) =
+                    context.Sample.Find(sampleID)
+
                static member addToContext (context:MzIdentMLContext) (item:SubSample) =
                     (addToContextWithExceptionCheck context item)
 
@@ -446,14 +525,14 @@ module InsertStatements =
         type SampleHandler =
                static member init
                     (
-                        ?id           : int,
+                        ?id           : string,
                         ?name         : string,
                         ?contactRoles : seq<ContactRole>,
                         ?subSamples   : seq<SubSample>,
                         ?details      : seq<CVParam>
                         //?mzIdentML    : MzIdentML
                     ) =
-                    let id'           = defaultArg id 0
+                    let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'         = defaultArg name null
                     let contactRoles' = convertOptionToList contactRoles
                     let subSamples'   = convertOptionToList subSamples
@@ -503,6 +582,18 @@ module InsertStatements =
                     let result = sample.Details <- addCollectionToList sample.Details details
                     sample
 
+               static member findContactRolesByID
+                    (context:MzIdentMLContext) (contactRolesID:string) =
+                    context.ContactRole.Find(contactRolesID)
+
+               static member findSubSampleID
+                    (context:MzIdentMLContext) (subSampleID:string) =
+                    context.SubSample.Find(subSampleID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Sample) =
                     (addToContextWithExceptionCheck context item)
 
@@ -514,13 +605,13 @@ module InsertStatements =
                static member init
                     (
                         details                : seq<CVParam>,
-                        ?id                    : int,
+                        ?id                    : string,
                         ?residues              : string,
                         ?location              : int,
                         ?monoIsotopicMassDelta : float,
                         ?avgMassDelta          : float
                     ) =
-                    let id'               = defaultArg id 0
+                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let residues'         = defaultArg residues null
                     let location'         = defaultArg location Unchecked.defaultof<int>
                     let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
@@ -555,6 +646,14 @@ module InsertStatements =
                     modification.AvgMassDelta <- avgMassDelta
                     modification
 
+               static member findModificationByID
+                    (context:MzIdentMLContext) (modificationID:string) =
+                    context.Modification.Find(modificationID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Modification) =
                     (addToContextWithExceptionCheck context item)
 
@@ -567,12 +666,12 @@ module InsertStatements =
                     (
                         originalResidue        : string,
                         replacementResidue     : string,
-                        ?id                    : int,
+                        ?id                    : string,
                         ?location              : int,
                         ?monoIsotopicMassDelta : float,
                         ?avgMassDelta          : float
                     ) =
-                    let id'                    = defaultArg id 0
+                    let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
                     let location'              = defaultArg location Unchecked.defaultof<int>
                     let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                     let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
@@ -601,6 +700,10 @@ module InsertStatements =
                     substitutionModification.AvgMassDelta <- avgMassDelta
                     substitutionModification
 
+               static member findSubstitutionModificationByID
+                    (context:MzIdentMLContext) (substitutionModificationID:string) =
+                    context.SubstitutionModification.Find(substitutionModificationID)
+
                static member addToContext (context:MzIdentMLContext) (item:SubstitutionModification) =
                     (addToContextWithExceptionCheck context item)
 
@@ -612,14 +715,14 @@ module InsertStatements =
                static member init
                     (
                         peptideSequence            : string,
-                        ?id                        : int,
+                        ?id                        : string,
                         ?name                      : string,                    
                         ?modifications             : seq<Modification>,
                         ?substitutionModifications : seq<SubstitutionModification>,
                         ?details                   : seq<CVParam>
                         //?mzIdentML                 : MzIdentML
                     ) =
-                    let id'                        = defaultArg id 0
+                    let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                      = defaultArg name null
                     let modifications'             = convertOptionToList modifications
                     let substitutionModifications' = convertOptionToList substitutionModifications
@@ -675,6 +778,22 @@ module InsertStatements =
                //     peptide.MzIdentML <- mzIdentML
                //     peptide
 
+               static member findPeptideByID
+                    (context:MzIdentMLContext) (peptideID:string) =
+                    context.Peptide.Find(peptideID)
+
+               static member findModificationByID
+                    (context:MzIdentMLContext) (modificationID:string) =
+                    context.Modification.Find(modificationID)
+
+               static member findSubstitutionModificationByID
+                    (context:MzIdentMLContext) (substitutionModificationID:string) =
+                    context.SubstitutionModification.Find(substitutionModificationID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Peptide) =
                     (addToContextWithExceptionCheck context item)
 
@@ -685,15 +804,15 @@ module InsertStatements =
         type TranslationTableHandler =
                static member init
                     (
-                        ?id       : int,
+                        ?id      : string,
                         ?name    : string,
                         ?details : seq<CVParam>
                     ) =
-                    let id'                        = defaultArg id 0
+                    let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                      = defaultArg name null
                     let details'                   = convertOptionToList details
                     {
-                        TranslationTable.ID          = 0
+                        TranslationTable.ID          = id'
                         TranslationTable.Name        = name'
                         TranslationTable.Details     = details'
                         TranslationTable.RowVersion  = DateTime.Now
@@ -714,6 +833,14 @@ module InsertStatements =
                     let result = translationTable.Details <- addCollectionToList translationTable.Details details
                     translationTable
 
+               static member findTranslationTableID
+                    (context:MzIdentMLContext) (translationTableID:string) =
+                    context.TranslationTable.Find(translationTableID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:TranslationTable) =
                     (addToContextWithExceptionCheck context item)
 
@@ -725,10 +852,10 @@ module InsertStatements =
                static member init
                     (
                         details  : seq<CVParam>,
-                        ?id      : int,
+                        ?id      : string,
                         ?name    : string 
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name' = defaultArg name null
                     {
                         TranslationTable.ID          = id'
@@ -742,6 +869,14 @@ module InsertStatements =
                     measure.Name <- name
                     measure
 
+               static member findMeasureByID
+                    (context:MzIdentMLContext) (measureID:string) =
+                    context.Measure.Find(measureID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Measure) =
                     (addToContextWithExceptionCheck context item)
 
@@ -754,15 +889,19 @@ module InsertStatements =
                     (
                         code    : string,
                         mass    : float,
-                        ?id     : int
+                        ?id     : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         Residue.ID          = id'
                         Residue.Code        = code
                         Residue.Mass        = mass
                         Residue.RowVersion  = DateTime.Now
                     }
+
+               static member findResidueByID
+                    (context:MzIdentMLContext) (residueID:string) =
+                    context.Residue.Find(residueID)
 
                static member addToContext (context:MzIdentMLContext) (item:Residue) =
                     (addToContextWithExceptionCheck context item)
@@ -776,15 +915,23 @@ module InsertStatements =
                     (
                         code    : string,
                         details : seq<CVParam>,
-                        ?id     : int
+                        ?id     : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         AmbiguousResidue.ID          = id'
                         AmbiguousResidue.Code        = code
                         AmbiguousResidue.Details     = details |> List
                         AmbiguousResidue.RowVersion  = DateTime.Now
                     }
+
+               static member findAmbiguousResidueByID
+                    (context:MzIdentMLContext) (ambiguousResidueID:string) =
+                    context.AmbiguousResidue.Find(ambiguousResidueID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentMLContext) (item:AmbiguousResidue) =
                     (addToContextWithExceptionCheck context item)
@@ -797,13 +944,13 @@ module InsertStatements =
                static member init
                     (
                         msLevel           : string,
-                        ?id               : int,
+                        ?id               : string,
                         ?name             : string,
                         ?residue          : seq<Residue>,
                         ?ambiguousResidue : seq<AmbiguousResidue>,
                         ?details          : seq<CVParam>
                     ) =
-                    let id'               = defaultArg id 0
+                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name null
                     let residue'          = convertOptionToList residue
                     let ambiguousResidue' = convertOptionToList ambiguousResidue
@@ -823,6 +970,22 @@ module InsertStatements =
                     measure.Name <- name
                     measure
 
+               static member findMassTableByID
+                    (context:MzIdentMLContext) (massTableID:string) =
+                    context.MassTable.Find(massTableID)
+
+               static member findResidueByID
+                    (context:MzIdentMLContext) (residueID:string) =
+                    context.Residue.Find(residueID)
+
+               static member findAmbiguousResidueByID
+                    (context:MzIdentMLContext) (ambiguousResidueID:string) =
+                    context.AmbiguousResidue.Find(ambiguousResidueID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:MassTable) =
                     (addToContextWithExceptionCheck context item)
 
@@ -834,14 +997,18 @@ module InsertStatements =
                static member init
                     (
                         value   : float,
-                        ?id     : int
+                        ?id     : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         Value.ID          = id'
                         Value.Value       = value
                         Value.RowVersion  = DateTime.Now
                     }
+
+               static member findValueByID
+                    (context:MzIdentMLContext) (valueID:string) =
+                    context.Value.Find(valueID)
 
                static member addToContext (context:MzIdentMLContext) (item:Value) =
                     (addToContextWithExceptionCheck context item)
@@ -855,15 +1022,27 @@ module InsertStatements =
                     (
                         measure : Measure,
                         values  : seq<Value>,
-                        ?id     : int
+                        ?id     : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         FragmentArray.ID          = id'
                         FragmentArray.Measure     = measure
                         FragmentArray.Values      = values |> List
                         FragmentArray.RowVersion  = DateTime.Now
                     }
+
+               static member findFragmentArrayByID
+                    (context:MzIdentMLContext) (fragmentArrayID:string) =
+                    context.FragmentArray.Find(fragmentArrayID)
+
+               static member findMeasureByID
+                    (context:MzIdentMLContext) (measureID:string) =
+                    context.Measure.Find(measureID)
+
+               static member findValueByID
+                    (context:MzIdentMLContext) (valueID:string) =
+                    context.Value.Find(valueID)
 
                static member addToContext (context:MzIdentMLContext) (item:FragmentArray) =
                     (addToContextWithExceptionCheck context item)
@@ -876,14 +1055,18 @@ module InsertStatements =
                static member init
                     (
                         index : int,
-                        ?id   : int
+                        ?id   : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         Index.ID          = id'
                         Index.Index       = index
                         Index.RowVersion  = DateTime.Now
                     }
+
+               static member findIndexByID
+                    (context:MzIdentMLContext) (indexID:string) =
+                    context.Index.Find(indexID)
 
                static member addToContext (context:MzIdentMLContext) (item:Index) =
                     (addToContextWithExceptionCheck context item)
@@ -896,11 +1079,11 @@ module InsertStatements =
                static member init
                     (
                         details        : seq<CVParam>,
-                        ?id            : int,
+                        ?id            : string,
                         ?index         : seq<Index>,
                         ?fragmentArray : seq<FragmentArray>
                     ) =
-                    let id'            = defaultArg id 0
+                    let id'            = defaultArg id (System.Guid.NewGuid().ToString())
                     let index'         = convertOptionToList index
                     let fragmentArray' = convertOptionToList fragmentArray
                     {
@@ -931,6 +1114,22 @@ module InsertStatements =
                     let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                     ionType
 
+               static member findIonTypeByID
+                    (context:MzIdentMLContext) (ionTypeID:string) =
+                    context.Iontype.Find(ionTypeID)
+
+               static member findIndexByID
+                    (context:MzIdentMLContext) (indexID:string) =
+                    context.Index.Find(indexID)
+
+               static member findFragmentArrayByID
+                    (context:MzIdentMLContext) (fragmentArrayID:string) =
+                    context.FragmentArray.Find(fragmentArrayID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:IonType) =
                     (addToContextWithExceptionCheck context item)
 
@@ -944,11 +1143,11 @@ module InsertStatements =
                         location                     : string,
                         fileFormat                   : CVParam,
                         spectrumIDFormat             : CVParam,
-                        ?id                          : int,
+                        ?id                          : string,
                         ?name                        : string,
                         ?externalFormatDocumentation : string
                     ) =
-                    let id'                          = defaultArg id 0
+                    let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
                     {
@@ -981,6 +1180,14 @@ module InsertStatements =
                //     spectraData.SpectrumIdentification <- spectrumIdentification
                //     spectraData
 
+               static member findSpectraDataByID
+                    (context:MzIdentMLContext) (spectraDataID:string) =
+                    context.SpectraData.Find(spectraDataID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:SpectraData) =
                     (addToContextWithExceptionCheck context item)
 
@@ -992,14 +1199,23 @@ module InsertStatements =
                static member init
                     ( 
                         details    : seq<CVParam>,
-                        ?id        : int
+                        ?id        : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         SpecificityRule.ID         = id'
                         SpecificityRule.Details    = details |> List
                         SpecificityRule.RowVersion = DateTime.Now
                     }
+
+               static member findSpecificityRuleByID
+                    (context:MzIdentMLContext) (specificityRuleID:string) =
+                    context.SpecificityRule.Find(specificityRuleID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1014,10 +1230,10 @@ module InsertStatements =
                         massDelta         : float,
                         residues          : string,
                         details           : List<CVParam>,
-                        ?id               : int,
+                        ?id               : string,
                         ?specificityRules : seq<SpecificityRule>
                     ) =
-                    let id'               = defaultArg id 0
+                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let specificityRules' = convertOptionToList specificityRules
                     {
                         SearchModification.ID               = id'
@@ -1039,6 +1255,18 @@ module InsertStatements =
                     let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                     searchModification
 
+               static member findSearchModificationByID
+                    (context:MzIdentMLContext) (searchModificationID:string) =
+                    context.SearchModification.Find(searchModificationID)
+
+               static member findSpecificityRuleByID
+                    (context:MzIdentMLContext) (specificityRuleID:string) =
+                    context.SpecificityRule.Find(specificityRuleID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:SearchModification) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1049,7 +1277,7 @@ module InsertStatements =
         type EnzymeHandler =
                static member init
                     (
-                        ?id              : int,
+                        ?id              : string,
                         ?name            : string,
                         ?cTermGain       : string,
                         ?nTermGain       : string,
@@ -1059,7 +1287,7 @@ module InsertStatements =
                         ?siteRegexc      : string,
                         ?enzymeName      : seq<CVParam>
                     ) =
-                    let id'              = defaultArg id 0
+                    let id'              = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'            = defaultArg name null
                     let cTermGain'       = defaultArg cTermGain null
                     let nTermGain'       = defaultArg nTermGain null
@@ -1126,6 +1354,14 @@ module InsertStatements =
                     let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                     enzyme
 
+               static member findEnzymeByID
+                    (context:MzIdentMLContext) (enzymeID:string) =
+                    context.Enzyme.Find(enzymeID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Enzyme) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1137,11 +1373,11 @@ module InsertStatements =
                static member init
                     (
                         filterType : CVParam,
-                        ?id        : int,
+                        ?id        : string,
                         ?includes  : seq<CVParam>,
                         ?excludes  : seq<CVParam>
                     ) =
-                    let id'         = defaultArg id 0
+                    let id'         = defaultArg id (System.Guid.NewGuid().ToString())
                     let includes'   = convertOptionToList includes
                     let excludes'   = convertOptionToList excludes
                     {
@@ -1172,6 +1408,14 @@ module InsertStatements =
                     let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                     filter
 
+               static member findFilterByID
+                    (context:MzIdentMLContext) (filterID:string) =
+                    context.Filter.Find(filterID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:Filter) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1183,14 +1427,19 @@ module InsertStatements =
                static member init
                     ( 
                         frame : string,
-                        ?id   : int
+                        ?id   : string
                     ) =
-                    let id'   = defaultArg id 0
+                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         Frame.ID         = id'
                         Frame.Frame      = frame
                         Frame.RowVersion = DateTime.Now
                     }
+
+               static member findFrameByID
+                    (context:MzIdentMLContext) (frameID:string) =
+                    context.Frame.Find(frameID)
+
                static member addToContext (context:MzIdentMLContext) (item:Frame) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1204,7 +1453,7 @@ module InsertStatements =
                         analysisSoftware        : AnalysisSoftware,
                         searchType              : CVParam ,
                         threshold               : seq<CVParam>,
-                        ?id                     : int,
+                        ?id                     : string,
                         ?name                   : string,
                         ?additionalSearchParams : seq<CVParam>,
                         ?modificationParams     : seq<SearchModification>,
@@ -1218,7 +1467,7 @@ module InsertStatements =
                         ?translationTable       : seq<TranslationTable>
                         //?mzIdentML              : MzIdentML
                     ) =
-                    let id'                     = defaultArg id 0
+                    let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                   = defaultArg name null
                     let additionalSearchParams' = convertOptionToList additionalSearchParams
                     let modificationParams'     = convertOptionToList modificationParams
@@ -1355,6 +1604,38 @@ module InsertStatements =
                //     spectrumIdentificationProtocol.MzIdentML <- mzIdentML
                //     spectrumIdentificationProtocol
 
+               static member findSpectrumIdentificationProtocolByID
+                    (context:MzIdentMLContext) (spectrumIdentificationProtocolID:string) =
+                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
+
+               static member findAnalysisSoftwareByID
+                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
+                    context.AnalysisSoftware.Find(analysisSoftwareID)
+
+               static member findSearchModificationByID
+                    (context:MzIdentMLContext) (searchModificationID:string) =
+                    context.SearchModification.Find(searchModificationID)
+
+               static member findEnzymeByID
+                    (context:MzIdentMLContext) (enzymeID:string) =
+                    context.Enzyme.Find(enzymeID)
+
+               static member findMassTableByID
+                    (context:MzIdentMLContext) (massTableID:string) =
+                    context.MassTable.Find(massTableID)
+
+               static member findFilterByID
+                    (context:MzIdentMLContext) (filterID:string) =
+                    context.Filter.Find(filterID)
+
+               static member findFrameByID
+                    (context:MzIdentMLContext) (frameID:string) =
+                    context.Frame.Find(frameID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item)
 
@@ -1368,7 +1649,7 @@ module InsertStatements =
                         location                     : string,
                         fileFormat                   : CVParam,
                         databaseName                 : CVParam,
-                        ?id                          : int,
+                        ?id                          : string,
                         ?name                        : string,                    
                         ?numDatabaseSequences        : string,
                         ?numResidues                 : string,
@@ -1377,7 +1658,7 @@ module InsertStatements =
                         ?externalFormatDocumentation : string,
                         ?details                     : seq<CVParam>
                     ) =
-                    let id'                          = defaultArg id 0
+                    let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
                     let numDatabaseSequences'        = defaultArg numDatabaseSequences null
                     let numResidues'                 = defaultArg numResidues null
@@ -1446,6 +1727,14 @@ module InsertStatements =
                //     searchDatabase.Inputs <- inputs
                //     searchDatabase
 
+               static member findSearchDatabaseByID
+                    (context:MzIdentMLContext) (searchDatabaseID:string) =
+                    context.SearchDatabase.Find(searchDatabaseID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1458,14 +1747,14 @@ module InsertStatements =
                     (
                         accession      : string,
                         searchDatabase : SearchDatabase,
-                        ?id            : int,
+                        ?id            : string,
                         ?name          : string,
                         ?sequence      : string,
                         ?length        : int,
                         ?details       : seq<CVParam>
                         //?mzIdentML     : MzIdentML
                     ) =
-                    let id'       = defaultArg id 0
+                    let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'     = defaultArg name null
                     let sequence' = defaultArg sequence null
                     let length'   = defaultArg length Unchecked.defaultof<int>
@@ -1511,6 +1800,18 @@ module InsertStatements =
                //     (dbSequence:DBSequence) (mzIdentML:MzIdentML) =
                //     dbSequence.MzIdentML <- mzIdentML
 
+               static member findDBSequenceByID
+                    (context:MzIdentMLContext) (dbSequenceID:string) =
+                    context.DBSequence.Find(dbSequenceID)
+
+               static member findSearchDatabaseByID
+                    (context:MzIdentMLContext) (searchDatabaseID:string) =
+                    context.SearchDatabase.Find(searchDatabaseID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1524,7 +1825,7 @@ module InsertStatements =
                     (
                         dbSequence                  : DBSequence,
                         peptide                     : Peptide,
-                        ?id                         : int,
+                        ?id                         : string,
                         ?name                       : string,
                         ?start                      : int,
                         ?end'                       : int,
@@ -1536,7 +1837,7 @@ module InsertStatements =
                         ?details                    : seq<CVParam>
                         //?mzIdentML                  : MzIdentML
                     ) =
-                    let id'                         = defaultArg id 0
+                    let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                       = defaultArg name null
                     let start'                      = defaultArg start Unchecked.defaultof<int>
                     let end''                       = defaultArg end' Unchecked.defaultof<int>
@@ -1622,6 +1923,30 @@ module InsertStatements =
                //     peptideEvidence.MzIdentML <- mzIdentML
                //     peptideEvidence
 
+               static member findPeptideEvidenceByID
+                    (context:MzIdentMLContext) (peptideEvidenceID:string) =
+                    context.PeptideEvidence.Find(peptideEvidenceID)
+
+               static member findDBSequenceByID
+                    (context:MzIdentMLContext) (dbSequenceID:string) =
+                    context.DBSequence.Find(dbSequenceID)
+
+               static member findPeptideByID
+                    (context:MzIdentMLContext) (peptideID:string) =
+                    context.Peptide.Find(peptideID)
+
+               static member findFrameID
+                    (context:MzIdentMLContext) (frameID:string) =
+                    context.Frame.Find(frameID)
+
+               static member findTranslationTableByID
+                    (context:MzIdentMLContext) (translationTableID:string) =
+                    context.TranslationTable.Find(translationTableID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:PeptideEvidence) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1637,7 +1962,7 @@ module InsertStatements =
                         experimentalMassToCharge      : float,
                         passThreshold                 : bool,
                         rank                          : int,
-                        ?id                           : int,
+                        ?id                           : string,
                         ?name                         : string,
                         ?sample                       : Sample,
                         ?massTable                    : MassTable,
@@ -1647,7 +1972,7 @@ module InsertStatements =
                         ?calculatedPI                 : float,
                         ?details                      : seq<CVParam>
                     ) =
-                    let id'                           = defaultArg id 0
+                    let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                         = defaultArg name null
                     let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
                     let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
@@ -1733,6 +2058,34 @@ module InsertStatements =
                //     (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
                //     spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
 
+               static member findSpectrumIdentificationItemByID
+                    (context:MzIdentMLContext) (spectrumIdentificationItemID:string) =
+                    context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
+
+               static member findMassTableByID
+                    (context:MzIdentMLContext) (massTableID:string) =
+                    context.MassTable.Find(massTableID)
+
+               static member findSampleByID
+                    (context:MzIdentMLContext) (sampleID:string) =
+                    context.Sample.Find(sampleID)
+
+               static member findIontypeByID
+                    (context:MzIdentMLContext) (ionTypeID:string) =
+                    context.Iontype.Find(ionTypeID)
+
+               static member findPeptideByID
+                    (context:MzIdentMLContext) (peptideID:string) =
+                    context.Peptide.Find(peptideID)
+
+               static member findPeptideEvidenceByID
+                    (context:MzIdentMLContext) (peptideEvidenceID:string) =
+                    context.PeptideEvidence.Find(peptideEvidenceID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1746,11 +2099,11 @@ module InsertStatements =
                         spectraData                 : SpectraData,
                         spectrumID                  : string,
                         spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
-                        ?id                         : int,
+                        ?id                         : string,
                         ?name                       : string,
                         ?details                    : seq<CVParam>
                     ) =
-                    let id'                         = defaultArg id 0
+                    let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                       = defaultArg name null
                     let details'                    = convertOptionToList details
                     {
@@ -1782,6 +2135,22 @@ module InsertStatements =
                //     (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
                //     spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
 
+               static member findSpectrumIdentificationResultByID
+                    (context:MzIdentMLContext) (spectrumIdentificationResultID:string) =
+                    context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
+
+               static member findSpectraDataByID
+                    (context:MzIdentMLContext) (spectraDataID:string) =
+                    context.SpectraData.Find(spectraDataID)
+
+               static member findSpectrumIdentificationItemByID
+                    (context:MzIdentMLContext) (spectrumIdentificationItemID:string) =
+                    context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1793,13 +2162,13 @@ module InsertStatements =
                static member init
                     (
                         spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
-                        ?id                          : int,
+                        ?id                          : string,
                         ?name                        : string,
                         ?numSequencesSearched        : int,
                         ?fragmentationTable          : seq<Measure>,
                         ?details                     : seq<CVParam>          
                     ) =
-                    let id'                   = defaultArg id 0
+                    let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                 = defaultArg name null
                     let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int>
                     let fragmentationTable'   = convertOptionToList fragmentationTable
@@ -1844,6 +2213,22 @@ module InsertStatements =
                     let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
 
+               static member findSpectrumIdentificationListByID
+                    (context:MzIdentMLContext) (spectrumIdentificationListID:string) =
+                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
+
+               static member findSpectrumIdentificationResultByID
+                    (context:MzIdentMLContext) (spectrumIdentificationResultID:string) =
+                    context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
+
+               static member findMeasureByID
+                    (context:MzIdentMLContext) (measureID:string) =
+                    context.Measure.Find(measureID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1858,11 +2243,11 @@ module InsertStatements =
                         spectrumIdentificationProtocol : SpectrumIdentificationProtocol,
                         spectraData                    : seq<SpectraData>,
                         searchDatabase                 : seq<SearchDatabase>,
-                        ?id                            : int,
+                        ?id                            : string,
                         ?name                          : string,
                         ?activityDate                  : DateTime
                     ) =
-                    let id'               = defaultArg id 0
+                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name null
                     let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
                     {
@@ -1905,6 +2290,26 @@ module InsertStatements =
                //     (spectrumIdentificationList:SpectrumIdentification) (mzIdentML:MzIdentML) =
                //     spectrumIdentificationList.MzIdentML <- mzIdentML
 
+               static member findSpectrumIdentificationByID
+                    (context:MzIdentMLContext) (spectrumIdentificationID:string) =
+                    context.SpectrumIdentification.Find(spectrumIdentificationID)
+
+               static member findSpectrumIdentificationListByID
+                    (context:MzIdentMLContext) (spectrumIdentificationListID:string) =
+                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
+
+               static member findSpectrumIdentificationProtocolByID
+                    (context:MzIdentMLContext) (spectrumIdentificationProtocolID:string) =
+                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
+
+               static member findSpectraDataByID
+                    (context:MzIdentMLContext) (spectraDataID:string) =
+                    context.SpectraData.Find(spectraDataID)
+
+               static member findSearchDatabaseByID
+                    (context:MzIdentMLContext) (searchDatabaseID:string) =
+                    context.SearchDatabase.Find(searchDatabaseID)
+
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentification) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1917,11 +2322,11 @@ module InsertStatements =
                     (
                         analysisSoftware : AnalysisSoftware,
                         threshold        : seq<CVParam>,
-                        ?id              : int,
+                        ?id              : string,
                         ?name            : string,
                         ?analysisParams  : seq<CVParam>
                     ) =
-                    let id'             = defaultArg id 0
+                    let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'           = defaultArg name null
                     let analysisParams' = convertOptionToList analysisParams
                     {
@@ -1948,6 +2353,18 @@ module InsertStatements =
                     let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
                     proteinDetectionProtocol
 
+               static member findProteinDetectionProtocolByID
+                    (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
+                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+
+               static member findAnalysisSoftwareByID
+                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
+                    context.AnalysisSoftware.Find(analysisSoftwareID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
                         (addToContextWithExceptionCheck context item)
 
@@ -1960,12 +2377,12 @@ module InsertStatements =
                     (             
                         location                     : string,
                         fileFormat                   : CVParam,
-                        ?id                          : int,
+                        ?id                          : string,
                         ?name                        : string,
                         ?externalFormatDocumentation : string,
                         ?details                     : seq<CVParam>
                     ) =
-                    let id'                          = defaultArg id 0
+                    let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
                     let details'                     = convertOptionToList details
@@ -2003,6 +2420,14 @@ module InsertStatements =
                //     (sourceFile:SourceFile) (inputs:Inputs) =
                //     sourceFile.Inputs <- inputs
 
+               static member findSourceFileByID
+                    (context:MzIdentMLContext) (sourceFileID:string) =
+                    context.SourceFile.Find(sourceFileID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:SourceFile) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2014,11 +2439,11 @@ module InsertStatements =
                static member init
                     (              
                         spectraData     : seq<SpectraData>,
-                        ?id             : int,
+                        ?id             : string,
                         ?sourceFile     : seq<SourceFile>,
                         ?searchDatabase : seq<SearchDatabase>
                     ) =
-                    let id'             = defaultArg id 0
+                    let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let sourceFile'     = convertOptionToList sourceFile
                     let searchDatabase' = convertOptionToList searchDatabase
                     {
@@ -2049,6 +2474,22 @@ module InsertStatements =
                     let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
                     inputs
 
+               static member findInputsID
+                    (context:MzIdentMLContext) (inputsID:string) =
+                    context.Inputs.Find(inputsID)
+
+               static member findSpectraDataByID
+                    (context:MzIdentMLContext) (spectraDataID:string) =
+                    context.SpectraData.Find(spectraDataID)
+
+               static member findSourceFileByID
+                    (context:MzIdentMLContext) (sourceFileID:string) =
+                    context.SourceFile.Find(sourceFileID)
+
+               static member findSearchDatabaseByID
+                    (context:MzIdentMLContext) (searchDatabaseID:string) =
+                    context.SearchDatabase.Find(searchDatabaseID)
+
                 static member addToContext (context:MzIdentMLContext) (item:Inputs) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2061,15 +2502,27 @@ module InsertStatements =
                     (              
                         peptideEvidence             : PeptideEvidence,
                         spectrumIdentificationItems : seq<SpectrumIdentificationItem>,
-                        ?id                         : int
+                        ?id                         : string
                     ) =
-                    let id' = defaultArg id 0
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     {
                         PeptideHypothesis.ID                          = id'
                         PeptideHypothesis.PeptideEvidence             = peptideEvidence
                         PeptideHypothesis.SpectrumIdentificationItems = spectrumIdentificationItems |> List
                         PeptideHypothesis.RowVersion                  = DateTime.Now
                     }
+
+               static member findPeptideHypothesisByID
+                    (context:MzIdentMLContext) (peptideHypothesisID:string) =
+                    context.PeptideHypothesis.Find(peptideHypothesisID)
+
+               static member findPeptideEvidenceByID
+                    (context:MzIdentMLContext) (peptideEvidenceID:string) =
+                    context.PeptideEvidence.Find(peptideEvidenceID)
+
+               static member findSpectrumIdentificationItemByID
+                    (context:MzIdentMLContext) (spectrumIdentificationItemID:string) =
+                    context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
 
                 static member addToContext (context:MzIdentMLContext) (item:PeptideHypothesis) =
                         (addToContextWithExceptionCheck context item)
@@ -2084,11 +2537,11 @@ module InsertStatements =
                         passThreshold     : bool,
                         dbSequence        : DBSequence,
                         peptideHypothesis : seq<PeptideHypothesis>,
-                        ?id               : int,
+                        ?id               : string,
                         ?name             : string,
                         ?details          : seq<CVParam>
                     ) =
-                    let id'      = defaultArg id 0
+                    let id'      = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'    = defaultArg name null
                     let details' = convertOptionToList details
                     {
@@ -2116,6 +2569,22 @@ module InsertStatements =
                     let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
                     proteinDetectionHypothesis
 
+               static member findProteinDetectionHypothesisByID
+                    (context:MzIdentMLContext) (proteinDetectionHypothesisID:string) =
+                    context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
+
+               static member findDBSequenceByID
+                    (context:MzIdentMLContext) (dbSequenceID:string) =
+                    context.DBSequence.Find(dbSequenceID)
+
+               static member findPeptideHypothesisByID
+                    (context:MzIdentMLContext) (peptideHypothesisID:string) =
+                    context.PeptideHypothesis.Find(peptideHypothesisID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2127,11 +2596,11 @@ module InsertStatements =
                static member init
                     (             
                         proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
-                        ?id                       : int,
+                        ?id                       : string,
                         ?name                     : string,
                         ?details                  : seq<CVParam>
                     ) =
-                    let id'                          = defaultArg id 0
+                    let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
                     let details'                     = convertOptionToList details
                     {
@@ -2157,6 +2626,18 @@ module InsertStatements =
                     let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                     proteinAmbiguityGroup
 
+               static member findProteinAmbiguityGroupByID
+                    (context:MzIdentMLContext) (proteinAmbiguityGroupID:string) =
+                    context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
+
+               static member findProteinDetectionHypothesisByID
+                    (context:MzIdentMLContext) (proteinDetectionHypothesisID:string) =
+                    context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2167,12 +2648,12 @@ module InsertStatements =
         type ProteinDetectionListHandler =
                static member init
                     (             
-                        ?id                     : int,
+                        ?id                     : string,
                         ?name                   : string,
                         ?proteinAmbiguityGroups : seq<ProteinAmbiguityGroup>,
                         ?details                : seq<CVParam>
                     ) =
-                    let id'                     = defaultArg id 0
+                    let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                   = defaultArg name null
                     let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
                     let details'                = convertOptionToList details
@@ -2209,6 +2690,18 @@ module InsertStatements =
                     let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                     proteinDetectionList
 
+               static member findProteinDetectionListByID
+                    (context:MzIdentMLContext) (proteinDetectionListID:string) =
+                    context.ProteinDetectionList.Find(proteinDetectionListID)
+
+               static member findProteinAmbiguityGroupByID
+                    (context:MzIdentMLContext) (proteinAmbiguityGroupID:string) =
+                    context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
+
+               static member findCVParamByID
+                    (context:MzIdentMLContext) (cvParamID:string) =
+                    context.CVParam.Find(cvParamID)
+
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionList) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2220,10 +2713,10 @@ module InsertStatements =
                static member init
                     (             
                         spectrumIdentificationList : seq<SpectrumIdentificationList>,
-                        ?id                        : int,
+                        ?id                        : string,
                         ?proteinDetectionList      : ProteinDetectionList
                     ) =
-                    let id'                   = defaultArg id 0
+                    let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                     let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
                     {
                         AnalysisData.ID                         = id'
@@ -2236,6 +2729,18 @@ module InsertStatements =
                     (analysisData:AnalysisData) (proteinDetectionList:ProteinDetectionList) =
                     analysisData.ProteinDetectionList <- proteinDetectionList
                     analysisData
+
+               static member findAnalysisDataByID
+                    (context:MzIdentMLContext) (analysisDataID:string) =
+                    context.AnalysisData.Find(analysisDataID)
+
+               static member findSpectrumIdentificationListByID
+                    (context:MzIdentMLContext) (spectrumIdentificationListID:string) =
+                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
+
+               static member findProteinDetectionListByID
+                    (context:MzIdentMLContext) (proteinDetectionListID:string) =
+                    context.ProteinDetectionList.Find(proteinDetectionListID)
 
                 static member addToContext (context:MzIdentMLContext) (item:AnalysisData) =
                         (addToContextWithExceptionCheck context item)
@@ -2250,11 +2755,11 @@ module InsertStatements =
                         proteinDetectionList     : ProteinDetectionList,
                         proteinDetectionProtocol : ProteinDetectionProtocol,
                         spectrumIdentifications  : seq<SpectrumIdentification>,
-                        ?id                      : int,
+                        ?id                      : string,
                         ?name                    : string,
                         ?activityDate            : DateTime
                     ) =
-                    let id'           = defaultArg id 0
+                    let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'         = defaultArg name null
                     let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
                     {
@@ -2277,6 +2782,22 @@ module InsertStatements =
                     proteinDetection.ActivityDate <- activityDate
                     proteinDetection
 
+               static member findProteinDetectionByID
+                    (context:MzIdentMLContext) (proteinDetectionID:string) =
+                    context.ProteinDetection.Find(proteinDetectionID)
+
+               static member findProteinDetectionListByID
+                    (context:MzIdentMLContext) (proteinDetectionListID:string) =
+                    context.ProteinDetectionList.Find(proteinDetectionListID)
+
+               static member findProteinDetectionProtocolByID
+                    (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
+                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+
+               static member findSpectrumIdentificationByID
+                    (context:MzIdentMLContext) (spectrumIdentificationID:string) =
+                    context.SpectrumIdentification.Find(spectrumIdentificationID)
+
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2287,7 +2808,7 @@ module InsertStatements =
         type BiblioGraphicReferenceHandler =
                static member init
                     (             
-                        ?id          : int,
+                        ?id          : string,
                         ?name        : string,
                         ?authors     : string,
                         ?doi         : string,
@@ -2300,7 +2821,7 @@ module InsertStatements =
                         ?volume      : string,
                         ?year        : int
                     ) =
-                    let id'          = defaultArg id 0
+                    let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'        = defaultArg name null
                     let authors'     = defaultArg authors null
                     let doi'         = defaultArg doi null
@@ -2378,6 +2899,10 @@ module InsertStatements =
                //     biblioGraphicReference.MzIdentML <- mzIdentML
                //     biblioGraphicReference
 
+               static member findBiblioGraphicReferenceByID
+                    (context:MzIdentMLContext) (biblioGraphicReferenceID:string) =
+                    context.BiblioGraphicReference.Find(biblioGraphicReferenceID)
+
                 static member addToContext (context:MzIdentMLContext) (item:BiblioGraphicReference) =
                         (addToContextWithExceptionCheck context item)
 
@@ -2388,21 +2913,21 @@ module InsertStatements =
         type ProviderHandler =
                static member init
                     (             
-                        ?id               : int,
+                        ?id               : string,
                         ?name             : string,
                         ?analysisSoftware : AnalysisSoftware,
                         ?contactRole      : ContactRole
                     ) =
-                    let id'               = defaultArg id 0
+                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name null
                     let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                     let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
                     {
-                        ID               = id'
-                        Name             = name'
-                        AnalysisSoftware = analysisSoftware'
-                        ContactRole      = contactRole'
-                        RowVersion       = DateTime.Now
+                        Provider.ID               = id'
+                        Provider.Name             = name'
+                        Provider.AnalysisSoftware = analysisSoftware'
+                        Provider.ContactRole      = contactRole'
+                        Provider.RowVersion       = DateTime.Now
                     }
 
                static member addName
@@ -2416,6 +2941,18 @@ module InsertStatements =
                static member addContactRole
                     (provider:Provider) (contactRole:ContactRole) =
                     provider.ContactRole <- contactRole
+
+               static member findProviderByID
+                    (context:MzIdentMLContext) (providerID:string) =
+                    context.Provider.Find(providerID)
+
+               static member findAnalysisSoftwareRoleByID
+                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
+                    context.AnalysisSoftware.Find(analysisSoftwareID)
+
+               static member findContactRoleByID
+                    (context:MzIdentMLContext) (contactRoleID:string) =
+                    context.ContactRole.Find(contactRoleID)
 
                 static member addToContext (context:MzIdentMLContext) (item:Provider) =
                         (addToContextWithExceptionCheck context item)
@@ -2603,7 +3140,7 @@ module InsertStatements =
                 let psims = OntologyHandler.init ("Psi-MS")
                 OntologyHandler.addToContext context psims |> ignore 
                 fromPsiMS
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name(*, context.Ontology.Find(psims.ID)*)))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(psims.ID))))
                 |> Seq.toArray
             terms_PsiMS
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
@@ -2612,7 +3149,7 @@ module InsertStatements =
                 let pride = OntologyHandler.init ("Pride")
                 OntologyHandler.addToContext context pride |> ignore 
                 fromPride
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name(*, context.Ontology.Find(pride.ID)*)))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(pride.ID))))
                 |> Seq.toArray
             terms_Pride
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
@@ -2621,7 +3158,7 @@ module InsertStatements =
                 let unimod = OntologyHandler.init ("Unimod")
                 OntologyHandler.addToContext context unimod |> ignore 
                 fromUniMod
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name(*, context.Ontology.Find(unimod.ID)*)))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unimod.ID))))
                 |> Seq.toArray
             terms_Unimod
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
@@ -2630,7 +3167,7 @@ module InsertStatements =
                 let unit_ontology = OntologyHandler.init ("Unit_Ontology")
                 OntologyHandler.addToContext context unit_ontology |> ignore 
                 fromUnit_Ontology
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name(*, context.Ontology.Find(unit_ontology.ID)*)))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unit_ontology.ID))))
                 |> Seq.toArray
             terms_Unit_Ontology
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore

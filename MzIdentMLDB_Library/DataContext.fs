@@ -18,7 +18,7 @@ module DataContext =
             {
                 ID               : string
                 mutable Name     : string
-                //mutable Ontology : Ontology
+                mutable Ontology : Ontology
                 RowVersion       : DateTime 
             }
 
@@ -35,8 +35,8 @@ module DataContext =
         type [<CLIMutable>] 
             CVParam =
             {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : string
                 Name               : string
                 mutable Value      : string
                 Term               : Term
@@ -63,8 +63,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Organization =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID              : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID              : string
                 mutable Name    : string
                 mutable Details : List<CVParam>
                 //Formerly Parent/Organization_Ref
@@ -77,8 +77,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Person =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                     : string
                 mutable Name           : string
                 mutable FirstName      : string
                 mutable MidInitials    : string
@@ -96,8 +96,8 @@ module DataContext =
         type [<CLIMutable>] 
             ContactRole =
             {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 //Formerly Contact_Ref
                 Person     : Person
                 //
@@ -109,8 +109,8 @@ module DataContext =
         type [<CLIMutable>] 
             AnalysisSoftware =
             {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                     : string
                 mutable Name           : string
                 mutable URI            : string
                 mutable Version        : string
@@ -124,8 +124,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SubSample =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                  : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                  : string
                 //Formerly Sample_Ref
                 mutable Sample      : Sample
                 //
@@ -136,8 +136,8 @@ module DataContext =
         and [<CLIMutable>] 
                 Sample =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                   : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                   : string
                 mutable Name         : string
                 mutable ContactRoles : List<ContactRole>
                 mutable SubSamples   : List<SubSample>
@@ -149,8 +149,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Modification =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                            : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                            : string
                 mutable Residues              : string
                 mutable Location              : int
                 mutable MonoIsotopicMassDelta : float
@@ -163,8 +163,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SubstitutionModification =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                            : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                            : string
                 OriginalResidue               : string
                 ReplacementResidue            : string
                 mutable Location              : int
@@ -177,8 +177,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Peptide =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                : string
                 mutable Name                      : string
                 PeptideSequence                   : string
                 mutable Modifications             : List<Modification>
@@ -191,8 +191,8 @@ module DataContext =
         type [<CLIMutable>] 
                 TranslationTable =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID              : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID              : string
                 mutable Name    : string
                 mutable Details : List<CVParam>
                 RowVersion      : DateTime
@@ -202,8 +202,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Measure =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID           : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID           : string
                 mutable Name : string
                 Details      : List<CVParam>
                 RowVersion   : DateTime
@@ -213,8 +213,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Residue =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Code       : string
                 Mass       : float
                 RowVersion : DateTime
@@ -224,8 +224,8 @@ module DataContext =
         type [<CLIMutable>] 
                 AmbiguousResidue =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Code       : string
                 Details    : List<CVParam>
                 RowVersion : DateTime
@@ -235,8 +235,8 @@ module DataContext =
         type [<CLIMutable>] 
                 MassTable =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                       : string
                 mutable Name             : string
                 MSLevel                  : string
                 mutable Residue          : List<Residue>
@@ -249,8 +249,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Value =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Value      : float
                 RowVersion : DateTime
                 }
@@ -259,8 +259,8 @@ module DataContext =
         type [<CLIMutable>] 
                 FragmentArray =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Measure    : Measure
                 Values     : List<Value>
                 RowVersion : DateTime
@@ -270,8 +270,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Index =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Index      : int
                 RowVersion : DateTime
                 }
@@ -280,8 +280,8 @@ module DataContext =
         type [<CLIMutable>] 
                 IonType =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                     : string
                 mutable Index          : List<Index>
                 mutable FragmentArrays : List<FragmentArray>
                 Details                : List<CVParam>
@@ -292,8 +292,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectraData =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                  : string
                 mutable Name                        : string
                 Location                            : string
                 mutable ExternalFormatDocumentation : string
@@ -307,8 +307,8 @@ module DataContext =
                 //Formerly Specificityrules
                 SpecificityRule =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Details    : List<CVParam>
                 RowVersion : DateTime
                 }  
@@ -318,8 +318,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SearchModification =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                       : string
                 FixedMod                 : bool
                 MassDelta                : float
                 Residues                 : string
@@ -332,8 +332,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Enzyme =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                      : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                      : string
                 mutable Name            : string
                 mutable CTermGain       : string
                 mutable NTermGain       : string
@@ -349,8 +349,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Filter =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID               : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID               : string
                 FilterType       : CVParam
                 mutable Includes : List<CVParam>
                 mutable Excludes : List<CVParam>
@@ -361,8 +361,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Frame =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID         : string
                 Frame      : string
                 RowVersion : DateTime
                 }
@@ -371,8 +371,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectrumIdentificationProtocol =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                             : string
                 mutable Name                   : string
                 //Formerly AnalysisSoftware_Ref
                 AnalysisSoftware               : AnalysisSoftware
@@ -400,8 +400,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SearchDatabase =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                  : string
                 mutable Name                        : string
                 Location                            : string
                 mutable NumDatabaseSequences        : string
@@ -420,8 +420,8 @@ module DataContext =
         type [<CLIMutable>] 
                 DBSequence =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                : string
                 mutable Name      : string
                 Accession         : string
                 SearchDatabase    : SearchDatabase
@@ -435,8 +435,8 @@ module DataContext =
         type [<CLIMutable>] 
                 PeptideEvidence =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                 : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                 : string
                 mutable Name                       : string
                 //Formerly DBSequence_Ref
                 DBSequence                         : DBSequence
@@ -461,8 +461,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectrumIdentificationItem =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                   : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                   : string
                 mutable Name                         : string
                 mutable Sample                       : Sample
                 mutable MassTable                    : MassTable
@@ -483,8 +483,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectrumIdentificationResult =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                 : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                 : string
                 mutable Name                       : string
                 SpectraData                        : SpectraData
                 SpectrumID                         : string
@@ -497,8 +497,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectrumIdentificationList =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                           : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                           : string
                 mutable Name                 : string
                 mutable NumSequencesSearched : int
                 mutable FragmentationTables  : List<Measure>
@@ -512,8 +512,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SpectrumIdentification =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                             : string
                 mutable Name                   : string
                 mutable ActivityDate           : DateTime
                 SpectrumIdentificationList     : SpectrumIdentificationList
@@ -531,8 +531,8 @@ module DataContext =
         type [<CLIMutable>] 
                 ProteinDetectionProtocol =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                     : string
                 mutable Name           : string
                 AnalysisSoftware       : AnalysisSoftware
                 mutable AnalysisParams : List<CVParam>
@@ -544,8 +544,8 @@ module DataContext =
         type [<CLIMutable>] 
                 SourceFile =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                                  : string
                 mutable Name                        : string
                 Location                            : string
                 mutable ExternalFormatDocumentation : string
@@ -558,8 +558,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Inputs =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                      : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                      : string
                 mutable SourceFiles     : List<SourceFile>
                 mutable SearchDatabases : List<SearchDatabase>
                 SpectraData             : List<SpectraData>
@@ -570,8 +570,8 @@ module DataContext =
         type [<CLIMutable>] 
                 PeptideHypothesis =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                          : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                          : string
                 PeptideEvidence             : PeptideEvidence
                 SpectrumIdentificationItems : List<SpectrumIdentificationItem>
                 RowVersion                  : DateTime
@@ -581,8 +581,8 @@ module DataContext =
         type [<CLIMutable>] 
                 ProteinDetectionHypothesis =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                : string
                 mutable Name      : string
                 PassThreshold     : bool
                 DBSequence        : DBSequence
@@ -595,8 +595,8 @@ module DataContext =
         type [<CLIMutable>] 
                 ProteinAmbiguityGroup =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                        : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                        : string
                 mutable Name              : string
                 ProteinDetecionHypothesis : List<ProteinDetectionHypothesis>
                 mutable Details           : List<CVParam>
@@ -607,8 +607,8 @@ module DataContext =
         type [<CLIMutable>] 
                 ProteinDetectionList =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                             : string
                 mutable Name                   : string
                 mutable ProteinAmbiguityGroups : List<ProteinAmbiguityGroup>
                 mutable Details                : List<CVParam>
@@ -619,8 +619,8 @@ module DataContext =
         type [<CLIMutable>] 
                 AnalysisData =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                           : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                           : string
                 SpectrumIdentificationList   : List<SpectrumIdentificationList>
                 mutable ProteinDetectionList : ProteinDetectionList
                 RowVersion                   : DateTime
@@ -630,8 +630,8 @@ module DataContext =
         type [<CLIMutable>] 
                 ProteinDetection =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                       : string
                 mutable Name             : string
                 mutable ActivityDate     : DateTime
                 ProteinDetectionList     : ProteinDetectionList
@@ -644,8 +644,8 @@ module DataContext =
         type [<CLIMutable>] 
                 BiblioGraphicReference =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                  : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                  : string
                 mutable Name        : string
                 mutable Authors     : string
                 mutable DOI         : string
@@ -664,8 +664,8 @@ module DataContext =
         type [<CLIMutable>] 
                 Provider =
                 {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : int
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                       : string
                 mutable Name             : string
                 //Formerly AnalysisSoftware_Ref
                 mutable AnalysisSoftware : AnalysisSoftware
@@ -742,6 +742,11 @@ module DataContext =
                                                         and set value = this.m_cvParam <- value
 
                 [<DefaultValue>] 
+                val mutable m_ContactRole : DbSet<ContactRole>
+                member public this.ContactRole with get() = this.m_ContactRole
+                                                            and set value = this.m_ContactRole <- value
+
+                [<DefaultValue>] 
                 val mutable m_AnalysisSoftware : DbSet<AnalysisSoftware>
                 member public this.AnalysisSoftware with get() = this.m_AnalysisSoftware
                                                                  and set value = this.m_AnalysisSoftware <- value
@@ -760,6 +765,11 @@ module DataContext =
                 val mutable m_DBSequence : DbSet<DBSequence>
                 member public this.DBSequence with get() = this.m_DBSequence
                                                            and set value = this.m_DBSequence <- value     
+
+                [<DefaultValue>] 
+                val mutable m_SubSample : DbSet<SubSample>
+                member public this.SubSample with get() = this.m_SubSample
+                                                          and set value = this.m_SubSample <- value  
 
                 [<DefaultValue>] 
                 val mutable m_Sample : DbSet<Sample>
@@ -812,9 +822,19 @@ module DataContext =
                                                           and set value = this.m_MassTable <- value
 
                 [<DefaultValue>] 
+                val mutable m_Value : DbSet<Value>
+                member public this.Value with get() = this.m_Value
+                                                      and set value = this.m_Value <- value
+
+                [<DefaultValue>] 
                 val mutable m_FragmentArray : DbSet<FragmentArray>
                 member public this.FragmentArray with get() = this.m_FragmentArray
                                                               and set value = this.m_FragmentArray <- value
+
+                [<DefaultValue>] 
+                val mutable m_Index : DbSet<Index>
+                member public this.Index with get() = this.m_Index
+                                                      and set value = this.m_Index <- value
 
                 [<DefaultValue>] 
                 val mutable m_IonType : DbSet<IonType>
@@ -860,6 +880,11 @@ module DataContext =
                 val mutable m_Filter : DbSet<Filter>
                 member public this.Filter with get() = this.m_Filter
                                                        and set value = this.m_Filter <- value
+
+                [<DefaultValue>] 
+                val mutable m_Frame : DbSet<Frame>
+                member public this.Frame with get() = this.m_Frame
+                                                      and set value = this.m_Frame <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentificationProtocol : DbSet<SpectrumIdentificationProtocol>
@@ -917,10 +942,24 @@ module DataContext =
                                                              and set value = this.m_AnalysisData <- value
 
                 [<DefaultValue>]
+                val mutable m_ProteinDetection : DbSet<ProteinDetection>
+                member public this.ProteinDetection with get() = this.m_ProteinDetection
+                                                                 and set value = this.m_ProteinDetection <- value
+
+                [<DefaultValue>]
+                val mutable m_Provider : DbSet<Provider>
+                member public this.Provider with get() = this.m_Provider
+                                                         and set value = this.m_Provider <- value
+
+                [<DefaultValue>]
                 val mutable m_BiblioGraphicReference : DbSet<BiblioGraphicReference>
                 member public this.BiblioGraphicReference with get() = this.m_BiblioGraphicReference
                                                                        and set value = this.m_BiblioGraphicReference <- value
 
+                [<DefaultValue>]
+                val mutable m_MzIdentML : DbSet<MzIdentML>
+                member public this.MzIdentML with get() = this.m_MzIdentML
+                                                          and set value = this.m_MzIdentML <- value
 
         type OntologyContext =
      

@@ -87,24 +87,24 @@ let termTest =
 
 let cvParamTest =
     let initCVParam =
-        CVParamHandler.init("", TermHandler.init(""))
+        CVParamHandler.init("", TermHandler.init("")(*, "", "", TermHandler.init("II"),"UnitName"*))
     initCVParam
 
 let organizationTest =
     let initOrg =
-        OrganizationHandler.init(0,"Test")
+        OrganizationHandler.init("I","Test")
     let orgWithDetail = 
         OrganizationHandler.addDetails initOrg [cvParamTest]
     OrganizationHandler.addToContext context orgWithDetail
 
-let testPerson =
-    let initPerson =
-        PersonHandler.init()
-    let personWithDetails = 
-        PersonHandler.addDetail initPerson cvParamTest
-    let personWithOrgan =
-        PersonHandler.addOrganization initPerson (OrganizationHandler.init(0,"Test"))
-    PersonHandler.addToContext context personWithOrgan
+//let testPerson =
+//    let initPerson =
+//        PersonHandler.init()
+//    let personWithDetails = 
+//        PersonHandler.addDetail initPerson cvParamTest
+//    let personWithOrgan =
+//        PersonHandler.addOrganization initPerson (OrganizationHandler.init("I","Test"))
+//    PersonHandler.addToContext context personWithOrgan
 
 //type Test =
 //    {
@@ -166,7 +166,7 @@ let testPerson =
 //    |> Array.map (fun item -> CVParamHandler.addValue testii.[0] item.Value.Value)
 
 
-let personCollection = [PersonHandler.init(); PersonHandler.init(); PersonHandler.init(1)]
+let personCollection = [PersonHandler.init(); PersonHandler.init(); PersonHandler.init("III")]
 let termCollection = [TermHandler.init("i"); TermHandler.init("ii"); TermHandler.init("iii")]
 
 let testContext =
