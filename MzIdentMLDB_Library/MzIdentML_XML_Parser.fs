@@ -3,9 +3,9 @@
 //open DataContext.EntityTypes
 //open DataContext.DataContext
 //open InsertStatements.ObjectHandlers
-//open System.Collections.Generic
-//open FSharp.Care.IO
-//open BioFSharp.IO
+////open System.Collections.Generic
+////open FSharp.Care.IO
+////open BioFSharp.IO
 
 
 //module XMLParsing =
@@ -198,8 +198,7 @@
 //              }
 //        |> (fun item -> if (Seq.length item) > 0 
 //                            then Seq.item 0 item
-//                            else TermHandler.init(null)
-//           )
+//                            else TermHandler.init(null))
 
 //    let takeTermEntryOption (dbContext : MzIdentMLContext) (termID : string option) =
 //        match termID with
@@ -211,20 +210,10 @@
 //                      }
 //                |> (fun item -> if (Seq.length item) > 0 
 //                                    then Seq.item 0 item
-//                                    else TermHandler.init(null)
-//                   )
+//                                    else TermHandler.init(null))
 //            | None -> TermHandler.init(null)
 
-//    let takeOrganizationEntry (dbContext : MzIdentMLContext) (organizationID : int) =
-//        query {
-//            for i in dbContext.Organization do
-//                if i.ID = organizationID then
-//                    select (i)
-//              }
-//        |> (fun item -> if (Seq.length item) > 0 
-//                            then Seq.item 0 item
-//                            else OrganizationHandler.init()
-//           )   
+    
 
 //    //let takeTermID (dbContext : MzIdentMLContext) xmlTermIDList =
 //    //    xmlTermIDList
@@ -266,45 +255,13 @@
 //        |Some x -> convertToEntity_CVParam dbContext x
 //        |None -> convertToEntity_UserParam dbContext userParam.Value
 
-//    let fuseCVParamAndUserParamCollection (dbContext:MzIdentMLContext) (cvParams:SchemePeptideShaker.CvParam []) (userParams:SchemePeptideShaker.UserParam []) =
-//                (Array.append
-//                    (cvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
-//                    (userParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
-//                )
-
 //    let convertToEntityOption_CVParam (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.CvParam option) =
 //        convertOptionToEntity convertToEntity_CVParam dbContext mzIdentMLXML
 
-//    let convertToEntity_Organization (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.Organization) =
-//        let init = OrganizationHandler.init()
-//        let addName = setOption OrganizationHandler.addName init mzIdentMLXML.Name
-//        let addParent = OrganizationHandler.addParent addName (if mzIdentMLXML.Parent.IsSome then mzIdentMLXML.Parent.Value.OrganizationRef else null)
-//        let addDetails = OrganizationHandler.addDetails addParent (fuseCVParamAndUserParamCollection dbContext mzIdentMLXML.CvParams mzIdentMLXML.UserParams)
-//        addDetails
+//    let test =
+//        SchemePeptideShaker.SpectrumIdentificationProtocol
 
-//    let convertToEntity_Person (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.Person) =
-//        let init = PersonHandler.init()
-//        let addName = setOption PersonHandler.addName init mzIdentMLXML.Name
-//        let addFirstName = setOption PersonHandler.addFirstName addName mzIdentMLXML.FirstName
-//        let addMidInitials = setOption PersonHandler.addMidInitials addFirstName mzIdentMLXML.MidInitials
-//        let addLastName = setOption PersonHandler.addLastName addMidInitials mzIdentMLXML.LastName
-//        let addOrganizations = 
-//            PersonHandler.addOrganization 
-//                addLastName 
-//                (mzIdentMLXML.Affiliations
-//                    |> Array.map (fun item -> item.OrganizationRef)
-//                )
-//        let addDetails = 
-//            PersonHandler.addDetails 
-//                addOrganizations 
-//                (mzIdentMLXML.CvParams 
-//                    |> Array.map (fun cvParam -> convertToEntity_CVParam dbContext cvParam)
-//                )
-//        addDetails
-
-//    let convertToEntity_ContactRole
-
-//    let convertToEntity_Person (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.ContactRole) =
+//    let convertToEntity_ContactRole (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.ContactRole) =
 //        ContactRoleHandler.init(mzIdentMLXML.ContactRef, convertToEntity_CVParam dbContext mzIdentMLXML.Role.CvParam)
 
 //    let convertToEntity_AnalysisSoftware (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.AnalysisSoftware) =
@@ -321,17 +278,16 @@
 //        let addIncludes = 
 //            FilterHandler.addIncludes 
 //                init
-//                (match mzIdentMLXML.Include with
-//                |Some x -> fuseCVParamAndUserParamCollection dbContext x.CvParams x.UserParams
-//                |None -> Unchecked.defaultof<CVParam[]>
+//                (Array.append
+//                    (mzIdentMLXML.Include.Value.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
+//                    (mzIdentMLXML.Include.Value.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
 //                )
-
 //        let addExcludes = 
 //            FilterHandler.addExcludes
 //                addIncludes
-//                (match mzIdentMLXML.Exclude with
-//                |Some x -> fuseCVParamAndUserParamCollection dbContext x.CvParams x.UserParams
-//                |None -> Unchecked.defaultof<CVParam[]>
+//                (Array.append
+//                    (mzIdentMLXML.Exclude.Value.CvParams |> Array.map (fun item -> convertToEntity_CVParam dbContext item))
+//                    (mzIdentMLXML.Exclude.Value.UserParams |> Array.map (fun item -> convertToEntity_UserParam dbContext item))
 //                )
 //        addExcludes
 

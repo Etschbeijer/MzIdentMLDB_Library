@@ -11,14 +11,14 @@ module DataContext =
 
     module EntityTypes =
 
-        //and definitions
+        //type definitions
 
         type [<CLIMutable>] 
             Term =
             {
                 ID               : string
                 mutable Name     : string
-                mutable Ontology : Ontology
+                //mutable Ontology : Ontology
                 RowVersion       : DateTime 
             }
 
@@ -28,12 +28,11 @@ module DataContext =
             {
                 ID                : string
                 mutable Terms     : List<Term>
-                //mutable MzIdentML : MzIdentML
                 RowVersion        : DateTime
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
             CVParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -47,21 +46,21 @@ module DataContext =
             }
 
         /////A single entry from an ontology or a controlled vocabulary.
-        //and [<CLIMutable>] 
+        //type [<CLIMutable>] 
         //    UserParam =
         //    {
         //     [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
         //     ID         : int
         //     Name       : string
         //     Value      : string
-        //     and       : string
+        //     type       : string
         //     Unit       : Term
         //     UnitName   : string
         //     RowVersion : DateTime 
         //    }
 
         ///Organizations are entities like companies, universities, government agencies.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Organization =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -74,8 +73,8 @@ module DataContext =
                 RowVersion      : DateTime
                 }
 
-        ///A person's name and contact details.
-        and [<CLIMutable>] 
+        ///A person's name type contact details.
+        type [<CLIMutable>] 
                 Person =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -94,7 +93,7 @@ module DataContext =
                 }
 
         ///The software used for performing the analyses.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
             ContactRole =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -107,7 +106,7 @@ module DataContext =
             }
 
         ///The software used for performing the analyses.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
             AnalysisSoftware =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -119,11 +118,10 @@ module DataContext =
                 mutable ContactRole    : ContactRole
                 SoftwareName           : CVParam
                 RowVersion             : DateTime
-                mutable MzIdentML      : MzIdentML
             }
 
         ///References to the individual component samples within a mixed parent sample.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SubSample =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -145,11 +143,10 @@ module DataContext =
                 mutable SubSamples   : List<SubSample>
                 mutable Details      : List<CVParam>
                 RowVersion           : DateTime
-                mutable MzIdentML    : MzIdentML
                 }
 
         ///A molecule modification specification.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Modification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -163,7 +160,7 @@ module DataContext =
                 }
 
         ///A modification where one residue is substituted by another (amino acid change).
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SubstitutionModification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -177,7 +174,7 @@ module DataContext =
                 }
 
         ///One (poly)peptide (a sequence with modifications).
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Peptide =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -188,11 +185,10 @@ module DataContext =
                 mutable SubstitutionModifications : List<SubstitutionModification>
                 mutable Details                   : List<CVParam>
                 RowVersion                        : DateTime
-                mutable MzIdentML                 : MzIdentML
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 TranslationTable =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -203,7 +199,7 @@ module DataContext =
                 }
 
         ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Measure =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -214,7 +210,7 @@ module DataContext =
                 }
 
         ///The specification of a single residue within the mass table.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Residue =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -224,8 +220,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
-        and [<CLIMutable>] 
+        ///Ambiguous residues e.g. X can be specified by the Code attribute type a set of parameters for example giving the different masses that will be used in the search.
+        type [<CLIMutable>] 
                 AmbiguousResidue =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -236,7 +232,7 @@ module DataContext =
                 }
 
         ///The masses of residues used in the search.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 MassTable =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -249,8 +245,8 @@ module DataContext =
                 RowVersion               : DateTime
                 }
 
-        ///The values of this particular measure, corresponding to the index defined in ion and.
-        and [<CLIMutable>] 
+        ///The values of this particular measure, corresponding to the index defined in ion type.
+        type [<CLIMutable>] 
                 Value =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -259,8 +255,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
-        and [<CLIMutable>] 
+        ///An array of values for a given type of measure type for a particular ion type, in parallel to the index of ions identified.
+        type [<CLIMutable>] 
                 FragmentArray =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -270,8 +266,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
-        and [<CLIMutable>] 
+        ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 type b6 have been identified, the index would store "3 5 6".
+        type [<CLIMutable>] 
                 Index =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -280,8 +276,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
-        and [<CLIMutable>] 
+        ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the type of ion e.g. b ion. Example: if b3 b7 b8 type b10 have been identified, the index attribute will contain 3 7 8 10.
+        type [<CLIMutable>] 
                 IonType =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -293,7 +289,7 @@ module DataContext =
                 }
 
         ///A data set containing spectra data (consisting of one or more spectra).
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SpectraData =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -304,12 +300,10 @@ module DataContext =
                 FileFormat                          : CVParam
                 SpectrumIDFormat                    : CVParam
                 RowVersion                          : DateTime
-                mutable Inputs                      : Inputs
-                mutable SpectrumIdentification      : SpectrumIdentification
                 }
 
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
-        and [<CLIMutable>]
+        type [<CLIMutable>]
                 //Formerly Specificityrules
                 SpecificityRule =
                 {
@@ -321,7 +315,7 @@ module DataContext =
                 //
 
         ///Specification of a search modification as parameter for a spectra search.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SearchModification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -335,7 +329,7 @@ module DataContext =
                 }
 
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Enzyme =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -351,8 +345,8 @@ module DataContext =
                 RowVersion              : DateTime
                 }
 
-        ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
-        and [<CLIMutable>] 
+        ///Filters applied to the search database. The filter MUST include at least one of Include type Exclude.
+        type [<CLIMutable>] 
                 Filter =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -364,7 +358,7 @@ module DataContext =
                 }
 
         ///The frames in which the nucleic acid sequence has been translated as a space separated list.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 Frame =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -373,8 +367,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///The parameters and settings of a SpectrumIdentification analysis.
-        and [<CLIMutable>] 
+        ///The parameters type settings of a SpectrumIdentification analysis.
+        type [<CLIMutable>] 
                 SpectrumIdentificationProtocol =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -400,11 +394,10 @@ module DataContext =
                 mutable TranslationTables      : List<TranslationTable>
                 //
                 RowVersion                     : DateTime
-                mutable MzIdentML              : MzIdentML
                 }
 
         ///A database for searching mass spectra.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SearchDatabase =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -420,13 +413,11 @@ module DataContext =
                 DatabaseName                        : CVParam
                 mutable Details                     : List<CVParam>
                 RowVersion                          : DateTime
-                mutable SpectrumIdentification      : SpectrumIdentification
-                mutable Inputs                      : Inputs
                 }
 
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 DBSequence =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -438,11 +429,10 @@ module DataContext =
                 mutable Length    : int
                 mutable Details   : List<CVParam>
                 RowVersion        : DateTime
-                mutable MzIdentML : MzIdentML
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 PeptideEvidence =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -465,12 +455,10 @@ module DataContext =
                 //
                 mutable Details                    : List<CVParam>
                 RowVersion                         : DateTime
-                mutable SpectrumIdentificationItem : SpectrumIdentificationItem
-                mutable MzIdentML                  : MzIdentML
                 }
 
         ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SpectrumIdentificationItem =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -489,11 +477,10 @@ module DataContext =
                 mutable CalculatedPI                 : float
                 mutable Details                      : List<CVParam>
                 RowVersion                           : DateTime
-                mutable SpectrumIdentificationResult : SpectrumIdentificationResult
                 }
 
         ///All identifications made from searching one spectrum.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SpectrumIdentificationResult =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -504,11 +491,10 @@ module DataContext =
                 SpectrumIdentificationItem         : List<SpectrumIdentificationItem>
                 mutable Details                    : List<CVParam>
                 RowVersion                         : DateTime
-                mutable SpectrumIdentificationList : SpectrumIdentificationList
                 }
 
         ///Represents the set of all search results from SpectrumIdentification.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SpectrumIdentificationList =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -522,8 +508,8 @@ module DataContext =
                 }
 
 
-        ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results and the protocol that is run.
-        and [<CLIMutable>] 
+        ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results type the protocol that is run.
+        type [<CLIMutable>] 
                 SpectrumIdentification =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -539,12 +525,10 @@ module DataContext =
                 SearchDatabase                 : List<SearchDatabase>
                 //
                 RowVersion                     : DateTime
-                mutable ProteinDetection       : ProteinDetection
-                mutable MzIdentML              : MzIdentML
                 }
 
-        ///The parameters and settings of a SpectrumIdentification analysis.
-        and [<CLIMutable>] 
+        ///The parameters type settings of a SpectrumIdentification analysis.
+        type [<CLIMutable>] 
                 ProteinDetectionProtocol =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -557,7 +541,7 @@ module DataContext =
                 }
 
         ///A file from which this mzIdentML instance was created.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 SourceFile =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -568,11 +552,10 @@ module DataContext =
                 FileFormat                          : CVParam
                 mutable Details                     : List<CVParam>
                 RowVersion                          : DateTime
-                mutable Inputs                      : Inputs
                 }
 
-        ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
-        and [<CLIMutable>] 
+        ///The inputs to the analyses including the databases searched, the spectral data type the source file converted to mzIdentML.
+        type [<CLIMutable>] 
                 Inputs =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -584,7 +567,7 @@ module DataContext =
                 }
 
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 PeptideHypothesis =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -595,7 +578,7 @@ module DataContext =
                 }
 
         ///A single result of the ProteinDetection analysis (i.e. a protein).
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 ProteinDetectionHypothesis =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -609,7 +592,7 @@ module DataContext =
                 }
 
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 ProteinAmbiguityGroup =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -621,7 +604,7 @@ module DataContext =
                 }
 
         ///The protein list resulting from a protein detection process.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 ProteinDetectionList =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -632,8 +615,8 @@ module DataContext =
                 RowVersion                     : DateTime
                 }
 
-        ///Data sets generated by the analyses, including peptide and protein lists.
-        and [<CLIMutable>] 
+        ///Data sets generated by the analyses, including peptide type protein lists.
+        type [<CLIMutable>] 
                 AnalysisData =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -644,7 +627,7 @@ module DataContext =
                 }
 
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 ProteinDetection =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -658,7 +641,7 @@ module DataContext =
                 }
 
         ///Any bibliographic references associated with the file.
-        and [<CLIMutable>] 
+        type [<CLIMutable>] 
                 BiblioGraphicReference =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -675,11 +658,10 @@ module DataContext =
                 mutable Volume      : string
                 mutable Year        : int
                 RowVersion          : DateTime
-                mutable MzIdentML   : MzIdentML
                 }
 
-        ///The Provider of the mzIdentML record in terms of the contact and software.
-        and [<CLIMutable>] 
+        ///The Provider of the mzIdentML record in terms of the contact type software.
+        type [<CLIMutable>] 
                 Provider =
                 {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -692,8 +674,8 @@ module DataContext =
                 RowVersion               : DateTime
                 }
 
-        ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results (spectrum identifications or protein detection results). 
-        and [<CLIMutable>] 
+        ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols type search results (spectrum identifications or protein detection results). 
+        type [<CLIMutable>] 
                 MzIdentML =
                 {
                 ID                               : int
@@ -707,8 +689,8 @@ module DataContext =
                 //
                 mutable Provider                 : Provider
                 //Formerly AuditCollection
-                mutable Persons                  : List<Person>
-                mutable Organizations            : List<Organization>
+                mutable Person                   : Person
+                mutable Organization             : Organization
                 //
                 //Formerly AnalysisSampleCollection
                 mutable Samples                  : List<Sample>
@@ -747,12 +729,12 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_term : DbSet<Term>
                 member public this.Term with get() = this.m_term
-                                                    and set value = this.m_term <- value
+                                                     and set value = this.m_term <- value
   
                 [<DefaultValue>] 
                 val mutable m_Ontology : DbSet<Ontology>
                 member public this.Ontology with get() = this.m_Ontology
-                                                        and set value = this.m_Ontology <- value 
+                                                         and set value = this.m_Ontology <- value 
 
                 [<DefaultValue>] 
                 val mutable m_cvParam : DbSet<CVParam>
@@ -762,37 +744,37 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_AnalysisSoftware : DbSet<AnalysisSoftware>
                 member public this.AnalysisSoftware with get() = this.m_AnalysisSoftware
-                                                                and set value = this.m_AnalysisSoftware <- value
+                                                                 and set value = this.m_AnalysisSoftware <- value
 
                 [<DefaultValue>] 
                 val mutable m_Person : DbSet<Person>
                 member public this.Person with get() = this.m_Person
-                                                    and set value = this.m_Person <- value
+                                                       and set value = this.m_Person <- value
 
                 [<DefaultValue>] 
                 val mutable m_Organization : DbSet<Organization>
                 member public this.Organization with get() = this.m_Organization
-                                                            and set value = this.m_Organization <- value
+                                                             and set value = this.m_Organization <- value
 
                 [<DefaultValue>] 
                 val mutable m_DBSequence : DbSet<DBSequence>
                 member public this.DBSequence with get() = this.m_DBSequence
-                                                        and set value = this.m_DBSequence <- value     
+                                                           and set value = this.m_DBSequence <- value     
 
                 [<DefaultValue>] 
                 val mutable m_Sample : DbSet<Sample>
                 member public this.Sample with get() = this.m_Sample
-                                                    and set value = this.m_Sample <- value   
+                                                       and set value = this.m_Sample <- value   
 
                 [<DefaultValue>] 
                 val mutable m_Modification : DbSet<Modification>
                 member public this.Modification with get() = this.m_Modification
-                                                            and set value = this.m_Modification <- value  
+                                                             and set value = this.m_Modification <- value  
 
                 [<DefaultValue>] 
                 val mutable m_SubstitutionModification : DbSet<SubstitutionModification>
                 member public this.SubstitutionModification with get() = this.m_SubstitutionModification
-                                                                        and set value = this.m_SubstitutionModification <- value
+                                                                         and set value = this.m_SubstitutionModification <- value
 
                 [<DefaultValue>] 
                 val mutable m_Peptide : DbSet<Peptide>
@@ -802,7 +784,7 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_TranslationTable : DbSet<TranslationTable>
                 member public this.TranslationTable with get() = this.m_TranslationTable
-                                                                and set value = this.m_TranslationTable <- value
+                                                                 and set value = this.m_TranslationTable <- value
 
                 [<DefaultValue>] 
                 val mutable m_PeptideEvidence : DbSet<PeptideEvidence>
@@ -822,17 +804,17 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_AmbiguousResidue : DbSet<AmbiguousResidue>
                 member public this.AmbiguousResidue with get() = this.m_AmbiguousResidue
-                                                                and set value = this.m_AmbiguousResidue <- value
+                                                                 and set value = this.m_AmbiguousResidue <- value
 
                 [<DefaultValue>] 
                 val mutable m_MassTable : DbSet<MassTable>
                 member public this.MassTable with get() = this.m_MassTable
-                                                        and set value = this.m_MassTable <- value
+                                                          and set value = this.m_MassTable <- value
 
                 [<DefaultValue>] 
                 val mutable m_FragmentArray : DbSet<FragmentArray>
                 member public this.FragmentArray with get() = this.m_FragmentArray
-                                                            and set value = this.m_FragmentArray <- value
+                                                              and set value = this.m_FragmentArray <- value
 
                 [<DefaultValue>] 
                 val mutable m_IonType : DbSet<IonType>
@@ -842,7 +824,7 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentificationItem : DbSet<SpectrumIdentificationItem>
                 member public this.SpectrumIdentificationItem with get() = this.m_SpectrumIdentificationItem
-                                                                        and set value = this.m_SpectrumIdentificationItem <- value
+                                                                           and set value = this.m_SpectrumIdentificationItem <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpectraData : DbSet<SpectraData>
@@ -852,12 +834,12 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentificationResult : DbSet<SpectrumIdentificationResult>
                 member public this.SpectrumIdentificationResult with get() = this.m_SpectrumIdentificationResult
-                                                                            and set value = this.m_SpectrumIdentificationResult <- value
+                                                                             and set value = this.m_SpectrumIdentificationResult <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentificationList : DbSet<SpectrumIdentificationList>
                 member public this.SpectrumIdentificationList with get() = this.m_SpectrumIdentificationList
-                                                                        and set value = this.m_SpectrumIdentificationList <- value
+                                                                           and set value = this.m_SpectrumIdentificationList <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpecificityRule : DbSet<SpecificityRule>
@@ -867,77 +849,77 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_SearchModification : DbSet<SearchModification>
                 member public this.SearchModification with get() = this.m_SearchModification
-                                                                and set value = this.m_SearchModification <- value
+                                                                   and set value = this.m_SearchModification <- value
 
                 [<DefaultValue>] 
                 val mutable m_Enzyme : DbSet<Enzyme>
                 member public this.Enzyme with get() = this.m_Enzyme
-                                                    and set value = this.m_Enzyme <- value
+                                                       and set value = this.m_Enzyme <- value
 
                 [<DefaultValue>] 
                 val mutable m_Filter : DbSet<Filter>
                 member public this.Filter with get() = this.m_Filter
-                                                    and set value = this.m_Filter <- value
+                                                       and set value = this.m_Filter <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentificationProtocol : DbSet<SpectrumIdentificationProtocol>
                 member public this.SpectrumIdentificationProtocol with get() = this.m_SpectrumIdentificationProtocol
-                                                                            and set value = this.m_SpectrumIdentificationProtocol <- value
+                                                                               and set value = this.m_SpectrumIdentificationProtocol <- value
 
                 [<DefaultValue>] 
                 val mutable m_SearchDatabase : DbSet<SearchDatabase>
                 member public this.SearchDatabase with get() = this.m_SearchDatabase
-                                                            and set value = this.m_SearchDatabase <- value
+                                                               and set value = this.m_SearchDatabase <- value
 
                 [<DefaultValue>] 
                 val mutable m_SpectrumIdentification : DbSet<SpectrumIdentification>
                 member public this.SpectrumIdentification with get() = this.m_SpectrumIdentification
-                                                                    and set value = this.m_SpectrumIdentification <- value
+                                                                       and set value = this.m_SpectrumIdentification <- value
 
                 [<DefaultValue>] 
                 val mutable m_ProteinDetectionProtocol : DbSet<ProteinDetectionProtocol>
                 member public this.ProteinDetectionProtocol with get() = this.m_ProteinDetectionProtocol
-                                                                        and set value = this.m_ProteinDetectionProtocol <- value
+                                                                         and set value = this.m_ProteinDetectionProtocol <- value
 
                 [<DefaultValue>] 
                 val mutable m_SourceFile : DbSet<SourceFile>
                 member public this.SourceFile with get() = this.m_SourceFile
-                                                        and set value = this.m_SourceFile <- value
+                                                           and set value = this.m_SourceFile <- value
 
                 [<DefaultValue>] 
                 val mutable m_Inputs : DbSet<Inputs>
                 member public this.Inputs with get() = this.m_Inputs
-                                                    and set value = this.m_Inputs <- value
+                                                       and set value = this.m_Inputs <- value
 
                 [<DefaultValue>] 
                 val mutable m_PeptideHypothesis : DbSet<PeptideHypothesis>
                 member public this.PeptideHypothesis with get() = this.m_PeptideHypothesis
-                                                                and set value = this.m_PeptideHypothesis <- value
+                                                                  and set value = this.m_PeptideHypothesis <- value
 
                 [<DefaultValue>]
                 val mutable m_ProteinDetectionHypothesis : DbSet<ProteinDetectionHypothesis>
                 member public this.ProteinDetectionHypothesis with get() = this.m_ProteinDetectionHypothesis
-                                                                        and set value = this.m_ProteinDetectionHypothesis <- value
+                                                                           and set value = this.m_ProteinDetectionHypothesis <- value
 
                 [<DefaultValue>]
                 val mutable m_ProteinAmbiguityGroup : DbSet<ProteinAmbiguityGroup>
                 member public this.ProteinAmbiguityGroup with get() = this.m_ProteinAmbiguityGroup
-                                                                    and set value = this.m_ProteinAmbiguityGroup <- value
+                                                                      and set value = this.m_ProteinAmbiguityGroup <- value
 
                 [<DefaultValue>]
                 val mutable m_ProteinDetectionList : DbSet<ProteinDetectionList>
                 member public this.ProteinDetectionList with get() = this.m_ProteinDetectionList
-                                                                    and set value = this.m_ProteinDetectionList <- value
+                                                                     and set value = this.m_ProteinDetectionList <- value
 
                 [<DefaultValue>]
                 val mutable m_AnalysisData : DbSet<AnalysisData>
                 member public this.AnalysisData with get() = this.m_AnalysisData
-                                                            and set value = this.m_AnalysisData <- value
+                                                             and set value = this.m_AnalysisData <- value
 
                 [<DefaultValue>]
                 val mutable m_BiblioGraphicReference : DbSet<BiblioGraphicReference>
                 member public this.BiblioGraphicReference with get() = this.m_BiblioGraphicReference
-                                                                    and set value = this.m_BiblioGraphicReference <- value
+                                                                       and set value = this.m_BiblioGraphicReference <- value
 
 
         type OntologyContext =
@@ -949,12 +931,12 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_term : DbSet<Term>
                 member public this.Term with get() = this.m_term
-                                                    and set value = this.m_term <- value
+                                                     and set value = this.m_term <- value
   
                 [<DefaultValue>] 
                 val mutable m_Ontology : DbSet<Ontology>
                 member public this.Ontology with get() = this.m_Ontology
-                                                        and set value = this.m_Ontology <- value 
+                                                         and set value = this.m_Ontology <- value 
 
 
         type AnalysisSoftwareContext =
@@ -966,12 +948,12 @@ module DataContext =
                 [<DefaultValue>] 
                 val mutable m_term : DbSet<Term>
                 member public this.Term with get() = this.m_term
-                                                    and set value = this.m_term <- value
+                                                     and set value = this.m_term <- value
   
                 [<DefaultValue>] 
                 val mutable m_Ontology : DbSet<Ontology>
                 member public this.Ontology with get() = this.m_Ontology
-                                                        and set value = this.m_Ontology <- value 
+                                                         and set value = this.m_Ontology <- value 
 
                 [<DefaultValue>] 
                 val mutable m_cvParam : DbSet<CVParam>

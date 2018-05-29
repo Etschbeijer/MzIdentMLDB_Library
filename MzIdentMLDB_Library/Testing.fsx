@@ -17,6 +17,7 @@
 #r "System.Xml.Linq.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
 
+open System.Collections.Generic
 open MzIdentMLDataBase.DataContext.DataContext
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
@@ -24,6 +25,7 @@ open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 //open MzIdentMLDataBase.XMLParsing
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
+//initStandardDB context
 
 ////Term and Ontology
 //let termI = TermHandler.init("I")
@@ -54,61 +56,87 @@ let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //context.Database.EnsureCreated()
 
 //insertWithExceptionCheck context
-context.Database.EnsureCreated()
+//context.Database.EnsureCreated()
 
-let testII (dbContext:MzIdentMLContext) =
-    let terms_PsiMS =
-        fromPsiMS
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-        |> Seq.toArray
-    //terms_PsiMS|> Array.map (fun item -> TermHandler.addToContext dbContext item)
-    let psiMS = OntologyHandler.init("Psi-MS")
-    let add   = OntologyHandler.addTerms psiMS terms_PsiMS
-    add
-    //OntologyHandler.addToContext dbContext tmp
+//let testII (dbContext:MzIdentMLContext) =
+//    let terms_PsiMS =
+//        fromPsiMS
+//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
+//        |> Seq.toArray
+//    //terms_PsiMS|> Array.map (fun item -> TermHandler.addToContext dbContext item)
+//    let psiMS = OntologyHandler.init("Psi-MS")
+//    let add   = OntologyHandler.addTerms psiMS terms_PsiMS
+//    add
+//    //OntologyHandler.addToContext dbContext tmp
 
-let finish = testII context
-finish.Terms
-context.Add finish
-OntologyHandler.init("i")
-OntologyHandler.addToContext context (OntologyHandler.init("i"))
-TermHandler.init("i")
-TermHandler.addToContext context (TermHandler.init("i","" ,(OntologyHandler.init("i"))))
+//let finish = testII context
+//finish.Terms
+//context.Add finish
+//OntologyHandler.init("i")
+//OntologyHandler.addToContext context (OntologyHandler.init("i"))
+//TermHandler.init("i")
+//TermHandler.addToContext context (TermHandler.init("iii","" ,(OntologyHandler.init("i"))))
 
-context.SaveChanges()
-initStandardDB context
+//context.SaveChanges()
 
-type Test =
-    {
-        ID : int
-        Name : string
-        Detail : string
-    }
 
-type TestHandler =
-        static member init
-            (
-                id        : int,
-                ?name     : string,
-                ?detail   : string
-            ) =
-            let name' :string= defaultArg name null
-            let detail'    = defaultArg detail null
-            {
-                ID         = id;
-                Name       = name';
-                Detail     = detail'
-            }
+let termTest =
+    let initTerm =
+        OntologyHandler.init("Test",[TermHandler.init("I")])
+    OntologyHandler.addToContext context initTerm
+
+let cvParamTest =
+    let initCVParam =
+        CVParamHandler.init("", TermHandler.init(""))
+    initCVParam
+
+let organizationTest =
+    let initOrg =
+        OrganizationHandler.init(0,"Test")
+    let orgWithDetail = 
+        OrganizationHandler.addDetails initOrg [cvParamTest]
+    OrganizationHandler.addToContext context orgWithDetail
+
+let testPerson =
+    let initPerson =
+        PersonHandler.init()
+    let personWithDetails = 
+        PersonHandler.addDetail initPerson cvParamTest
+    let personWithOrgan =
+        PersonHandler.addOrganization initPerson (OrganizationHandler.init(0,"Test"))
+    PersonHandler.addToContext context personWithOrgan
+
+//type Test =
+//    {
+//        ID : int
+//        Name : string
+//        Detail : string
+//    }
+
+//type TestHandler =
+//        static member init
+//            (
+//                id        : int,
+//                ?name     : string,
+//                ?detail   : string
+//            ) =
+//            let name' :string= defaultArg name null
+//            let detail'    = defaultArg detail null
+//            {
+//                ID         = id;
+//                Name       = name';
+//                Detail     = detail'
+//            }
     
 
-let transformOption (item : 'a option) =
-    match item with
-    |Some x -> x
-    |None -> Unchecked.defaultof<'a>
+//let transformOption (item : 'a option) =
+//    match item with
+//    |Some x -> x
+//    |None -> Unchecked.defaultof<'a>
 
-TestHandler.init(0,transformOption(Some("test")) ,"string")
-TestHandler.init(0)
-TestHandler.init(0,transformOption(None) ,"string")
+//TestHandler.init(0,transformOption(Some("test")) ,"string")
+//TestHandler.init(0)
+//TestHandler.init(0,transformOption(None) ,"string")
 
 //XMLParser
 
@@ -159,19 +187,51 @@ open FSharp.Data
 type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
 let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
 
+let findTerm =
+    context.Term.Find("MS:000000")
+
+let addDetails (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Organization) =
+        (xmlType.CvParams 
+            |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession)))
+        )
+
+xmlCVParams.AuditCollection.Value.Organizations
+|> Array.map (fun item -> addDetails context item)
+
 let convertOrganization (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Organization) =
     let init = OrganizationHandler.init()
     let addName = OrganizationHandler.addName init xmlType.Name.Value
-    addName
-    //let addDetails = OrganizationHandler.addDetails addName (xmlType.CvParams |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession),0, item.Value.Value)))
-    //addDetails
+    let addDetails = 
+        OrganizationHandler.addDetails 
+            addName 
+            (xmlType.CvParams 
+                |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession)))
+            )
+    let addParent = OrganizationHandler.addParent addName "CSB"
+    addParent
 
 let organizations =
     xmlCVParams.AuditCollection.Value.Organizations
     |> Array.map (fun organization -> convertOrganization context organization)
+    //|> Array.map (fun item -> item.Details)
+    |> Array.map (fun item -> OrganizationHandler.addToContext context item)
+
+let testI =
+    xmlCVParams.AuditCollection.Value.Organizations
+    |> Array.collect (fun organization -> organization.CvParams
+                                          |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession))))
+
+let transferTest =
+    testI
     |> Array.map (fun item -> context.Add item)
 
-organizations
+transferTest.Length
+
+
+let testTerm =
+    let termInit = TermHandler.init("I")
+    let termName = TermHandler.addName termInit "Test"
+    TermHandler.addToContext context termInit
 
 
 let convertPerson (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Person) (organizationID:int) =
@@ -187,7 +247,12 @@ let persons =
     |> Array.map (fun item -> context.Add item)
 
 persons
-
-
-
 persons.[0]
+
+module SubFunctions =
+    //ObjectHandlers
+
+    let convertOptionToList (optionOfType : seq<'a> option) =
+        match optionOfType with
+        | Some x -> x |> List
+        | None -> null
