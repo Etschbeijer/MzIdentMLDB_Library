@@ -23,7 +23,7 @@ open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
-open System.Runtime.Remoting.Contexts
+
 
 
 //open MzIdentMLDataBase.XMLParsing
@@ -90,15 +90,31 @@ let takeOntologyEntry (dbContext : MzIdentMLContext) (ontologyID : string) =
           }
     |> Seq.toArray
     |> (fun item -> item.[0])
+    |> (fun (a,_) ->  a)
 
-takeTermEntry context "MS:0000000"
+let testPsiMS =
+    let psiMS = takeOntologyEntry context "Psi-MS"
+    psiMS
 
-(context.Term.Find "MS:0000000").Ontology
+  
+let replacePsiMS =
+    let tmpI = testPsiMS
+    context.Ontology.Remove(tmpI) |> ignore
+    context.SaveChanges() |> ignore
+    let tmpOnto =
+        let tmpII = testPsiMS 
+        tmpII.Terms <- null
+        tmpII
+    let termsWithoutOntologyAdded = 
+        testPsiMS.Terms
+        |> Seq.map (fun item -> TermHandler.addOntology item tmpOnto) |> ignore
+        testPsiMS
+    termsWithoutOntologyAdded
+    //context.Ontology.Add(testPsiMS) |> ignore
+    //context.SaveChanges()
 
-let testDelete =
-    let delete = OntologyHandler.findOntologyByID context "Psi-MS"
-    context.Ontology.Remove(delete) |> ignore
-    context.SaveChanges()
+//replacePsiMS
+//|> Seq.map (fun item -> context.Term.Add(item))
 
 //Test Organization and Person
 open FSharp.Data
