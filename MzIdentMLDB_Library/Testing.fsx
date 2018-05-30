@@ -71,9 +71,8 @@ let organizationTest =
         CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
     let organizationWithDetail = 
         OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
-    OrganizationHandler.addToContextAndInsert context organizationBasic
+    OrganizationHandler.addToContext context organizationBasic
 
-context.SaveChanges()
 
 let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
     query {
@@ -83,10 +82,18 @@ let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
             }
     |> Seq.toArray
 
+let takeOntologyEntry (dbContext : MzIdentMLContext) (ontologyID : string) =
+    query {
+        for i in dbContext.Ontology do
+            if i.ID = ontologyID then
+                select (i, i.Terms)
+            }
+    |> Seq.toArray
+    |> (fun item -> item.[0])
 
-takeTermEntry context "I"
+takeTermEntry context "MS:0000000"
 
-context.Term.Find "I"
+(context.Term.Find "MS:0000000").Ontology
 
 
 
