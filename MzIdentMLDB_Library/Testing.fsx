@@ -29,7 +29,7 @@ open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 //open MzIdentMLDataBase.XMLParsing
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-initStandardDB context
+//initStandardDB context
 
 
 let termTestI =
@@ -57,7 +57,7 @@ let ontologyTest =
 
 let cvParamTest =
     let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I", null, (OntologyHandler.init(""))), "I")
+        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))), "I")
     //let cvParamWithUnit =
     //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
     CVParamHandler.addToContext context cvParamBasic
@@ -67,12 +67,14 @@ let organizationTest =
         OrganizationHandler.init("I","Test")
     let organizationDetail =
         OrganizationHandler.findCVParamByID context "I"
-    let organizationDetailWithUnit =
-        CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
-    let organizationWithDetail = 
-        OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
+    //let organizationDetailWithUnit =
+    //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
+    //let organizationWithDetail = 
+    //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
     OrganizationHandler.addToContext context organizationBasic
 
+context.Organization.Find("I")
+context.SaveChanges()
 
 let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
     query {
