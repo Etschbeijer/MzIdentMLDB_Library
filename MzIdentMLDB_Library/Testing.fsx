@@ -23,6 +23,7 @@ open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
+open System.Runtime.Remoting.Contexts
 
 
 //open MzIdentMLDataBase.XMLParsing
@@ -30,8 +31,6 @@ open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //initStandardDB context
 
-
-//context.SaveChanges()
 
 let termTestI =
     let termBasic =
@@ -54,7 +53,7 @@ let ontologyTest =
         OntologyHandler.addTerm ontologyBasic (OntologyHandler.findTermByID context "I")
     let ontologyTermWithOntology =
         TermHandler.addOntology ontologyWithTerm.Terms.[0] ontologyBasic
-    OntologyHandler.addToContext context ontologyWithTerm
+    OntologyHandler.addToContext context ontologyBasic
 
 let cvParamTest =
     let cvParamBasic =
@@ -68,12 +67,13 @@ let organizationTest =
         OrganizationHandler.init("I","Test")
     let organizationDetail =
         OrganizationHandler.findCVParamByID context "I"
-    let organiZationDetailWithUnit =
+    let organizationDetailWithUnit =
         CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
     let organizationWithDetail = 
-        OrganizationHandler.addDetail organizationBasic organiZationDetailWithUnit
-    OrganizationHandler.addToContext context organizationWithDetail
+        OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
+    OrganizationHandler.addToContextAndInsert context organizationBasic
 
+context.SaveChanges()
 
 let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
     query {

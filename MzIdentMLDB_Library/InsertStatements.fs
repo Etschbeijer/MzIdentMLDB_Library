@@ -232,7 +232,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:CVParam) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:CVParam) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -287,7 +287,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Organization) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Organization) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Organization) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -372,7 +372,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Person) =
                         (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Person) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Person) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -406,7 +406,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:ContactRole) =
                         (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:ContactRole) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ContactRole) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -484,7 +484,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:AnalysisSoftware) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -518,7 +518,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SubSample) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SubSample) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SubSample) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -597,7 +597,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Sample) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Sample) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Sample) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -657,7 +657,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Modification) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Modification) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Modification) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -707,7 +707,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SubstitutionModification) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SubstitutionModification) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SubstitutionModification) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -797,7 +797,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Peptide) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Peptide) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Peptide) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -844,7 +844,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:TranslationTable) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:TranslationTable) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:TranslationTable) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -880,7 +880,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Measure) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Measure) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Measure) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -906,7 +906,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Residue) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Residue) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Residue) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -936,7 +936,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:AmbiguousResidue) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:AmbiguousResidue) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:AmbiguousResidue) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -989,7 +989,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:MassTable) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:MassTable) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:MassTable) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1013,7 +1013,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Value) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Value) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Value) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1047,7 +1047,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:FragmentArray) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:FragmentArray) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:FragmentArray) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1071,7 +1071,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Index) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Index) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Index) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1133,7 +1133,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:IonType) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:IonType) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:IonType) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1191,7 +1191,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SpectraData) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SpectraData) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectraData) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1219,7 +1219,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SpecificityRule) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1270,7 +1270,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SearchModification) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SearchModification) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SearchModification) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1365,7 +1365,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Enzyme) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Enzyme) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Enzyme) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1419,7 +1419,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Filter) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Filter) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Filter) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1443,7 +1443,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:Frame) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:Frame) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:Frame) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1639,7 +1639,7 @@ module InsertStatements =
                static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item)
 
-               static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item) |> ignore
                     insertWithExceptionCheck context
 
@@ -1738,7 +1738,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:DBSequence) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -1815,7 +1815,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:DBSequence) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -1950,7 +1950,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:PeptideEvidence) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:PeptideEvidence) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:PeptideEvidence) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2089,7 +2089,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationItem) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2154,7 +2154,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2232,7 +2232,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationList) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2313,7 +2313,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentification) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:SpectrumIdentification) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentification) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2368,7 +2368,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetectionProtocol) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2431,7 +2431,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:SourceFile) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:SourceFile) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SourceFile) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2493,7 +2493,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:Inputs) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:Inputs) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:Inputs) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2527,7 +2527,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:PeptideHypothesis) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:PeptideHypothesis) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:PeptideHypothesis) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2588,7 +2588,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetectionHypothesis) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2641,7 +2641,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinAmbiguityGroup) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2705,7 +2705,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionList) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:ProteinDetectionList) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetectionList) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2745,7 +2745,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:AnalysisData) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:AnalysisData) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:AnalysisData) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2801,7 +2801,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:ProteinDetection) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2906,7 +2906,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:BiblioGraphicReference) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:BiblioGraphicReference) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:BiblioGraphicReference) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2957,7 +2957,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:Provider) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:Provider) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:Provider) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -3108,7 +3108,7 @@ module InsertStatements =
                 static member addToContext (context:MzIdentMLContext) (item:MzIdentML) =
                         (addToContextWithExceptionCheck context item)
 
-                static member insert (context:MzIdentMLContext) (item:MzIdentML) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:MzIdentML) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
