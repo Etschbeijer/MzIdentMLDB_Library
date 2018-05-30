@@ -19,167 +19,76 @@
 
 open System.Collections.Generic
 open MzIdentMLDataBase.DataContext.DataContext
+open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
+
+
 //open MzIdentMLDataBase.XMLParsing
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //initStandardDB context
 
-////Term and Ontology
-//let termI = TermHandler.init("I")
-//let termII = TermHandler.addName termI "Test"
-//let ontologyI = OntologyHandler.init("I")
-//let termIII = TermHandler.addOntology termI ontologyI
-//let ontologyII = OntologyHandler.addTerm ontologyI termI
-////let addOntologyToContext = OntologyHandler.addToContext context (OntologyHandler.addTerm ontologyI termI)
-//let addTermToContext = TermHandler.addToContext context termI
-
-//let cvParam = CVParamHandler.init("Test", termI)
-//let addCVtoContext = CVParamHandler.addToContext context cvParam
-
-//let analysisSoftware = AnalysisSoftwareHandler.init(cvParam, 0)
-//let analysisSoftwareName = AnalysisSoftwareHandler.addName analysisSoftware "BioFsharp.MZ"
-//let analysisSoftwareURI = AnalysisSoftwareHandler.addURI analysisSoftwareName "www.TEST.de"
-//let analysisSoftwareVersion = AnalysisSoftwareHandler.addVersion analysisSoftwareURI "V 1.00"
-//let analyisisSofwareDeveloper = AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper analysisSoftwareVersion (ContactRoleHandler.init(PersonHandler.init(0, "David"),(CVParamHandler.init("Testi",termI))))
-//let addAnalysisSoftwareToContext = AnalysisSoftwareHandler.addToContext context analyisisSofwareDeveloper
-
-//let person = PersonHandler.init(0)
-//let addpersonToContext = PersonHandler.addToContext context person
-
-//let organization = OrganizationHandler.init(0)
-//let addOrganizationToContext = OrganizationHandler.addToContext context organization
-
-//context.Database.ProviderName
-//context.Database.EnsureCreated()
-
-//insertWithExceptionCheck context
-//context.Database.EnsureCreated()
-
-//let testII (dbContext:MzIdentMLContext) =
-//    let terms_PsiMS =
-//        fromPsiMS
-//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name))
-//        |> Seq.toArray
-//    //terms_PsiMS|> Array.map (fun item -> TermHandler.addToContext dbContext item)
-//    let psiMS = OntologyHandler.init("Psi-MS")
-//    let add   = OntologyHandler.addTerms psiMS terms_PsiMS
-//    add
-//    //OntologyHandler.addToContext dbContext tmp
-
-//let finish = testII context
-//finish.Terms
-//context.Add finish
-//OntologyHandler.init("i")
-//OntologyHandler.addToContext context (OntologyHandler.init("i"))
-//TermHandler.init("i")
-//TermHandler.addToContext context (TermHandler.init("iii","" ,(OntologyHandler.init("i"))))
 
 //context.SaveChanges()
 
+let termTestI =
+    let termBasic =
+        TermHandler.init("I")
+    let termWithName =
+        TermHandler.addName termBasic  "TestName"
+    TermHandler.addToContext context termWithName
 
-let termTest =
-    let initTerm =
-        OntologyHandler.init("Test",[TermHandler.init("I")])
-    OntologyHandler.addToContext context initTerm
+let termTestII =
+    let termBasic =
+        TermHandler.init("II")
+    let termWithName =
+        TermHandler.addName termBasic  "TestName"
+    TermHandler.addToContext context termWithName
+
+let ontologyTest =
+    let ontologyBasic =
+        OntologyHandler.init("Test")
+    let ontologyWithTerm =
+        OntologyHandler.addTerm ontologyBasic (OntologyHandler.findTermByID context "I")
+    let ontologyTermWithOntology =
+        TermHandler.addOntology ontologyWithTerm.Terms.[0] ontologyBasic
+    OntologyHandler.addToContext context ontologyWithTerm
 
 let cvParamTest =
-    let initCVParam =
-        CVParamHandler.init("", TermHandler.init("")(*, "", "", TermHandler.init("II"),"UnitName"*))
-    initCVParam
+    let cvParamBasic =
+        CVParamHandler.init("Name", TermHandler.init("I", null, (OntologyHandler.init(""))), "I")
+    //let cvParamWithUnit =
+    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
+    CVParamHandler.addToContext context cvParamBasic
 
 let organizationTest =
-    let initOrg =
+    let organizationBasic =
         OrganizationHandler.init("I","Test")
-    let orgWithDetail = 
-        OrganizationHandler.addDetails initOrg [cvParamTest]
-    OrganizationHandler.addToContext context orgWithDetail
-
-//let testPerson =
-//    let initPerson =
-//        PersonHandler.init()
-//    let personWithDetails = 
-//        PersonHandler.addDetail initPerson cvParamTest
-//    let personWithOrgan =
-//        PersonHandler.addOrganization initPerson (OrganizationHandler.init("I","Test"))
-//    PersonHandler.addToContext context personWithOrgan
-
-//type Test =
-//    {
-//        ID : int
-//        Name : string
-//        Detail : string
-//    }
-
-//type TestHandler =
-//        static member init
-//            (
-//                id        : int,
-//                ?name     : string,
-//                ?detail   : string
-//            ) =
-//            let name' :string= defaultArg name null
-//            let detail'    = defaultArg detail null
-//            {
-//                ID         = id;
-//                Name       = name';
-//                Detail     = detail'
-//            }
-    
-
-//let transformOption (item : 'a option) =
-//    match item with
-//    |Some x -> x
-//    |None -> Unchecked.defaultof<'a>
-
-//TestHandler.init(0,transformOption(Some("test")) ,"string")
-//TestHandler.init(0)
-//TestHandler.init(0,transformOption(None) ,"string")
-
-//XMLParser
-
-//let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
-
-//let xmlTest = xmlCVParams.AnalysisProtocolCollection.ProteinDetectionProtocol.Value.Threshold.CvParams
-
-//let test =
-//    xmlTest
-//    |> Array.map (fun item -> convertToEntity_CVParam context item)
-//test.Length
-//test
-//let testTerm =
-//    xmlTest
-//    |> Array.map (fun item -> takeTermEntry context item.Accession)
-
-//let testi (dbContext : MzIdentMLContext) (mzIdentMLXML : SchemePeptideShaker.CvParam) =
-//    let init = CVParamHandler.init(mzIdentMLXML.Name, (takeTermEntry dbContext mzIdentMLXML.Accession))
-//    init
-
-//let testii =
-//    xmlTest
-//    |> Array.map (fun item -> testi context item)
-
-//let testiii =
-//    xmlTest
-//    |> Array.map (fun item -> CVParamHandler.addValue testii.[0] item.Value.Value)
+    let organizationDetail =
+        OrganizationHandler.findCVParamByID context "I"
+    let organiZationDetailWithUnit =
+        CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
+    let organizationWithDetail = 
+        OrganizationHandler.addDetail organizationBasic organiZationDetailWithUnit
+    OrganizationHandler.addToContext context organizationWithDetail
 
 
-let personCollection = [PersonHandler.init(); PersonHandler.init(); PersonHandler.init("III")]
-let termCollection = [TermHandler.init("i"); TermHandler.init("ii"); TermHandler.init("iii")]
-
-let testContext =
-    personCollection
-    |> List.map (fun item -> context.Person.Add item)
-
-let testContextI =
-    termCollection
-    |> List.map (fun item -> context.Term.Add item)
+let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
+    query {
+        for i in dbContext.Term do
+            if i.ID = termID then
+                select (i, i.Ontology)
+            }
+    |> Seq.toArray
 
 
-context.Person.Find(1)
-context.Term.Find("i")
+takeTermEntry context "I"
+
+context.Term.Find "I"
+
+
 
 //Test Organization and Person
 open FSharp.Data
