@@ -961,6 +961,13 @@ module DataContext =
                 member public this.MzIdentML with get() = this.m_MzIdentML
                                                           and set value = this.m_MzIdentML <- value
 
+                //override this.OnModelCreating (modelBuilder :  ModelBuilder) =
+                //         modelBuilder.Entity<Term>()
+                //            .HasOne(fun item -> item.Ontology)
+                //            .WithMany("Terms")
+                //            .IsRequired(false)
+                //            .OnDelete(DeleteBehavior.Restrict)|> ignore
+
         type OntologyContext =
      
                 inherit DbContext

@@ -29,7 +29,7 @@ open System.Runtime.Remoting.Contexts
 //open MzIdentMLDataBase.XMLParsing
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-//initStandardDB context
+initStandardDB context
 
 
 let termTestI =
@@ -79,7 +79,7 @@ let takeTermEntry (dbContext : MzIdentMLContext) (termID : string) =
         for i in dbContext.Term do
             if i.ID = termID then
                 select (i, i.Ontology)
-            }
+          }
     |> Seq.toArray
 
 let takeOntologyEntry (dbContext : MzIdentMLContext) (ontologyID : string) =
@@ -87,7 +87,7 @@ let takeOntologyEntry (dbContext : MzIdentMLContext) (ontologyID : string) =
         for i in dbContext.Ontology do
             if i.ID = ontologyID then
                 select (i, i.Terms)
-            }
+          }
     |> Seq.toArray
     |> (fun item -> item.[0])
 
@@ -95,7 +95,10 @@ takeTermEntry context "MS:0000000"
 
 (context.Term.Find "MS:0000000").Ontology
 
-
+let testDelete =
+    let delete = OntologyHandler.findOntologyByID context "Psi-MS"
+    context.Ontology.Remove(delete) |> ignore
+    context.SaveChanges()
 
 //Test Organization and Person
 open FSharp.Data
