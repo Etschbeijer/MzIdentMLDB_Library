@@ -23,10 +23,8 @@ open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
+open MzIdentMLDataBase.XMLParsing
 
-
-
-//open MzIdentMLDataBase.XMLParsing
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //initStandardDB context
@@ -115,81 +113,34 @@ let replacePsiMS =
     //context.Ontology.Add(testPsiMS) |> ignore
     //context.SaveChanges()
 
-//replacePsiMS
-//|> Seq.map (fun item -> context.Term.Add(item))
 
-//Test Organization and Person
+
+//Test of XML-PArser//////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 open FSharp.Data
 
 type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
-let xmlCVParams = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
+let xmlFile = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
 
-let findTerm =
-    context.Term.Find("MS:000000")
-
-let addDetails (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Organization) =
-        (xmlType.CvParams 
-            |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession)))
-        )
-
-xmlCVParams.AuditCollection.Value.Organizations
-|> Array.map (fun item -> addDetails context item)
-
-let convertOrganization (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Organization) =
-    let init = OrganizationHandler.init()
-    let addName = OrganizationHandler.addName init xmlType.Name.Value
-    let addDetails = 
-        OrganizationHandler.addDetails 
-            addName 
-            (xmlType.CvParams 
-                |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession)))
-            )
-    let addParent = OrganizationHandler.addParent addName "CSB"
-    addParent
-
-let organizations =
-    xmlCVParams.AuditCollection.Value.Organizations
-    |> Array.map (fun organization -> convertOrganization context organization)
-    //|> Array.map (fun item -> item.Details)
-    |> Array.map (fun item -> OrganizationHandler.addToContext context item)
-
-let testI =
-    xmlCVParams.AuditCollection.Value.Organizations
-    |> Array.collect (fun organization -> organization.CvParams
-                                          |> Array.map (fun item -> CVParamHandler.init(item.Name, context.Term.Find(item.Accession))))
-
-let transferTest =
-    testI
-    |> Array.map (fun item -> context.Add item)
-
-transferTest.Length
-
-
-let testTerm =
-    let termInit = TermHandler.init("I")
-    let termName = TermHandler.addName termInit "Test"
-    TermHandler.addToContext context termInit
-
-
-let convertPerson (dbContext:MzIdentMLContext) (xmlType:SchemePeptideShaker.Person) (organizationID:int) =
-    let init = PersonHandler.init()
-    let addFirstName = PersonHandler.addFirstName init xmlType.FirstName.Value
-    let addLastname = PersonHandler.addLastName addFirstName xmlType.LastName.Value
-    let addOrganization = PersonHandler.addOrganization addLastname (context.Organization.Find(organizationID))
-    addOrganization
-
+let organizations = 
+    (match xmlFile.AuditCollection with
+        |Some x -> x.Organizations 
+                   |> Array.map (fun organization -> convertToEntity_Organization context organization)
+        |None -> Unchecked.defaultof<array<bool>>
+    )
+                                                          
 let persons =
-    xmlCVParams.AuditCollection.Value.Persons
-    |> Array.map (fun person -> convertPerson context person -2147482644)
-    |> Array.map (fun item -> context.Add item)
+    (match xmlFile.AuditCollection with
+        |Some x -> x.Persons 
+                   |> Array.map (fun person -> convertToEntity_Person context person)
+        |None -> Unchecked.defaultof<array<bool>>
+    )  
 
-persons
-persons.[0]
+let analysisSoftwares = 
+    (match xmlFile.AnalysisSoftwareList with
+        | Some x -> x.AnalysisSoftwares 
+                    |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware context analysisSoftware)
+        |None -> Unchecked.defaultof<array<bool>>
+    )
 
-module SubFunctions =
-    //ObjectHandlers
-
-    let convertOptionToList (optionOfType : seq<'a> option) =
-        match optionOfType with
-        | Some x -> x |> List
-        | None -> null
+context.SaveChanges()
