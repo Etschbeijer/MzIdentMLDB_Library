@@ -29,7 +29,6 @@ open MzIdentMLDataBase.XMLParsing
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //initStandardDB context
 
-
 let termTestI =
     let termBasic =
         TermHandler.init("I")
@@ -143,4 +142,25 @@ let analysisSoftwares =
         |None -> Unchecked.defaultof<array<bool>>
     )
 
-context.SaveChanges()
+//context.SaveChanges()
+
+
+let xmlFragmentArray = 
+    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
+    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
+                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
+                                                                          |> Array.map (fun item -> match item.Fragmentation with
+                                                                                                    |Some x -> x.IonTypes
+                                                                                                               |> Array.map (fun item -> item.Index.Value)
+                                                                                                    | None -> null)
+
+                                                             )
+                 )
+
+let xmlFrame =
+    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+    |> Array.map (fun item -> match item.DatabaseTranslation with
+                              |Some x -> match x.Frames with
+                                         |Some x -> x
+                                         |None -> null
+                              |None -> null)

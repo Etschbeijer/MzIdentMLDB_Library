@@ -858,10 +858,10 @@ module InsertStatements =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name' = defaultArg name null
                     {
-                        TranslationTable.ID          = id'
-                        TranslationTable.Name        = name'
-                        TranslationTable.Details     = details |> List
-                        TranslationTable.RowVersion  = DateTime.Now
+                        Measure.ID          = id'
+                        Measure.Name        = name'
+                        Measure.Details     = details |> List
+                        Measure.RowVersion  = DateTime.Now
                     }
 
                static member addName
@@ -956,19 +956,49 @@ module InsertStatements =
                     let ambiguousResidue' = convertOptionToList ambiguousResidue
                     let details'          = convertOptionToList details
                     {
-                        MassTable.ID               = id'
-                        MassTable.Name             = name'
-                        MassTable.MSLevel          = msLevel
-                        MassTable.Residue          = residue'
-                        MassTable.AmbiguousResidue = ambiguousResidue'
-                        MassTable.Details          = details'
-                        MassTable.RowVersion       = DateTime.Now
+                        MassTable.ID                = id'
+                        MassTable.Name              = name'
+                        MassTable.MSLevel           = msLevel
+                        MassTable.Residues          = residue'
+                        MassTable.AmbiguousResidues = ambiguousResidue'
+                        MassTable.Details           = details'
+                        MassTable.RowVersion        = DateTime.Now
                     }
 
                static member addName
-                    (measure:Measure) (name:string) =
-                    measure.Name <- name
-                    measure
+                    (massTable:MassTable) (name:string) =
+                    massTable.Name <- name
+                    massTable
+
+               static member addResidue
+                    (massTable:MassTable) (residue:Residue) =
+                    let result = massTable.Residues <- addToList massTable.Residues residue
+                    massTable
+
+               static member addResidues
+                    (massTable:MassTable) (residues:seq<Residue>) =
+                    let result = massTable.Residues <- addCollectionToList massTable.Residues residues
+                    massTable
+
+               static member addAmbiguousResidue
+                    (massTable:MassTable) (ambiguousResidues:AmbiguousResidue) =
+                    let result = massTable.AmbiguousResidues <- addToList massTable.AmbiguousResidues ambiguousResidues
+                    massTable
+
+               static member addAmbiguousResidues
+                    (massTable:MassTable) (ambiguousResidues:seq<AmbiguousResidue>) =
+                    let result = massTable.AmbiguousResidues <- addCollectionToList massTable.AmbiguousResidues ambiguousResidues
+                    massTable
+
+               static member addDetail
+                    (massTable:MassTable) (detail:CVParam) =
+                    let result = massTable.Details <- addToList massTable.Details detail
+                    massTable
+
+               static member addDetails
+                    (massTable:MassTable) (details:seq<CVParam>) =
+                    let result = massTable.Details <- addCollectionToList massTable.Details details
+                    massTable
 
                static member findMassTableByID
                     (context:MzIdentMLContext) (massTableID:string) =
@@ -1229,7 +1259,7 @@ module InsertStatements =
                         fixedMod          : bool,
                         massDelta         : float,
                         residues          : string,
-                        details           : List<CVParam>,
+                        details           : seq<CVParam>,
                         ?id               : string,
                         ?specificityRules : seq<SpecificityRule>
                     ) =
@@ -1627,6 +1657,10 @@ module InsertStatements =
                static member findFilterByID
                     (context:MzIdentMLContext) (filterID:string) =
                     context.Filter.Find(filterID)
+
+               static member findTranslationTableByID
+                    (context:MzIdentMLContext) (translationTableID:string) =
+                    context.TranslationTable.Find(translationTableID)
 
                static member findFrameByID
                     (context:MzIdentMLContext) (frameID:string) =

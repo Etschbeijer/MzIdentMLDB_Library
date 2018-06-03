@@ -236,13 +236,13 @@ module DataContext =
                 MassTable =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : string
-                mutable Name             : string
-                MSLevel                  : string
-                mutable Residue          : List<Residue>
-                mutable AmbiguousResidue : List<AmbiguousResidue>
-                mutable Details          : List<CVParam>
-                RowVersion               : DateTime
+                ID                        : string
+                mutable Name              : string
+                MSLevel                   : string
+                mutable Residues          : List<Residue>
+                mutable AmbiguousResidues : List<AmbiguousResidue>
+                mutable Details           : List<CVParam>
+                RowVersion                : DateTime
                 }
 
         ///The values of this particular measure, corresponding to the index defined in ion type.
@@ -377,7 +377,7 @@ module DataContext =
                 //Formerly AnalysisSoftware_Ref
                 AnalysisSoftware               : AnalysisSoftware
                 //
-                SearchType                      : CVParam
+                SearchType                     : CVParam
                 mutable AdditionalSearchParams : List<CVParam>
                 mutable ModificationParams     : List<SearchModification>
                 //Formerly Enzymes
