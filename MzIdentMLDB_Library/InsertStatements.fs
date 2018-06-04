@@ -3142,6 +3142,54 @@ module InsertStatements =
                     let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
                     mzIdentML
 
+               static member findMzIdentMLByID
+                    (context:MzIdentMLContext) (mzIdentMLID:string) =
+                    context.MzIdentML.Find(mzIdentMLID)
+
+               static member findAnalysisSoftwareByID
+                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
+                    context.AnalysisSoftware.Find(analysisSoftwareID)
+
+               static member findProviderByID
+                    (context:MzIdentMLContext) (providerID:string) =
+                    context.Provider.Find(providerID)
+
+               static member findPersonByID
+                    (context:MzIdentMLContext) (personID:string) =
+                    context.Person.Find(personID)
+
+               static member findOrganiozationByID
+                    (context:MzIdentMLContext) (organizationID:string) =
+                    context.Organization.Find(organizationID)
+
+               static member findSamplesByID
+                    (context:MzIdentMLContext) (sampleID:string) =
+                    context.Sample.Find(sampleID)
+
+               static member findDBSequencesByID
+                    (context:MzIdentMLContext) (dbSequenceID:string) =
+                    context.DBSequence.Find(dbSequenceID)
+
+               static member findPeptidesByID
+                    (context:MzIdentMLContext) (peptideID:string) =
+                    context.Peptide.Find(peptideID)
+
+               static member findPeptideEvidencesByID
+                    (context:MzIdentMLContext) (peptideEvidenceID:string) =
+                    context.PeptideEvidence.Find(peptideEvidenceID)
+
+               static member findProteinDetectionByID
+                    (context:MzIdentMLContext) (proteinDetectionID:string) =
+                    context.ProteinDetection.Find(proteinDetectionID)
+
+               static member findProteinDetectionProtocolByID
+                    (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
+                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+
+               static member findBiblioGraphicReferencesByID
+                    (context:MzIdentMLContext) (bibliographicReferenceID:string) =
+                    context.BiblioGraphicReference.Find(bibliographicReferenceID)
+
                 static member addToContext (context:MzIdentMLContext) (item:MzIdentML) =
                         (addToContextWithExceptionCheck context item)
 
