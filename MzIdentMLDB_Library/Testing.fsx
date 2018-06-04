@@ -27,7 +27,7 @@ open MzIdentMLDataBase.XMLParsing
 
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-//initStandardDB context
+initStandardDB context
 
 let termTestI =
     let termBasic =
@@ -175,3 +175,11 @@ let xmlPI =
 
                                                              )
                  )
+
+let xmlOntology =
+    xmlFile.CvList
+    |> Array.map (fun item -> item.FullName)
+
+let ontologyTestI =
+    xmlOntology
+    |> Array.map (fun item -> OntologyHandler.findOntologyByID context item)

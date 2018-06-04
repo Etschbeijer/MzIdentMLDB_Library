@@ -634,7 +634,7 @@ module XMLParsing =
                 (mzIdentMLXML.SearchDatabases
                  |> Array.map (fun searchDatabase -> convertToEntity_SearchDatabase dbContext searchDatabase)
                 )
-        InputsHandler.addToContext dbContext inputsWithSourceFiles
+        inputsWithSearchDatabases
 
     let convertToEntity_SpectrumIdentification (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.SpectrumIdentification) =
         let spectrumIdentificationBasic = 
@@ -655,7 +655,7 @@ module XMLParsing =
                                               )
         let spectrumIdentificationWithName = setOption SpectrumIdentificationHandler.addName spectrumIdentificationBasic mzIdentMLXML.Name
         let spectrumIdentificationWithActivityDate = setOption SpectrumIdentificationHandler.addActivityDate spectrumIdentificationWithName mzIdentMLXML.ActivityDate
-        SpectrumIdentificationHandler.addToContext dbContext spectrumIdentificationWithActivityDate
+        spectrumIdentificationWithActivityDate
 
     let convertToEntity_ProteinDetectionProtocol (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.ProteinDetectionProtocol) =
         let proteinDetectionProtocolBasic = 
@@ -741,7 +741,7 @@ module XMLParsing =
                  |Some x -> convertToEntity_ProteinDetectionList dbContext x
                  |None -> Unchecked.defaultof<ProteinDetectionList>
                 )
-        AnalysisDataHandler.addToContext dbContext analysisDataWithProteinDetectionList
+        analysisDataWithProteinDetectionList
 
     let convertToEntity_ProteinDetection (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.ProteinDetection) =
         let proteinDetectionBasic = 
@@ -749,12 +749,12 @@ module XMLParsing =
                                          ProteinDetectionHandler.findProteinDetectionListByID dbContext mzIdentMLXML.ProteinDetectionListRef,
                                          ProteinDetectionHandler.findProteinDetectionProtocolByID dbContext mzIdentMLXML.ProteinDetectionProtocolRef,
                                          mzIdentMLXML.InputSpectrumIdentifications
-                                         |> Array.map (fun spectrumIdentification -> ProteinDetectionHandler.findSpectrumIdentificationByID dbContext spectrumIdentification.SpectrumIdentificationListRef),
+                                         |> Array.map (fun spectrumIdentificationList -> ProteinDetectionHandler.findSpectrumIdentificationListByID dbContext spectrumIdentificationList.SpectrumIdentificationListRef),
                                          mzIdentMLXML.Id
                                         )
         let proteinDetectionWithName = setOption ProteinDetectionHandler.addName proteinDetectionBasic mzIdentMLXML.Name
         let proteinDetectionWithActivityDate = setOption ProteinDetectionHandler.addActivityDate proteinDetectionWithName mzIdentMLXML.ActivityDate
-        ProteinDetectionHandler.addToContext dbContext proteinDetectionWithActivityDate
+        proteinDetectionWithActivityDate
 
     let convertToEntity_BiblioGraphicReference (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.BibliographicReference) =
         let biblioGraphicReferenceBasic = BiblioGraphicReferenceHandler.init(mzIdentMLXML.Id)
@@ -769,7 +769,7 @@ module XMLParsing =
         let biblioGraphicReferenceWithTitle = setOption BiblioGraphicReferenceHandler.addTitle biblioGraphicReferenceWithPublisher mzIdentMLXML.Title
         let biblioGraphicReferenceWithVolume = setOption BiblioGraphicReferenceHandler.addVolume biblioGraphicReferenceWithTitle mzIdentMLXML.Volume
         let biblioGraphicReferenceWithYear = setOption BiblioGraphicReferenceHandler.addYear biblioGraphicReferenceWithVolume mzIdentMLXML.Year
-        BiblioGraphicReferenceHandler.addToContext dbContext biblioGraphicReferenceWithYear
+        biblioGraphicReferenceWithYear
 
     let convertToEntity_Provider (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.Provider) =
         let providerBasic = ProviderHandler.init(mzIdentMLXML.Id)
@@ -788,9 +788,108 @@ module XMLParsing =
                  |Some x -> convertToEntity_ContactRole dbContext x
                  |None -> Unchecked.defaultof<ContactRole>
                 )
-        ProviderHandler.addToContext dbContext providerWithContactRole
+        providerWithContactRole
 
     let convertToEntity_MzIdentML (dbContext:MzIdentMLContext) (mzIdentMLXML:SchemePeptideShaker.MzIdentMl) =
+        let mzIdentMLBasic =  
+            MzIdentMLHandler.init(
+                                  mzIdentMLXML.Version,
+                                  mzIdentMLXML.CvList
+                                  |> Array.map (function ontology -> MzIdentMLHandler.findOntologyByID dbContext ontology.FullName),
+                                  mzIdentMLXML.AnalysisCollection.SpectrumIdentifications
+                                  |> Array.map (fun spectrumIdentification -> convertToEntity_SpectrumIdentification dbContext spectrumIdentification),
+                                  mzIdentMLXML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+                                  |> Array.map (fun spectrumIdentificationProtocol -> MzIdentMLHandler.findSpectrumIdentificationProtocolByID dbContext spectrumIdentificationProtocol.Id),
+                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
+                                  convertToEntity_AnalysisData dbContext mzIdentMLXML.DataCollection.AnalysisData
+                                 )
+        let mzIdentMLWithName = setOption MzIdentMLHandler.addName mzIdentMLBasic mzIdentMLXML.Name
+        let mzIdentMLWithAnalysisSoftwares =
+            MzIdentMLHandler.addAnalysisSoftwares
+                mzIdentMLWithName
+                (match mzIdentMLXML.AnalysisSoftwareList with
+                 |Some x -> x.AnalysisSoftwares
+                            |> Array.map (fun analysisSoftware -> MzIdentMLHandler.findAnalysisSoftwareByID dbContext analysisSoftware.Id)
+                 |None -> Unchecked.defaultof<array<AnalysisSoftware>>
+                )
+        let mzIDentMLWithProvider =
+            MzIdentMLHandler.addProvider
+                mzIdentMLWithAnalysisSoftwares
+                (match mzIdentMLXML.Provider with
+                 |Some x -> convertToEntity_Provider dbContext x
+                 |None -> Unchecked.defaultof<Provider>
+                )
+        let mzIdentMLWithPersons =
+            MzIdentMLHandler.addPersons
+                mzIDentMLWithProvider
+                (match mzIdentMLXML.AuditCollection with
+                 |Some x -> x.Persons
+                            |> Array.map (fun person -> MzIdentMLHandler.findPersonByID dbContext person.Id)
+                 |None -> Unchecked.defaultof<array<Person>>
+                )
+        let mzIdentMLWithOrganizations =
+            MzIdentMLHandler.addOrganizations
+                mzIdentMLWithPersons
+                (match mzIdentMLXML.AuditCollection with
+                 |Some x -> x.Organizations
+                            |> Array.map (fun organization -> MzIdentMLHandler.findOrganizationByID dbContext organization.Id)
+                 |None -> Unchecked.defaultof<array<Organization>>
+                )
+        let mzIdentMLWithSamples =
+            MzIdentMLHandler.addSamples 
+                mzIdentMLWithOrganizations
+                (match mzIdentMLXML.AnalysisSampleCollection with
+                 |Some x -> x.Samples
+                            |>Array.map (fun sample -> MzIdentMLHandler.findSamplesByID dbContext sample.Id)
+                 |None -> Unchecked.defaultof<array<Sample>>
+                )
+        let mzIdentMLWithDBSequences =
+            MzIdentMLHandler.addDBSequences
+                mzIdentMLWithSamples
+                (match mzIdentMLXML.SequenceCollection with
+                 |Some x -> x.DbSequences
+                            |> Array.map (fun dbSequence -> MzIdentMLHandler.findDBSequencesByID dbContext dbSequence.Id)
+                 |None -> Unchecked.defaultof<array<DBSequence>>
+                )
+        let mzIdentMLWithPeptides =
+            MzIdentMLHandler.addPeptides
+                mzIdentMLWithDBSequences
+                (match mzIdentMLXML.SequenceCollection with
+                 |Some x -> x.Peptides
+                            |> Array.map (fun peptide -> MzIdentMLHandler.findPeptidesByID dbContext peptide.Id)
+                 |None -> Unchecked.defaultof<array<Peptide>>
+                )
+        let mzIdentMLWithPeptideEvidences =
+            MzIdentMLHandler.addPeptideEvidences
+                mzIdentMLWithPeptides
+                (match mzIdentMLXML.SequenceCollection with
+                 |Some x -> x.PeptideEvidences
+                            |> Array.map (fun peptideEvidence -> MzIdentMLHandler.findPeptideEvidencesByID dbContext peptideEvidence.Id)
+                 |None -> Unchecked.defaultof<array<PeptideEvidence>>
+                )
+        let mzIdentMLWithProteinDetection =
+            MzIdentMLHandler.addProteinDetection
+                mzIdentMLWithPeptideEvidences
+                (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
+                 |Some x -> convertToEntity_ProteinDetection dbContext x
+                 |None -> Unchecked.defaultof<ProteinDetection>
+                )
+        let mzIdentMLWithProteinDetectionProtocol =
+            MzIdentMLHandler.addProteinDetectionProtocol
+                mzIdentMLWithProteinDetection
+                (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
+                 |Some x -> MzIdentMLHandler.findProteinDetectionProtocolByID dbContext x.Id
+                 |None -> Unchecked.defaultof<ProteinDetectionProtocol>
+                )
+        let mzIdentMLWithBiblioGraphicReference =
+            MzIdentMLHandler.addBiblioGraphicReferences
+                mzIdentMLWithProteinDetectionProtocol
+                (mzIdentMLXML.BibliographicReferences
+                 |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
+                )
+        MzIdentMLHandler.addToContext dbContext mzIdentMLWithBiblioGraphicReference
+
+
 
     //let removeDoubleTerms (pathXML : string) =
     //    let xmlMzIdentML = SchemePeptideShaker.Load(pathXML)

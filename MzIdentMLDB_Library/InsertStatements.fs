@@ -2776,24 +2776,24 @@ module InsertStatements =
         type ProteinDetectionHandler =
                static member init
                     (             
-                        proteinDetectionList     : ProteinDetectionList,
-                        proteinDetectionProtocol : ProteinDetectionProtocol,
-                        spectrumIdentifications  : seq<SpectrumIdentification>,
-                        ?id                      : string,
-                        ?name                    : string,
-                        ?activityDate            : DateTime
+                        proteinDetectionList        : ProteinDetectionList,
+                        proteinDetectionProtocol    : ProteinDetectionProtocol,
+                        spectrumIdentificationLists : seq<SpectrumIdentificationList>,
+                        ?id                         : string,
+                        ?name                       : string,
+                        ?activityDate               : DateTime
                     ) =
                     let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'         = defaultArg name null
                     let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
                     {
-                        ProteinDetection.ID                       = id'
-                        ProteinDetection.Name                     = name'
-                        ProteinDetection.ActivityDate             = activityDate'
-                        ProteinDetection.ProteinDetectionList     = proteinDetectionList
-                        ProteinDetection.ProteinDetectionProtocol = proteinDetectionProtocol
-                        ProteinDetection.SpectrumIdentifications  = spectrumIdentifications |> List
-                        ProteinDetection.RowVersion               = DateTime.Now
+                        ProteinDetection.ID                          = id'
+                        ProteinDetection.Name                        = name'
+                        ProteinDetection.ActivityDate                = activityDate'
+                        ProteinDetection.ProteinDetectionList        = proteinDetectionList
+                        ProteinDetection.ProteinDetectionProtocol    = proteinDetectionProtocol
+                        ProteinDetection.SpectrumIdentificationLists = spectrumIdentificationLists |> List
+                        ProteinDetection.RowVersion                  = DateTime.Now
                     }
 
                static member addName
@@ -2818,9 +2818,9 @@ module InsertStatements =
                     (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
                     context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
 
-               static member findSpectrumIdentificationByID
-                    (context:MzIdentMLContext) (spectrumIdentificationID:string) =
-                    context.SpectrumIdentification.Find(spectrumIdentificationID)
+               static member findSpectrumIdentificationListByID
+                    (context:MzIdentMLContext) (spectrumIdentificationListID:string) =
+                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
 
                 static member addToContext (context:MzIdentMLContext) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item)
@@ -3012,8 +3012,8 @@ module InsertStatements =
                         ?name                          : string,
                         ?analysisSoftwares             : seq<AnalysisSoftware>,
                         ?provider                      : Provider,
-                        ?person                        : Person,
-                        ?organization                  : Organization,
+                        ?persons                       : seq<Person>,
+                        ?organizations                 : seq<Organization>,
                         ?samples                       : seq<Sample>,
                         ?dbSequences                   : seq<DBSequence>,
                         ?peptides                      : seq<Peptide>,
@@ -3026,8 +3026,8 @@ module InsertStatements =
                     let name'                     = defaultArg name null
                     let analysisSoftwares'        = convertOptionToList analysisSoftwares
                     let provider'                 = defaultArg provider Unchecked.defaultof<Provider>
-                    let person'                   = defaultArg person Unchecked.defaultof<Person>
-                    let organization'             = defaultArg organization Unchecked.defaultof<Organization>
+                    let persons'                  = convertOptionToList persons
+                    let organizations'            = convertOptionToList organizations
                     let samples'                  = convertOptionToList samples
                     let dbSequences'              = convertOptionToList dbSequences
                     let peptides'                 = convertOptionToList peptides
@@ -3042,8 +3042,8 @@ module InsertStatements =
                         MzIdentML.Ontologies                     = ontologies |> List
                         MzIdentML.AnalysisSoftwares              = analysisSoftwares'
                         MzIdentML.Provider                       = provider'
-                        MzIdentML.Person                         = person'
-                        MzIdentML.Organization                   = organization'
+                        MzIdentML.Persons                        = persons'
+                        MzIdentML.Organizations                  = organizations'
                         MzIdentML.Samples                        = samples'
                         MzIdentML.DBSequences                    = dbSequences'
                         MzIdentML.Peptides                       = peptides'
@@ -3061,6 +3061,7 @@ module InsertStatements =
                static member addName
                     (mzIdentML:MzIdentML) (name:string) =
                     mzIdentML.Name <- name
+                    mzIdentML
 
                static member addAnalysisSoftware
                     (mzIdentML:MzIdentML) (analysisSoftware:AnalysisSoftware) =
@@ -3075,14 +3076,27 @@ module InsertStatements =
                static member addProvider
                     (mzIdentML:MzIdentML) (provider:Provider) =
                     mzIdentML.Provider <- provider
+                    mzIdentML
 
                static member addPerson
                     (mzIdentML:MzIdentML) (person:Person) =
-                    mzIdentML.Person <- person
+                    mzIdentML.Persons <- addToList mzIdentML.Persons person
+                    mzIdentML
+
+               static member addPersons
+                    (mzIdentML:MzIdentML) (persons:seq<Person>) =
+                    let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
+                    mzIdentML
 
                static member addOrganization
                     (mzIdentML:MzIdentML) (organization:Organization) =
-                    mzIdentML.Organization <- organization
+                    mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
+                    mzIdentML
+
+               static member addOrganizations
+                    (mzIdentML:MzIdentML) (organizations:seq<Organization>) =
+                    let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
+                    mzIdentML
 
                static member addSample
                     (mzIdentML:MzIdentML) (sample:Sample) =
@@ -3127,10 +3141,12 @@ module InsertStatements =
                static member addProteinDetection
                     (mzIdentML:MzIdentML) (proteinDetection:ProteinDetection) =
                     mzIdentML.ProteinDetection <- proteinDetection
+                    mzIdentML
 
                static member addProteinDetectionProtocol
                     (mzIdentML:MzIdentML) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+                    mzIdentML
 
                static member addBiblioGraphicReference
                     (mzIdentML:MzIdentML) (biblioGraphicReference:BiblioGraphicReference) =
@@ -3146,6 +3162,10 @@ module InsertStatements =
                     (context:MzIdentMLContext) (mzIdentMLID:string) =
                     context.MzIdentML.Find(mzIdentMLID)
 
+               static member findOntologyByID
+                    (context:MzIdentMLContext) (ontologyID:string) =
+                    context.Ontology.Find(ontologyID)                
+
                static member findAnalysisSoftwareByID
                     (context:MzIdentMLContext) (analysisSoftwareID:string) =
                     context.AnalysisSoftware.Find(analysisSoftwareID)
@@ -3158,7 +3178,7 @@ module InsertStatements =
                     (context:MzIdentMLContext) (personID:string) =
                     context.Person.Find(personID)
 
-               static member findOrganiozationByID
+               static member findOrganizationByID
                     (context:MzIdentMLContext) (organizationID:string) =
                     context.Organization.Find(organizationID)
 
@@ -3178,13 +3198,29 @@ module InsertStatements =
                     (context:MzIdentMLContext) (peptideEvidenceID:string) =
                     context.PeptideEvidence.Find(peptideEvidenceID)
 
+               static member findSpectrumIdentificationByID
+                    (context:MzIdentMLContext) (spectrumIdentificationID:string) =
+                    context.SpectrumIdentification.Find(spectrumIdentificationID)
+
                static member findProteinDetectionByID
                     (context:MzIdentMLContext) (proteinDetectionID:string) =
                     context.ProteinDetection.Find(proteinDetectionID)
 
+               static member findSpectrumIdentificationProtocolByID
+                    (context:MzIdentMLContext) (spectrumIdentificationProtocolID:string) =
+                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
+
                static member findProteinDetectionProtocolByID
                     (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
                     context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+
+               static member findInputsByID
+                    (context:MzIdentMLContext) (inputsID:string) =
+                    context.Inputs.Find(inputsID)
+
+               static member findAnalysisDataByID
+                    (context:MzIdentMLContext) (analysisDataID:string) =
+                    context.AnalysisData.Find(analysisDataID)
 
                static member findBiblioGraphicReferencesByID
                     (context:MzIdentMLContext) (bibliographicReferenceID:string) =
@@ -3222,7 +3258,7 @@ module InsertStatements =
 
         let initStandardDB (context : MzIdentMLContext) =
             let terms_PsiMS =
-                let psims = OntologyHandler.init ("Psi-MS")
+                let psims = OntologyHandler.init ("PSI-MS")
                 OntologyHandler.addToContext context psims |> ignore 
                 fromPsiMS
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(psims.ID))))
@@ -3231,7 +3267,7 @@ module InsertStatements =
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
 
             let terms_Pride =
-                let pride = OntologyHandler.init ("Pride")
+                let pride = OntologyHandler.init ("PRIDE")
                 OntologyHandler.addToContext context pride |> ignore 
                 fromPride
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(pride.ID))))
@@ -3240,7 +3276,7 @@ module InsertStatements =
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
 
             let terms_Unimod =
-                let unimod = OntologyHandler.init ("Unimod")
+                let unimod = OntologyHandler.init ("UNIMOD")
                 OntologyHandler.addToContext context unimod |> ignore 
                 fromUniMod
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unimod.ID))))
@@ -3249,7 +3285,7 @@ module InsertStatements =
             |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
 
             let terms_Unit_Ontology =
-                let unit_ontology = OntologyHandler.init ("Unit_Ontology")
+                let unit_ontology = OntologyHandler.init ("UNIT-ONTOLOGY")
                 OntologyHandler.addToContext context unit_ontology |> ignore 
                 fromUnit_Ontology
                 |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unit_ontology.ID))))

@@ -631,13 +631,13 @@ module DataContext =
                 ProteinDetection =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : string
-                mutable Name             : string
-                mutable ActivityDate     : DateTime
-                ProteinDetectionList     : ProteinDetectionList
-                ProteinDetectionProtocol : ProteinDetectionProtocol
-                SpectrumIdentifications  : List<SpectrumIdentification>
-                RowVersion               : DateTime
+                ID                           : string
+                mutable Name                 : string
+                mutable ActivityDate         : DateTime
+                ProteinDetectionList         : ProteinDetectionList
+                ProteinDetectionProtocol     : ProteinDetectionProtocol
+                SpectrumIdentificationLists  : List<SpectrumIdentificationList>
+                RowVersion                   : DateTime
                 }
 
         ///Any bibliographic references associated with the file.
@@ -689,8 +689,8 @@ module DataContext =
                 //
                 mutable Provider                 : Provider
                 //Formerly AuditCollection
-                mutable Person                   : Person
-                mutable Organization             : Organization
+                mutable Persons                  : List<Person>
+                mutable Organizations            : List<Organization>
                 //
                 //Formerly AnalysisSampleCollection
                 mutable Samples                  : List<Sample>
