@@ -363,7 +363,7 @@ module DataContext =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID         : string
-                Frame      : string
+                Frame      : int
                 RowVersion : DateTime
                 }
 
@@ -404,8 +404,8 @@ module DataContext =
                 ID                                  : string
                 mutable Name                        : string
                 Location                            : string
-                mutable NumDatabaseSequences        : string
-                mutable NumResidues                 : string
+                mutable NumDatabaseSequences        : int64
+                mutable NumResidues                 : int64
                 mutable ReleaseDate                 : DateTime
                 mutable Version                     : string
                 mutable ExternalFormatDocumentation : string
@@ -500,7 +500,7 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID                           : string
                 mutable Name                 : string
-                mutable NumSequencesSearched : int
+                mutable NumSequencesSearched : int64
                 mutable FragmentationTables  : List<Measure>
                 SpectrumIdentificationResult : List<SpectrumIdentificationResult>
                 mutable Details              : List<CVParam>

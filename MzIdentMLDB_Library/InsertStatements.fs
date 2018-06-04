@@ -1271,7 +1271,7 @@ module InsertStatements =
                         SearchModification.MassDelta        = massDelta
                         SearchModification.Residues         = residues
                         SearchModification.SpecificityRules = specificityRules'
-                        SearchModification.Details          = details
+                        SearchModification.Details          = details |> List
                         SearchModification.RowVersion       = DateTime.Now
                     }
 
@@ -1456,7 +1456,7 @@ module InsertStatements =
         type FrameHandler =
                static member init
                     ( 
-                        frame : string,
+                        frame : int,
                         ?id   : string
                     ) =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
@@ -1685,8 +1685,8 @@ module InsertStatements =
                         databaseName                 : CVParam,
                         ?id                          : string,
                         ?name                        : string,                    
-                        ?numDatabaseSequences        : string,
-                        ?numResidues                 : string,
+                        ?numDatabaseSequences        : int64,
+                        ?numResidues                 : int64,
                         ?releaseDate                 : DateTime,
                         ?version                     : string,
                         ?externalFormatDocumentation : string,
@@ -1694,8 +1694,8 @@ module InsertStatements =
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
-                    let numDatabaseSequences'        = defaultArg numDatabaseSequences null
-                    let numResidues'                 = defaultArg numResidues null
+                    let numDatabaseSequences'        = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
+                    let numResidues'                 = defaultArg numResidues Unchecked.defaultof<int64>
                     let releaseDate'                 = defaultArg releaseDate Unchecked.defaultof<DateTime>
                     let version'                     = defaultArg version null
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
@@ -1722,12 +1722,12 @@ module InsertStatements =
                     searchDatabase
 
                static member addNumDatabaseSequences
-                    (searchDatabase:SearchDatabase) (numDatabaseSequences:string) =
+                    (searchDatabase:SearchDatabase) (numDatabaseSequences:int64) =
                     searchDatabase.NumDatabaseSequences <- numDatabaseSequences
                     searchDatabase
 
                static member addNumResidues
-                    (searchDatabase:SearchDatabase) (numResidues:string) =
+                    (searchDatabase:SearchDatabase) (numResidues:int64) =
                     searchDatabase.NumResidues <- numResidues
                     searchDatabase
 
@@ -1769,10 +1769,10 @@ module InsertStatements =
                     (context:MzIdentMLContext) (cvParamID:string) =
                     context.CVParam.Find(cvParamID)
 
-                static member addToContext (context:MzIdentMLContext) (item:DBSequence) =
+                static member addToContext (context:MzIdentMLContext) (item:SearchDatabase) =
                         (addToContextWithExceptionCheck context item)
 
-                static member addToContextAndInsert (context:MzIdentMLContext) (item:DBSequence) =
+                static member addToContextAndInsert (context:MzIdentMLContext) (item:SearchDatabase) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
@@ -2161,7 +2161,7 @@ module InsertStatements =
                     spectrumIdentificationResult
 
                static member addDetails
-                    (spectrumIdentificationResult:DBSequence) (details:seq<CVParam>) =
+                    (spectrumIdentificationResult:SpectrumIdentificationResult) (details:seq<CVParam>) =
                     let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
                     spectrumIdentificationResult
 
@@ -2198,13 +2198,13 @@ module InsertStatements =
                         spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
                         ?id                          : string,
                         ?name                        : string,
-                        ?numSequencesSearched        : int,
+                        ?numSequencesSearched        : int64,
                         ?fragmentationTable          : seq<Measure>,
                         ?details                     : seq<CVParam>          
                     ) =
                     let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                 = defaultArg name null
-                    let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int>
+                    let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int64>
                     let fragmentationTable'   = convertOptionToList fragmentationTable
                     let details'              = convertOptionToList details
                     {
@@ -2223,7 +2223,7 @@ module InsertStatements =
                     spectrumIdentificationList
 
                static member addNumSequencesSearched
-                    (spectrumIdentificationList:SpectrumIdentificationList) (numSequencesSearched:int) =
+                    (spectrumIdentificationList:SpectrumIdentificationList) (numSequencesSearched:int64) =
                     spectrumIdentificationList.NumSequencesSearched <- numSequencesSearched
                     spectrumIdentificationList
 
@@ -2300,19 +2300,9 @@ module InsertStatements =
                     spectrumIdentificationList.Name <- name
                     spectrumIdentificationList
 
-               static member addNumSequencesSearched
+               static member addActivityDate
                     (spectrumIdentificationList:SpectrumIdentification) (activityDate:DateTime) =
                     spectrumIdentificationList.ActivityDate <- activityDate
-                    spectrumIdentificationList
-
-               static member addDetail
-                    (spectrumIdentificationList:SpectrumIdentificationList) (detail:CVParam) =
-                    let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
-                    spectrumIdentificationList
-
-               static member addDetails
-                    (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<CVParam>) =
-                    let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
 
                //static member addProteinDetection
@@ -2898,9 +2888,19 @@ module InsertStatements =
                     biblioGraphicReference.DOI <- doi
                     biblioGraphicReference
 
+               static member addEditor
+                    (biblioGraphicReference:BiblioGraphicReference) (editor:string) =
+                    biblioGraphicReference.Editor <- editor
+                    biblioGraphicReference
+
                static member addIssue
                     (biblioGraphicReference:BiblioGraphicReference) (issue:string) =
                     biblioGraphicReference.Issue <- issue
+                    biblioGraphicReference
+
+               static member addPages
+                    (biblioGraphicReference:BiblioGraphicReference) (pages:string) =
+                    biblioGraphicReference.Pages <- pages
                     biblioGraphicReference
 
                static member addPublication
@@ -2967,14 +2967,17 @@ module InsertStatements =
                static member addName
                     (provider:Provider) (name:string) =
                     provider.Name <- name
+                    provider
 
                static member addAnalysisSoftware
                     (provider:Provider) (analysisSoftware:AnalysisSoftware) =
                     provider.AnalysisSoftware <- analysisSoftware
+                    provider
 
                static member addContactRole
                     (provider:Provider) (contactRole:ContactRole) =
                     provider.ContactRole <- contactRole
+                    provider
 
                static member findProviderByID
                     (context:MzIdentMLContext) (providerID:string) =

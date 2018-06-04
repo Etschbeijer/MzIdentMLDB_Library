@@ -164,3 +164,14 @@ let xmlFrame =
                                          |Some x -> x
                                          |None -> null
                               |None -> null)
+
+let xmlPI =
+    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
+    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
+                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
+                                                                          |> Array.map (fun item -> match item.CalculatedPi with
+                                                                                                    |Some x -> float x
+                                                                                                    | None -> Unchecked.defaultof<float>)
+
+                                                             )
+                 )
