@@ -198,13 +198,13 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName null
                     {
-                        ID         = id';
-                        Name       = name;
-                        Value      = value';
-                        Term       = term;
-                        Unit       = unit';
-                        UnitName   = unitName';
-                        RowVersion = DateTime.Now
+                        CVParam.ID         = id';
+                        CVParam.Name       = name;
+                        CVParam.Value      = value';
+                        CVParam.Term       = term;
+                        CVParam.Unit       = unit';
+                        CVParam.UnitName   = unitName';
+                        CVParam.RowVersion = DateTime.Now
                     }
                static member addValue
                     (cvParam:CVParam) (value:string) =
@@ -241,7 +241,7 @@ module InsertStatements =
                     (
                         ?id      : string,
                         ?name    : string,
-                        ?details : seq<CVParam>,
+                        ?details : seq<CVParam_Organization>,
                         ?parent  : string
                     ) =
                     let id'      = defaultArg id (System.Guid.NewGuid().ToString())
@@ -267,12 +267,12 @@ module InsertStatements =
                     organization
 
                static member addDetail
-                    (organization:Organization) (detail:CVParam) =
+                    (organization:Organization) (detail:CVParam_Organization) =
                     let result = organization.Details <- addToList organization.Details detail
                     organization
 
                static member addDetails
-                    (organization:Organization) (details:seq<CVParam>) =
+                    (organization:Organization) (details:seq<CVParam_Organization>) =
                     let result = organization.Details <- addCollectionToList organization.Details details
                     organization
 
@@ -299,7 +299,7 @@ module InsertStatements =
                         ?firstName      : string,
                         ?midInitials    : string,
                         ?lastName       : string,
-                        ?contactDetails : seq<CVParam>,
+                        ?contactDetails : seq<CVParam_Person>,
                         ?organizations  : seq<Organization> 
                     ) =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
@@ -338,12 +338,12 @@ module InsertStatements =
                     person.LastName <- lastName
                     person
 
-               static member addDetail (person:Person) (detail:CVParam) =
+               static member addDetail (person:Person) (detail:CVParam_Person) =
                     let result = person.Details <- addToList person.Details detail
                     person
 
                static member addDetails
-                    (person:Person) (details:seq<CVParam>) =
+                    (person:Person) (details:seq<CVParam_Person>) =
                     let result = person.Details <- addCollectionToList person.Details details
                     person
 

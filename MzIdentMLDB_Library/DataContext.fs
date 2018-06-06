@@ -26,9 +26,21 @@ module DataContext =
         and [<CLIMutable>] 
             Ontology = 
             {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 ID                : string
                 mutable Terms     : List<Term>
                 RowVersion        : DateTime
+            }
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            Unit =
+            {
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
@@ -45,6 +57,55 @@ module DataContext =
                 RowVersion         : DateTime 
             }
 
+        ///A single entry from an ontology or a controlled vocabulary.
+        type CVParam_Base =
+            abstract member ID         : string
+            abstract member Name       : string
+            abstract member Value      : string
+            abstract member Term       : Term
+            abstract member Unit       : Unit
+            abstract member RowVersion : DateTime 
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            CVParam_Organization =
+            {
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : string
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Unit
+                RowVersion         : DateTime 
+            }
+            interface CVParam_Base with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            CVParam_Person =
+            {
+                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : string
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Unit
+                RowVersion         : DateTime 
+            }
+            interface CVParam_Base with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
         /////A single entry from an ontology or a controlled vocabulary.
         //type [<CLIMutable>] 
         //    UserParam =
@@ -60,13 +121,13 @@ module DataContext =
         //    }
 
         ///Organizations are entities like companies, universities, government agencies.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Organization =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID              : string
                 mutable Name    : string
-                mutable Details : List<CVParam>
+                mutable Details : List<CVParam_Organization>
                 //Formerly Parent/Organization_Ref
                 mutable Parent  : string
                 //
@@ -86,7 +147,7 @@ module DataContext =
                 //Formerly Organization_Ref
                 mutable Organizations  : List<Organization>
                 //
-                mutable Details        : List<CVParam>
+                mutable Details        : List<CVParam_Person>
                 RowVersion             : DateTime
                 //CVParams_Organization   : List<CVParam>
                 //UserParams_Organization : List<UserParam>
@@ -116,6 +177,7 @@ module DataContext =
                 mutable Version        : string
                 mutable Customizations : string
                 mutable ContactRole    : ContactRole
+                [<NotMapped>]
                 SoftwareName           : CVParam
                 RowVersion             : DateTime
             }
@@ -962,11 +1024,26 @@ module DataContext =
                                                           and set value = this.m_MzIdentML <- value
 
                 //override this.OnModelCreating (modelBuilder :  ModelBuilder) =
-                //         modelBuilder.Entity<Term>()
-                //            .HasOne(fun item -> item.Ontology)
-                //            .WithMany("Terms")
-                //            .IsRequired(false)
-                //            .OnDelete(DeleteBehavior.Restrict)|> ignore
+                //         modelBuilder.Entity<CVParam>()
+                //            .HasOne("OrganizationID")
+                //            .WithMany("Details")
+                //            .HasForeignKey("FK")
+                //            .OnDelete(DeleteBehavior.Cascade)|> ignore
+                //         modelBuilder.Entity<CVParam>()
+                //            .HasOne("PersonID")
+                //            .WithMany("Details")
+                //            .HasForeignKey("FK")
+                //            .OnDelete(DeleteBehavior.Cascade)|> ignore
+                //         modelBuilder.Entity<CVParam>()
+                //            .HasOne("AmbiguousResidueID")
+                //            .WithMany("Details")
+                //            .HasForeignKey("FK")
+                //            .OnDelete(DeleteBehavior.Cascade)|> ignore
+                //         modelBuilder.Entity<CVParam>()
+                //            .HasOne("SampleID")
+                //            .WithMany("Details")
+                //            .HasForeignKey("FK")
+                //            .OnDelete(DeleteBehavior.Cascade)|> ignore
 
         type OntologyContext =
      
