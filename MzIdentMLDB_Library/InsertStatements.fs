@@ -188,12 +188,12 @@ module InsertStatements =
                     (
                         name      : string,
                         term      : Term,
-                        ?id       : string,
+                        ?id       : int,
                         ?value    : string,
                         ?unit     : Term,
                         ?unitName : string
                     ) =
-                    let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id'       = defaultArg id 0
                     let value'    = defaultArg value null
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName null
@@ -241,7 +241,7 @@ module InsertStatements =
                     (
                         ?id      : string,
                         ?name    : string,
-                        ?details : seq<CVParam_Organization>,
+                        ?details : seq<OrganizationParam>,
                         ?parent  : string
                     ) =
                     let id'      = defaultArg id (System.Guid.NewGuid().ToString())
@@ -267,12 +267,12 @@ module InsertStatements =
                     organization
 
                static member addDetail
-                    (organization:Organization) (detail:CVParam_Organization) =
+                    (organization:Organization) (detail:OrganizationParam) =
                     let result = organization.Details <- addToList organization.Details detail
                     organization
 
                static member addDetails
-                    (organization:Organization) (details:seq<CVParam_Organization>) =
+                    (organization:Organization) (details:seq<OrganizationParam>) =
                     let result = organization.Details <- addCollectionToList organization.Details details
                     organization
 
@@ -299,7 +299,7 @@ module InsertStatements =
                         ?firstName      : string,
                         ?midInitials    : string,
                         ?lastName       : string,
-                        ?contactDetails : seq<CVParam_Person>,
+                        ?contactDetails : seq<PersonParam>,
                         ?organizations  : seq<Organization> 
                     ) =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
@@ -338,12 +338,12 @@ module InsertStatements =
                     person.LastName <- lastName
                     person
 
-               static member addDetail (person:Person) (detail:CVParam_Person) =
+               static member addDetail (person:Person) (detail:PersonParam) =
                     let result = person.Details <- addToList person.Details detail
                     person
 
                static member addDetails
-                    (person:Person) (details:seq<CVParam_Person>) =
+                    (person:Person) (details:seq<PersonParam>) =
                     let result = person.Details <- addCollectionToList person.Details details
                     person
 
@@ -529,7 +529,7 @@ module InsertStatements =
                         ?name         : string,
                         ?contactRoles : seq<ContactRole>,
                         ?subSamples   : seq<SubSample>,
-                        ?details      : seq<CVParam>
+                        ?details      : seq<SampleParam>
                         //?mzIdentML    : MzIdentML
                     ) =
                     let id'           = defaultArg id (System.Guid.NewGuid().ToString())
@@ -573,12 +573,12 @@ module InsertStatements =
                     sample
 
                static member addDetail
-                    (sample:Sample) (detail:CVParam) =
+                    (sample:Sample) (detail:SampleParam) =
                     let result = sample.Details <- addToList sample.Details detail
                     sample
 
                static member addDetails
-                    (sample:Sample) (details:seq<CVParam>) =
+                    (sample:Sample) (details:seq<SampleParam>) =
                     let result = sample.Details <- addCollectionToList sample.Details details
                     sample
 
@@ -604,7 +604,7 @@ module InsertStatements =
         type ModificationHandler =
                static member init
                     (
-                        details                : seq<CVParam>,
+                        details                : seq<ModificationParam>,
                         ?id                    : string,
                         ?residues              : string,
                         ?location              : int,
@@ -719,7 +719,7 @@ module InsertStatements =
                         ?name                      : string,                    
                         ?modifications             : seq<Modification>,
                         ?substitutionModifications : seq<SubstitutionModification>,
-                        ?details                   : seq<CVParam>
+                        ?details                   : seq<PeptideParam>
                         //?mzIdentML                 : MzIdentML
                     ) =
                     let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
@@ -764,12 +764,12 @@ module InsertStatements =
                     peptide
 
                static member addDetail
-                    (peptide:Peptide) (detail:CVParam) =
+                    (peptide:Peptide) (detail:PeptideParam) =
                     let result = peptide.Details <- addToList peptide.Details detail
                     peptide
 
                static member addDetails
-                    (peptide:Peptide) (details:seq<CVParam>) =
+                    (peptide:Peptide) (details:seq<PeptideParam>) =
                     let result = peptide.Details <- addCollectionToList peptide.Details details
                     peptide
 
@@ -806,7 +806,7 @@ module InsertStatements =
                     (
                         ?id      : string,
                         ?name    : string,
-                        ?details : seq<CVParam>
+                        ?details : seq<TranslationTableParam>
                     ) =
                     let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                      = defaultArg name null
@@ -824,12 +824,12 @@ module InsertStatements =
                     translationTable
 
                static member addDetail
-                    (translationTable:TranslationTable) (detail:CVParam) =
+                    (translationTable:TranslationTable) (detail:TranslationTableParam) =
                     let result = translationTable.Details <- addToList translationTable.Details detail
                     translationTable
 
                static member addDetails
-                    (translationTable:TranslationTable) (details:seq<CVParam>) =
+                    (translationTable:TranslationTable) (details:seq<TranslationTableParam>) =
                     let result = translationTable.Details <- addCollectionToList translationTable.Details details
                     translationTable
 
@@ -851,7 +851,7 @@ module InsertStatements =
         type MeasureHandler =
                static member init
                     (
-                        details  : seq<CVParam>,
+                        details  : seq<MeasureParam>,
                         ?id      : string,
                         ?name    : string 
                     ) =
@@ -914,7 +914,7 @@ module InsertStatements =
                static member init
                     (
                         code    : string,
-                        details : seq<CVParam>,
+                        details : seq<AmbiguousResidueParam>,
                         ?id     : string
                     ) =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
@@ -948,7 +948,7 @@ module InsertStatements =
                         ?name             : string,
                         ?residue          : seq<Residue>,
                         ?ambiguousResidue : seq<AmbiguousResidue>,
-                        ?details          : seq<CVParam>
+                        ?details          : seq<MassTableParam>
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name null
@@ -991,12 +991,12 @@ module InsertStatements =
                     massTable
 
                static member addDetail
-                    (massTable:MassTable) (detail:CVParam) =
+                    (massTable:MassTable) (detail:MassTableParam) =
                     let result = massTable.Details <- addToList massTable.Details detail
                     massTable
 
                static member addDetails
-                    (massTable:MassTable) (details:seq<CVParam>) =
+                    (massTable:MassTable) (details:seq<MassTableParam>) =
                     let result = massTable.Details <- addCollectionToList massTable.Details details
                     massTable
 
@@ -1108,7 +1108,7 @@ module InsertStatements =
         type IonTypeHandler =
                static member init
                     (
-                        details        : seq<CVParam>,
+                        details        : seq<IonTypeParam>,
                         ?id            : string,
                         ?index         : seq<Index>,
                         ?fragmentArray : seq<FragmentArray>
@@ -1228,7 +1228,7 @@ module InsertStatements =
         type SpecificityRulesHandler =
                static member init
                     ( 
-                        details    : seq<CVParam>,
+                        details    : seq<SpecificityRuleParam>,
                         ?id        : string
                     ) =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
@@ -1259,7 +1259,7 @@ module InsertStatements =
                         fixedMod          : bool,
                         massDelta         : float,
                         residues          : string,
-                        details           : seq<CVParam>,
+                        details           : seq<SearchModificationParam>,
                         ?id               : string,
                         ?specificityRules : seq<SpecificityRule>
                     ) =
@@ -1315,7 +1315,7 @@ module InsertStatements =
                         ?missedCleavages : int,
                         ?semiSpecific    : bool,
                         ?siteRegexc      : string,
-                        ?enzymeName      : seq<CVParam>
+                        ?enzymeName      : seq<EnzymeNameParam>
                     ) =
                     let id'              = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'            = defaultArg name null
@@ -1375,12 +1375,12 @@ module InsertStatements =
                     enzyme
 
                static member addEnzymeName
-                    (enzyme:Enzyme) (enzymeName:CVParam) =
+                    (enzyme:Enzyme) (enzymeName:EnzymeNameParam) =
                     let result = enzyme.EnzymeName <- addToList enzyme.EnzymeName enzymeName
                     enzyme
 
                static member addEnzymeNames
-                    (enzyme:Enzyme) (enzymeNames:seq<CVParam>) =
+                    (enzyme:Enzyme) (enzymeNames:seq<EnzymeNameParam>) =
                     let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                     enzyme
 
@@ -1404,8 +1404,8 @@ module InsertStatements =
                     (
                         filterType : CVParam,
                         ?id        : string,
-                        ?includes  : seq<CVParam>,
-                        ?excludes  : seq<CVParam>
+                        ?includes  : seq<IncludeParam>,
+                        ?excludes  : seq<ExcludeParam>
                     ) =
                     let id'         = defaultArg id (System.Guid.NewGuid().ToString())
                     let includes'   = convertOptionToList includes
@@ -1419,22 +1419,22 @@ module InsertStatements =
                     }
 
                static member addInclude
-                    (filter:Filter) (include':CVParam) =
+                    (filter:Filter) (include':IncludeParam) =
                     let result = filter.Includes <- addToList filter.Includes include'
                     filter
 
                static member addIncludes
-                    (filter:Filter) (includes:seq<CVParam>) =
+                    (filter:Filter) (includes:seq<IncludeParam>) =
                     let result = filter.Includes <- addCollectionToList filter.Includes includes
                     filter
 
                static member addExclude
-                    (filter:Filter) (exclude':CVParam) =
+                    (filter:Filter) (exclude':ExcludeParam) =
                     let result = filter.Excludes <- addToList filter.Excludes exclude'
                     filter
 
                static member addExcludes
-                    (filter:Filter) (excludes:seq<CVParam>) =
+                    (filter:Filter) (excludes:seq<ExcludeParam>) =
                     let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                     filter
 
@@ -1482,16 +1482,16 @@ module InsertStatements =
                     (
                         analysisSoftware        : AnalysisSoftware,
                         searchType              : CVParam ,
-                        threshold               : seq<CVParam>,
+                        threshold               : seq<ThresholdParam>,
                         ?id                     : string,
                         ?name                   : string,
-                        ?additionalSearchParams : seq<CVParam>,
+                        ?additionalSearchParams : seq<AdditionalSearchParam>,
                         ?modificationParams     : seq<SearchModification>,
                         ?enzymes                : seq<Enzyme>,
                         ?independent_Enzymes    : bool,
                         ?massTables             : seq<MassTable>,
-                        ?fragmentTolerance      : seq<CVParam>,
-                        ?parentTolerance        : seq<CVParam>,
+                        ?fragmentTolerance      : seq<FragmentToleranceParam>,
+                        ?parentTolerance        : seq<ParentToleranceParam>,
                         ?databaseFilters        : seq<Filter>,
                         ?frames                 : seq<Frame>,
                         ?translationTable       : seq<TranslationTable>
@@ -1535,12 +1535,12 @@ module InsertStatements =
                     spectrumIdentificationProtocol
 
                static member addEnzymeAdditionalSearchParam
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParam:CVParam) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParam:AdditionalSearchParam) =
                     let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParam
                     spectrumIdentificationProtocol
 
                static member addEnzymeAdditionalSearchParams
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParams:seq<CVParam>) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParams:seq<AdditionalSearchParam>) =
                     let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addCollectionToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParams
                     spectrumIdentificationProtocol
 
@@ -1580,22 +1580,22 @@ module InsertStatements =
                     spectrumIdentificationProtocol
 
                static member addFragmentTolerance
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerance:CVParam) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerance:FragmentToleranceParam) =
                     let result = spectrumIdentificationProtocol.FragmentTolerance <- addToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerance
                     spectrumIdentificationProtocol
 
                static member addFragmentTolerances
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerances:seq<CVParam>) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerances:seq<FragmentToleranceParam>) =
                     let result = spectrumIdentificationProtocol.FragmentTolerance <- addCollectionToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerances
                     spectrumIdentificationProtocol
 
                static member addParentTolerance
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerance:CVParam) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerance:ParentToleranceParam) =
                     let result = spectrumIdentificationProtocol.ParentTolerance <- addToList spectrumIdentificationProtocol.ParentTolerance parentTolerance
                     spectrumIdentificationProtocol
 
                static member addParentTolerances
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerances:seq<CVParam>) =
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerances:seq<ParentToleranceParam>) =
                     let result = spectrumIdentificationProtocol.ParentTolerance <- addCollectionToList spectrumIdentificationProtocol.ParentTolerance parentTolerances
                     spectrumIdentificationProtocol
 
@@ -1690,7 +1690,7 @@ module InsertStatements =
                         ?releaseDate                 : DateTime,
                         ?version                     : string,
                         ?externalFormatDocumentation : string,
-                        ?details                     : seq<CVParam>
+                        ?details                     : seq<SearchDatabaseParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
@@ -1711,7 +1711,7 @@ module InsertStatements =
                         SearchDatabase.ExternalFormatDocumentation = externalFormatDocumentation';
                         SearchDatabase.FileFormat                  = fileFormat;
                         SearchDatabase.DatabaseName                = databaseName;
-                        SearchDatabase.Details                     =  details';
+                        SearchDatabase.Details                     = details';
                         SearchDatabase.RowVersion                  = DateTime.Now.Date
 
                     }
@@ -1746,8 +1746,13 @@ module InsertStatements =
                     searchDatabase.Version <- externalFormatDocumentation
                     searchDatabase
 
+               static member addDetail
+                    (dbSequence:SearchDatabase) (detail:SearchDatabaseParam) =
+                    let result = dbSequence.Details <- addToList dbSequence.Details detail
+                    dbSequence
+
                static member addDetails
-                    (searchDatabase:SearchDatabase) (details:seq<CVParam>) =
+                    (searchDatabase:SearchDatabase) (details:seq<SearchDatabaseParam>) =
                     let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
                     searchDatabase
 
@@ -1785,7 +1790,7 @@ module InsertStatements =
                         ?name          : string,
                         ?sequence      : string,
                         ?length        : int,
-                        ?details       : seq<CVParam>
+                        ?details       : seq<DBSequenceParam>
                         //?mzIdentML     : MzIdentML
                     ) =
                     let id'       = defaultArg id (System.Guid.NewGuid().ToString())
@@ -1821,12 +1826,12 @@ module InsertStatements =
                     dbSequence
 
                static member addDetail
-                    (dbSequence:DBSequence) (detail:CVParam) =
+                    (dbSequence:DBSequence) (detail:DBSequenceParam) =
                     let result = dbSequence.Details <- addToList dbSequence.Details detail
                     dbSequence
 
                static member addDetails
-                    (dbSequence:DBSequence) (details:seq<CVParam>) =
+                    (dbSequence:DBSequence) (details:seq<DBSequenceParam>) =
                     let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                     dbSequence
 
@@ -1868,7 +1873,7 @@ module InsertStatements =
                         ?frame                      : Frame,
                         ?isDecoy                    : bool,
                         ?translationTable           : TranslationTable,
-                        ?details                    : seq<CVParam>
+                        ?details                    : seq<PeptideEvidenceParam>
                         //?mzIdentML                  : MzIdentML
                     ) =
                     let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
@@ -1938,12 +1943,12 @@ module InsertStatements =
                     peptideEvidence
 
                static member addDetail
-                    (peptideEvidence:PeptideEvidence) (detail:CVParam) =
+                    (peptideEvidence:PeptideEvidence) (detail:PeptideEvidenceParam) =
                     let result = peptideEvidence.Details <- addToList peptideEvidence.Details detail
                     peptideEvidence
 
                static member addDetails
-                    (peptideEvidence:PeptideEvidence) (details:seq<CVParam>) =
+                    (peptideEvidence:PeptideEvidence) (details:seq<PeptideEvidenceParam>) =
                     let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
                     peptideEvidence
 
@@ -2004,7 +2009,7 @@ module InsertStatements =
                         ?fragmentations               : seq<IonType>,
                         ?calculatedMassToCharge       : float,
                         ?calculatedPI                 : float,
-                        ?details                      : seq<CVParam>
+                        ?details                      : seq<SpectrumIdentificationItemParam>
                     ) =
                     let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                         = defaultArg name null
@@ -2079,12 +2084,12 @@ module InsertStatements =
                     spectrumIdentificationItem
 
                static member addDetail
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (detail:CVParam) =
+                    (spectrumIdentificationItem:SpectrumIdentificationItem) (detail:SpectrumIdentificationItemParam) =
                     let result = spectrumIdentificationItem.Details <- addToList spectrumIdentificationItem.Details detail
                     spectrumIdentificationItem
 
                static member addDetails
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (details:seq<CVParam>) =
+                    (spectrumIdentificationItem:SpectrumIdentificationItem) (details:seq<SpectrumIdentificationItemParam>) =
                     let result = spectrumIdentificationItem.Details <- addCollectionToList spectrumIdentificationItem.Details details
                     spectrumIdentificationItem
 
@@ -2135,7 +2140,7 @@ module InsertStatements =
                         spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
                         ?id                         : string,
                         ?name                       : string,
-                        ?details                    : seq<CVParam>
+                        ?details                    : seq<SpectrumIdentificationResultParam>
                     ) =
                     let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                       = defaultArg name null
@@ -2156,12 +2161,12 @@ module InsertStatements =
                     spectrumIdentificationResult
 
                static member addDetail
-                    (spectrumIdentificationResult:SpectrumIdentificationResult) (detail:CVParam) =
+                    (spectrumIdentificationResult:SpectrumIdentificationResult) (detail:SpectrumIdentificationResultParam) =
                     let result = spectrumIdentificationResult.Details <- addToList spectrumIdentificationResult.Details detail
                     spectrumIdentificationResult
 
                static member addDetails
-                    (spectrumIdentificationResult:SpectrumIdentificationResult) (details:seq<CVParam>) =
+                    (spectrumIdentificationResult:SpectrumIdentificationResult) (details:seq<SpectrumIdentificationResultParam>) =
                     let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
                     spectrumIdentificationResult
 
@@ -2200,7 +2205,7 @@ module InsertStatements =
                         ?name                        : string,
                         ?numSequencesSearched        : int64,
                         ?fragmentationTable          : seq<Measure>,
-                        ?details                     : seq<CVParam>          
+                        ?details                     : seq<SpectrumIdentificationListParam>          
                     ) =
                     let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                 = defaultArg name null
@@ -2238,12 +2243,12 @@ module InsertStatements =
                     spectrumIdentificationList
 
                static member addDetail
-                    (spectrumIdentificationList:SpectrumIdentificationList) (detail:CVParam) =
+                    (spectrumIdentificationList:SpectrumIdentificationList) (detail:SpectrumIdentificationListParam) =
                     let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
                     spectrumIdentificationList
 
                static member addDetails
-                    (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<CVParam>) =
+                    (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<SpectrumIdentificationListParam>) =
                     let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
 
@@ -2345,10 +2350,10 @@ module InsertStatements =
                static member init
                     (
                         analysisSoftware : AnalysisSoftware,
-                        threshold        : seq<CVParam>,
+                        threshold        : seq<ThresholdParam>,
                         ?id              : string,
                         ?name            : string,
-                        ?analysisParams  : seq<CVParam>
+                        ?analysisParams  : seq<AnalysisParam>
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'           = defaultArg name null
@@ -2368,12 +2373,12 @@ module InsertStatements =
                     proteinDetectionProtocol
 
                static member addAnalysisParam
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParam:CVParam) =
+                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParam:AnalysisParam) =
                     let result = proteinDetectionProtocol.AnalysisParams <- addToList proteinDetectionProtocol.AnalysisParams analysisParam
                     proteinDetectionProtocol
 
                static member addAnalysisParams
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParams:seq<CVParam>) =
+                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParams:seq<AnalysisParam>) =
                     let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
                     proteinDetectionProtocol
 
@@ -2404,7 +2409,7 @@ module InsertStatements =
                         ?id                          : string,
                         ?name                        : string,
                         ?externalFormatDocumentation : string,
-                        ?details                     : seq<CVParam>
+                        ?details                     : seq<SourceFileParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
@@ -2431,12 +2436,12 @@ module InsertStatements =
                     sourceFile
 
                static member addDetail
-                    (sourceFile:SourceFile) (detail:CVParam) =
+                    (sourceFile:SourceFile) (detail:SourceFileParam) =
                     let result = sourceFile.Details <- addToList sourceFile.Details detail
                     sourceFile
 
                static member addDetails
-                    (sourceFile:SourceFile) (details:seq<CVParam>) =
+                    (sourceFile:SourceFile) (details:seq<SourceFileParam>) =
                     let result = sourceFile.Details <- addCollectionToList sourceFile.Details details
                     sourceFile
 
@@ -2563,7 +2568,7 @@ module InsertStatements =
                         peptideHypothesis : seq<PeptideHypothesis>,
                         ?id               : string,
                         ?name             : string,
-                        ?details          : seq<CVParam>
+                        ?details          : seq<ProteinDetectionHypothesisParam>
                     ) =
                     let id'      = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'    = defaultArg name null
@@ -2584,12 +2589,12 @@ module InsertStatements =
                     proteinDetectionHypothesis
 
                static member addDetail
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (detail:CVParam) =
+                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (detail:ProteinDetectionHypothesisParam) =
                     let result = proteinDetectionHypothesis.Details <- addToList proteinDetectionHypothesis.Details detail
                     proteinDetectionHypothesis
 
                static member addDetails
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (details:seq<CVParam>) =
+                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (details:seq<ProteinDetectionHypothesisParam>) =
                     let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
                     proteinDetectionHypothesis
 
@@ -2622,7 +2627,7 @@ module InsertStatements =
                         proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
                         ?id                       : string,
                         ?name                     : string,
-                        ?details                  : seq<CVParam>
+                        ?details                  : seq<ProteinAmbiguityGroupParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                        = defaultArg name null
@@ -2641,12 +2646,12 @@ module InsertStatements =
                     proteinAmbiguityGroup
 
                static member addDetail
-                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (detail:CVParam) =
+                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (detail:ProteinAmbiguityGroupParam) =
                     let result = proteinAmbiguityGroup.Details <- addToList proteinAmbiguityGroup.Details detail
                     proteinAmbiguityGroup
 
                static member addDetails
-                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (details:seq<CVParam>) =
+                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (details:seq<ProteinAmbiguityGroupParam>) =
                     let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                     proteinAmbiguityGroup
 
@@ -2675,7 +2680,7 @@ module InsertStatements =
                         ?id                     : string,
                         ?name                   : string,
                         ?proteinAmbiguityGroups : seq<ProteinAmbiguityGroup>,
-                        ?details                : seq<CVParam>
+                        ?details                : seq<ProteinDetectionListParam>
                     ) =
                     let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                   = defaultArg name null
@@ -2705,12 +2710,12 @@ module InsertStatements =
                     proteinDetectionList
 
                static member addDetail
-                    (proteinDetectionList:ProteinDetectionList) (detail:CVParam) =
+                    (proteinDetectionList:ProteinDetectionList) (detail:ProteinDetectionListParam) =
                     let result = proteinDetectionList.Details <- addToList proteinDetectionList.Details detail
                     proteinDetectionList
 
                static member addDetails
-                    (proteinDetectionList:ProteinDetectionList) (details:seq<CVParam>) =
+                    (proteinDetectionList:ProteinDetectionList) (details:seq<ProteinDetectionListParam>) =
                     let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                     proteinDetectionList
 

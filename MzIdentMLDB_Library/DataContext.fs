@@ -33,22 +33,43 @@ module DataContext =
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
-            Unit =
-            {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
+        type CVParamBase =
+            abstract member ID         : int
+            abstract member Name       : string
+            abstract member Value      : string
+            abstract member Term       : Term
+            abstract member Unit       : Term
+            abstract member UnitName   : string
+            abstract member RowVersion : DateTime
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             CVParam =
             {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : string
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            } 
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            OrganizationParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
                 Name               : string
                 mutable Value      : string
                 Term               : Term
@@ -56,54 +77,666 @@ module DataContext =
                 mutable UnitName   : string
                 RowVersion         : DateTime 
             }
-
-        ///A single entry from an ontology or a controlled vocabulary.
-        type CVParam_Base =
-            abstract member ID         : string
-            abstract member Name       : string
-            abstract member Value      : string
-            abstract member Term       : Term
-            abstract member Unit       : Unit
-            abstract member RowVersion : DateTime 
-
-        ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
-            CVParam_Organization =
-            {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : string
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Unit
-                RowVersion         : DateTime 
-            }
-            interface CVParam_Base with
+            interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Name       = x.Name
                 member x.Value      = x.Value
                 member x.Term       = x.Term
                 member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
-            CVParam_Person =
+            PersonParam =
             {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : string
+                ID                 : int
                 Name               : string
                 mutable Value      : string
                 Term               : Term
-                mutable Unit       : Unit
+                mutable Unit       : Term
+                mutable UnitName   : string
                 RowVersion         : DateTime 
             }
-            interface CVParam_Base with
+            interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Name       = x.Name
                 member x.Value      = x.Value
                 member x.Term       = x.Term
                 member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        and [<CLIMutable>] 
+            SampleParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ModificationParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            PeptideParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            TranslationTableParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            MeasureParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            AmbiguousResidueParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            MassTableParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            IonTypeParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SpecificityRuleParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SearchModificationParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            EnzymeNameParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            IncludeParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ExcludeParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            AdditionalSearchParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            FragmentToleranceParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ParentToleranceParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ThresholdParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SearchDatabaseParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            DBSequenceParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            PeptideEvidenceParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SpectrumIdentificationItemParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SpectrumIdentificationResultParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SpectrumIdentificationListParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            AnalysisParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            SourceFileParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ProteinDetectionHypothesisParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ProteinAmbiguityGroupParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
+                member x.RowVersion = x.RowVersion
+
+
+        ///A single entry from an ontology or a controlled vocabulary.
+        type [<CLIMutable>] 
+            ProteinDetectionListParam =
+            {
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+                ID                 : int
+                Name               : string
+                mutable Value      : string
+                Term               : Term
+                mutable Unit       : Term
+                mutable UnitName   : string
+                RowVersion         : DateTime 
+            }
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Name       = x.Name
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
         /////A single entry from an ontology or a controlled vocabulary.
@@ -127,7 +760,7 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID              : string
                 mutable Name    : string
-                mutable Details : List<CVParam_Organization>
+                mutable Details : List<OrganizationParam>
                 //Formerly Parent/Organization_Ref
                 mutable Parent  : string
                 //
@@ -147,7 +780,7 @@ module DataContext =
                 //Formerly Organization_Ref
                 mutable Organizations  : List<Organization>
                 //
-                mutable Details        : List<CVParam_Person>
+                mutable Details        : List<PersonParam>
                 RowVersion             : DateTime
                 //CVParams_Organization   : List<CVParam>
                 //UserParams_Organization : List<UserParam>
@@ -177,7 +810,6 @@ module DataContext =
                 mutable Version        : string
                 mutable Customizations : string
                 mutable ContactRole    : ContactRole
-                [<NotMapped>]
                 SoftwareName           : CVParam
                 RowVersion             : DateTime
             }
@@ -203,7 +835,7 @@ module DataContext =
                 mutable Name         : string
                 mutable ContactRoles : List<ContactRole>
                 mutable SubSamples   : List<SubSample>
-                mutable Details      : List<CVParam>
+                mutable Details      : List<SampleParam>
                 RowVersion           : DateTime
                 }
 
@@ -217,7 +849,7 @@ module DataContext =
                 mutable Location              : int
                 mutable MonoIsotopicMassDelta : float
                 mutable AvgMassDelta          : float
-                Details                       : List<CVParam>
+                Details                       : List<ModificationParam>
                 RowVersion                    : DateTime
                 }
 
@@ -245,7 +877,7 @@ module DataContext =
                 PeptideSequence                   : string
                 mutable Modifications             : List<Modification>
                 mutable SubstitutionModifications : List<SubstitutionModification>
-                mutable Details                   : List<CVParam>
+                mutable Details                   : List<PeptideParam>
                 RowVersion                        : DateTime
                 }
 
@@ -256,7 +888,7 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID              : string
                 mutable Name    : string
-                mutable Details : List<CVParam>
+                mutable Details : List<TranslationTableParam>
                 RowVersion      : DateTime
                 }
 
@@ -267,7 +899,7 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID           : string
                 mutable Name : string
-                Details      : List<CVParam>
+                Details      : List<MeasureParam>
                 RowVersion   : DateTime
                 }
 
@@ -289,7 +921,7 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID         : string
                 Code       : string
-                Details    : List<CVParam>
+                Details    : List<AmbiguousResidueParam>
                 RowVersion : DateTime
                 }
 
@@ -303,7 +935,7 @@ module DataContext =
                 MSLevel                   : string
                 mutable Residues          : List<Residue>
                 mutable AmbiguousResidues : List<AmbiguousResidue>
-                mutable Details           : List<CVParam>
+                mutable Details           : List<MassTableParam>
                 RowVersion                : DateTime
                 }
 
@@ -346,7 +978,7 @@ module DataContext =
                 ID                     : string
                 mutable Index          : List<Index>
                 mutable FragmentArrays : List<FragmentArray>
-                Details                : List<CVParam>
+                Details                : List<IonTypeParam>
                 RowVersion             : DateTime
                 }
 
@@ -371,7 +1003,7 @@ module DataContext =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID         : string
-                Details    : List<CVParam>
+                Details    : List<SpecificityRuleParam>
                 RowVersion : DateTime
                 }  
                 //
@@ -386,7 +1018,7 @@ module DataContext =
                 MassDelta                : float
                 Residues                 : string
                 mutable SpecificityRules : List<SpecificityRule>
-                Details                  : List<CVParam>
+                Details                  : List<SearchModificationParam>
                 RowVersion               : DateTime
                 }
 
@@ -403,7 +1035,7 @@ module DataContext =
                 mutable MissedCleavages : int
                 mutable SemiSpecific    : bool
                 mutable SiteRegexc      : string
-                mutable EnzymeName      : List<CVParam>
+                mutable EnzymeName      : List<EnzymeNameParam>
                 RowVersion              : DateTime
                 }
 
@@ -414,8 +1046,8 @@ module DataContext =
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
                 ID               : string
                 FilterType       : CVParam
-                mutable Includes : List<CVParam>
-                mutable Excludes : List<CVParam>
+                mutable Includes : List<IncludeParam>
+                mutable Excludes : List<ExcludeParam>
                 RowVersion       : DateTime
                 }
 
@@ -440,16 +1072,16 @@ module DataContext =
                 AnalysisSoftware               : AnalysisSoftware
                 //
                 SearchType                     : CVParam
-                mutable AdditionalSearchParams : List<CVParam>
+                mutable AdditionalSearchParams : List<AdditionalSearchParam>
                 mutable ModificationParams     : List<SearchModification>
                 //Formerly Enzymes
                 mutable Enzymes                : List<Enzyme>
                 mutable Independent_Enzymes    : bool
                 //
                 mutable MassTables             : List<MassTable>
-                mutable FragmentTolerance      : List<CVParam>
-                mutable ParentTolerance        : List<CVParam>
-                Threshold                      : List<CVParam>
+                mutable FragmentTolerance      : List<FragmentToleranceParam>
+                mutable ParentTolerance        : List<ParentToleranceParam>
+                Threshold                      : List<ThresholdParam>
                 mutable DatabaseFilters        : List<Filter>
                 //DatabaseTranlation
                 mutable Frames                 : List<Frame>
@@ -473,10 +1105,9 @@ module DataContext =
                 mutable ExternalFormatDocumentation : string
                 FileFormat                          : CVParam
                 DatabaseName                        : CVParam
-                mutable Details                     : List<CVParam>
+                mutable Details                     : List<SearchDatabaseParam>
                 RowVersion                          : DateTime
                 }
-
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
         type [<CLIMutable>] 
@@ -489,7 +1120,7 @@ module DataContext =
                 SearchDatabase    : SearchDatabase
                 mutable Sequence  : string
                 mutable Length    : int
-                mutable Details   : List<CVParam>
+                mutable Details   : List<DBSequenceParam>
                 RowVersion        : DateTime
                 }
 
@@ -515,7 +1146,7 @@ module DataContext =
                 //Formerly TranslationTable_Ref
                 mutable TranslationTable           : TranslationTable
                 //
-                mutable Details                    : List<CVParam>
+                mutable Details                    : List<PeptideEvidenceParam>
                 RowVersion                         : DateTime
                 }
 
@@ -537,7 +1168,7 @@ module DataContext =
                 ExperimentalMassToCharge             : float
                 mutable CalculatedMassToCharge       : float
                 mutable CalculatedPI                 : float
-                mutable Details                      : List<CVParam>
+                mutable Details                      : List<SpectrumIdentificationItemParam>
                 RowVersion                           : DateTime
                 }
 
@@ -551,7 +1182,7 @@ module DataContext =
                 SpectraData                        : SpectraData
                 SpectrumID                         : string
                 SpectrumIdentificationItem         : List<SpectrumIdentificationItem>
-                mutable Details                    : List<CVParam>
+                mutable Details                    : List<SpectrumIdentificationResultParam>
                 RowVersion                         : DateTime
                 }
 
@@ -565,7 +1196,7 @@ module DataContext =
                 mutable NumSequencesSearched : int64
                 mutable FragmentationTables  : List<Measure>
                 SpectrumIdentificationResult : List<SpectrumIdentificationResult>
-                mutable Details              : List<CVParam>
+                mutable Details              : List<SpectrumIdentificationListParam>
                 RowVersion                   : DateTime
                 }
 
@@ -597,8 +1228,8 @@ module DataContext =
                 ID                     : string
                 mutable Name           : string
                 AnalysisSoftware       : AnalysisSoftware
-                mutable AnalysisParams : List<CVParam>
-                Threshold              : List<CVParam>
+                mutable AnalysisParams : List<AnalysisParam>
+                Threshold              : List<ThresholdParam>
                 RowVersion             : DateTime
                 }
 
@@ -612,7 +1243,7 @@ module DataContext =
                 Location                            : string
                 mutable ExternalFormatDocumentation : string
                 FileFormat                          : CVParam
-                mutable Details                     : List<CVParam>
+                mutable Details                     : List<SourceFileParam>
                 RowVersion                          : DateTime
                 }
 
@@ -649,7 +1280,7 @@ module DataContext =
                 PassThreshold     : bool
                 DBSequence        : DBSequence
                 PeptideHypothesis : List<PeptideHypothesis>
-                mutable Details   : List<CVParam>
+                mutable Details   : List<ProteinDetectionHypothesisParam>
                 RowVersion        : DateTime
                 }
 
@@ -661,7 +1292,7 @@ module DataContext =
                 ID                        : string
                 mutable Name              : string
                 ProteinDetecionHypothesis : List<ProteinDetectionHypothesis>
-                mutable Details           : List<CVParam>
+                mutable Details           : List<ProteinAmbiguityGroupParam>
                 RowVersion                : DateTime
                 }
 
@@ -673,7 +1304,7 @@ module DataContext =
                 ID                             : string
                 mutable Name                   : string
                 mutable ProteinAmbiguityGroups : List<ProteinAmbiguityGroup>
-                mutable Details                : List<CVParam>
+                mutable Details                : List<ProteinDetectionListParam>
                 RowVersion                     : DateTime
                 }
 

@@ -33,7 +33,7 @@ open Microsoft.EntityFrameworkCore
 
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-//initStandardDB context
+initStandardDB context
 
 let termTestI =
     let termBasic =
