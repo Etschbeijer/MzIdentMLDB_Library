@@ -22,7 +22,7 @@ module InsertStatements =
         let convertOptionToList (optionOfType : seq<'a> option) =
             match optionOfType with
             | Some x -> x |> List
-            | None -> null
+            | None -> Unchecked.defaultof<List<'a>>
 
         let addToList (typeCollection : List<'a>) (optionOfType : 'a) =
             match typeCollection with
@@ -106,7 +106,7 @@ module InsertStatements =
                         ?name     : string,
                         ?ontology : Ontology  
                     ) =
-                    let name'      = defaultArg name null
+                    let name'      = defaultArg name Unchecked.defaultof<string>
                     let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
                     {
                         ID         = id;
@@ -194,9 +194,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         CVParam.ID         = id';
                         CVParam.Name       = name;
@@ -248,9 +248,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         OrganizationParam.ID         = id';
                         OrganizationParam.Name       = name;
@@ -302,9 +302,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         PersonParam.ID         = id';
                         PersonParam.Name       = name;
@@ -356,9 +356,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SampleParam.ID         = id';
                         SampleParam.Name       = name;
@@ -410,9 +410,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ModificationParam.ID         = id';
                         ModificationParam.Name       = name;
@@ -464,9 +464,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         PeptideParam.ID         = id';
                         PeptideParam.Name       = name;
@@ -518,9 +518,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         TranslationTableParam.ID         = id';
                         TranslationTableParam.Name       = name;
@@ -572,9 +572,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         MeasureParam.ID         = id';
                         MeasureParam.Name       = name;
@@ -626,9 +626,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         AmbiguousResidueParam.ID         = id';
                         AmbiguousResidueParam.Name       = name;
@@ -680,9 +680,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         MassTableParam.ID         = id';
                         MassTableParam.Name       = name;
@@ -734,9 +734,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         IonTypeParam.ID         = id';
                         IonTypeParam.Name       = name;
@@ -788,9 +788,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SpecificityRuleParam.ID         = id';
                         SpecificityRuleParam.Name       = name;
@@ -842,9 +842,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SearchModificationParam.ID         = id';
                         SearchModificationParam.Name       = name;
@@ -896,9 +896,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         EnzymeNameParam.ID         = id';
                         EnzymeNameParam.Name       = name;
@@ -950,9 +950,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         IncludeParam.ID         = id';
                         IncludeParam.Name       = name;
@@ -1004,9 +1004,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ExcludeParam.ID         = id';
                         ExcludeParam.Name       = name;
@@ -1058,9 +1058,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         AdditionalSearchParam.ID         = id';
                         AdditionalSearchParam.Name       = name;
@@ -1112,9 +1112,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         FragmentToleranceParam.ID         = id';
                         FragmentToleranceParam.Name       = name;
@@ -1166,9 +1166,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ParentToleranceParam.ID         = id';
                         ParentToleranceParam.Name       = name;
@@ -1220,9 +1220,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ThresholdParam.ID         = id';
                         ThresholdParam.Name       = name;
@@ -1274,9 +1274,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SearchDatabaseParam.ID         = id';
                         SearchDatabaseParam.Name       = name;
@@ -1328,9 +1328,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         DBSequenceParam.ID         = id';
                         DBSequenceParam.Name       = name;
@@ -1382,9 +1382,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         PeptideEvidenceParam.ID         = id';
                         PeptideEvidenceParam.Name       = name;
@@ -1436,9 +1436,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SpectrumIdentificationItemParam.ID         = id';
                         SpectrumIdentificationItemParam.Name       = name;
@@ -1490,9 +1490,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SpectrumIdentificationResultParam.ID         = id';
                         SpectrumIdentificationResultParam.Name       = name;
@@ -1544,9 +1544,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SpectrumIdentificationListParam.ID         = id';
                         SpectrumIdentificationListParam.Name       = name;
@@ -1598,9 +1598,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         AnalysisParam.ID         = id';
                         AnalysisParam.Name       = name;
@@ -1652,9 +1652,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         SourceFileParam.ID         = id';
                         SourceFileParam.Name       = name;
@@ -1706,9 +1706,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ProteinDetectionHypothesisParam.ID         = id';
                         ProteinDetectionHypothesisParam.Name       = name;
@@ -1760,9 +1760,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ProteinAmbiguityGroupParam.ID         = id';
                         ProteinAmbiguityGroupParam.Name       = name;
@@ -1814,9 +1814,9 @@ module InsertStatements =
                         ?unitName : string
                     ) =
                     let id'       = defaultArg id 0
-                    let value'    = defaultArg value null
+                    let value'    = defaultArg value Unchecked.defaultof<string>
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    let unitName' = defaultArg unitName null
+                    let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     {
                         ProteinDetectionListParam.ID         = id';
                         ProteinDetectionListParam.Name       = name;
@@ -1865,9 +1865,9 @@ module InsertStatements =
                         ?parent  : string
                     ) =
                     let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'    = defaultArg name null
+                    let name'    = defaultArg name Unchecked.defaultof<string>
                     let details' = convertOptionToList details
-                    let parent'  = defaultArg parent null
+                    let parent'  = defaultArg parent Unchecked.defaultof<string>
                     {
                         Organization.ID         = id';
                         Organization.Name       = name';
@@ -1923,10 +1923,10 @@ module InsertStatements =
                         ?organizations  : seq<Organization> 
                     ) =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'        = defaultArg name null
-                    let firstName'   = defaultArg firstName null
-                    let midInitials' = defaultArg midInitials null
-                    let lastName'    = defaultArg lastName null
+                    let name'        = defaultArg name Unchecked.defaultof<string>
+                    let firstName'   = defaultArg firstName Unchecked.defaultof<string>
+                    let midInitials' = defaultArg midInitials Unchecked.defaultof<string>
+                    let lastName'    = defaultArg lastName Unchecked.defaultof<string>
                     {
                         Person.ID            = id';
                         Person.Name          = name';
@@ -2043,10 +2043,10 @@ module InsertStatements =
                         ////?mzIdentML         : MzIdentML
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'           = defaultArg name null
-                    let uri'            = defaultArg uri null
-                    let version'        = defaultArg version null
-                    let customizations' = defaultArg customizations null
+                    let name'           = defaultArg name Unchecked.defaultof<string>
+                    let uri'            = defaultArg uri Unchecked.defaultof<string>
+                    let version'        = defaultArg version Unchecked.defaultof<string>
+                    let customizations' = defaultArg customizations Unchecked.defaultof<string>
                     let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
                     ////let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
@@ -2153,7 +2153,7 @@ module InsertStatements =
                         //?mzIdentML    : MzIdentML
                     ) =
                     let id'           = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'         = defaultArg name null
+                    let name'         = defaultArg name Unchecked.defaultof<string>
                     let contactRoles' = convertOptionToList contactRoles
                     let subSamples'   = convertOptionToList subSamples
                     let details'      = convertOptionToList details
@@ -2232,7 +2232,7 @@ module InsertStatements =
                         ?avgMassDelta          : float
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                    let residues'         = defaultArg residues null
+                    let residues'         = defaultArg residues Unchecked.defaultof<string>
                     let location'         = defaultArg location Unchecked.defaultof<int>
                     let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                     let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
@@ -2343,7 +2343,7 @@ module InsertStatements =
                         //?mzIdentML                 : MzIdentML
                     ) =
                     let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                      = defaultArg name null
+                    let name'                      = defaultArg name Unchecked.defaultof<string>
                     let modifications'             = convertOptionToList modifications
                     let substitutionModifications' = convertOptionToList substitutionModifications
                     let details'                   = convertOptionToList details
@@ -2429,7 +2429,7 @@ module InsertStatements =
                         ?details : seq<TranslationTableParam>
                     ) =
                     let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                      = defaultArg name null
+                    let name'                      = defaultArg name Unchecked.defaultof<string>
                     let details'                   = convertOptionToList details
                     {
                         TranslationTable.ID          = id'
@@ -2476,7 +2476,7 @@ module InsertStatements =
                         ?name    : string 
                     ) =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name' = defaultArg name null
+                    let name' = defaultArg name Unchecked.defaultof<string>
                     {
                         Measure.ID          = id'
                         Measure.Name        = name'
@@ -2571,7 +2571,7 @@ module InsertStatements =
                         ?details          : seq<MassTableParam>
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'             = defaultArg name null
+                    let name'             = defaultArg name Unchecked.defaultof<string>
                     let residue'          = convertOptionToList residue
                     let ambiguousResidue' = convertOptionToList ambiguousResidue
                     let details'          = convertOptionToList details
@@ -2798,8 +2798,8 @@ module InsertStatements =
                         ?externalFormatDocumentation : string
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                        = defaultArg name null
-                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                    let name'                        = defaultArg name Unchecked.defaultof<string>
+                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                     {
                         SpectraData.ID                          = id'
                         SpectraData.Name                        = name'
@@ -2938,13 +2938,13 @@ module InsertStatements =
                         ?enzymeName      : seq<EnzymeNameParam>
                     ) =
                     let id'              = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'            = defaultArg name null
-                    let cTermGain'       = defaultArg cTermGain null
-                    let nTermGain'       = defaultArg nTermGain null
+                    let name'            = defaultArg name Unchecked.defaultof<string>
+                    let cTermGain'       = defaultArg cTermGain Unchecked.defaultof<string>
+                    let nTermGain'       = defaultArg nTermGain Unchecked.defaultof<string>
                     let minDistance'     = defaultArg minDistance Unchecked.defaultof<int>
                     let missedCleavages' = defaultArg missedCleavages Unchecked.defaultof<int>
                     let semiSpecific'    = defaultArg semiSpecific Unchecked.defaultof<bool>
-                    let siteRegexc'      = defaultArg siteRegexc null
+                    let siteRegexc'      = defaultArg siteRegexc Unchecked.defaultof<string>
                     let enzymeName'      = convertOptionToList enzymeName
                     {
                         Enzyme.ID              = id'
@@ -3118,7 +3118,7 @@ module InsertStatements =
                         //?mzIdentML              : MzIdentML
                     ) =
                     let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                   = defaultArg name null
+                    let name'                   = defaultArg name Unchecked.defaultof<string>
                     let additionalSearchParams' = convertOptionToList additionalSearchParams
                     let modificationParams'     = convertOptionToList modificationParams
                     let enzymes'                = convertOptionToList enzymes
@@ -3313,12 +3313,12 @@ module InsertStatements =
                         ?details                     : seq<SearchDatabaseParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                        = defaultArg name null
+                    let name'                        = defaultArg name Unchecked.defaultof<string>
                     let numDatabaseSequences'        = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
                     let numResidues'                 = defaultArg numResidues Unchecked.defaultof<int64>
                     let releaseDate'                 = defaultArg releaseDate Unchecked.defaultof<DateTime>
-                    let version'                     = defaultArg version null
-                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                    let version'                     = defaultArg version Unchecked.defaultof<string>
+                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     {
                         SearchDatabase.ID                          = id';
@@ -3414,8 +3414,8 @@ module InsertStatements =
                         //?mzIdentML     : MzIdentML
                     ) =
                     let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'     = defaultArg name null
-                    let sequence' = defaultArg sequence null
+                    let name'     = defaultArg name Unchecked.defaultof<string>
+                    let sequence' = defaultArg sequence Unchecked.defaultof<string>
                     let length'   = defaultArg length Unchecked.defaultof<int>
                     let details'  = convertOptionToList details
                     //let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
@@ -3497,11 +3497,11 @@ module InsertStatements =
                         //?mzIdentML                  : MzIdentML
                     ) =
                     let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                       = defaultArg name null
+                    let name'                       = defaultArg name Unchecked.defaultof<string>
                     let start'                      = defaultArg start Unchecked.defaultof<int>
                     let end''                       = defaultArg end' Unchecked.defaultof<int>
-                    let pre'                        = defaultArg pre null
-                    let post'                       = defaultArg post null
+                    let pre'                        = defaultArg pre Unchecked.defaultof<string>
+                    let post'                       = defaultArg post Unchecked.defaultof<string>
                     let frame'                      = defaultArg frame Unchecked.defaultof<Frame>
                     let isDecoy'                    = defaultArg isDecoy Unchecked.defaultof<bool>
                     let translationTable'           = defaultArg translationTable Unchecked.defaultof<TranslationTable>
@@ -3632,7 +3632,7 @@ module InsertStatements =
                         ?details                      : seq<SpectrumIdentificationItemParam>
                     ) =
                     let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                         = defaultArg name null
+                    let name'                         = defaultArg name Unchecked.defaultof<string>
                     let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
                     let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
                     let peptideEvidences'             = convertOptionToList peptideEvidences
@@ -3763,7 +3763,7 @@ module InsertStatements =
                         ?details                    : seq<SpectrumIdentificationResultParam>
                     ) =
                     let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                       = defaultArg name null
+                    let name'                       = defaultArg name Unchecked.defaultof<string>
                     let details'                    = convertOptionToList details
                     {
                         SpectrumIdentificationResult.ID                         = id'
@@ -3828,7 +3828,7 @@ module InsertStatements =
                         ?details                     : seq<SpectrumIdentificationListParam>          
                     ) =
                     let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                 = defaultArg name null
+                    let name'                 = defaultArg name Unchecked.defaultof<string>
                     let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int64>
                     let fragmentationTable'   = convertOptionToList fragmentationTable
                     let details'              = convertOptionToList details
@@ -3907,7 +3907,7 @@ module InsertStatements =
                         ?activityDate                  : DateTime
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'             = defaultArg name null
+                    let name'             = defaultArg name Unchecked.defaultof<string>
                     let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
                     {
                         SpectrumIdentification.ID                             = id'
@@ -3976,7 +3976,7 @@ module InsertStatements =
                         ?analysisParams  : seq<AnalysisParam>
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'           = defaultArg name null
+                    let name'           = defaultArg name Unchecked.defaultof<string>
                     let analysisParams' = convertOptionToList analysisParams
                     {
                         ProteinDetectionProtocol.ID               = id'
@@ -4032,8 +4032,8 @@ module InsertStatements =
                         ?details                     : seq<SourceFileParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                        = defaultArg name null
-                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation null
+                    let name'                        = defaultArg name Unchecked.defaultof<string>
+                    let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     {
                         SourceFile.ID                          = id'
@@ -4191,7 +4191,7 @@ module InsertStatements =
                         ?details          : seq<ProteinDetectionHypothesisParam>
                     ) =
                     let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'    = defaultArg name null
+                    let name'    = defaultArg name Unchecked.defaultof<string>
                     let details' = convertOptionToList details
                     {
                         ProteinDetectionHypothesis.ID                = id'
@@ -4250,7 +4250,7 @@ module InsertStatements =
                         ?details                  : seq<ProteinAmbiguityGroupParam>
                     ) =
                     let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                        = defaultArg name null
+                    let name'                        = defaultArg name Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     {
                         ProteinAmbiguityGroup.ID                        = id'
@@ -4303,7 +4303,7 @@ module InsertStatements =
                         ?details                : seq<ProteinDetectionListParam>
                     ) =
                     let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                   = defaultArg name null
+                    let name'                   = defaultArg name Unchecked.defaultof<string>
                     let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
                     let details'                = convertOptionToList details
                     {
@@ -4409,7 +4409,7 @@ module InsertStatements =
                         ?activityDate               : DateTime
                     ) =
                     let id'           = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'         = defaultArg name null
+                    let name'         = defaultArg name Unchecked.defaultof<string>
                     let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
                     {
                         ProteinDetection.ID                          = id'
@@ -4471,16 +4471,16 @@ module InsertStatements =
                         ?year        : int
                     ) =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'        = defaultArg name null
-                    let authors'     = defaultArg authors null
-                    let doi'         = defaultArg doi null
-                    let editor'      = defaultArg editor null
-                    let issue'       = defaultArg issue null
-                    let pages'       = defaultArg pages null
-                    let publication' = defaultArg publication null
-                    let publisher'   = defaultArg publisher null
-                    let title'       = defaultArg title null
-                    let volume'      = defaultArg volume null
+                    let name'        = defaultArg name Unchecked.defaultof<string>
+                    let authors'     = defaultArg authors Unchecked.defaultof<string>
+                    let doi'         = defaultArg doi Unchecked.defaultof<string>
+                    let editor'      = defaultArg editor Unchecked.defaultof<string>
+                    let issue'       = defaultArg issue Unchecked.defaultof<string>
+                    let pages'       = defaultArg pages Unchecked.defaultof<string>
+                    let publication' = defaultArg publication Unchecked.defaultof<string>
+                    let publisher'   = defaultArg publisher Unchecked.defaultof<string>
+                    let title'       = defaultArg title Unchecked.defaultof<string>
+                    let volume'      = defaultArg volume Unchecked.defaultof<string>
                     let year'        = defaultArg year Unchecked.defaultof<int>
                     {
                         BiblioGraphicReference.ID          = id'
@@ -4578,7 +4578,7 @@ module InsertStatements =
                         ?contactRole      : ContactRole
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'             = defaultArg name null
+                    let name'             = defaultArg name Unchecked.defaultof<string>
                     let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                     let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
                     {
@@ -4648,7 +4648,7 @@ module InsertStatements =
                         ?biblioGraphicReferences       : seq<BiblioGraphicReference>
                     ) =
                     let id'                       = defaultArg id 0
-                    let name'                     = defaultArg name null
+                    let name'                     = defaultArg name Unchecked.defaultof<string>
                     let analysisSoftwares'        = convertOptionToList analysisSoftwares
                     let provider'                 = defaultArg provider Unchecked.defaultof<Provider>
                     let persons'                  = convertOptionToList persons
@@ -4996,8 +4996,8 @@ module InsertStatements =
     //                    ?name     : string,
     //                    ?detail   : string
     //                ) =
-    //                let name' :string= defaultArg name null
-    //                let detail'    = defaultArg detail null
+    //                let name' :string= defaultArg name Unchecked.defaultof<string>
+    //                let detail'    = defaultArg detail Unchecked.defaultof<string>
     //                {
     //                    ID         = id;
     //                    Name       = name';
