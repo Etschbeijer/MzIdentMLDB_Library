@@ -1696,8 +1696,8 @@ module DataContext =
 
                 [<DefaultValue>] 
                 val mutable m_SearchModificationParam : DbSet<SearchModificationParam>
-                member public this.SearchModificationParam with get() = this.SearchModificationParam
-                                                                        and set value = this.SearchModificationParam <- value
+                member public this.SearchModificationParam with get() = this.m_SearchModificationParam
+                                                                        and set value = this.m_SearchModificationParam <- value
 
                 [<DefaultValue>] 
                 val mutable m_EnzymeNameParam : DbSet<EnzymeNameParam>

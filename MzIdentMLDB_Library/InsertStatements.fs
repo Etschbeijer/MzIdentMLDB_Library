@@ -221,9 +221,9 @@ module InsertStatements =
                     cvParam.UnitName <- unitName
                     cvParam
 
-               static member findCVParamByID
-                    (context:MzIdentMLContext) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.CVParam.Find(paramID)
 
                static member findTermByID
                     (context:MzIdentMLContext) (termID:string) =
@@ -233,6 +233,1626 @@ module InsertStatements =
                         (addToContextWithExceptionCheck context item)
 
                static member addToContextAndInsert (context:MzIdentMLContext) (item:CVParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type OrganizationParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        OrganizationParam.ID         = id';
+                        OrganizationParam.Name       = name;
+                        OrganizationParam.Value      = value';
+                        OrganizationParam.Term       = term;
+                        OrganizationParam.Unit       = unit';
+                        OrganizationParam.UnitName   = unitName';
+                        OrganizationParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:OrganizationParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:OrganizationParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:OrganizationParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.OrganizationParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:OrganizationParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:OrganizationParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type PersonParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        PersonParam.ID         = id';
+                        PersonParam.Name       = name;
+                        PersonParam.Value      = value';
+                        PersonParam.Term       = term;
+                        PersonParam.Unit       = unit';
+                        PersonParam.UnitName   = unitName';
+                        PersonParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:PersonParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:PersonParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:PersonParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.PersonParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:PersonParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:PersonParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SampleParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SampleParam.ID         = id';
+                        SampleParam.Name       = name;
+                        SampleParam.Value      = value';
+                        SampleParam.Term       = term;
+                        SampleParam.Unit       = unit';
+                        SampleParam.UnitName   = unitName';
+                        SampleParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SampleParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SampleParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SampleParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SampleParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SampleParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SampleParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ModificationParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ModificationParam.ID         = id';
+                        ModificationParam.Name       = name;
+                        ModificationParam.Value      = value';
+                        ModificationParam.Term       = term;
+                        ModificationParam.Unit       = unit';
+                        ModificationParam.UnitName   = unitName';
+                        ModificationParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ModificationParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ModificationParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ModificationParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ModificationParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ModificationParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ModificationParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type PeptideParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        PeptideParam.ID         = id';
+                        PeptideParam.Name       = name;
+                        PeptideParam.Value      = value';
+                        PeptideParam.Term       = term;
+                        PeptideParam.Unit       = unit';
+                        PeptideParam.UnitName   = unitName';
+                        PeptideParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:PeptideParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:PeptideParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:PeptideParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.PeptideParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:PeptideParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:PeptideParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type TranslationTableParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        TranslationTableParam.ID         = id';
+                        TranslationTableParam.Name       = name;
+                        TranslationTableParam.Value      = value';
+                        TranslationTableParam.Term       = term;
+                        TranslationTableParam.Unit       = unit';
+                        TranslationTableParam.UnitName   = unitName';
+                        TranslationTableParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:TranslationTableParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:TranslationTableParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:TranslationTableParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.TranslationTableParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:TranslationTableParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:TranslationTableParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type MeasureParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        MeasureParam.ID         = id';
+                        MeasureParam.Name       = name;
+                        MeasureParam.Value      = value';
+                        MeasureParam.Term       = term;
+                        MeasureParam.Unit       = unit';
+                        MeasureParam.UnitName   = unitName';
+                        MeasureParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:MeasureParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:MeasureParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:MeasureParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.MeasureParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:MeasureParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:MeasureParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type AmbiguousResidueParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        AmbiguousResidueParam.ID         = id';
+                        AmbiguousResidueParam.Name       = name;
+                        AmbiguousResidueParam.Value      = value';
+                        AmbiguousResidueParam.Term       = term;
+                        AmbiguousResidueParam.Unit       = unit';
+                        AmbiguousResidueParam.UnitName   = unitName';
+                        AmbiguousResidueParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:AmbiguousResidueParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:AmbiguousResidueParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:AmbiguousResidueParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.AmbiguousResidueParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:AmbiguousResidueParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:AmbiguousResidueParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type MassTableParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        MassTableParam.ID         = id';
+                        MassTableParam.Name       = name;
+                        MassTableParam.Value      = value';
+                        MassTableParam.Term       = term;
+                        MassTableParam.Unit       = unit';
+                        MassTableParam.UnitName   = unitName';
+                        MassTableParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:MassTableParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:MassTableParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:MassTableParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.MassTableParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:MassTableParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:MassTableParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type IonTypeParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        IonTypeParam.ID         = id';
+                        IonTypeParam.Name       = name;
+                        IonTypeParam.Value      = value';
+                        IonTypeParam.Term       = term;
+                        IonTypeParam.Unit       = unit';
+                        IonTypeParam.UnitName   = unitName';
+                        IonTypeParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:IonTypeParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:IonTypeParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:IonTypeParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.IonTypeParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:IonTypeParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:IonTypeParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SpecificityRuleParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SpecificityRuleParam.ID         = id';
+                        SpecificityRuleParam.Name       = name;
+                        SpecificityRuleParam.Value      = value';
+                        SpecificityRuleParam.Term       = term;
+                        SpecificityRuleParam.Unit       = unit';
+                        SpecificityRuleParam.UnitName   = unitName';
+                        SpecificityRuleParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SpecificityRuleParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SpecificityRuleParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SpecificityRuleParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SpecificityRuleParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SpecificityRuleParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpecificityRuleParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SearchModificationParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SearchModificationParam.ID         = id';
+                        SearchModificationParam.Name       = name;
+                        SearchModificationParam.Value      = value';
+                        SearchModificationParam.Term       = term;
+                        SearchModificationParam.Unit       = unit';
+                        SearchModificationParam.UnitName   = unitName';
+                        SearchModificationParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SearchModificationParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SearchModificationParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SearchModificationParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SearchModificationParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SearchModificationParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SearchModificationParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type EnzymeNameParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        EnzymeNameParam.ID         = id';
+                        EnzymeNameParam.Name       = name;
+                        EnzymeNameParam.Value      = value';
+                        EnzymeNameParam.Term       = term;
+                        EnzymeNameParam.Unit       = unit';
+                        EnzymeNameParam.UnitName   = unitName';
+                        EnzymeNameParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:EnzymeNameParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:EnzymeNameParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:EnzymeNameParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.EnzymeNameParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:EnzymeNameParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:EnzymeNameParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type IncludeParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        IncludeParam.ID         = id';
+                        IncludeParam.Name       = name;
+                        IncludeParam.Value      = value';
+                        IncludeParam.Term       = term;
+                        IncludeParam.Unit       = unit';
+                        IncludeParam.UnitName   = unitName';
+                        IncludeParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:IncludeParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:IncludeParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:IncludeParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.EnzymeNameParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:IncludeParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:IncludeParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ExcludeParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ExcludeParam.ID         = id';
+                        ExcludeParam.Name       = name;
+                        ExcludeParam.Value      = value';
+                        ExcludeParam.Term       = term;
+                        ExcludeParam.Unit       = unit';
+                        ExcludeParam.UnitName   = unitName';
+                        ExcludeParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ExcludeParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ExcludeParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ExcludeParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ExcludeParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ExcludeParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ExcludeParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type AdditionalSearchParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        AdditionalSearchParam.ID         = id';
+                        AdditionalSearchParam.Name       = name;
+                        AdditionalSearchParam.Value      = value';
+                        AdditionalSearchParam.Term       = term;
+                        AdditionalSearchParam.Unit       = unit';
+                        AdditionalSearchParam.UnitName   = unitName';
+                        AdditionalSearchParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:AdditionalSearchParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:AdditionalSearchParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:AdditionalSearchParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.AdditionalSearchParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:AdditionalSearchParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:AdditionalSearchParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type FragmentToleranceParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        FragmentToleranceParam.ID         = id';
+                        FragmentToleranceParam.Name       = name;
+                        FragmentToleranceParam.Value      = value';
+                        FragmentToleranceParam.Term       = term;
+                        FragmentToleranceParam.Unit       = unit';
+                        FragmentToleranceParam.UnitName   = unitName';
+                        FragmentToleranceParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:FragmentToleranceParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:FragmentToleranceParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:FragmentToleranceParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.FragmentToleranceParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:FragmentToleranceParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:FragmentToleranceParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ParentToleranceParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ParentToleranceParam.ID         = id';
+                        ParentToleranceParam.Name       = name;
+                        ParentToleranceParam.Value      = value';
+                        ParentToleranceParam.Term       = term;
+                        ParentToleranceParam.Unit       = unit';
+                        ParentToleranceParam.UnitName   = unitName';
+                        ParentToleranceParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ParentToleranceParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ParentToleranceParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ParentToleranceParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ParentToleranceParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ParentToleranceParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ParentToleranceParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ThresholdParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ThresholdParam.ID         = id';
+                        ThresholdParam.Name       = name;
+                        ThresholdParam.Value      = value';
+                        ThresholdParam.Term       = term;
+                        ThresholdParam.Unit       = unit';
+                        ThresholdParam.UnitName   = unitName';
+                        ThresholdParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ThresholdParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ThresholdParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ThresholdParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ThresholdParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ThresholdParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ThresholdParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SearchDatabaseParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SearchDatabaseParam.ID         = id';
+                        SearchDatabaseParam.Name       = name;
+                        SearchDatabaseParam.Value      = value';
+                        SearchDatabaseParam.Term       = term;
+                        SearchDatabaseParam.Unit       = unit';
+                        SearchDatabaseParam.UnitName   = unitName';
+                        SearchDatabaseParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SearchDatabaseParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SearchDatabaseParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SearchDatabaseParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SearchDatabaseParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SearchDatabaseParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SearchDatabaseParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type DBSequenceParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        DBSequenceParam.ID         = id';
+                        DBSequenceParam.Name       = name;
+                        DBSequenceParam.Value      = value';
+                        DBSequenceParam.Term       = term;
+                        DBSequenceParam.Unit       = unit';
+                        DBSequenceParam.UnitName   = unitName';
+                        DBSequenceParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:DBSequenceParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:DBSequenceParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:DBSequenceParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.DBSequenceParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:DBSequenceParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:DBSequenceParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type PeptideEvidenceParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        PeptideEvidenceParam.ID         = id';
+                        PeptideEvidenceParam.Name       = name;
+                        PeptideEvidenceParam.Value      = value';
+                        PeptideEvidenceParam.Term       = term;
+                        PeptideEvidenceParam.Unit       = unit';
+                        PeptideEvidenceParam.UnitName   = unitName';
+                        PeptideEvidenceParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:PeptideEvidenceParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:PeptideEvidenceParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:PeptideEvidenceParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.PeptideEvidenceParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:PeptideEvidenceParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:PeptideEvidenceParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SpectrumIdentificationItemParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SpectrumIdentificationItemParam.ID         = id';
+                        SpectrumIdentificationItemParam.Name       = name;
+                        SpectrumIdentificationItemParam.Value      = value';
+                        SpectrumIdentificationItemParam.Term       = term;
+                        SpectrumIdentificationItemParam.Unit       = unit';
+                        SpectrumIdentificationItemParam.UnitName   = unitName';
+                        SpectrumIdentificationItemParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SpectrumIdentificationItemParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SpectrumIdentificationItemParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SpectrumIdentificationItemParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SpectrumIdentificationItemParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationItemParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationItemParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SpectrumIdentificationResultParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SpectrumIdentificationResultParam.ID         = id';
+                        SpectrumIdentificationResultParam.Name       = name;
+                        SpectrumIdentificationResultParam.Value      = value';
+                        SpectrumIdentificationResultParam.Term       = term;
+                        SpectrumIdentificationResultParam.Unit       = unit';
+                        SpectrumIdentificationResultParam.UnitName   = unitName';
+                        SpectrumIdentificationResultParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SpectrumIdentificationResultParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SpectrumIdentificationResultParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SpectrumIdentificationResultParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SpectrumIdentificationResultParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationResultParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationResultParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SpectrumIdentificationListParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SpectrumIdentificationListParam.ID         = id';
+                        SpectrumIdentificationListParam.Name       = name;
+                        SpectrumIdentificationListParam.Value      = value';
+                        SpectrumIdentificationListParam.Term       = term;
+                        SpectrumIdentificationListParam.Unit       = unit';
+                        SpectrumIdentificationListParam.UnitName   = unitName';
+                        SpectrumIdentificationListParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SpectrumIdentificationListParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SpectrumIdentificationListParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SpectrumIdentificationListParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SpectrumIdentificationListParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SpectrumIdentificationListParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SpectrumIdentificationListParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type AnalysisParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        AnalysisParam.ID         = id';
+                        AnalysisParam.Name       = name;
+                        AnalysisParam.Value      = value';
+                        AnalysisParam.Term       = term;
+                        AnalysisParam.Unit       = unit';
+                        AnalysisParam.UnitName   = unitName';
+                        AnalysisParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:AnalysisParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:AnalysisParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:AnalysisParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.AnalysisParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:AnalysisParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:AnalysisParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type SourceFileParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        SourceFileParam.ID         = id';
+                        SourceFileParam.Name       = name;
+                        SourceFileParam.Value      = value';
+                        SourceFileParam.Term       = term;
+                        SourceFileParam.Unit       = unit';
+                        SourceFileParam.UnitName   = unitName';
+                        SourceFileParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:SourceFileParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:SourceFileParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:SourceFileParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.SourceFileParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:SourceFileParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:SourceFileParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ProteinDetectionHypothesisParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ProteinDetectionHypothesisParam.ID         = id';
+                        ProteinDetectionHypothesisParam.Name       = name;
+                        ProteinDetectionHypothesisParam.Value      = value';
+                        ProteinDetectionHypothesisParam.Term       = term;
+                        ProteinDetectionHypothesisParam.Unit       = unit';
+                        ProteinDetectionHypothesisParam.UnitName   = unitName';
+                        ProteinDetectionHypothesisParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ProteinDetectionHypothesisParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ProteinDetectionHypothesisParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ProteinDetectionHypothesisParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ProteinDetectionHypothesisParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionHypothesisParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetectionHypothesisParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ProteinAmbiguityGroupParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ProteinAmbiguityGroupParam.ID         = id';
+                        ProteinAmbiguityGroupParam.Name       = name;
+                        ProteinAmbiguityGroupParam.Value      = value';
+                        ProteinAmbiguityGroupParam.Term       = term;
+                        ProteinAmbiguityGroupParam.Unit       = unit';
+                        ProteinAmbiguityGroupParam.UnitName   = unitName';
+                        ProteinAmbiguityGroupParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ProteinAmbiguityGroupParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ProteinAmbiguityGroupParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ProteinAmbiguityGroupParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ProteinAmbiguityGroupParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ProteinAmbiguityGroupParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinAmbiguityGroupParam) =
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
+
+        type ProteinDetectionListParamHandler =
+
+               static member init
+                    (
+                        name      : string,
+                        term      : Term,
+                        ?id       : int,
+                        ?value    : string,
+                        ?unit     : Term,
+                        ?unitName : string
+                    ) =
+                    let id'       = defaultArg id 0
+                    let value'    = defaultArg value null
+                    let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    let unitName' = defaultArg unitName null
+                    {
+                        ProteinDetectionListParam.ID         = id';
+                        ProteinDetectionListParam.Name       = name;
+                        ProteinDetectionListParam.Value      = value';
+                        ProteinDetectionListParam.Term       = term;
+                        ProteinDetectionListParam.Unit       = unit';
+                        ProteinDetectionListParam.UnitName   = unitName';
+                        ProteinDetectionListParam.RowVersion = DateTime.Now
+                    }
+               static member addValue
+                    (param:ProteinDetectionListParam) (value:string) =
+                    param.Value <- value
+                    param
+
+               static member addUnit
+                    (param:ProteinDetectionListParam) (unit:Term) =
+                    param.Unit <- unit
+                    param
+
+               static member addUnitName
+                    (param:ProteinDetectionListParam) (unitName:string) =
+                    param.UnitName <- unitName
+                    param
+
+               static member findParamByID
+                    (context:MzIdentMLContext) (paramID:string) =
+                    context.ProteinDetectionListParam.Find(paramID)
+
+               static member findTermByID
+                    (context:MzIdentMLContext) (termID:string) =
+                    context.Term.Find(termID)
+
+               static member addToContext (context:MzIdentMLContext) (item:ProteinDetectionListParam) =
+                        (addToContextWithExceptionCheck context item)
+
+               static member addToContextAndInsert (context:MzIdentMLContext) (item:ProteinDetectionListParam) =
                         (addToContextWithExceptionCheck context item) |> ignore
                         insertWithExceptionCheck context
 
