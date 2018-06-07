@@ -43,7 +43,7 @@ module DataContext =
             abstract member RowVersion : DateTime
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("CVParams")>]
             CVParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -65,7 +65,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("OrganizationParams")>]
             OrganizationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -87,7 +87,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("PersonParams")>]
             PersonParam =
             {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -109,7 +109,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] 
+        and [<CLIMutable>] [<Table("SampleParams")>]
             SampleParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -131,7 +131,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ModificationParams")>]
             ModificationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -153,7 +153,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("PeptideParams")>]
             PeptideParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -175,7 +175,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("TranslationTableParams")>]
             TranslationTableParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -197,7 +197,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("MeasureParams")>]
             MeasureParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -219,7 +219,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("AmbiguousResidueParams")>]
             AmbiguousResidueParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -241,7 +241,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("MassTableParams")>]
             MassTableParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -263,7 +263,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("IonTypeParams")>]
             IonTypeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -285,7 +285,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SpecificityRuleParams")>]
             SpecificityRuleParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -307,7 +307,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SearchModificationParams")>]
             SearchModificationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -329,7 +329,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("EnzymeNameParams")>]
             EnzymeNameParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -351,7 +351,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("IncludeParams")>]
             IncludeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -373,7 +373,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ExcludeParams")>]
             ExcludeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -395,7 +395,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("AdditionalSearchParams")>]
             AdditionalSearchParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -417,7 +417,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("FragmentToleranceParams")>]
             FragmentToleranceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -439,7 +439,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ParentToleranceParams")>]
             ParentToleranceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -461,7 +461,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ThresholdParams")>]
             ThresholdParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -483,7 +483,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SearchDatabaseParams")>]
             SearchDatabaseParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -505,7 +505,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("DBSequenceParams")>]
             DBSequenceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -527,7 +527,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("PeptideEvidenceParams")>]
             PeptideEvidenceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -549,7 +549,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SpectrumIdentificationItemParams")>]
             SpectrumIdentificationItemParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -571,7 +571,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SpectrumIdentificationResultParams")>]
             SpectrumIdentificationResultParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -593,7 +593,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SpectrumIdentificationListParams")>]
             SpectrumIdentificationListParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -615,7 +615,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("AnalysisParams")>]
             AnalysisParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -637,7 +637,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("SourceFileParams")>]
             SourceFileParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -659,7 +659,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ProteinDetectionHypothesisParams")>]
             ProteinDetectionHypothesisParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -681,7 +681,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ProteinAmbiguityGroupParams")>]
             ProteinAmbiguityGroupParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -703,7 +703,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] 
+        type [<CLIMutable>] [<Table("ProteinDetectionListParams")>]
             ProteinDetectionListParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
