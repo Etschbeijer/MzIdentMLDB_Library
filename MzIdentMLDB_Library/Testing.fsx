@@ -17,23 +17,22 @@
 #r "System.Xml.Linq.dll"
 #r @"..\MzIdentMLDB_Library\bin\Debug\MzIdentMLDB_Library.dll"
 
-
 open System
 open System.Data
 open System.Linq
 open System.Collections.Generic
+open FSharp.Data
+open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataContext.DataContext
 open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
-open Microsoft.EntityFrameworkCore
-
-//open MzIdentMLDataBase.XMLParsing
+open MzIdentMLDataBase.XMLParsing
 
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-initStandardDB context
+//initStandardDB context
 
 let termTestI =
     let termBasic =
@@ -72,12 +71,12 @@ testQueryable context "I"
 
 
 takeTermEntry context "MS:0000000"
+|> (fun item -> context.Term.Add(item))
+context.SaveChanges()
 
 context.Term.Find("MS:0000000")
-
-takeTermEntry context "I"
-
-context.Term.Find"I"
+|> (fun item -> context.Term.Add(item))
+context.SaveChanges()
 
 let termTestII =
     let termBasic =
@@ -166,73 +165,73 @@ let replacePsiMS =
 
 //Test of XML-PArser//////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-//open FSharp.Data
 
-//type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
-//let xmlFile = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
 
-//let organizations = 
-//    (match xmlFile.AuditCollection with
-//        |Some x -> x.Organizations 
-//                   |> Array.map (fun organization -> convertToEntity_Organization context organization)
-//        |None -> Unchecked.defaultof<array<bool>>
-//    )
+type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
+let xmlFile = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
+
+let organizations = 
+    (match xmlFile.AuditCollection with
+        |Some x -> x.Organizations 
+                   |> Array.map (fun organization -> convertToEntity_Organization context organization)
+        |None -> Unchecked.defaultof<array<bool>>
+    )
                                                           
-//let persons =
-//    (match xmlFile.AuditCollection with
-//        |Some x -> x.Persons 
-//                   |> Array.map (fun person -> convertToEntity_Person context person)
-//        |None -> Unchecked.defaultof<array<bool>>
-//    )  
+let persons =
+    (match xmlFile.AuditCollection with
+        |Some x -> x.Persons 
+                   |> Array.map (fun person -> convertToEntity_Person context person)
+        |None -> Unchecked.defaultof<array<bool>>
+    )  
 
-//let analysisSoftwares = 
-//    (match xmlFile.AnalysisSoftwareList with
-//        | Some x -> x.AnalysisSoftwares 
-//                    |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware context analysisSoftware)
-//        |None -> Unchecked.defaultof<array<bool>>
-//    )
+let analysisSoftwares = 
+    (match xmlFile.AnalysisSoftwareList with
+        | Some x -> x.AnalysisSoftwares 
+                    |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware context analysisSoftware)
+        |None -> Unchecked.defaultof<array<bool>>
+    )
 
-//context.SaveChanges()
+context.SaveChanges()
 
 
-//let xmlFragmentArray = 
-//    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
-//    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
-//                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
-//                                                                          |> Array.map (fun item -> match item.Fragmentation with
-//                                                                                                    |Some x -> x.IonTypes
-//                                                                                                               |> Array.map (fun item -> item.Index.Value)
-//                                                                                                    | None -> null)
+let xmlFragmentArray = 
+    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
+    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
+                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
+                                                                          |> Array.map (fun item -> match item.Fragmentation with
+                                                                                                    |Some x -> x.IonTypes
+                                                                                                               |> Array.map (fun item -> item.Index.Value)
+                                                                                                    | None -> null)
 
-//                                                             )
-//                 )
+                                                             )
+                 )
 
-//let xmlFrame =
-//    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-//    |> Array.map (fun item -> match item.DatabaseTranslation with
-//                              |Some x -> match x.Frames with
-//                                         |Some x -> x
-//                                         |None -> null
-//                              |None -> null)
+let xmlFrame =
+    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+    |> Array.map (fun item -> match item.DatabaseTranslation with
+                              |Some x -> match x.Frames with
+                                         |Some x -> x
+                                         |None -> null
+                              |None -> null)
 
-//let xmlPI =
-//    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
-//    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
-//                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
-//                                                                          |> Array.map (fun item -> match item.CalculatedPi with
-//                                                                                                    |Some x -> float x
-//                                                                                                    | None -> Unchecked.defaultof<float>)
+let xmlPI =
+    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
+    |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
+                                                |> Array.map (fun item -> item.SpectrumIdentificationItems
+                                                                          |> Array.map (fun item -> match item.CalculatedPi with
+                                                                                                    |Some x -> float x
+                                                                                                    | None -> Unchecked.defaultof<float>)
 
-//                                                             )
-//                 )
+                                                             )
+                 )
 
-//let xmlOntology =
-//    xmlFile.CvList
-//    |> Array.map (fun item -> item.FullName)
+let xmlOntology =
+    xmlFile.CvList
+    |> Array.map (fun item -> item.FullName)
 
-//let ontologyTestI =
-//    xmlOntology
-//    |> Array.map (fun item -> OntologyHandler.findOntologyByID context item)
+let ontologyTestI =
+    xmlOntology
+    |> Array.map (fun item -> OntologyHandler.findOntologyByID context item)
 
 //type PersonenVerzeichnis(personenVerzeichnisid : int, name : string, abteilungen : Abteilung, rollen : Rolle) =
 //    let mutable personenVerzeichnisid = personenVerzeichnisid
