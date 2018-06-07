@@ -97,7 +97,7 @@ let ontologyTest =
 
 let cvParamTest =
     let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))), "I")
+        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
     //let cvParamWithUnit =
     //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
     //CVParamHandler.addToContext context cvParamBasic
@@ -261,72 +261,3 @@ let replacePsiMS =
 //    member this.Unit       with get() = unit' and set(value) = id' <- value
 //    member this.UnitName   with get() = unitName' and set(value) = id' <- value
 //    member this.RowVersion with get() = rowVersion and set(value) = id' <- value
-
-
-type UnitHandler =
-
-        static member init
-            (
-                ?id       : int,
-                ?unit     : Term,
-                ?unitName : string
-            ) =
-            let id'       = defaultArg id 0
-            let unit'     = defaultArg unit Unchecked.defaultof<Term>
-            let unitName' = defaultArg unitName null
-            {
-                Unit.ID         = id';
-                Unit.Unit       = unit';
-                Unit.UnitName   = unitName';
-                Unit.RowVersion = DateTime.Now
-            }
-
-type CVParam_Organization_Handler =
-
-        static member init
-            (
-                name      : string,
-                term      : Term,
-                ?id       : string,
-                ?value    : string,
-                ?unit     : Unit
-            ) =
-            let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-            let value'    = defaultArg value null
-            let unit'     = defaultArg unit Unchecked.defaultof<Unit>
-            {
-                CVParam_Organization.ID         = id';
-                CVParam_Organization.Name       = name;
-                CVParam_Organization.Value      = value';
-                CVParam_Organization.Term       = term;
-                CVParam_Organization.Unit       = unit';
-                CVParam_Organization.RowVersion = DateTime.Now
-            }
-
-type CVParam_Person_Handler =
-
-        static member init
-            (
-                name      : string,
-                term      : Term,
-                ?id       : string,
-                ?value    : string,
-                ?unit     : Unit
-            ) =
-            let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-            let value'    = defaultArg value null
-            let unit'     = defaultArg unit Unchecked.defaultof<Unit>
-            {
-                CVParam_Person.ID         = id';
-                CVParam_Person.Name       = name;
-                CVParam_Person.Value      = value';
-                CVParam_Person.Term       = term;
-                CVParam_Person.Unit       = unit';
-                CVParam_Person.RowVersion = DateTime.Now
-            }
-
-let testTerm =
-    TermHandler.init("XI")
-
-let testXI =
-    CVParam_Person_Handler.init("Test", testTerm)

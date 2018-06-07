@@ -152,7 +152,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             PeptideParam =
@@ -219,7 +218,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             AmbiguousResidueParam =
@@ -263,7 +261,6 @@ module DataContext =
                 member x.Unit       = x.Unit
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
-
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
@@ -309,7 +306,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             SearchModificationParam =
@@ -332,7 +328,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             EnzymeNameParam =
@@ -354,7 +349,6 @@ module DataContext =
                 member x.Unit       = x.Unit
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
-
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
@@ -399,7 +393,6 @@ module DataContext =
                 member x.Unit       = x.Unit
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
-
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
@@ -489,7 +482,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             SearchDatabaseParam =
@@ -534,7 +526,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             PeptideEvidenceParam =
@@ -557,7 +548,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             SpectrumIdentificationItemParam =
@@ -579,7 +569,6 @@ module DataContext =
                 member x.Unit       = x.Unit
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
-
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
@@ -625,7 +614,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             AnalysisParam =
@@ -670,7 +658,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             ProteinDetectionHypothesisParam =
@@ -693,7 +680,6 @@ module DataContext =
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
 
-
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
             ProteinAmbiguityGroupParam =
@@ -715,7 +701,6 @@ module DataContext =
                 member x.Unit       = x.Unit
                 member x.UnitName   = x.UnitName
                 member x.RowVersion = x.RowVersion
-
 
         ///A single entry from an ontology or a controlled vocabulary.
         type [<CLIMutable>] 
@@ -1653,6 +1638,156 @@ module DataContext =
                 val mutable m_MzIdentML : DbSet<MzIdentML>
                 member public this.MzIdentML with get() = this.m_MzIdentML
                                                           and set value = this.m_MzIdentML <- value
+
+                [<DefaultValue>] 
+                val mutable m_OrganizationParam : DbSet<OrganizationParam>
+                member public this.OrganizationParam with get() = this.m_OrganizationParam
+                                                                  and set value = this.m_OrganizationParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_PersonParam : DbSet<PersonParam>
+                member public this.PersonParam with get() = this.m_PersonParam
+                                                            and set value = this.m_PersonParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SampleParam : DbSet<SampleParam>
+                member public this.SampleParam with get() = this.m_SampleParam
+                                                            and set value = this.m_SampleParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ModificationParam : DbSet<ModificationParam>
+                member public this.ModificationParam with get() = this.m_ModificationParam
+                                                                  and set value = this.m_ModificationParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_PeptideParam : DbSet<PeptideParam>
+                member public this.PeptideParam with get() = this.m_PeptideParam
+                                                             and set value = this.m_PeptideParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_TranslationTableParam : DbSet<TranslationTableParam>
+                member public this.TranslationTableParam with get() = this.m_TranslationTableParam
+                                                                      and set value = this.m_TranslationTableParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_MeasureParam : DbSet<MeasureParam>
+                member public this.MeasureParam with get() = this.m_MeasureParam
+                                                             and set value = this.m_MeasureParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_AmbiguousResidueParam : DbSet<AmbiguousResidueParam>
+                member public this.AmbiguousResidueParam with get() = this.m_AmbiguousResidueParam
+                                                                      and set value = this.m_AmbiguousResidueParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_MassTableParam : DbSet<MassTableParam>
+                member public this.MassTableParam with get() = this.m_MassTableParam
+                                                               and set value = this.m_MassTableParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_IonTypeParam : DbSet<IonTypeParam>
+                member public this.IonTypeParam with get() = this.m_IonTypeParam
+                                                             and set value = this.m_IonTypeParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SpecificityRuleParam : DbSet<SpecificityRuleParam>
+                member public this.SpecificityRuleParam with get() = this.m_SpecificityRuleParam
+                                                                     and set value = this.m_SpecificityRuleParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SearchModificationParam : DbSet<SearchModificationParam>
+                member public this.SearchModificationParam with get() = this.SearchModificationParam
+                                                                        and set value = this.SearchModificationParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_EnzymeNameParam : DbSet<EnzymeNameParam>
+                member public this.EnzymeNameParam with get() = this.m_EnzymeNameParam
+                                                                and set value = this.m_EnzymeNameParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_IncludeParam : DbSet<IncludeParam>
+                member public this.IncludeParam with get() = this.m_IncludeParam
+                                                             and set value = this.m_IncludeParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ExcludeParam : DbSet<ExcludeParam>
+                member public this.ExcludeParam with get() = this.m_ExcludeParam
+                                                             and set value = this.m_ExcludeParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_AdditionalSearchParam : DbSet<AdditionalSearchParam>
+                member public this.AdditionalSearchParam with get() = this.m_AdditionalSearchParam
+                                                                      and set value = this.m_AdditionalSearchParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_FragmentToleranceParam : DbSet<FragmentToleranceParam>
+                member public this.FragmentToleranceParam with get() = this.m_FragmentToleranceParam
+                                                                       and set value = this.m_FragmentToleranceParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ParentToleranceParam : DbSet<ParentToleranceParam>
+                member public this.ParentToleranceParam with get() = this.m_ParentToleranceParam
+                                                                     and set value = this.m_ParentToleranceParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ThresholdParam : DbSet<ThresholdParam>
+                member public this.ThresholdParam with get() = this.m_ThresholdParam
+                                                               and set value = this.m_ThresholdParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SearchDatabaseParam : DbSet<SearchDatabaseParam>
+                member public this.SearchDatabaseParam with get() = this.m_SearchDatabaseParam
+                                                                    and set value = this.m_SearchDatabaseParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_DBSequenceParam : DbSet<DBSequenceParam>
+                member public this.DBSequenceParam with get() = this.m_DBSequenceParam
+                                                                and set value = this.m_DBSequenceParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_PeptideEvidenceParam : DbSet<PeptideEvidenceParam>
+                member public this.PeptideEvidenceParam with get() = this.m_PeptideEvidenceParam
+                                                                     and set value = this.m_PeptideEvidenceParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SpectrumIdentificationItemParam : DbSet<SpectrumIdentificationItemParam>
+                member public this.SpectrumIdentificationItemParam with get() = this.m_SpectrumIdentificationItemParam
+                                                                                and set value = this.m_SpectrumIdentificationItemParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SpectrumIdentificationResultParam : DbSet<SpectrumIdentificationResultParam>
+                member public this.SpectrumIdentificationResultParam with get() = this.m_SpectrumIdentificationResultParam
+                                                                                  and set value = this.m_SpectrumIdentificationResultParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SpectrumIdentificationListParam : DbSet<SpectrumIdentificationListParam>
+                member public this.SpectrumIdentificationListParam with get() = this.m_SpectrumIdentificationListParam
+                                                                                and set value = this.m_SpectrumIdentificationListParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_AnalysisParam : DbSet<AnalysisParam>
+                member public this.AnalysisParam with get() = this.m_AnalysisParam
+                                                              and set value = this.m_AnalysisParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_SourceFileParam : DbSet<SourceFileParam>
+                member public this.SourceFileParam with get() = this.m_SourceFileParam
+                                                                and set value = this.m_SourceFileParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ProteinDetectionHypothesisParam : DbSet<ProteinDetectionHypothesisParam>
+                member public this.ProteinDetectionHypothesisParam with get() = this.m_ProteinDetectionHypothesisParam
+                                                                                and set value = this.m_ProteinDetectionHypothesisParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ProteinAmbiguityGroupParam : DbSet<ProteinAmbiguityGroupParam>
+                member public this.ProteinAmbiguityGroupParam with get() = this.m_ProteinAmbiguityGroupParam
+                                                                           and set value = this.m_ProteinAmbiguityGroupParam <- value
+
+                [<DefaultValue>] 
+                val mutable m_ProteinDetectionListParam : DbSet<ProteinDetectionListParam>
+                member public this.ProteinDetectionListParam with get() = this.m_ProteinDetectionListParam
+                                                                          and set value = this.m_ProteinDetectionListParam <- value
 
                 //override this.OnModelCreating (modelBuilder :  ModelBuilder) =
                 //         modelBuilder.Entity<CVParam>()
