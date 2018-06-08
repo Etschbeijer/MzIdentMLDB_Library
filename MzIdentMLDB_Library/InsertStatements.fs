@@ -140,16 +140,16 @@ module InsertStatements =
                static member init
                     (
                         id         : string,
-                        ?terms     : seq<Term>
-                        //?mzIdentML : MzIdentML
+                        ?terms     : seq<Term>,
+                        ?mzIdentML : MzIdentML
                     ) =
                     let terms'     = convertOptionToList terms
-                    //let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
                     {
                         Ontology.ID         = id;
                         Ontology.Terms      = terms';
                         Ontology.RowVersion = DateTime.Now
-                        //Ontology.MzIdentML  = mzIdentML'
+                        Ontology.MzIdentML  = mzIdentML'
                     }
 
                 static member addTerm
@@ -162,10 +162,10 @@ module InsertStatements =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                     ontology
 
-                //static member addMzIdentML
-                //    (ontology:Ontology) (mzIdentML:MzIdentML) =
-                //    let result = ontology.MzIdentML <- mzIdentML
-                //    ontology
+                static member addMzIdentML
+                    (ontology:Ontology) (mzIdentML:MzIdentML) =
+                    let result = ontology.MzIdentML <- mzIdentML
+                    ontology
 
                static member findOntologyByID
                     (context:MzIdentMLContext) (ontologyID:string) =
@@ -4660,203 +4660,208 @@ module InsertStatements =
                     let proteinDetection'         = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
                     let proteinDetectionProtocol' = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
                     let biblioGraphicReferences'  = convertOptionToList biblioGraphicReferences
-                    {
-                        MzIdentML.ID                             = id'
-                        MzIdentML.Name                           = name'
-                        MzIdentML.Version                        = version
-                        MzIdentML.Ontologies                     = ontologies |> List
-                        MzIdentML.AnalysisSoftwares              = analysisSoftwares'
-                        MzIdentML.Provider                       = provider'
-                        MzIdentML.Persons                        = persons'
-                        MzIdentML.Organizations                  = organizations'
-                        MzIdentML.Samples                        = samples'
-                        MzIdentML.DBSequences                    = dbSequences'
-                        MzIdentML.Peptides                       = peptides'
-                        MzIdentML.PeptideEvidences               = peptideEvidences'
-                        MzIdentML.SpectrumIdentification         = spectrumIdentification |> List
-                        MzIdentML.ProteinDetection               = proteinDetection'
-                        MzIdentML.SpectrumIdentificationProtocol = spectrumIdentificationProtocol |> List
-                        MzIdentML.ProteinDetectionProtocol       = proteinDetectionProtocol'
-                        MzIdentML.Inputs                         = inputs
-                        MzIdentML.AnalysisData                   = analysisData
-                        MzIdentML.BiblioGraphicReferences        = biblioGraphicReferences' |> List
-                        MzIdentML.RowVersion                     = DateTime.Now
-                    }
+                    let mzIdentMLInitalized =
+                        new  MzIdentML(id', version, 
+                                       ontologies |> List, spectrumIdentification |> List, 
+                                       spectrumIdentificationProtocol |> List, inputs, analysisData,DateTime.Now, name', analysisSoftwares', 
+                                       provider', persons', organizations', samples', dbSequences', peptides', peptideEvidences', 
+                                       proteinDetection', proteinDetectionProtocol', biblioGraphicReferences' |> List
+                                      )
+                    mzIdentMLInitalized
+                        //MzIdentML.Name                           = 
+                        //MzIdentML.Version                        = 
+                        //MzIdentML.Ontologies                     = 
+                        //MzIdentML.AnalysisSoftwares              = 
+                        //MzIdentML.Provider                       = 
+                        //MzIdentML.Persons                        = 
+                        //MzIdentML.Organizations                  = 
+                        //MzIdentML.Samples                        = 
+                        //MzIdentML.DBSequences                    = 
+                        //MzIdentML.Peptides                       = 
+                        //MzIdentML.PeptideEvidences               = 
+                        //MzIdentML.SpectrumIdentification         = 
+                        //MzIdentML.ProteinDetection               = 
+                        //MzIdentML.SpectrumIdentificationProtocol = 
+                        //MzIdentML.ProteinDetectionProtocol       = 
+                        //MzIdentML.Inputs                         = 
+                        //MzIdentML.AnalysisData                   = 
+                        //MzIdentML.BiblioGraphicReferences        = 
+                        //MzIdentML.RowVersion                     = DateTime.Now
 
-               static member addName
-                    (mzIdentML:MzIdentML) (name:string) =
-                    mzIdentML.Name <- name
-                    mzIdentML
+               //static member addName
+               //     (mzIdentML:MzIdentML) (name:string) =
+               //     mzIdentML.Name <- name
+               //     mzIdentML
 
-               static member addAnalysisSoftware
-                    (mzIdentML:MzIdentML) (analysisSoftware:AnalysisSoftware) =
-                    let result = mzIdentML.AnalysisSoftwares <- addToList mzIdentML.AnalysisSoftwares analysisSoftware
-                    mzIdentML
+               //static member addAnalysisSoftware
+               //     (mzIdentML:MzIdentML) (analysisSoftware:AnalysisSoftware) =
+               //     let result = mzIdentML.AnalysisSoftwares <- addToList mzIdentML.AnalysisSoftwares analysisSoftware
+               //     mzIdentML
 
-               static member addAnalysisSoftwares
-                    (mzIdentML:MzIdentML) (analysisSoftwares:seq<AnalysisSoftware>) =
-                    let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
-                    mzIdentML
+               //static member addAnalysisSoftwares
+               //     (mzIdentML:MzIdentML) (analysisSoftwares:seq<AnalysisSoftware>) =
+               //     let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
+               //     mzIdentML
 
-               static member addProvider
-                    (mzIdentML:MzIdentML) (provider:Provider) =
-                    mzIdentML.Provider <- provider
-                    mzIdentML
+               //static member addProvider
+               //     (mzIdentML:MzIdentML) (provider:Provider) =
+               //     mzIdentML.Provider <- provider
+               //     mzIdentML
 
-               static member addPerson
-                    (mzIdentML:MzIdentML) (person:Person) =
-                    mzIdentML.Persons <- addToList mzIdentML.Persons person
-                    mzIdentML
+               //static member addPerson
+               //     (mzIdentML:MzIdentML) (person:Person) =
+               //     mzIdentML.Persons <- addToList mzIdentML.Persons person
+               //     mzIdentML
 
-               static member addPersons
-                    (mzIdentML:MzIdentML) (persons:seq<Person>) =
-                    let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
-                    mzIdentML
+               //static member addPersons
+               //     (mzIdentML:MzIdentML) (persons:seq<Person>) =
+               //     let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
+               //     mzIdentML
 
-               static member addOrganization
-                    (mzIdentML:MzIdentML) (organization:Organization) =
-                    mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
-                    mzIdentML
+               //static member addOrganization
+               //     (mzIdentML:MzIdentML) (organization:Organization) =
+               //     mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
+               //     mzIdentML
 
-               static member addOrganizations
-                    (mzIdentML:MzIdentML) (organizations:seq<Organization>) =
-                    let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
-                    mzIdentML
+               //static member addOrganizations
+               //     (mzIdentML:MzIdentML) (organizations:seq<Organization>) =
+               //     let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
+               //     mzIdentML
 
-               static member addSample
-                    (mzIdentML:MzIdentML) (sample:Sample) =
-                    let result = mzIdentML.Samples <- addToList mzIdentML.Samples sample
-                    mzIdentML
+               //static member addSample
+               //     (mzIdentML:MzIdentML) (sample:Sample) =
+               //     let result = mzIdentML.Samples <- addToList mzIdentML.Samples sample
+               //     mzIdentML
 
-               static member addSamples
-                    (mzIdentML:MzIdentML) (samples:seq<Sample>) =
-                    let result = mzIdentML.Samples <- addCollectionToList mzIdentML.Samples samples
-                    mzIdentML
+               //static member addSamples
+               //     (mzIdentML:MzIdentML) (samples:seq<Sample>) =
+               //     let result = mzIdentML.Samples <- addCollectionToList mzIdentML.Samples samples
+               //     mzIdentML
 
-               static member addDBSequence
-                    (mzIdentML:MzIdentML) (dbSequence:DBSequence) =
-                    let result = mzIdentML.DBSequences <- addToList mzIdentML.DBSequences dbSequence
-                    mzIdentML
+               //static member addDBSequence
+               //     (mzIdentML:MzIdentML) (dbSequence:DBSequence) =
+               //     let result = mzIdentML.DBSequences <- addToList mzIdentML.DBSequences dbSequence
+               //     mzIdentML
 
-               static member addDBSequences
-                    (mzIdentML:MzIdentML) (dbSequences:seq<DBSequence>) =
-                    let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
-                    mzIdentML
+               //static member addDBSequences
+               //     (mzIdentML:MzIdentML) (dbSequences:seq<DBSequence>) =
+               //     let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
+               //     mzIdentML
 
-               static member addPeptide
-                    (mzIdentML:MzIdentML) (peptide:Peptide) =
-                    let result = mzIdentML.Peptides <- addToList mzIdentML.Peptides peptide
-                    mzIdentML
+               //static member addPeptide
+               //     (mzIdentML:MzIdentML) (peptide:Peptide) =
+               //     let result = mzIdentML.Peptides <- addToList mzIdentML.Peptides peptide
+               //     mzIdentML
 
-               static member addPeptides
-                    (mzIdentML:MzIdentML) (peptides:seq<Peptide>) =
-                    let result = mzIdentML.Peptides <- addCollectionToList mzIdentML.Peptides peptides
-                    mzIdentML
+               //static member addPeptides
+               //     (mzIdentML:MzIdentML) (peptides:seq<Peptide>) =
+               //     let result = mzIdentML.Peptides <- addCollectionToList mzIdentML.Peptides peptides
+               //     mzIdentML
 
-               static member addPeptideEvidence
-                    (mzIdentML:MzIdentML) (peptideEvidence:PeptideEvidence) =
-                    let result = mzIdentML.PeptideEvidences <- addToList mzIdentML.PeptideEvidences peptideEvidence
-                    mzIdentML
+               //static member addPeptideEvidence
+               //     (mzIdentML:MzIdentML) (peptideEvidence:PeptideEvidence) =
+               //     let result = mzIdentML.PeptideEvidences <- addToList mzIdentML.PeptideEvidences peptideEvidence
+               //     mzIdentML
 
-               static member addPeptideEvidences
-                    (mzIdentML:MzIdentML) (peptideEvidences:seq<PeptideEvidence>) =
-                    let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
-                    mzIdentML
+               //static member addPeptideEvidences
+               //     (mzIdentML:MzIdentML) (peptideEvidences:seq<PeptideEvidence>) =
+               //     let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
+               //     mzIdentML
 
-               static member addProteinDetection
-                    (mzIdentML:MzIdentML) (proteinDetection:ProteinDetection) =
-                    mzIdentML.ProteinDetection <- proteinDetection
-                    mzIdentML
+               //static member addProteinDetection
+               //     (mzIdentML:MzIdentML) (proteinDetection:ProteinDetection) =
+               //     mzIdentML.ProteinDetection <- proteinDetection
+               //     mzIdentML
 
-               static member addProteinDetectionProtocol
-                    (mzIdentML:MzIdentML) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                    mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
-                    mzIdentML
+               //static member addProteinDetectionProtocol
+               //     (mzIdentML:MzIdentML) (proteinDetectionProtocol:ProteinDetectionProtocol) =
+               //     mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+               //     mzIdentML
 
-               static member addBiblioGraphicReference
-                    (mzIdentML:MzIdentML) (biblioGraphicReference:BiblioGraphicReference) =
-                    let result = mzIdentML.BiblioGraphicReferences <- addToList mzIdentML.BiblioGraphicReferences biblioGraphicReference
-                    mzIdentML
+               //static member addBiblioGraphicReference
+               //     (mzIdentML:MzIdentML) (biblioGraphicReference:BiblioGraphicReference) =
+               //     let result = mzIdentML.BiblioGraphicReferences <- addToList mzIdentML.BiblioGraphicReferences biblioGraphicReference
+               //     mzIdentML
 
-               static member addBiblioGraphicReferences
-                    (mzIdentML:MzIdentML) (biblioGraphicReferences:seq<BiblioGraphicReference>) =
-                    let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
-                    mzIdentML
+               //static member addBiblioGraphicReferences
+               //     (mzIdentML:MzIdentML) (biblioGraphicReferences:seq<BiblioGraphicReference>) =
+               //     let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
+               //     mzIdentML
 
-               static member findMzIdentMLByID
-                    (context:MzIdentMLContext) (mzIdentMLID:string) =
-                    context.MzIdentML.Find(mzIdentMLID)
+               //static member findMzIdentMLByID
+               //     (context:MzIdentMLContext) (mzIdentMLID:string) =
+               //     context.MzIdentML.Find(mzIdentMLID)
 
-               static member findOntologyByID
-                    (context:MzIdentMLContext) (ontologyID:string) =
-                    context.Ontology.Find(ontologyID)                
+               //static member findOntologyByID
+               //     (context:MzIdentMLContext) (ontologyID:string) =
+               //     context.Ontology.Find(ontologyID)                
 
-               static member findAnalysisSoftwareByID
-                    (context:MzIdentMLContext) (analysisSoftwareID:string) =
-                    context.AnalysisSoftware.Find(analysisSoftwareID)
+               //static member findAnalysisSoftwareByID
+               //     (context:MzIdentMLContext) (analysisSoftwareID:string) =
+               //     context.AnalysisSoftware.Find(analysisSoftwareID)
 
-               static member findProviderByID
-                    (context:MzIdentMLContext) (providerID:string) =
-                    context.Provider.Find(providerID)
+               //static member findProviderByID
+               //     (context:MzIdentMLContext) (providerID:string) =
+               //     context.Provider.Find(providerID)
 
-               static member findPersonByID
-                    (context:MzIdentMLContext) (personID:string) =
-                    context.Person.Find(personID)
+               //static member findPersonByID
+               //     (context:MzIdentMLContext) (personID:string) =
+               //     context.Person.Find(personID)
 
-               static member findOrganizationByID
-                    (context:MzIdentMLContext) (organizationID:string) =
-                    context.Organization.Find(organizationID)
+               //static member findOrganizationByID
+               //     (context:MzIdentMLContext) (organizationID:string) =
+               //     context.Organization.Find(organizationID)
 
-               static member findSamplesByID
-                    (context:MzIdentMLContext) (sampleID:string) =
-                    context.Sample.Find(sampleID)
+               //static member findSamplesByID
+               //     (context:MzIdentMLContext) (sampleID:string) =
+               //     context.Sample.Find(sampleID)
 
-               static member findDBSequencesByID
-                    (context:MzIdentMLContext) (dbSequenceID:string) =
-                    context.DBSequence.Find(dbSequenceID)
+               //static member findDBSequencesByID
+               //     (context:MzIdentMLContext) (dbSequenceID:string) =
+               //     context.DBSequence.Find(dbSequenceID)
 
-               static member findPeptidesByID
-                    (context:MzIdentMLContext) (peptideID:string) =
-                    context.Peptide.Find(peptideID)
+               //static member findPeptidesByID
+               //     (context:MzIdentMLContext) (peptideID:string) =
+               //     context.Peptide.Find(peptideID)
 
-               static member findPeptideEvidencesByID
-                    (context:MzIdentMLContext) (peptideEvidenceID:string) =
-                    context.PeptideEvidence.Find(peptideEvidenceID)
+               //static member findPeptideEvidencesByID
+               //     (context:MzIdentMLContext) (peptideEvidenceID:string) =
+               //     context.PeptideEvidence.Find(peptideEvidenceID)
 
-               static member findSpectrumIdentificationByID
-                    (context:MzIdentMLContext) (spectrumIdentificationID:string) =
-                    context.SpectrumIdentification.Find(spectrumIdentificationID)
+               //static member findSpectrumIdentificationByID
+               //     (context:MzIdentMLContext) (spectrumIdentificationID:string) =
+               //     context.SpectrumIdentification.Find(spectrumIdentificationID)
 
-               static member findProteinDetectionByID
-                    (context:MzIdentMLContext) (proteinDetectionID:string) =
-                    context.ProteinDetection.Find(proteinDetectionID)
+               //static member findProteinDetectionByID
+               //     (context:MzIdentMLContext) (proteinDetectionID:string) =
+               //     context.ProteinDetection.Find(proteinDetectionID)
 
-               static member findSpectrumIdentificationProtocolByID
-                    (context:MzIdentMLContext) (spectrumIdentificationProtocolID:string) =
-                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
+               //static member findSpectrumIdentificationProtocolByID
+               //     (context:MzIdentMLContext) (spectrumIdentificationProtocolID:string) =
+               //     context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
 
-               static member findProteinDetectionProtocolByID
-                    (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
-                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+               //static member findProteinDetectionProtocolByID
+               //     (context:MzIdentMLContext) (proteinDetectionProtocolID:string) =
+               //     context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
 
-               static member findInputsByID
-                    (context:MzIdentMLContext) (inputsID:string) =
-                    context.Inputs.Find(inputsID)
+               //static member findInputsByID
+               //     (context:MzIdentMLContext) (inputsID:string) =
+               //     context.Inputs.Find(inputsID)
 
-               static member findAnalysisDataByID
-                    (context:MzIdentMLContext) (analysisDataID:string) =
-                    context.AnalysisData.Find(analysisDataID)
+               //static member findAnalysisDataByID
+               //     (context:MzIdentMLContext) (analysisDataID:string) =
+               //     context.AnalysisData.Find(analysisDataID)
 
-               static member findBiblioGraphicReferencesByID
-                    (context:MzIdentMLContext) (bibliographicReferenceID:string) =
-                    context.BiblioGraphicReference.Find(bibliographicReferenceID)
+               //static member findBiblioGraphicReferencesByID
+               //     (context:MzIdentMLContext) (bibliographicReferenceID:string) =
+               //     context.BiblioGraphicReference.Find(bibliographicReferenceID)
 
-                static member addToContext (context:MzIdentMLContext) (item:MzIdentML) =
-                        (addToContextWithExceptionCheck context item)
+               // static member addToContext (context:MzIdentMLContext) (item:MzIdentML) =
+               //         (addToContextWithExceptionCheck context item)
 
-                static member addToContextAndInsert (context:MzIdentMLContext) (item:MzIdentML) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+               // static member addToContextAndInsert (context:MzIdentMLContext) (item:MzIdentML) =
+               //         (addToContextWithExceptionCheck context item) |> ignore
+               //         insertWithExceptionCheck context
 
     module InitializeStandardDB =
         open BioFSharp.IO

@@ -10,8 +10,7 @@ module DataContext =
 
 
     module EntityTypes =
-
-        //type definitions
+        open System.Data
 
         type [<CLIMutable>] 
             Term =
@@ -29,11 +28,12 @@ module DataContext =
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 ID                : string
                 mutable Terms     : List<Term>
+                mutable MzIdentML : MzIdentML
                 RowVersion        : DateTime
             }
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type CVParamBase =
+        and CVParamBase =
             abstract member ID         : int
             abstract member Name       : string
             abstract member Value      : string
@@ -43,7 +43,7 @@ module DataContext =
             abstract member RowVersion : DateTime
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("CVParams")>]
+        and [<CLIMutable>] [<Table("CVParams")>]
             CVParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -65,7 +65,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("OrganizationParams")>]
+        and [<CLIMutable>] [<Table("OrganizationParams")>]
             OrganizationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -87,7 +87,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("PersonParams")>]
+        and [<CLIMutable>] [<Table("PersonParams")>]
             PersonParam =
             {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -131,7 +131,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ModificationParams")>]
+        and [<CLIMutable>] [<Table("ModificationParams")>]
             ModificationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -153,7 +153,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("PeptideParams")>]
+        and [<CLIMutable>] [<Table("PeptideParams")>]
             PeptideParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -175,7 +175,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("TranslationTableParams")>]
+        and [<CLIMutable>] [<Table("TranslationTableParams")>]
             TranslationTableParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -197,7 +197,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("MeasureParams")>]
+        and [<CLIMutable>] [<Table("MeasureParams")>]
             MeasureParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -219,7 +219,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("AmbiguousResidueParams")>]
+        and [<CLIMutable>] [<Table("AmbiguousResidueParams")>]
             AmbiguousResidueParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -241,7 +241,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("MassTableParams")>]
+        and [<CLIMutable>] [<Table("MassTableParams")>]
             MassTableParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -263,7 +263,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("IonTypeParams")>]
+        and [<CLIMutable>] [<Table("IonTypeParams")>]
             IonTypeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -285,7 +285,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SpecificityRuleParams")>]
+        and [<CLIMutable>] [<Table("SpecificityRuleParams")>]
             SpecificityRuleParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -307,7 +307,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SearchModificationParams")>]
+        and [<CLIMutable>] [<Table("SearchModificationParams")>]
             SearchModificationParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -329,7 +329,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("EnzymeNameParams")>]
+        and [<CLIMutable>] [<Table("EnzymeNameParams")>]
             EnzymeNameParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -351,7 +351,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("IncludeParams")>]
+        and [<CLIMutable>] [<Table("IncludeParams")>]
             IncludeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -373,7 +373,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ExcludeParams")>]
+        and [<CLIMutable>] [<Table("ExcludeParams")>]
             ExcludeParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -395,7 +395,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("AdditionalSearchParams")>]
+        and [<CLIMutable>] [<Table("AdditionalSearchParams")>]
             AdditionalSearchParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -417,7 +417,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("FragmentToleranceParams")>]
+        and [<CLIMutable>] [<Table("FragmentToleranceParams")>]
             FragmentToleranceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -439,7 +439,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ParentToleranceParams")>]
+        and [<CLIMutable>] [<Table("ParentToleranceParams")>]
             ParentToleranceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -461,7 +461,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ThresholdParams")>]
+        and [<CLIMutable>] [<Table("ThresholdParams")>]
             ThresholdParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -483,7 +483,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SearchDatabaseParams")>]
+        and [<CLIMutable>] [<Table("SearchDatabaseParams")>]
             SearchDatabaseParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -505,7 +505,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("DBSequenceParams")>]
+        and [<CLIMutable>] [<Table("DBSequenceParams")>]
             DBSequenceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -527,7 +527,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("PeptideEvidenceParams")>]
+        and [<CLIMutable>] [<Table("PeptideEvidenceParams")>]
             PeptideEvidenceParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -549,7 +549,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SpectrumIdentificationItemParams")>]
+        and [<CLIMutable>] [<Table("SpectrumIdentificationItemParams")>]
             SpectrumIdentificationItemParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -571,7 +571,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SpectrumIdentificationResultParams")>]
+        and [<CLIMutable>] [<Table("SpectrumIdentificationResultParams")>]
             SpectrumIdentificationResultParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -593,7 +593,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SpectrumIdentificationListParams")>]
+        and [<CLIMutable>] [<Table("SpectrumIdentificationListParams")>]
             SpectrumIdentificationListParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -615,7 +615,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("AnalysisParams")>]
+        and [<CLIMutable>] [<Table("AnalysisParams")>]
             AnalysisParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -637,7 +637,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("SourceFileParams")>]
+        and [<CLIMutable>] [<Table("SourceFileParams")>]
             SourceFileParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -659,7 +659,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ProteinDetectionHypothesisParams")>]
+        and [<CLIMutable>] [<Table("ProteinDetectionHypothesisParams")>]
             ProteinDetectionHypothesisParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -681,7 +681,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ProteinAmbiguityGroupParams")>]
+        and [<CLIMutable>] [<Table("ProteinAmbiguityGroupParams")>]
             ProteinAmbiguityGroupParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -703,7 +703,7 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
-        type [<CLIMutable>] [<Table("ProteinDetectionListParams")>]
+        and [<CLIMutable>] [<Table("ProteinDetectionListParams")>]
             ProteinDetectionListParam =
             {
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
@@ -725,14 +725,14 @@ module DataContext =
                 member x.RowVersion = x.RowVersion
 
         /////A single entry from an ontology or a controlled vocabulary.
-        //type [<CLIMutable>] 
+        //and [<CLIMutable>] 
         //    UserParam =
         //    {
         //     [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
         //     ID         : int
         //     Name       : string
         //     Value      : string
-        //     type       : string
+        //     and       : string
         //     Unit       : Term
         //     UnitName   : string
         //     RowVersion : DateTime 
@@ -752,8 +752,8 @@ module DataContext =
                 RowVersion      : DateTime
                 }
 
-        ///A person's name type contact details.
-        type [<CLIMutable>] 
+        ///A person's name and contact details.
+        and [<CLIMutable>] 
                 Person =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -772,7 +772,7 @@ module DataContext =
                 }
 
         ///The software used for performing the analyses.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
             ContactRole =
             {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -785,7 +785,7 @@ module DataContext =
             }
 
         ///The software used for performing the analyses.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
             AnalysisSoftware =
             {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -800,7 +800,7 @@ module DataContext =
             }
 
         ///References to the individual component samples within a mixed parent sample.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SubSample =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -825,7 +825,7 @@ module DataContext =
                 }
 
         ///A molecule modification specification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Modification =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -839,7 +839,7 @@ module DataContext =
                 }
 
         ///A modification where one residue is substituted by another (amino acid change).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SubstitutionModification =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -853,7 +853,7 @@ module DataContext =
                 }
 
         ///One (poly)peptide (a sequence with modifications).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Peptide =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -867,7 +867,7 @@ module DataContext =
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 TranslationTable =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -878,7 +878,7 @@ module DataContext =
                 }
 
         ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Measure =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -889,7 +889,7 @@ module DataContext =
                 }
 
         ///The specification of a single residue within the mass table.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Residue =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -899,8 +899,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///Ambiguous residues e.g. X can be specified by the Code attribute type a set of parameters for example giving the different masses that will be used in the search.
-        type [<CLIMutable>] 
+        ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
+        and [<CLIMutable>] 
                 AmbiguousResidue =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -911,7 +911,7 @@ module DataContext =
                 }
 
         ///The masses of residues used in the search.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 MassTable =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -924,8 +924,8 @@ module DataContext =
                 RowVersion                : DateTime
                 }
 
-        ///The values of this particular measure, corresponding to the index defined in ion type.
-        type [<CLIMutable>] 
+        ///The values of this particular measure, corresponding to the index defined in ion and.
+        and [<CLIMutable>] 
                 Value =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -934,8 +934,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///An array of values for a given type of measure type for a particular ion type, in parallel to the index of ions identified.
-        type [<CLIMutable>] 
+        ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
+        and [<CLIMutable>] 
                 FragmentArray =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -945,8 +945,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 type b6 have been identified, the index would store "3 5 6".
-        type [<CLIMutable>] 
+        ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
+        and [<CLIMutable>] 
                 Index =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -955,8 +955,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the type of ion e.g. b ion. Example: if b3 b7 b8 type b10 have been identified, the index attribute will contain 3 7 8 10.
-        type [<CLIMutable>] 
+        ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
+        and [<CLIMutable>] 
                 IonType =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -968,7 +968,7 @@ module DataContext =
                 }
 
         ///A data set containing spectra data (consisting of one or more spectra).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectraData =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -982,7 +982,7 @@ module DataContext =
                 }
 
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
-        type [<CLIMutable>]
+        and [<CLIMutable>]
                 //Formerly Specificityrules
                 SpecificityRule =
                 {
@@ -994,7 +994,7 @@ module DataContext =
                 //
 
         ///Specification of a search modification as parameter for a spectra search.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SearchModification =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1008,7 +1008,7 @@ module DataContext =
                 }
 
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Enzyme =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1024,8 +1024,8 @@ module DataContext =
                 RowVersion              : DateTime
                 }
 
-        ///Filters applied to the search database. The filter MUST include at least one of Include type Exclude.
-        type [<CLIMutable>] 
+        ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
+        and [<CLIMutable>] 
                 Filter =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1037,7 +1037,7 @@ module DataContext =
                 }
 
         ///The frames in which the nucleic acid sequence has been translated as a space separated list.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 Frame =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1046,8 +1046,8 @@ module DataContext =
                 RowVersion : DateTime
                 }
 
-        ///The parameters type settings of a SpectrumIdentification analysis.
-        type [<CLIMutable>] 
+        ///The parameters and settings of a SpectrumIdentification analysis.
+        and [<CLIMutable>] 
                 SpectrumIdentificationProtocol =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1076,7 +1076,7 @@ module DataContext =
                 }
 
         ///A database for searching mass spectra.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SearchDatabase =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1095,7 +1095,7 @@ module DataContext =
                 }
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 DBSequence =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1110,7 +1110,7 @@ module DataContext =
                 }
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 PeptideEvidence =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1136,7 +1136,7 @@ module DataContext =
                 }
 
         ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationItem =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1158,7 +1158,7 @@ module DataContext =
                 }
 
         ///All identifications made from searching one spectrum.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationResult =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1172,7 +1172,7 @@ module DataContext =
                 }
 
         ///Represents the set of all search results from SpectrumIdentification.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SpectrumIdentificationList =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1186,8 +1186,8 @@ module DataContext =
                 }
 
 
-        ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results type the protocol that is run.
-        type [<CLIMutable>] 
+        ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results and the protocol that is run.
+        and [<CLIMutable>] 
                 SpectrumIdentification =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1205,8 +1205,8 @@ module DataContext =
                 RowVersion                     : DateTime
                 }
 
-        ///The parameters type settings of a SpectrumIdentification analysis.
-        type [<CLIMutable>] 
+        ///The parameters and settings of a SpectrumIdentification analysis.
+        and [<CLIMutable>] 
                 ProteinDetectionProtocol =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1219,7 +1219,7 @@ module DataContext =
                 }
 
         ///A file from which this mzIdentML instance was created.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 SourceFile =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1232,8 +1232,8 @@ module DataContext =
                 RowVersion                          : DateTime
                 }
 
-        ///The inputs to the analyses including the databases searched, the spectral data type the source file converted to mzIdentML.
-        type [<CLIMutable>] 
+        ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
+        and [<CLIMutable>] 
                 Inputs =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1245,7 +1245,7 @@ module DataContext =
                 }
 
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 PeptideHypothesis =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1256,7 +1256,7 @@ module DataContext =
                 }
 
         ///A single result of the ProteinDetection analysis (i.e. a protein).
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetectionHypothesis =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1270,7 +1270,7 @@ module DataContext =
                 }
 
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinAmbiguityGroup =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1282,7 +1282,7 @@ module DataContext =
                 }
 
         ///The protein list resulting from a protein detection process.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetectionList =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1293,8 +1293,8 @@ module DataContext =
                 RowVersion                     : DateTime
                 }
 
-        ///Data sets generated by the analyses, including peptide type protein lists.
-        type [<CLIMutable>] 
+        ///Data sets generated by the analyses, including peptide and protein lists.
+        and [<CLIMutable>] 
                 AnalysisData =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1305,7 +1305,7 @@ module DataContext =
                 }
 
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 ProteinDetection =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1319,7 +1319,7 @@ module DataContext =
                 }
 
         ///Any bibliographic references associated with the file.
-        type [<CLIMutable>] 
+        and [<CLIMutable>] 
                 BiblioGraphicReference =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1338,8 +1338,8 @@ module DataContext =
                 RowVersion          : DateTime
                 }
 
-        ///The Provider of the mzIdentML record in terms of the contact type software.
-        type [<CLIMutable>] 
+        ///The Provider of the mzIdentML record in terms of the contact and software.
+        and [<CLIMutable>] 
                 Provider =
                 {
                 //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
@@ -1352,47 +1352,115 @@ module DataContext =
                 RowVersion               : DateTime
                 }
 
-        ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols type search results (spectrum identifications or protein detection results). 
-        type [<CLIMutable>] 
-                MzIdentML =
-                {
-                ID                               : int
-                mutable Name                     : string
-                Version                          : string
+        and [<AllowNullLiteral>]
+            MzIdentML(
+                      id:int, version:string, ontologies:List<Ontology>, spectrumIdentification:List<SpectrumIdentification>, 
+                      spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, inputs:Inputs, analysisData:AnalysisData, rowVersion:DateTime,
+                      name:string, analysisSoftwares:List<AnalysisSoftware>, provider:Provider, persons:List<Person>, 
+                      organizations:List<Organization>, samples:List<Sample>, dbSequences:List<DBSequence>, peptides:List<Peptide>,
+                      peptideEvidences:List<PeptideEvidence>, proteinDetection:ProteinDetection, proteinDetectionProtocol:ProteinDetectionProtocol,
+                      biblioGraphicReferences:List<BiblioGraphicReference>) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable version' = version
+                let mutable ontologies' = ontologies
+                let mutable analysisSoftwares' = analysisSoftwares
+                let mutable provider' = provider
+                let mutable persons' = persons
+                let mutable organizations' = organizations
+                let mutable samples' = samples
+                let mutable dbSequences' = dbSequences
+                let mutable peptides' = peptides
+                let mutable peptideEvidences' = peptideEvidences
+                let mutable spectrumIdentification' = spectrumIdentification
+                let mutable proteinDetection' = proteinDetection
+                let mutable spectrumIdentificationProtocol' = spectrumIdentificationProtocol
+                let mutable proteinDetectionProtocol' = proteinDetectionProtocol
+                let mutable inputs' = inputs
+                let mutable analysisData' = analysisData
+                let mutable biblioGraphicReferences' = biblioGraphicReferences
+                let mutable rowVersion' = rowVersion
+
+                new() = MzIdentML()
+
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Version with get() = version' and set(value) = version' <- value
                 //Formerly CVList
-                Ontologies                       : List<Ontology>
+                member this.Ontologies with get() = ontologies' and set(value) = ontologies' <- value
                 //
                 //Formerly AnalysisSoftwareList
-                mutable AnalysisSoftwares        : List<AnalysisSoftware>
+                member this. AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
                 //
-                mutable Provider                 : Provider
+                member this.Provider with get() = provider' and set(value) = provider' <- value
                 //Formerly AuditCollection
-                mutable Persons                  : List<Person>
-                mutable Organizations            : List<Organization>
+                member this. Persons with get() = persons and set(value) = persons' <- value
+                member this. Organizations with get() = organizations' and set(value) = organizations' <- value
                 //
                 //Formerly AnalysisSampleCollection
-                mutable Samples                  : List<Sample>
+                member this. Samples with get() = samples' and set(value) = samples' <- value
                 //
                 //Formerly SequenceCollection
-                mutable DBSequences              : List<DBSequence>
-                mutable Peptides                 : List<Peptide>
-                mutable PeptideEvidences         : List<PeptideEvidence>
+                member this. DBSequences with get() = dbSequences' and set(value) = dbSequences' <- value
+                member this. Peptides with get() = peptides' and set(value) = peptides' <- value
+                member this. PeptideEvidences with get() = peptideEvidences' and set(value) = peptideEvidences' <- value
                 //
                 //AnalysisCollection
-                SpectrumIdentification           : List<SpectrumIdentification>
-                mutable ProteinDetection         : ProteinDetection
+                member this.SpectrumIdentification with get() = spectrumIdentification' and set(value) = spectrumIdentification' <- value
+                member this.ProteinDetection with get() = proteinDetection' and set(value) = proteinDetection' <- value
                 //
                 //AnalysisProtocolCollection
-                SpectrumIdentificationProtocol   : List<SpectrumIdentificationProtocol>
-                mutable ProteinDetectionProtocol : ProteinDetectionProtocol
+                member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
+                member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
                 //
                 //DataCollection
-                Inputs                           : Inputs
-                AnalysisData                     : AnalysisData
+                member this.Inputs with get() = inputs' and set(value) = inputs' <- value
+                member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
                 //
-                mutable BiblioGraphicReferences  : List<BiblioGraphicReference> 
-                RowVersion                       : DateTime
-                }
+                member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+        /////The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results (spectrum identifications or protein detection results). 
+        //and [<CLIMutable>] 
+        //        MzIdentML =
+        //        {
+        //        ID                               : int
+        //        mutable Name                     : string
+        //        Version                          : string
+        //        //Formerly CVList
+        //        Ontologies                       : List<Ontology>
+        //        //
+        //        //Formerly AnalysisSoftwareList
+        //        mutable AnalysisSoftwares        : List<AnalysisSoftware>
+        //        //
+        //        mutable Provider                 : Provider
+        //        //Formerly AuditCollection
+        //        mutable Persons                  : List<Person>
+        //        mutable Organizations            : List<Organization>
+        //        //
+        //        //Formerly AnalysisSampleCollection
+        //        mutable Samples                  : List<Sample>
+        //        //
+        //        //Formerly SequenceCollection
+        //        mutable DBSequences              : List<DBSequence>
+        //        mutable Peptides                 : List<Peptide>
+        //        mutable PeptideEvidences         : List<PeptideEvidence>
+        //        //
+        //        //AnalysisCollection
+        //        SpectrumIdentification           : List<SpectrumIdentification>
+        //        mutable ProteinDetection         : ProteinDetection
+        //        //
+        //        //AnalysisProtocolCollection
+        //        SpectrumIdentificationProtocol   : List<SpectrumIdentificationProtocol>
+        //        mutable ProteinDetectionProtocol : ProteinDetectionProtocol
+        //        //
+        //        //DataCollection
+        //        Inputs                           : Inputs
+        //        AnalysisData                     : AnalysisData
+        //        //
+        //        mutable BiblioGraphicReferences  : List<BiblioGraphicReference> 
+        //        RowVersion                       : DateTime
+        //        }
 
     module DataContext =
 

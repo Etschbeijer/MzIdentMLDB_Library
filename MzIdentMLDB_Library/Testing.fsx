@@ -28,11 +28,14 @@ open MzIdentMLDataBase.DataContext.EntityTypes
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
-open MzIdentMLDataBase.XMLParsing
+//open MzIdentMLDataBase.XMLParsing
 
 
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
-//initStandardDB context
+initStandardDB context
+
+
+
 
 let termTestI =
     let termBasic =
