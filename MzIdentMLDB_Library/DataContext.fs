@@ -980,117 +980,168 @@ module DataContext =
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
-        and [<CLIMutable>]
-                //Formerly Specificityrules
-                SpecificityRule =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Details    : List<SpecificityRuleParam>
-                RowVersion : DateTime
-                }  
-                //
+        and [<AllowNullLiteral>]
+            //Formerly Specificityrules
+            SpecificityRule (id:string, details:List<SpecificityRuleParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+            //
+                new() = SpecificityRule()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Specification of a search modification as parameter for a spectra search.
-        and [<CLIMutable>] 
-                SearchModification =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : string
-                FixedMod                 : bool
-                MassDelta                : float
-                Residues                 : string
-                mutable SpecificityRules : List<SpecificityRule>
-                Details                  : List<SearchModificationParam>
-                RowVersion               : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SearchModification (id:string, fixedMod:bool, massDelta:float, residues:string, specificityRules:list<SpecificityRule>, 
+                                searchModificationParams:List<SearchModificationParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable fixedMod' = fixedMod
+                let mutable massDelta' = massDelta
+                let mutable residues' = residues
+                let mutable specificityRules' = specificityRules
+                let mutable searchModificationParams' = searchModificationParams
+                let mutable rowVersion' = rowVersion
+                new() = SearchModification()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.FixedMod with get() = fixedMod' and set(value) = fixedMod' <- value
+                member this.MassDelta with get() = massDelta' and set(value) = massDelta' <- value
+                member this.Residues with get() = residues' and set(value) = residues' <- value
+                member this.SpecificityRules with get() = specificityRules' and set(value) = specificityRules' <- value
+                member this.SearchModificationParams with get() = searchModificationParams' and set(value) = searchModificationParams' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
-        and [<CLIMutable>] 
-                Enzyme =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                      : string
-                mutable Name            : string
-                mutable CTermGain       : string
-                mutable NTermGain       : string
-                mutable MinDistance     : int
-                mutable MissedCleavages : int
-                mutable SemiSpecific    : bool
-                mutable SiteRegexc      : string
-                mutable EnzymeName      : List<EnzymeNameParam>
-                RowVersion              : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Enzyme (id:string, name:string, cTermGain:string, nTermGain:string, minDistance:int, missedCleavages:int, 
+                    semiSpecific:bool, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable cTermGain' = cTermGain
+                let mutable nTermGain' = nTermGain
+                let mutable minDistance' = minDistance
+                let mutable missedCleavages' = missedCleavages
+                let mutable semiSpecific' = semiSpecific
+                let mutable siteRegexc' = siteRegexc
+                let mutable enzymeName' = enzymeName
+                let mutable rowVersion' = rowVersion
+                new() = Enzyme()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.CTermGain with get() = cTermGain' and set(value) = cTermGain' <- value
+                member this.NTermGain with get() = nTermGain' and set(value) = nTermGain' <- value
+                member this.MinDistance with get() = minDistance' and set(value) = minDistance' <- value
+                member this.MissedCleavages with get() = missedCleavages' and set(value) = missedCleavages' <- value
+                member this.SemiSpecific with get() = semiSpecific' and set(value) = semiSpecific' <- value
+                member this.SiteRegex with get() = siteRegexc' and set(value) = siteRegexc' <- value
+                member this.EnzymeName with get() = enzymeName' and set(value) = enzymeName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
-        and [<CLIMutable>] 
-                Filter =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID               : string
-                FilterType       : CVParam
-                mutable Includes : List<IncludeParam>
-                mutable Excludes : List<ExcludeParam>
-                RowVersion       : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Filter (id:string, filterType:CVParam, includes:List<IncludeParam>, excludes:List<ExcludeParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable filterType' = filterType
+                let mutable includes' = includes
+                let mutable excludes' = excludes
+                let mutable rowVersion' = rowVersion
+                new() = Filter()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.FilterType with get() = filterType' and set(value) = filterType' <- value
+                member this.Includes with get() = includes' and set(value) = includes' <- value
+                member this.Excludes with get() = excludes' and set(value) = excludes' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The frames in which the nucleic acid sequence has been translated as a space separated list.
-        and [<CLIMutable>] 
-                Frame =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Frame      : int
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            Frame (id:string, frame:Nullable<int>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable frame' = frame
+                let mutable rowVersion' = rowVersion
+                new() = Frame()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Frame with get() = frame' and set(value) = frame' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The parameters and settings of a SpectrumIdentification analysis.
-        and [<CLIMutable>] 
-                SpectrumIdentificationProtocol =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : string
-                mutable Name                   : string
+        and [<AllowNullLiteral>] 
+            SpectrumIdentificationProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, searchType:CVParam,
+                                            additionalSearchParams:List<AdditionalSearchParam>, modificationParams:List<SearchModification>,
+                                            enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
+                                            fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
+                                            threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
+                                            translationTables:List<TranslationTable>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
                 //Formerly AnalysisSoftware_Ref
-                AnalysisSoftware               : AnalysisSoftware
+                let mutable analysisSoftware' = analysisSoftware
                 //
-                SearchType                     : CVParam
-                mutable AdditionalSearchParams : List<AdditionalSearchParam>
-                mutable ModificationParams     : List<SearchModification>
+                let mutable searchType' = searchType
+                let mutable additionalSearchParams' = additionalSearchParams
+                let mutable modificationParams' = modificationParams
                 //Formerly Enzymes
-                mutable Enzymes                : List<Enzyme>
-                mutable Independent_Enzymes    : bool
+                let mutable enzymes' = enzymes
+                let mutable independent_Enzymes' = independent_Enzymes
                 //
-                mutable MassTables             : List<MassTable>
-                mutable FragmentTolerance      : List<FragmentToleranceParam>
-                mutable ParentTolerance        : List<ParentToleranceParam>
-                Threshold                      : List<ThresholdParam>
-                mutable DatabaseFilters        : List<Filter>
+                let mutable massTables' = massTables
+                let mutable fragmentTolerance' = fragmentTolerance
+                let mutable parentTolerance' = parentTolerance
+                let mutable threshold' = threshold
+                let mutable databaseFilters' = databaseFilters
                 //DatabaseTranlation
-                mutable Frames                 : List<Frame>
-                mutable TranslationTables      : List<TranslationTable>
+                let mutable frames' = frames
+                let mutable translationTables' = translationTables
                 //
-                RowVersion                     : DateTime
-                }
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationProtocol()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
+                member this.SearchType with get() = searchType' and set(value) = searchType' <- value
+                member this.AdditionalSearchParams with get() = additionalSearchParams' and set(value) = additionalSearchParams' <- value
+                member this.ModificationParams with get() = modificationParams' and set(value) = modificationParams' <- value
+                member this.Enzymes with get() = enzymes' and set(value) = enzymes' <- value
+                member this.Independent_Enzymes with get() = independent_Enzymes' and set(value) = independent_Enzymes' <- value
+                member this.MassTables with get() = massTables' and set(value) = massTables' <- value
+                member this.FragmentTolerance with get() = fragmentTolerance' and set(value) = fragmentTolerance' <- value
+                member this.ParentTolerance with get() = parentTolerance' and set(value) = parentTolerance' <- value
+                member this.Threshold with get() = threshold' and set(value) = threshold' <- value
+                member this.DatabaseFilters with get() = databaseFilters' and set(value) = databaseFilters' <- value
+                member this.Frames with get() = frames' and set(value) = frames' <- value
+                member this.TranslationTables with get() = translationTables' and set(value) = translationTables' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A database for searching mass spectra.
-        and [<CLIMutable>] 
-                SearchDatabase =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : string
-                mutable Name                        : string
-                Location                            : string
-                mutable NumDatabaseSequences        : int64
-                mutable NumResidues                 : int64
-                mutable ReleaseDate                 : DateTime
-                mutable Version                     : string
-                mutable ExternalFormatDocumentation : string
-                FileFormat                          : CVParam
-                DatabaseName                        : CVParam
-                mutable Details                     : List<SearchDatabaseParam>
-                RowVersion                          : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:int64, numResidues:int64,
+                            releaseDate:DateTime, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
+                            databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable location' = location
+                let mutable numDatabaseSequences' = numDatabaseSequences
+                let mutable numResidues' = numResidues
+                let mutable releaseDate' = releaseDate
+                let mutable version' = version
+                let mutable externalFormatDocumentation' = externalFormatDocumentation
+                let mutable fileFormat' = fileFormat
+                let mutable databaseName' = databaseName
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = SearchDatabase()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Location with get() = location' and set(value) = location' <- value
+                member this.NumDatabaseSequences with get() = numDatabaseSequences' and set(value) = numDatabaseSequences' <- value
+                member this.NumResidues with get() = numResidues' and set(value) = numResidues' <- value
+                member this.ReleaseDate with get() = releaseDate' and set(value) = releaseDate' <- value
+                member this.Version with get() = version' and set(value) = version' <- value
+                member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
+                member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
+                member this.DatabaseName with get() = databaseName' and set(value) = databaseName' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
         and [<CLIMutable>] 
