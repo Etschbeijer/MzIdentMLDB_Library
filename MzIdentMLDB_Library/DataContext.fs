@@ -12,717 +12,657 @@ module DataContext =
     module EntityTypes =
         open System.Data
 
-        type [<CLIMutable>] 
-            Term =
-            {
-                ID               : string
-                mutable Name     : string
-                mutable Ontology : Ontology
-                RowVersion       : DateTime 
-            }
+        //type [<CLIMutable>] 
+        //    Term =
+        //    {
+        //        ID               : string
+        //        mutable Name     : string
+        //        mutable Ontology : Ontology
+        //        RowVersion       : DateTime 
+        //    }
 
+        type [<AllowNullLiteral>]
+            Term (id:string, name:string, ontology:Ontology, rowVersion:DateTime) =
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable ontology'   = ontology
+                let mutable rowVersion' = rowVersion
+                new() = Term()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Ontology with get() = ontology' and set(value) = ontology' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+        
+    
         ///Standarized vocabulary for MS-Database.
-        and [<CLIMutable>] 
-            Ontology = 
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
-                ID                : string
-                mutable Terms     : List<Term>
-                mutable MzIdentML : MzIdentML
-                RowVersion        : DateTime
-            }
+        and [<AllowNullLiteral>]
+            Ontology (id:string, terms:List<Term>, rowVersion:DateTime) =
+                let mutable id'         = id
+                let mutable terms'      = terms
+                let mutable rowVersion' = rowVersion
+                new() = Ontology()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Terms with get() = terms' and set(value) = terms' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and CVParamBase =
-            abstract member ID         : int
-            abstract member Name       : string
-            abstract member Value      : string
-            abstract member Term       : Term
-            abstract member Unit       : Term
-            abstract member UnitName   : string
-            abstract member RowVersion : DateTime
+        and [<AllowNullLiteral>] [<Table("CVParams")>]
+            CVParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = CVParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("CVParams")>]
-            CVParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            } 
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("OrganizationParams")>]
+            OrganizationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = OrganizationParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("OrganizationParams")>]
-            OrganizationParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("PersonParams")>]
+            PersonParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = PersonParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("PersonParams")>]
-            PersonParam =
-            {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SampleParams")>]
+            SampleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SampleParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SampleParams")>]
-            SampleParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ModificationParams")>]
+            ModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ModificationParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ModificationParams")>]
-            ModificationParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("PeptideParams")>]
+            PeptideParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = PeptideParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("PeptideParams")>]
-            PeptideParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
+            TranslationTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = TranslationTableParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("TranslationTableParams")>]
-            TranslationTableParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("MeasureParams")>]
+            MeasureParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = MeasureParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("MeasureParams")>]
-            MeasureParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
+            AmbiguousResidueParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = AmbiguousResidueParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("AmbiguousResidueParams")>]
-            AmbiguousResidueParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("MassTableParams")>]
+            MassTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = MassTableParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("MassTableParams")>]
-            MassTableParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("IonTypeParams")>]
+            IonTypeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = IonTypeParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("IonTypeParams")>]
-            IonTypeParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
+            SpecificityRuleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SpecificityRuleParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SpecificityRuleParams")>]
-            SpecificityRuleParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
+            SearchModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SearchModificationParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SearchModificationParams")>]
-            SearchModificationParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
+            EnzymeNameParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = EnzymeNameParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("EnzymeNameParams")>]
-            EnzymeNameParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("IncludeParams")>]
+            IncludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = IncludeParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("IncludeParams")>]
-            IncludeParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ExcludeParams")>]
+            ExcludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ExcludeParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ExcludeParams")>]
-            ExcludeParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
+            AdditionalSearchParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = AdditionalSearchParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("AdditionalSearchParams")>]
-            AdditionalSearchParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
+            FragmentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = FragmentToleranceParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("FragmentToleranceParams")>]
-            FragmentToleranceParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
+            ParentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ParentToleranceParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ParentToleranceParams")>]
-            ParentToleranceParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ThresholdParams")>]
+            ThresholdParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ThresholdParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ThresholdParams")>]
-            ThresholdParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
+            SearchDatabaseParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SearchDatabaseParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SearchDatabaseParams")>]
-            SearchDatabaseParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
+            DBSequenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = DBSequenceParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("DBSequenceParams")>]
-            DBSequenceParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
+            PeptideEvidenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = PeptideEvidenceParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("PeptideEvidenceParams")>]
-            PeptideEvidenceParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
+            SpectrumIdentificationItemParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationItemParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SpectrumIdentificationItemParams")>]
-            SpectrumIdentificationItemParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
+            SpectrumIdentificationResultParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationResultParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SpectrumIdentificationResultParams")>]
-            SpectrumIdentificationResultParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
+            SpectrumIdentificationListParam(id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationListParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SpectrumIdentificationListParams")>]
-            SpectrumIdentificationListParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
+            AnalysisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = AnalysisParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("AnalysisParams")>]
-            AnalysisParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("SourceFileParams")>]
+            SourceFileParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = SourceFileParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("SourceFileParams")>]
-            SourceFileParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
+            ProteinDetectionHypothesisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetectionHypothesisParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ProteinDetectionHypothesisParams")>]
-            ProteinDetectionHypothesisParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
+            ProteinAmbiguityGroupParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ProteinAmbiguityGroupParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ProteinAmbiguityGroupParams")>]
-            ProteinAmbiguityGroupParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
-
-        ///A single entry from an ontology or a controlled vocabulary.
-        and [<CLIMutable>] [<Table("ProteinDetectionListParams")>]
-            ProteinDetectionListParam =
-            {
-                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
-                ID                 : int
-                Name               : string
-                mutable Value      : string
-                Term               : Term
-                mutable Unit       : Term
-                mutable UnitName   : string
-                RowVersion         : DateTime 
-            }
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Name       = x.Name
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.UnitName   = x.UnitName
-                member x.RowVersion = x.RowVersion
+        and [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
+            ProteinDetectionListParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+                inherit CVParam()
+                let mutable id'         = id
+                let mutable name'       = name
+                let mutable value'      = value
+                let mutable term'       = term
+                let mutable unit'       = unit
+                let mutable unitName'   = unitName
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetectionListParam()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.Term with get() = term' and set(value) = term' <- value
+                member this.Unit with get() = unit' and set(value) = unit' <- value
+                member this.UnitName with get() = unitName' and set(value) = unitName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         /////A single entry from an ontology or a controlled vocabulary.
         //and [<CLIMutable>] 
@@ -739,247 +679,305 @@ module DataContext =
         //    }
 
         ///Organizations are entities like companies, universities, government agencies.
-        and [<CLIMutable>] 
-                Organization =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID              : string
-                mutable Name    : string
-                mutable Details : List<OrganizationParam>
-                //Formerly Parent/Organization_Ref
-                mutable Parent  : string
-                //
-                RowVersion      : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Organization (id:string, name:string, details:List<OrganizationParam>, parent:string, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable details' = details
+                let mutable parent' = parent
+                let mutable rowVersion' = rowVersion
+                new() = Organization()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Parent with get() = parent' and set(value) = parent' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A person's name and contact details.
-        and [<CLIMutable>] 
-                Person =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : string
-                mutable Name           : string
-                mutable FirstName      : string
-                mutable MidInitials    : string
-                mutable LastName       : string
-                //Formerly Organization_Ref
-                mutable Organizations  : List<Organization>
-                //
-                mutable Details        : List<PersonParam>
-                RowVersion             : DateTime
-                //CVParams_Organization   : List<CVParam>
-                //UserParams_Organization : List<UserParam>
-                }
+        and [<AllowNullLiteral>]
+            Person (id:string, name:string, firstName:string, midInitials:string, 
+                    lastName:string, organizations:List<Organization>, 
+                    details:List<PersonParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable firstName' = firstName
+                let mutable midInitials' = midInitials
+                let mutable lastName' = lastName
+                let mutable organizations' = organizations
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = Person()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.FisrstName with get() = firstName' and set(value) = firstName' <- value
+                member this.MidInitials with get() = midInitials' and set(value) = midInitials' <- value
+                member this.LastName with get() = lastName' and set(value) = lastName' <- value
+                member this.Organizations with get() = organizations' and set(value) = organizations' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The software used for performing the analyses.
-        and [<CLIMutable>] 
-            ContactRole =
-            {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                //Formerly Contact_Ref
-                Person     : Person
-                //
-                Role       : CVParam
-                RowVersion : DateTime
-            }
-
+        and [<AllowNullLiteral>]
+            ContactRole (id:string, name:string, role:CVParam, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable role' = role
+                let mutable rowVersion' = rowVersion
+                new() = ContactRole()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Role with get() = role' and set(value) = role' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
         ///The software used for performing the analyses.
-        and [<CLIMutable>] 
-            AnalysisSoftware =
-            {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : string
-                mutable Name           : string
-                mutable URI            : string
-                mutable Version        : string
-                mutable Customizations : string
-                mutable ContactRole    : ContactRole
-                SoftwareName           : CVParam
-                RowVersion             : DateTime
-            }
+        and [<AllowNullLiteral>]
+            AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, 
+                              contactRole:ContactRole, softwareName:CVParam, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable uri' = uri
+                let mutable version' = version
+                let mutable customization' = contactRole
+                let mutable softwareName' = softwareName
+                let mutable rowVersion' = rowVersion
+                new() = AnalysisSoftware()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.URI with get() = uri' and set(value) = uri' <- value
+                member this.Version with get() = version' and set(value) = version' <- value
+                member this.Customization with get() = customization' and set(value) = customization' <- value
+                member this.SoftwareName with get() = softwareName' and set(value) = softwareName' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///References to the individual component samples within a mixed parent sample.
-        and [<CLIMutable>] 
-                SubSample =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                  : string
-                //Formerly Sample_Ref
-                mutable Sample      : Sample
-                //
-                RowVersion          : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SubSample (id:string, sample:Sample, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable sample' = sample
+                let mutable rowVersion' = rowVersion
+                new() = SubSample()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Sample with get() = sample' and set(value) = sample' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
-        and [<CLIMutable>] 
-                Sample =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                   : string
-                mutable Name         : string
-                mutable ContactRoles : List<ContactRole>
-                mutable SubSamples   : List<SubSample>
-                mutable Details      : List<SampleParam>
-                RowVersion           : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Sample (id:string, name:string, contactRoles:List<CVParam>, subSamples:List<SubSample>, 
+                    details:List<SampleParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable contactRoles' = contactRoles
+                let mutable subSamples' = subSamples
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = Sample()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.ContactRoles with get() = contactRoles' and set(value) = contactRoles' <- value
+                member this.SubSamples with get() = subSamples' and set(value) = subSamples' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A molecule modification specification.
-        and [<CLIMutable>] 
-                Modification =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                            : string
-                mutable Residues              : string
-                mutable Location              : int
-                mutable MonoIsotopicMassDelta : float
-                mutable AvgMassDelta          : float
-                Details                       : List<ModificationParam>
-                RowVersion                    : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Modification (id:string, residues:string, location:int, monoIsotopicMassDelta:float, 
+                          avgMassDelta:float, details:List<ModificationParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable residues' = residues
+                let mutable location' = location
+                let mutable monoIsotopicMassDelta' = monoIsotopicMassDelta
+                let mutable avgMassDelta' = avgMassDelta
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = Modification()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Resiudes with get() = residues' and set(value) = residues' <- value
+                member this.Location with get() = location' and set(value) = location' <- value
+                member this.MonoIsotopicMassDelta with get() = monoIsotopicMassDelta' and set(value) = monoIsotopicMassDelta' <- value
+                member this.AvgMassDelta with get() = avgMassDelta' and set(value) = avgMassDelta' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A modification where one residue is substituted by another (amino acid change).
-        and [<CLIMutable>] 
-                SubstitutionModification =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                            : string
-                OriginalResidue               : string
-                ReplacementResidue            : string
-                mutable Location              : int
-                mutable MonoIsotopicMassDelta : float
-                mutable AvgMassDelta          : float
-                RowVersion                    : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SubstitutionModification (id:string, originalResidue:string, replacementResidue:string, location:int, 
+                                      monoIsotopicMassDelta:float, avgMassDelta:float, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable originalResidue' = originalResidue
+                let mutable replacementResidue' = replacementResidue
+                let mutable location' = location
+                let mutable monoIsotopicMassDelta' = monoIsotopicMassDelta
+                let mutable avgMassDelta' = avgMassDelta
+                let mutable rowVersion' = rowVersion
+                new() = SubstitutionModification()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.OriginalResidue with get() = originalResidue' and set(value) = originalResidue' <- value
+                member this.ReplacementResidue with get() = replacementResidue' and set(value) = replacementResidue' <- value
+                member this.Location with get() = location' and set(value) = location' <- value
+                member this.MonoIsotopicMassDelta with get() = monoIsotopicMassDelta' and set(value) = monoIsotopicMassDelta' <- value
+                member this.AvgMassDelta with get() = avgMassDelta' and set(value) = avgMassDelta' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///One (poly)peptide (a sequence with modifications).
-        and [<CLIMutable>] 
-                Peptide =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                : string
-                mutable Name                      : string
-                PeptideSequence                   : string
-                mutable Modifications             : List<Modification>
-                mutable SubstitutionModifications : List<SubstitutionModification>
-                mutable Details                   : List<PeptideParam>
-                RowVersion                        : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, 
+                     substitutionModifications:List<SubstitutionModification>, details:List<PeptideParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable peptideSequence' = peptideSequence
+                let mutable modifications' = modifications
+                let mutable substitutionModifications' = substitutionModifications
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = Peptide()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+                member this.Modifications with get() = modifications' and set(value) = modifications' <- value
+                member this.SubstitutionModifications with get() = substitutionModifications' and set(value) = substitutionModifications' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        and [<CLIMutable>] 
-                TranslationTable =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID              : string
-                mutable Name    : string
-                mutable Details : List<TranslationTableParam>
-                RowVersion      : DateTime
-                }
+        and [<AllowNullLiteral>]
+            TranslationTable (id:string, name:string, details:List<TranslationTableParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = TranslationTable()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
-        and [<CLIMutable>] 
-                Measure =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID           : string
-                mutable Name : string
-                Details      : List<MeasureParam>
-                RowVersion   : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Measure (id:string, name:string, details:List<MeasureParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = Measure()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The specification of a single residue within the mass table.
-        and [<CLIMutable>] 
-                Residue =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Code       : string
-                Mass       : float
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Residue (id:string, code:string, mass:float, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable code' = code
+                let mutable mass' = mass
+                let mutable rowVersion' = rowVersion
+                new() = Residue()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Code with get() = code' and set(value) = code' <- value
+                member this.Mass with get() = mass' and set(value) = mass' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
-        and [<CLIMutable>] 
-                AmbiguousResidue =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Code       : string
-                Details    : List<AmbiguousResidueParam>
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>]
+            AmbiguousResidue (id:string, code:string, details:List<AmbiguousResidueParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable code' = code
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = AmbiguousResidue()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Code with get() = code' and set(value) = code' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The masses of residues used in the search.
-        and [<CLIMutable>] 
-                MassTable =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                        : string
-                mutable Name              : string
-                MSLevel                   : string
-                mutable Residues          : List<Residue>
-                mutable AmbiguousResidues : List<AmbiguousResidue>
-                mutable Details           : List<MassTableParam>
-                RowVersion                : DateTime
-                }
+        and [<AllowNullLiteral>]
+            MassTable (id:string, name:string, msLevel:string, residues:List<Residue>, 
+                       ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable msLevel' = msLevel
+                let mutable residues' = residues
+                let mutable ambiguousResidues' = ambiguousResidues
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = MassTable()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.MSLevel with get() = msLevel' and set(value) = msLevel' <- value
+                member this.Residues with get() = residues' and set(value) = residues' <- value
+                member this.AmbiguousResidues with get() = ambiguousResidues' and set(value) = ambiguousResidues' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The values of this particular measure, corresponding to the index defined in ion and.
-        and [<CLIMutable>] 
-                Value =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Value      : float
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Value (id:string, value:Nullable<float>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable value' = value
+                let mutable rowVersion' = rowVersion
+                new() = Value()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Value with get() = value' and set(value) = value' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
-        and [<CLIMutable>] 
-                FragmentArray =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Measure    : Measure
-                Values     : List<Value>
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>]
+            FragmentArray (id:string, measure:Measure, values:List<Value>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable measure' = measure
+                let mutable values' = values
+                let mutable rowVersion' = rowVersion
+                new() = FragmentArray()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Measure with get() = measure' and set(value) = measure' <- value
+                member this.Values with get() = values' and set(value) = values' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
-        and [<CLIMutable>] 
-                Index =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID         : string
-                Index      : int
-                RowVersion : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Index (id:string, index:Nullable<int>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable index' = index
+                let mutable rowVersion' = rowVersion
+                new() = Index()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Index with get() = index' and set(value) = index' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
-        and [<CLIMutable>] 
-                IonType =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : string
-                mutable Index          : List<Index>
-                mutable FragmentArrays : List<FragmentArray>
-                Details                : List<IonTypeParam>
-                RowVersion             : DateTime
-                }
+        and [<AllowNullLiteral>]
+            IonType (id:string, index:List<Index>, fragmentArray:List<FragmentArray>, details:List<IonTypeParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable index' = index
+                let mutable fragmentArray' = fragmentArray
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = IonType()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Index with get() = index' and set(value) = index' <- value
+                member this.FragmentArray with get() = fragmentArray' and set(value) = fragmentArray' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A data set containing spectra data (consisting of one or more spectra).
-        and [<CLIMutable>] 
-                SpectraData =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : string
-                mutable Name                        : string
-                Location                            : string
-                mutable ExternalFormatDocumentation : string
-                FileFormat                          : CVParam
-                SpectrumIDFormat                    : CVParam
-                RowVersion                          : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SpectraData (id:string, name:string, location:string, externalFormatDocumentation:string, 
+                         fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable location' = location
+                let mutable externalFormatDocumentation' = externalFormatDocumentation
+                let mutable fileFormat' = fileFormat
+                let mutable spectrumIDFormat' = spectrumIDFormat
+                let mutable rowVersion' = rowVersion
+                new() = SpectraData()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Location with get() = location' and set(value) = location' <- value
+                member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
+                member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
+                member this.SpectrumIDFormat with get() = spectrumIDFormat' and set(value) = spectrumIDFormat' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
         and [<CLIMutable>]
@@ -1354,7 +1352,7 @@ module DataContext =
 
         and [<AllowNullLiteral>]
             MzIdentML(
-                      id:int, version:string, ontologies:List<Ontology>, spectrumIdentification:List<SpectrumIdentification>, 
+                      id:int, version:string, spectrumIdentification:List<SpectrumIdentification>, 
                       spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, inputs:Inputs, analysisData:AnalysisData, rowVersion:DateTime,
                       name:string, analysisSoftwares:List<AnalysisSoftware>, provider:Provider, persons:List<Person>, 
                       organizations:List<Organization>, samples:List<Sample>, dbSequences:List<DBSequence>, peptides:List<Peptide>,
@@ -1363,7 +1361,6 @@ module DataContext =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable version' = version
-                let mutable ontologies' = ontologies
                 let mutable analysisSoftwares' = analysisSoftwares
                 let mutable provider' = provider
                 let mutable persons' = persons
@@ -1386,9 +1383,6 @@ module DataContext =
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Version with get() = version' and set(value) = version' <- value
-                //Formerly CVList
-                member this.Ontologies with get() = ontologies' and set(value) = ontologies' <- value
-                //
                 //Formerly AnalysisSoftwareList
                 member this. AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
                 //
@@ -1419,48 +1413,7 @@ module DataContext =
                 //
                 member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-
-        /////The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results (spectrum identifications or protein detection results). 
-        //and [<CLIMutable>] 
-        //        MzIdentML =
-        //        {
-        //        ID                               : int
-        //        mutable Name                     : string
-        //        Version                          : string
-        //        //Formerly CVList
-        //        Ontologies                       : List<Ontology>
-        //        //
-        //        //Formerly AnalysisSoftwareList
-        //        mutable AnalysisSoftwares        : List<AnalysisSoftware>
-        //        //
-        //        mutable Provider                 : Provider
-        //        //Formerly AuditCollection
-        //        mutable Persons                  : List<Person>
-        //        mutable Organizations            : List<Organization>
-        //        //
-        //        //Formerly AnalysisSampleCollection
-        //        mutable Samples                  : List<Sample>
-        //        //
-        //        //Formerly SequenceCollection
-        //        mutable DBSequences              : List<DBSequence>
-        //        mutable Peptides                 : List<Peptide>
-        //        mutable PeptideEvidences         : List<PeptideEvidence>
-        //        //
-        //        //AnalysisCollection
-        //        SpectrumIdentification           : List<SpectrumIdentification>
-        //        mutable ProteinDetection         : ProteinDetection
-        //        //
-        //        //AnalysisProtocolCollection
-        //        SpectrumIdentificationProtocol   : List<SpectrumIdentificationProtocol>
-        //        mutable ProteinDetectionProtocol : ProteinDetectionProtocol
-        //        //
-        //        //DataCollection
-        //        Inputs                           : Inputs
-        //        AnalysisData                     : AnalysisData
-        //        //
-        //        mutable BiblioGraphicReferences  : List<BiblioGraphicReference> 
-        //        RowVersion                       : DateTime
-        //        }
+    
 
     module DataContext =
 
@@ -1878,6 +1831,13 @@ module DataContext =
                 //            .WithMany("Details")
                 //            .HasForeignKey("FK")
                 //            .OnDelete(DeleteBehavior.Cascade)|> ignore
+        let fileDir = __SOURCE_DIRECTORY__
+        let standardDBPathSQLite = fileDir + "\Databases\Test.db"
+
+        let configureSQLiteContextMzIdentML path = 
+            let optionsBuilder = new DbContextOptionsBuilder<MzIdentMLContext>()
+            optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
+            new MzIdentMLContext(optionsBuilder.Options)
 
         type OntologyContext =
      
