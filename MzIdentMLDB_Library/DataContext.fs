@@ -65,7 +65,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("OrganizationParams")>]
             OrganizationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -85,7 +85,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PersonParams")>]
             PersonParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -105,7 +105,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SampleParams")>]
             SampleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -125,7 +125,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ModificationParams")>]
             ModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -145,7 +145,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideParams")>]
             PeptideParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -165,7 +165,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
             TranslationTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -185,7 +185,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MeasureParams")>]
             MeasureParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -205,7 +205,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
             AmbiguousResidueParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -225,7 +225,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MassTableParams")>]
             MassTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -245,7 +245,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IonTypeParams")>]
             IonTypeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -265,7 +265,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
             SpecificityRuleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -285,7 +285,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
             SearchModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -305,7 +305,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
             EnzymeNameParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -325,7 +325,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IncludeParams")>]
             IncludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -345,7 +345,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ExcludeParams")>]
             ExcludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -365,7 +365,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
             AdditionalSearchParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -385,7 +385,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
             FragmentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -405,7 +405,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
             ParentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -425,7 +425,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ThresholdParams")>]
             ThresholdParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -445,7 +445,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
             SearchDatabaseParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -465,7 +465,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
             DBSequenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -485,7 +485,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
             PeptideEvidenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -505,7 +505,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
             SpectrumIdentificationItemParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -525,7 +525,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
             SpectrumIdentificationResultParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -545,7 +545,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
             SpectrumIdentificationListParam(id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -565,7 +565,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
             AnalysisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -585,7 +585,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SourceFileParams")>]
             SourceFileParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -605,7 +605,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
             ProteinDetectionHypothesisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -625,7 +625,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
             ProteinAmbiguityGroupParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -645,7 +645,7 @@ module DataContext =
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
             ProteinDetectionListParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                inherit CVParam()
+                //inherit CVParam()
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -1069,7 +1069,8 @@ module DataContext =
                                             enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
                                             fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                             threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
-                                            translationTables:List<TranslationTable>, rowVersion:DateTime) =
+                                            translationTables:List<TranslationTable>, rowVersion:DateTime
+                                           ) =
                 let mutable id' = id
                 let mutable name' = name
                 //Formerly AnalysisSoftware_Ref
@@ -1331,13 +1332,13 @@ module DataContext =
 
         ///A file from which this mzIdentML instance was created.
         and [<AllowNullLiteral>] 
-            SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormat_CVParam,
+            SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormatParam:CVParam,
                         details:List<SourceFileParam>, rowVersion:DateTime) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable location' = location
                 let mutable externalFormatDocumentation' = externalFormatDocumentation
-                let mutable fileFormat_CVParam' = fileFormat_CVParam
+                let mutable fileFormatParam' = fileFormatParam
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
                 new() = SourceFile()
@@ -1345,7 +1346,7 @@ module DataContext =
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Location with get() = location' and set(value) = location' <- value
                 member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
-                member this.FileFormat_CVParam with get() = fileFormat_CVParam' and set(value) = fileFormat_CVParam' <- value
+                member this.FileFormatParam with get() = fileFormatParam' and set(value) = fileFormatParam' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
@@ -1519,12 +1520,26 @@ module DataContext =
         ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
         and [<AllowNullLiteral>]
             MzIdentML(
-                      id:int, version:string, spectrumIdentification:List<SpectrumIdentification>, 
-                      spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, inputs:Inputs, analysisData:AnalysisData, rowVersion:DateTime,
-                      name:string, analysisSoftwares:List<AnalysisSoftware>, provider:Provider, persons:List<Person>, 
-                      organizations:List<Organization>, samples:List<Sample>, dbSequences:List<DBSequence>, peptides:List<Peptide>,
-                      peptideEvidences:List<PeptideEvidence>, proteinDetection:ProteinDetection, proteinDetectionProtocol:ProteinDetectionProtocol,
-                      biblioGraphicReferences:List<BiblioGraphicReference>) =
+                      id:int,
+                      name:string, 
+                      version:string,
+                      analysisSoftwares:List<AnalysisSoftware>,
+                      provider:Provider,
+                      persons:List<Person>, 
+                      organizations:List<Organization>, 
+                      samples:List<Sample>, 
+                      dbSequences:List<DBSequence>, 
+                      peptides:List<Peptide>,
+                      peptideEvidences:List<PeptideEvidence>, 
+                      spectrumIdentification:List<SpectrumIdentification>, 
+                      proteinDetection:ProteinDetection, 
+                      spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
+                      proteinDetectionProtocol:ProteinDetectionProtocol,
+                      inputs:Inputs,
+                      analysisData:AnalysisData,
+                      biblioGraphicReferences:List<BiblioGraphicReference>,
+                      rowVersion:DateTime
+                     ) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable version' = version

@@ -26,7 +26,7 @@ open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataContext.DataContext
 open MzIdentMLDataBase.DataContext.EntityTypes
 
-//open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 //open MzIdentMLDataBase.InsertStatements.ManipulateDataContextAndDB
 //open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 //open MzIdentMLDataBase.XMLParsing
@@ -36,8 +36,14 @@ let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 context.Database.EnsureCreated()
 //initStandardDB context
 
-let a = new Value("Test",Nullable(), DateTime.Now)
-
+let y =
+    MzIdentMLHandler.init("Test", 
+                          [new SpectrumIdentification(null, null, Nullable(), null, null, null, null, DateTime.Now)], 
+                          [new SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, DateTime.Now)],
+                          new Inputs(null, null, null, null, DateTime.Now),
+                          new AnalysisData(null, null, null, DateTime.Now),
+                          1
+                         )
 
 //let termTestI =
 //    let termBasic =
