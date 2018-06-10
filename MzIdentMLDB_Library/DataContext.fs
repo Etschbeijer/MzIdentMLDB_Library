@@ -20,12 +20,14 @@ module DataContext =
         //    }
 
         type [<AllowNullLiteral>]
-            Term (id:string, name:string, ontology:Ontology, rowVersion:DateTime) =
+            Term (id:string, name:string, ontology:Ontology, rowVersion:Nullable<DateTime>) =
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable ontology'   = ontology
                 let mutable rowVersion' = rowVersion
-                new() = Term()
+
+                new() = Term(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Ontology with get() = ontology' and set(value) = ontology' <- value
@@ -34,18 +36,20 @@ module DataContext =
     
         ///Standarized vocabulary for MS-Database.
         and [<AllowNullLiteral>]
-            Ontology (id:string, terms:List<Term>, rowVersion:DateTime) =
+            Ontology (id:string, terms:List<Term>, rowVersion:Nullable<DateTime>) =
                 let mutable id'         = id
                 let mutable terms'      = terms
                 let mutable rowVersion' = rowVersion
-                new() = Ontology()
+
+                new() = Ontology(null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Terms with get() = terms' and set(value) = terms' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("CVParams")>]
-            CVParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
+            CVParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =  
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -53,7 +57,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = CVParam()
+
+                new() = CVParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -64,8 +71,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("OrganizationParams")>]
-            OrganizationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            OrganizationParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -73,7 +80,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = OrganizationParam()
+
+                new() = OrganizationParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -84,8 +94,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PersonParams")>]
-            PersonParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            PersonParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -93,7 +103,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = PersonParam()
+
+                new() = PersonParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -104,8 +117,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SampleParams")>]
-            SampleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SampleParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -113,7 +126,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SampleParam()
+
+                new() = SampleParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -124,8 +140,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ModificationParams")>]
-            ModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ModificationParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -133,7 +149,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ModificationParam()
+
+                new() = ModificationParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -144,8 +163,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideParams")>]
-            PeptideParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            PeptideParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -153,7 +172,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = PeptideParam()
+
+                new() = PeptideParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -164,8 +186,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
-            TranslationTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            TranslationTableParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -173,7 +195,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = TranslationTableParam()
+
+                new() = TranslationTableParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -184,8 +209,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MeasureParams")>]
-            MeasureParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            MeasureParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -193,7 +218,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = MeasureParam()
+
+                new() = MeasureParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -204,8 +232,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
-            AmbiguousResidueParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            AmbiguousResidueParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -213,7 +241,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = AmbiguousResidueParam()
+
+                new() = AmbiguousResidueParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -224,8 +255,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MassTableParams")>]
-            MassTableParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            MassTableParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -233,7 +264,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = MassTableParam()
+
+                new() = MassTableParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -244,8 +278,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IonTypeParams")>]
-            IonTypeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            IonTypeParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -253,7 +287,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = IonTypeParam()
+
+                new() = IonTypeParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -264,8 +301,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
-            SpecificityRuleParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SpecificityRuleParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -273,7 +310,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SpecificityRuleParam()
+
+                new() = SpecificityRuleParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -284,8 +324,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
-            SearchModificationParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SearchModificationParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -293,7 +333,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SearchModificationParam()
+
+                new() = SearchModificationParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -304,8 +347,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
-            EnzymeNameParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            EnzymeNameParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -313,7 +356,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = EnzymeNameParam()
+
+                new() = EnzymeNameParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -324,8 +370,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IncludeParams")>]
-            IncludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            IncludeParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -333,7 +379,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = IncludeParam()
+
+                new() = IncludeParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -344,8 +393,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ExcludeParams")>]
-            ExcludeParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ExcludeParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -353,7 +402,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ExcludeParam()
+
+                new() = ExcludeParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -364,8 +416,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
-            AdditionalSearchParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            AdditionalSearchParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -373,7 +425,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = AdditionalSearchParam()
+
+                new() = AdditionalSearchParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -384,8 +439,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
-            FragmentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            FragmentToleranceParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -393,7 +448,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = FragmentToleranceParam()
+
+                new() = FragmentToleranceParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -404,8 +462,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
-            ParentToleranceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ParentToleranceParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -413,7 +471,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ParentToleranceParam()
+
+                new() = ParentToleranceParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -424,8 +485,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ThresholdParams")>]
-            ThresholdParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ThresholdParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -433,7 +494,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ThresholdParam()
+
+                new() = ThresholdParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -444,8 +508,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
-            SearchDatabaseParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SearchDatabaseParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -453,7 +517,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SearchDatabaseParam()
+
+                new() = SearchDatabaseParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -464,8 +531,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
-            DBSequenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            DBSequenceParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -473,7 +540,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = DBSequenceParam()
+
+                new() = DBSequenceParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -484,8 +554,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
-            PeptideEvidenceParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            PeptideEvidenceParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -493,7 +563,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = PeptideEvidenceParam()
+
+                new() = PeptideEvidenceParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -504,8 +577,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
-            SpectrumIdentificationItemParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SpectrumIdentificationItemParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -513,7 +586,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationItemParam()
+
+                new() = SpectrumIdentificationItemParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -524,8 +600,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
-            SpectrumIdentificationResultParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SpectrumIdentificationResultParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -533,7 +609,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationResultParam()
+
+                new() = SpectrumIdentificationResultParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -544,8 +623,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
-            SpectrumIdentificationListParam(id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SpectrumIdentificationListParam(id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -553,7 +632,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationListParam()
+
+                new() = SpectrumIdentificationListParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -564,8 +646,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
-            AnalysisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            AnalysisParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -573,7 +655,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = AnalysisParam()
+
+                new() = AnalysisParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -584,8 +669,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SourceFileParams")>]
-            SourceFileParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            SourceFileParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -593,7 +678,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = SourceFileParam()
+
+                new() = SourceFileParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -604,8 +692,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
-            ProteinDetectionHypothesisParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ProteinDetectionHypothesisParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -613,7 +701,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetectionHypothesisParam()
+
+                new() = ProteinDetectionHypothesisParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -624,8 +715,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
-            ProteinAmbiguityGroupParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ProteinAmbiguityGroupParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -633,7 +724,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ProteinAmbiguityGroupParam()
+
+                new() = ProteinAmbiguityGroupParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -644,8 +738,8 @@ module DataContext =
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
-            ProteinDetectionListParam (id:int, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:DateTime) =
-                //inherit CVParam()
+            ProteinDetectionListParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =
+                //inherit CVParam(null, null, null, null, null, null, Nullable())
                 let mutable id'         = id
                 let mutable name'       = name
                 let mutable value'      = value
@@ -653,7 +747,10 @@ module DataContext =
                 let mutable unit'       = unit
                 let mutable unitName'   = unitName
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetectionListParam()
+
+                new() = ProteinDetectionListParam(null, null, null, null, null, null, Nullable())
+
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
@@ -678,13 +775,15 @@ module DataContext =
 
         ///Organizations are entities like companies, universities, government agencies.
         and [<AllowNullLiteral>]
-            Organization (id:string, name:string, details:List<OrganizationParam>, parent:string, rowVersion:DateTime) =
+            Organization (id:string, name:string, details:List<OrganizationParam>, parent:string, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable details' = details
                 let mutable parent' = parent
                 let mutable rowVersion' = rowVersion
-                new() = Organization()
+
+                new() = Organization(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Parent with get() = parent' and set(value) = parent' <- value
@@ -695,7 +794,7 @@ module DataContext =
         and [<AllowNullLiteral>]
             Person (id:string, name:string, firstName:string, midInitials:string, 
                     lastName:string, organizations:List<Organization>, 
-                    details:List<PersonParam>, rowVersion:DateTime) =
+                    details:List<PersonParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable firstName' = firstName
@@ -704,10 +803,12 @@ module DataContext =
                 let mutable organizations' = organizations
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = Person()
+
+                new() = Person(null, null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
-                member this.FisrstName with get() = firstName' and set(value) = firstName' <- value
+                member this.FirstName with get() = firstName' and set(value) = firstName' <- value
                 member this.MidInitials with get() = midInitials' and set(value) = midInitials' <- value
                 member this.LastName with get() = lastName' and set(value) = lastName' <- value
                 member this.Organizations with get() = organizations' and set(value) = organizations' <- value
@@ -716,58 +817,69 @@ module DataContext =
 
         ///The software used for performing the analyses.
         and [<AllowNullLiteral>]
-            ContactRole (id:string, name:string, role:CVParam, rowVersion:DateTime) =
+            ContactRole (id:string, person:Person, role:CVParam, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
-                let mutable name' = name
+                let mutable person' = person
                 let mutable role' = role
                 let mutable rowVersion' = rowVersion
-                new() = ContactRole()
+
+                new() = ContactRole(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
-                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Person with get() = person' and set(value) = person' <- value
                 member this.Role with get() = role' and set(value) = role' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
         ///The software used for performing the analyses.
         and [<AllowNullLiteral>]
             AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, 
-                              contactRole:ContactRole, softwareName:CVParam, rowVersion:DateTime) =
+                              contactRole:ContactRole, softwareName:CVParam, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable uri' = uri
                 let mutable version' = version
-                let mutable customization' = contactRole
+                let mutable customization' = customizations
+                let mutable contactRole' = contactRole
                 let mutable softwareName' = softwareName
                 let mutable rowVersion' = rowVersion
-                new() = AnalysisSoftware()
+
+                new() = AnalysisSoftware(null, null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.URI with get() = uri' and set(value) = uri' <- value
                 member this.Version with get() = version' and set(value) = version' <- value
-                member this.Customization with get() = customization' and set(value) = customization' <- value
+                member this.Customizations with get() = customization' and set(value) = customization' <- value
+                member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
                 member this.SoftwareName with get() = softwareName' and set(value) = softwareName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///References to the individual component samples within a mixed parent sample.
         and [<AllowNullLiteral>]
-            SubSample (id:string, sample:Sample, rowVersion:DateTime) =
+            SubSample (id:string, sample:Sample, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable sample' = sample
                 let mutable rowVersion' = rowVersion
-                new() = SubSample()
+
+                new() = SubSample(null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Sample with get() = sample' and set(value) = sample' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
         and [<AllowNullLiteral>]
-            Sample (id:string, name:string, contactRoles:List<CVParam>, subSamples:List<SubSample>, 
-                    details:List<SampleParam>, rowVersion:DateTime) =
+            Sample (id:string, name:string, contactRoles:List<ContactRole>, subSamples:List<SubSample>, 
+                    details:List<SampleParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable contactRoles' = contactRoles
                 let mutable subSamples' = subSamples
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = Sample()
+
+                new() = Sample(null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ContactRoles with get() = contactRoles' and set(value) = contactRoles' <- value
@@ -777,8 +889,8 @@ module DataContext =
 
         ///A molecule modification specification.
         and [<AllowNullLiteral>]
-            Modification (id:string, residues:string, location:int, monoIsotopicMassDelta:float, 
-                          avgMassDelta:float, details:List<ModificationParam>, rowVersion:DateTime) =
+            Modification (id:string, residues:string, location:Nullable<int>, monoIsotopicMassDelta:Nullable<float>, 
+                          avgMassDelta:Nullable<float>, details:List<ModificationParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable residues' = residues
                 let mutable location' = location
@@ -786,9 +898,11 @@ module DataContext =
                 let mutable avgMassDelta' = avgMassDelta
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = Modification()
+
+                new() = Modification(null, null, Nullable(), Nullable(), Nullable(), null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
-                member this.Resiudes with get() = residues' and set(value) = residues' <- value
+                member this.Residues with get() = residues' and set(value) = residues' <- value
                 member this.Location with get() = location' and set(value) = location' <- value
                 member this.MonoIsotopicMassDelta with get() = monoIsotopicMassDelta' and set(value) = monoIsotopicMassDelta' <- value
                 member this.AvgMassDelta with get() = avgMassDelta' and set(value) = avgMassDelta' <- value
@@ -797,8 +911,8 @@ module DataContext =
 
         ///A modification where one residue is substituted by another (amino acid change).
         and [<AllowNullLiteral>]
-            SubstitutionModification (id:string, originalResidue:string, replacementResidue:string, location:int, 
-                                      monoIsotopicMassDelta:float, avgMassDelta:float, rowVersion:DateTime) =
+            SubstitutionModification (id:string, originalResidue:string, replacementResidue:string, location:Nullable<int>, 
+                                      monoIsotopicMassDelta:Nullable<float>, avgMassDelta:Nullable<float>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable originalResidue' = originalResidue
                 let mutable replacementResidue' = replacementResidue
@@ -806,7 +920,9 @@ module DataContext =
                 let mutable monoIsotopicMassDelta' = monoIsotopicMassDelta
                 let mutable avgMassDelta' = avgMassDelta
                 let mutable rowVersion' = rowVersion
-                new() = SubstitutionModification()
+
+                new() = SubstitutionModification(null, null, null, Nullable(), Nullable(), Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.OriginalResidue with get() = originalResidue' and set(value) = originalResidue' <- value
                 member this.ReplacementResidue with get() = replacementResidue' and set(value) = replacementResidue' <- value
@@ -818,7 +934,7 @@ module DataContext =
         ///One (poly)peptide (a sequence with modifications).
         and [<AllowNullLiteral>]
             Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, 
-                     substitutionModifications:List<SubstitutionModification>, details:List<PeptideParam>, rowVersion:DateTime) =
+                     substitutionModifications:List<SubstitutionModification>, details:List<PeptideParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable peptideSequence' = peptideSequence
@@ -826,7 +942,9 @@ module DataContext =
                 let mutable substitutionModifications' = substitutionModifications
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = Peptide()
+
+                new() = Peptide(null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
@@ -837,12 +955,14 @@ module DataContext =
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
         and [<AllowNullLiteral>]
-            TranslationTable (id:string, name:string, details:List<TranslationTableParam>, rowVersion:DateTime) =
+            TranslationTable (id:string, name:string, details:List<TranslationTableParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = TranslationTable()
+
+                new() = TranslationTable(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
@@ -850,12 +970,14 @@ module DataContext =
 
         ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
         and [<AllowNullLiteral>]
-            Measure (id:string, name:string, details:List<MeasureParam>, rowVersion:DateTime) =
+            Measure (id:string, name:string, details:List<MeasureParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = Measure()
+
+                new() = Measure(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
@@ -863,12 +985,14 @@ module DataContext =
 
         ///The specification of a single residue within the mass table.
         and [<AllowNullLiteral>]
-            Residue (id:string, code:string, mass:float, rowVersion:DateTime) =
+            Residue (id:string, code:string, mass:Nullable<float>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable code' = code
                 let mutable mass' = mass
                 let mutable rowVersion' = rowVersion
-                new() = Residue()
+
+                new() = Residue(null, null, Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Code with get() = code' and set(value) = code' <- value
                 member this.Mass with get() = mass' and set(value) = mass' <- value
@@ -876,12 +1000,14 @@ module DataContext =
 
         ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
         and [<AllowNullLiteral>]
-            AmbiguousResidue (id:string, code:string, details:List<AmbiguousResidueParam>, rowVersion:DateTime) =
+            AmbiguousResidue (id:string, code:string, details:List<AmbiguousResidueParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable code' = code
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = AmbiguousResidue()
+
+                new() = AmbiguousResidue(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Code with get() = code' and set(value) = code' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
@@ -890,7 +1016,7 @@ module DataContext =
         ///The masses of residues used in the search.
         and [<AllowNullLiteral>]
             MassTable (id:string, name:string, msLevel:string, residues:List<Residue>, 
-                       ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:DateTime) =
+                       ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable msLevel' = msLevel
@@ -898,7 +1024,9 @@ module DataContext =
                 let mutable ambiguousResidues' = ambiguousResidues
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = MassTable()
+
+                new() = MassTable(null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.MSLevel with get() = msLevel' and set(value) = msLevel' <- value
@@ -909,23 +1037,27 @@ module DataContext =
 
         ///The values of this particular measure, corresponding to the index defined in ion and.
         and [<AllowNullLiteral>]
-            Value (id:string, value:Nullable<float>, rowVersion:DateTime) =
+            Value (id:string, value:Nullable<float>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable value' = value
                 let mutable rowVersion' = rowVersion
-                new() = Value()
+
+                new() = Value(null, Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Value with get() = value' and set(value) = value' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
         and [<AllowNullLiteral>]
-            FragmentArray (id:string, measure:Measure, values:List<Value>, rowVersion:DateTime) =
+            FragmentArray (id:string, measure:Measure, values:List<Value>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable measure' = measure
                 let mutable values' = values
                 let mutable rowVersion' = rowVersion
-                new() = FragmentArray()
+
+                new() = FragmentArray(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Measure with get() = measure' and set(value) = measure' <- value
                 member this.Values with get() = values' and set(value) = values' <- value
@@ -933,34 +1065,40 @@ module DataContext =
 
         ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
         and [<AllowNullLiteral>]
-            Index (id:string, index:Nullable<int>, rowVersion:DateTime) =
+            Index (id:string, index:Nullable<int>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable index' = index
                 let mutable rowVersion' = rowVersion
-                new() = Index()
+
+                new() = Index(null, Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Index with get() = index' and set(value) = index' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
         and [<AllowNullLiteral>]
-            IonType (id:string, index:List<Index>, fragmentArray:List<FragmentArray>, details:List<IonTypeParam>, rowVersion:DateTime) =
+            IonType (id:string, index:List<Index>, fragmentArrays:List<FragmentArray>, 
+                     details:List<IonTypeParam>, rowVersion:Nullable<DateTime>
+                    ) =
                 let mutable id' = id
                 let mutable index' = index
-                let mutable fragmentArray' = fragmentArray
+                let mutable fragmentArrays' = fragmentArrays
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = IonType()
+
+                new() = IonType(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Index with get() = index' and set(value) = index' <- value
-                member this.FragmentArray with get() = fragmentArray' and set(value) = fragmentArray' <- value
+                member this.FragmentArrays with get() = fragmentArrays' and set(value) = fragmentArrays' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A data set containing spectra data (consisting of one or more spectra).
         and [<AllowNullLiteral>]
             SpectraData (id:string, name:string, location:string, externalFormatDocumentation:string, 
-                         fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:DateTime) =
+                         fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable location' = location
@@ -968,7 +1106,9 @@ module DataContext =
                 let mutable fileFormat' = fileFormat
                 let mutable spectrumIDFormat' = spectrumIDFormat
                 let mutable rowVersion' = rowVersion
-                new() = SpectraData()
+
+                new() = SpectraData(null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Location with get() = location' and set(value) = location' <- value
@@ -980,20 +1120,21 @@ module DataContext =
         ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
         and [<AllowNullLiteral>]
             //Formerly Specificityrules
-            SpecificityRule (id:string, details:List<SpecificityRuleParam>, rowVersion:DateTime) =
+            SpecificityRule (id:string, details:List<SpecificityRuleParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
             //
-                new() = SpecificityRule()
+                new() = SpecificityRule(null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Specification of a search modification as parameter for a spectra search.
         and [<AllowNullLiteral>]
-            SearchModification (id:string, fixedMod:bool, massDelta:float, residues:string, specificityRules:list<SpecificityRule>, 
-                                searchModificationParams:List<SearchModificationParam>, rowVersion:DateTime) =
+            SearchModification (id:string, fixedMod:Nullable<bool>, massDelta:Nullable<float>, residues:string, specificityRules:List<SpecificityRule>, 
+                                searchModificationParams:List<SearchModificationParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable fixedMod' = fixedMod
                 let mutable massDelta' = massDelta
@@ -1001,7 +1142,9 @@ module DataContext =
                 let mutable specificityRules' = specificityRules
                 let mutable searchModificationParams' = searchModificationParams
                 let mutable rowVersion' = rowVersion
-                new() = SearchModification()
+
+                new() = SearchModification(null, Nullable(), Nullable(), null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.FixedMod with get() = fixedMod' and set(value) = fixedMod' <- value
                 member this.MassDelta with get() = massDelta' and set(value) = massDelta' <- value
@@ -1012,8 +1155,8 @@ module DataContext =
 
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
         and [<AllowNullLiteral>]
-            Enzyme (id:string, name:string, cTermGain:string, nTermGain:string, minDistance:int, missedCleavages:int, 
-                    semiSpecific:bool, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:DateTime) =
+            Enzyme (id:string, name:string, cTermGain:string, nTermGain:string, minDistance:Nullable<int>, missedCleavages:Nullable<int>, 
+                    semiSpecific:Nullable<bool>, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable cTermGain' = cTermGain
@@ -1024,7 +1167,9 @@ module DataContext =
                 let mutable siteRegexc' = siteRegexc
                 let mutable enzymeName' = enzymeName
                 let mutable rowVersion' = rowVersion
-                new() = Enzyme()
+
+                new() = Enzyme(null, null, null, null, Nullable(), Nullable(), Nullable(), null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.CTermGain with get() = cTermGain' and set(value) = cTermGain' <- value
@@ -1032,19 +1177,21 @@ module DataContext =
                 member this.MinDistance with get() = minDistance' and set(value) = minDistance' <- value
                 member this.MissedCleavages with get() = missedCleavages' and set(value) = missedCleavages' <- value
                 member this.SemiSpecific with get() = semiSpecific' and set(value) = semiSpecific' <- value
-                member this.SiteRegex with get() = siteRegexc' and set(value) = siteRegexc' <- value
+                member this.SiteRegexc with get() = siteRegexc' and set(value) = siteRegexc' <- value
                 member this.EnzymeName with get() = enzymeName' and set(value) = enzymeName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
         and [<AllowNullLiteral>]
-            Filter (id:string, filterType:CVParam, includes:List<IncludeParam>, excludes:List<ExcludeParam>, rowVersion:DateTime) =
+            Filter (id:string, filterType:CVParam, includes:List<IncludeParam>, excludes:List<ExcludeParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable filterType' = filterType
                 let mutable includes' = includes
                 let mutable excludes' = excludes
                 let mutable rowVersion' = rowVersion
-                new() = Filter()
+
+                new() = Filter(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.FilterType with get() = filterType' and set(value) = filterType' <- value
                 member this.Includes with get() = includes' and set(value) = includes' <- value
@@ -1053,11 +1200,13 @@ module DataContext =
 
         ///The frames in which the nucleic acid sequence has been translated as a space separated list.
         and [<AllowNullLiteral>] 
-            Frame (id:string, frame:Nullable<int>, rowVersion:DateTime) =
+            Frame (id:string, frame:Nullable<int>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable frame' = frame
                 let mutable rowVersion' = rowVersion
-                new() = Frame()
+
+                new() = Frame(null, Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Frame with get() = frame' and set(value) = frame' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -1069,7 +1218,7 @@ module DataContext =
                                             enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
                                             fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                             threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
-                                            translationTables:List<TranslationTable>, rowVersion:DateTime
+                                            translationTables:List<TranslationTable>, rowVersion:Nullable<DateTime>
                                            ) =
                 let mutable id' = id
                 let mutable name' = name
@@ -1093,7 +1242,9 @@ module DataContext =
                 let mutable translationTables' = translationTables
                 //
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationProtocol()
+
+                new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
@@ -1113,9 +1264,9 @@ module DataContext =
 
         ///A database for searching mass spectra.
         and [<AllowNullLiteral>]
-            SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:int64, numResidues:int64,
-                            releaseDate:DateTime, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
-                            databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:DateTime) =
+            SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:Nullable<int64>, numResidues:Nullable<int64>,
+                            releaseDate:Nullable<DateTime>, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
+                            databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable location' = location
@@ -1128,7 +1279,9 @@ module DataContext =
                 let mutable databaseName' = databaseName
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = SearchDatabase()
+
+                new() = SearchDatabase(null, null, null, Nullable(), Nullable(), Nullable(), null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Location with get() = location' and set(value) = location' <- value
@@ -1145,7 +1298,7 @@ module DataContext =
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
         and [<AllowNullLiteral>]
             DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
-                        length:Nullable<int>, details:List<DBSequenceParam>, rowVersion:DateTime) =
+                        length:Nullable<int>, details:List<DBSequenceParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable accession' = accession
@@ -1154,7 +1307,9 @@ module DataContext =
                 let mutable length' = length
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = DBSequence()
+
+                new() = DBSequence(null, null, null, null, null, Nullable(), null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Accession with get() = accession' and set(value) = accession' <- value
@@ -1167,8 +1322,8 @@ module DataContext =
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
         and [<AllowNullLiteral>]
             PeptideEvidence (id:string, name:string, dbSequence:DBSequence, peptide:Peptide, start:Nullable<int>, 
-                             ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<int>, 
-                             translationTable:TranslationTable, details:List<PeptideEvidenceParam>, rowVersion:DateTime) =
+                             ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, 
+                             translationTable:TranslationTable, details:List<PeptideEvidenceParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 //Formerly DBSequence_Ref
@@ -1188,13 +1343,15 @@ module DataContext =
                 //
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = PeptideEvidence()
+
+                new() = PeptideEvidence(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.DBSequence with get() = dbSequence' and set(value) = dbSequence' <- value
                 member this.Peptide with get() = peptide' and set(value) = peptide' <- value
                 member this.Start with get() = start' and set(value) = start' <- value
-                member this.Ends with get() = ends' and set(value) = ends' <- value
+                member this.End with get() = ends' and set(value) = ends' <- value
                 member this.Pre with get() = pre' and set(value) = pre' <- value
                 member this.Post with get() = post' and set(value) = post' <- value
                 member this.Frame with get() = frame' and set(value) = frame' <- value
@@ -1209,7 +1366,7 @@ module DataContext =
                                         passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
                                         fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
                                         calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, details:List<SpectrumIdentificationItemParam>, 
-                                        rowVersion:DateTime) =
+                                        rowVersion:Nullable<DateTime>) =
 
                 let mutable id' = id
                 let mutable name' = name
@@ -1226,7 +1383,9 @@ module DataContext =
                 let mutable calculatedPI' = calculatedPI
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationItem()
+
+                new() = SpectrumIdentificationItem(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), Nullable(), Nullable(), Nullable(), null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Sample with get() = sample' and set(value) = sample' <- value
@@ -1247,7 +1406,7 @@ module DataContext =
         and [<AllowNullLiteral>]
             SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
                                           spectrumIdentificationItem:List<SpectrumIdentificationItem>, details:List<SpectrumIdentificationResultParam>,
-                                          rowVersion:DateTime) =
+                                          rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable spectraData' = spectraData
@@ -1255,7 +1414,9 @@ module DataContext =
                 let mutable spectrumIdentificationItem' = spectrumIdentificationItem
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationResult()
+
+                new() = SpectrumIdentificationResult(null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
@@ -1266,20 +1427,22 @@ module DataContext =
 
         ///Represents the set of all search results from SpectrumIdentification.
         and [<AllowNullLiteral>]
-            SpectrumIdentificationList (id:string, name:string, numbSequencesSearched:Nullable<int64>, fragmentationTables:List<Measure>,
+            SpectrumIdentificationList (id:string, name:string, numSequencesSearched:Nullable<int64>, fragmentationTables:List<Measure>,
                                         spectrumIdentificationResult:List<SpectrumIdentificationResult>, details:List<SpectrumIdentificationListParam>,
-                                        rowVersion:DateTime) =
+                                        rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
-                let mutable numbSequencesSearched' = numbSequencesSearched
+                let mutable numSequencesSearched' = numSequencesSearched
                 let mutable fragmentationTables' = fragmentationTables
                 let mutable spectrumIdentificationResult' = spectrumIdentificationResult
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentificationList()
+
+                new() = SpectrumIdentificationList(null, null, Nullable(), null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
-                member this.NumbSequencesSearched with get() = numbSequencesSearched' and set(value) = numbSequencesSearched' <- value
+                member this.NumSequencesSearched with get() = numSequencesSearched' and set(value) = numSequencesSearched' <- value
                 member this.FragmentationTables with get() = fragmentationTables' and set(value) = fragmentationTables' <- value
                 member this.SpectrumIdentificationResult with get() = spectrumIdentificationResult' and set(value) = spectrumIdentificationResult' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
@@ -1289,7 +1452,7 @@ module DataContext =
         and [<AllowNullLiteral>]
             SpectrumIdentification (id:string, name:string, activityDate:Nullable<DateTime>, spectrumidentificationList:SpectrumIdentificationList,
                                     spectrumIdentificationProtocol:SpectrumIdentificationProtocol, spectraData:List<SpectraData>,
-                                    searchDatabase:List<SearchDatabase>, rowVersion:DateTime) =
+                                    searchDatabase:List<SearchDatabase>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable activityDate' = activityDate
@@ -1302,7 +1465,9 @@ module DataContext =
                 let mutable searchDatabase' = searchDatabase
                 //
                 let mutable rowVersion' = rowVersion
-                new() = SpectrumIdentification()
+
+                new() = SpectrumIdentification(null, null, Nullable(), null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ActivityDate with get() = activityDate' and set(value) = activityDate' <- value
@@ -1315,14 +1480,16 @@ module DataContext =
         ///The parameters and settings of a SpectrumIdentification analysis.
         and [<AllowNullLiteral>] 
             ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
-                                      threshold:List<ThresholdParam>, rowVersion:DateTime) =
+                                      threshold:List<ThresholdParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable analysisSoftware' = analysisSoftware
                 let mutable analysisParams' = analysisParams
                 let mutable threshold' = threshold
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetectionProtocol()
+
+                new() = ProteinDetectionProtocol(null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
@@ -1333,7 +1500,7 @@ module DataContext =
         ///A file from which this mzIdentML instance was created.
         and [<AllowNullLiteral>] 
             SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormatParam:CVParam,
-                        details:List<SourceFileParam>, rowVersion:DateTime) =
+                        details:List<SourceFileParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable location' = location
@@ -1341,7 +1508,9 @@ module DataContext =
                 let mutable fileFormatParam' = fileFormatParam
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = SourceFile()
+
+                new() = SourceFile(null, null, null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Location with get() = location' and set(value) = location' <- value
@@ -1353,13 +1522,15 @@ module DataContext =
         ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
         and [<AllowNullLiteral>]
             Inputs (id:string, sourceFiles:List<SourceFile>, searchDatabases:List<SearchDatabase>,
-                    spectraData:List<SpectraData>, rowVersion:DateTime) =
+                    spectraData:List<SpectraData>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable sourceFiles' = sourceFiles
                 let mutable searchDatabases' = searchDatabases
                 let mutable spectraData' = spectraData
                 let mutable rowVersion' = rowVersion
-                new() = Inputs()
+
+                new() = Inputs(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
                 member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
@@ -1369,12 +1540,14 @@ module DataContext =
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
         and [<AllowNullLiteral>]
             PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, spectrumIdentificationItems:List<SpectrumIdentificationItem>,
-                                rowVersion:DateTime) =
+                                rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable peptideEvidence' = peptideEvidence
                 let mutable spectrumIdentificationItems' = spectrumIdentificationItems
                 let mutable rowVersion' = rowVersion
-                new() = PeptideHypothesis()
+
+                new() = PeptideHypothesis(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.PeptideEvidence with get() = peptideEvidence' and set(value) = peptideEvidence' <- value
                 member this.SpectrumIdentificationItems with get() = spectrumIdentificationItems' and set(value) = spectrumIdentificationItems' <- value
@@ -1384,7 +1557,7 @@ module DataContext =
         and [<AllowNullLiteral>] 
             ProteinDetectionHypothesis (id:string, name:string, passThreshold:Nullable<bool>, dbSequence:DBSequence,
                                         peptideHypothesis:List<PeptideHypothesis>, details:List<ProteinDetectionHypothesisParam>,
-                                        rowVersion:DateTime) =
+                                        rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable passThreshold' = passThreshold
@@ -1392,7 +1565,9 @@ module DataContext =
                 let mutable peptideHypothesis' = peptideHypothesis
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetectionHypothesis()
+
+                new() = ProteinDetectionHypothesis(null, null, Nullable(), null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.PassThreshold with get() = passThreshold' and set(value) = passThreshold' <- value
@@ -1404,13 +1579,15 @@ module DataContext =
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
         and [<AllowNullLiteral>] 
             ProteinAmbiguityGroup (id:string, name:string, proteinDetecionHypothesis:List<ProteinDetectionHypothesis>,
-                                   details:List<ProteinAmbiguityGroupParam>, rowVersion:DateTime) =
+                                   details:List<ProteinAmbiguityGroupParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable proteinDetecionHypothesis' = proteinDetecionHypothesis
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = ProteinAmbiguityGroup()
+
+                new() = ProteinAmbiguityGroup(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ProteinDetecionHypothesis with get() = proteinDetecionHypothesis' and set(value) = proteinDetecionHypothesis' <- value
@@ -1420,13 +1597,15 @@ module DataContext =
         ///The protein list resulting from a protein detection process.
         and [<AllowNullLiteral>] 
             ProteinDetectionList (id:string, name:string, proteinAmbiguityGroups:List<ProteinAmbiguityGroup>,
-                                  details:List<ProteinDetectionListParam>, rowVersion:DateTime) =
+                                  details:List<ProteinDetectionListParam>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable proteinAmbiguityGroups' = proteinAmbiguityGroups
                 let mutable details' = details
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetectionList()
+
+                new() = ProteinDetectionList(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ProteinAmbiguityGroups with get() = proteinAmbiguityGroups' and set(value) = proteinAmbiguityGroups' <- value
@@ -1436,12 +1615,14 @@ module DataContext =
         ///Data sets generated by the analyses, including peptide and protein lists.
         and [<AllowNullLiteral>] 
             AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, 
-                          proteinDetectionList:ProteinDetectionList, rowVersion:DateTime) =
+                          proteinDetectionList:ProteinDetectionList, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable spectrumIdentificationList' = spectrumIdentificationList
                 let mutable proteinDetectionList' = proteinDetectionList
                 let mutable rowVersion' = rowVersion
-                new() = AnalysisData()
+
+                new() = AnalysisData(null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.SpectrumIdentificationList with get() = spectrumIdentificationList' and set(value) = spectrumIdentificationList' <- value
                 member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
@@ -1450,8 +1631,8 @@ module DataContext =
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
         and [<AllowNullLiteral>] 
             ProteinDetection (id:string, name:string, activityDate:Nullable<DateTime>, proteinDetectionList:ProteinDetectionList,
-                              proteinDetectionProtocol:ProteinDetectionProtocol, spectrumIdentificationLists:SpectrumIdentificationList,
-                              rowVersion:DateTime) =
+                              proteinDetectionProtocol:ProteinDetectionProtocol, spectrumIdentificationLists:List<SpectrumIdentificationList>,
+                              rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable activityDate' = activityDate
@@ -1459,7 +1640,9 @@ module DataContext =
                 let mutable proteinDetectionProtocol' = proteinDetectionProtocol
                 let mutable spectrumIdentificationLists' = spectrumIdentificationLists
                 let mutable rowVersion' = rowVersion
-                new() = ProteinDetection()
+
+                new() = ProteinDetection(null, null, Nullable(), null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ActivityDate with get() = activityDate' and set(value) = activityDate' <- value
@@ -1472,7 +1655,7 @@ module DataContext =
         and [<AllowNullLiteral>] 
             BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                     issue:string, pages:string, publication:string, publisher:string, title:string,
-                                    volume:string, year:Nullable<int>, rowVersion:DateTime) =
+                                    volume:string, year:Nullable<int>, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable authors' = authors
@@ -1486,7 +1669,9 @@ module DataContext =
                 let mutable volume' = volume
                 let mutable year' = year
                 let mutable rowVersion' = rowVersion
-                new() = BiblioGraphicReference()
+
+                new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Authors with get() = authors' and set(value) = authors' <- value
@@ -1504,13 +1689,15 @@ module DataContext =
         ///The Provider of the mzIdentML record in terms of the contact and software.
         and [<AllowNullLiteral>] 
             Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
-                      rowVersion:DateTime) =
+                      rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable analysisSoftware' = analysisSoftware
                 let mutable contactRole' = contactRole
                 let mutable rowVersion' = rowVersion
-                new() = Provider()
+
+                new() = Provider(null, null, null, null, Nullable())
+
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
@@ -1520,7 +1707,7 @@ module DataContext =
         ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
         and [<AllowNullLiteral>]
             MzIdentML(
-                      id:int,
+                      id:string,
                       name:string, 
                       version:string,
                       analysisSoftwares:List<AnalysisSoftware>,
@@ -1538,7 +1725,7 @@ module DataContext =
                       inputs:Inputs,
                       analysisData:AnalysisData,
                       biblioGraphicReferences:List<BiblioGraphicReference>,
-                      rowVersion:DateTime
+                      rowVersion:Nullable<DateTime>
                      ) =
                 let mutable id' = id
                 let mutable name' = name
@@ -1560,8 +1747,9 @@ module DataContext =
                 let mutable biblioGraphicReferences' = biblioGraphicReferences
                 let mutable rowVersion' = rowVersion
 
-                new() = MzIdentML()
+                new() = MzIdentML(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
+                [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.Version with get() = version' and set(value) = version' <- value
