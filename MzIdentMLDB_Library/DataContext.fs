@@ -1,13 +1,11 @@
 ﻿namespace MzIdentMLDataBase
 
+open System
+open System.ComponentModel.DataAnnotations.Schema
+open Microsoft.EntityFrameworkCore
+open System.Collections.Generic
 
 module DataContext =
-
-    open System
-    open System.ComponentModel.DataAnnotations.Schema
-    open Microsoft.EntityFrameworkCore
-    open System.Collections.Generic
-
 
     module EntityTypes =
         open System.Data
@@ -1113,7 +1111,7 @@ module DataContext =
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A database for searching mass spectra.
-        and [<AllowNullLiteral>] 
+        and [<AllowNullLiteral>]
             SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:int64, numResidues:int64,
                             releaseDate:DateTime, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
                             databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:DateTime) =
@@ -1144,263 +1142,381 @@ module DataContext =
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
-        and [<CLIMutable>] 
-                DBSequence =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                : string
-                mutable Name      : string
-                Accession         : string
-                SearchDatabase    : SearchDatabase
-                mutable Sequence  : string
-                mutable Length    : int
-                mutable Details   : List<DBSequenceParam>
-                RowVersion        : DateTime
-                }
+        and [<AllowNullLiteral>]
+            DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
+                        length:Nullable<int>, details:List<DBSequenceParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable accession' = accession
+                let mutable searchDatabase' = searchDatabase
+                let mutable sequence' = sequence
+                let mutable length' = length
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = DBSequence()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Accession with get() = accession' and set(value) = accession' <- value
+                member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
+                member this.Sequence with get() = sequence' and set(value) = sequence' <- value
+                member this.Length with get() = length' and set(value) = length' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-        and [<CLIMutable>] 
-                PeptideEvidence =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                 : string
-                mutable Name                       : string
+        and [<AllowNullLiteral>]
+            PeptideEvidence (id:string, name:string, dbSequence:DBSequence, peptide:Peptide, start:Nullable<int>, 
+                             ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<int>, 
+                             translationTable:TranslationTable, details:List<PeptideEvidenceParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
                 //Formerly DBSequence_Ref
-                DBSequence                         : DBSequence
+                let mutable dbSequence' = dbSequence
                 //
                 //Formerly Peptide_Ref
-                Peptide                            : Peptide
+                let mutable peptide' = peptide
                 //
-                mutable Start                      : int
-                mutable End                        : int
-                mutable Pre                        : string
-                mutable Post                       : string
-                mutable Frame                      : Frame
-                mutable IsDecoy                    : bool
+                let mutable start' = start
+                let mutable ends' = ends
+                let mutable pre' = pre
+                let mutable post' = post
+                let mutable frame' = frame
+                let mutable isDecoy' = isDecoy
                 //Formerly TranslationTable_Ref
-                mutable TranslationTable           : TranslationTable
+                let mutable translationTable' = translationTable
                 //
-                mutable Details                    : List<PeptideEvidenceParam>
-                RowVersion                         : DateTime
-                }
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = PeptideEvidence()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.DBSequence with get() = dbSequence' and set(value) = dbSequence' <- value
+                member this.Peptide with get() = peptide' and set(value) = peptide' <- value
+                member this.Start with get() = start' and set(value) = start' <- value
+                member this.Ends with get() = ends' and set(value) = ends' <- value
+                member this.Pre with get() = pre' and set(value) = pre' <- value
+                member this.Post with get() = post' and set(value) = post' <- value
+                member this.Frame with get() = frame' and set(value) = frame' <- value
+                member this.IsDecoy with get() = isDecoy' and set(value) = isDecoy' <- value
+                member this.TranslationTable with get() = translationTable' and set(value) = translationTable' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
-        and [<CLIMutable>] 
-                SpectrumIdentificationItem =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                   : string
-                mutable Name                         : string
-                mutable Sample                       : Sample
-                mutable MassTable                    : MassTable
-                PassThreshold                        : bool
-                Rank                                 : int
-                mutable PeptideEvidences             : List<PeptideEvidence>
-                mutable Fragmentations               : List<IonType>
-                Peptide                              : Peptide
-                ChargeState                          : int
-                ExperimentalMassToCharge             : float
-                mutable CalculatedMassToCharge       : float
-                mutable CalculatedPI                 : float
-                mutable Details                      : List<SpectrumIdentificationItemParam>
-                RowVersion                           : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SpectrumIdentificationItem (id:string, name:string, sample:Sample, massTable:MassTable, 
+                                        passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
+                                        fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
+                                        calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, details:List<SpectrumIdentificationItemParam>, 
+                                        rowVersion:DateTime) =
+
+                let mutable id' = id
+                let mutable name' = name
+                let mutable sample' = sample
+                let mutable massTable' = massTable
+                let mutable passThreshold' = passThreshold
+                let mutable rank' = rank
+                let mutable peptideEvidences' = peptideEvidences
+                let mutable fragmentations' = fragmentations
+                let mutable peptide' = peptide
+                let mutable chargeState' = chargeState
+                let mutable experimentalMassToCharge' = experimentalMassToCharge
+                let mutable calculatedMassToCharge' = calculatedMassToCharge
+                let mutable calculatedPI' = calculatedPI
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationItem()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Sample with get() = sample' and set(value) = sample' <- value
+                member this.MassTable with get() = massTable' and set(value) = massTable' <- value
+                member this.PassThreshold with get() = passThreshold' and set(value) = passThreshold' <- value
+                member this.Rank with get() = rank' and set(value) = rank' <- value
+                member this.PeptideEvidences with get() = peptideEvidences' and set(value) = peptideEvidences' <- value
+                member this.Fragmentations with get() = fragmentations' and set(value) = fragmentations' <- value
+                member this.Peptide with get() = peptide' and set(value) = peptide' <- value
+                member this.ChargeState with get() = chargeState' and set(value) = chargeState' <- value
+                member this.ExperimentalMassToCharge with get() = experimentalMassToCharge' and set(value) = experimentalMassToCharge' <- value
+                member this.CalculatedMassToCharge with get() = calculatedMassToCharge' and set(value) = calculatedMassToCharge' <- value
+                member this.CalculatedPI with get() = calculatedPI' and set(value) = calculatedPI' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///All identifications made from searching one spectrum.
-        and [<CLIMutable>] 
-                SpectrumIdentificationResult =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                 : string
-                mutable Name                       : string
-                SpectraData                        : SpectraData
-                SpectrumID                         : string
-                SpectrumIdentificationItem         : List<SpectrumIdentificationItem>
-                mutable Details                    : List<SpectrumIdentificationResultParam>
-                RowVersion                         : DateTime
-                }
+        and [<AllowNullLiteral>]
+            SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
+                                          spectrumIdentificationItem:List<SpectrumIdentificationItem>, details:List<SpectrumIdentificationResultParam>,
+                                          rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable spectraData' = spectraData
+                let mutable spectrumID' = spectrumID
+                let mutable spectrumIdentificationItem' = spectrumIdentificationItem
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationResult()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
+                member this.SpectrumID with get() = spectrumID' and set(value) = spectrumID' <- value
+                member this.SpectrumIdentificationItem with get() = spectrumIdentificationItem' and set(value) = spectrumIdentificationItem' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Represents the set of all search results from SpectrumIdentification.
-        and [<CLIMutable>] 
-                SpectrumIdentificationList =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                           : string
-                mutable Name                 : string
-                mutable NumSequencesSearched : int64
-                mutable FragmentationTables  : List<Measure>
-                SpectrumIdentificationResult : List<SpectrumIdentificationResult>
-                mutable Details              : List<SpectrumIdentificationListParam>
-                RowVersion                   : DateTime
-                }
-
+        and [<AllowNullLiteral>]
+            SpectrumIdentificationList (id:string, name:string, numbSequencesSearched:Nullable<int64>, fragmentationTables:List<Measure>,
+                                        spectrumIdentificationResult:List<SpectrumIdentificationResult>, details:List<SpectrumIdentificationListParam>,
+                                        rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable numbSequencesSearched' = numbSequencesSearched
+                let mutable fragmentationTables' = fragmentationTables
+                let mutable spectrumIdentificationResult' = spectrumIdentificationResult
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentificationList()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.NumbSequencesSearched with get() = numbSequencesSearched' and set(value) = numbSequencesSearched' <- value
+                member this.FragmentationTables with get() = fragmentationTables' and set(value) = fragmentationTables' <- value
+                member this.SpectrumIdentificationResult with get() = spectrumIdentificationResult' and set(value) = spectrumIdentificationResult' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results and the protocol that is run.
-        and [<CLIMutable>] 
-                SpectrumIdentification =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : string
-                mutable Name                   : string
-                mutable ActivityDate           : DateTime
-                SpectrumIdentificationList     : SpectrumIdentificationList
-                SpectrumIdentificationProtocol : SpectrumIdentificationProtocol
+        and [<AllowNullLiteral>]
+            SpectrumIdentification (id:string, name:string, activityDate:Nullable<DateTime>, spectrumidentificationList:SpectrumIdentificationList,
+                                    spectrumIdentificationProtocol:SpectrumIdentificationProtocol, spectraData:List<SpectraData>,
+                                    searchDatabase:List<SearchDatabase>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable activityDate' = activityDate
+                let mutable spectrumidentificationList' = spectrumidentificationList
+                let mutable spectrumIdentificationProtocol' = spectrumIdentificationProtocol
                 //SpectraData_Ref
-                SpectraData                    : List<SpectraData>
+                let mutable spectraData' = spectraData
                 //
                 //SearchDatabase_Ref
-                SearchDatabase                 : List<SearchDatabase>
+                let mutable searchDatabase' = searchDatabase
                 //
-                RowVersion                     : DateTime
-                }
+                let mutable rowVersion' = rowVersion
+                new() = SpectrumIdentification()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.ActivityDate with get() = activityDate' and set(value) = activityDate' <- value
+                member this.SpectrumidentificationList with get() = spectrumidentificationList' and set(value) = spectrumidentificationList' <- value
+                member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
+                member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
+                member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The parameters and settings of a SpectrumIdentification analysis.
-        and [<CLIMutable>] 
-                ProteinDetectionProtocol =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                     : string
-                mutable Name           : string
-                AnalysisSoftware       : AnalysisSoftware
-                mutable AnalysisParams : List<AnalysisParam>
-                Threshold              : List<ThresholdParam>
-                RowVersion             : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
+                                      threshold:List<ThresholdParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable analysisSoftware' = analysisSoftware
+                let mutable analysisParams' = analysisParams
+                let mutable threshold' = threshold
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetectionProtocol()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
+                member this.AnalysisParams with get() = analysisParams' and set(value) = analysisParams' <- value
+                member this.Threshold with get() = threshold' and set(value) = threshold' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A file from which this mzIdentML instance was created.
-        and [<CLIMutable>] 
-                SourceFile =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                                  : string
-                mutable Name                        : string
-                Location                            : string
-                mutable ExternalFormatDocumentation : string
-                FileFormat                          : CVParam
-                mutable Details                     : List<SourceFileParam>
-                RowVersion                          : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormat_CVParam,
+                        details:List<SourceFileParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable location' = location
+                let mutable externalFormatDocumentation' = externalFormatDocumentation
+                let mutable fileFormat_CVParam' = fileFormat_CVParam
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = SourceFile()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Location with get() = location' and set(value) = location' <- value
+                member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
+                member this.FileFormat_CVParam with get() = fileFormat_CVParam' and set(value) = fileFormat_CVParam' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
-        and [<CLIMutable>] 
-                Inputs =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                      : string
-                mutable SourceFiles     : List<SourceFile>
-                mutable SearchDatabases : List<SearchDatabase>
-                SpectraData             : List<SpectraData>
-                RowVersion              : DateTime
-                }
+        and [<AllowNullLiteral>]
+            Inputs (id:string, sourceFiles:List<SourceFile>, searchDatabases:List<SearchDatabase>,
+                    spectraData:List<SpectraData>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable sourceFiles' = sourceFiles
+                let mutable searchDatabases' = searchDatabases
+                let mutable spectraData' = spectraData
+                let mutable rowVersion' = rowVersion
+                new() = Inputs()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
+                member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
+                member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
-        and [<CLIMutable>] 
-                PeptideHypothesis =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                          : string
-                PeptideEvidence             : PeptideEvidence
-                SpectrumIdentificationItems : List<SpectrumIdentificationItem>
-                RowVersion                  : DateTime
-                }
+        and [<AllowNullLiteral>]
+            PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, spectrumIdentificationItems:List<SpectrumIdentificationItem>,
+                                rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable peptideEvidence' = peptideEvidence
+                let mutable spectrumIdentificationItems' = spectrumIdentificationItems
+                let mutable rowVersion' = rowVersion
+                new() = PeptideHypothesis()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.PeptideEvidence with get() = peptideEvidence' and set(value) = peptideEvidence' <- value
+                member this.SpectrumIdentificationItems with get() = spectrumIdentificationItems' and set(value) = spectrumIdentificationItems' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A single result of the ProteinDetection analysis (i.e. a protein).
-        and [<CLIMutable>] 
-                ProteinDetectionHypothesis =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                : string
-                mutable Name      : string
-                PassThreshold     : bool
-                DBSequence        : DBSequence
-                PeptideHypothesis : List<PeptideHypothesis>
-                mutable Details   : List<ProteinDetectionHypothesisParam>
-                RowVersion        : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            ProteinDetectionHypothesis (id:string, name:string, passThreshold:Nullable<bool>, dbSequence:DBSequence,
+                                        peptideHypothesis:List<PeptideHypothesis>, details:List<ProteinDetectionHypothesisParam>,
+                                        rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable passThreshold' = passThreshold
+                let mutable dbSequence' = dbSequence
+                let mutable peptideHypothesis' = peptideHypothesis
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetectionHypothesis()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.PassThreshold with get() = passThreshold' and set(value) = passThreshold' <- value
+                member this.DBSequence with get() = dbSequence' and set(value) = dbSequence' <- value
+                member this.PeptideHypothesis with get() = peptideHypothesis' and set(value) = peptideHypothesis' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
-        and [<CLIMutable>] 
-                ProteinAmbiguityGroup =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                        : string
-                mutable Name              : string
-                ProteinDetecionHypothesis : List<ProteinDetectionHypothesis>
-                mutable Details           : List<ProteinAmbiguityGroupParam>
-                RowVersion                : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            ProteinAmbiguityGroup (id:string, name:string, proteinDetecionHypothesis:List<ProteinDetectionHypothesis>,
+                                   details:List<ProteinAmbiguityGroupParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable proteinDetecionHypothesis' = proteinDetecionHypothesis
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = ProteinAmbiguityGroup()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.ProteinDetecionHypothesis with get() = proteinDetecionHypothesis' and set(value) = proteinDetecionHypothesis' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The protein list resulting from a protein detection process.
-        and [<CLIMutable>] 
-                ProteinDetectionList =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                             : string
-                mutable Name                   : string
-                mutable ProteinAmbiguityGroups : List<ProteinAmbiguityGroup>
-                mutable Details                : List<ProteinDetectionListParam>
-                RowVersion                     : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            ProteinDetectionList (id:string, name:string, proteinAmbiguityGroups:List<ProteinAmbiguityGroup>,
+                                  details:List<ProteinDetectionListParam>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable proteinAmbiguityGroups' = proteinAmbiguityGroups
+                let mutable details' = details
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetectionList()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.ProteinAmbiguityGroups with get() = proteinAmbiguityGroups' and set(value) = proteinAmbiguityGroups' <- value
+                member this.Details with get() = details' and set(value) = details' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Data sets generated by the analyses, including peptide and protein lists.
-        and [<CLIMutable>] 
-                AnalysisData =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                           : string
-                SpectrumIdentificationList   : List<SpectrumIdentificationList>
-                mutable ProteinDetectionList : ProteinDetectionList
-                RowVersion                   : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, 
+                          proteinDetectionList:ProteinDetectionList, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable spectrumIdentificationList' = spectrumIdentificationList
+                let mutable proteinDetectionList' = proteinDetectionList
+                let mutable rowVersion' = rowVersion
+                new() = AnalysisData()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.SpectrumIdentificationList with get() = spectrumIdentificationList' and set(value) = spectrumIdentificationList' <- value
+                member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
-        and [<CLIMutable>] 
-                ProteinDetection =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                           : string
-                mutable Name                 : string
-                mutable ActivityDate         : DateTime
-                ProteinDetectionList         : ProteinDetectionList
-                ProteinDetectionProtocol     : ProteinDetectionProtocol
-                SpectrumIdentificationLists  : List<SpectrumIdentificationList>
-                RowVersion                   : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            ProteinDetection (id:string, name:string, activityDate:Nullable<DateTime>, proteinDetectionList:ProteinDetectionList,
+                              proteinDetectionProtocol:ProteinDetectionProtocol, spectrumIdentificationLists:SpectrumIdentificationList,
+                              rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable activityDate' = activityDate
+                let mutable proteinDetectionList' = proteinDetectionList
+                let mutable proteinDetectionProtocol' = proteinDetectionProtocol
+                let mutable spectrumIdentificationLists' = spectrumIdentificationLists
+                let mutable rowVersion' = rowVersion
+                new() = ProteinDetection()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.ActivityDate with get() = activityDate' and set(value) = activityDate' <- value
+                member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
+                member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
+                member this.SpectrumIdentificationLists with get() = spectrumIdentificationLists' and set(value) = spectrumIdentificationLists' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Any bibliographic references associated with the file.
-        and [<CLIMutable>] 
-                BiblioGraphicReference =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                  : string
-                mutable Name        : string
-                mutable Authors     : string
-                mutable DOI         : string
-                mutable Editor      : string
-                mutable Issue       : string
-                mutable Pages       : string
-                mutable Publication : string
-                mutable Publisher   : string
-                mutable Title       : string
-                mutable Volume      : string
-                mutable Year        : int
-                RowVersion          : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
+                                    issue:string, pages:string, publication:string, publisher:string, title:string,
+                                    volume:string, year:Nullable<int>, rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable authors' = authors
+                let mutable doi' = doi
+                let mutable editor' = editor
+                let mutable issue' = issue
+                let mutable pages' = pages
+                let mutable publication' = publication
+                let mutable publisher' = publisher
+                let mutable title' = title
+                let mutable volume' = volume
+                let mutable year' = year
+                let mutable rowVersion' = rowVersion
+                new() = BiblioGraphicReference()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.Authors with get() = authors' and set(value) = authors' <- value
+                member this.DOI with get() = doi' and set(value) = doi' <- value
+                member this.Editor with get() = editor' and set(value) = editor' <- value
+                member this.Issue with get() = issue' and set(value) = issue' <- value
+                member this.Pages with get() = pages' and set(value) = pages' <- value
+                member this.Publication with get() = publication' and set(value) = publication' <- value
+                member this.Publisher with get() = publisher' and set(value) = publisher' <- value
+                member this.Title with get() = title' and set(value) = title' <- value
+                member this.Volume with get() = volume' and set(value) = volume' <- value
+                member this.Year with get() = year' and set(value) = year' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The Provider of the mzIdentML record in terms of the contact and software.
-        and [<CLIMutable>] 
-                Provider =
-                {
-                //[<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-                ID                       : string
-                mutable Name             : string
-                //Formerly AnalysisSoftware_Ref
-                mutable AnalysisSoftware : AnalysisSoftware
-                //
-                mutable ContactRole      : ContactRole
-                RowVersion               : DateTime
-                }
+        and [<AllowNullLiteral>] 
+            Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
+                      rowVersion:DateTime) =
+                let mutable id' = id
+                let mutable name' = name
+                let mutable analysisSoftware' = analysisSoftware
+                let mutable contactRole' = contactRole
+                let mutable rowVersion' = rowVersion
+                new() = Provider()
+                member this.ID with get() = id' and set(value) = id' <- value
+                member this.Name with get() = name' and set(value) = name' <- value
+                member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
+                member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
+                member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+        ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
         and [<AllowNullLiteral>]
             MzIdentML(
                       id:int, version:string, spectrumIdentification:List<SpectrumIdentification>, 
