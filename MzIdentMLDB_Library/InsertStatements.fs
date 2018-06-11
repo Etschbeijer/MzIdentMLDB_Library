@@ -94,9 +94,9 @@ module InsertStatements =
         open ManipulateDataContextAndDB
         open SubFunctions
 
-        let setOption (addFunction:'a->'b->'a) (object:'a) (item:'b option) =
+        let setOption (addFunction:'a->'b->'b) (item:'a option) (object:'b) =
             match item with
-            |Some x -> addFunction object x
+            |Some x -> addFunction x object
             |None -> object
 
         type TermHandler =
@@ -1823,7 +1823,7 @@ module InsertStatements =
 
                static member tryFindByID
                     (context:MzIdentML) (contactRolesID:string) =
-                    context.ContactRole.Find(contactRolesID)
+                    context.Sample.Find(contactRolesID)
 
                static member addToContext (context:MzIdentML) (item:Sample) =
                     (addToContextWithExceptionCheck context item)
@@ -2666,13 +2666,9 @@ module InsertStatements =
                     let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
                     spectrumIdentificationProtocol
 
-               static member findSpectrumIdentificationProtocolByID
+               static member tryFindByID
                     (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
                     context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
-
-               static member tryFindByID
-                    (context:MzIdentML) (analysisSoftwareID:string) =
-                    context.AnalysisSoftware.Find(analysisSoftwareID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item)
@@ -3631,7 +3627,7 @@ module InsertStatements =
                     biblioGraphicReference
 
                static member addPages
-                    (biblioGraphicReference:BiblioGraphicReference) (pages:string) =
+                    (pages:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Pages <- pages
                     biblioGraphicReference
 
