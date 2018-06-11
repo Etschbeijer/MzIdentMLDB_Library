@@ -3727,41 +3727,46 @@ module InsertStatements =
         type MzIdentMLHandler =
                static member init
                     (             
-                        version                        : string,
-                        spectrumIdentification         : seq<SpectrumIdentification>,
-                        spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
-                        inputs                         : Inputs,
-                        analysisData                   : AnalysisData,
-                        ?id                            : string,
-                        ?name                          : string,
-                        ?analysisSoftwares             : seq<AnalysisSoftware>,
-                        ?provider                      : Provider,
-                        ?persons                       : seq<Person>,
-                        ?organizations                 : seq<Organization>,
-                        ?samples                       : seq<Sample>,
-                        ?dbSequences                   : seq<DBSequence>,
-                        ?peptides                      : seq<Peptide>,
-                        ?peptideEvidences              : seq<PeptideEvidence>,
-                        ?proteinDetection              : ProteinDetection,
-                        ?proteinDetectionProtocol      : ProteinDetectionProtocol,
-                        ?biblioGraphicReferences       : seq<BiblioGraphicReference>
+                        ?version                        : string,
+                        ?spectrumIdentification         : seq<SpectrumIdentification>,
+                        ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
+                        ?inputs                         : Inputs,
+                        ?analysisData                   : AnalysisData,
+                        ?id                             : string,
+                        ?name                           : string,
+                        ?analysisSoftwares              : seq<AnalysisSoftware>,
+                        ?provider                       : Provider,
+                        ?persons                        : seq<Person>,
+                        ?organizations                  : seq<Organization>,
+                        ?samples                        : seq<Sample>,
+                        ?dbSequences                    : seq<DBSequence>,
+                        ?peptides                       : seq<Peptide>,
+                        ?peptideEvidences               : seq<PeptideEvidence>,
+                        ?proteinDetection               : ProteinDetection,
+                        ?proteinDetectionProtocol       : ProteinDetectionProtocol,
+                        ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                     ) =
-                    let id'                       = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                     = defaultArg name Unchecked.defaultof<string>
-                    let analysisSoftwares'        = convertOptionToList analysisSoftwares
-                    let provider'                 = defaultArg provider Unchecked.defaultof<Provider>
-                    let persons'                  = convertOptionToList persons
-                    let organizations'            = convertOptionToList organizations
-                    let samples'                  = convertOptionToList samples
-                    let dbSequences'              = convertOptionToList dbSequences
-                    let peptides'                 = convertOptionToList peptides
-                    let peptideEvidences'         = convertOptionToList peptideEvidences
-                    let proteinDetection'         = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
-                    let proteinDetectionProtocol' = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
-                    let biblioGraphicReferences'  = convertOptionToList biblioGraphicReferences
+                    let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                    let name'                           = defaultArg name Unchecked.defaultof<string>
+                    let version'                        = defaultArg version Unchecked.defaultof<string>
+                    let analysisSoftwares'              = convertOptionToList analysisSoftwares
+                    let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
+                    let persons'                        = convertOptionToList persons
+                    let organizations'                  = convertOptionToList organizations
+                    let samples'                        = convertOptionToList samples
+                    let dbSequences'                    = convertOptionToList dbSequences
+                    let peptides'                       = convertOptionToList peptides
+                    let peptideEvidences'               = convertOptionToList peptideEvidences
+                    let spectrumIdentification'         = convertOptionToList spectrumIdentification
+                    let proteinDetection'               = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
+                    let spectrumIdentificationProtocol' = convertOptionToList spectrumIdentificationProtocol
+                    let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
+                    let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
+                    let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
+                    let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                     new MzIdentMLDocument(id', 
                                           name',
-                                          version,
+                                          version',
                                           analysisSoftwares', 
                                           provider', 
                                           persons', 
@@ -3770,12 +3775,12 @@ module InsertStatements =
                                           dbSequences', 
                                           peptides', 
                                           peptideEvidences', 
-                                          spectrumIdentification |> List,
+                                          spectrumIdentification',
                                           proteinDetection',
-                                          spectrumIdentificationProtocol |> List,
+                                          spectrumIdentificationProtocol',
                                           proteinDetectionProtocol', 
-                                          inputs, 
-                                          analysisData,
+                                          inputs', 
+                                          analysisData',
                                           biblioGraphicReferences',
                                           Nullable(DateTime.Now)
                                          )
@@ -3784,6 +3789,11 @@ module InsertStatements =
                static member addName
                     (name:string) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.Name <- name
+                    mzIdentML
+
+               static member addVersion
+                    (version:string) (mzIdentML:MzIdentMLDocument) =
+                    mzIdentML.Version <- version
                     mzIdentML
 
                static member addAnalysisSoftware
@@ -3862,14 +3872,44 @@ module InsertStatements =
                     let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
                     mzIdentML
 
+               static member addSpectrumIdentification
+                    (spectrumIdentification:SpectrumIdentification) (mzIdentML:MzIdentMLDocument) =
+                    let result = mzIdentML.SpectrumIdentification <- addToList mzIdentML.SpectrumIdentification spectrumIdentification
+                    mzIdentML
+
+               static member addSpectrumIdentifications
+                    (spectrumIdentification:seq<SpectrumIdentification>) (mzIdentML:MzIdentMLDocument) =
+                    let result = mzIdentML.SpectrumIdentification <- addCollectionToList mzIdentML.SpectrumIdentification spectrumIdentification
+                    mzIdentML
+
                static member addProteinDetection
                     (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.ProteinDetection <- proteinDetection
                     mzIdentML
 
+               static member addSpectrumIdentificationProtocol
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentML:MzIdentMLDocument) =
+                    let result = mzIdentML.SpectrumIdentificationProtocol <- addToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
+                    mzIdentML
+
+               static member addSpectrumIdentificationProtocols
+                    (spectrumIdentificationProtocol:seq<SpectrumIdentificationProtocol>) (mzIdentML:MzIdentMLDocument) =
+                    let result = mzIdentML.SpectrumIdentificationProtocol <- addCollectionToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
+                    mzIdentML
+
                static member addProteinDetectionProtocol
                     (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+                    mzIdentML
+
+               static member addInputs
+                    (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
+                    mzIdentML.Inputs <- inputs
+                    mzIdentML
+
+               static member addAnalysisData
+                    (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
+                    mzIdentML.AnalysisData <- analysisData
                     mzIdentML
 
                static member addBiblioGraphicReference

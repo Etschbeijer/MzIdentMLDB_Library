@@ -62,7 +62,7 @@ let testQueryable (dbContext : MzIdentML) (id : string) =
 let termTryFindTestI =
     TermHandler.tryFindByID context "Test"
 
-termTryFindTestI.IsSome
+termTryFindTestI
 
 let CVParamInit =
     CVParamHandler.init("Test", null,unit=termTryFindTestI)
