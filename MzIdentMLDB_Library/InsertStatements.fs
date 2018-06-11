@@ -193,21 +193,21 @@ module InsertStatements =
                     new CVParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (cvParam:CVParam) (value:string) =
+                    (value:string) (cvParam:CVParam) =
                     cvParam.Value <- value
                     cvParam
 
                static member addUnit
-                    (cvParam:CVParam) (unit:Term) =
+                    (unit:Term) (cvParam:CVParam) =
                     cvParam.Unit <- unit
                     cvParam
 
                static member addUnitName
-                    (cvParam:CVParam) (unitName:string) =
+                    (unitName:string) (cvParam:CVParam) =
                     cvParam.UnitName <- unitName
                     cvParam
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.CVParam.Find(paramID)
 
@@ -241,27 +241,23 @@ module InsertStatements =
                     new OrganizationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:OrganizationParam) (value:string) =
+                    (value:string) (param:OrganizationParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:OrganizationParam) (unit:Term) =
+                    (unit:Term) (param:OrganizationParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:OrganizationParam) (unitName:string) =
+                    (unitName:string) (param:OrganizationParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.OrganizationParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:OrganizationParam) =
                         (addToContextWithExceptionCheck context item)
@@ -289,27 +285,23 @@ module InsertStatements =
                     new PersonParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:PersonParam) (value:string) =
+                    (value:string) (param:PersonParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:PersonParam) (unit:Term) =
+                    (unit:Term) (param:PersonParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:PersonParam) (unitName:string) =
+                    (unitName:string) (param:PersonParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.PersonParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:PersonParam) =
                         (addToContextWithExceptionCheck context item)
@@ -337,27 +329,23 @@ module InsertStatements =
                     new SampleParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SampleParam) (value:string) =
+                    (value:string) (param:SampleParam)  =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SampleParam) (unit:Term) =
+                    (unit:Term) (param:SampleParam)  =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SampleParam) (unitName:string) =
+                    (unitName:string) (param:SampleParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SampleParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SampleParam) =
                         (addToContextWithExceptionCheck context item)
@@ -385,27 +373,23 @@ module InsertStatements =
                     new ModificationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ModificationParam) (value:string) =
+                    (value:string) (param:ModificationParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ModificationParam) (unit:Term) =
+                    (unit:Term) (param:ModificationParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ModificationParam) (unitName:string) =
+                    (unitName:string) (param:ModificationParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ModificationParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ModificationParam) =
                         (addToContextWithExceptionCheck context item)
@@ -431,28 +415,25 @@ module InsertStatements =
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
                     new PeptideParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+
                static member addValue
-                    (param:PeptideParam) (value:string) =
+                    (value:string) (param:PeptideParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:PeptideParam) (unit:Term) =
+                    (unit:Term) (param:PeptideParam)  =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:PeptideParam) (unitName:string) =
+                    (unitName:string) (param:PeptideParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.PeptideParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:PeptideParam) =
                         (addToContextWithExceptionCheck context item)
@@ -479,27 +460,23 @@ module InsertStatements =
                     
                     new TranslationTableParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
                static member addValue
-                    (param:TranslationTableParam) (value:string) =
+                    (value:string) (param:TranslationTableParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:TranslationTableParam) (unit:Term) =
+                    (unit:Term) (param:TranslationTableParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:TranslationTableParam) (unitName:string) =
+                    (unitName:string) (param:TranslationTableParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.TranslationTableParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:TranslationTableParam) =
                         (addToContextWithExceptionCheck context item)
@@ -527,27 +504,23 @@ module InsertStatements =
                     new MeasureParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:MeasureParam) (value:string) =
+                    (value:string) (param:MeasureParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:MeasureParam) (unit:Term) =
+                    (unit:Term) (param:MeasureParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:MeasureParam) (unitName:string) =
+                    (unitName:string) (param:MeasureParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.MeasureParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:MeasureParam) =
                         (addToContextWithExceptionCheck context item)
@@ -575,27 +548,23 @@ module InsertStatements =
                     new AmbiguousResidueParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:AmbiguousResidueParam) (value:string) =
+                    (value:string) (param:AmbiguousResidueParam)  =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:AmbiguousResidueParam) (unit:Term) =
+                    (unit:Term) (param:AmbiguousResidueParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:AmbiguousResidueParam) (unitName:string) =
+                    (unitName:string) (param:AmbiguousResidueParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.AmbiguousResidueParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:AmbiguousResidueParam) =
                         (addToContextWithExceptionCheck context item)
@@ -623,27 +592,23 @@ module InsertStatements =
                     new MassTableParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:MassTableParam) (value:string) =
+                    (value:string) (param:MassTableParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:MassTableParam) (unit:Term) =
+                    (unit:Term) (param:MassTableParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:MassTableParam) (unitName:string) =
+                    (unitName:string) (param:MassTableParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.MassTableParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:MassTableParam) =
                         (addToContextWithExceptionCheck context item)
@@ -671,27 +636,23 @@ module InsertStatements =
                     new IonTypeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:IonTypeParam) (value:string) =
+                    (value:string) (param:IonTypeParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:IonTypeParam) (unit:Term) =
+                    (unit:Term) (param:IonTypeParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:IonTypeParam) (unitName:string) =
+                    (unitName:string) (param:IonTypeParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.IonTypeParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:IonTypeParam) =
                         (addToContextWithExceptionCheck context item)
@@ -719,27 +680,23 @@ module InsertStatements =
                     new SpecificityRuleParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SpecificityRuleParam) (value:string) =
+                    (value:string) (param:SpecificityRuleParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SpecificityRuleParam) (unit:Term) =
+                    (unit:Term) (param:SpecificityRuleParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SpecificityRuleParam) (unitName:string) =
+                    (unitName:string) (param:SpecificityRuleParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SpecificityRuleParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SpecificityRuleParam) =
                         (addToContextWithExceptionCheck context item)
@@ -767,27 +724,23 @@ module InsertStatements =
                     new SearchModificationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SearchModificationParam) (value:string) =
+                    (value:string) (param:SearchModificationParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SearchModificationParam) (unit:Term) =
+                    (unit:Term) (param:SearchModificationParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SearchModificationParam) (unitName:string) =
+                    (unitName:string) (param:SearchModificationParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SearchModificationParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SearchModificationParam) =
                         (addToContextWithExceptionCheck context item)
@@ -815,27 +768,23 @@ module InsertStatements =
                     new EnzymeNameParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:EnzymeNameParam) (value:string) =
+                    (value:string) (param:EnzymeNameParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:EnzymeNameParam) (unit:Term) =
+                    (unit:Term) (param:EnzymeNameParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:EnzymeNameParam) (unitName:string) =
+                    (unitName:string) (param:EnzymeNameParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.EnzymeNameParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:EnzymeNameParam) =
                         (addToContextWithExceptionCheck context item)
@@ -863,27 +812,23 @@ module InsertStatements =
                     new IncludeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:IncludeParam) (value:string) =
+                    (value:string) (param:IncludeParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:IncludeParam) (unit:Term) =
+                    (unit:Term) (param:IncludeParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:IncludeParam) (unitName:string) =
+                    (unitName:string) (param:IncludeParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.EnzymeNameParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:IncludeParam) =
                         (addToContextWithExceptionCheck context item)
@@ -911,27 +856,23 @@ module InsertStatements =
                     new ExcludeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ExcludeParam) (value:string) =
+                    (value:string) (param:ExcludeParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ExcludeParam) (unit:Term) =
+                    (unit:Term) (param:ExcludeParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ExcludeParam) (unitName:string) =
+                    (unitName:string) (param:ExcludeParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ExcludeParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ExcludeParam) =
                         (addToContextWithExceptionCheck context item)
@@ -959,27 +900,23 @@ module InsertStatements =
                     new AdditionalSearchParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:AdditionalSearchParam) (value:string) =
+                    (value:string) (param:AdditionalSearchParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:AdditionalSearchParam) (unit:Term) =
+                    (unit:Term) (param:AdditionalSearchParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:AdditionalSearchParam) (unitName:string) =
+                    (unitName:string) (param:AdditionalSearchParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.AdditionalSearchParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:AdditionalSearchParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1007,27 +944,23 @@ module InsertStatements =
                     new FragmentToleranceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:FragmentToleranceParam) (value:string) =
+                    (value:string) (param:FragmentToleranceParam)  =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:FragmentToleranceParam) (unit:Term) =
+                    (unit:Term) (param:FragmentToleranceParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:FragmentToleranceParam) (unitName:string) =
+                    (unitName:string) (param:FragmentToleranceParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.FragmentToleranceParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:FragmentToleranceParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1055,27 +988,23 @@ module InsertStatements =
                     new ParentToleranceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ParentToleranceParam) (value:string) =
+                    (value:string) (param:ParentToleranceParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ParentToleranceParam) (unit:Term) =
+                    (unit:Term) (param:ParentToleranceParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ParentToleranceParam) (unitName:string) =
+                    (unitName:string) (param:ParentToleranceParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ParentToleranceParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ParentToleranceParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1103,27 +1032,23 @@ module InsertStatements =
                     new ThresholdParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ThresholdParam) (value:string) =
+                    (value:string) (param:ThresholdParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ThresholdParam) (unit:Term) =
+                    (unit:Term) (param:ThresholdParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ThresholdParam) (unitName:string) =
+                    (unitName:string) (param:ThresholdParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ThresholdParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ThresholdParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1151,27 +1076,23 @@ module InsertStatements =
                     new SearchDatabaseParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SearchDatabaseParam) (value:string) =
+                    (value:string) (param:SearchDatabaseParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SearchDatabaseParam) (unit:Term) =
+                    (unit:Term) (param:SearchDatabaseParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SearchDatabaseParam) (unitName:string) =
+                    (unitName:string) (param:SearchDatabaseParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SearchDatabaseParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SearchDatabaseParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1199,27 +1120,23 @@ module InsertStatements =
                     new DBSequenceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:DBSequenceParam) (value:string) =
+                    (value:string) (param:DBSequenceParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:DBSequenceParam) (unit:Term) =
+                    (unit:Term) (param:DBSequenceParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:DBSequenceParam) (unitName:string) =
+                    (unitName:string) (param:DBSequenceParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.DBSequenceParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:DBSequenceParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1247,27 +1164,23 @@ module InsertStatements =
                     new PeptideEvidenceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:PeptideEvidenceParam) (value:string) =
+                    (value:string) (param:PeptideEvidenceParam)  =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:PeptideEvidenceParam) (unit:Term) =
+                    (unit:Term) (param:PeptideEvidenceParam)  =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:PeptideEvidenceParam) (unitName:string) =
+                    (unitName:string) (param:PeptideEvidenceParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.PeptideEvidenceParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:PeptideEvidenceParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1295,27 +1208,23 @@ module InsertStatements =
                     new SpectrumIdentificationItemParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SpectrumIdentificationItemParam) (value:string) =
+                    (value:string) (param:SpectrumIdentificationItemParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SpectrumIdentificationItemParam) (unit:Term) =
+                    (unit:Term) (param:SpectrumIdentificationItemParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SpectrumIdentificationItemParam) (unitName:string) =
+                    (unitName:string) (param:SpectrumIdentificationItemParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SpectrumIdentificationItemParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationItemParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1343,27 +1252,23 @@ module InsertStatements =
                     new SpectrumIdentificationResultParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SpectrumIdentificationResultParam) (value:string) =
+                    (value:string) (param:SpectrumIdentificationResultParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SpectrumIdentificationResultParam) (unit:Term) =
+                    (unit:Term) (param:SpectrumIdentificationResultParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SpectrumIdentificationResultParam) (unitName:string) =
+                    (unitName:string) (param:SpectrumIdentificationResultParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SpectrumIdentificationResultParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationResultParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1391,27 +1296,23 @@ module InsertStatements =
                     new SpectrumIdentificationListParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SpectrumIdentificationListParam) (value:string) =
+                    (value:string) (param:SpectrumIdentificationListParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SpectrumIdentificationListParam) (unit:Term) =
+                    (unit:Term) (param:SpectrumIdentificationListParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SpectrumIdentificationListParam) (unitName:string) =
+                    (unitName:string) (param:SpectrumIdentificationListParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SpectrumIdentificationListParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationListParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1439,27 +1340,23 @@ module InsertStatements =
                     new AnalysisParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:AnalysisParam) (value:string) =
+                    (value:string) (param:AnalysisParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:AnalysisParam) (unit:Term) =
+                    (unit:Term) (param:AnalysisParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:AnalysisParam) (unitName:string) =
+                    (unitName:string) (param:AnalysisParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.AnalysisParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:AnalysisParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1487,27 +1384,23 @@ module InsertStatements =
                     new SourceFileParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:SourceFileParam) (value:string) =
+                    (value:string) (param:SourceFileParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:SourceFileParam) (unit:Term) =
+                    (unit:Term) (param:SourceFileParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:SourceFileParam) (unitName:string) =
+                    (unitName:string) (param:SourceFileParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.SourceFileParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:SourceFileParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1535,27 +1428,23 @@ module InsertStatements =
                     new ProteinDetectionHypothesisParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ProteinDetectionHypothesisParam) (value:string) =
+                    (value:string) (param:ProteinDetectionHypothesisParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ProteinDetectionHypothesisParam) (unit:Term) =
+                    (unit:Term) (param:ProteinDetectionHypothesisParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ProteinDetectionHypothesisParam) (unitName:string) =
+                    (unitName:string) (param:ProteinDetectionHypothesisParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ProteinDetectionHypothesisParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ProteinDetectionHypothesisParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1583,27 +1472,23 @@ module InsertStatements =
                     new  ProteinAmbiguityGroupParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ProteinAmbiguityGroupParam) (value:string) =
+                    (value:string) (param:ProteinAmbiguityGroupParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ProteinAmbiguityGroupParam) (unit:Term) =
+                    (unit:Term) (param:ProteinAmbiguityGroupParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ProteinAmbiguityGroupParam) (unitName:string) =
+                    (unitName:string) (param:ProteinAmbiguityGroupParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ProteinAmbiguityGroupParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ProteinAmbiguityGroupParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1631,27 +1516,23 @@ module InsertStatements =
                     new ProteinDetectionListParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
 
                static member addValue
-                    (param:ProteinDetectionListParam) (value:string) =
+                    (value:string) (param:ProteinDetectionListParam) =
                     param.Value <- value
                     param
 
                static member addUnit
-                    (param:ProteinDetectionListParam) (unit:Term) =
+                    (unit:Term) (param:ProteinDetectionListParam) =
                     param.Unit <- unit
                     param
 
                static member addUnitName
-                    (param:ProteinDetectionListParam) (unitName:string) =
+                    (unitName:string) (param:ProteinDetectionListParam) =
                     param.UnitName <- unitName
                     param
 
-               static member findParamByID
+               static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.ProteinDetectionListParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:ProteinDetectionListParam) =
                         (addToContextWithExceptionCheck context item)
@@ -1695,13 +1576,9 @@ module InsertStatements =
                     let result = organization.Details <- addCollectionToList organization.Details details
                     organization
 
-               static member findOrganizationByID
+               static member tryFindByID
                     (context:MzIdentML) (organizationID:string) =
                     context.Organization.Find(organizationID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Organization) =
                     (addToContextWithExceptionCheck context item)
@@ -1770,17 +1647,9 @@ module InsertStatements =
                     let result = person.Organizations <- addCollectionToList person.Organizations organizations
                     person
 
-               static member findPersonByID
+               static member tryFindByID
                     (context:MzIdentML) (personID:string) =
                     context.Person.Find(personID)
-
-               static member findOrganizationByID
-                    (context:MzIdentML) (organizationID:string) =
-                    context.Organization.Find(organizationID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Person) =
                         (addToContextWithExceptionCheck context item)
@@ -1800,17 +1669,9 @@ module InsertStatements =
                     
                     new ContactRole(id', person, role, Nullable(DateTime.Now))
 
-               static member findContactRoleByID
+               static member tryFindByID
                     (context:MzIdentML) (contactRoleID:string) =
                     context.ContactRole.Find(contactRoleID)
-
-               static member findPersonByID
-                    (context:MzIdentML) (personID:string) =
-                    context.Person.Find(personID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:ContactRole) =
                         (addToContextWithExceptionCheck context item)
@@ -1876,17 +1737,9 @@ module InsertStatements =
                //     analysisSoftware.MzIdentML <- mzIdentML
                //     analysisSoftware
 
-               static member findAnalysisSoftwareByID
+               static member tryFindByID
                     (context:MzIdentML) (analysisSoftwareID:string) =
                     context.AnalysisSoftware.Find(analysisSoftwareID)
-
-               static member findContactRoleByID
-                    (context:MzIdentML) (contactRoleID:string) =
-                    context.ContactRole.Find(contactRoleID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:AnalysisSoftware) =
                         (addToContextWithExceptionCheck context item)
@@ -1911,13 +1764,9 @@ module InsertStatements =
                     subSample.Sample <- sampleID
                     subSample
 
-               static member findSubSampleByID
+               static member tryFindByID
                     (context:MzIdentML) (subSampleID:string) =
                     context.SubSample.Find(subSampleID)
-
-               static member findSampleByID
-                    (context:MzIdentML) (sampleID:string) =
-                    context.Sample.Find(sampleID)
 
                static member addToContext (context:MzIdentML) (item:SubSample) =
                     (addToContextWithExceptionCheck context item)
@@ -1985,17 +1834,9 @@ module InsertStatements =
                     let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                     sample
 
-               static member findContactRolesByID
+               static member tryFindByID
                     (context:MzIdentML) (contactRolesID:string) =
                     context.ContactRole.Find(contactRolesID)
-
-               static member findSubSampleID
-                    (context:MzIdentML) (subSampleID:string) =
-                    context.SubSample.Find(subSampleID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Sample) =
                     (addToContextWithExceptionCheck context item)
@@ -2042,13 +1883,9 @@ module InsertStatements =
                     modification.AvgMassDelta <- Nullable(avgMassDelta)
                     modification
 
-               static member findModificationByID
+               static member tryFindByID
                     (context:MzIdentML) (modificationID:string) =
                     context.Modification.Find(modificationID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Modification) =
                     (addToContextWithExceptionCheck context item)
@@ -2089,7 +1926,7 @@ module InsertStatements =
                     substitutionModification.AvgMassDelta <- Nullable(avgMassDelta)
                     substitutionModification
 
-               static member findSubstitutionModificationByID
+               static member tryFindByID
                     (context:MzIdentML) (substitutionModificationID:string) =
                     context.SubstitutionModification.Find(substitutionModificationID)
 
@@ -2160,21 +1997,9 @@ module InsertStatements =
                     let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
                     peptide
 
-               static member findPeptideByID
+               static member tryFindByID
                     (context:MzIdentML) (peptideID:string) =
                     context.Peptide.Find(peptideID)
-
-               static member findModificationByID
-                    (context:MzIdentML) (modificationID:string) =
-                    context.Modification.Find(modificationID)
-
-               static member findSubstitutionModificationByID
-                    (context:MzIdentML) (substitutionModificationID:string) =
-                    context.SubstitutionModification.Find(substitutionModificationID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Peptide) =
                     (addToContextWithExceptionCheck context item)
@@ -2211,13 +2036,9 @@ module InsertStatements =
                     let result = translationTable.Details <- addCollectionToList translationTable.Details details
                     translationTable
 
-               static member findTranslationTableID
+               static member tryFindByID
                     (context:MzIdentML) (translationTableID:string) =
                     context.TranslationTable.Find(translationTableID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:TranslationTable) =
                     (addToContextWithExceptionCheck context item)
@@ -2243,13 +2064,9 @@ module InsertStatements =
                     measure.Name <- name
                     measure
 
-               static member findMeasureByID
+               static member tryFindByID
                     (context:MzIdentML) (measureID:string) =
                     context.Measure.Find(measureID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Measure) =
                     (addToContextWithExceptionCheck context item)
@@ -2290,13 +2107,9 @@ module InsertStatements =
                     
                     new AmbiguousResidue(id', code, details |> List, Nullable(DateTime.Now))
 
-               static member findAmbiguousResidueByID
+               static member tryFindByID
                     (context:MzIdentML) (ambiguousResidueID:string) =
                     context.AmbiguousResidue.Find(ambiguousResidueID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:AmbiguousResidue) =
                     (addToContextWithExceptionCheck context item)
@@ -2358,21 +2171,9 @@ module InsertStatements =
                     let result = massTable.Details <- addCollectionToList massTable.Details details
                     massTable
 
-               static member findMassTableByID
+               static member tryFindByID
                     (context:MzIdentML) (massTableID:string) =
                     context.MassTable.Find(massTableID)
-
-               static member findResidueByID
-                    (context:MzIdentML) (residueID:string) =
-                    context.Residue.Find(residueID)
-
-               static member findAmbiguousResidueByID
-                    (context:MzIdentML) (ambiguousResidueID:string) =
-                    context.AmbiguousResidue.Find(ambiguousResidueID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:MassTable) =
                     (addToContextWithExceptionCheck context item)
@@ -2413,17 +2214,9 @@ module InsertStatements =
                     
                     new FragmentArray(id', measure, values |> List, Nullable(DateTime.Now))
 
-               static member findFragmentArrayByID
+               static member tryFindByID
                     (context:MzIdentML) (fragmentArrayID:string) =
                     context.FragmentArray.Find(fragmentArrayID)
-
-               static member findMeasureByID
-                    (context:MzIdentML) (measureID:string) =
-                    context.Measure.Find(measureID)
-
-               static member findValueByID
-                    (context:MzIdentML) (valueID:string) =
-                    context.Value.Find(valueID)
 
                static member addToContext (context:MzIdentML) (item:FragmentArray) =
                     (addToContextWithExceptionCheck context item)
@@ -2442,7 +2235,7 @@ module InsertStatements =
 
                     new Index(id', Nullable(index), Nullable(DateTime.Now))
 
-               static member findIndexByID
+               static member tryFindByID
                     (context:MzIdentML) (indexID:string) =
                     context.Index.Find(indexID)
 
@@ -2487,21 +2280,9 @@ module InsertStatements =
                     let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                     ionType
 
-               static member findIonTypeByID
+               static member tryFindByID
                     (context:MzIdentML) (ionTypeID:string) =
                     context.Iontype.Find(ionTypeID)
-
-               static member findIndexByID
-                    (context:MzIdentML) (indexID:string) =
-                    context.Index.Find(indexID)
-
-               static member findFragmentArrayByID
-                    (context:MzIdentML) (fragmentArrayID:string) =
-                    context.FragmentArray.Find(fragmentArrayID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:IonType) =
                     (addToContextWithExceptionCheck context item)
@@ -2546,13 +2327,9 @@ module InsertStatements =
                //     spectraData.SpectrumIdentification <- spectrumIdentification
                //     spectraData
 
-               static member findSpectraDataByID
+               static member tryFindByID
                     (context:MzIdentML) (spectraDataID:string) =
                     context.SpectraData.Find(spectraDataID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:SpectraData) =
                     (addToContextWithExceptionCheck context item)
@@ -2571,13 +2348,9 @@ module InsertStatements =
                     
                     new SpecificityRule(id', details |> List,  Nullable(DateTime.Now))
 
-               static member findSpecificityRuleByID
+               static member tryFindByID
                     (context:MzIdentML) (specificityRuleID:string) =
                     context.SpecificityRule.Find(specificityRuleID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:SpecificityRule) =
                     (addToContextWithExceptionCheck context item)
@@ -2611,17 +2384,9 @@ module InsertStatements =
                     let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                     searchModification
 
-               static member findSearchModificationByID
+               static member tryFindByID
                     (context:MzIdentML) (searchModificationID:string) =
                     context.SearchModification.Find(searchModificationID)
-
-               static member findSpecificityRuleByID
-                    (context:MzIdentML) (specificityRuleID:string) =
-                    context.SpecificityRule.Find(specificityRuleID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:SearchModification) =
                     (addToContextWithExceptionCheck context item)
@@ -2702,13 +2467,9 @@ module InsertStatements =
                     let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                     enzyme
 
-               static member findEnzymeByID
+               static member tryFindByID
                     (context:MzIdentML) (enzymeID:string) =
                     context.Enzyme.Find(enzymeID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Enzyme) =
                     (addToContextWithExceptionCheck context item)
@@ -2751,13 +2512,9 @@ module InsertStatements =
                     let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                     filter
 
-               static member findFilterByID
+               static member tryFindByID
                     (context:MzIdentML) (filterID:string) =
                     context.Filter.Find(filterID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:Filter) =
                     (addToContextWithExceptionCheck context item)
@@ -2936,37 +2693,9 @@ module InsertStatements =
                     (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
                     context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
 
-               static member findAnalysisSoftwareByID
+               static member tryFindByID
                     (context:MzIdentML) (analysisSoftwareID:string) =
                     context.AnalysisSoftware.Find(analysisSoftwareID)
-
-               static member findSearchModificationByID
-                    (context:MzIdentML) (searchModificationID:string) =
-                    context.SearchModification.Find(searchModificationID)
-
-               static member findEnzymeByID
-                    (context:MzIdentML) (enzymeID:string) =
-                    context.Enzyme.Find(enzymeID)
-
-               static member findMassTableByID
-                    (context:MzIdentML) (massTableID:string) =
-                    context.MassTable.Find(massTableID)
-
-               static member findFilterByID
-                    (context:MzIdentML) (filterID:string) =
-                    context.Filter.Find(filterID)
-
-               static member findTranslationTableByID
-                    (context:MzIdentML) (translationTableID:string) =
-                    context.TranslationTable.Find(translationTableID)
-
-               static member findFrameByID
-                    (context:MzIdentML) (frameID:string) =
-                    context.Frame.Find(frameID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationProtocol) =
                     (addToContextWithExceptionCheck context item)
@@ -3053,13 +2782,9 @@ module InsertStatements =
                //     searchDatabase.Inputs <- inputs
                //     searchDatabase
 
-               static member findSearchDatabaseByID
+               static member tryFindByID
                     (context:MzIdentML) (searchDatabaseID:string) =
                     context.SearchDatabase.Find(searchDatabaseID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:SearchDatabase) =
                         (addToContextWithExceptionCheck context item)
@@ -3119,17 +2844,9 @@ module InsertStatements =
                     let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                     dbSequence
 
-               static member findDBSequenceByID
+               static member tryFindByID
                     (context:MzIdentML) (dbSequenceID:string) =
                     context.DBSequence.Find(dbSequenceID)
-
-               static member findSearchDatabaseByID
-                    (context:MzIdentML) (searchDatabaseID:string) =
-                    context.SearchDatabase.Find(searchDatabaseID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:DBSequence) =
                         (addToContextWithExceptionCheck context item)
@@ -3227,29 +2944,9 @@ module InsertStatements =
                     let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
                     peptideEvidence
 
-               static member findPeptideEvidenceByID
+               static member tryFindByID
                     (context:MzIdentML) (peptideEvidenceID:string) =
                     context.PeptideEvidence.Find(peptideEvidenceID)
-
-               static member findDBSequenceByID
-                    (context:MzIdentML) (dbSequenceID:string) =
-                    context.DBSequence.Find(dbSequenceID)
-
-               static member findPeptideByID
-                    (context:MzIdentML) (peptideID:string) =
-                    context.Peptide.Find(peptideID)
-
-               static member findFrameID
-                    (context:MzIdentML) (frameID:string) =
-                    context.Frame.Find(frameID)
-
-               static member findTranslationTableByID
-                    (context:MzIdentML) (translationTableID:string) =
-                    context.TranslationTable.Find(translationTableID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:PeptideEvidence) =
                         (addToContextWithExceptionCheck context item)
@@ -3351,33 +3048,9 @@ module InsertStatements =
                //     (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
                //     spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
 
-               static member findSpectrumIdentificationItemByID
+               static member tryFindByID
                     (context:MzIdentML) (spectrumIdentificationItemID:string) =
                     context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
-
-               static member findMassTableByID
-                    (context:MzIdentML) (massTableID:string) =
-                    context.MassTable.Find(massTableID)
-
-               static member findSampleByID
-                    (context:MzIdentML) (sampleID:string) =
-                    context.Sample.Find(sampleID)
-
-               static member findIontypeByID
-                    (context:MzIdentML) (ionTypeID:string) =
-                    context.Iontype.Find(ionTypeID)
-
-               static member findPeptideByID
-                    (context:MzIdentML) (peptideID:string) =
-                    context.Peptide.Find(peptideID)
-
-               static member findPeptideEvidenceByID
-                    (context:MzIdentML) (peptideEvidenceID:string) =
-                    context.PeptideEvidence.Find(peptideEvidenceID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationItem) =
                         (addToContextWithExceptionCheck context item)
@@ -3426,17 +3099,9 @@ module InsertStatements =
                     (context:MzIdentML) (spectrumIdentificationResultID:string) =
                     context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
 
-               static member findSpectraDataByID
+               static member tryFindByID
                     (context:MzIdentML) (spectraDataID:string) =
                     context.SpectraData.Find(spectraDataID)
-
-               static member findSpectrumIdentificationItemByID
-                    (context:MzIdentML) (spectrumIdentificationItemID:string) =
-                    context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item)
@@ -3495,21 +3160,9 @@ module InsertStatements =
                     let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
 
-               static member findSpectrumIdentificationListByID
+               static member tryFindByID
                     (context:MzIdentML) (spectrumIdentificationListID:string) =
                     context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
-
-               static member findSpectrumIdentificationResultByID
-                    (context:MzIdentML) (spectrumIdentificationResultID:string) =
-                    context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
-
-               static member findMeasureByID
-                    (context:MzIdentML) (measureID:string) =
-                    context.Measure.Find(measureID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationList) =
                         (addToContextWithExceptionCheck context item)
@@ -3553,25 +3206,9 @@ module InsertStatements =
                     let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
                     spectrumIdentification
 
-               static member findSpectrumIdentificationByID
+               static member tryFindByID
                     (context:MzIdentML) (spectrumIdentificationID:string) =
                     context.SpectrumIdentification.Find(spectrumIdentificationID)
-
-               static member findSpectrumIdentificationListByID
-                    (context:MzIdentML) (spectrumIdentificationListID:string) =
-                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
-
-               static member findSpectrumIdentificationProtocolByID
-                    (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
-                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
-
-               static member findSpectraDataByID
-                    (context:MzIdentML) (spectraDataID:string) =
-                    context.SpectraData.Find(spectraDataID)
-
-               static member findSearchDatabaseByID
-                    (context:MzIdentML) (searchDatabaseID:string) =
-                    context.SearchDatabase.Find(searchDatabaseID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentification) =
                         (addToContextWithExceptionCheck context item)
@@ -3617,17 +3254,9 @@ module InsertStatements =
                     let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionProtocol
 
-               static member findProteinDetectionProtocolByID
+               static member tryFindByID
                     (context:MzIdentML) (proteinDetectionProtocolID:string) =
                     context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
-
-               static member findAnalysisSoftwareByID
-                    (context:MzIdentML) (analysisSoftwareID:string) =
-                    context.AnalysisSoftware.Find(analysisSoftwareID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionProtocol) =
                         (addToContextWithExceptionCheck context item)
@@ -3677,13 +3306,9 @@ module InsertStatements =
                //     (sourceFile:SourceFile) (inputs:Inputs) =
                //     sourceFile.Inputs <- inputs
 
-               static member findSourceFileByID
+               static member tryFindByID
                     (context:MzIdentML) (sourceFileID:string) =
                     context.SourceFile.Find(sourceFileID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:SourceFile) =
                         (addToContextWithExceptionCheck context item)
@@ -3733,21 +3358,9 @@ module InsertStatements =
                     let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                     inputs
 
-               static member findInputsID
+               static member tryFindByID
                     (context:MzIdentML) (inputsID:string) =
                     context.Inputs.Find(inputsID)
-
-               static member findSpectraDataByID
-                    (context:MzIdentML) (spectraDataID:string) =
-                    context.SpectraData.Find(spectraDataID)
-
-               static member findSourceFileByID
-                    (context:MzIdentML) (sourceFileID:string) =
-                    context.SourceFile.Find(sourceFileID)
-
-               static member findSearchDatabaseByID
-                    (context:MzIdentML) (searchDatabaseID:string) =
-                    context.SearchDatabase.Find(searchDatabaseID)
 
                 static member addToContext (context:MzIdentML) (item:Inputs) =
                         (addToContextWithExceptionCheck context item)
@@ -3767,17 +3380,9 @@ module InsertStatements =
                     
                     new PeptideHypothesis(id', peptideEvidence, spectrumIdentificationItems |> List, Nullable(DateTime.Now))
 
-               static member findPeptideHypothesisByID
+               static member tryFindByID
                     (context:MzIdentML) (peptideHypothesisID:string) =
                     context.PeptideHypothesis.Find(peptideHypothesisID)
-
-               static member findPeptideEvidenceByID
-                    (context:MzIdentML) (peptideEvidenceID:string) =
-                    context.PeptideEvidence.Find(peptideEvidenceID)
-
-               static member findSpectrumIdentificationItemByID
-                    (context:MzIdentML) (spectrumIdentificationItemID:string) =
-                    context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
 
                 static member addToContext (context:MzIdentML) (item:PeptideHypothesis) =
                         (addToContextWithExceptionCheck context item)
@@ -3826,21 +3431,9 @@ module InsertStatements =
                     let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionHypothesis
 
-               static member findProteinDetectionHypothesisByID
+               static member tryFindByID
                     (context:MzIdentML) (proteinDetectionHypothesisID:string) =
                     context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
-
-               static member findDBSequenceByID
-                    (context:MzIdentML) (dbSequenceID:string) =
-                    context.DBSequence.Find(dbSequenceID)
-
-               static member findPeptideHypothesisByID
-                    (context:MzIdentML) (peptideHypothesisID:string) =
-                    context.PeptideHypothesis.Find(peptideHypothesisID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionHypothesis) =
                         (addToContextWithExceptionCheck context item)
@@ -3878,17 +3471,9 @@ module InsertStatements =
                     let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                     proteinAmbiguityGroup
 
-               static member findProteinAmbiguityGroupByID
+               static member tryFindByID
                     (context:MzIdentML) (proteinAmbiguityGroupID:string) =
                     context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
-
-               static member findProteinDetectionHypothesisByID
-                    (context:MzIdentML) (proteinDetectionHypothesisID:string) =
-                    context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinAmbiguityGroup) =
                         (addToContextWithExceptionCheck context item)
@@ -3937,17 +3522,9 @@ module InsertStatements =
                     let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                     proteinDetectionList
 
-               static member findProteinDetectionListByID
+               static member tryFindByID
                     (context:MzIdentML) (proteinDetectionListID:string) =
                     context.ProteinDetectionList.Find(proteinDetectionListID)
-
-               static member findProteinAmbiguityGroupByID
-                    (context:MzIdentML) (proteinAmbiguityGroupID:string) =
-                    context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
-
-               static member findCVParamByID
-                    (context:MzIdentML) (cvParamID:string) =
-                    context.CVParam.Find(cvParamID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionList) =
                         (addToContextWithExceptionCheck context item)
@@ -3980,17 +3557,9 @@ module InsertStatements =
                     let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                     analysisData
 
-               static member findAnalysisDataByID
+               static member tryFindByID
                     (context:MzIdentML) (analysisDataID:string) =
                     context.AnalysisData.Find(analysisDataID)
-
-               static member findSpectrumIdentificationListByID
-                    (context:MzIdentML) (spectrumIdentificationListID:string) =
-                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
-
-               static member findProteinDetectionListByID
-                    (context:MzIdentML) (proteinDetectionListID:string) =
-                    context.ProteinDetectionList.Find(proteinDetectionListID)
 
                 static member addToContext (context:MzIdentML) (item:AnalysisData) =
                         (addToContextWithExceptionCheck context item)
@@ -4027,21 +3596,9 @@ module InsertStatements =
                     proteinDetection.ActivityDate <- Nullable(activityDate)
                     proteinDetection
 
-               static member findProteinDetectionByID
+               static member tryFindByID
                     (context:MzIdentML) (proteinDetectionID:string) =
                     context.ProteinDetection.Find(proteinDetectionID)
-
-               static member findProteinDetectionListByID
-                    (context:MzIdentML) (proteinDetectionListID:string) =
-                    context.ProteinDetectionList.Find(proteinDetectionListID)
-
-               static member findProteinDetectionProtocolByID
-                    (context:MzIdentML) (proteinDetectionProtocolID:string) =
-                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
-
-               static member findSpectrumIdentificationListByID
-                    (context:MzIdentML) (spectrumIdentificationListID:string) =
-                    context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetection) =
                         (addToContextWithExceptionCheck context item)
@@ -4145,7 +3702,7 @@ module InsertStatements =
                     let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
                     biblioGraphicReference
 
-               static member findBiblioGraphicReferenceByID
+               static member tryFindByID
                     (context:MzIdentML) (biblioGraphicReferenceID:string) =
                     context.BiblioGraphicReference.Find(biblioGraphicReferenceID)
 
@@ -4193,17 +3750,9 @@ module InsertStatements =
                     let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                     provider
 
-               static member findProviderByID
+               static member tryFindByID
                     (context:MzIdentML) (providerID:string) =
                     context.Provider.Find(providerID)
-
-               static member findAnalysisSoftwareRoleByID
-                    (context:MzIdentML) (analysisSoftwareID:string) =
-                    context.AnalysisSoftware.Find(analysisSoftwareID)
-
-               static member findContactRoleByID
-                    (context:MzIdentML) (contactRoleID:string) =
-                    context.ContactRole.Find(contactRoleID)
 
                 static member addToContext (context:MzIdentML) (item:Provider) =
                         (addToContextWithExceptionCheck context item)
@@ -4370,73 +3919,9 @@ module InsertStatements =
                     let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
                     mzIdentML
 
-               static member findMzIdentMLByID
+               static member tryFindByID
                     (context:MzIdentML) (mzIdentMLID:string) =
                     context.MzIdentML.Find(mzIdentMLID)
-
-               static member findOntologyByID
-                    (context:MzIdentML) (ontologyID:string) =
-                    context.Ontology.Find(ontologyID)                
-
-               static member findAnalysisSoftwareByID
-                    (context:MzIdentML) (analysisSoftwareID:string) =
-                    context.AnalysisSoftware.Find(analysisSoftwareID)
-
-               static member findProviderByID
-                    (context:MzIdentML) (providerID:string) =
-                    context.Provider.Find(providerID)
-
-               static member findPersonByID
-                    (context:MzIdentML) (personID:string) =
-                    context.Person.Find(personID)
-
-               static member findOrganizationByID
-                    (context:MzIdentML) (organizationID:string) =
-                    context.Organization.Find(organizationID)
-
-               static member findSamplesByID
-                    (context:MzIdentML) (sampleID:string) =
-                    context.Sample.Find(sampleID)
-
-               static member findDBSequencesByID
-                    (context:MzIdentML) (dbSequenceID:string) =
-                    context.DBSequence.Find(dbSequenceID)
-
-               static member findPeptidesByID
-                    (context:MzIdentML) (peptideID:string) =
-                    context.Peptide.Find(peptideID)
-
-               static member findPeptideEvidencesByID
-                    (context:MzIdentML) (peptideEvidenceID:string) =
-                    context.PeptideEvidence.Find(peptideEvidenceID)
-
-               static member findSpectrumIdentificationByID
-                    (context:MzIdentML) (spectrumIdentificationID:string) =
-                    context.SpectrumIdentification.Find(spectrumIdentificationID)
-
-               static member findProteinDetectionByID
-                    (context:MzIdentML) (proteinDetectionID:string) =
-                    context.ProteinDetection.Find(proteinDetectionID)
-
-               static member findSpectrumIdentificationProtocolByID
-                    (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
-                    context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
-
-               static member findProteinDetectionProtocolByID
-                    (context:MzIdentML) (proteinDetectionProtocolID:string) =
-                    context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
-
-               static member findInputsByID
-                    (context:MzIdentML) (inputsID:string) =
-                    context.Inputs.Find(inputsID)
-
-               static member findAnalysisDataByID
-                    (context:MzIdentML) (analysisDataID:string) =
-                    context.AnalysisData.Find(analysisDataID)
-
-               static member findBiblioGraphicReferencesByID
-                    (context:MzIdentML) (bibliographicReferenceID:string) =
-                    context.BiblioGraphicReference.Find(bibliographicReferenceID)
 
                 static member addToContext (context:MzIdentML) (item:MzIdentML) =
                         (addToContextWithExceptionCheck context item)
