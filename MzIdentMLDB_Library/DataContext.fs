@@ -832,8 +832,8 @@ module DataContext =
 
         ///The software used for performing the analyses.
         and [<AllowNullLiteral>]
-            AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, 
-                              contactRole:ContactRole, softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+            AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, contactRole:ContactRole, 
+                              softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable uri' = uri
@@ -1677,7 +1677,7 @@ module DataContext =
         and [<AllowNullLiteral>] 
             BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                     issue:string, pages:string, publication:string, publisher:string, title:string,
-                                    volume:string, year:Nullable<int>, rowVersion:Nullable<DateTime>) =
+                                    volume:string, year:Nullable<int>, mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable authors' = authors
@@ -1690,9 +1690,10 @@ module DataContext =
                 let mutable title' = title
                 let mutable volume' = volume
                 let mutable year' = year
+                let mutable mzIdentML' = mzIdentML
                 let mutable rowVersion' = rowVersion
 
-                new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), Nullable())
+                new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1706,17 +1707,18 @@ module DataContext =
                 member this.Title with get() = title' and set(value) = title' <- value
                 member this.Volume with get() = volume' and set(value) = volume' <- value
                 member this.Year with get() = year' and set(value) = year' <- value
+                member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The Provider of the mzIdentML record in terms of the contact and software.
         and [<AllowNullLiteral>] 
             Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
-                      mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                      mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable analysisSoftware' = analysisSoftware
                 let mutable contactRole' = contactRole
-                let mutable mzIdentMLDocument' = mzIdentMLDocument
+                let mutable mzIdentML' = mzIdentML
                 let mutable rowVersion' = rowVersion
 
                 new() = Provider(null, null, null, null, null, Nullable())
@@ -1725,7 +1727,7 @@ module DataContext =
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
                 member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
-                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+                member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
@@ -1749,7 +1751,6 @@ module DataContext =
                               inputs:Inputs,
                               analysisData:AnalysisData,
                               biblioGraphicReferences:List<BiblioGraphicReference>,
-                              mzIdentMLDocument:MzIdentMLDocument,
                               rowVersion:Nullable<DateTime>
                              ) =
                 let mutable id' = id
@@ -1770,10 +1771,9 @@ module DataContext =
                 let mutable inputs' = inputs
                 let mutable analysisData' = analysisData
                 let mutable biblioGraphicReferences' = biblioGraphicReferences
-                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
+                new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
@@ -1808,7 +1808,6 @@ module DataContext =
                 member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
                 //
                 member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
-                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
 

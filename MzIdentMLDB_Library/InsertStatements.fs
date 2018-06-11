@@ -1828,8 +1828,8 @@ module InsertStatements =
                         ?uri               : string,
                         ?version           : string,
                         ?customizations    : string,
-                        ?softwareDeveloper : ContactRole
-                        ////?mzIdentML         : MzIdentML
+                        ?softwareDeveloper : ContactRole,
+                        ?mzIdentML         : MzIdentMLDocument
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'           = defaultArg name Unchecked.defaultof<string>
@@ -1837,9 +1837,9 @@ module InsertStatements =
                     let version'        = defaultArg version Unchecked.defaultof<string>
                     let customizations' = defaultArg customizations Unchecked.defaultof<string>
                     let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
-                    ////let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new AnalysisSoftware(id', name', uri', version', customizations', contactRole', softwareName, Nullable(DateTime.Now))
+                    new AnalysisSoftware(id', name', uri', version', customizations', contactRole', softwareName, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (analysisSoftware:AnalysisSoftware) (name:string) =
@@ -1859,6 +1859,11 @@ module InsertStatements =
                static member addCustomization
                     (analysisSoftware:AnalysisSoftware) (customizations:string) =
                     analysisSoftware.Customizations <- customizations
+                    analysisSoftware
+
+                static member addMzIdentML
+                    (analysisSoftware:AnalysisSoftware) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
                     analysisSoftware
 
                static member addAnalysisSoftwareDeveloper
@@ -1928,17 +1933,17 @@ module InsertStatements =
                         ?name         : string,
                         ?contactRoles : seq<ContactRole>,
                         ?subSamples   : seq<SubSample>,
-                        ?details      : seq<SampleParam>
-                        //?mzIdentML    : MzIdentML
+                        ?details      : seq<SampleParam>,
+                        ?mzIdentML    : MzIdentMLDocument
                     ) =
                     let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'         = defaultArg name Unchecked.defaultof<string>
                     let contactRoles' = convertOptionToList contactRoles
                     let subSamples'   = convertOptionToList subSamples
                     let details'      = convertOptionToList details
-                    //let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new Sample(id', name', contactRoles', subSamples', details', Nullable(DateTime.Now))
+                    new Sample(id', name', contactRoles', subSamples', details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (sample:Sample) (name:string) =
@@ -1973,6 +1978,11 @@ module InsertStatements =
                static member addDetails
                     (sample:Sample) (details:seq<SampleParam>) =
                     let result = sample.Details <- addCollectionToList sample.Details details
+                    sample
+
+               static member addMzIdentML
+                    (sample:Sample) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                     sample
 
                static member findContactRolesByID
@@ -2098,17 +2108,17 @@ module InsertStatements =
                         ?name                      : string,                    
                         ?modifications             : seq<Modification>,
                         ?substitutionModifications : seq<SubstitutionModification>,
-                        ?details                   : seq<PeptideParam>
-                        //?mzIdentML                 : MzIdentML
+                        ?details                   : seq<PeptideParam>,
+                        ?mzIdentML                 : MzIdentMLDocument
                     ) =
                     let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                      = defaultArg name Unchecked.defaultof<string>
                     let modifications'             = convertOptionToList modifications
                     let substitutionModifications' = convertOptionToList substitutionModifications
                     let details'                   = convertOptionToList details
-                    //let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
-                    new Peptide(id', name', peptideSequence, modifications', substitutionModifications', details', Nullable(DateTime.Now))
+                    new Peptide(id', name', peptideSequence, modifications', substitutionModifications', details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (peptide:Peptide) (name:string) =
@@ -2145,10 +2155,10 @@ module InsertStatements =
                     let result = peptide.Details <- addCollectionToList peptide.Details details
                     peptide
 
-               //static member addMzIdentML
-               //     (peptide:Peptide) (mzIdentML:MzIdentML) =
-               //     peptide.MzIdentML <- mzIdentML
-               //     peptide
+               static member addMzIdentML
+                    (peptide:Peptide) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
+                    peptide
 
                static member findPeptideByID
                     (context:MzIdentML) (peptideID:string) =
@@ -2794,8 +2804,8 @@ module InsertStatements =
                         ?parentTolerance        : seq<ParentToleranceParam>,
                         ?databaseFilters        : seq<Filter>,
                         ?frames                 : seq<Frame>,
-                        ?translationTable       : seq<TranslationTable>
-                        //?mzIdentML              : MzIdentML
+                        ?translationTable       : seq<TranslationTable>,
+                        ?mzIdentML              : MzIdentMLDocument
                     ) =
                     let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                   = defaultArg name Unchecked.defaultof<string>
@@ -2809,12 +2819,12 @@ module InsertStatements =
                     let databaseFilters'        = convertOptionToList databaseFilters
                     let frames'                 = convertOptionToList frames
                     let translationTable'       = convertOptionToList translationTable
-                    //let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                     new SpectrumIdentificationProtocol(id', name', analysisSoftware, searchType, additionalSearchParams',
                                                        modificationParams', enzymes', Nullable(independent_Enzymes'), massTables',
                                                        fragmentTolerance', parentTolerance', threshold |> List, databaseFilters',
-                                                       frames', translationTable', Nullable(DateTime.Now)
+                                                       frames', translationTable', mzIdentML', Nullable(DateTime.Now)
                                                       )
 
                static member addName
@@ -2917,10 +2927,10 @@ module InsertStatements =
                     let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
                     spectrumIdentificationProtocol
 
-               //static member addMzIdentML
-               //     (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentML:MzIdentML) =
-               //     spectrumIdentificationProtocol.MzIdentML <- mzIdentML
-               //     spectrumIdentificationProtocol
+               static member addMzIdentML
+                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
+                    spectrumIdentificationProtocol
 
                static member findSpectrumIdentificationProtocolByID
                     (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
@@ -3067,17 +3077,17 @@ module InsertStatements =
                         ?name          : string,
                         ?sequence      : string,
                         ?length        : int,
-                        ?details       : seq<DBSequenceParam>
-                        //?mzIdentML     : MzIdentML
+                        ?details       : seq<DBSequenceParam>,
+                        ?mzIdentML     : MzIdentMLDocument
                     ) =
                     let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'     = defaultArg name Unchecked.defaultof<string>
                     let sequence' = defaultArg sequence Unchecked.defaultof<string>
                     let length'   = defaultArg length Unchecked.defaultof<int>
                     let details'  = convertOptionToList details
-                    //let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
+                    let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new DBSequence(id', name', accession, searchDatabase, sequence', Nullable(length'), details', Nullable(DateTime.Now))
+                    new DBSequence(id', name', accession, searchDatabase, sequence', Nullable(length'), details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (dbSequence:DBSequence) (name:string) =
@@ -3104,9 +3114,10 @@ module InsertStatements =
                     let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                     dbSequence
 
-               //static member addMzIdentML
-               //     (dbSequence:DBSequence) (mzIdentML:MzIdentML) =
-               //     dbSequence.MzIdentML <- mzIdentML
+               static member addMzIdentML
+                    (dbSequence:DBSequence) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
+                    dbSequence
 
                static member findDBSequenceByID
                     (context:MzIdentML) (dbSequenceID:string) =
@@ -3142,8 +3153,8 @@ module InsertStatements =
                         ?frame                      : Frame,
                         ?isDecoy                    : bool,
                         ?translationTable           : TranslationTable,
-                        ?details                    : seq<PeptideEvidenceParam>
-                        //?mzIdentML                  : MzIdentML
+                        ?details                    : seq<PeptideEvidenceParam>,
+                        ?mzIdentML                  : MzIdentMLDocument
                     ) =
                     let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'                       = defaultArg name Unchecked.defaultof<string>
@@ -3155,9 +3166,10 @@ module InsertStatements =
                     let isDecoy'                    = defaultArg isDecoy Unchecked.defaultof<bool>
                     let translationTable'           = defaultArg translationTable Unchecked.defaultof<TranslationTable>
                     let details'                    = convertOptionToList details
+                    let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                     new PeptideEvidence(id', name', dbSequence, peptide, Nullable(start'), Nullable(end''), pre', post', frame', Nullable(isDecoy'), 
-                                        translationTable', details', Nullable(DateTime.Now)
+                                        translationTable', details', mzIdentML', Nullable(DateTime.Now)
                                        )
 
                static member addName
@@ -3210,15 +3222,10 @@ module InsertStatements =
                     let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
                     peptideEvidence
 
-               //static member addSpectrumIdentificationItem
-               //     (peptideEvidence:PeptideEvidence) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-               //     peptideEvidence.SpectrumIdentificationItem <- spectrumIdentificationItem
-               //     peptideEvidence
-
-               //static member addMzIdentML
-               //     (peptideEvidence:PeptideEvidence) (mzIdentML:MzIdentML) =
-               //     peptideEvidence.MzIdentML <- mzIdentML
-               //     peptideEvidence
+               static member addMzIdentML
+                    (peptideEvidence:PeptideEvidence) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
+                    peptideEvidence
 
                static member findPeptideEvidenceByID
                     (context:MzIdentML) (peptideEvidenceID:string) =
@@ -3520,14 +3527,16 @@ module InsertStatements =
                         searchDatabase                 : seq<SearchDatabase>,
                         ?id                            : string,
                         ?name                          : string,
-                        ?activityDate                  : DateTime
+                        ?activityDate                  : DateTime,
+                        ?mzIdentML                     : MzIdentMLDocument
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name Unchecked.defaultof<string>
                     let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
+                    let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                     new SpectrumIdentification(id', name', Nullable(activityDate'), spectrumIdentificationList, spectrumIdentificationProtocol,
-                                               spectraData |> List, searchDatabase |> List, Nullable(DateTime.Now))
+                                               spectraData |> List, searchDatabase |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (spectrumIdentificationList:SpectrumIdentification) (name:string) =
@@ -3539,14 +3548,10 @@ module InsertStatements =
                     spectrumIdentificationList.ActivityDate <- Nullable(activityDate)
                     spectrumIdentificationList
 
-               //static member addProteinDetection
-               //     (spectrumIdentificationList:SpectrumIdentification) (proteinDetection:ProteinDetection) =
-               //     spectrumIdentificationList.ProteinDetection <- proteinDetection
-               //     spectrumIdentificationList
-
-               //static member addMzIdentML
-               //     (spectrumIdentificationList:SpectrumIdentification) (mzIdentML:MzIdentML) =
-               //     spectrumIdentificationList.MzIdentML <- mzIdentML
+               static member addMzIdentML
+                    (spectrumIdentification:SpectrumIdentification) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
+                    spectrumIdentification
 
                static member findSpectrumIdentificationByID
                     (context:MzIdentML) (spectrumIdentificationID:string) =
@@ -3582,13 +3587,15 @@ module InsertStatements =
                         threshold        : seq<ThresholdParam>,
                         ?id              : string,
                         ?name            : string,
-                        ?analysisParams  : seq<AnalysisParam>
+                        ?analysisParams  : seq<AnalysisParam>,
+                        ?mzIdentML       : MzIdentMLDocument
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'           = defaultArg name Unchecked.defaultof<string>
                     let analysisParams' = convertOptionToList analysisParams
+                    let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new ProteinDetectionProtocol(id', name', analysisSoftware, analysisParams', threshold |> List, Nullable(DateTime.Now))
+                    new ProteinDetectionProtocol(id', name', analysisSoftware, analysisParams', threshold |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (proteinDetectionProtocol:ProteinDetectionProtocol) (name:string) =
@@ -3603,6 +3610,11 @@ module InsertStatements =
                static member addAnalysisParams
                     (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParams:seq<AnalysisParam>) =
                     let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
+                    proteinDetectionProtocol
+
+               static member addMzIdentML
+                    (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionProtocol
 
                static member findProteinDetectionProtocolByID
@@ -3686,13 +3698,15 @@ module InsertStatements =
                         spectraData     : seq<SpectraData>,
                         ?id             : string,
                         ?sourceFile     : seq<SourceFile>,
-                        ?searchDatabase : seq<SearchDatabase>
+                        ?searchDatabase : seq<SearchDatabase>,
+                        ?mzIdentML      : MzIdentMLDocument
                     ) =
                     let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                     let sourceFile'     = convertOptionToList sourceFile
                     let searchDatabase' = convertOptionToList searchDatabase
+                    let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new Inputs(id', sourceFile', searchDatabase', spectraData |> List, Nullable(DateTime.Now))
+                    new Inputs(id', sourceFile', searchDatabase', spectraData |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addSourceFile
                     (inputs:Inputs) (sourceFile:SourceFile) =
@@ -3712,6 +3726,11 @@ module InsertStatements =
                static member addSearchDatabases
                     (inputs:Inputs) (searchDatabases:seq<SearchDatabase>) =
                     let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
+                    inputs
+
+               static member addMzIdentML
+                    (inputs:Inputs) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                     inputs
 
                static member findInputsID
@@ -3775,14 +3794,16 @@ module InsertStatements =
                         peptideHypothesis : seq<PeptideHypothesis>,
                         ?id               : string,
                         ?name             : string,
-                        ?details          : seq<ProteinDetectionHypothesisParam>
+                        ?details          : seq<ProteinDetectionHypothesisParam>,
+                        ?mzIdentML        : MzIdentMLDocument
                     ) =
-                    let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'    = defaultArg name Unchecked.defaultof<string>
-                    let details' = convertOptionToList details
+                    let id'        = defaultArg id (System.Guid.NewGuid().ToString())
+                    let name'      = defaultArg name Unchecked.defaultof<string>
+                    let details'   = convertOptionToList details
+                    let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                     new ProteinDetectionHypothesis(id', name', Nullable(passThreshold),  dbSequence, peptideHypothesis |> List,
-                                                   details', Nullable(DateTime.Now)
+                                                   details', mzIdentML', Nullable(DateTime.Now)
                                                   )
 
                static member addName
@@ -3798,6 +3819,11 @@ module InsertStatements =
                static member addDetails
                     (proteinDetectionHypothesis:ProteinDetectionHypothesis) (details:seq<ProteinDetectionHypothesisParam>) =
                     let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
+                    proteinDetectionHypothesis
+
+               static member addMzIdentML
+                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionHypothesis
 
                static member findProteinDetectionHypothesisByID
@@ -3935,16 +3961,23 @@ module InsertStatements =
                     (             
                         spectrumIdentificationList : seq<SpectrumIdentificationList>,
                         ?id                        : string,
-                        ?proteinDetectionList      : ProteinDetectionList
+                        ?proteinDetectionList      : ProteinDetectionList,
+                        ?mzIdentML                 : MzIdentMLDocument
                     ) =
                     let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                     let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
+                    let mzIdentML'            = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new AnalysisData(id', spectrumIdentificationList |> List, proteinDetectionList', Nullable(DateTime.Now))
+                    new AnalysisData(id', spectrumIdentificationList |> List, proteinDetectionList', mzIdentML', Nullable(DateTime.Now))
 
                static member addProteinDetectionList
                     (analysisData:AnalysisData) (proteinDetectionList:ProteinDetectionList) =
                     analysisData.ProteinDetectionList <- proteinDetectionList
+                    analysisData
+
+               static member addMzIdentML
+                    (analysisData:AnalysisData) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                     analysisData
 
                static member findAnalysisDataByID
@@ -4031,7 +4064,8 @@ module InsertStatements =
                         ?publisher   : string,
                         ?title       : string,
                         ?volume      : string,
-                        ?year        : int
+                        ?year        : int,
+                        ?mzIdentML   : MzIdentMLDocument
                     ) =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'        = defaultArg name Unchecked.defaultof<string>
@@ -4045,9 +4079,10 @@ module InsertStatements =
                     let title'       = defaultArg title Unchecked.defaultof<string>
                     let volume'      = defaultArg volume Unchecked.defaultof<string>
                     let year'        = defaultArg year Unchecked.defaultof<int>
+                    let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                     new BiblioGraphicReference(id', name', authors', doi', editor', issue', pages', publication',
-                                               publisher', title', volume', Nullable(year'), Nullable(DateTime.Now)
+                                               publisher', title', volume', Nullable(year'), mzIdentML', Nullable(DateTime.Now)
                                               )
 
                static member addName
@@ -4105,10 +4140,10 @@ module InsertStatements =
                     biblioGraphicReference.Year <- Nullable(year)
                     biblioGraphicReference
 
-               //static member addMzIdentML
-               //     (biblioGraphicReference:BiblioGraphicReference) (mzIdentML:MzIdentML) =
-               //     biblioGraphicReference.MzIdentML <- mzIdentML
-               //     biblioGraphicReference
+               static member addMzIdentML
+                    (biblioGraphicReference:BiblioGraphicReference) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
+                    biblioGraphicReference
 
                static member findBiblioGraphicReferenceByID
                     (context:MzIdentML) (biblioGraphicReferenceID:string) =
@@ -4127,13 +4162,16 @@ module InsertStatements =
                         ?id               : string,
                         ?name             : string,
                         ?analysisSoftware : AnalysisSoftware,
-                        ?contactRole      : ContactRole
+                        ?contactRole      : ContactRole,
+                        ?mzIdentML        : MzIdentMLDocument
                     ) =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let name'             = defaultArg name Unchecked.defaultof<string>
                     let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                     let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
-                    new Provider(id', name', analysisSoftware', contactRole', Nullable(DateTime.Now))
+                    let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+
+                    new Provider(id', name', analysisSoftware', contactRole', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
                     (provider:Provider) (name:string) =
@@ -4148,6 +4186,11 @@ module InsertStatements =
                static member addContactRole
                     (provider:Provider) (contactRole:ContactRole) =
                     provider.ContactRole <- contactRole
+                    provider
+
+               static member addMzIdentML
+                    (provider:Provider) (mzIdentMLDocument:MzIdentMLDocument) =
+                    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                     provider
 
                static member findProviderByID
