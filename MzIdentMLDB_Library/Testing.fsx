@@ -59,106 +59,106 @@ let testQueryable (dbContext : MzIdentML) (id : string) =
         | :? System.InvalidOperationException -> takeTermEntryLocal dbContext id
         | _ -> Unchecked.defaultof<Term>
 
-testQueryable context "MS:0000000"
-testQueryable context "I"
+//testQueryable context "MS:0000000"
+//testQueryable context "I"
 
 
-takeTermEntry context "MS:0000000"
-|> (fun item -> context.Term.Add(item))
-context.SaveChanges()
+//takeTermEntry context "MS:0000000"
+//|> (fun item -> context.Term.Add(item))
+//context.SaveChanges()
 
-context.Term.Find("MS:0000000")
-|> (fun item -> context.Term.Add(item))
-context.SaveChanges()
+//context.Term.Find("MS:0000000")
+//|> (fun item -> context.Term.Add(item))
+//context.SaveChanges()
 
-let termTestII =
-    let termBasic =
-        TermHandler.init("II")
-    let termWithName =
-        TermHandler.addName termBasic  "TestName"
-    TermHandler.addToContext context termWithName
+//let termTestII =
+//    let termBasic =
+//        TermHandler.init("II")
+//    let termWithName =
+//        TermHandler.addName termBasic  "TestName"
+//    TermHandler.addToContext context termWithName
 
-let ontologyTest =
-    let ontologyBasic =
-        OntologyHandler.init("Test")
-    let ontologyWithTerm =
-        OntologyHandler.addTerm ontologyBasic (OntologyHandler.findTermByID context "I")
-    let ontologyTermWithOntology =
-        TermHandler.addOntology ontologyWithTerm.Terms.[0] ontologyBasic
-    OntologyHandler.addToContext context ontologyBasic
+//let ontologyTest =
+//    let ontologyBasic =
+//        OntologyHandler.init("Test")
+//    let ontologyWithTerm =
+//        OntologyHandler.addTerm ontologyBasic (OntologyHandler.findTermByID context "I")
+//    let ontologyTermWithOntology =
+//        TermHandler.addOntology ontologyWithTerm.Terms.[0] ontologyBasic
+//    OntologyHandler.addToContext context ontologyBasic
 
-let cvParamTest =
-    let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
-    //let cvParamWithUnit =
-    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
-    context.CVParam.Add(cvParamBasic)
+//let cvParamTest =
+//    let cvParamBasic =
+//        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
+//    //let cvParamWithUnit =
+//    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
+//    context.CVParam.Add(cvParamBasic)
 
-let cvParamTestI =
-    let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
-    //let cvParamWithUnit =
-    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
-    CVParamHandler.addToContext context cvParamBasic
+//let cvParamTestI =
+//    let cvParamBasic =
+//        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
+//    //let cvParamWithUnit =
+//    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID context "II")
+//    CVParamHandler.addToContext context cvParamBasic
 
-//let analysisSoftwareTest =
-//    let I = AnalysisSoftwareHandler.init(cvParamTest)
-//    AnalysisSoftwareHandler.addToContext context I
+////let analysisSoftwareTest =
+////    let I = AnalysisSoftwareHandler.init(cvParamTest)
+////    AnalysisSoftwareHandler.addToContext context I
 
-context.SaveChanges()
+//context.SaveChanges()
 
-let organizationTest =
-    let organizationBasic =
-        OrganizationHandler.init("I","Test")
-    let organizationDetail =
-        OrganizationHandler.findCVParamByID context "I"
-    //let organizationDetailWithUnit =
-    //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
-    //let organizationWithDetail = 
-    //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
-    OrganizationHandler.addToContext context organizationBasic
+//let organizationTest =
+//    let organizationBasic =
+//        OrganizationHandler.init("I","Test")
+//    let organizationDetail =
+//        OrganizationHandler.findCVParamByID context "I"
+//    //let organizationDetailWithUnit =
+//    //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
+//    //let organizationWithDetail = 
+//    //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
+//    OrganizationHandler.addToContext context organizationBasic
 
-context.Organization.Find("I")
-context.SaveChanges()
+//context.Organization.Find("I")
+//context.SaveChanges()
 
-let takeTermEntryI (dbContext : MzIdentML) (termID : string) =
-    query {
-        for i in dbContext.Term do
-            if i.ID = termID then
-                select (i, i.Ontology)
-          }
-    |> Seq.toArray
+//let takeTermEntryI (dbContext : MzIdentML) (termID : string) =
+//    query {
+//        for i in dbContext.Term do
+//            if i.ID = termID then
+//                select (i, i.Ontology)
+//          }
+//    |> Seq.toArray
 
-let takeOntologyEntry (dbContext : MzIdentML) (ontologyID : string) =
-    query {
-        for i in dbContext.Ontology do
-            if i.ID = ontologyID then
-                select (i, i.Terms)
-          }
-    |> Seq.toArray
-    |> (fun item -> item.[0])
-    |> (fun (a,_) ->  a)
+//let takeOntologyEntry (dbContext : MzIdentML) (ontologyID : string) =
+//    query {
+//        for i in dbContext.Ontology do
+//            if i.ID = ontologyID then
+//                select (i, i.Terms)
+//          }
+//    |> Seq.toArray
+//    |> (fun item -> item.[0])
+//    |> (fun (a,_) ->  a)
 
-let testPsiMS =
-    let psiMS = takeOntologyEntry context "Psi-MS"
-    psiMS
+//let testPsiMS =
+//    let psiMS = takeOntologyEntry context "Psi-MS"
+//    psiMS
 
   
-let replacePsiMS =
-    let tmpI = testPsiMS
-    context.Ontology.Remove(tmpI) |> ignore
-    context.SaveChanges() |> ignore
-    let tmpOnto =
-        let tmpII = testPsiMS 
-        tmpII.Terms <- null
-        tmpII
-    let termsWithoutOntologyAdded = 
-        testPsiMS.Terms
-        |> Seq.map (fun item -> TermHandler.addOntology item tmpOnto) |> ignore
-        testPsiMS
-    termsWithoutOntologyAdded
-    //context.Ontology.Add(testPsiMS) |> ignore
-    //context.SaveChanges()
+//let replacePsiMS =
+//    let tmpI = testPsiMS
+//    context.Ontology.Remove(tmpI) |> ignore
+//    context.SaveChanges() |> ignore
+//    let tmpOnto =
+//        let tmpII = testPsiMS 
+//        tmpII.Terms <- null
+//        tmpII
+//    let termsWithoutOntologyAdded = 
+//        testPsiMS.Terms
+//        |> Seq.map (fun item -> TermHandler.addOntology item tmpOnto) |> ignore
+//        testPsiMS
+//    termsWithoutOntologyAdded
+//    //context.Ontology.Add(testPsiMS) |> ignore
+//    //context.SaveChanges()
 
 
 

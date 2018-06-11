@@ -47,6 +47,17 @@ module DataContext =
                 member this.Terms with get() = terms' and set(value) = terms' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+        ///Abstract member for params, in order to enable working without additional functions.
+        and [<AllowNullLiteral>]
+            CVParamBase =
+            abstract member ID         : string
+            abstract member Name       : string
+            abstract member Value      : string
+            abstract member Term       : Term
+            abstract member Unit       : Term
+            abstract member UnitName   : string
+            abstract member RowVersion : Nullable<DateTime>
+
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("CVParams")>]
             CVParam (id:string, name:string, value:string, term:Term, unit:Term, unitName:string, rowVersion:Nullable<DateTime>) =  
@@ -68,6 +79,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("OrganizationParams")>]
@@ -91,6 +110,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PersonParams")>]
@@ -114,6 +141,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SampleParams")>]
@@ -137,6 +172,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ModificationParams")>]
@@ -160,6 +203,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideParams")>]
@@ -183,6 +234,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
@@ -206,6 +265,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MeasureParams")>]
@@ -229,6 +296,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
@@ -252,6 +327,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("MassTableParams")>]
@@ -275,6 +358,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IonTypeParams")>]
@@ -298,6 +389,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
@@ -321,6 +420,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
@@ -344,6 +451,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
@@ -367,6 +482,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("IncludeParams")>]
@@ -390,6 +513,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ExcludeParams")>]
@@ -413,6 +544,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
@@ -436,6 +575,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
@@ -459,6 +606,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
@@ -482,6 +637,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ThresholdParams")>]
@@ -505,6 +668,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
@@ -528,6 +699,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
@@ -551,6 +730,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
@@ -574,6 +761,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
@@ -597,6 +792,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
@@ -620,6 +823,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
@@ -643,6 +854,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
@@ -666,6 +885,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("SourceFileParams")>]
@@ -689,6 +916,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
@@ -712,6 +947,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
@@ -735,6 +978,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         ///A single entry from an ontology or a controlled vocabulary.
         and [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
@@ -758,6 +1009,14 @@ module DataContext =
                 member this.Unit with get() = unit' and set(value) = unit' <- value
                 member this.UnitName with get() = unitName' and set(value) = unitName' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+                interface CVParamBase with
+                    member x.ID = x.ID
+                    member x.Name = x.Name
+                    member x.Value = x.Value
+                    member x.Term = x.Term
+                    member x.Unit = x.Unit
+                    member x.UnitName = x.UnitName
+                    member x.RowVersion = x.RowVersion
 
         /////A single entry from an ontology or a controlled vocabulary.
         //and [<CLIMutable>] 
@@ -2052,9 +2311,9 @@ module DataContext =
                                                                        and set value = this.m_BiblioGraphicReference <- value
 
                 [<DefaultValue>]
-                val mutable m_MzIdentML : DbSet<MzIdentML>
-                member public this.MzIdentML with get() = this.m_MzIdentML
-                                                          and set value = this.m_MzIdentML <- value
+                val mutable m_MzIdentMLDocument : DbSet<MzIdentMLDocument>
+                member public this.MzIdentMLDocument with get() = this.m_MzIdentMLDocument
+                                                          and set value = this.m_MzIdentMLDocument <- value
 
                 [<DefaultValue>] 
                 val mutable m_OrganizationParam : DbSet<OrganizationParam>

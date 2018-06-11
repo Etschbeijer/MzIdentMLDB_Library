@@ -3892,7 +3892,7 @@ module InsertStatements =
 
                static member tryFindByID
                     (context:MzIdentML) (mzIdentMLID:string) =
-                    context.MzIdentML.Find(mzIdentMLID)
+                    context.MzIdentMLDocument.Find(mzIdentMLID)
 
                 static member addToContext (context:MzIdentML) (item:MzIdentML) =
                         (addToContextWithExceptionCheck context item)
