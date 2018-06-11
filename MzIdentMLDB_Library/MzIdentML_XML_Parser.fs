@@ -943,7 +943,9 @@ module XMLParsing =
                                  |> Array.map (fun analysisSoftware -> AnalysisSoftwareHandler.tryFindByID dbContext analysisSoftware.Id)
                                 )
                                 mzIdentMLWithName
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addAnalysisSoftware     
+                            (AnalysisSoftwareHandler.tryFindByID dbContext "")
+                            mzIdentMLWithName
         let mzIDentMLWithProvider =
             MzIdentMLHandler.addProvider
                 (match mzIdentMLXML.Provider with
@@ -958,7 +960,9 @@ module XMLParsing =
                                  |> Array.map (fun person -> PersonHandler.tryFindByID dbContext person.Id)
                                 )
                                 mzIDentMLWithProvider
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addPerson
+                            (PersonHandler.tryFindByID dbContext "")
+                            mzIDentMLWithProvider
         let mzIdentMLWithOrganizations =
                 match mzIdentMLXML.AuditCollection with
                  |Some x -> MzIdentMLHandler.addOrganizations
@@ -966,15 +970,19 @@ module XMLParsing =
                                  |> Array.map (fun organization -> OrganizationHandler.tryFindByID dbContext organization.Id)
                                 )
                                 mzIdentMLWithPersons
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addOrganization
+                            (OrganizationHandler.tryFindByID dbContext "")
+                            mzIdentMLWithPersons
         let mzIdentMLWithSamples =
                 match mzIdentMLXML.AnalysisSampleCollection with
-                 |Some x -> MzIdentMLHandler.addSamples 
+                 |Some x -> MzIdentMLHandler.addSamples
                                 (x.Samples
                                  |>Array.map (fun sample -> SampleHandler.tryFindByID dbContext sample.Id)
                                 )
                                 mzIdentMLWithOrganizations
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addSample
+                            (SampleHandler.tryFindByID dbContext "")
+                            mzIdentMLWithOrganizations
         let mzIdentMLWithDBSequences =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addDBSequences
@@ -982,7 +990,9 @@ module XMLParsing =
                                  |> Array.map (fun dbSequence -> DBSequenceHandler.tryFindByID dbContext dbSequence.Id)
                                 )
                                 mzIdentMLWithSamples
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addDBSequence
+                            (DBSequenceHandler.tryFindByID dbContext "")
+                            mzIdentMLWithSamples
         let mzIdentMLWithPeptides =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addPeptides
@@ -990,7 +1000,9 @@ module XMLParsing =
                                  |> Array.map (fun peptide -> PeptideHandler.tryFindByID dbContext peptide.Id)
                                 )
                                 mzIdentMLWithDBSequences
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addPeptide
+                            (PeptideHandler.tryFindByID dbContext "")
+                            mzIdentMLWithDBSequences
         let mzIdentMLWithPeptideEvidences =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addPeptideEvidences
@@ -998,7 +1010,9 @@ module XMLParsing =
                                  |> Array.map (fun peptideEvidence -> PeptideEvidenceHandler.tryFindByID dbContext peptideEvidence.Id)
                                 )
                                 mzIdentMLWithPeptides
-                 |None -> Unchecked.defaultof<MzIdentML>
+                 |None -> MzIdentMLHandler.addPeptideEvidence
+                            (PeptideEvidenceHandler.tryFindByID dbContext "")
+                            mzIdentMLWithPeptides
         let mzIdentMLWithProteinDetection =
             MzIdentMLHandler.addProteinDetection
                 (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
@@ -1009,8 +1023,8 @@ module XMLParsing =
         let mzIdentMLWithProteinDetectionProtocol =
             MzIdentMLHandler.addProteinDetectionProtocol
                 (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
-                 |Some x -> MzIdentMLHandler.findProteinDetectionProtocolByID dbContext x.Id
-                 |None -> Unchecked.defaultof<ProteinDetectionProtocol>
+                 |Some x -> ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id
+                 |None -> ProteinDetectionProtocolHandler.tryFindByID dbContext ""
                 )
                 mzIdentMLWithProteinDetection
         let mzIdentMLWithBiblioGraphicReference =
