@@ -164,11 +164,11 @@ module InsertStatements =
                     context.Ontology.Find(ontologyID)
 
                 static member addToContext (context:MzIdentML) (item:Ontology) =
-                    addToContextWithExceptionCheck context item
+                        addToContextWithExceptionCheck context item
 
                 static member insertIntoDB (context:MzIdentML) (item:Ontology) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                        (addToContextWithExceptionCheck context item) |> ignore
+                        insertWithExceptionCheck context
             
         type CVParamHandler =
 
