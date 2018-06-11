@@ -112,12 +112,12 @@ module InsertStatements =
                     new Term(id, name', ontology', (Nullable(DateTime.Now)))
 
                static member addName
-                    (term:Term) (name:string) =
+                    (name:string) (term:Term) =
                     term.Name <- name
                     term
                     
                static member addOntology
-                    (term:Term) (ontology:Ontology) =
+                    (ontology:Ontology) (term:Term) =
                     term.Ontology <- ontology
                     term
 
@@ -145,12 +145,12 @@ module InsertStatements =
                     new Ontology(id, terms', Nullable(DateTime.Now))
 
                 static member addTerm
-                    (ontology:Ontology) (term:Term) =
+                    (term:Term) (ontology:Ontology) =
                     let result = ontology.Terms <- addToList ontology.Terms term
                     ontology
 
                 static member addTerms
-                    (ontology:Ontology) (terms:seq<Term>) =
+                    (terms:seq<Term>) (ontology:Ontology) =
                     let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                     ontology
 
@@ -1557,22 +1557,22 @@ module InsertStatements =
                     new Organization(id', name', details',  parent', Nullable(DateTime.Now))
 
                static member addName
-                    (organization:Organization) (name:string) =
+                    (name:string) (organization:Organization) =
                     organization.Name <- name
                     organization
 
                static member addParent
-                    (organization:Organization) (parent:string) =
+                    (parent:string) (organization:Organization) =
                     organization.Parent <- parent
                     organization
 
                static member addDetail
-                    (organization:Organization) (detail:OrganizationParam) =
+                    (detail:OrganizationParam) (organization:Organization) =
                     let result = organization.Details <- addToList organization.Details detail
                     organization
 
                static member addDetails
-                    (organization:Organization) (details:seq<OrganizationParam>) =
+                    (details:seq<OrganizationParam>) (organization:Organization) =
                     let result = organization.Details <- addCollectionToList organization.Details details
                     organization
 
@@ -1609,41 +1609,41 @@ module InsertStatements =
                               )
 
                static member addName
-                    (person:Person) (name:string) =
+                    (name:string) (person:Person) =
                     person.Name <- name
                     person
 
                static member addFirstName
-                    (person:Person) (firstName:string) =
+                    (firstName:string) (person:Person) =
                     person.FirstName <- firstName
                     person
 
                static member addMidInitials
-                    (person:Person) (midInitials:string) =
+                    (midInitials:string) (person:Person) =
                     person.MidInitials <- midInitials
                     person
 
                static member addLastName
-                    (person:Person) (lastName:string) =
+                    (lastName:string) (person:Person) =
                     person.LastName <- lastName
                     person
 
-               static member addDetail (person:Person) (detail:PersonParam) =
+               static member addDetail (detail:PersonParam) (person:Person) =
                     let result = person.Details <- addToList person.Details detail
                     person
 
                static member addDetails
-                    (person:Person) (details:seq<PersonParam>) =
+                    (details:seq<PersonParam>) (person:Person) =
                     let result = person.Details <- addCollectionToList person.Details details
                     person
 
                static member addOrganization
-                    (person:Person) (organization:Organization) =
+                    (organization:Organization) (person:Person) =
                     let result = person.Organizations <- addToList person.Organizations organization
                     person
 
                static member addOrganizations
-                    (person:Person) (organizations:seq<Organization>) =
+                    (organizations:seq<Organization>) (person:Person) =
                     let result = person.Organizations <- addCollectionToList person.Organizations organizations
                     person
 
@@ -1703,39 +1703,34 @@ module InsertStatements =
                     new AnalysisSoftware(id', name', uri', version', customizations', contactRole', softwareName, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (analysisSoftware:AnalysisSoftware) (name:string) =
+                    (name:string) (analysisSoftware:AnalysisSoftware) =
                     analysisSoftware.Name <- name
                     analysisSoftware
 
                static member addURI
-                    (analysisSoftware:AnalysisSoftware) (uri:string) =
+                    (uri:string) (analysisSoftware:AnalysisSoftware) =
                     analysisSoftware.URI <- uri
                     analysisSoftware
 
                static member addVersion
-                    (analysisSoftware:AnalysisSoftware) (version:string) =
+                    (version:string) (analysisSoftware:AnalysisSoftware) =
                     analysisSoftware.Version <- version
                     analysisSoftware
 
                static member addCustomization
-                    (analysisSoftware:AnalysisSoftware) (customizations:string) =
+                    (customizations:string) (analysisSoftware:AnalysisSoftware) =
                     analysisSoftware.Customizations <- customizations
                     analysisSoftware
 
-                static member addMzIdentML
-                    (analysisSoftware:AnalysisSoftware) (mzIdentMLDocument:MzIdentMLDocument) =
-                    let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
-                    analysisSoftware
-
                static member addAnalysisSoftwareDeveloper
-                    (analysisSoftware:AnalysisSoftware) (analysisSoftwareDeveloper:ContactRole) =
+                    (analysisSoftwareDeveloper:ContactRole) (analysisSoftware:AnalysisSoftware)=
                     analysisSoftware.ContactRole <- analysisSoftwareDeveloper
                     analysisSoftware
 
-               //static member addMzIdentML
-               //     (analysisSoftware:AnalysisSoftware) (mzIdentML:MzIdentML) =
-               //     analysisSoftware.MzIdentML <- mzIdentML
-               //     analysisSoftware
+               static member addMzIdentML
+                    (mzIdentMLDocument:MzIdentMLDocument) (analysisSoftware:AnalysisSoftware)=
+                    let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
+                    analysisSoftware
 
                static member tryFindByID
                     (context:MzIdentML) (analysisSoftwareID:string) =
@@ -1760,7 +1755,7 @@ module InsertStatements =
                     new SubSample(id', Sample', Nullable(DateTime.Now))
 
                static member addSample
-                    (subSample:SubSample) (sampleID:Sample) =
+                    (sampleID:Sample) (subSample:SubSample) =
                     subSample.Sample <- sampleID
                     subSample
 
@@ -1795,42 +1790,42 @@ module InsertStatements =
                     new Sample(id', name', contactRoles', subSamples', details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (sample:Sample) (name:string) =
+                    (name:string) (sample:Sample) =
                     sample.Name <- name
                     sample
 
                static member addContactRole
-                    (sample:Sample) (contactRole:ContactRole) =
+                    (contactRole:ContactRole) (sample:Sample) =
                     let result = sample.ContactRoles <- addToList sample.ContactRoles contactRole
                     sample
 
                static member addContactRoles
-                    (sample:Sample) (contactRoles:seq<ContactRole>) =
+                    (contactRoles:seq<ContactRole>) (sample:Sample) =
                     let result = sample.ContactRoles <- addCollectionToList sample.ContactRoles contactRoles
                     sample
 
                static member addSubSample
-                    (sample:Sample) (subSample:SubSample) =
+                    (subSample:SubSample) (sample:Sample) =
                     let result = sample.SubSamples <- addToList sample.SubSamples subSample
                     sample
 
                static member addSubSamples
-                    (sample:Sample) (subSamples:seq<SubSample>) =
+                    (subSamples:seq<SubSample>) (sample:Sample) =
                     let result = sample.SubSamples <- addCollectionToList sample.SubSamples subSamples
                     sample
 
                static member addDetail
-                    (sample:Sample) (detail:SampleParam) =
+                    (detail:SampleParam) (sample:Sample) =
                     let result = sample.Details <- addToList sample.Details detail
                     sample
 
                static member addDetails
-                    (sample:Sample) (details:seq<SampleParam>) =
+                    (details:seq<SampleParam>) (sample:Sample) =
                     let result = sample.Details <- addCollectionToList sample.Details details
                     sample
 
                static member addMzIdentML
-                    (sample:Sample) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (sample:Sample) =
                     let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                     sample
 
@@ -1864,22 +1859,22 @@ module InsertStatements =
                     new Modification(id', residues', Nullable(location'), Nullable(monoIsotopicMassDelta'), Nullable(avgMassDelta'), details |> List, Nullable(DateTime.Now))
 
                static member addResidues
-                    (modification:Modification) (residues:string) =
+                    (residues:string) (modification:Modification) =
                     modification.Residues <- residues
                     modification
 
                static member addLocation
-                    (modification:Modification) (location:int) =
+                    (location:int) (modification:Modification) =
                     modification.Location <- Nullable(location)
                     modification
 
                static member addMonoIsotopicMassDelta
-                    (modification:Modification) (monoIsotopicMassDelta:float) =
+                    (monoIsotopicMassDelta:float) (modification:Modification) =
                     modification.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
                     modification
 
                static member addAvgMassDelta
-                    (modification:Modification) (avgMassDelta:float) =
+                    (avgMassDelta:float) (modification:Modification) =
                     modification.AvgMassDelta <- Nullable(avgMassDelta)
                     modification
 
@@ -1912,17 +1907,17 @@ module InsertStatements =
                     new SubstitutionModification(id', originalResidue, replacementResidue, Nullable(location'), Nullable(monoIsotopicMassDelta'), Nullable(avgMassDelta'), Nullable(DateTime.Now))
 
                static member addLocation
-                    (substitutionModification:SubstitutionModification) (location:int) =
+                    (location:int) (substitutionModification:SubstitutionModification) =
                     substitutionModification.Location <- Nullable(location)
                     substitutionModification
 
                static member addMonoIsotopicMassDelta
-                    (substitutionModification:SubstitutionModification) (monoIsotopicMassDelta:float) =
+                    (monoIsotopicMassDelta:float) (substitutionModification:SubstitutionModification) =
                     substitutionModification.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
                     substitutionModification
 
                static member addAvgMassDelta
-                    (substitutionModification:SubstitutionModification) (avgMassDelta:float) =
+                    (avgMassDelta:float) (substitutionModification:SubstitutionModification) =
                     substitutionModification.AvgMassDelta <- Nullable(avgMassDelta)
                     substitutionModification
 
@@ -1958,42 +1953,42 @@ module InsertStatements =
                     new Peptide(id', name', peptideSequence, modifications', substitutionModifications', details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (peptide:Peptide) (name:string) =
+                    (name:string) (peptide:Peptide) =
                     peptide.Name <- name
                     peptide
 
                static member addModification
-                    (peptide:Peptide) (modification:Modification) =
+                    (modification:Modification) (peptide:Peptide) =
                     let result = peptide.Modifications <- addToList peptide.Modifications modification
                     peptide
 
                static member addModifications
-                    (peptide:Peptide) (modifications:seq<Modification>) =
+                    (modifications:seq<Modification>) (peptide:Peptide) =
                     let result = peptide.Modifications <- addCollectionToList peptide.Modifications modifications
                     peptide
 
                static member addSubstitutionModification
-                    (peptide:Peptide) (substitutionModification:SubstitutionModification) =
+                    (substitutionModification:SubstitutionModification) (peptide:Peptide) =
                     let result = peptide.SubstitutionModifications <- addToList peptide.SubstitutionModifications substitutionModification
                     peptide
 
                static member addSubstitutionModifications
-                    (peptide:Peptide) (substitutionModifications:seq<SubstitutionModification>) =
+                    (substitutionModifications:seq<SubstitutionModification>) (peptide:Peptide) =
                     let result = peptide.SubstitutionModifications <- addCollectionToList peptide.SubstitutionModifications substitutionModifications
                     peptide
 
                static member addDetail
-                    (peptide:Peptide) (detail:PeptideParam) =
+                    (detail:PeptideParam) (peptide:Peptide) =
                     let result = peptide.Details <- addToList peptide.Details detail
                     peptide
 
                static member addDetails
-                    (peptide:Peptide) (details:seq<PeptideParam>) =
+                    (details:seq<PeptideParam>) (peptide:Peptide) =
                     let result = peptide.Details <- addCollectionToList peptide.Details details
                     peptide
 
                static member addMzIdentML
-                    (peptide:Peptide) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (peptide:Peptide) =
                     let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
                     peptide
 
@@ -2022,17 +2017,17 @@ module InsertStatements =
                     new TranslationTable(id', name', details', Nullable(DateTime.Now))
 
                static member addName
-                    (translationTable:TranslationTable) (name:string) =
+                    (name:string) (translationTable:TranslationTable) =
                     translationTable.Name <- name
                     translationTable
 
                static member addDetail
-                    (translationTable:TranslationTable) (detail:TranslationTableParam) =
+                    (detail:TranslationTableParam) (translationTable:TranslationTable) =
                     let result = translationTable.Details <- addToList translationTable.Details detail
                     translationTable
 
                static member addDetails
-                    (translationTable:TranslationTable) (details:seq<TranslationTableParam>) =
+                    (details:seq<TranslationTableParam>) (translationTable:TranslationTable) =
                     let result = translationTable.Details <- addCollectionToList translationTable.Details details
                     translationTable
 
@@ -2060,7 +2055,7 @@ module InsertStatements =
                     new Measure(id', name', details |> List, Nullable(DateTime.Now))
 
                static member addName
-                    (measure:Measure) (name:string) =
+                    (name:string) (measure:Measure) =
                     measure.Name <- name
                     measure
 
@@ -2137,37 +2132,37 @@ module InsertStatements =
                     new MassTable(id', name', msLevel, residue', ambiguousResidue', details', Nullable(DateTime.Now))
 
                static member addName
-                    (massTable:MassTable) (name:string) =
+                    (name:string) (massTable:MassTable) =
                     massTable.Name <- name
                     massTable
 
                static member addResidue
-                    (massTable:MassTable) (residue:Residue) =
+                    (residue:Residue) (massTable:MassTable) =
                     let result = massTable.Residues <- addToList massTable.Residues residue
                     massTable
 
                static member addResidues
-                    (massTable:MassTable) (residues:seq<Residue>) =
+                    (residues:seq<Residue>) (massTable:MassTable) =
                     let result = massTable.Residues <- addCollectionToList massTable.Residues residues
                     massTable
 
                static member addAmbiguousResidue
-                    (massTable:MassTable) (ambiguousResidues:AmbiguousResidue) =
+                    (ambiguousResidues:AmbiguousResidue) (massTable:MassTable) =
                     let result = massTable.AmbiguousResidues <- addToList massTable.AmbiguousResidues ambiguousResidues
                     massTable
 
                static member addAmbiguousResidues
-                    (massTable:MassTable) (ambiguousResidues:seq<AmbiguousResidue>) =
+                    (ambiguousResidues:seq<AmbiguousResidue>) (massTable:MassTable) =
                     let result = massTable.AmbiguousResidues <- addCollectionToList massTable.AmbiguousResidues ambiguousResidues
                     massTable
 
                static member addDetail
-                    (massTable:MassTable) (detail:MassTableParam) =
+                    (detail:MassTableParam) (massTable:MassTable) =
                     let result = massTable.Details <- addToList massTable.Details detail
                     massTable
 
                static member addDetails
-                    (massTable:MassTable) (details:seq<MassTableParam>) =
+                    (details:seq<MassTableParam>) (massTable:MassTable) =
                     let result = massTable.Details <- addCollectionToList massTable.Details details
                     massTable
 
@@ -2261,22 +2256,22 @@ module InsertStatements =
                     new IonType(id', index', fragmentArray', details |> List, Nullable(DateTime.Now))
 
                static member addIndex
-                    (ionType:IonType) (index:Index) =
+                    (index:Index) (ionType:IonType) =
                     let result = ionType.Index <- addToList ionType.Index index
                     ionType
 
                static member addIndexes
-                    (ionType:IonType) (index:seq<Index>) =
+                    (index:seq<Index>) (ionType:IonType) =
                     let result = ionType.Index <- addCollectionToList ionType.Index index
                     ionType
 
                static member addFragmentArray
-                    (ionType:IonType) (fragmentArray:FragmentArray) =
+                    (fragmentArray:FragmentArray) (ionType:IonType) =
                     let result = ionType.FragmentArrays <- addToList ionType.FragmentArrays fragmentArray
                     ionType
 
                static member addFragmentArrays
-                    (ionType:IonType) (fragmentArrays:seq<FragmentArray>) =
+                    (fragmentArrays:seq<FragmentArray>) (ionType:IonType) =
                     let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                     ionType
 
@@ -2308,24 +2303,14 @@ module InsertStatements =
                     new SpectraData(id', name', location, externalFormatDocumentation', fileFormat, spectrumIDFormat, Nullable(DateTime.Now))
 
                static member addName
-                    (spectraData:SpectraData) (name:string) =
+                    (name:string) (spectraData:SpectraData) =
                     spectraData.Name <- name
                     spectraData
 
                static member addExternalFormatDocumentation
-                    (spectraData:SpectraData) (externalFormatDocumentation:string) =
+                    (externalFormatDocumentation:string) (spectraData:SpectraData) =
                     spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
                     spectraData
-
-               //static member addInputs
-               //     (spectraData:SpectraData) (inputs:Inputs) =
-               //     spectraData.Inputs <- inputs
-               //     spectraData
-
-               //static member addSpectrumIdentification
-               //     (spectraData:SpectraData) (spectrumIdentification:SpectrumIdentification) =
-               //     spectraData.SpectrumIdentification <- spectrumIdentification
-               //     spectraData
 
                static member tryFindByID
                     (context:MzIdentML) (spectraDataID:string) =
@@ -2375,12 +2360,12 @@ module InsertStatements =
                     new SearchModification(id', Nullable(fixedMod), Nullable(massDelta), residues, specificityRules', details |> List, Nullable(DateTime.Now))
 
                static member addSpecificityRule
-                    (searchModification:SearchModification) (specificityRule:SpecificityRule) =
+                    (specificityRule:SpecificityRule) (searchModification:SearchModification) =
                     let result = searchModification.SpecificityRules <- addToList searchModification.SpecificityRules specificityRule
                     searchModification
 
                static member addSpecificityRules
-                    (searchModification:SearchModification) (specificityRules:seq<SpecificityRule>) =
+                    (specificityRules:seq<SpecificityRule>) (searchModification:SearchModification) =
                     let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                     searchModification
 
@@ -2423,47 +2408,47 @@ module InsertStatements =
                               )
 
                static member addName
-                    (enzyme:Enzyme) (name:string) =
+                    (name:string) (enzyme:Enzyme) =
                     enzyme.Name <- name
                     enzyme
 
                static member addCTermGain
-                    (enzyme:Enzyme) (cTermGain:string) =
+                    (cTermGain:string) (enzyme:Enzyme) =
                     enzyme.CTermGain <- cTermGain
                     enzyme
 
                static member addNTermGain
-                    (enzyme:Enzyme) (nTermGain:string) =
+                    (nTermGain:string) (enzyme:Enzyme) =
                     enzyme.NTermGain <- nTermGain
                     enzyme
 
                static member addMinDistance
-                    (enzyme:Enzyme) (minDistance:int) =
+                    (minDistance:int) (enzyme:Enzyme) =
                     enzyme.MinDistance <- Nullable(minDistance)
                     enzyme
 
                static member addMissedCleavages
-                    (enzyme:Enzyme) (missedCleavages:int) =
+                    (missedCleavages:int) (enzyme:Enzyme) =
                     enzyme.MissedCleavages <-Nullable( missedCleavages)
                     enzyme
 
                static member addSemiSpecific
-                    (enzyme:Enzyme) (semiSpecific:bool) =
+                    (semiSpecific:bool) (enzyme:Enzyme) =
                     enzyme.SemiSpecific <- Nullable(semiSpecific)
                     enzyme
 
                static member addSiteRegexc
-                    (enzyme:Enzyme) (siteRegexc:string) =
+                    (siteRegexc:string) (enzyme:Enzyme) =
                     enzyme.SiteRegexc <- siteRegexc
                     enzyme
 
                static member addEnzymeName
-                    (enzyme:Enzyme) (enzymeName:EnzymeNameParam) =
+                    (enzymeName:EnzymeNameParam) (enzyme:Enzyme) =
                     let result = enzyme.EnzymeName <- addToList enzyme.EnzymeName enzymeName
                     enzyme
 
                static member addEnzymeNames
-                    (enzyme:Enzyme) (enzymeNames:seq<EnzymeNameParam>) =
+                    (enzymeNames:seq<EnzymeNameParam>) (enzyme:Enzyme) =
                     let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                     enzyme
 
@@ -2493,22 +2478,22 @@ module InsertStatements =
                     new Filter(id', filterType, includes', excludes', Nullable(DateTime.Now))
 
                static member addInclude
-                    (filter:Filter) (include':IncludeParam) =
+                    (include':IncludeParam) (filter:Filter) =
                     let result = filter.Includes <- addToList filter.Includes include'
                     filter
 
                static member addIncludes
-                    (filter:Filter) (includes:seq<IncludeParam>) =
+                    (includes:seq<IncludeParam>) (filter:Filter) =
                     let result = filter.Includes <- addCollectionToList filter.Includes includes
                     filter
 
                static member addExclude
-                    (filter:Filter) (exclude':ExcludeParam) =
+                    (exclude':ExcludeParam) (filter:Filter) =
                     let result = filter.Excludes <- addToList filter.Excludes exclude'
                     filter
 
                static member addExcludes
-                    (filter:Filter) (excludes:seq<ExcludeParam>) =
+                    (excludes:seq<ExcludeParam>) (filter:Filter) =
                     let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                     filter
 
@@ -2585,107 +2570,107 @@ module InsertStatements =
                                                       )
 
                static member addName
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (name:string) =
+                    (name:string) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     spectrumIdentificationProtocol.Name <- name
                     spectrumIdentificationProtocol
 
                static member addEnzymeAdditionalSearchParam
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParam:AdditionalSearchParam) =
+                    (additionalSearchParam:AdditionalSearchParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParam
                     spectrumIdentificationProtocol
 
                static member addEnzymeAdditionalSearchParams
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (additionalSearchParams:seq<AdditionalSearchParam>) =
+                    (additionalSearchParams:seq<AdditionalSearchParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addCollectionToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParams
                     spectrumIdentificationProtocol
 
                static member addModificationParam
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (modificationParam:SearchModification) =
+                    (modificationParam:SearchModification) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.ModificationParams <- addToList spectrumIdentificationProtocol.ModificationParams modificationParam
                     spectrumIdentificationProtocol
 
                static member addModificationParams
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (modificationParams:seq<SearchModification>) =
+                    (modificationParams:seq<SearchModification>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.ModificationParams <- addCollectionToList spectrumIdentificationProtocol.ModificationParams modificationParams
                     spectrumIdentificationProtocol
 
                static member addEnzyme
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (enzyme:Enzyme) =
+                    (enzyme:Enzyme) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.Enzymes <- addToList spectrumIdentificationProtocol.Enzymes enzyme
                     spectrumIdentificationProtocol
 
                static member addEnzymes
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (enzymes:seq<Enzyme>) =
+                    (enzymes:seq<Enzyme>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.Enzymes <- addCollectionToList spectrumIdentificationProtocol.Enzymes enzymes
                     spectrumIdentificationProtocol
 
                static member addIndependent_Enzymes
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (independent_Enzymes:bool) =
+                    (independent_Enzymes:bool) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     spectrumIdentificationProtocol.Independent_Enzymes <- Nullable(independent_Enzymes)
                     spectrumIdentificationProtocol
 
                static member addMassTable
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (massTable:MassTable) =
+                    (massTable:MassTable) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.MassTables <- addToList spectrumIdentificationProtocol.MassTables massTable
                     spectrumIdentificationProtocol
 
                static member addMassTables
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (massTables:seq<MassTable>) =
+                    (massTables:seq<MassTable>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.MassTables <- addCollectionToList spectrumIdentificationProtocol.MassTables massTables
                     spectrumIdentificationProtocol
 
                static member addFragmentTolerance
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerance:FragmentToleranceParam) =
+                    (fragmentTolerance:FragmentToleranceParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.FragmentTolerance <- addToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerance
                     spectrumIdentificationProtocol
 
                static member addFragmentTolerances
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (fragmentTolerances:seq<FragmentToleranceParam>) =
+                    (fragmentTolerances:seq<FragmentToleranceParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.FragmentTolerance <- addCollectionToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerances
                     spectrumIdentificationProtocol
 
                static member addParentTolerance
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerance:ParentToleranceParam) =
+                    (parentTolerance:ParentToleranceParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.ParentTolerance <- addToList spectrumIdentificationProtocol.ParentTolerance parentTolerance
                     spectrumIdentificationProtocol
 
                static member addParentTolerances
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (parentTolerances:seq<ParentToleranceParam>) =
+                    (parentTolerances:seq<ParentToleranceParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.ParentTolerance <- addCollectionToList spectrumIdentificationProtocol.ParentTolerance parentTolerances
                     spectrumIdentificationProtocol
 
                static member addDatabaseFilter
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (databaseFilter:Filter) =
+                    (databaseFilter:Filter) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.DatabaseFilters <- addToList spectrumIdentificationProtocol.DatabaseFilters databaseFilter
                     spectrumIdentificationProtocol
 
                static member addDatabaseFilters
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (databaseFilters:seq<Filter>) =
+                    (databaseFilters:seq<Filter>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.DatabaseFilters <- addCollectionToList spectrumIdentificationProtocol.DatabaseFilters databaseFilters
                     spectrumIdentificationProtocol
 
                static member addFrame
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (frame:Frame) =
+                    (frame:Frame) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.Frames <- addToList spectrumIdentificationProtocol.Frames frame
                     spectrumIdentificationProtocol
 
                static member addFrames
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (frames:seq<Frame>) =
+                    (frames:seq<Frame>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.Frames <- addCollectionToList spectrumIdentificationProtocol.Frames frames
                     spectrumIdentificationProtocol
 
                static member addTranslationTable
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (translationTable:TranslationTable) =
+                    (translationTable:TranslationTable) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.TranslationTables <- addToList spectrumIdentificationProtocol.TranslationTables translationTable
                     spectrumIdentificationProtocol
 
                static member addTranslationTables
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (translationTables:seq<TranslationTable>) =
+                    (translationTables:seq<TranslationTable>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
                     spectrumIdentificationProtocol
 
                static member addMzIdentML
-                    (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                     let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
                     spectrumIdentificationProtocol
 
@@ -2733,54 +2718,44 @@ module InsertStatements =
                                       )
 
                static member addName
-                    (searchDatabase:SearchDatabase) (name:string) =
+                    (name:string) (searchDatabase:SearchDatabase) =
                     searchDatabase.Name <- name
                     searchDatabase
 
                static member addNumDatabaseSequences
-                    (searchDatabase:SearchDatabase) (numDatabaseSequences:int64) =
+                    (numDatabaseSequences:int64) (searchDatabase:SearchDatabase) =
                     searchDatabase.NumDatabaseSequences <- Nullable(numDatabaseSequences)
                     searchDatabase
 
                static member addNumResidues
-                    (searchDatabase:SearchDatabase) (numResidues:int64) =
+                    (numResidues:int64) (searchDatabase:SearchDatabase) =
                     searchDatabase.NumResidues <- Nullable(numResidues)
                     searchDatabase
 
                static member addReleaseDate
-                    (searchDatabase:SearchDatabase) (releaseDate:DateTime) =
+                    (releaseDate:DateTime) (searchDatabase:SearchDatabase) =
                     searchDatabase.ReleaseDate <- Nullable(releaseDate)
                     searchDatabase
 
                static member addVersion
-                    (searchDatabase:SearchDatabase) (version:string) =
+                    (version:string) (searchDatabase:SearchDatabase) =
                     searchDatabase.Version <- version
                     searchDatabase
 
                static member addExternalFormatDocumentation
-                    (searchDatabase:SearchDatabase) (externalFormatDocumentation:string) =
+                    (externalFormatDocumentation:string) (searchDatabase:SearchDatabase) =
                     searchDatabase.Version <- externalFormatDocumentation
                     searchDatabase
 
                static member addDetail
-                    (dbSequence:SearchDatabase) (detail:SearchDatabaseParam) =
-                    let result = dbSequence.Details <- addToList dbSequence.Details detail
-                    dbSequence
-
-               static member addDetails
-                    (searchDatabase:SearchDatabase) (details:seq<SearchDatabaseParam>) =
-                    let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
+                    (detail:SearchDatabaseParam) (searchDatabase:SearchDatabase) =
+                    let result = searchDatabase.Details <- addToList searchDatabase.Details detail
                     searchDatabase
 
-               //static member addSpectrumIdentification
-               //     (searchDatabase:SearchDatabase) (spectrumIdentification:SpectrumIdentification) =
-               //     searchDatabase.SpectrumIdentification <- spectrumIdentification
-               //     searchDatabase
-
-               //static member addInputs
-               //     (searchDatabase:SearchDatabase) (inputs:Inputs) =
-               //     searchDatabase.Inputs <- inputs
-               //     searchDatabase
+               static member addDetails
+                    (details:seq<SearchDatabaseParam>) (searchDatabase:SearchDatabase) =
+                    let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
+                    searchDatabase
 
                static member tryFindByID
                     (context:MzIdentML) (searchDatabaseID:string) =
@@ -2815,32 +2790,32 @@ module InsertStatements =
                     new DBSequence(id', name', accession, searchDatabase, sequence', Nullable(length'), details', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (dbSequence:DBSequence) (name:string) =
+                    (name:string) (dbSequence:DBSequence) =
                     dbSequence.Name <- name
                     dbSequence
 
                static member addSequence
-                    (dbSequence:DBSequence) (sequence:string) =
+                    (sequence:string) (dbSequence:DBSequence) =
                     dbSequence.Sequence <- sequence
                     dbSequence
 
                static member addLength
-                    (dbSequence:DBSequence) (length:int) =
+                    (length:int) (dbSequence:DBSequence) =
                     dbSequence.Length <- Nullable(length)
                     dbSequence
 
                static member addDetail
-                    (dbSequence:DBSequence) (detail:DBSequenceParam) =
+                    (detail:DBSequenceParam) (dbSequence:DBSequence) =
                     let result = dbSequence.Details <- addToList dbSequence.Details detail
                     dbSequence
 
                static member addDetails
-                    (dbSequence:DBSequence) (details:seq<DBSequenceParam>) =
+                    (details:seq<DBSequenceParam>) (dbSequence:DBSequence) =
                     let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                     dbSequence
 
                static member addMzIdentML
-                    (dbSequence:DBSequence) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (dbSequence:DBSequence) =
                     let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                     dbSequence
 
@@ -2890,57 +2865,57 @@ module InsertStatements =
                                        )
 
                static member addName
-                    (peptideEvidence:PeptideEvidence) (name:string) =
+                    (name:string) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.Name <- name
                     peptideEvidence
 
                static member addStart
-                    (peptideEvidence:PeptideEvidence) (start:int) =
+                    (start:int) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.Start <- Nullable(start)
                     peptideEvidence
 
                static member addEnd 
-                    (peptideEvidence:PeptideEvidence) (end':int) =
+                    (end':int) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.End  <- Nullable(end')
                     peptideEvidence
 
                static member addPre
-                    (peptideEvidence:PeptideEvidence) (pre:string) =
+                    (pre:string) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.Pre <- pre
                     peptideEvidence
 
                static member addPost
-                    (peptideEvidence:PeptideEvidence) (post:string) =
+                    (post:string) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.Post <- post
                     peptideEvidence
 
                static member addFrame
-                    (peptideEvidence:PeptideEvidence) (frame:Frame) =
+                    (frame:Frame) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.Frame <- frame
                     peptideEvidence
 
                static member addIsDecoy
-                    (peptideEvidence:PeptideEvidence) (isDecoy:bool) =
+                    (isDecoy:bool) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.IsDecoy <- Nullable(isDecoy)
                     peptideEvidence
 
                static member addTranslationTable
-                    (peptideEvidence:PeptideEvidence) (translationTable:TranslationTable) =
+                    (translationTable:TranslationTable) (peptideEvidence:PeptideEvidence) =
                     peptideEvidence.TranslationTable <- translationTable
                     peptideEvidence
 
                static member addDetail
-                    (peptideEvidence:PeptideEvidence) (detail:PeptideEvidenceParam) =
+                    (detail:PeptideEvidenceParam) (peptideEvidence:PeptideEvidence) =
                     let result = peptideEvidence.Details <- addToList peptideEvidence.Details detail
                     peptideEvidence
 
                static member addDetails
-                    (peptideEvidence:PeptideEvidence) (details:seq<PeptideEvidenceParam>) =
+                    (details:seq<PeptideEvidenceParam>) (peptideEvidence:PeptideEvidence) =
                     let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
                     peptideEvidence
 
                static member addMzIdentML
-                    (peptideEvidence:PeptideEvidence) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (peptideEvidence:PeptideEvidence) =
                     let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
                     peptideEvidence
 
@@ -2989,58 +2964,58 @@ module InsertStatements =
                                                   )
 
                static member addName
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (name:string) =
+                    (name:string) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     spectrumIdentificationItem.Name <- name
                     spectrumIdentificationItem
 
                static member addSample
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (sample:Sample) =
+                    (sample:Sample) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     spectrumIdentificationItem.Sample <- sample 
                     spectrumIdentificationItem
 
                static member addMassTable
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (massTable:MassTable) =
+                    (massTable:MassTable) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     spectrumIdentificationItem.MassTable <- massTable
                     spectrumIdentificationItem
 
                static member addPeptideEvidence
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (peptideEvidence:PeptideEvidence) =
+                    (peptideEvidence:PeptideEvidence) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.PeptideEvidences <- addToList spectrumIdentificationItem.PeptideEvidences peptideEvidence
                     spectrumIdentificationItem
 
                static member addPeptideEvidences
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (peptideEvidences:seq<PeptideEvidence>) =
+                    (peptideEvidences:seq<PeptideEvidence>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.PeptideEvidences <- addCollectionToList spectrumIdentificationItem.PeptideEvidences peptideEvidences
                     spectrumIdentificationItem   
 
                static member addFragmentation
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (ionType:IonType) =
+                    (ionType:IonType) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.Fragmentations <- addToList spectrumIdentificationItem.Fragmentations ionType
                     spectrumIdentificationItem
 
                static member addFragmentations
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (ionTypes:seq<IonType>) =
+                    (ionTypes:seq<IonType>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.Fragmentations <- addCollectionToList spectrumIdentificationItem.Fragmentations ionTypes
                     spectrumIdentificationItem 
 
                static member addCalculatedMassToCharge
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedMassToCharge:float) =
+                    (calculatedMassToCharge:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     spectrumIdentificationItem.CalculatedMassToCharge <- Nullable(calculatedMassToCharge)
                     //printfn "%A" calculatedMassToCharge
                     spectrumIdentificationItem
 
                static member addCalculatedPI
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (calculatedPI:float) =
+                    (calculatedPI:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     spectrumIdentificationItem.CalculatedPI <- Nullable(calculatedPI)
                     spectrumIdentificationItem
 
                static member addDetail
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (detail:SpectrumIdentificationItemParam) =
+                    (detail:SpectrumIdentificationItemParam) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.Details <- addToList spectrumIdentificationItem.Details detail
                     spectrumIdentificationItem
 
                static member addDetails
-                    (spectrumIdentificationItem:SpectrumIdentificationItem) (details:seq<SpectrumIdentificationItemParam>) =
+                    (details:seq<SpectrumIdentificationItemParam>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                     let result = spectrumIdentificationItem.Details <- addCollectionToList spectrumIdentificationItem.Details details
                     spectrumIdentificationItem
 
@@ -3077,17 +3052,17 @@ module InsertStatements =
                                                      details', Nullable(DateTime.Now))
 
                static member addName
-                    (spectrumIdentificationResult:SpectrumIdentificationResult) (name:string) =
+                    (name:string) (spectrumIdentificationResult:SpectrumIdentificationResult)  =
                     spectrumIdentificationResult.Name <- name
                     spectrumIdentificationResult
 
                static member addDetail
-                    (spectrumIdentificationResult:SpectrumIdentificationResult) (detail:SpectrumIdentificationResultParam) =
+                    (detail:SpectrumIdentificationResultParam) (spectrumIdentificationResult:SpectrumIdentificationResult) =
                     let result = spectrumIdentificationResult.Details <- addToList spectrumIdentificationResult.Details detail
                     spectrumIdentificationResult
 
                static member addDetails
-                    (spectrumIdentificationResult:SpectrumIdentificationResult) (details:seq<SpectrumIdentificationResultParam>) =
+                    (details:seq<SpectrumIdentificationResultParam>) (spectrumIdentificationResult:SpectrumIdentificationResult) =
                     let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
                     spectrumIdentificationResult
 
@@ -3095,13 +3070,9 @@ module InsertStatements =
                //     (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
                //     spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
 
-               static member findSpectrumIdentificationResultByID
+               static member tryFindByID
                     (context:MzIdentML) (spectrumIdentificationResultID:string) =
                     context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
-
-               static member tryFindByID
-                    (context:MzIdentML) (spectraDataID:string) =
-                    context.SpectraData.Find(spectraDataID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationResult) =
                         (addToContextWithExceptionCheck context item)
@@ -3131,32 +3102,32 @@ module InsertStatements =
                                                   )
 
                static member addName
-                    (spectrumIdentificationList:SpectrumIdentificationList) (name:string) =
+                    (name:string) (spectrumIdentificationList:SpectrumIdentificationList) =
                     spectrumIdentificationList.Name <- name
                     spectrumIdentificationList
 
                static member addNumSequencesSearched
-                    (spectrumIdentificationList:SpectrumIdentificationList) (numSequencesSearched:int64) =
+                    (numSequencesSearched:int64) (spectrumIdentificationList:SpectrumIdentificationList) =
                     spectrumIdentificationList.NumSequencesSearched <- Nullable(numSequencesSearched)
                     spectrumIdentificationList
 
                static member addFragmentationTable
-                    (spectrumIdentificationList:SpectrumIdentificationList) (fragmentationTable:Measure) =
+                    (fragmentationTable:Measure) (spectrumIdentificationList:SpectrumIdentificationList) =
                     let result = spectrumIdentificationList.FragmentationTables <- addToList spectrumIdentificationList.FragmentationTables fragmentationTable
                     spectrumIdentificationList
 
                static member addFragmentationTables
-                    (spectrumIdentificationList:SpectrumIdentificationList) (fragmentationTables:seq<Measure>) =
+                    (fragmentationTables:seq<Measure>) (spectrumIdentificationList:SpectrumIdentificationList) =
                     let result = spectrumIdentificationList.FragmentationTables <- addCollectionToList spectrumIdentificationList.FragmentationTables fragmentationTables
                     spectrumIdentificationList
 
                static member addDetail
-                    (spectrumIdentificationList:SpectrumIdentificationList) (detail:SpectrumIdentificationListParam) =
+                    (detail:SpectrumIdentificationListParam) (spectrumIdentificationList:SpectrumIdentificationList) =
                     let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
                     spectrumIdentificationList
 
                static member addDetails
-                    (spectrumIdentificationList:SpectrumIdentificationList) (details:seq<SpectrumIdentificationListParam>) =
+                    (details:seq<SpectrumIdentificationListParam>) (spectrumIdentificationList:SpectrumIdentificationList) =
                     let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                     spectrumIdentificationList
 
@@ -3192,17 +3163,17 @@ module InsertStatements =
                                                spectraData |> List, searchDatabase |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (spectrumIdentificationList:SpectrumIdentification) (name:string) =
-                    spectrumIdentificationList.Name <- name
-                    spectrumIdentificationList
+                    (name:string) (spectrumIdentification:SpectrumIdentification) =
+                    spectrumIdentification.Name <- name
+                    spectrumIdentification
 
                static member addActivityDate
-                    (spectrumIdentificationList:SpectrumIdentification) (activityDate:DateTime) =
-                    spectrumIdentificationList.ActivityDate <- Nullable(activityDate)
-                    spectrumIdentificationList
+                    (activityDate:DateTime) (spectrumIdentification:SpectrumIdentification) =
+                    spectrumIdentification.ActivityDate <- Nullable(activityDate)
+                    spectrumIdentification
 
                static member addMzIdentML
-                    (spectrumIdentification:SpectrumIdentification) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentification:SpectrumIdentification) =
                     let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
                     spectrumIdentification
 
@@ -3235,22 +3206,22 @@ module InsertStatements =
                     new ProteinDetectionProtocol(id', name', analysisSoftware, analysisParams', threshold |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (name:string) =
+                    (name:string) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     proteinDetectionProtocol.Name <- name
                     proteinDetectionProtocol
 
                static member addAnalysisParam
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParam:AnalysisParam) =
+                    (analysisParam:AnalysisParam) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     let result = proteinDetectionProtocol.AnalysisParams <- addToList proteinDetectionProtocol.AnalysisParams analysisParam
                     proteinDetectionProtocol
 
                static member addAnalysisParams
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (analysisParams:seq<AnalysisParam>) =
+                    (analysisParams:seq<AnalysisParam>) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
                     proteinDetectionProtocol
 
                static member addMzIdentML
-                    (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                     let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionProtocol
 
@@ -3283,22 +3254,22 @@ module InsertStatements =
                     new SourceFile(id', name', location, externalFormatDocumentation', fileFormat, details', Nullable(DateTime.Now))
 
                static member addName
-                    (sourceFile:SourceFile) (name:string) =
+                    (name:string) (sourceFile:SourceFile) =
                     sourceFile.Name <- name
                     sourceFile
 
                static member addExternalFormatDocumentation
-                    (sourceFile:SourceFile) (externalFormatDocumentation:string) =
+                    (externalFormatDocumentation:string) (sourceFile:SourceFile) =
                     sourceFile.ExternalFormatDocumentation <- externalFormatDocumentation
                     sourceFile
 
                static member addDetail
-                    (sourceFile:SourceFile) (detail:SourceFileParam) =
+                    (detail:SourceFileParam) (sourceFile:SourceFile) =
                     let result = sourceFile.Details <- addToList sourceFile.Details detail
                     sourceFile
 
                static member addDetails
-                    (sourceFile:SourceFile) (details:seq<SourceFileParam>) =
+                    (details:seq<SourceFileParam>) (sourceFile:SourceFile) =
                     let result = sourceFile.Details <- addCollectionToList sourceFile.Details details
                     sourceFile
 
@@ -3334,27 +3305,27 @@ module InsertStatements =
                     new Inputs(id', sourceFile', searchDatabase', spectraData |> List, mzIdentML', Nullable(DateTime.Now))
 
                static member addSourceFile
-                    (inputs:Inputs) (sourceFile:SourceFile) =
+                    (sourceFile:SourceFile) (inputs:Inputs) =
                     let result = inputs.SourceFiles <- addToList inputs.SourceFiles sourceFile
                     inputs
 
                static member addSourceFiles
-                    (inputs:Inputs) (sourceFiles:seq<SourceFile>) =
+                    (sourceFiles:seq<SourceFile>) (inputs:Inputs) =
                     let result = inputs.SourceFiles <- addCollectionToList inputs.SourceFiles sourceFiles
                     inputs
 
                static member addSearchDatabase
-                    (inputs:Inputs) (searchDatabase:SearchDatabase) =
+                    (searchDatabase:SearchDatabase) (inputs:Inputs) =
                     let result = inputs.SearchDatabases <- addToList inputs.SearchDatabases searchDatabase
                     inputs
 
                static member addSearchDatabases
-                    (inputs:Inputs) (searchDatabases:seq<SearchDatabase>) =
+                    (searchDatabases:seq<SearchDatabase>) (inputs:Inputs) =
                     let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
                     inputs
 
                static member addMzIdentML
-                    (inputs:Inputs) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (inputs:Inputs) =
                     let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                     inputs
 
@@ -3412,22 +3383,22 @@ module InsertStatements =
                                                   )
 
                static member addName
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (name:string) =
+                    (name:string) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                     proteinDetectionHypothesis.Name <- name
                     proteinDetectionHypothesis
 
                static member addDetail
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (detail:ProteinDetectionHypothesisParam) =
+                    (detail:ProteinDetectionHypothesisParam) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                     let result = proteinDetectionHypothesis.Details <- addToList proteinDetectionHypothesis.Details detail
                     proteinDetectionHypothesis
 
                static member addDetails
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (details:seq<ProteinDetectionHypothesisParam>) =
+                    (details:seq<ProteinDetectionHypothesisParam>) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                     let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
                     proteinDetectionHypothesis
 
                static member addMzIdentML
-                    (proteinDetectionHypothesis:ProteinDetectionHypothesis) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                     let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                     proteinDetectionHypothesis
 
@@ -3457,17 +3428,17 @@ module InsertStatements =
                     new ProteinAmbiguityGroup(id', name', proteinDetecionHypothesis |> List, details', Nullable(DateTime.Now))
 
                static member addName
-                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (name:string) =
+                    (name:string) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
                     proteinAmbiguityGroup.Name <- name
                     proteinAmbiguityGroup
 
                static member addDetail
-                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (detail:ProteinAmbiguityGroupParam) =
+                    (detail:ProteinAmbiguityGroupParam) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
                     let result = proteinAmbiguityGroup.Details <- addToList proteinAmbiguityGroup.Details detail
                     proteinAmbiguityGroup
 
                static member addDetails
-                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (details:seq<ProteinAmbiguityGroupParam>) =
+                    (details:seq<ProteinAmbiguityGroupParam>) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
                     let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                     proteinAmbiguityGroup
 
@@ -3498,27 +3469,27 @@ module InsertStatements =
                     new ProteinDetectionList(id', name', proteinAmbiguityGroups', details', Nullable(DateTime.Now))
 
                static member addName
-                    (proteinDetectionList:ProteinDetectionList) (name:string) =
+                    (name:string) (proteinDetectionList:ProteinDetectionList) =
                     proteinDetectionList.Name <- name
                     proteinDetectionList
 
                static member addProteinAmbiguityGroup
-                    (proteinDetectionList:ProteinDetectionList) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
+                    (proteinAmbiguityGroup:ProteinAmbiguityGroup) (proteinDetectionList:ProteinDetectionList) =
                     let result = proteinDetectionList.ProteinAmbiguityGroups <- addToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroup
                     proteinDetectionList
 
                static member addProteinAmbiguityGroups
-                    (proteinDetectionList:ProteinDetectionList) (proteinAmbiguityGroups:seq<ProteinAmbiguityGroup>) =
+                    (proteinAmbiguityGroups:seq<ProteinAmbiguityGroup>) (proteinDetectionList:ProteinDetectionList) =
                     let result = proteinDetectionList.ProteinAmbiguityGroups <- addCollectionToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroups
                     proteinDetectionList
 
                static member addDetail
-                    (proteinDetectionList:ProteinDetectionList) (detail:ProteinDetectionListParam) =
+                    (detail:ProteinDetectionListParam) (proteinDetectionList:ProteinDetectionList) =
                     let result = proteinDetectionList.Details <- addToList proteinDetectionList.Details detail
                     proteinDetectionList
 
                static member addDetails
-                    (proteinDetectionList:ProteinDetectionList) (details:seq<ProteinDetectionListParam>) =
+                    (details:seq<ProteinDetectionListParam>) (proteinDetectionList:ProteinDetectionList) =
                     let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                     proteinDetectionList
 
@@ -3548,12 +3519,12 @@ module InsertStatements =
                     new AnalysisData(id', spectrumIdentificationList |> List, proteinDetectionList', mzIdentML', Nullable(DateTime.Now))
 
                static member addProteinDetectionList
-                    (analysisData:AnalysisData) (proteinDetectionList:ProteinDetectionList) =
+                    (proteinDetectionList:ProteinDetectionList) (analysisData:AnalysisData) =
                     analysisData.ProteinDetectionList <- proteinDetectionList
                     analysisData
 
                static member addMzIdentML
-                    (analysisData:AnalysisData) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (analysisData:AnalysisData) =
                     let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                     analysisData
 
@@ -3587,12 +3558,12 @@ module InsertStatements =
                                         )
 
                static member addName
-                    (proteinDetection:ProteinDetection) (name:string) =
+                    (name:string) (proteinDetection:ProteinDetection) =
                     proteinDetection.Name <- name
                     proteinDetection
 
                static member addActivityDate
-                    (proteinDetection:ProteinDetection) (activityDate:DateTime) =
+                    (activityDate:DateTime) (proteinDetection:ProteinDetection) =
                     proteinDetection.ActivityDate <- Nullable(activityDate)
                     proteinDetection
 
@@ -3643,27 +3614,27 @@ module InsertStatements =
                                               )
 
                static member addName
-                    (biblioGraphicReference:BiblioGraphicReference) (name:string) =
+                    (name:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Name <- name
                     biblioGraphicReference
 
                static member addAuthors
-                    (biblioGraphicReference:BiblioGraphicReference) (authors:string) =
+                    (authors:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Authors <- authors
                     biblioGraphicReference
 
                static member addDOI
-                    (biblioGraphicReference:BiblioGraphicReference) (doi:string) =
+                    (doi:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.DOI <- doi
                     biblioGraphicReference
 
                static member addEditor
-                    (biblioGraphicReference:BiblioGraphicReference) (editor:string) =
+                    (editor:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Editor <- editor
                     biblioGraphicReference
 
                static member addIssue
-                    (biblioGraphicReference:BiblioGraphicReference) (issue:string) =
+                    (issue:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Issue <- issue
                     biblioGraphicReference
 
@@ -3673,32 +3644,32 @@ module InsertStatements =
                     biblioGraphicReference
 
                static member addPublication
-                    (biblioGraphicReference:BiblioGraphicReference) (publication:string) =
+                    (publication:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Publication <- publication
                     biblioGraphicReference
 
                static member addPublisher
-                    (biblioGraphicReference:BiblioGraphicReference) (publisher:string) =
+                    (publisher:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Publisher <- publisher
                     biblioGraphicReference
 
                static member addTitle
-                    (biblioGraphicReference:BiblioGraphicReference) (title:string) =
+                    (title:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Title <- title
                     biblioGraphicReference
 
                static member addVolume
-                    (biblioGraphicReference:BiblioGraphicReference) (volume:string) =
+                    (volume:string) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Volume <- volume
                     biblioGraphicReference
 
                static member addYear
-                    (biblioGraphicReference:BiblioGraphicReference) (year:int) =
+                    (year:int) (biblioGraphicReference:BiblioGraphicReference) =
                     biblioGraphicReference.Year <- Nullable(year)
                     biblioGraphicReference
 
                static member addMzIdentML
-                    (biblioGraphicReference:BiblioGraphicReference) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (biblioGraphicReference:BiblioGraphicReference) =
                     let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
                     biblioGraphicReference
 
@@ -3731,22 +3702,22 @@ module InsertStatements =
                     new Provider(id', name', analysisSoftware', contactRole', mzIdentML', Nullable(DateTime.Now))
 
                static member addName
-                    (provider:Provider) (name:string) =
+                    (name:string) (provider:Provider) =
                     provider.Name <- name
                     provider
 
                static member addAnalysisSoftware
-                    (provider:Provider) (analysisSoftware:AnalysisSoftware) =
+                    (analysisSoftware:AnalysisSoftware) (provider:Provider) =
                     provider.AnalysisSoftware <- analysisSoftware
                     provider
 
                static member addContactRole
-                    (provider:Provider) (contactRole:ContactRole) =
+                    (contactRole:ContactRole) (provider:Provider) =
                     provider.ContactRole <- contactRole
                     provider
 
                static member addMzIdentML
-                    (provider:Provider) (mzIdentMLDocument:MzIdentMLDocument) =
+                    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
                     let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                     provider
 
@@ -3819,103 +3790,103 @@ module InsertStatements =
                     
 
                static member addName
-                    (mzIdentML:MzIdentMLDocument) (name:string) =
+                    (name:string) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.Name <- name
                     mzIdentML
 
                static member addAnalysisSoftware
-                    (mzIdentML:MzIdentMLDocument) (analysisSoftware:AnalysisSoftware) =
+                    (analysisSoftware:AnalysisSoftware) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.AnalysisSoftwares <- addToList mzIdentML.AnalysisSoftwares analysisSoftware
                     mzIdentML
 
                static member addAnalysisSoftwares
-                    (mzIdentML:MzIdentMLDocument) (analysisSoftwares:seq<AnalysisSoftware>) =
+                    (analysisSoftwares:seq<AnalysisSoftware>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
                     mzIdentML
 
                static member addProvider
-                    (mzIdentML:MzIdentMLDocument) (provider:Provider) =
+                    (provider:Provider) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.Provider <- provider
                     mzIdentML
 
                static member addPerson
-                    (mzIdentML:MzIdentMLDocument) (person:Person) =
+                    (person:Person) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.Persons <- addToList mzIdentML.Persons person
                     mzIdentML
 
                static member addPersons
-                    (mzIdentML:MzIdentMLDocument) (persons:seq<Person>) =
+                    (persons:seq<Person>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
                     mzIdentML
 
                static member addOrganization
-                    (mzIdentML:MzIdentMLDocument) (organization:Organization) =
+                    (organization:Organization) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
                     mzIdentML
 
                static member addOrganizations
-                    (mzIdentML:MzIdentMLDocument) (organizations:seq<Organization>) =
+                    (organizations:seq<Organization>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
                     mzIdentML
 
                static member addSample
-                    (mzIdentML:MzIdentMLDocument) (sample:Sample) =
+                    (sample:Sample) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Samples <- addToList mzIdentML.Samples sample
                     mzIdentML
 
                static member addSamples
-                    (mzIdentML:MzIdentMLDocument) (samples:seq<Sample>) =
+                    (samples:seq<Sample>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Samples <- addCollectionToList mzIdentML.Samples samples
                     mzIdentML
 
                static member addDBSequence
-                    (mzIdentML:MzIdentMLDocument) (dbSequence:DBSequence) =
+                    (dbSequence:DBSequence) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.DBSequences <- addToList mzIdentML.DBSequences dbSequence
                     mzIdentML
 
                static member addDBSequences
-                    (mzIdentML:MzIdentMLDocument) (dbSequences:seq<DBSequence>) =
+                    (dbSequences:seq<DBSequence>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
                     printfn "%A" dbSequences
                     mzIdentML
 
                static member addPeptide
-                    (mzIdentML:MzIdentMLDocument) (peptide:Peptide) =
+                    (peptide:Peptide) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Peptides <- addToList mzIdentML.Peptides peptide
                     mzIdentML
 
                static member addPeptides
-                    (mzIdentML:MzIdentMLDocument) (peptides:seq<Peptide>) =
+                    (peptides:seq<Peptide>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.Peptides <- addCollectionToList mzIdentML.Peptides peptides
                     mzIdentML
 
                static member addPeptideEvidence
-                    (mzIdentML:MzIdentMLDocument) (peptideEvidence:PeptideEvidence) =
+                    (peptideEvidence:PeptideEvidence) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.PeptideEvidences <- addToList mzIdentML.PeptideEvidences peptideEvidence
                     mzIdentML
 
                static member addPeptideEvidences
-                    (mzIdentML:MzIdentMLDocument) (peptideEvidences:seq<PeptideEvidence>) =
+                    (peptideEvidences:seq<PeptideEvidence>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
                     mzIdentML
 
                static member addProteinDetection
-                    (mzIdentML:MzIdentMLDocument) (proteinDetection:ProteinDetection) =
+                    (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.ProteinDetection <- proteinDetection
                     mzIdentML
 
                static member addProteinDetectionProtocol
-                    (mzIdentML:MzIdentMLDocument) (proteinDetectionProtocol:ProteinDetectionProtocol) =
+                    (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
                     mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
                     mzIdentML
 
                static member addBiblioGraphicReference
-                    (mzIdentML:MzIdentMLDocument) (biblioGraphicReference:BiblioGraphicReference) =
+                    (biblioGraphicReference:BiblioGraphicReference) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.BiblioGraphicReferences <- addToList mzIdentML.BiblioGraphicReferences biblioGraphicReference
                     mzIdentML
 
                static member addBiblioGraphicReferences
-                    (mzIdentML:MzIdentMLDocument) (biblioGraphicReferences:seq<BiblioGraphicReference>) =
+                    (biblioGraphicReferences:seq<BiblioGraphicReference>) (mzIdentML:MzIdentMLDocument) =
                     let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
                     mzIdentML
 
