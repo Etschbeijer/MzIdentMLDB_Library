@@ -121,7 +121,7 @@ module InsertStatements =
                     term.Ontology <- ontology
                     term
 
-               static member findTermByID
+               static member tryFindByID
                     (context:MzIdentML) (termID:string) =
                     context.Term.Find(termID)
 
@@ -159,13 +159,9 @@ module InsertStatements =
                 //    let result = ontology.MzIdentML <- mzIdentML
                 //    ontology
 
-               static member findOntologyByID
+               static member tryFindByID
                     (context:MzIdentML) (ontologyID:string) =
                     context.Ontology.Find(ontologyID)
-
-                static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                 static member addToContext (context:MzIdentML) (item:Ontology) =
                     addToContextWithExceptionCheck context item
@@ -210,10 +206,6 @@ module InsertStatements =
                static member tryFindByID
                     (context:MzIdentML) (paramID:string) =
                     context.CVParam.Find(paramID)
-
-               static member findTermByID
-                    (context:MzIdentML) (termID:string) =
-                    context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:CVParam) =
                         (addToContextWithExceptionCheck context item)

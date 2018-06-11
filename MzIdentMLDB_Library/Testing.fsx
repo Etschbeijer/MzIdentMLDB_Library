@@ -59,6 +59,14 @@ let testQueryable (dbContext : MzIdentML) (id : string) =
         | :? System.InvalidOperationException -> takeTermEntryLocal dbContext id
         | _ -> Unchecked.defaultof<Term>
 
+let termTryFindTestI =
+    TermHandler.tryFindByID context "Test"
+
+termTryFindTestI.IsSome
+
+let CVParamInit =
+    CVParamHandler.init("Test", null,unit=termTryFindTestI)
+
 //testQueryable context "MS:0000000"
 //testQueryable context "I"
 
