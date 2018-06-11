@@ -833,7 +833,7 @@ module DataContext =
         ///The software used for performing the analyses.
         and [<AllowNullLiteral>]
             AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, 
-                              contactRole:ContactRole, softwareName:CVParam, rowVersion:Nullable<DateTime>) =
+                              contactRole:ContactRole, softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable uri' = uri
@@ -841,9 +841,10 @@ module DataContext =
                 let mutable customization' = customizations
                 let mutable contactRole' = contactRole
                 let mutable softwareName' = softwareName
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = AnalysisSoftware(null, null, null, null, null, null, null, Nullable())
+                new() = AnalysisSoftware(null, null, null, null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -852,6 +853,7 @@ module DataContext =
                 member this.Customizations with get() = customization' and set(value) = customization' <- value
                 member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
                 member this.SoftwareName with get() = softwareName' and set(value) = softwareName' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///References to the individual component samples within a mixed parent sample.
@@ -870,21 +872,23 @@ module DataContext =
         ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
         and [<AllowNullLiteral>]
             Sample (id:string, name:string, contactRoles:List<ContactRole>, subSamples:List<SubSample>, 
-                    details:List<SampleParam>, rowVersion:Nullable<DateTime>) =
+                    details:List<SampleParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable contactRoles' = contactRoles
                 let mutable subSamples' = subSamples
                 let mutable details' = details
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = Sample(null, null, null, null, null, Nullable())
+                new() = Sample(null, null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.ContactRoles with get() = contactRoles' and set(value) = contactRoles' <- value
                 member this.SubSamples with get() = subSamples' and set(value) = subSamples' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A molecule modification specification.
@@ -933,17 +937,18 @@ module DataContext =
 
         ///One (poly)peptide (a sequence with modifications).
         and [<AllowNullLiteral>]
-            Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, 
-                     substitutionModifications:List<SubstitutionModification>, details:List<PeptideParam>, rowVersion:Nullable<DateTime>) =
+            Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, substitutionModifications:List<SubstitutionModification>, 
+                     details:List<PeptideParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable peptideSequence' = peptideSequence
                 let mutable modifications' = modifications
                 let mutable substitutionModifications' = substitutionModifications
                 let mutable details' = details
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = Peptide(null, null, null, null, null, null, Nullable())
+                new() = Peptide(null, null, null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -951,6 +956,7 @@ module DataContext =
                 member this.Modifications with get() = modifications' and set(value) = modifications' <- value
                 member this.SubstitutionModifications with get() = substitutionModifications' and set(value) = substitutionModifications' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
@@ -1218,7 +1224,7 @@ module DataContext =
                                             enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
                                             fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                             threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
-                                            translationTables:List<TranslationTable>, rowVersion:Nullable<DateTime>
+                                            translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
                                            ) =
                 let mutable id' = id
                 let mutable name' = name
@@ -1241,9 +1247,10 @@ module DataContext =
                 let mutable frames' = frames
                 let mutable translationTables' = translationTables
                 //
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, Nullable())
+                new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1260,6 +1267,7 @@ module DataContext =
                 member this.DatabaseFilters with get() = databaseFilters' and set(value) = databaseFilters' <- value
                 member this.Frames with get() = frames' and set(value) = frames' <- value
                 member this.TranslationTables with get() = translationTables' and set(value) = translationTables' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A database for searching mass spectra.
@@ -1298,7 +1306,7 @@ module DataContext =
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
         and [<AllowNullLiteral>]
             DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
-                        length:Nullable<int>, details:List<DBSequenceParam>, rowVersion:Nullable<DateTime>) =
+                        length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable accession' = accession
@@ -1306,9 +1314,10 @@ module DataContext =
                 let mutable sequence' = sequence
                 let mutable length' = length
                 let mutable details' = details
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = DBSequence(null, null, null, null, null, Nullable(), null, Nullable())
+                new() = DBSequence(null, null, null, null, null, Nullable(), null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1317,13 +1326,14 @@ module DataContext =
                 member this.Sequence with get() = sequence' and set(value) = sequence' <- value
                 member this.Length with get() = length' and set(value) = length' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
         and [<AllowNullLiteral>]
             PeptideEvidence (id:string, name:string, dbSequence:DBSequence, peptide:Peptide, start:Nullable<int>, 
-                             ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, 
-                             translationTable:TranslationTable, details:List<PeptideEvidenceParam>, rowVersion:Nullable<DateTime>) =
+                             ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, translationTable:TranslationTable, 
+                             details:List<PeptideEvidenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 //Formerly DBSequence_Ref
@@ -1342,9 +1352,10 @@ module DataContext =
                 let mutable translationTable' = translationTable
                 //
                 let mutable details' = details
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = PeptideEvidence(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), null, null, Nullable())
+                new() = PeptideEvidence(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1358,6 +1369,7 @@ module DataContext =
                 member this.IsDecoy with get() = isDecoy' and set(value) = isDecoy' <- value
                 member this.TranslationTable with get() = translationTable' and set(value) = translationTable' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
@@ -1452,7 +1464,7 @@ module DataContext =
         and [<AllowNullLiteral>]
             SpectrumIdentification (id:string, name:string, activityDate:Nullable<DateTime>, spectrumidentificationList:SpectrumIdentificationList,
                                     spectrumIdentificationProtocol:SpectrumIdentificationProtocol, spectraData:List<SpectraData>,
-                                    searchDatabase:List<SearchDatabase>, rowVersion:Nullable<DateTime>) =
+                                    searchDatabase:List<SearchDatabase>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable activityDate' = activityDate
@@ -1464,9 +1476,10 @@ module DataContext =
                 //SearchDatabase_Ref
                 let mutable searchDatabase' = searchDatabase
                 //
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = SpectrumIdentification(null, null, Nullable(), null, null, null, null, Nullable())
+                new() = SpectrumIdentification(null, null, Nullable(), null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1475,26 +1488,29 @@ module DataContext =
                 member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
                 member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
                 member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The parameters and settings of a SpectrumIdentification analysis.
         and [<AllowNullLiteral>] 
             ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
-                                      threshold:List<ThresholdParam>, rowVersion:Nullable<DateTime>) =
+                                      threshold:List<ThresholdParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable analysisSoftware' = analysisSoftware
                 let mutable analysisParams' = analysisParams
                 let mutable threshold' = threshold
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = ProteinDetectionProtocol(null, null, null, null, null, Nullable())
+                new() = ProteinDetectionProtocol(null, null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
                 member this.AnalysisParams with get() = analysisParams' and set(value) = analysisParams' <- value
                 member this.Threshold with get() = threshold' and set(value) = threshold' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A file from which this mzIdentML instance was created.
@@ -1522,19 +1538,21 @@ module DataContext =
         ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
         and [<AllowNullLiteral>]
             Inputs (id:string, sourceFiles:List<SourceFile>, searchDatabases:List<SearchDatabase>,
-                    spectraData:List<SpectraData>, rowVersion:Nullable<DateTime>) =
+                    spectraData:List<SpectraData>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable sourceFiles' = sourceFiles
                 let mutable searchDatabases' = searchDatabases
                 let mutable spectraData' = spectraData
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = Inputs(null, null, null, null, Nullable())
+                new() = Inputs(null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
                 member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
                 member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
@@ -1557,16 +1575,17 @@ module DataContext =
         and [<AllowNullLiteral>] 
             ProteinDetectionHypothesis (id:string, name:string, passThreshold:Nullable<bool>, dbSequence:DBSequence,
                                         peptideHypothesis:List<PeptideHypothesis>, details:List<ProteinDetectionHypothesisParam>,
-                                        rowVersion:Nullable<DateTime>) =
+                                        mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable passThreshold' = passThreshold
                 let mutable dbSequence' = dbSequence
                 let mutable peptideHypothesis' = peptideHypothesis
                 let mutable details' = details
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = ProteinDetectionHypothesis(null, null, Nullable(), null, null, null, Nullable())
+                new() = ProteinDetectionHypothesis(null, null, Nullable(), null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
@@ -1574,6 +1593,7 @@ module DataContext =
                 member this.DBSequence with get() = dbSequence' and set(value) = dbSequence' <- value
                 member this.PeptideHypothesis with get() = peptideHypothesis' and set(value) = peptideHypothesis' <- value
                 member this.Details with get() = details' and set(value) = details' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
@@ -1614,18 +1634,20 @@ module DataContext =
 
         ///Data sets generated by the analyses, including peptide and protein lists.
         and [<AllowNullLiteral>] 
-            AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, 
-                          proteinDetectionList:ProteinDetectionList, rowVersion:Nullable<DateTime>) =
+            AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, proteinDetectionList:ProteinDetectionList, 
+                          mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable spectrumIdentificationList' = spectrumIdentificationList
                 let mutable proteinDetectionList' = proteinDetectionList
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = AnalysisData(null, null, null, Nullable())
+                new() = AnalysisData(null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.SpectrumIdentificationList with get() = spectrumIdentificationList' and set(value) = spectrumIdentificationList' <- value
                 member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
@@ -1689,44 +1711,47 @@ module DataContext =
         ///The Provider of the mzIdentML record in terms of the contact and software.
         and [<AllowNullLiteral>] 
             Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
-                      rowVersion:Nullable<DateTime>) =
+                      mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable analysisSoftware' = analysisSoftware
                 let mutable contactRole' = contactRole
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = Provider(null, null, null, null, Nullable())
+                new() = Provider(null, null, null, null, null, Nullable())
 
                 member this.ID with get() = id' and set(value) = id' <- value
                 member this.Name with get() = name' and set(value) = name' <- value
                 member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
                 member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
         ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
         and [<AllowNullLiteral>]
-            MzIdentML(
-                      id:string,
-                      name:string, 
-                      version:string,
-                      analysisSoftwares:List<AnalysisSoftware>,
-                      provider:Provider,
-                      persons:List<Person>, 
-                      organizations:List<Organization>, 
-                      samples:List<Sample>, 
-                      dbSequences:List<DBSequence>, 
-                      peptides:List<Peptide>,
-                      peptideEvidences:List<PeptideEvidence>, 
-                      spectrumIdentification:List<SpectrumIdentification>, 
-                      proteinDetection:ProteinDetection, 
-                      spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
-                      proteinDetectionProtocol:ProteinDetectionProtocol,
-                      inputs:Inputs,
-                      analysisData:AnalysisData,
-                      biblioGraphicReferences:List<BiblioGraphicReference>,
-                      rowVersion:Nullable<DateTime>
-                     ) =
+            MzIdentMLDocument(
+                              id:string,
+                              name:string, 
+                              version:string,
+                              analysisSoftwares:List<AnalysisSoftware>,
+                              provider:Provider,
+                              persons:List<Person>, 
+                              organizations:List<Organization>, 
+                              samples:List<Sample>, 
+                              dbSequences:List<DBSequence>, 
+                              peptides:List<Peptide>,
+                              peptideEvidences:List<PeptideEvidence>, 
+                              spectrumIdentification:List<SpectrumIdentification>, 
+                              proteinDetection:ProteinDetection, 
+                              spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
+                              proteinDetectionProtocol:ProteinDetectionProtocol,
+                              inputs:Inputs,
+                              analysisData:AnalysisData,
+                              biblioGraphicReferences:List<BiblioGraphicReference>,
+                              mzIdentMLDocument:MzIdentMLDocument,
+                              rowVersion:Nullable<DateTime>
+                             ) =
                 let mutable id' = id
                 let mutable name' = name
                 let mutable version' = version
@@ -1745,9 +1770,10 @@ module DataContext =
                 let mutable inputs' = inputs
                 let mutable analysisData' = analysisData
                 let mutable biblioGraphicReferences' = biblioGraphicReferences
+                let mutable mzIdentMLDocument' = mzIdentMLDocument
                 let mutable rowVersion' = rowVersion
 
-                new() = MzIdentML(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
+                new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
                 [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
                 member this.ID with get() = id' and set(value) = id' <- value
@@ -1782,6 +1808,7 @@ module DataContext =
                 member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
                 //
                 member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
+                member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
                 member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
 
@@ -1789,11 +1816,11 @@ module DataContext =
 
         open EntityTypes
 
-        type MzIdentMLContext =
+        type MzIdentML =
      
                 inherit DbContext
 
-                new(options : DbContextOptions<MzIdentMLContext>) = {inherit DbContext(options)}
+                new(options : DbContextOptions<MzIdentML>) = {inherit DbContext(options)}
 
                 [<DefaultValue>] 
                 val mutable m_term : DbSet<Term>
@@ -2205,9 +2232,9 @@ module DataContext =
         let standardDBPathSQLite = fileDir + "\Databases\Test.db"
 
         let configureSQLiteContextMzIdentML path = 
-            let optionsBuilder = new DbContextOptionsBuilder<MzIdentMLContext>()
+            let optionsBuilder = new DbContextOptionsBuilder<MzIdentML>()
             optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
-            new MzIdentMLContext(optionsBuilder.Options)
+            new MzIdentML(optionsBuilder.Options)
 
         type OntologyContext =
      
