@@ -8,16 +8,6 @@ open System.Collections.Generic
 module DataContext =
 
     module EntityTypes =
-        open System.Data
-
-        //type [<CLIMutable>] 
-        //    Term =
-        //    {
-        //        ID               : string
-        //        mutable Name     : string
-        //        mutable Ontology : Ontology
-        //        RowVersion       : DateTime 
-        //    }
 
         type [<AllowNullLiteral>]
             Term (id:string, name:string, ontology:Ontology, rowVersion:Nullable<DateTime>) =
@@ -1018,19 +1008,11 @@ module DataContext =
                     member x.UnitName   = x.UnitName
                     member x.RowVersion = x.RowVersion
 
-        /////A single entry from an ontology or a controlled vocabulary.
-        //and [<CLIMutable>] 
-        //    UserParam =
-        //    {
-        //     [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] 
-        //     ID         : int
-        //     Name       : string
-        //     Value      : string
-        //     and       : string
-        //     Unit       : Term
-        //     UnitName   : string
-        //     RowVersion : DateTime 
-        //    }
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            //End of params///////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////
+
 
         ///Organizations are entities like companies, universities, government agencies.
         and [<AllowNullLiteral>]
@@ -1053,7 +1035,8 @@ module DataContext =
         and [<AllowNullLiteral>]
             Person (id:string, name:string, firstName:string, midInitials:string, 
                     lastName:string, organizations:List<Organization>, 
-                    details:List<PersonParam>, rowVersion:Nullable<DateTime>) =
+                    details:List<PersonParam>, rowVersion:Nullable<DateTime>
+                   ) =
                 let mutable id'            = id
                 let mutable name'          = name
                 let mutable firstName'     = firstName
@@ -1092,7 +1075,8 @@ module DataContext =
         ///The software used for performing the analyses.
         and [<AllowNullLiteral>]
             AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, contactRole:ContactRole, 
-                              softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                              softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                             ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable uri'               = uri
@@ -1131,7 +1115,8 @@ module DataContext =
         ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
         and [<AllowNullLiteral>]
             Sample (id:string, name:string, contactRoles:List<ContactRole>, subSamples:List<SubSample>, 
-                    details:List<SampleParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                    details:List<SampleParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                   ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable contactRoles'      = contactRoles
@@ -1153,7 +1138,8 @@ module DataContext =
         ///A molecule modification specification.
         and [<AllowNullLiteral>]
             Modification (id:string, residues:string, location:Nullable<int>, monoIsotopicMassDelta:Nullable<float>, 
-                          avgMassDelta:Nullable<float>, details:List<ModificationParam>, rowVersion:Nullable<DateTime>) =
+                          avgMassDelta:Nullable<float>, details:List<ModificationParam>, rowVersion:Nullable<DateTime>
+                         ) =
                 let mutable id'                    = id
                 let mutable residues'              = residues
                 let mutable location'              = location
@@ -1175,7 +1161,8 @@ module DataContext =
         ///A modification where one residue is substituted by another (amino acid change).
         and [<AllowNullLiteral>]
             SubstitutionModification (id:string, originalResidue:string, replacementResidue:string, location:Nullable<int>, 
-                                      monoIsotopicMassDelta:Nullable<float>, avgMassDelta:Nullable<float>, rowVersion:Nullable<DateTime>) =
+                                      monoIsotopicMassDelta:Nullable<float>, avgMassDelta:Nullable<float>, rowVersion:Nullable<DateTime>
+                                     ) =
                 let mutable id'                    = id
                 let mutable originalResidue'       = originalResidue
                 let mutable replacementResidue'    = replacementResidue
@@ -1197,7 +1184,8 @@ module DataContext =
         ///One (poly)peptide (a sequence with modifications).
         and [<AllowNullLiteral>]
             Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, substitutionModifications:List<SubstitutionModification>, 
-                     details:List<PeptideParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                     details:List<PeptideParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                    ) =
                 let mutable id'                        = id
                 let mutable name'                      = name
                 let mutable peptideSequence'           = peptideSequence
@@ -1281,7 +1269,8 @@ module DataContext =
         ///The masses of residues used in the search.
         and [<AllowNullLiteral>]
             MassTable (id:string, name:string, msLevel:string, residues:List<Residue>, 
-                       ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:Nullable<DateTime>) =
+                       ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:Nullable<DateTime>
+                      ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable msLevel'           = msLevel
@@ -1363,7 +1352,8 @@ module DataContext =
         ///A data set containing spectra data (consisting of one or more spectra).
         and [<AllowNullLiteral>]
             SpectraData (id:string, name:string, location:string, externalFormatDocumentation:string, 
-                         fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:Nullable<DateTime>) =
+                         fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:Nullable<DateTime>
+                        ) =
                 let mutable id'                          = id
                 let mutable name'                        = name
                 let mutable location'                    = location
@@ -1399,7 +1389,8 @@ module DataContext =
         ///Specification of a search modification as parameter for a spectra search.
         and [<AllowNullLiteral>]
             SearchModification (id:string, fixedMod:Nullable<bool>, massDelta:Nullable<float>, residues:string, specificityRules:List<SpecificityRule>, 
-                                searchModificationParams:List<SearchModificationParam>, rowVersion:Nullable<DateTime>) =
+                                searchModificationParams:List<SearchModificationParam>, rowVersion:Nullable<DateTime>
+                               ) =
                 let mutable id'                       = id
                 let mutable fixedMod'                 = fixedMod
                 let mutable massDelta'                = massDelta
@@ -1421,7 +1412,8 @@ module DataContext =
         ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
         and [<AllowNullLiteral>]
             Enzyme (id:string, name:string, cTermGain:string, nTermGain:string, minDistance:Nullable<int>, missedCleavages:Nullable<int>, 
-                    semiSpecific:Nullable<bool>, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:Nullable<DateTime>) =
+                    semiSpecific:Nullable<bool>, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:Nullable<DateTime>
+                   ) =
                 let mutable id'              = id
                 let mutable name'            = name
                 let mutable cTermGain'       = cTermGain
@@ -1483,7 +1475,8 @@ module DataContext =
                                             enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
                                             fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                             threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
-                                            translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                            translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, 
+                                            rowVersion:Nullable<DateTime>
                                            ) =
                 let mutable id'                     = id
                 let mutable name'                   = name
@@ -1533,7 +1526,8 @@ module DataContext =
         and [<AllowNullLiteral>]
             SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:Nullable<int64>, numResidues:Nullable<int64>,
                             releaseDate:Nullable<DateTime>, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
-                            databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>) =
+                            databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>
+                           ) =
                 let mutable id'                          = id
                 let mutable name'                        = name
                 let mutable location'                    = location
@@ -1565,7 +1559,8 @@ module DataContext =
         ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
         and [<AllowNullLiteral>]
             DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
-                        length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                        length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                       ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable accession'         = accession
@@ -1592,7 +1587,8 @@ module DataContext =
         and [<AllowNullLiteral>]
             PeptideEvidence (id:string, name:string, dbSequence:DBSequence, peptide:Peptide, start:Nullable<int>, 
                              ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, translationTable:TranslationTable, 
-                             details:List<PeptideEvidenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                             details:List<PeptideEvidenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                            ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 //Formerly DBSequence_Ref
@@ -1637,7 +1633,8 @@ module DataContext =
                                         passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
                                         fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
                                         calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, details:List<SpectrumIdentificationItemParam>, 
-                                        rowVersion:Nullable<DateTime>) =
+                                        rowVersion:Nullable<DateTime>
+                                       ) =
 
                 let mutable id'                       = id
                 let mutable name'                     = name
@@ -1677,7 +1674,8 @@ module DataContext =
         and [<AllowNullLiteral>]
             SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
                                           spectrumIdentificationItem:List<SpectrumIdentificationItem>, details:List<SpectrumIdentificationResultParam>,
-                                          rowVersion:Nullable<DateTime>) =
+                                          rowVersion:Nullable<DateTime>
+                                         ) =
                 let mutable id'                         = id
                 let mutable name'                       = name
                 let mutable spectraData'                = spectraData
@@ -1700,7 +1698,8 @@ module DataContext =
         and [<AllowNullLiteral>]
             SpectrumIdentificationList (id:string, name:string, numSequencesSearched:Nullable<int64>, fragmentationTables:List<Measure>,
                                         spectrumIdentificationResult:List<SpectrumIdentificationResult>, details:List<SpectrumIdentificationListParam>,
-                                        rowVersion:Nullable<DateTime>) =
+                                        rowVersion:Nullable<DateTime>
+                                       ) =
                 let mutable id'                           = id
                 let mutable name'                         = name
                 let mutable numSequencesSearched'         = numSequencesSearched
@@ -1753,7 +1752,8 @@ module DataContext =
         ///The parameters and settings of a SpectrumIdentification analysis.
         and [<AllowNullLiteral>] 
             ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
-                                      threshold:List<ThresholdParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                                      threshold:List<ThresholdParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                     ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable analysisSoftware'  = analysisSoftware
@@ -1775,7 +1775,8 @@ module DataContext =
         ///A file from which this mzIdentML instance was created.
         and [<AllowNullLiteral>] 
             SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormatParam:CVParam,
-                        details:List<SourceFileParam>, rowVersion:Nullable<DateTime>) =
+                        details:List<SourceFileParam>, rowVersion:Nullable<DateTime>
+                       ) =
                 let mutable id'                          = id
                 let mutable name'                        = name
                 let mutable location'                    = location
@@ -1797,7 +1798,8 @@ module DataContext =
         ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
         and [<AllowNullLiteral>]
             Inputs (id:string, sourceFiles:List<SourceFile>, searchDatabases:List<SearchDatabase>,
-                    spectraData:List<SpectraData>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                    spectraData:List<SpectraData>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                   ) =
                 let mutable id'                = id
                 let mutable sourceFiles'       = sourceFiles
                 let mutable searchDatabases'   = searchDatabases
@@ -1817,7 +1819,8 @@ module DataContext =
         ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
         and [<AllowNullLiteral>]
             PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, spectrumIdentificationItems:List<SpectrumIdentificationItem>,
-                                rowVersion:Nullable<DateTime>) =
+                                rowVersion:Nullable<DateTime>
+                               ) =
                 let mutable id'                          = id
                 let mutable peptideEvidence'             = peptideEvidence
                 let mutable spectrumIdentificationItems' = spectrumIdentificationItems
@@ -1834,7 +1837,8 @@ module DataContext =
         and [<AllowNullLiteral>] 
             ProteinDetectionHypothesis (id:string, name:string, passThreshold:Nullable<bool>, dbSequence:DBSequence,
                                         peptideHypothesis:List<PeptideHypothesis>, details:List<ProteinDetectionHypothesisParam>,
-                                        mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                                        mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                       ) =
                 let mutable id'                = id
                 let mutable name'              = name
                 let mutable passThreshold'     = passThreshold
@@ -1858,7 +1862,8 @@ module DataContext =
         ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
         and [<AllowNullLiteral>] 
             ProteinAmbiguityGroup (id:string, name:string, proteinDetecionHypothesis:List<ProteinDetectionHypothesis>,
-                                   details:List<ProteinAmbiguityGroupParam>, rowVersion:Nullable<DateTime>) =
+                                   details:List<ProteinAmbiguityGroupParam>, rowVersion:Nullable<DateTime>
+                                  ) =
                 let mutable id'                        = id
                 let mutable name'                      = name
                 let mutable proteinDetecionHypothesis' = proteinDetecionHypothesis
@@ -1876,7 +1881,8 @@ module DataContext =
         ///The protein list resulting from a protein detection process.
         and [<AllowNullLiteral>] 
             ProteinDetectionList (id:string, name:string, proteinAmbiguityGroups:List<ProteinAmbiguityGroup>,
-                                  details:List<ProteinDetectionListParam>, rowVersion:Nullable<DateTime>) =
+                                  details:List<ProteinDetectionListParam>, rowVersion:Nullable<DateTime>
+                                 ) =
                 let mutable id'                     = id
                 let mutable name'                   = name
                 let mutable proteinAmbiguityGroups' = proteinAmbiguityGroups
@@ -1894,7 +1900,8 @@ module DataContext =
         ///Data sets generated by the analyses, including peptide and protein lists.
         and [<AllowNullLiteral>] 
             AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, proteinDetectionList:ProteinDetectionList, 
-                          mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                          mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                         ) =
                 let mutable id'                         = id
                 let mutable spectrumIdentificationList' = spectrumIdentificationList
                 let mutable proteinDetectionList'       = proteinDetectionList
@@ -1913,7 +1920,8 @@ module DataContext =
         and [<AllowNullLiteral>] 
             ProteinDetection (id:string, name:string, activityDate:Nullable<DateTime>, proteinDetectionList:ProteinDetectionList,
                               proteinDetectionProtocol:ProteinDetectionProtocol, spectrumIdentificationLists:List<SpectrumIdentificationList>,
-                              rowVersion:Nullable<DateTime>) =
+                              rowVersion:Nullable<DateTime>
+                             ) =
                 let mutable id'                          = id
                 let mutable name'                        = name
                 let mutable activityDate'                = activityDate
@@ -1936,7 +1944,8 @@ module DataContext =
         and [<AllowNullLiteral>] 
             BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                     issue:string, pages:string, publication:string, publisher:string, title:string,
-                                    volume:string, year:Nullable<int>, mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                                    volume:string, year:Nullable<int>, mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                   ) =
                 let mutable id'          = id
                 let mutable name'        = name
                 let mutable authors'     = authors
@@ -1972,7 +1981,8 @@ module DataContext =
         ///The Provider of the mzIdentML record in terms of the contact and software.
         and [<AllowNullLiteral>] 
             Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
-                      mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>) =
+                      mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                     ) =
                 let mutable id'               = id
                 let mutable name'             = name
                 let mutable analysisSoftware' = analysisSoftware
