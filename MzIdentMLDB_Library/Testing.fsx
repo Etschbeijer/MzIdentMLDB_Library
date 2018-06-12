@@ -30,7 +30,6 @@ open MzIdentMLDataBase.InsertStatements.InitializeStandardDB
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzIdentMLDataBase.XMLParsing
 
-
 let context = configureSQLiteContextMzIdentML standardDBPathSQLite
 //initStandardDB context
 
