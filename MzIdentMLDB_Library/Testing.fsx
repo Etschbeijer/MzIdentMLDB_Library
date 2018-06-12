@@ -176,30 +176,6 @@ type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_File
 let xmlFile = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.mzid")
 
 
-let organizations = 
-    (match xmlFile.AuditCollection with
-        |Some x -> x.Organizations 
-                   |> Array.map (fun organization -> convertToEntity_Organization context organization)
-        |None -> Unchecked.defaultof<array<bool>>
-    )
-                                                          
-let persons =
-    (match xmlFile.AuditCollection with
-        |Some x -> x.Persons 
-                   |> Array.map (fun person -> convertToEntity_Person context person)
-        |None -> Unchecked.defaultof<array<bool>>
-    )  
-
-let analysisSoftwares = 
-    (match xmlFile.AnalysisSoftwareList with
-        | Some x -> x.AnalysisSoftwares 
-                    |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware context analysisSoftware)
-        |None -> Unchecked.defaultof<array<bool>>
-    )
-
-context.SaveChanges()
-
-
 let xmlFragmentArray = 
     xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
     |> Array.map (fun spectrumIdentification -> spectrumIdentification.SpectrumIdentificationResults
@@ -276,25 +252,25 @@ let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzId
         match xmlContext.AuditCollection with
         |Some x -> x.Organizations
                    |> Array.map (fun organization -> convertToEntity_Organization dbContext organization)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
   
     let parsedPersons =
         match xmlContext.AuditCollection with
         |Some x -> x.Persons
                    |> Array.map (fun person -> convertToEntity_Person dbContext person)
-        |None -> Unchecked.defaultof<array<bool>> 
+        |None -> null
         
     let parsedAnalysisSoftwares =
         match xmlContext.AnalysisSoftwareList with
         |Some x -> x.AnalysisSoftwares
                    |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware dbContext analysisSoftware)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
 
     let parsedSamples =
         match xmlContext.AnalysisSampleCollection with
         |Some x -> x.Samples
                    |> Array.map (fun sample -> convertToEntity_Sample dbContext sample)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
 
     let parsedSubSamples =
         match xmlContext.AnalysisSampleCollection with
@@ -302,25 +278,25 @@ let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzId
                    |> Array.map (fun sample -> sample.SubSamples
                                                |> Array.map (fun subSample -> convertToEntity_SubSample dbContext subSample)
                                 )
-        |None -> Unchecked.defaultof<array<array<bool>>>
+        |None -> null
 
     let parsedPeptides =
         match xmlContext.SequenceCollection with
         |Some x -> x.Peptides
                    |> Array.map (fun peptide -> convertToEntity_Peptide dbContext peptide)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
 
     let parsedDBSequences =
         match xmlContext.SequenceCollection with
         |Some x -> x.DbSequences
                    |> Array.map (fun dbSequence -> convertToEntity_DBSequence dbContext dbSequence)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
 
     let parsedPeptideEvidences =
         match xmlContext.SequenceCollection with
         |Some x -> x.PeptideEvidences
                    |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence dbContext peptideEvidences)
-        |None -> Unchecked.defaultof<array<bool>>
+        |None -> null
 
     let parsedMassTables =
         xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
@@ -333,7 +309,7 @@ let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzId
         |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
                                                             |Some x -> x.Enzymes
                                                                        |> Array.map (fun enzyme -> convertToEntity_Enzyme dbContext enzyme)
-                                                            |None -> Unchecked.defaultof<array<bool>>
+                                                            |None -> null
                                                             
                      )
 
@@ -344,32 +320,91 @@ let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzId
     let parsedProteinDetectionProtocol =
         match xmlContext.AnalysisProtocolCollection.ProteinDetectionProtocol with
         |Some x -> convertToEntity_ProteinDetectionProtocol dbContext x
-        |None -> Unchecked.defaultof<bool>
+        |None -> null
 
     let parsedMzIdentMl =
         convertToEntity_MzIdentML dbContext xmlContext
+
     context.SaveChanges()
 
 #time
 parseWholeXMLFile context xmlFile
 
-let x =
-    xmlFile.DataCollection.AnalysisData.SpectrumIdentificationList
-    |> Array.map (fun item -> item.SpectrumIdentificationResults
-                              |> Array.map (fun item -> item.SpectrumIdentificationItems
-                                                        |> Array.map (fun item -> convertToEntity_SpectrumIdentificationItem context item)
-                                           )
-                 )
-    |> Array.concat
-    |> Array.concat
+let parsedOrganizations =
+    match xmlFile.AuditCollection with
+    |Some x -> x.Organizations
+                |> Array.map (fun organization -> convertToEntity_Organization context organization)
+    |None -> null
+  
+let parsedPersons =
+    match xmlFile.AuditCollection with
+    |Some x -> x.Persons
+                |> Array.map (fun person -> convertToEntity_Person context person)
+    |None -> null
+        
+let parsedAnalysisSoftwares =
+    match xmlFile.AnalysisSoftwareList with
+    |Some x -> x.AnalysisSoftwares
+                |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware context analysisSoftware)
+    |None -> null
 
-let y =
+let parsedSamples =
+    match xmlFile.AnalysisSampleCollection with
+    |Some x -> x.Samples
+                |> Array.map (fun sample -> convertToEntity_Sample context sample)
+    |None -> null
+
+let parsedSubSamples =
+    match xmlFile.AnalysisSampleCollection with
+    |Some x -> x.Samples
+                |> Array.map (fun sample -> sample.SubSamples
+                                            |> Array.map (fun subSample -> convertToEntity_SubSample context subSample)
+                            )
+    |None -> null
+
+let parsedPeptides =
     match xmlFile.SequenceCollection with
-            |Some x -> x.DbSequences
-                       |> Array.map (fun dbSequence -> convertToEntity_DBSequence context dbSequence)
-            |None -> Unchecked.defaultof<array<bool>>
+    |Some x -> x.Peptides
+                |> Array.map (fun peptide -> convertToEntity_Peptide context peptide)
+    |None -> null
 
-let z =
+let parsedDBSequences =
+    match xmlFile.SequenceCollection with
+    |Some x -> x.DbSequences
+                |> Array.map (fun dbSequence -> convertToEntity_DBSequence context dbSequence)
+    |None -> null
+
+let parsedPeptideEvidences =
+    match xmlFile.SequenceCollection with
+    |Some x -> x.PeptideEvidences
+                |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence context peptideEvidences)
+    |None -> null
+
+let parsedMassTables =
+    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+    |> Array.map (fun spectrumIdentificationProtocol -> spectrumIdentificationProtocol.MassTables
+                                                        |> Array.map (fun massTable -> convertToEntity_MassTable context massTable)
+                    )
+
+let parsedEnzymes =
+    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+    |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
+                                                        |Some x -> x.Enzymes
+                                                                    |> Array.map (fun enzyme -> convertToEntity_Enzyme context enzyme)
+                                                        |None -> null
+                                                            
+                    )
+
+let parsedSpectrumIdentificationProtocols =
+    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+    |> Array.map (fun spectrumIdentificationProtocol -> convertToEntity_SpectrumIdentificationProtocol context spectrumIdentificationProtocol)
+
+let parsedProteinDetectionProtocol =
+    match xmlFile.AnalysisProtocolCollection.ProteinDetectionProtocol with
+    |Some x -> convertToEntity_ProteinDetectionProtocol context x
+    |None -> null
+
+let parsedMzIdentMl =
     convertToEntity_MzIdentML context xmlFile
 
-context.SaveChanges()
+

@@ -355,7 +355,7 @@ module XMLParsing =
                  |> Array.map (fun cvParamItem -> MassTableParamHandler.init(cvParamItem.Name, cvParamItem.Term, cvParamItem.ID, cvParamItem.Value, cvParamItem.Unit, cvParamItem.UnitName))
                 )
                 massTableWithAmbigousResidues
-        MassTableHandler.addToContext dbContext massTableWithDetails
+        massTableWithDetails
 
 //Stup because there is a problem with the xmlFile with the values of the FragmentArray/////////////////
     let convertToEntity_FragmentArray (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.FragmentArray) =
@@ -538,7 +538,7 @@ module XMLParsing =
                  |None -> EnzymeHandler.addEnzymeName
                             (EnzymeNameParamHandler.tryFindByID dbContext "")
                             enzymeWithSiteRegxc
-        EnzymeHandler.addToContext dbContext enzymeWithEnzymeNames
+        enzymeWithEnzymeNames
 
     let convertToEntity_Filter (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.Filter) =
         let filterBasic = 
@@ -593,7 +593,7 @@ module XMLParsing =
                 match mzIdentMLXML.Enzymes with 
                  |Some x -> SpectrumIdentificationProtocolHandler.addEnzymes 
                                 (x.Enzymes 
-                                 |> Array.map (fun enzyme -> EnzymeHandler.tryFindByID dbContext enzyme.Id)
+                                 |> Array.map (fun enzyme -> convertToEntity_Enzyme dbContext enzyme)
                                 )
                                 spectrumIdentificationProtocolWithModificationParams
                  |None -> SpectrumIdentificationProtocolHandler.addEnzyme
@@ -611,7 +611,7 @@ module XMLParsing =
         let spectrumIdentificationProtocolWithMassTables =
             SpectrumIdentificationProtocolHandler.addMassTables
                 (mzIdentMLXML.MassTables
-                 |> Array.map (fun massTable -> MassTableHandler.tryFindByID dbContext massTable.Id)
+                 |> Array.map (fun massTable -> convertToEntity_MassTable dbContext massTable)
                 )
                 spectrumIdentificationProtocolWithEnzymesWithIndepent_Enzymes
         let spectrumIdentificationProtocolWithFragmentTolerances =

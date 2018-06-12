@@ -2,9 +2,7 @@
 
 module InsertStatements =
 
-    open DataContext
-    open DataContext.EntityTypes
-    open DataContext.DataContext
+    open DataModel
     open System
     open System.ComponentModel.DataAnnotations
     open System.ComponentModel.DataAnnotations.Schema
@@ -56,31 +54,6 @@ module InsertStatements =
   
     module ManipulateDataContextAndDB =
 
-        let addToContextWithExceptionCheck (context : MzIdentML) (item : 'a) =
-            try
-                context.Add(item) |> ignore
-                true
-            with
-                | :? System.InvalidOperationException as text ->
-                     printfn "%s" text.Message
-                     false
-                | :? System .NullReferenceException as text ->
-                     printfn "%s" text.Message
-                     false
-                | _ -> false
-
-        let insertWithExceptionCheck (context : MzIdentML) =
-            try
-                context.SaveChanges()
-                |> (fun i -> printfn "Added %i elements to the DB" i)
-                true
-            with
-                | :? Microsoft.EntityFrameworkCore.DbUpdateException as text ->
-                     printfn "%s" text.Message
-                     false
-                |_ ->
-                   false
-
         let fileDir = __SOURCE_DIRECTORY__
         let standardDBPathSQLite = fileDir + "\Databases\Test.db"
 
@@ -91,13 +64,37 @@ module InsertStatements =
 
     module ObjectHandlers =
 
-        open ManipulateDataContextAndDB
-        open SubFunctions
+       open ManipulateDataContextAndDB
+       open SubFunctions
 
-        let setOption (addFunction:'a->'b->'b) (item:'a option) (object:'b) =
+       let setOption (addFunction:'a->'b->'b) (item:'a option) (object:'b) =
             match item with
             |Some x -> addFunction x object
             |None -> object
+
+       type OntologyTerm =
+            |  PsiMS 
+            |  PRIDE 
+            |  UNIMOD 
+            static member ToString (x:OntologyTerm) =
+                match x with
+                | PsiMS  -> "PSI-MS"
+                | PRIDE  -> "PRIDE"
+                | UNIMOD -> "UNIMOD"
+
+
+       type ExampleTerm =
+            |  A 
+            |  B 
+            |  C of string 
+            static member ToString (x:ExampleTerm) =
+                match x with
+                | A  -> "A"
+                | B  -> "B"
+                | C v -> sprintf "C %s" v
+       
+       let test = C "Patrick"
+
 
         type TermHandler =
                static member init
@@ -126,11 +123,11 @@ module InsertStatements =
                     context.Term.Find(termID)
 
                static member addToContext (context:MzIdentML) (item:Term) =
-                        addToContextWithExceptionCheck context item
+                        context.Add(item)
 
-               static member addAndInsert (context:MzIdentML) (item:Term) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+               static member addToContextAndInsert (context:MzIdentML) (item:Term) =
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
         
         type OntologyHandler =
                static member init
@@ -163,12 +160,18 @@ module InsertStatements =
                     (context:MzIdentML) (ontologyID:string) =
                     context.Ontology.Find(ontologyID)
 
-                static member addToContext (context:MzIdentML) (item:Ontology) =
-                        addToContextWithExceptionCheck context item
 
-                static member insertIntoDB (context:MzIdentML) (item:Ontology) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+               static member tryFind
+                    (context:MzIdentML) (ontologyTerm:OntologyTerm) =
+                    OntologyHandler.tryFindByID context (OntologyTerm.ToString  ontologyTerm)
+
+
+                static member addToContext (context:MzIdentML) (item:Ontology) =
+                        context.Add(item)
+
+                static member addToContextAndInsert (context:MzIdentML) (item:Ontology) =
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
             
         type CVParamHandler =
 
@@ -216,11 +219,11 @@ module InsertStatements =
                     context.CVParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:CVParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:CVParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type OrganizationParamHandler =
 
@@ -268,11 +271,11 @@ module InsertStatements =
                     context.OrganizationParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:OrganizationParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:OrganizationParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type PersonParamHandler =
 
@@ -320,11 +323,11 @@ module InsertStatements =
                     context.PersonParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:PersonParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:PersonParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SampleParamHandler =
 
@@ -372,11 +375,11 @@ module InsertStatements =
                     context.SampleParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SampleParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SampleParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ModificationParamHandler =
 
@@ -424,11 +427,11 @@ module InsertStatements =
                     context.ModificationParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ModificationParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ModificationParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type PeptideParamHandler =
 
@@ -476,11 +479,11 @@ module InsertStatements =
                     context.PeptideParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:PeptideParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:PeptideParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type TranslationTableParamHandler =
 
@@ -528,11 +531,11 @@ module InsertStatements =
                     context.TranslationTableParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:TranslationTableParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:TranslationTableParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type MeasureParamHandler =
 
@@ -580,11 +583,11 @@ module InsertStatements =
                     context.MeasureParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:MeasureParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:MeasureParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type AmbiguousResidueParamHandler =
 
@@ -632,11 +635,11 @@ module InsertStatements =
                     context.AmbiguousResidueParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:AmbiguousResidueParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:AmbiguousResidueParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type MassTableParamHandler =
 
@@ -676,11 +679,11 @@ module InsertStatements =
                     context.MassTableParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:MassTableParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:MassTableParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type IonTypeParamHandler =
 
@@ -728,11 +731,11 @@ module InsertStatements =
                     context.IonTypeParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:IonTypeParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:IonTypeParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpecificityRuleParamHandler =
 
@@ -780,11 +783,11 @@ module InsertStatements =
                     context.SpecificityRuleParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SpecificityRuleParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpecificityRuleParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SearchModificationParamHandler =
 
@@ -832,11 +835,11 @@ module InsertStatements =
                     context.SearchModificationParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SearchModificationParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SearchModificationParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type EnzymeNameParamHandler =
 
@@ -884,11 +887,11 @@ module InsertStatements =
                     context.EnzymeNameParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:EnzymeNameParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:EnzymeNameParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type IncludeParamHandler =
 
@@ -936,11 +939,11 @@ module InsertStatements =
                     context.EnzymeNameParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:IncludeParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:IncludeParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ExcludeParamHandler =
 
@@ -988,11 +991,11 @@ module InsertStatements =
                     context.ExcludeParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ExcludeParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ExcludeParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type AdditionalSearchParamHandler =
 
@@ -1040,11 +1043,11 @@ module InsertStatements =
                     context.AdditionalSearchParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:AdditionalSearchParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:AdditionalSearchParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type FragmentToleranceParamHandler =
 
@@ -1092,11 +1095,11 @@ module InsertStatements =
                     context.FragmentToleranceParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:FragmentToleranceParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:FragmentToleranceParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ParentToleranceParamHandler =
 
@@ -1144,11 +1147,11 @@ module InsertStatements =
                     context.ParentToleranceParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ParentToleranceParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ParentToleranceParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ThresholdParamHandler =
 
@@ -1196,11 +1199,11 @@ module InsertStatements =
                     context.ThresholdParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ThresholdParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ThresholdParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SearchDatabaseParamHandler =
 
@@ -1248,11 +1251,11 @@ module InsertStatements =
                     context.SearchDatabaseParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SearchDatabaseParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SearchDatabaseParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type DBSequenceParamHandler =
 
@@ -1300,11 +1303,11 @@ module InsertStatements =
                     context.DBSequenceParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:DBSequenceParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:DBSequenceParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type PeptideEvidenceParamHandler =
 
@@ -1352,11 +1355,11 @@ module InsertStatements =
                     context.PeptideEvidenceParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:PeptideEvidenceParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:PeptideEvidenceParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationItemParamHandler =
 
@@ -1404,11 +1407,11 @@ module InsertStatements =
                     context.SpectrumIdentificationItemParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationItemParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationItemParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationResultParamHandler =
 
@@ -1456,11 +1459,11 @@ module InsertStatements =
                     context.SpectrumIdentificationResultParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationResultParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationResultParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationListParamHandler =
 
@@ -1508,11 +1511,11 @@ module InsertStatements =
                     context.SpectrumIdentificationListParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationListParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationListParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type AnalysisParamHandler =
 
@@ -1560,11 +1563,11 @@ module InsertStatements =
                     context.AnalysisParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:AnalysisParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:AnalysisParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SourceFileParamHandler =
 
@@ -1612,11 +1615,11 @@ module InsertStatements =
                     context.SourceFileParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:SourceFileParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SourceFileParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionHypothesisParamHandler =
 
@@ -1664,11 +1667,11 @@ module InsertStatements =
                     context.ProteinDetectionHypothesisParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ProteinDetectionHypothesisParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetectionHypothesisParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinAmbiguityGroupParamHandler =
 
@@ -1716,11 +1719,11 @@ module InsertStatements =
                     context.ProteinAmbiguityGroupParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ProteinAmbiguityGroupParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ProteinAmbiguityGroupParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionListParamHandler =
 
@@ -1768,11 +1771,11 @@ module InsertStatements =
                     context.ProteinDetectionListParam.Find(paramID)
 
                static member addToContext (context:MzIdentML) (item:ProteinDetectionListParam) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetectionListParam) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type OrganizationHandler =
                static member init
@@ -1820,11 +1823,11 @@ module InsertStatements =
                     context.Organization.Find(organizationID)
 
                static member addToContext (context:MzIdentML) (item:Organization) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Organization) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type PersonHandler =
                static member init
@@ -1897,11 +1900,11 @@ module InsertStatements =
                     context.Person.Find(personID)
 
                static member addToContext (context:MzIdentML) (item:Person) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Person) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ContactRoleHandler =
                static member init
@@ -1924,11 +1927,11 @@ module InsertStatements =
                     context.ContactRole.Find(contactRoleID)
 
                static member addToContext (context:MzIdentML) (item:ContactRole) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:ContactRole) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type AnalysisSoftwareHandler =
                static member init
@@ -1997,11 +2000,11 @@ module InsertStatements =
                     context.AnalysisSoftware.Find(analysisSoftwareID)
 
                static member addToContext (context:MzIdentML) (item:AnalysisSoftware) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:AnalysisSoftware) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SubSampleHandler =
                static member init
@@ -2028,11 +2031,11 @@ module InsertStatements =
                     context.SubSample.Find(subSampleID)
 
                static member addToContext (context:MzIdentML) (item:SubSample) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SubSample) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SampleHandler =
                static member init
@@ -2106,11 +2109,11 @@ module InsertStatements =
                     context.Sample.Find(contactRolesID)
 
                static member addToContext (context:MzIdentML) (item:Sample) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Sample) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type ModificationHandler =
                static member init
@@ -2162,11 +2165,11 @@ module InsertStatements =
                     context.Modification.Find(modificationID)
 
                static member addToContext (context:MzIdentML) (item:Modification) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Modification) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SubstitutionModificationHandler =
                static member init
@@ -2213,11 +2216,11 @@ module InsertStatements =
                     context.SubstitutionModification.Find(substitutionModificationID)
 
                static member addToContext (context:MzIdentML) (item:SubstitutionModification) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SubstitutionModification) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type PeptideHandler =
                static member init
@@ -2293,11 +2296,11 @@ module InsertStatements =
                     context.Peptide.Find(peptideID)
 
                static member addToContext (context:MzIdentML) (item:Peptide) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Peptide) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type TranslationTableHandler =
                static member init
@@ -2337,11 +2340,11 @@ module InsertStatements =
                     context.TranslationTable.Find(translationTableID)
 
                static member addToContext (context:MzIdentML) (item:TranslationTable) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:TranslationTable) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type MeasureHandler =
                static member init
@@ -2369,11 +2372,11 @@ module InsertStatements =
                     context.Measure.Find(measureID)
 
                static member addToContext (context:MzIdentML) (item:Measure) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Measure) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type ResidueHandler =
                static member init
@@ -2395,11 +2398,11 @@ module InsertStatements =
                     context.Residue.Find(residueID)
 
                static member addToContext (context:MzIdentML) (item:Residue) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Residue) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type AmbiguousResidueHandler =
                static member init
@@ -2422,11 +2425,11 @@ module InsertStatements =
                     context.AmbiguousResidue.Find(ambiguousResidueID)
 
                static member addToContext (context:MzIdentML) (item:AmbiguousResidue) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:AmbiguousResidue) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type MassTableHandler =
                static member init
@@ -2494,11 +2497,11 @@ module InsertStatements =
                     context.MassTable.Find(massTableID)
 
                static member addToContext (context:MzIdentML) (item:MassTable) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:MassTable) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type ValueHandler =
                static member init
@@ -2519,11 +2522,11 @@ module InsertStatements =
                     context.Value.Find(valueID)
 
                static member addToContext (context:MzIdentML) (item:Value) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Value) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type FragmentArrayHandler =
                static member init
@@ -2546,11 +2549,11 @@ module InsertStatements =
                     context.FragmentArray.Find(fragmentArrayID)
 
                static member addToContext (context:MzIdentML) (item:FragmentArray) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:FragmentArray) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type IndexHandler =
                static member init
@@ -2571,11 +2574,11 @@ module InsertStatements =
                     context.Index.Find(indexID)
 
                static member addToContext (context:MzIdentML) (item:Index) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Index) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type IonTypeHandler =
                static member init
@@ -2621,11 +2624,11 @@ module InsertStatements =
                     context.Iontype.Find(ionTypeID)
 
                static member addToContext (context:MzIdentML) (item:IonType) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:IonType) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SpectraDataHandler =
                static member init
@@ -2665,11 +2668,11 @@ module InsertStatements =
                     context.SpectraData.Find(spectraDataID)
 
                static member addToContext (context:MzIdentML) (item:SpectraData) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpectraData) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SpecificityRulesHandler =
                static member init
@@ -2690,11 +2693,11 @@ module InsertStatements =
                     context.SpecificityRule.Find(specificityRuleID)
 
                static member addToContext (context:MzIdentML) (item:SpecificityRule) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpecificityRule) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SearchModificationHandler =
                static member init
@@ -2733,11 +2736,11 @@ module InsertStatements =
                     context.SearchModification.Find(searchModificationID)
 
                static member addToContext (context:MzIdentML) (item:SearchModification) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SearchModification) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type EnzymeHandler =
                static member init
@@ -2825,11 +2828,11 @@ module InsertStatements =
                     context.Enzyme.Find(enzymeID)
 
                static member addToContext (context:MzIdentML) (item:Enzyme) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Enzyme) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type FilterHandler =
                static member init
@@ -2876,11 +2879,11 @@ module InsertStatements =
                     context.Filter.Find(filterID)
 
                static member addToContext (context:MzIdentML) (item:Filter) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Filter) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type FrameHandler =
                static member init
@@ -2897,11 +2900,11 @@ module InsertStatements =
                     context.Frame.Find(frameID)
 
                static member addToContext (context:MzIdentML) (item:Frame) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:Frame) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SpectrumIdentificationProtocolHandler =
                static member init
@@ -3066,11 +3069,11 @@ module InsertStatements =
                     context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
 
                static member addToContext (context:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                    (addToContextWithExceptionCheck context item)
+                    context.Add(item)
 
                static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                    (addToContextWithExceptionCheck context item) |> ignore
-                    insertWithExceptionCheck context
+                    context.Add(item) |> ignore
+                    context.SaveChanges()
 
         type SearchDatabaseHandler =
                static member init
@@ -3156,11 +3159,11 @@ module InsertStatements =
                     context.SearchDatabase.Find(searchDatabaseID)
 
                 static member addToContext (context:MzIdentML) (item:SearchDatabase) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SearchDatabase) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type DBSequenceHandler =
                static member init
@@ -3228,11 +3231,11 @@ module InsertStatements =
                     context.DBSequence.Find(dbSequenceID)
 
                 static member addToContext (context:MzIdentML) (item:DBSequence) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:DBSequence) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
 
         type PeptideEvidenceHandler =
@@ -3340,11 +3343,11 @@ module InsertStatements =
                     context.PeptideEvidence.Find(peptideEvidenceID)
 
                 static member addToContext (context:MzIdentML) (item:PeptideEvidence) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:PeptideEvidence) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationItemHandler =
                static member init
@@ -3457,11 +3460,11 @@ module InsertStatements =
                     context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationItem) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationItem) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationResultHandler =
                static member init
@@ -3511,11 +3514,11 @@ module InsertStatements =
                     context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationResult) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationResult) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationListHandler =
                static member init
@@ -3578,11 +3581,11 @@ module InsertStatements =
                     context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentificationList) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentificationList) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SpectrumIdentificationHandler =
                static member init
@@ -3633,11 +3636,11 @@ module InsertStatements =
                     context.SpectrumIdentification.Find(spectrumIdentificationID)
 
                 static member addToContext (context:MzIdentML) (item:SpectrumIdentification) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SpectrumIdentification) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionProtocolHandler =
                static member init
@@ -3689,11 +3692,11 @@ module InsertStatements =
                     context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionProtocol) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetectionProtocol) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type SourceFileHandler =
                static member init
@@ -3749,11 +3752,11 @@ module InsertStatements =
                     context.SourceFile.Find(sourceFileID)
 
                 static member addToContext (context:MzIdentML) (item:SourceFile) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:SourceFile) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type InputsHandler =
                static member init
@@ -3808,11 +3811,11 @@ module InsertStatements =
                     context.Inputs.Find(inputsID)
 
                 static member addToContext (context:MzIdentML) (item:Inputs) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:Inputs) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type PeptideHypothesisHandler =
                static member init
@@ -3835,11 +3838,11 @@ module InsertStatements =
                     context.PeptideHypothesis.Find(peptideHypothesisID)
 
                 static member addToContext (context:MzIdentML) (item:PeptideHypothesis) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:PeptideHypothesis) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionHypothesisHandler =
                static member init
@@ -3892,11 +3895,11 @@ module InsertStatements =
                     context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionHypothesis) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetectionHypothesis) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinAmbiguityGroupHandler =
                static member init
@@ -3938,11 +3941,11 @@ module InsertStatements =
                     context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinAmbiguityGroup) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:ProteinAmbiguityGroup) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionListHandler =
                static member init
@@ -3995,11 +3998,11 @@ module InsertStatements =
                     context.ProteinDetectionList.Find(proteinDetectionListID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetectionList) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetectionList) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type AnalysisDataHandler =
                static member init
@@ -4036,11 +4039,11 @@ module InsertStatements =
                     context.AnalysisData.Find(analysisDataID)
 
                 static member addToContext (context:MzIdentML) (item:AnalysisData) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:AnalysisData) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProteinDetectionHandler =
                static member init
@@ -4080,11 +4083,11 @@ module InsertStatements =
                     context.ProteinDetection.Find(proteinDetectionID)
 
                 static member addToContext (context:MzIdentML) (item:ProteinDetection) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:ProteinDetection) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
                static member init
@@ -4198,11 +4201,11 @@ module InsertStatements =
                     context.BiblioGraphicReference.Find(biblioGraphicReferenceID)
 
                 static member addToContext (context:MzIdentML) (item:BiblioGraphicReference) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:BiblioGraphicReference) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type ProviderHandler =
                static member init
@@ -4253,11 +4256,11 @@ module InsertStatements =
                     context.Provider.Find(providerID)
 
                 static member addToContext (context:MzIdentML) (item:Provider) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:Provider) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
 
         type MzIdentMLHandler =
                static member init
@@ -4463,11 +4466,11 @@ module InsertStatements =
                     context.MzIdentMLDocument.Find(mzIdentMLID)
 
                 static member addToContext (context:MzIdentML) (item:MzIdentMLDocument) =
-                        (addToContextWithExceptionCheck context item)
+                        context.Add(item)
 
                 static member addToContextAndInsert (context:MzIdentML) (item:MzIdentMLDocument) =
-                        (addToContextWithExceptionCheck context item) |> ignore
-                        insertWithExceptionCheck context
+                        context.Add(item) |> ignore
+                        context.SaveChanges()
         
     module InitializeStandardDB =
         open BioFSharp.IO
@@ -4491,50 +4494,50 @@ module InsertStatements =
 
         let fromUnit_Ontology =
             fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
+        
+ 
 
-        let initStandardDB (context : MzIdentML) =
-            let terms_PsiMS =
-                let psims = OntologyHandler.init ("PSI-MS")
-                OntologyHandler.addToContext context psims |> ignore 
-                fromPsiMS
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(psims.ID))))
-                |> Seq.toArray
-            terms_PsiMS
-            |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
+
+        let initStandardDB (dbontext : MzIdentML) =
+            let ontology =  OntologyHandler.init ("PSI-MS")
+            //|>OntologyHandler.addToContext dbontext psims |> ignore 
+            fromPsiMS
+            |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+            |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore) 
 
             let terms_Pride =
                 let pride = OntologyHandler.init ("PRIDE")
-                OntologyHandler.addToContext context pride |> ignore 
+                OntologyHandler.addToContext dbontext pride |> ignore 
                 fromPride
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(pride.ID))))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (dbontext.Ontology.Find(pride.ID))))
                 |> Seq.toArray
             terms_Pride
-            |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
+            |> Array.map (fun term -> TermHandler.addToContext dbontext term) |> ignore
 
             let terms_Unimod =
                 let unimod = OntologyHandler.init ("UNIMOD")
-                OntologyHandler.addToContext context unimod |> ignore 
+                OntologyHandler.addToContext dbontext unimod |> ignore 
                 fromUniMod
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unimod.ID))))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (dbontext.Ontology.Find(unimod.ID))))
                 |> Seq.toArray
             terms_Unimod
-            |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
+            |> Array.map (fun term -> TermHandler.addToContext dbontext term) |> ignore
 
             let terms_Unit_Ontology =
                 let unit_ontology = OntologyHandler.init ("UNIT-ONTOLOGY")
-                OntologyHandler.addToContext context unit_ontology |> ignore 
+                OntologyHandler.addToContext dbontext unit_ontology |> ignore 
                 fromUnit_Ontology
-                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (context.Ontology.Find(unit_ontology.ID))))
+                |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, (dbontext.Ontology.Find(unit_ontology.ID))))
                 |> Seq.toArray
             terms_Unit_Ontology
-            |> Array.map (fun term -> TermHandler.addToContext context term) |> ignore
+            |> Array.map (fun term -> TermHandler.addToContext dbontext term) |> ignore
 
             let userOntology =
                     OntologyHandler.init("UserParam")
-            OntologyHandler.addToContext context userOntology |> ignore
+            OntologyHandler.addToContext dbontext userOntology |> ignore
 
-            context.Database.EnsureCreated() |> ignore
-            context.SaveChanges()
+            dbontext.Database.EnsureCreated() |> ignore
+            dbontext.SaveChanges()
 
     //module test =
     //    ////Apply functions
@@ -4589,7 +4592,7 @@ module InsertStatements =
 
     //    context.Database.EnsureCreated()
 
-    //    insertWithExceptionCheck context
+    //    context.SaveChanges()
 
     //    initStandardDB context
 
