@@ -186,7 +186,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new CVParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new CVParam(
+                                id', 
+                                name, 
+                                value', 
+                                term, 
+                                unit', 
+                                unitName', 
+                                Nullable(DateTime.Now)
+                               )
 
                static member addValue
                     (value:string) (cvParam:CVParam) =
@@ -230,7 +238,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new OrganizationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new OrganizationParam(
+                                          id', 
+                                          name, 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          unitName', 
+                                          Nullable(DateTime.Now)
+                                         )
 
                static member addValue
                     (value:string) (param:OrganizationParam) =
@@ -274,7 +290,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new PersonParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new PersonParam(
+                                    id', 
+                                    name, 
+                                    value', 
+                                    term, 
+                                    unit', 
+                                    unitName', 
+                                    Nullable(DateTime.Now)
+                                   )
 
                static member addValue
                     (value:string) (param:PersonParam) =
@@ -318,7 +342,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new SampleParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SampleParam(
+                                    id', 
+                                    name, 
+                                    value', 
+                                    term, 
+                                    unit', 
+                                    unitName', 
+                                    Nullable(DateTime.Now)
+                                   )
 
                static member addValue
                     (value:string) (param:SampleParam)  =
@@ -362,7 +394,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new ModificationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ModificationParam(
+                                          id', 
+                                          name, 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          unitName', 
+                                          Nullable(DateTime.Now)
+                                         )
 
                static member addValue
                     (value:string) (param:ModificationParam) =
@@ -406,7 +446,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new PeptideParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new PeptideParam(
+                                     id', 
+                                     name, 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     unitName', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addValue
                     (value:string) (param:PeptideParam) =
@@ -450,7 +498,16 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new TranslationTableParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new TranslationTableParam(
+                                              id', 
+                                              name, 
+                                              value', 
+                                              term, 
+                                              unit', 
+                                              unitName', 
+                                              Nullable(DateTime.Now)
+                                             )
+
                static member addValue
                     (value:string) (param:TranslationTableParam) =
                     param.Value <- value
@@ -493,7 +550,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new MeasureParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new MeasureParam(
+                                     id', 
+                                     name, 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     unitName', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addValue
                     (value:string) (param:MeasureParam) =
@@ -537,7 +602,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new AmbiguousResidueParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new AmbiguousResidueParam(
+                                              id', 
+                                              name, 
+                                              value', 
+                                              term, 
+                                              unit', 
+                                              unitName', 
+                                              Nullable(DateTime.Now)
+                                             )
 
                static member addValue
                     (value:string) (param:AmbiguousResidueParam)  =
@@ -625,7 +698,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new IonTypeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new IonTypeParam(
+                                     id', 
+                                     name, 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     unitName', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addValue
                     (value:string) (param:IonTypeParam) =
@@ -669,7 +750,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new SpecificityRuleParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SpecificityRuleParam(
+                                             id', 
+                                             name, 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             unitName', 
+                                             Nullable(DateTime.Now)
+                                            )
 
                static member addValue
                     (value:string) (param:SpecificityRuleParam) =
@@ -713,7 +802,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new SearchModificationParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SearchModificationParam(
+                                                id', 
+                                                name, 
+                                                value', 
+                                                term, 
+                                                unit', 
+                                                unitName', 
+                                                Nullable(DateTime.Now)
+                                               )
 
                static member addValue
                     (value:string) (param:SearchModificationParam) =
@@ -757,7 +854,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new EnzymeNameParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new EnzymeNameParam(
+                                        id', 
+                                        name, 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        unitName', 
+                                        Nullable(DateTime.Now)
+                                       )
 
                static member addValue
                     (value:string) (param:EnzymeNameParam) =
@@ -801,7 +906,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new IncludeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new IncludeParam(
+                                     id', 
+                                     name, 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     unitName', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addValue
                     (value:string) (param:IncludeParam) =
@@ -845,7 +958,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new ExcludeParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ExcludeParam(
+                                     id', 
+                                     name, 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     unitName', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addValue
                     (value:string) (param:ExcludeParam) =
@@ -889,7 +1010,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new AdditionalSearchParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new AdditionalSearchParam(
+                                              id', 
+                                              name, 
+                                              value', 
+                                              term, 
+                                              unit', 
+                                              unitName', 
+                                              Nullable(DateTime.Now)
+                                             )
 
                static member addValue
                     (value:string) (param:AdditionalSearchParam) =
@@ -933,7 +1062,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new FragmentToleranceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new FragmentToleranceParam(
+                                               id', 
+                                               name, 
+                                               value', 
+                                               term, 
+                                               unit', 
+                                               unitName',
+                                               Nullable(DateTime.Now)
+                                              )
 
                static member addValue
                     (value:string) (param:FragmentToleranceParam)  =
@@ -977,7 +1114,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new ParentToleranceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ParentToleranceParam(
+                                             id', 
+                                             name, 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             unitName', 
+                                             Nullable(DateTime.Now)
+                                            )
 
                static member addValue
                     (value:string) (param:ParentToleranceParam) =
@@ -1021,7 +1166,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new ThresholdParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ThresholdParam(
+                                       id', 
+                                       name, 
+                                       value', 
+                                       term, 
+                                       unit', 
+                                       unitName', 
+                                       Nullable(DateTime.Now)
+                                      )
 
                static member addValue
                     (value:string) (param:ThresholdParam) =
@@ -1065,7 +1218,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new SearchDatabaseParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SearchDatabaseParam(
+                                            id', 
+                                            name, 
+                                            value', 
+                                            term, 
+                                            unit', 
+                                            unitName', 
+                                            Nullable(DateTime.Now)
+                                           )
 
                static member addValue
                     (value:string) (param:SearchDatabaseParam) =
@@ -1109,7 +1270,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new DBSequenceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new DBSequenceParam(
+                                        id',
+                                        name, 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        unitName', 
+                                        Nullable(DateTime.Now)
+                                       )
 
                static member addValue
                     (value:string) (param:DBSequenceParam) =
@@ -1153,7 +1322,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new PeptideEvidenceParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new PeptideEvidenceParam(
+                                             id',
+                                             name, 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             unitName', 
+                                             Nullable(DateTime.Now)
+                                            )
 
                static member addValue
                     (value:string) (param:PeptideEvidenceParam)  =
@@ -1197,7 +1374,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new SpectrumIdentificationItemParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SpectrumIdentificationItemParam(
+                                                        id', 
+                                                        name, 
+                                                        value', 
+                                                        term, 
+                                                        unit', 
+                                                        unitName', 
+                                                        Nullable(DateTime.Now)
+                                                       )
 
                static member addValue
                     (value:string) (param:SpectrumIdentificationItemParam) =
@@ -1241,7 +1426,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new SpectrumIdentificationResultParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SpectrumIdentificationResultParam(
+                                                          id', 
+                                                          name, 
+                                                          value', 
+                                                          term, 
+                                                          unit', 
+                                                          unitName', 
+                                                          Nullable(DateTime.Now)
+                                                         )
 
                static member addValue
                     (value:string) (param:SpectrumIdentificationResultParam) =
@@ -1285,7 +1478,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new SpectrumIdentificationListParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SpectrumIdentificationListParam(
+                                                        id', 
+                                                        name, 
+                                                        value', 
+                                                        term, 
+                                                        unit', 
+                                                        unitName', 
+                                                        Nullable(DateTime.Now)
+                                                       )
 
                static member addValue
                     (value:string) (param:SpectrumIdentificationListParam) =
@@ -1329,7 +1530,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new AnalysisParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new AnalysisParam(
+                                      id', 
+                                      name, 
+                                      value', 
+                                      term, 
+                                      unit', 
+                                      unitName', 
+                                      Nullable(DateTime.Now)
+                                     )
 
                static member addValue
                     (value:string) (param:AnalysisParam) =
@@ -1373,7 +1582,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new SourceFileParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new SourceFileParam(
+                                        id', 
+                                        name, 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        unitName',
+                                        Nullable(DateTime.Now)
+                                       )
 
                static member addValue
                     (value:string) (param:SourceFileParam) =
@@ -1417,7 +1634,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
                     
-                    new ProteinDetectionHypothesisParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ProteinDetectionHypothesisParam(
+                                                        id', 
+                                                        name, 
+                                                        value', 
+                                                        term, 
+                                                        unit', 
+                                                        unitName', 
+                                                        Nullable(DateTime.Now)
+                                                       )
 
                static member addValue
                     (value:string) (param:ProteinDetectionHypothesisParam) =
@@ -1461,7 +1686,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new  ProteinAmbiguityGroupParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new  ProteinAmbiguityGroupParam(
+                                                    id', 
+                                                    name, 
+                                                    value', 
+                                                    term, 
+                                                    unit', 
+                                                    unitName', 
+                                                    Nullable(DateTime.Now)
+                                                   )
 
                static member addValue
                     (value:string) (param:ProteinAmbiguityGroupParam) =
@@ -1505,7 +1738,15 @@ module InsertStatements =
                     let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     let unitName' = defaultArg unitName Unchecked.defaultof<string>
 
-                    new ProteinDetectionListParam(id', name, value', term, unit', unitName', Nullable(DateTime.Now))
+                    new ProteinDetectionListParam(
+                                                  id',
+                                                  name, 
+                                                  value', 
+                                                  term, 
+                                                  unit', 
+                                                  unitName', 
+                                                  Nullable(DateTime.Now)
+                                                 )
 
                static member addValue
                     (value:string) (param:ProteinDetectionListParam) =
@@ -1546,7 +1787,13 @@ module InsertStatements =
                     let details' = convertOptionToList details
                     let parent'  = defaultArg parent Unchecked.defaultof<string>
                     
-                    new Organization(id', name', details',  parent', Nullable(DateTime.Now))
+                    new Organization(
+                                     id', 
+                                     name', 
+                                     details',  
+                                     parent', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addName
                     (name:string) (organization:Organization) =
@@ -1596,8 +1843,14 @@ module InsertStatements =
                     let midInitials' = defaultArg midInitials Unchecked.defaultof<string>
                     let lastName'    = defaultArg lastName Unchecked.defaultof<string>
                     
-                    new Person(id', name', firstName',  midInitials', lastName', 
-                               convertOptionToList organizations,convertOptionToList contactDetails, Nullable(DateTime.Now)
+                    new Person(
+                               id', 
+                               name', 
+                               firstName',  
+                               midInitials', 
+                               lastName', 
+                               convertOptionToList organizations,convertOptionToList contactDetails, 
+                               Nullable(DateTime.Now)
                               )
 
                static member addName
@@ -1659,7 +1912,12 @@ module InsertStatements =
                     ) =
                     let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new ContactRole(id', person, role, Nullable(DateTime.Now))
+                    new ContactRole(
+                                    id', 
+                                    person, 
+                                    role, 
+                                    Nullable(DateTime.Now)
+                                   )
 
                static member tryFindByID
                     (context:MzIdentML) (contactRoleID:string) =
@@ -1692,7 +1950,17 @@ module InsertStatements =
                     let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
                     let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new AnalysisSoftware(id', name', uri', version', customizations', contactRole', softwareName, mzIdentML', Nullable(DateTime.Now))
+                    new AnalysisSoftware(
+                                         id', 
+                                         name', 
+                                         uri', 
+                                         version', 
+                                         customizations', 
+                                         contactRole', 
+                                         softwareName, 
+                                         mzIdentML', 
+                                         Nullable(DateTime.Now)
+                                        )
 
                static member addName
                     (name:string) (analysisSoftware:AnalysisSoftware) =
@@ -1744,7 +2012,11 @@ module InsertStatements =
                     let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                     let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
                     
-                    new SubSample(id', Sample', Nullable(DateTime.Now))
+                    new SubSample(
+                                  id', 
+                                  Sample', 
+                                  Nullable(DateTime.Now)
+                                 )
 
                static member addSample
                     (sampleID:Sample) (subSample:SubSample) =
@@ -1779,7 +2051,15 @@ module InsertStatements =
                     let details'      = convertOptionToList details
                     let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new Sample(id', name', contactRoles', subSamples', details', mzIdentML', Nullable(DateTime.Now))
+                    new Sample(
+                               id', 
+                               name', 
+                               contactRoles', 
+                               subSamples', 
+                               details', 
+                               mzIdentML', 
+                               Nullable(DateTime.Now)
+                              )
 
                static member addName
                     (name:string) (sample:Sample) =
@@ -1842,13 +2122,20 @@ module InsertStatements =
                         ?monoIsotopicMassDelta : float,
                         ?avgMassDelta          : float
                     ) =
-                    let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                    let residues'         = defaultArg residues Unchecked.defaultof<string>
-                    let location'         = defaultArg location Unchecked.defaultof<int>
+                    let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
+                    let residues'              = defaultArg residues Unchecked.defaultof<string>
+                    let location'              = defaultArg location Unchecked.defaultof<int>
                     let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
-                    let avgMassDelta' = defaultArg avgMassDelta Unchecked.defaultof<float>
+                    let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
                     
-                    new Modification(id', residues', Nullable(location'), Nullable(monoIsotopicMassDelta'), Nullable(avgMassDelta'), details |> List, Nullable(DateTime.Now))
+                    new Modification(
+                                     id', 
+                                     residues', 
+                                     Nullable(location'), 
+                                     Nullable(monoIsotopicMassDelta'), 
+                                     Nullable(avgMassDelta'), 
+                                     details |> List, Nullable(DateTime.Now)
+                                    )
 
                static member addResidues
                     (residues:string) (modification:Modification) =
@@ -1896,7 +2183,15 @@ module InsertStatements =
                     let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                     let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
 
-                    new SubstitutionModification(id', originalResidue, replacementResidue, Nullable(location'), Nullable(monoIsotopicMassDelta'), Nullable(avgMassDelta'), Nullable(DateTime.Now))
+                    new SubstitutionModification(
+                                                 id', 
+                                                 originalResidue, 
+                                                 replacementResidue, 
+                                                 Nullable(location'), 
+                                                 Nullable(monoIsotopicMassDelta'), 
+                                                 Nullable(avgMassDelta'), 
+                                                 Nullable(DateTime.Now)
+                                                )
 
                static member addLocation
                     (location:int) (substitutionModification:SubstitutionModification) =
@@ -1942,7 +2237,16 @@ module InsertStatements =
                     let details'                   = convertOptionToList details
                     let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
-                    new Peptide(id', name', peptideSequence, modifications', substitutionModifications', details', mzIdentML', Nullable(DateTime.Now))
+                    new Peptide(
+                                id', 
+                                name', 
+                                peptideSequence, 
+                                modifications', 
+                                substitutionModifications', 
+                                details', 
+                                mzIdentML', 
+                                Nullable(DateTime.Now)
+                               )
 
                static member addName
                     (name:string) (peptide:Peptide) =
@@ -2002,11 +2306,16 @@ module InsertStatements =
                         ?name    : string,
                         ?details : seq<TranslationTableParam>
                     ) =
-                    let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'                      = defaultArg name Unchecked.defaultof<string>
-                    let details'                   = convertOptionToList details
+                    let id'      = defaultArg id (System.Guid.NewGuid().ToString())
+                    let name'    = defaultArg name Unchecked.defaultof<string>
+                    let details' = convertOptionToList details
                     
-                    new TranslationTable(id', name', details', Nullable(DateTime.Now))
+                    new TranslationTable(
+                                         id', 
+                                         name', 
+                                         details', 
+                                         Nullable(DateTime.Now)
+                                        )
 
                static member addName
                     (name:string) (translationTable:TranslationTable) =
@@ -2044,7 +2353,11 @@ module InsertStatements =
                     let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     let name' = defaultArg name Unchecked.defaultof<string>
                     
-                    new Measure(id', name', details |> List, Nullable(DateTime.Now))
+                    new Measure(
+                                id', 
+                                name', 
+                                details |> List, Nullable(DateTime.Now)
+                               )
 
                static member addName
                     (name:string) (measure:Measure) =
@@ -2069,8 +2382,13 @@ module InsertStatements =
                         mass    : float,
                         ?id     : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
-                    new Residue(id', code, Nullable(mass), Nullable(DateTime.Now))
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                    new Residue(
+                                id', 
+                                code, 
+                                Nullable(mass), 
+                                Nullable(DateTime.Now)
+                               )
 
                static member findResidueByID
                     (context:MzIdentML) (residueID:string) =
@@ -2090,9 +2408,14 @@ module InsertStatements =
                         details : seq<AmbiguousResidueParam>,
                         ?id     : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new AmbiguousResidue(id', code, details |> List, Nullable(DateTime.Now))
+                    new AmbiguousResidue(
+                                         id', 
+                                         code, 
+                                         details |> List, 
+                                         Nullable(DateTime.Now)
+                                        )
 
                static member tryFindByID
                     (context:MzIdentML) (ambiguousResidueID:string) =
@@ -2121,7 +2444,15 @@ module InsertStatements =
                     let ambiguousResidue' = convertOptionToList ambiguousResidue
                     let details'          = convertOptionToList details
                     
-                    new MassTable(id', name', msLevel, residue', ambiguousResidue', details', Nullable(DateTime.Now))
+                    new MassTable(
+                                  id', 
+                                  name', 
+                                  msLevel, 
+                                  residue', 
+                                  ambiguousResidue', 
+                                  details', 
+                                  Nullable(DateTime.Now)
+                                 )
 
                static member addName
                     (name:string) (massTable:MassTable) =
@@ -2175,9 +2506,13 @@ module InsertStatements =
                         value   : float,
                         ?id     : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new Value(id', Nullable(value), Nullable(DateTime.Now))
+                    new Value(
+                              id', 
+                              Nullable(value), 
+                              Nullable(DateTime.Now)
+                             )
 
                static member findValueByID
                     (context:MzIdentML) (valueID:string) =
@@ -2197,9 +2532,14 @@ module InsertStatements =
                         values  : seq<Value>,
                         ?id     : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new FragmentArray(id', measure, values |> List, Nullable(DateTime.Now))
+                    new FragmentArray(
+                                      id', 
+                                      measure, 
+                                      values |> List, 
+                                      Nullable(DateTime.Now)
+                                     )
 
                static member tryFindByID
                     (context:MzIdentML) (fragmentArrayID:string) =
@@ -2218,9 +2558,13 @@ module InsertStatements =
                         index : int,
                         ?id   : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
 
-                    new Index(id', Nullable(index), Nullable(DateTime.Now))
+                    new Index(
+                              id', 
+                              Nullable(index), 
+                              Nullable(DateTime.Now)
+                             )
 
                static member tryFindByID
                     (context:MzIdentML) (indexID:string) =
@@ -2245,7 +2589,12 @@ module InsertStatements =
                     let index'         = convertOptionToList index
                     let fragmentArray' = convertOptionToList fragmentArray
                     
-                    new IonType(id', index', fragmentArray', details |> List, Nullable(DateTime.Now))
+                    new IonType(
+                                id', 
+                                index', 
+                                fragmentArray', 
+                                details |> List, Nullable(DateTime.Now)
+                               )
 
                static member addIndex
                     (index:Index) (ionType:IonType) =
@@ -2292,7 +2641,14 @@ module InsertStatements =
                     let name'                        = defaultArg name Unchecked.defaultof<string>
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
 
-                    new SpectraData(id', name', location, externalFormatDocumentation', fileFormat, spectrumIDFormat, Nullable(DateTime.Now))
+                    new SpectraData(
+                                    id', 
+                                    name', 
+                                    location, 
+                                    externalFormatDocumentation', 
+                                    fileFormat, spectrumIDFormat, 
+                                    Nullable(DateTime.Now)
+                                   )
 
                static member addName
                     (name:string) (spectraData:SpectraData) =
@@ -2321,9 +2677,13 @@ module InsertStatements =
                         details    : seq<SpecificityRuleParam>,
                         ?id        : string
                     ) =
-                    let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                    let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new SpecificityRule(id', details |> List,  Nullable(DateTime.Now))
+                    new SpecificityRule(
+                                        id', 
+                                        details |> List, 
+                                        Nullable(DateTime.Now)
+                                       )
 
                static member tryFindByID
                     (context:MzIdentML) (specificityRuleID:string) =
@@ -2349,7 +2709,14 @@ module InsertStatements =
                     let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                     let specificityRules' = convertOptionToList specificityRules
                     
-                    new SearchModification(id', Nullable(fixedMod), Nullable(massDelta), residues, specificityRules', details |> List, Nullable(DateTime.Now))
+                    new SearchModification(
+                                           id', 
+                                           Nullable(fixedMod), 
+                                           Nullable(massDelta), 
+                                           residues, 
+                                           specificityRules', 
+                                           details |> List, Nullable(DateTime.Now)
+                                          )
 
                static member addSpecificityRule
                     (specificityRule:SpecificityRule) (searchModification:SearchModification) =
@@ -2395,8 +2762,17 @@ module InsertStatements =
                     let siteRegexc'      = defaultArg siteRegexc Unchecked.defaultof<string>
                     let enzymeName'      = convertOptionToList enzymeName
                     
-                    new Enzyme(id', name', cTermGain', nTermGain', Nullable(minDistance'), Nullable(missedCleavages'), Nullable(semiSpecific'), 
-                               siteRegexc', enzymeName', Nullable(DateTime.Now)
+                    new Enzyme(
+                               id', 
+                               name', 
+                               cTermGain', 
+                               nTermGain', 
+                               Nullable(minDistance'), 
+                               Nullable(missedCleavages'), 
+                               Nullable(semiSpecific'), 
+                               siteRegexc', 
+                               enzymeName', 
+                               Nullable(DateTime.Now)
                               )
 
                static member addName
@@ -2467,7 +2843,13 @@ module InsertStatements =
                     let includes'   = convertOptionToList includes
                     let excludes'   = convertOptionToList excludes
                     
-                    new Filter(id', filterType, includes', excludes', Nullable(DateTime.Now))
+                    new Filter(
+                               id', 
+                               filterType, 
+                               includes', 
+                               excludes', 
+                               Nullable(DateTime.Now)
+                              )
 
                static member addInclude
                     (include':IncludeParam) (filter:Filter) =
@@ -2555,10 +2937,23 @@ module InsertStatements =
                     let translationTable'       = convertOptionToList translationTable
                     let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new SpectrumIdentificationProtocol(id', name', analysisSoftware, searchType, additionalSearchParams',
-                                                       modificationParams', enzymes', Nullable(independent_Enzymes'), massTables',
-                                                       fragmentTolerance', parentTolerance', threshold |> List, databaseFilters',
-                                                       frames', translationTable', mzIdentML', Nullable(DateTime.Now)
+                    new SpectrumIdentificationProtocol(id', 
+                                                       name', 
+                                                       analysisSoftware, 
+                                                       searchType, 
+                                                       additionalSearchParams',
+                                                       modificationParams', 
+                                                       enzymes',
+                                                       Nullable(independent_Enzymes'), 
+                                                       massTables',
+                                                       fragmentTolerance', 
+                                                       parentTolerance', 
+                                                       threshold |> List, 
+                                                       databaseFilters',
+                                                       frames', 
+                                                       translationTable', 
+                                                       mzIdentML', 
+                                                       Nullable(DateTime.Now)
                                                       )
 
                static member addName
@@ -2701,8 +3096,19 @@ module InsertStatements =
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     
-                    new SearchDatabase(id', name', location, Nullable(numDatabaseSequences'), Nullable(numResidues'), Nullable(releaseDate'), version',
-                                       externalFormatDocumentation', fileFormat, databaseName, details', Nullable(DateTime.Now)
+                    new SearchDatabase(
+                                       id', 
+                                       name', 
+                                       location, 
+                                       Nullable(numDatabaseSequences'), 
+                                       Nullable(numResidues'), 
+                                       Nullable(releaseDate'), 
+                                       version',
+                                       externalFormatDocumentation', 
+                                       fileFormat, 
+                                       databaseName, 
+                                       details', 
+                                       Nullable(DateTime.Now)
                                       )
 
                static member addName
@@ -2768,14 +3174,24 @@ module InsertStatements =
                         ?details       : seq<DBSequenceParam>,
                         ?mzIdentML     : MzIdentMLDocument
                     ) =
-                    let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-                    let name'     = defaultArg name Unchecked.defaultof<string>
-                    let sequence' = defaultArg sequence Unchecked.defaultof<string>
-                    let length'   = defaultArg length Unchecked.defaultof<int>
-                    let details'  = convertOptionToList details
+                    let id'        = defaultArg id (System.Guid.NewGuid().ToString())
+                    let name'      = defaultArg name Unchecked.defaultof<string>
+                    let sequence'  = defaultArg sequence Unchecked.defaultof<string>
+                    let length'    = defaultArg length Unchecked.defaultof<int>
+                    let details'   = convertOptionToList details
                     let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new DBSequence(id', name', accession, searchDatabase, sequence', Nullable(length'), details', mzIdentML', Nullable(DateTime.Now))
+                    new DBSequence(
+                                   id', 
+                                   name', 
+                                   accession, 
+                                   searchDatabase, 
+                                   sequence', 
+                                   Nullable(length'), 
+                                   details', 
+                                   mzIdentML', 
+                                   Nullable(DateTime.Now)
+                                  )
 
                static member addName
                     (name:string) (dbSequence:DBSequence) =
@@ -2848,8 +3264,20 @@ module InsertStatements =
                     let details'                    = convertOptionToList details
                     let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new PeptideEvidence(id', name', dbSequence, peptide, Nullable(start'), Nullable(end''), pre', post', frame', Nullable(isDecoy'), 
-                                        translationTable', details', mzIdentML', Nullable(DateTime.Now)
+                    new PeptideEvidence(id', 
+                                        name', 
+                                        dbSequence, 
+                                        peptide, 
+                                        Nullable(start'), 
+                                        Nullable(end''), 
+                                        pre', 
+                                        post', 
+                                        frame', 
+                                        Nullable(isDecoy'), 
+                                        translationTable', 
+                                        details', 
+                                        mzIdentML', 
+                                        Nullable(DateTime.Now)
                                        )
 
                static member addName
@@ -2946,9 +3374,22 @@ module InsertStatements =
                     let calculatedPI'                 = defaultArg calculatedPI Unchecked.defaultof<float>
                     let details'                      = convertOptionToList details
                     
-                    new SpectrumIdentificationItem(id', name', sample', massTable', Nullable(passThreshold), Nullable(rank), peptideEvidences',
-                                                   fragmentations', peptide, Nullable(chargeState), Nullable(experimentalMassToCharge), Nullable(calculatedMassToCharge'),
-                                                   Nullable(calculatedPI'), details', Nullable(DateTime.Now)
+                    new SpectrumIdentificationItem(
+                                                   id', 
+                                                   name', 
+                                                   sample', 
+                                                   massTable', 
+                                                   Nullable(passThreshold), 
+                                                   Nullable(rank), 
+                                                   peptideEvidences',
+                                                   fragmentations', 
+                                                   peptide, 
+                                                   Nullable(chargeState), 
+                                                   Nullable(experimentalMassToCharge), 
+                                                   Nullable(calculatedMassToCharge'),
+                                                   Nullable(calculatedPI'), 
+                                                   details', 
+                                                   Nullable(DateTime.Now)
                                                   )
 
                static member addName
@@ -3036,8 +3477,15 @@ module InsertStatements =
                     let name'                       = defaultArg name Unchecked.defaultof<string>
                     let details'                    = convertOptionToList details
                     
-                    new SpectrumIdentificationResult(id', name', spectraData, spectrumID, spectrumIdentificationItem |> List,
-                                                     details', Nullable(DateTime.Now))
+                    new SpectrumIdentificationResult(
+                                                     id', 
+                                                     name', 
+                                                     spectraData, 
+                                                     spectrumID, 
+                                                     spectrumIdentificationItem |> List,
+                                                     details', 
+                                                     Nullable(DateTime.Now)
+                                                    )
 
                static member addName
                     (name:string) (spectrumIdentificationResult:SpectrumIdentificationResult)  =
@@ -3085,8 +3533,14 @@ module InsertStatements =
                     let fragmentationTable'   = convertOptionToList fragmentationTable
                     let details'              = convertOptionToList details
                     
-                    new SpectrumIdentificationList(id', name', Nullable(numSequencesSearched'), fragmentationTable', spectrumIdentificationResult |> List,
-                                                   details', Nullable(DateTime.Now)
+                    new SpectrumIdentificationList(
+                                                   id', 
+                                                   name', 
+                                                   Nullable(numSequencesSearched'), 
+                                                   fragmentationTable', 
+                                                   spectrumIdentificationResult |> List,
+                                                   details', 
+                                                   Nullable(DateTime.Now)
                                                   )
 
                static member addName
@@ -3147,8 +3601,17 @@ module InsertStatements =
                     let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
                     let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new SpectrumIdentification(id', name', Nullable(activityDate'), spectrumIdentificationList, spectrumIdentificationProtocol,
-                                               spectraData |> List, searchDatabase |> List, mzIdentML', Nullable(DateTime.Now))
+                    new SpectrumIdentification(
+                                               id', 
+                                               name',
+                                               Nullable(activityDate'), 
+                                               spectrumIdentificationList, 
+                                               spectrumIdentificationProtocol,
+                                               spectraData |> List, 
+                                               searchDatabase |> List, 
+                                               mzIdentML', 
+                                               Nullable(DateTime.Now)
+                                              )
 
                static member addName
                     (name:string) (spectrumIdentification:SpectrumIdentification) =
@@ -3191,7 +3654,15 @@ module InsertStatements =
                     let analysisParams' = convertOptionToList analysisParams
                     let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new ProteinDetectionProtocol(id', name', analysisSoftware, analysisParams', threshold |> List, mzIdentML', Nullable(DateTime.Now))
+                    new ProteinDetectionProtocol(
+                                                 id', 
+                                                 name', 
+                                                 analysisSoftware, 
+                                                 analysisParams', 
+                                                 threshold |> List,
+                                                 mzIdentML', 
+                                                 Nullable(DateTime.Now)
+                                                )
 
                static member addName
                     (name:string) (proteinDetectionProtocol:ProteinDetectionProtocol) =
@@ -3239,7 +3710,15 @@ module InsertStatements =
                     let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     
-                    new SourceFile(id', name', location, externalFormatDocumentation', fileFormat, details', Nullable(DateTime.Now))
+                    new SourceFile(
+                                   id', 
+                                   name', 
+                                   location, 
+                                   externalFormatDocumentation', 
+                                   fileFormat, 
+                                   details', 
+                                   Nullable(DateTime.Now)
+                                  )
 
                static member addName
                     (name:string) (sourceFile:SourceFile) =
@@ -3290,7 +3769,14 @@ module InsertStatements =
                     let searchDatabase' = convertOptionToList searchDatabase
                     let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new Inputs(id', sourceFile', searchDatabase', spectraData |> List, mzIdentML', Nullable(DateTime.Now))
+                    new Inputs(
+                               id', 
+                               sourceFile', 
+                               searchDatabase', 
+                               spectraData |> List, 
+                               mzIdentML', 
+                               Nullable(DateTime.Now)
+                              )
 
                static member addSourceFile
                     (sourceFile:SourceFile) (inputs:Inputs) =
@@ -3337,7 +3823,12 @@ module InsertStatements =
                     ) =
                     let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                    new PeptideHypothesis(id', peptideEvidence, spectrumIdentificationItems |> List, Nullable(DateTime.Now))
+                    new PeptideHypothesis(
+                                          id', 
+                                          peptideEvidence, 
+                                          spectrumIdentificationItems |> List, 
+                                          Nullable(DateTime.Now)
+                                         )
 
                static member tryFindByID
                     (context:MzIdentML) (peptideHypothesisID:string) =
@@ -3366,8 +3857,14 @@ module InsertStatements =
                     let details'   = convertOptionToList details
                     let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new ProteinDetectionHypothesis(id', name', Nullable(passThreshold),  dbSequence, peptideHypothesis |> List,
-                                                   details', mzIdentML', Nullable(DateTime.Now)
+                    new ProteinDetectionHypothesis(id', 
+                                                   name', 
+                                                   Nullable(passThreshold), 
+                                                   dbSequence, 
+                                                   peptideHypothesis |> List,
+                                                   details', 
+                                                   mzIdentML', 
+                                                   Nullable(DateTime.Now)
                                                   )
 
                static member addName
@@ -3413,7 +3910,13 @@ module InsertStatements =
                     let name'                        = defaultArg name Unchecked.defaultof<string>
                     let details'                     = convertOptionToList details
                     
-                    new ProteinAmbiguityGroup(id', name', proteinDetecionHypothesis |> List, details', Nullable(DateTime.Now))
+                    new ProteinAmbiguityGroup(
+                                              id', 
+                                              name', 
+                                              proteinDetecionHypothesis |> List, 
+                                              details', 
+                                              Nullable(DateTime.Now)
+                                             )
 
                static member addName
                     (name:string) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
@@ -3454,7 +3957,13 @@ module InsertStatements =
                     let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
                     let details'                = convertOptionToList details
                     
-                    new ProteinDetectionList(id', name', proteinAmbiguityGroups', details', Nullable(DateTime.Now))
+                    new ProteinDetectionList(
+                                             id', 
+                                             name', 
+                                             proteinAmbiguityGroups', 
+                                             details', 
+                                             Nullable(DateTime.Now)
+                                            )
 
                static member addName
                     (name:string) (proteinDetectionList:ProteinDetectionList) =
@@ -3504,7 +4013,13 @@ module InsertStatements =
                     let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
                     let mzIdentML'            = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new AnalysisData(id', spectrumIdentificationList |> List, proteinDetectionList', mzIdentML', Nullable(DateTime.Now))
+                    new AnalysisData(
+                                     id', 
+                                     spectrumIdentificationList |> List, 
+                                     proteinDetectionList', 
+                                     mzIdentML', 
+                                     Nullable(DateTime.Now)
+                                    )
 
                static member addProteinDetectionList
                     (proteinDetectionList:ProteinDetectionList) (analysisData:AnalysisData) =
@@ -3541,8 +4056,13 @@ module InsertStatements =
                     let name'         = defaultArg name Unchecked.defaultof<string>
                     let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
                     
-                    new ProteinDetection(id', name', Nullable(activityDate'), proteinDetectionList, proteinDetectionProtocol,
-                                         spectrumIdentificationLists |> List, Nullable(DateTime.Now)
+                    new ProteinDetection(id', 
+                                         name', 
+                                         Nullable(activityDate'), 
+                                         proteinDetectionList, 
+                                         proteinDetectionProtocol,
+                                         spectrumIdentificationLists |> List, 
+                                         Nullable(DateTime.Now)
                                         )
 
                static member addName
@@ -3597,8 +4117,20 @@ module InsertStatements =
                     let year'        = defaultArg year Unchecked.defaultof<int>
                     let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
-                    new BiblioGraphicReference(id', name', authors', doi', editor', issue', pages', publication',
-                                               publisher', title', volume', Nullable(year'), mzIdentML', Nullable(DateTime.Now)
+                    new BiblioGraphicReference(
+                                               id', 
+                                               name', 
+                                               authors', 
+                                               doi', editor', 
+                                               issue', 
+                                               pages', 
+                                               publication',
+                                               publisher', 
+                                               title', 
+                                               volume', 
+                                               Nullable(year'), 
+                                               mzIdentML', 
+                                               Nullable(DateTime.Now)
                                               )
 
                static member addName
@@ -3687,7 +4219,14 @@ module InsertStatements =
                     let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
                     let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
-                    new Provider(id', name', analysisSoftware', contactRole', mzIdentML', Nullable(DateTime.Now))
+                    new Provider(
+                                 id', 
+                                 name', 
+                                 analysisSoftware', 
+                                 contactRole', 
+                                 mzIdentML', 
+                                 Nullable(DateTime.Now)
+                                )
 
                static member addName
                     (name:string) (provider:Provider) =
@@ -3760,7 +4299,8 @@ module InsertStatements =
                     let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
                     let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                     let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
-                    new MzIdentMLDocument(id', 
+                    new MzIdentMLDocument(
+                                          id', 
                                           name',
                                           version',
                                           analysisSoftwares', 
