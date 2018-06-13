@@ -1,22 +1,20 @@
 ﻿namespace MzIdentMLDataBase
 
 open System
-open DataContext.EntityTypes
-open DataContext.DataContext
+open DataModel
 open InsertStatements.ObjectHandlers
-//open System.Collections.Generic
-//open FSharp.Care.IO
-//open BioFSharp.IO
+open FSharp.Data
 
 
 module XMLParsing =
 
-    open FSharp.Data
-
     type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
     //let  samplePeptideShaker = SchemePeptideShaker.Load("..\ExampleFile\PeptideShaker_mzid_1_2_example.txt") 
 
-
+    let setOption (addFunction:'a->'b->'b) (item:'a option) (object:'b) =
+        match item with
+        |Some x -> addFunction x object
+        |None -> object
 
     let takeTermEntry (dbContext : MzIdentML) (termID : string) =
         query {
@@ -52,99 +50,113 @@ module XMLParsing =
     let convertToEntityCVParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = CVParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption CVParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = CVParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                |Some x -> TermHandler.tryFindByID dbContext x 
-                                                |None -> TermHandler.tryFindByID dbContext ""
-                                               ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> CVParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        )
         let addedUnitName = setOption CVParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntityModificationParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = ModificationParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption ModificationParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = ModificationParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                                 |Some x -> TermHandler.tryFindByID dbContext x 
-                                                                 |None -> TermHandler.tryFindByID dbContext ""
-                                                                ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> ModificationParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption ModificationParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntityTranslationTableParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = TranslationTableParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption TranslationTableParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = TranslationTableParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                              |Some x -> TermHandler.tryFindByID dbContext x 
-                                                              |None -> TermHandler.tryFindByID dbContext ""
-                                                             ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> TranslationTableParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        )
         let addUnitName = setOption TranslationTableParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addUnitName
 
     let convertToEntityMeasureParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = MeasureParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption MeasureParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = MeasureParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                     |Some x -> TermHandler.tryFindByID dbContext x
-                                                     |None -> TermHandler.tryFindByID dbContext ""
-                                                    ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> MeasureParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        )
         let addedUnitName = setOption MeasureParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntitySearchModificationParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = SearchModificationParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption SearchModificationParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = SearchModificationParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                                |Some x -> TermHandler.tryFindByID dbContext x
-                                                                |None -> TermHandler.tryFindByID dbContext ""
-                                                               ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> SearchModificationParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption SearchModificationParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntitySpecificityRuleParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = SpecificityRuleParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption SpecificityRuleParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = SpecificityRuleParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                             |Some x -> TermHandler.tryFindByID dbContext x
-                                                             |None -> TermHandler.tryFindByID dbContext ""
-                                                            ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> SpecificityRuleParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption SpecificityRuleParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntityFragmentToleranceParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = FragmentToleranceParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption FragmentToleranceParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = FragmentToleranceParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                               |Some x -> TermHandler.tryFindByID dbContext x
-                                                               |None -> TermHandler.tryFindByID dbContext ""
-                                                              ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> FragmentToleranceParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption FragmentToleranceParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntityParentToleranceParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = ParentToleranceParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption ParentToleranceParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = ParentToleranceParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                             |Some x -> TermHandler.tryFindByID dbContext x
-                                                             |None -> TermHandler.tryFindByID dbContext ""
-                                                            ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> ParentToleranceParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption ParentToleranceParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntitySearchDatabaseParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.CvParam) =
         let initialized = SearchDatabaseParamHandler.init(mzIdentMLXML.Name, TermHandler.tryFindByID dbContext (mzIdentMLXML.Accession))
         let addedValue = setOption SearchDatabaseParamHandler.addValue mzIdentMLXML.Value initialized
-        let addedUnit = SearchDatabaseParamHandler.addUnit (match mzIdentMLXML.UnitAccession with
-                                                            |Some x -> TermHandler.tryFindByID dbContext x
-                                                            |None -> TermHandler.tryFindByID dbContext ""
-                                                           ) addedValue
+        let addedUnit = (match mzIdentMLXML.UnitAccession with
+                         |Some x -> SearchDatabaseParamHandler.addUnit
+                                        (TermHandler.tryFindByID dbContext x)
+                                        addedValue
+                         |None -> addedValue
+                        ) 
         let addedUnitName = setOption SearchDatabaseParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
         addedUnitName
 
     let convertToEntity_UserParam (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.UserParam) =
-        let initialized = CVParamHandler.init(mzIdentMLXML.Name, (match mzIdentMLXML.UnitAccession with
-                                                                  |Some x ->  TermHandler.tryFindByID dbContext x
-                                                                  |None -> TermHandler.tryFindByID dbContext ""
-                                                                 )
-                                             )
+        let initialized = CVParamHandler.init(mzIdentMLXML.Name, null)
         let addedValue = setOption CVParamHandler.addValue mzIdentMLXML.Value initialized
         let addedUnit = CVParamHandler.addUnit (takeTermEntryOption dbContext mzIdentMLXML.UnitAccession) addedValue
         let addedUnitName = setOption CVParamHandler.addUnitName mzIdentMLXML.UnitName addedUnit
@@ -192,12 +204,12 @@ module XMLParsing =
                 )
                 organizationWithName
         let organizationWithParent = 
-            OrganizationHandler.addParent 
                 (match mzIdentMLXML.Parent with
-                 |Some x -> x.OrganizationRef
-                 |None -> ""
+                 |Some x -> OrganizationHandler.addParent 
+                                x.OrganizationRef
+                                organizationWithDetails
+                 |None -> organizationWithDetails
                 )
-                organizationWithDetails
         OrganizationHandler.addToContext dbContext organizationWithParent
 
     let convertToEntity_Person (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.Person) =
@@ -391,19 +403,19 @@ module XMLParsing =
                                                   )
         let spectrumIdentificationItemWithName = setOption SpectrumIdentificationItemHandler.addName mzIdentMLXML.Name spectrumIdentificationItemBasic
         let spectrumIdentificationItemWithSample = 
-            SpectrumIdentificationItemHandler.addSample  
                 (match mzIdentMLXML.SampleRef with 
-                 |Some x -> SampleHandler.tryFindByID dbContext x
-                 |None -> SampleHandler.tryFindByID dbContext ""
+                 |Some x -> SpectrumIdentificationItemHandler.addSample  
+                                (SampleHandler.tryFindByID dbContext x)
+                                spectrumIdentificationItemWithName
+                 |None -> spectrumIdentificationItemWithName
                 )
-                spectrumIdentificationItemWithName
         let spectrumIdentificationItemWithMassTable = 
-            SpectrumIdentificationItemHandler.addMassTable 
                 (match mzIdentMLXML.MassTableRef with
-                 |Some x -> MassTableHandler.tryFindByID dbContext x
-                 |None -> MassTableHandler.tryFindByID dbContext ""
+                 |Some x -> SpectrumIdentificationItemHandler.addMassTable 
+                                (MassTableHandler.tryFindByID dbContext x)
+                                spectrumIdentificationItemWithSample
+                 |None -> spectrumIdentificationItemWithSample
                 )
-                spectrumIdentificationItemWithSample
         let spectrumIdentificationItemWithPeptideEvidence =
             SpectrumIdentificationItemHandler.addPeptideEvidences
                 (mzIdentMLXML.PeptideEvidenceRefs
@@ -417,9 +429,7 @@ module XMLParsing =
                                  |> Array.map (fun ionType -> convertToEntity_IonType dbContext ionType)
                                 )
                                 spectrumIdentificationItemWithPeptideEvidence
-                 |None -> SpectrumIdentificationItemHandler.addFragmentation
-                            (IonTypeHandler.tryFindByID dbContext "")
-                            spectrumIdentificationItemWithPeptideEvidence
+                 |None -> spectrumIdentificationItemWithPeptideEvidence
         let spectrumIdentificationItemWithCalculatedMassToCharge =
             setOption SpectrumIdentificationItemHandler.addCalculatedMassToCharge mzIdentMLXML.CalculatedMassToCharge spectrumIdentificationItemWithFragmentation
         let spectrumIdentificationItemWithCalculatedPI =
@@ -473,9 +483,7 @@ module XMLParsing =
                                  |> Array.map (fun measure -> convertToEntity_Measure dbContext measure)
                                 )
                                 spectrumIdentificationListWithNumSequencesSearched
-                 |None -> SpectrumIdentificationListHandler.addFragmentationTable
-                            (MeasureHandler.tryFindByID dbContext "")
-                            spectrumIdentificationListWithNumSequencesSearched
+                 |None -> spectrumIdentificationListWithNumSequencesSearched
         let spectrumIdentificationListWithDetails =
             SpectrumIdentificationListHandler.addDetails   
                 ((convertCVandUserParamCollections dbContext mzIdentMLXML.CvParams mzIdentMLXML.UserParams)
@@ -535,9 +543,7 @@ module XMLParsing =
                                  |> Array.map (fun cvParamItem -> EnzymeNameParamHandler.init(cvParamItem.Name, cvParamItem.Term, cvParamItem.ID, cvParamItem.Value, cvParamItem.Unit, cvParamItem.UnitName))
                                 )
                                 enzymeWithSiteRegxc
-                 |None -> EnzymeHandler.addEnzymeName
-                            (EnzymeNameParamHandler.tryFindByID dbContext "")
-                            enzymeWithSiteRegxc
+                 |None -> enzymeWithSiteRegxc
         enzymeWithEnzymeNames
 
     let convertToEntity_Filter (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.Filter) =
@@ -576,9 +582,7 @@ module XMLParsing =
                                  |> Array.map (fun cvParamItem -> AdditionalSearchParamHandler.init(cvParamItem.Name, cvParamItem.Term, cvParamItem.ID, cvParamItem.Value, cvParamItem.Unit, cvParamItem.UnitName))
                                 )
                                 spectrumIdentificationProtocolWithName
-                 |None -> SpectrumIdentificationProtocolHandler.addEnzymeAdditionalSearchParam
-                            (AdditionalSearchParamHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithName
+                 |None -> spectrumIdentificationProtocolWithName
         let spectrumIdentificationProtocolWithModificationParams = 
                 match mzIdentMLXML.ModificationParams with
                  |Some x -> SpectrumIdentificationProtocolHandler.addModificationParams
@@ -586,9 +590,7 @@ module XMLParsing =
                                  |> Array.map (fun searchModification -> convertToEntity_SearchModification dbContext searchModification)
                                 )
                                 spectrumIdentificationProtocolWithAdditionalSearchParams
-                 |None -> SpectrumIdentificationProtocolHandler.addModificationParam
-                            (SearchModificationHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithAdditionalSearchParams
+                 |None -> spectrumIdentificationProtocolWithAdditionalSearchParams
         let spectrumIdentificationProtocolWithEnzymes =
                 match mzIdentMLXML.Enzymes with 
                  |Some x -> SpectrumIdentificationProtocolHandler.addEnzymes 
@@ -596,18 +598,16 @@ module XMLParsing =
                                  |> Array.map (fun enzyme -> convertToEntity_Enzyme dbContext enzyme)
                                 )
                                 spectrumIdentificationProtocolWithModificationParams
-                 |None -> SpectrumIdentificationProtocolHandler.addEnzyme
-                            (EnzymeHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithModificationParams
+                 |None -> spectrumIdentificationProtocolWithModificationParams
         let spectrumIdentificationProtocolWithEnzymesWithIndepent_Enzymes = 
-            SpectrumIdentificationProtocolHandler.addIndependent_Enzymes  
                 (match mzIdentMLXML.Enzymes with
                     |Some x -> match x.Independent with
-                               |Some x -> x
-                               |None -> Unchecked.defaultof<bool>
-                    |None -> Unchecked.defaultof<bool>
+                               |Some x -> SpectrumIdentificationProtocolHandler.addIndependent_Enzymes
+                                            x
+                                            spectrumIdentificationProtocolWithEnzymes
+                               |None -> spectrumIdentificationProtocolWithEnzymes
+                    |None -> spectrumIdentificationProtocolWithEnzymes
                 )
-                spectrumIdentificationProtocolWithEnzymes
         let spectrumIdentificationProtocolWithMassTables =
             SpectrumIdentificationProtocolHandler.addMassTables
                 (mzIdentMLXML.MassTables
@@ -621,9 +621,7 @@ module XMLParsing =
                                  |> Array.map (fun cvParam -> convertToEntityFragmentToleranceParam dbContext cvParam)
                                 )
                                 spectrumIdentificationProtocolWithMassTables
-                 |None -> SpectrumIdentificationProtocolHandler.addFragmentTolerance
-                            (FragmentToleranceParamHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithMassTables
+                 |None -> spectrumIdentificationProtocolWithMassTables
         let spectrumIdentificationProtocolWithParentTolerances =
                 match mzIdentMLXML.ParentTolerance with
                  |Some x -> SpectrumIdentificationProtocolHandler.addParentTolerances
@@ -631,9 +629,7 @@ module XMLParsing =
                                  |> Array.map (fun cvParam -> convertToEntityParentToleranceParam dbContext cvParam)
                                 )
                                 spectrumIdentificationProtocolWithFragmentTolerances
-                 |None -> SpectrumIdentificationProtocolHandler.addParentTolerance
-                            (ParentToleranceParamHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithFragmentTolerances
+                 |None -> spectrumIdentificationProtocolWithFragmentTolerances
         let spectrumIdentificationProtocolWithDatabaseFilter = 
                 match mzIdentMLXML.DatabaseFilters with
                  |Some x -> SpectrumIdentificationProtocolHandler.addDatabaseFilters
@@ -641,9 +637,7 @@ module XMLParsing =
                                  |> Array.map (fun filter -> convertToEntity_Filter dbContext filter)
                                 )
                                 spectrumIdentificationProtocolWithParentTolerances
-                 |None -> SpectrumIdentificationProtocolHandler.addDatabaseFilter
-                            (FilterHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithParentTolerances
+                 |None -> spectrumIdentificationProtocolWithParentTolerances
         //let spectrumIdentificationProtocolWithDatabaseFrames =
         //    SpectrumIdentificationProtocolHandler.addFrame
         //        spectrumIdentificationProtocolWithDatabaseFilter
@@ -661,9 +655,7 @@ module XMLParsing =
                                  |> Array.map (fun translationTable -> convertToEntity_TranslationTable dbContext translationTable)
                                 )
                                 spectrumIdentificationProtocolWithDatabaseFilter
-                 |None -> SpectrumIdentificationProtocolHandler.addTranslationTable
-                            (TranslationTableHandler.tryFindByID dbContext "")
-                            spectrumIdentificationProtocolWithDatabaseFilter
+                 |None -> spectrumIdentificationProtocolWithDatabaseFilter
         SpectrumIdentificationProtocolHandler.addToContext dbContext spectrumIdentificationProtocolWithTranslationTable
 
     let convertToEntity_SearchDatabase (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.SearchDatabase) =
@@ -730,12 +722,13 @@ module XMLParsing =
                 peptideEvidenceWithPost
         let peptideEvidenceWithIsDecoy = setOption PeptideEvidenceHandler.addIsDecoy mzIdentMLXML.IsDecoy peptideEvidenceWithFrame
         let peptideEvidenceWithTranslationTable = 
-            PeptideEvidenceHandler.addTranslationTable 
+            
                 (match mzIdentMLXML.TranslationTableRef with
-                 |Some x -> TranslationTableHandler.tryFindByID dbContext x
-                 |None -> TranslationTableHandler.tryFindByID dbContext ""
+                 |Some x -> PeptideEvidenceHandler.addTranslationTable 
+                                (TranslationTableHandler.tryFindByID dbContext x)
+                                peptideEvidenceWithIsDecoy
+                 |None -> peptideEvidenceWithIsDecoy
                 )
-                peptideEvidenceWithIsDecoy
         let peptideEvidenceWithDetails =
             PeptideEvidenceHandler.addDetails 
                 ((convertCVandUserParamCollections dbContext mzIdentMLXML.CvParams mzIdentMLXML.UserParams)
@@ -819,9 +812,7 @@ module XMLParsing =
                                  |> Array.map (fun cvParamItem -> AnalysisParamHandler.init(cvParamItem.Name, cvParamItem.Term, cvParamItem.ID, cvParamItem.Value, cvParamItem.Unit, cvParamItem.UnitName))
                                 )
                                 proteinDetectionProtocolWithName
-                 |None -> ProteinDetectionProtocolHandler.addAnalysisParam
-                            (AnalysisParamHandler.tryFindByID dbContext "")
-                            proteinDetectionProtocolWithName
+                 |None -> proteinDetectionProtocolWithName
         ProteinDetectionProtocolHandler.addToContext dbContext proteinDetectionProtocolWithAnalysisParams
 
     let convertToEntity_PeptideHypothesis (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.PeptideHypothesis) =
@@ -891,12 +882,12 @@ module XMLParsing =
                                      |> Array.map (fun spectrumIdentificationList -> convertToEntity_SpectrumIdentificationList dbContext spectrumIdentificationList)
                                     )
         let analysisDataWithProteinDetectionList = 
-            AnalysisDataHandler.addProteinDetectionList
-                (match mzIdentMLXML.ProteinDetectionList with
-                 |Some x -> convertToEntity_ProteinDetectionList dbContext x
-                 |None -> ProteinDetectionListHandler.tryFindByID dbContext ""
-                )
-                analysisDataBasic
+            (match mzIdentMLXML.ProteinDetectionList with
+             |Some x -> AnalysisDataHandler.addProteinDetectionList
+                            (convertToEntity_ProteinDetectionList dbContext x)
+                            analysisDataBasic
+             |None -> analysisDataBasic
+            )
         analysisDataWithProteinDetectionList
 
     let convertToEntity_ProteinDetection (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.ProteinDetection) =
@@ -930,31 +921,31 @@ module XMLParsing =
     let convertToEntity_Provider (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.Provider) =
         let providerBasic = ProviderHandler.init(mzIdentMLXML.Id)
         let providerWithName = setOption ProviderHandler.addName mzIdentMLXML.Name providerBasic
-        let providerWithAnalysisSoftware = 
-            ProviderHandler.addAnalysisSoftware 
-                (match mzIdentMLXML.AnalysisSoftwareRef with
-                 |Some x -> AnalysisSoftwareHandler.tryFindByID dbContext x
-                 |None -> AnalysisSoftwareHandler.tryFindByID dbContext ""
-                )
-                providerWithName
+        let providerWithAnalysisSoftware =   
+            (match mzIdentMLXML.AnalysisSoftwareRef with
+             |Some x -> ProviderHandler.addAnalysisSoftware 
+                            (AnalysisSoftwareHandler.tryFindByID dbContext x)
+                            providerWithName
+             |None -> providerWithName
+            )
         let providerWithContactRole = 
-            ProviderHandler.addContactRole 
-                (match mzIdentMLXML.ContactRole with
-                 |Some x -> convertToEntity_ContactRole dbContext x
-                 |None -> ContactRoleHandler.tryFindByID dbContext ""
-                )
-                providerWithAnalysisSoftware
+            (match mzIdentMLXML.ContactRole with
+             |Some x -> ProviderHandler.addContactRole 
+                            (convertToEntity_ContactRole dbContext x)
+                            providerWithAnalysisSoftware
+             |None -> providerWithAnalysisSoftware
+            )
         providerWithContactRole
 
     let convertToEntity_MzIdentML (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.MzIdentMl) =
         let mzIdentMLBasic =  
             MzIdentMLHandler.init(
+                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
                                   mzIdentMLXML.Version,
                                   mzIdentMLXML.AnalysisCollection.SpectrumIdentifications
                                   |> Array.map (fun spectrumIdentification -> convertToEntity_SpectrumIdentification dbContext spectrumIdentification),
                                   mzIdentMLXML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
                                   |> Array.map (fun spectrumIdentificationProtocol -> SpectrumIdentificationProtocolHandler.tryFindByID dbContext spectrumIdentificationProtocol.Id),
-                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
                                   convertToEntity_AnalysisData dbContext mzIdentMLXML.DataCollection.AnalysisData
                                  )
         let mzIdentMLWithName = setOption MzIdentMLHandler.addName mzIdentMLXML.Name mzIdentMLBasic
@@ -965,16 +956,14 @@ module XMLParsing =
                                  |> Array.map (fun analysisSoftware -> AnalysisSoftwareHandler.tryFindByID dbContext analysisSoftware.Id)
                                 )
                                 mzIdentMLWithName
-                 |None -> MzIdentMLHandler.addAnalysisSoftware     
-                            (AnalysisSoftwareHandler.tryFindByID dbContext "")
-                            mzIdentMLWithName
+                 |None -> mzIdentMLWithName
         let mzIDentMLWithProvider =
-            MzIdentMLHandler.addProvider
                 (match mzIdentMLXML.Provider with
-                 |Some x -> convertToEntity_Provider dbContext x
-                 |None -> ProviderHandler.tryFindByID dbContext ""
+                 |Some x -> MzIdentMLHandler.addProvider
+                                (convertToEntity_Provider dbContext x)
+                                mzIdentMLWithAnalysisSoftwares
+                 |None -> mzIdentMLWithAnalysisSoftwares
                 )
-                mzIdentMLWithAnalysisSoftwares
         let mzIdentMLWithPersons =
                 match mzIdentMLXML.AuditCollection with
                  |Some x -> MzIdentMLHandler.addPersons
@@ -982,9 +971,7 @@ module XMLParsing =
                                  |> Array.map (fun person -> PersonHandler.tryFindByID dbContext person.Id)
                                 )
                                 mzIDentMLWithProvider
-                 |None -> MzIdentMLHandler.addPerson
-                            (PersonHandler.tryFindByID dbContext "")
-                            mzIDentMLWithProvider
+                 |None -> mzIDentMLWithProvider
         let mzIdentMLWithOrganizations =
                 match mzIdentMLXML.AuditCollection with
                  |Some x -> MzIdentMLHandler.addOrganizations
@@ -992,9 +979,7 @@ module XMLParsing =
                                  |> Array.map (fun organization -> OrganizationHandler.tryFindByID dbContext organization.Id)
                                 )
                                 mzIdentMLWithPersons
-                 |None -> MzIdentMLHandler.addOrganization
-                            (OrganizationHandler.tryFindByID dbContext "")
-                            mzIdentMLWithPersons
+                 |None -> mzIdentMLWithPersons
         let mzIdentMLWithSamples =
                 match mzIdentMLXML.AnalysisSampleCollection with
                  |Some x -> MzIdentMLHandler.addSamples
@@ -1002,9 +987,7 @@ module XMLParsing =
                                  |>Array.map (fun sample -> SampleHandler.tryFindByID dbContext sample.Id)
                                 )
                                 mzIdentMLWithOrganizations
-                 |None -> MzIdentMLHandler.addSample
-                            (SampleHandler.tryFindByID dbContext "")
-                            mzIdentMLWithOrganizations
+                 |None -> mzIdentMLWithOrganizations
         let mzIdentMLWithDBSequences =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addDBSequences
@@ -1012,9 +995,7 @@ module XMLParsing =
                                  |> Array.map (fun dbSequence -> DBSequenceHandler.tryFindByID dbContext dbSequence.Id)
                                 )
                                 mzIdentMLWithSamples
-                 |None -> MzIdentMLHandler.addDBSequence
-                            (DBSequenceHandler.tryFindByID dbContext "")
-                            mzIdentMLWithSamples
+                 |None -> mzIdentMLWithSamples
         let mzIdentMLWithPeptides =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addPeptides
@@ -1022,9 +1003,7 @@ module XMLParsing =
                                  |> Array.map (fun peptide -> PeptideHandler.tryFindByID dbContext peptide.Id)
                                 )
                                 mzIdentMLWithDBSequences
-                 |None -> MzIdentMLHandler.addPeptide
-                            (PeptideHandler.tryFindByID dbContext "")
-                            mzIdentMLWithDBSequences
+                 |None -> mzIdentMLWithDBSequences
         let mzIdentMLWithPeptideEvidences =
                 match mzIdentMLXML.SequenceCollection with
                  |Some x -> MzIdentMLHandler.addPeptideEvidences
@@ -1032,30 +1011,28 @@ module XMLParsing =
                                  |> Array.map (fun peptideEvidence -> PeptideEvidenceHandler.tryFindByID dbContext peptideEvidence.Id)
                                 )
                                 mzIdentMLWithPeptides
-                 |None -> MzIdentMLHandler.addPeptideEvidence
-                            (PeptideEvidenceHandler.tryFindByID dbContext "")
-                            mzIdentMLWithPeptides
+                 |None -> mzIdentMLWithPeptides
         let mzIdentMLWithProteinDetection =
-            MzIdentMLHandler.addProteinDetection
-                (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
-                 |Some x -> convertToEntity_ProteinDetection dbContext x
-                 |None -> ProteinDetectionHandler.tryFindByID dbContext ""
-                )
-                mzIdentMLWithPeptideEvidences
+            (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
+             |Some x -> MzIdentMLHandler.addProteinDetection
+                            (convertToEntity_ProteinDetection dbContext x)
+                            mzIdentMLWithPeptideEvidences
+             |None -> mzIdentMLWithPeptideEvidences
+            )
         let mzIdentMLWithProteinDetectionProtocol =
-            MzIdentMLHandler.addProteinDetectionProtocol
-                (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
-                 |Some x -> ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id
-                 |None -> ProteinDetectionProtocolHandler.tryFindByID dbContext ""
-                )
-                mzIdentMLWithProteinDetection
-        let mzIdentMLWithBiblioGraphicReference =
-            MzIdentMLHandler.addBiblioGraphicReferences
-                (mzIdentMLXML.BibliographicReferences
-                 |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
-                )
-                mzIdentMLWithProteinDetectionProtocol
-        MzIdentMLHandler.addToContext dbContext mzIdentMLWithBiblioGraphicReference
+            (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
+             |Some x -> MzIdentMLHandler.addProteinDetectionProtocol
+                            (ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id)
+                            mzIdentMLWithProteinDetection
+             |None -> mzIdentMLWithProteinDetection
+            ) 
+        //let mzIdentMLWithBiblioGraphicReference =
+        //    MzIdentMLHandler.addBiblioGraphicReferences
+        //        (mzIdentMLXML.BibliographicReferences
+        //         |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
+        //        )
+        //        mzIdentMLWithProteinDetectionProtocol
+        MzIdentMLHandler.addToContext dbContext mzIdentMLWithProteinDetectionProtocol
 
 
 
