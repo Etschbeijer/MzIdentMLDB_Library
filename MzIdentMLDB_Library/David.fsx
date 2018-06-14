@@ -119,21 +119,24 @@ let persons =
      |> PersonHandler.addOrganization 
         (OrganizationHandler.tryFindByID 
             sqliteContext 
-            (TestType.toString CSB));
+            (TestType.toString CSB)
+        );
      PersonHandler.init("2")
      |> PersonHandler.addFirstName "David"
      |> PersonHandler.addLastName "Zimmer"
      |> PersonHandler.addOrganization 
             (OrganizationHandler.tryFindByID 
                 sqliteContext 
-                (TestType.toString CSB));
+                (TestType.toString CSB)
+            );
      PersonHandler.init("3")
      |> PersonHandler.addFirstName "Michael"
      |> PersonHandler.addLastName "Schroda"
      |> PersonHandler.addOrganization 
             (OrganizationHandler.tryFindByID 
                 sqliteContext 
-                (TestType.toString BioTech))
+                (TestType.toString BioTech)
+            )
     ]
     |> List.map (fun person -> ContextHandler.addToContext sqliteContext person)
 
