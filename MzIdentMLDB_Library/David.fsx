@@ -116,29 +116,48 @@ let persons =
      PersonHandler.init("1")
      |> PersonHandler.addFirstName "Timo"
      |> PersonHandler.addLastName "Mühlhaus"
-     |> PersonHandler.addOrganization (OrganizationHandler.tryFindByID sqliteContext (TestType.toString CSB));
+     |> PersonHandler.addOrganization 
+        (OrganizationHandler.tryFindByID 
+            sqliteContext 
+            (TestType.toString CSB));
      PersonHandler.init("2")
      |> PersonHandler.addFirstName "David"
      |> PersonHandler.addLastName "Zimmer"
-     |> PersonHandler.addOrganization (OrganizationHandler.tryFindByID sqliteContext (TestType.toString CSB));
+     |> PersonHandler.addOrganization 
+            (OrganizationHandler.tryFindByID 
+                sqliteContext 
+                (TestType.toString CSB));
      PersonHandler.init("3")
      |> PersonHandler.addFirstName "Michael"
      |> PersonHandler.addLastName "Schroda"
-     |> PersonHandler.addOrganization (OrganizationHandler.tryFindByID sqliteContext (TestType.toString BioTech))
+     |> PersonHandler.addOrganization 
+            (OrganizationHandler.tryFindByID 
+                sqliteContext 
+                (TestType.toString BioTech))
     ]
     |> List.map (fun person -> ContextHandler.addToContext sqliteContext person)
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init(
-                                 CVParamHandler.init("MzIdentMLTest", TermHandler.tryFindByID sqliteContext (TestType.toString Software)
+                                 CVParamHandler.init(
+                                                     "MzIdentMLTest", 
+                                                     TermHandler.tryFindByID 
+                                                        sqliteContext 
+                                                        (TestType.toString Software)
                                                     )
                                 )
     |> AnalysisSoftwareHandler.addName "MzIdentMLDatanBank"
     |> AnalysisSoftwareHandler.addVersion "0.8"
     |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper (ContactRoleHandler.init(
-                                                                                     PersonHandler.tryFindByID sqliteContext (TestType.toString David),
-                                                                                     CVParamHandler.init("MasterStudent", TermHandler.tryFindByID sqliteContext (TestType.toString SoftwareVendor)
-                                                                                                        )
+                                                                                     PersonHandler.tryFindByID 
+                                                                                        sqliteContext 
+                                                                                        (TestType.toString David),
+                                                                                     CVParamHandler.init
+                                                                                        ("MasterStudent", 
+                                                                                         TermHandler.tryFindByID 
+                                                                                            sqliteContext 
+                                                                                            (TestType.toString SoftwareVendor)
+                                                                                        )
                                                                                     )
                                                             )
     |> ContextHandler.addToContext sqliteContext
