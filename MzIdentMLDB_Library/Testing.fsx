@@ -31,8 +31,8 @@ let standardDBPathSQLite = fileDir + "\Databases\Test.db"
 
 let sqliteContext = ContextHandler.sqliteConnection standardDBPathSQLite
 
-let sqlConntection = ContextHandler.sqlConnection()
-sqlConntection.Database.EnsureCreated()
+//let sqlConntection = ContextHandler.sqlConnection()
+//sqlConntection.Database.EnsureCreated()
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
@@ -562,4 +562,29 @@ let ontologyTestI =
 //testMzIdentML
 //    |> sqliteContext.Add
 
-//1+1
+//initStandardDB sqliteContext
+
+let tryAdd (dbContext:MzIdentML) (id:'a) (item:'b) =
+    let x = dbContext.Find(item.GetType(),id)
+    match x with
+    |null -> dbContext.Add item |> ignore
+             true
+    |_ -> false
+
+let tryAddAndInsert (dbContext:MzIdentML) (id:'a) (item:'b) =
+    let x = dbContext.Find(item.GetType(),id)
+    match x with
+    |null -> dbContext.Add item      |> ignore
+             dbContext.SaveChanges() |> ignore
+             true
+    |_ -> false
+
+let tryAddAndInsert' (dbContext:MzIdentML) (item:'b) =
+    try
+        dbContext.Add item      |> ignore
+        dbContext.SaveChanges() |> ignore
+        true
+    with
+    | _ -> false 
+
+
