@@ -13,11 +13,9 @@ module InsertStatements =
 
 
     module ObjectHandlers =
-
-        module HelperFunctions =
-
-            // Defining the objectHandlers of the entities of the dbContext.
-
+        
+        module private HelperFunctions =
+            
             let convertOptionToList (optionOfType : seq<'a> option) =
                 match optionOfType with
                 | Some x -> x |> List
@@ -53,6 +51,7 @@ module InsertStatements =
                 |Some x -> addCollectionToList inputCollection x
                 |None -> inputCollection  
 
+        // Defining the objectHandlers of the entities of the dbContext.
 
         open HelperFunctions
 
