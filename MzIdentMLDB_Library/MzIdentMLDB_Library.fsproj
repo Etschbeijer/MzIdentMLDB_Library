@@ -77,6 +77,7 @@
     <None Include="dlls\FSharp.Care.IO.dll" />
     <None Include="dlls\FSharp.Care.dll" />
     <None Include="InitDB.fsx" />
+    <None Include="David.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
