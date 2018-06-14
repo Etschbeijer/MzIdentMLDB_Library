@@ -22,7 +22,7 @@ open FSharp.Data
 open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
-open MzIdentMLDataBase.XMLParsing
+//open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
@@ -44,38 +44,38 @@ let fromUnit_Ontology =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
         
  
-let initStandardDB (dbontext : MzIdentML) =
+let initStandardDB (dbContext : MzIdentML) =
 
     let termsPSIMS =
         let ontology =  OntologyHandler.init ("PSI-MS")
         fromPsiMS
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore) 
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore) 
 
     let termsPride =
         let ontology =  OntologyHandler.init ("PRIDE")
         fromPride
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let termsUnimod =
         let ontology =  OntologyHandler.init ("UNIMOD")
         fromUniMod
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let termsUnit_Ontology =
         let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
         fromUnit_Ontology
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let userOntology =
         OntologyHandler.init("UserParam")
-        |> OntologyHandler.addToContext dbontext |> ignore
+        |> ContextHandler.addToContext dbContext |> ignore
 
-    dbontext.Database.EnsureCreated() |> ignore
-    dbontext.SaveChanges()
+    dbContext.Database.EnsureCreated() |> ignore
+    dbContext.SaveChanges()
 
 
 let sqliteDB =

@@ -23,7 +23,7 @@ open FSharp.Data
 open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
-open MzIdentMLDataBase.XMLParsing
+//open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
@@ -47,38 +47,38 @@ let fromUnit_Ontology =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
         
  
-let initStandardDB (dbontext : MzIdentML) =
+let initStandardDB (dbContext : MzIdentML) =
 
     let termsPSIMS =
         let ontology =  OntologyHandler.init ("PSI-MS")
         fromPsiMS
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore) 
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore) 
 
     let termsPride =
         let ontology =  OntologyHandler.init ("PRIDE")
         fromPride
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let termsUnimod =
         let ontology =  OntologyHandler.init ("UNIMOD")
         fromUniMod
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let termsUnit_Ontology =
         let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
         fromUnit_Ontology
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> TermHandler.addToContext dbontext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
 
     let userOntology =
         OntologyHandler.init("UserParam")
-        |> OntologyHandler.addToContext dbontext |> ignore
+        |> ContextHandler.addToContext dbContext |> ignore
 
-    dbontext.Database.EnsureCreated() |> ignore
-    dbontext.SaveChanges()
+    dbContext.Database.EnsureCreated() |> ignore
+    dbContext.SaveChanges()
 
 
 let takeTermEntry (dbContext : MzIdentML) (termID : string) =
@@ -131,7 +131,7 @@ let termTestII =
         TermHandler.init("II")
     let termWithName =
         TermHandler.addName "TestName" termBasic
-    TermHandler.addToContext sqliteContext termWithName
+    ContextHandler.addToContext sqliteContext termWithName
 
 let ontologyTest =
     let ontologyBasic =
@@ -140,7 +140,7 @@ let ontologyTest =
         OntologyHandler.addTerm (TermHandler.tryFindByID sqliteContext "I") ontologyBasic
     let ontologyTermWithOntology =
         TermHandler.addOntology ontologyBasic ontologyWithTerm.Terms.[0]
-    OntologyHandler.addToContext sqliteContext ontologyBasic
+    ContextHandler.addToContext sqliteContext ontologyBasic
 
 let cvParamTest =
     let cvParamBasic =
@@ -154,7 +154,7 @@ let cvParamTestI =
         CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
     //let cvParamWithUnit =
     //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
-    CVParamHandler.addToContext sqliteContext cvParamBasic
+    ContextHandler.addToContext sqliteContext cvParamBasic
 
 //let analysisSoftwareTest =
 //    let I = AnalysisSoftwareHandler.init(cvParamTest)
@@ -171,7 +171,7 @@ let organizationTest =
     //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
     //let organizationWithDetail = 
     //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
-    OrganizationHandler.addToContext sqliteContext organizationBasic
+    ContextHandler.addToContext sqliteContext organizationBasic
 
 sqliteContext.Organization.Find("I")
 sqliteContext.SaveChanges()
@@ -292,274 +292,274 @@ let ontologyTestI =
 //    member this.RowVersion with get() = rowVersion and set(value) = id' <- value
 
 
-//Test parser for whole xml-file
+////Test parser for whole xml-file
 
-let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzIdentMl) =
+//let parseWholeXMLFile (dbContext:MzIdentML) (xmlContext:SchemePeptideShaker.MzIdentMl) =
     
-    let parsedOrganizations =
-        match xmlContext.AuditCollection with
-        |Some x -> x.Organizations
-                   |> Array.map (fun organization -> convertToEntity_Organization dbContext organization)
-        |None -> null
+//    let parsedOrganizations =
+//        match xmlContext.AuditCollection with
+//        |Some x -> x.Organizations
+//                   |> Array.map (fun organization -> convertToEntity_Organization dbContext organization)
+//        |None -> null
   
-    let parsedPersons =
-        match xmlContext.AuditCollection with
-        |Some x -> x.Persons
-                   |> Array.map (fun person -> convertToEntity_Person dbContext person)
-        |None -> null
+//    let parsedPersons =
+//        match xmlContext.AuditCollection with
+//        |Some x -> x.Persons
+//                   |> Array.map (fun person -> convertToEntity_Person dbContext person)
+//        |None -> null
         
-    let parsedAnalysisSoftwares =
-        match xmlContext.AnalysisSoftwareList with
-        |Some x -> x.AnalysisSoftwares
-                   |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware dbContext analysisSoftware)
-        |None -> null
+//    let parsedAnalysisSoftwares =
+//        match xmlContext.AnalysisSoftwareList with
+//        |Some x -> x.AnalysisSoftwares
+//                   |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware dbContext analysisSoftware)
+//        |None -> null
 
-    let parsedSamples =
-        match xmlContext.AnalysisSampleCollection with
-        |Some x -> x.Samples
-                   |> Array.map (fun sample -> convertToEntity_Sample dbContext sample)
-        |None -> null
+//    let parsedSamples =
+//        match xmlContext.AnalysisSampleCollection with
+//        |Some x -> x.Samples
+//                   |> Array.map (fun sample -> convertToEntity_Sample dbContext sample)
+//        |None -> null
 
-    let parsedSubSamples =
-        match xmlContext.AnalysisSampleCollection with
-        |Some x -> x.Samples
-                   |> Array.map (fun sample -> sample.SubSamples
-                                               |> Array.map (fun subSample -> convertToEntity_SubSample dbContext subSample)
-                                )
-        |None -> null
+//    let parsedSubSamples =
+//        match xmlContext.AnalysisSampleCollection with
+//        |Some x -> x.Samples
+//                   |> Array.map (fun sample -> sample.SubSamples
+//                                               |> Array.map (fun subSample -> convertToEntity_SubSample dbContext subSample)
+//                                )
+//        |None -> null
 
-    let parsedPeptides =
-        match xmlContext.SequenceCollection with
-        |Some x -> x.Peptides
-                   |> Array.map (fun peptide -> convertToEntity_Peptide dbContext peptide)
-        |None -> null
+//    let parsedPeptides =
+//        match xmlContext.SequenceCollection with
+//        |Some x -> x.Peptides
+//                   |> Array.map (fun peptide -> convertToEntity_Peptide dbContext peptide)
+//        |None -> null
 
-    let parsedDBSequences =
-        match xmlContext.SequenceCollection with
-        |Some x -> x.DbSequences
-                   |> Array.map (fun dbSequence -> convertToEntity_DBSequence dbContext dbSequence)
-        |None -> null
+//    let parsedDBSequences =
+//        match xmlContext.SequenceCollection with
+//        |Some x -> x.DbSequences
+//                   |> Array.map (fun dbSequence -> convertToEntity_DBSequence dbContext dbSequence)
+//        |None -> null
 
-    let parsedPeptideEvidences =
-        match xmlContext.SequenceCollection with
-        |Some x -> x.PeptideEvidences
-                   |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence dbContext peptideEvidences)
-        |None -> null
+//    let parsedPeptideEvidences =
+//        match xmlContext.SequenceCollection with
+//        |Some x -> x.PeptideEvidences
+//                   |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence dbContext peptideEvidences)
+//        |None -> null
 
-    let parsedMassTables =
-        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-        |> Array.map (fun spectrumIdentificationProtocol -> spectrumIdentificationProtocol.MassTables
-                                                            |> Array.map (fun massTable -> convertToEntity_MassTable dbContext massTable)
-                     )
+//    let parsedMassTables =
+//        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//        |> Array.map (fun spectrumIdentificationProtocol -> spectrumIdentificationProtocol.MassTables
+//                                                            |> Array.map (fun massTable -> convertToEntity_MassTable dbContext massTable)
+//                     )
 
-    let parsedEnzymes =
-        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-        |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
-                                                            |Some x -> x.Enzymes
-                                                                       |> Array.map (fun enzyme -> convertToEntity_Enzyme dbContext enzyme)
-                                                            |None -> null
+//    let parsedEnzymes =
+//        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//        |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
+//                                                            |Some x -> x.Enzymes
+//                                                                       |> Array.map (fun enzyme -> convertToEntity_Enzyme dbContext enzyme)
+//                                                            |None -> null
                                                             
-                     )
+//                     )
 
-    let parsedSpectrumIdentificationProtocols =
-        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-        |> Array.map (fun spectrumIdentificationProtocol -> convertToEntity_SpectrumIdentificationProtocol dbContext spectrumIdentificationProtocol)
+//    let parsedSpectrumIdentificationProtocols =
+//        xmlContext.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//        |> Array.map (fun spectrumIdentificationProtocol -> convertToEntity_SpectrumIdentificationProtocol dbContext spectrumIdentificationProtocol)
 
-    let parsedProteinDetectionProtocol =
-        match xmlContext.AnalysisProtocolCollection.ProteinDetectionProtocol with
-        |Some x -> convertToEntity_ProteinDetectionProtocol dbContext x
-        |None -> null
+//    let parsedProteinDetectionProtocol =
+//        match xmlContext.AnalysisProtocolCollection.ProteinDetectionProtocol with
+//        |Some x -> convertToEntity_ProteinDetectionProtocol dbContext x
+//        |None -> null
 
-    let parsedMzIdentMl =
-        convertToEntity_MzIdentML dbContext xmlContext
+//    let parsedMzIdentMl =
+//        convertToEntity_MzIdentML dbContext xmlContext
 
-    sqliteContext.SaveChanges()
+//    sqliteContext.SaveChanges()
 
-#time
-parseWholeXMLFile sqliteContext xmlFile
+//#time
+//parseWholeXMLFile sqliteContext xmlFile
 
-let parsedOrganizations =
-    match xmlFile.AuditCollection with
-    |Some x -> x.Organizations
-                |> Array.map (fun organization -> convertToEntity_Organization sqliteContext organization)
-    |None -> null
+//let parsedOrganizations =
+//    match xmlFile.AuditCollection with
+//    |Some x -> x.Organizations
+//                |> Array.map (fun organization -> convertToEntity_Organization sqliteContext organization)
+//    |None -> null
   
-let parsedPersons =
-    match xmlFile.AuditCollection with
-    |Some x -> x.Persons
-                |> Array.map (fun person -> convertToEntity_Person sqliteContext person)
-    |None -> null
+//let parsedPersons =
+//    match xmlFile.AuditCollection with
+//    |Some x -> x.Persons
+//                |> Array.map (fun person -> convertToEntity_Person sqliteContext person)
+//    |None -> null
         
-let parsedAnalysisSoftwares =
-    match xmlFile.AnalysisSoftwareList with
-    |Some x -> x.AnalysisSoftwares
-                |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware sqliteContext analysisSoftware)
-    |None -> null
+//let parsedAnalysisSoftwares =
+//    match xmlFile.AnalysisSoftwareList with
+//    |Some x -> x.AnalysisSoftwares
+//                |> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware sqliteContext analysisSoftware)
+//    |None -> null
 
-let parsedSamples =
-    match xmlFile.AnalysisSampleCollection with
-    |Some x -> x.Samples
-                |> Array.map (fun sample -> convertToEntity_Sample sqliteContext sample)
-    |None -> null
+//let parsedSamples =
+//    match xmlFile.AnalysisSampleCollection with
+//    |Some x -> x.Samples
+//                |> Array.map (fun sample -> convertToEntity_Sample sqliteContext sample)
+//    |None -> null
 
-let parsedSubSamples =
-    match xmlFile.AnalysisSampleCollection with
-    |Some x -> x.Samples
-                |> Array.map (fun sample -> sample.SubSamples
-                                            |> Array.map (fun subSample -> convertToEntity_SubSample sqliteContext subSample)
-                            )
-    |None -> null
+//let parsedSubSamples =
+//    match xmlFile.AnalysisSampleCollection with
+//    |Some x -> x.Samples
+//                |> Array.map (fun sample -> sample.SubSamples
+//                                            |> Array.map (fun subSample -> convertToEntity_SubSample sqliteContext subSample)
+//                            )
+//    |None -> null
 
-let parsedPeptides =
-    match xmlFile.SequenceCollection with
-    |Some x -> x.Peptides
-                |> Array.map (fun peptide -> convertToEntity_Peptide sqliteContext peptide)
-    |None -> null
+//let parsedPeptides =
+//    match xmlFile.SequenceCollection with
+//    |Some x -> x.Peptides
+//                |> Array.map (fun peptide -> convertToEntity_Peptide sqliteContext peptide)
+//    |None -> null
 
-let parsedDBSequences =
-    match xmlFile.SequenceCollection with
-    |Some x -> x.DbSequences
-                |> Array.map (fun dbSequence -> convertToEntity_DBSequence sqliteContext dbSequence)
-    |None -> null
+//let parsedDBSequences =
+//    match xmlFile.SequenceCollection with
+//    |Some x -> x.DbSequences
+//                |> Array.map (fun dbSequence -> convertToEntity_DBSequence sqliteContext dbSequence)
+//    |None -> null
 
-let parsedPeptideEvidences =
-    match xmlFile.SequenceCollection with
-    |Some x -> x.PeptideEvidences
-                |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence sqliteContext peptideEvidences)
-    |None -> null
+//let parsedPeptideEvidences =
+//    match xmlFile.SequenceCollection with
+//    |Some x -> x.PeptideEvidences
+//                |> Array.map (fun peptideEvidences -> convertToEntity_PeptideEvidence sqliteContext peptideEvidences)
+//    |None -> null
 
-let parsedMassTables =
-    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-    |> Array.map (fun spectrumIdentificationProtocol -> spectrumIdentificationProtocol.MassTables
-                                                        |> Array.map (fun massTable -> convertToEntity_MassTable sqliteContext massTable)
-                    )
+//let parsedMassTables =
+//    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//    |> Array.map (fun spectrumIdentificationProtocol -> spectrumIdentificationProtocol.MassTables
+//                                                        |> Array.map (fun massTable -> convertToEntity_MassTable sqliteContext massTable)
+//                    )
 
-let parsedEnzymes =
-    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-    |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
-                                                        |Some x -> x.Enzymes
-                                                                    |> Array.map (fun enzyme -> convertToEntity_Enzyme sqliteContext enzyme)
-                                                        |None -> null
+//let parsedEnzymes =
+//    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//    |> Array.map (fun spectrumIdentificationProtocol -> match spectrumIdentificationProtocol.Enzymes with
+//                                                        |Some x -> x.Enzymes
+//                                                                    |> Array.map (fun enzyme -> convertToEntity_Enzyme sqliteContext enzyme)
+//                                                        |None -> null
                                                             
-                    )
+//                    )
 
-let parsedSpectrumIdentificationProtocols =
-    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-    |> Array.map (fun spectrumIdentificationProtocol -> convertToEntity_SpectrumIdentificationProtocol sqliteContext spectrumIdentificationProtocol)
+//let parsedSpectrumIdentificationProtocols =
+//    xmlFile.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//    |> Array.map (fun spectrumIdentificationProtocol -> convertToEntity_SpectrumIdentificationProtocol sqliteContext spectrumIdentificationProtocol)
 
-let parsedProteinDetectionProtocol =
-    match xmlFile.AnalysisProtocolCollection.ProteinDetectionProtocol with
-    |Some x -> convertToEntity_ProteinDetectionProtocol sqliteContext x
-    |None -> null
+//let parsedProteinDetectionProtocol =
+//    match xmlFile.AnalysisProtocolCollection.ProteinDetectionProtocol with
+//    |Some x -> convertToEntity_ProteinDetectionProtocol sqliteContext x
+//    |None -> null
 
-let parsedMzIdentMl =
-    convertToEntity_MzIdentML sqliteContext xmlFile
+//let parsedMzIdentMl =
+//    convertToEntity_MzIdentML sqliteContext xmlFile
 
 
 
-let convertToEntity_MzIdentMLI (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.MzIdentMl) =
-        let mzIdentMLBasic =  
-            MzIdentMLHandler.init(
-                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
-                                  mzIdentMLXML.Version,
-                                  mzIdentMLXML.AnalysisCollection.SpectrumIdentifications
-                                  |> Array.map (fun spectrumIdentification -> convertToEntity_SpectrumIdentification dbContext spectrumIdentification),
-                                  mzIdentMLXML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-                                  |> Array.map (fun spectrumIdentificationProtocol -> SpectrumIdentificationProtocolHandler.tryFindByID dbContext spectrumIdentificationProtocol.Id),
-                                  convertToEntity_AnalysisData dbContext mzIdentMLXML.DataCollection.AnalysisData,
-                                  mzIdentMLXML.Id
-                                 )
-        //let mzIdentMLWithName = setOption MzIdentMLHandler.addName mzIdentMLXML.Name mzIdentMLBasic
-        //let mzIdentMLWithAnalysisSoftwares =
-        //        match mzIdentMLXML.AnalysisSoftwareList with
-        //         |Some x -> MzIdentMLHandler.addAnalysisSoftwares      
-        //                        (x.AnalysisSoftwares
-        //                         |> Array.map (fun analysisSoftware -> AnalysisSoftwareHandler.tryFindByID dbContext analysisSoftware.Id)
-        //                        )
-        //                        mzIdentMLWithName
-        //         |None -> mzIdentMLWithName
-        //let mzIDentMLWithProvider =
-        //        (match mzIdentMLXML.Provider with
-        //         |Some x -> MzIdentMLHandler.addProvider
-        //                        (convertToEntity_Provider dbContext x)
-        //                        mzIdentMLWithAnalysisSoftwares
-        //         |None -> mzIdentMLWithAnalysisSoftwares
-        //        )
-        //let mzIdentMLWithPersons =
-        //        match mzIdentMLXML.AuditCollection with
-        //         |Some x -> MzIdentMLHandler.addPersons
-        //                        (x.Persons
-        //                         |> Array.map (fun person -> PersonHandler.tryFindByID dbContext person.Id)
-        //                        )
-        //                        mzIDentMLWithProvider
-        //         |None -> mzIDentMLWithProvider
-        //let mzIdentMLWithOrganizations =
-        //        match mzIdentMLXML.AuditCollection with
-        //         |Some x -> MzIdentMLHandler.addOrganizations
-        //                        (x.Organizations
-        //                         |> Array.map (fun organization -> OrganizationHandler.tryFindByID dbContext organization.Id)
-        //                        )
-        //                        mzIdentMLWithPersons
-        //         |None -> mzIdentMLWithPersons
-        //let mzIdentMLWithSamples =
-        //        match mzIdentMLXML.AnalysisSampleCollection with
-        //         |Some x -> MzIdentMLHandler.addSamples
-        //                        (x.Samples
-        //                         |>Array.map (fun sample -> SampleHandler.tryFindByID dbContext sample.Id)
-        //                        )
-        //                        mzIdentMLWithOrganizations
-        //         |None -> mzIdentMLWithOrganizations
-        //let mzIdentMLWithDBSequences =
-        //        match mzIdentMLXML.SequenceCollection with
-        //         |Some x -> MzIdentMLHandler.addDBSequences
-        //                        (x.DbSequences
-        //                         |> Array.map (fun dbSequence -> DBSequenceHandler.tryFindByID dbContext dbSequence.Id)
-        //                        )
-        //                        mzIdentMLWithSamples
-        //         |None -> mzIdentMLWithSamples
-        //let mzIdentMLWithPeptides =
-        //        match mzIdentMLXML.SequenceCollection with
-        //         |Some x -> MzIdentMLHandler.addPeptides
-        //                        (x.Peptides
-        //                         |> Array.map (fun peptide -> PeptideHandler.tryFindByID dbContext peptide.Id)
-        //                        )
-        //                        mzIdentMLWithDBSequences
-        //         |None -> mzIdentMLWithDBSequences
-        //let mzIdentMLWithPeptideEvidences =
-        //        match mzIdentMLXML.SequenceCollection with
-        //         |Some x -> MzIdentMLHandler.addPeptideEvidences
-        //                        (x.PeptideEvidences
-        //                         |> Array.map (fun peptideEvidence -> PeptideEvidenceHandler.tryFindByID dbContext peptideEvidence.Id)
-        //                        )
-        //                        mzIdentMLWithPeptides
-        //         |None -> mzIdentMLWithPeptides
-        //let mzIdentMLWithProteinDetection =
-        //    (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
-        //     |Some x -> MzIdentMLHandler.addProteinDetection
-        //                    (convertToEntity_ProteinDetection dbContext x)
-        //                    mzIdentMLWithPeptideEvidences
-        //     |None -> mzIdentMLWithPeptideEvidences
-        //    )
-        //let mzIdentMLWithProteinDetectionProtocol =
-        //    (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
-        //     |Some x -> MzIdentMLHandler.addProteinDetectionProtocol
-        //                    (ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id)
-        //                    mzIdentMLWithProteinDetection
-        //     |None -> mzIdentMLWithProteinDetection
-            //) 
-        //let mzIdentMLWithBiblioGraphicReference =
-        //    MzIdentMLHandler.addBiblioGraphicReferences
-        //        (mzIdentMLXML.BibliographicReferences
-        //         |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
-        //        )
-        //        mzIdentMLWithProteinDetectionProtocol
-        //MzIdentMLHandler.addToContext dbContext 
-        mzIdentMLBasic
+//let convertToEntity_MzIdentMLI (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.MzIdentMl) =
+//        let mzIdentMLBasic =  
+//            MzIdentMLHandler.init(
+//                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
+//                                  mzIdentMLXML.Version,
+//                                  mzIdentMLXML.AnalysisCollection.SpectrumIdentifications
+//                                  |> Array.map (fun spectrumIdentification -> convertToEntity_SpectrumIdentification dbContext spectrumIdentification),
+//                                  mzIdentMLXML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+//                                  |> Array.map (fun spectrumIdentificationProtocol -> SpectrumIdentificationProtocolHandler.tryFindByID dbContext spectrumIdentificationProtocol.Id),
+//                                  convertToEntity_AnalysisData dbContext mzIdentMLXML.DataCollection.AnalysisData,
+//                                  mzIdentMLXML.Id
+//                                 )
+//        //let mzIdentMLWithName = setOption MzIdentMLHandler.addName mzIdentMLXML.Name mzIdentMLBasic
+//        //let mzIdentMLWithAnalysisSoftwares =
+//        //        match mzIdentMLXML.AnalysisSoftwareList with
+//        //         |Some x -> MzIdentMLHandler.addAnalysisSoftwares      
+//        //                        (x.AnalysisSoftwares
+//        //                         |> Array.map (fun analysisSoftware -> AnalysisSoftwareHandler.tryFindByID dbContext analysisSoftware.Id)
+//        //                        )
+//        //                        mzIdentMLWithName
+//        //         |None -> mzIdentMLWithName
+//        //let mzIDentMLWithProvider =
+//        //        (match mzIdentMLXML.Provider with
+//        //         |Some x -> MzIdentMLHandler.addProvider
+//        //                        (convertToEntity_Provider dbContext x)
+//        //                        mzIdentMLWithAnalysisSoftwares
+//        //         |None -> mzIdentMLWithAnalysisSoftwares
+//        //        )
+//        //let mzIdentMLWithPersons =
+//        //        match mzIdentMLXML.AuditCollection with
+//        //         |Some x -> MzIdentMLHandler.addPersons
+//        //                        (x.Persons
+//        //                         |> Array.map (fun person -> PersonHandler.tryFindByID dbContext person.Id)
+//        //                        )
+//        //                        mzIDentMLWithProvider
+//        //         |None -> mzIDentMLWithProvider
+//        //let mzIdentMLWithOrganizations =
+//        //        match mzIdentMLXML.AuditCollection with
+//        //         |Some x -> MzIdentMLHandler.addOrganizations
+//        //                        (x.Organizations
+//        //                         |> Array.map (fun organization -> OrganizationHandler.tryFindByID dbContext organization.Id)
+//        //                        )
+//        //                        mzIdentMLWithPersons
+//        //         |None -> mzIdentMLWithPersons
+//        //let mzIdentMLWithSamples =
+//        //        match mzIdentMLXML.AnalysisSampleCollection with
+//        //         |Some x -> MzIdentMLHandler.addSamples
+//        //                        (x.Samples
+//        //                         |>Array.map (fun sample -> SampleHandler.tryFindByID dbContext sample.Id)
+//        //                        )
+//        //                        mzIdentMLWithOrganizations
+//        //         |None -> mzIdentMLWithOrganizations
+//        //let mzIdentMLWithDBSequences =
+//        //        match mzIdentMLXML.SequenceCollection with
+//        //         |Some x -> MzIdentMLHandler.addDBSequences
+//        //                        (x.DbSequences
+//        //                         |> Array.map (fun dbSequence -> DBSequenceHandler.tryFindByID dbContext dbSequence.Id)
+//        //                        )
+//        //                        mzIdentMLWithSamples
+//        //         |None -> mzIdentMLWithSamples
+//        //let mzIdentMLWithPeptides =
+//        //        match mzIdentMLXML.SequenceCollection with
+//        //         |Some x -> MzIdentMLHandler.addPeptides
+//        //                        (x.Peptides
+//        //                         |> Array.map (fun peptide -> PeptideHandler.tryFindByID dbContext peptide.Id)
+//        //                        )
+//        //                        mzIdentMLWithDBSequences
+//        //         |None -> mzIdentMLWithDBSequences
+//        //let mzIdentMLWithPeptideEvidences =
+//        //        match mzIdentMLXML.SequenceCollection with
+//        //         |Some x -> MzIdentMLHandler.addPeptideEvidences
+//        //                        (x.PeptideEvidences
+//        //                         |> Array.map (fun peptideEvidence -> PeptideEvidenceHandler.tryFindByID dbContext peptideEvidence.Id)
+//        //                        )
+//        //                        mzIdentMLWithPeptides
+//        //         |None -> mzIdentMLWithPeptides
+//        //let mzIdentMLWithProteinDetection =
+//        //    (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
+//        //     |Some x -> MzIdentMLHandler.addProteinDetection
+//        //                    (convertToEntity_ProteinDetection dbContext x)
+//        //                    mzIdentMLWithPeptideEvidences
+//        //     |None -> mzIdentMLWithPeptideEvidences
+//        //    )
+//        //let mzIdentMLWithProteinDetectionProtocol =
+//        //    (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
+//        //     |Some x -> MzIdentMLHandler.addProteinDetectionProtocol
+//        //                    (ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id)
+//        //                    mzIdentMLWithProteinDetection
+//        //     |None -> mzIdentMLWithProteinDetection
+//            //) 
+//        //let mzIdentMLWithBiblioGraphicReference =
+//        //    MzIdentMLHandler.addBiblioGraphicReferences
+//        //        (mzIdentMLXML.BibliographicReferences
+//        //         |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
+//        //        )
+//        //        mzIdentMLWithProteinDetectionProtocol
+//        //MzIdentMLHandler.addToContext dbContext 
+//        mzIdentMLBasic
 
-let testMzIdentML =
-    convertToEntity_MzIdentMLI sqliteContext xmlFile
+//let testMzIdentML =
+//    convertToEntity_MzIdentMLI sqliteContext xmlFile
 
-testMzIdentML
-    |> sqliteContext.Add
+//testMzIdentML
+//    |> sqliteContext.Add
 
-1+1
+//1+1
