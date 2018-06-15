@@ -42,15 +42,15 @@ module InsertStatements =
                     typeCollection.AddRange optionOfType
                     typeCollection
 
-            let addOptionToList (typeCollection : List<'a>) (optionOfType : 'a option) =
-                match optionOfType with
-                |Some x -> addToList typeCollection x
-                |None -> typeCollection
+            //let addOptionToList (typeCollection : List<'a>) (optionOfType : 'a option) =
+            //    match optionOfType with
+            //    |Some x -> addToList typeCollection x
+            //    |None -> typeCollection
 
-            let addOptionCollectionToList (inputCollection : List<'a>) (input : seq<'a> option) =
-                match input with
-                |Some x -> addCollectionToList inputCollection x
-                |None -> inputCollection  
+            //let addOptionCollectionToList (inputCollection : List<'a>) (input : seq<'a> option) =
+            //    match input with
+            //    |Some x -> addCollectionToList inputCollection x
+            //    |None -> inputCollection  
 
             let tryFind (item:'a) =
                 match item with
@@ -149,7 +149,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.Term do
                                        if i.ID=item.ID || i.Name=item.Name
-                                          then select (i)
+                                          then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -198,7 +198,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.Ontology do
                                        if i.ID=item.ID
-                                          then select (i)
+                                          then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -264,7 +264,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.CVParam do
                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                          then select (i)
+                                          then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -330,7 +330,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.OrganizationParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -396,7 +396,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.PersonParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -462,7 +462,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SampleParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -528,7 +528,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ModificationParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -594,7 +594,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.PeptideParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -660,7 +660,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.TranslationTableParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -726,7 +726,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.MeasureParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -792,7 +792,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.AmbiguousResidueParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -858,7 +858,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.MassTableParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -924,7 +924,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.IonTypeParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -990,7 +990,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SpecificityRuleParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1056,7 +1056,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SearchModificationParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1122,7 +1122,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.EnzymeNameParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1188,7 +1188,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.IncludeParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1254,7 +1254,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ExcludeParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1320,7 +1320,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.AdditionalSearchParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1386,7 +1386,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.FragmentToleranceParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1452,7 +1452,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ParentToleranceParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1518,7 +1518,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ThresholdParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1584,7 +1584,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SearchDatabaseParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1650,7 +1650,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.DBSequenceParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1716,7 +1716,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.PeptideEvidenceParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1782,7 +1782,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SpectrumIdentificationItemParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1848,7 +1848,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SpectrumIdentificationResultParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1914,7 +1914,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SpectrumIdentificationListParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -1980,7 +1980,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.AnalysisParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -2046,7 +2046,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.SourceFileParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -2112,7 +2112,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ProteinDetectionHypothesisParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -2178,7 +2178,7 @@ module InsertStatements =
                             query {
                                     for i in dbContext.ProteinAmbiguityGroupParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
+                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
@@ -2237,15 +2237,15 @@ module InsertStatements =
                     for i in dbContext.ProteinDetectionListParam.Local do
                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                      }
+                       }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ProteinDetectionListParam do
                                         if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
-                                           then select (i)
-                                  }
+                                           then select i
+                                    }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
