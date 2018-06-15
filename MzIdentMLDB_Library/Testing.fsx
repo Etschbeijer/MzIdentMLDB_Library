@@ -23,6 +23,8 @@ open FSharp.Data
 open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open System.Collections.ObjectModel
+
 //open MzIdentMLDataBase.XMLParsing
 
 
@@ -79,32 +81,6 @@ let initStandardDB (dbContext : MzIdentML) =
 
     dbContext.Database.EnsureCreated() |> ignore
     dbContext.SaveChanges()
-
-
-let takeTermEntry (dbContext : MzIdentML) (termID : string) =
-    query {
-        for i in dbContext.Term do
-            if i.ID = termID then
-               select (i)
-          }
-    |> Queryable.FirstOrDefault
-
-let takeTermEntryLocal (dbContext : MzIdentML) (termID : string) =
-    query {
-        for i in dbContext.Term.Local do
-            if i.ID = termID then
-               select (i)
-          }
-    |> (fun item -> if (Seq.length item > 0)
-                       then Seq.item 0 item
-                       else Unchecked.defaultof<Term>)
-
-let testQueryable (dbContext : MzIdentML) (id : string) =
-    try
-        (takeTermEntry dbContext id)
-    with
-        | :? System.InvalidOperationException -> takeTermEntryLocal dbContext id
-        | _ -> Unchecked.defaultof<Term>
 
 let termTryFindTestI =
     TermHandler.tryFindByID sqliteContext "Test"
@@ -568,3 +544,48 @@ let ontologyTestI =
 
 TermHandler.tryFindByID sqliteContext "Teest"
 TermHandler.tryFindByID sqliteContext "MS:0000000"
+
+let addTerm1 (dbContext : MzIdentML) (item:Term) =
+    query {
+        for i in dbContext.Term do
+            if i.Name = item.Name && i.Ontology=item.Ontology
+               then select i
+          }
+    |> (fun term -> 
+        if Seq.length term < 1 
+            then 
+                query {
+                       for i in dbContext.Term.Local do
+                           if i.Name = item.Name && i.Ontology=item.Ontology 
+                              then select (i)
+                      }
+                |> (fun term' -> if (Seq.length term' < 1)
+                                    then dbContext.Add item |> ignore
+                                         ()
+                                    else ()
+                       )
+            else ()
+       )
+
+let addTerm2 (dbContext : MzIdentML) (item:Term) =
+    query {
+        for i in dbContext.Term.Local do
+            if i.Name = item.Name && i.Ontology=item.Ontology 
+               then select (i)
+          }
+    |> (fun item -> if (Seq.length item < 1)
+                       then dbContext.Add item |> ignore
+                            ()
+                       else ()
+       )
+
+sqliteContext.SaveChanges()
+
+let x = addTerm1 sqliteContext (TermHandler.init("TEEEEEEEEEEEST", Ontology=(OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
+let y = addTerm1 sqliteContext (TermHandler.init("MS:0000000", "Proteomics Standards Initiative Mass Spectrometry Vocabularies", (OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
+let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
+
+Seq.length 
+Seq.length
+
+
