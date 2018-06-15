@@ -83,28 +83,33 @@ module InsertStatements =
 
         type ContextHandler =
 
-             static member sqliteConnection (path:string) =
-                 let optionsBuilder = 
+            ///Creats connection for SQLite-Context and DataBase.
+            static member sqliteConnection (path:string) =
+                let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
-                 optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
-                 new MzIdentML(optionsBuilder.Options)       
+                optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
+                new MzIdentML(optionsBuilder.Options)       
 
-             static member sqlConnection() =
-                 let optionsBuilder = 
+            ///Creats connection for SQL-Context and DataBase.
+            static member sqlConnection() =
+                let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
-                 optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
-                 new MzIdentML(optionsBuilder.Options) 
+                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
+                new MzIdentML(optionsBuilder.Options) 
 
-             static member fromFileObo (filePath:string) =
-                 FileIO.readFile filePath
-                 |> Obo.parseOboTerms
+            ///Reads Obo-File.
+            static member fromFileObo (filePath:string) =
+                FileIO.readFile filePath
+                |> Obo.parseOboTerms
 
-             static member tryAddToContext (context:MzIdentML) (item:'b) =
-                    context.Add(item)
+            ///Tries to add the object to the DataBase-Context.
+            static member tryAddToContext (context:MzIdentML) (item:'b) =
+                context.Add(item)
 
-             static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
-                    context.Add(item) |> ignore
-                    context.SaveChanges()
+            ///Tries to add the Object to the DataBase-Context and insert it in the DataBase in the next step.
+            static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
+                context.Add(item) |> ignore
+                context.SaveChanges()
 
         type TermHandler =
             static member init
