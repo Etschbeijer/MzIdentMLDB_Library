@@ -4,6 +4,7 @@ module InsertStatements =
 
     open DataModel
     open System
+    open System.Linq
     open System.ComponentModel.DataAnnotations
     open System.ComponentModel.DataAnnotations.Schema
     open Microsoft.EntityFrameworkCore
@@ -135,16 +136,35 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
+
+            static member addTermToContext (dbContext:MzIdentML) (item:Term) =
+                query {
+                    for i in dbContext.Term.Local do
+                        if i.ID=item.ID || i.Name=item.Name
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.Term do
+                                        if i.ID=item.ID || i.Name=item.Name
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
         
         type OntologyHandler =
             static member init
                 (
                     id         : string,
                     ?terms     : seq<Term>
-                    //?mzIdentML : MzIdentML
                 ) =
                 let terms'     = convertOptionToList terms
-                //let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentML>
 
                 new Ontology(
                              id,
@@ -162,15 +182,31 @@ module InsertStatements =
                 let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                 ontology
 
-            //static member addMzIdentML
-            //    (ontology:Ontology) (mzIdentML:MzIdentML) =
-            //    let result = ontology.MzIdentML <- mzIdentML
-            //    ontology
-
             static member tryFindByID
                 (context:MzIdentML) (ontologyID:string) =
                 tryFind (context.Ontology.Find(ontologyID))
             
+            static member addOntologyToContext (dbContext:MzIdentML) (item:Ontology) =
+                query {
+                    for i in dbContext.Ontology.Local do
+                        if i.ID=item.ID
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.Ontology do
+                                        if i.ID=item.ID
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type CVParamHandler =
 
             static member init
@@ -215,6 +251,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:CVParam) =
+                query {
+                    for i in dbContext.CVParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.CVParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type OrganizationParamHandler =
 
@@ -261,6 +318,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.OrganizationParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:OrganizationParam) =
+                query {
+                    for i in dbContext.OrganizationParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.OrganizationParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type PersonParamHandler =
 
             static member init
@@ -305,6 +383,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PersonParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:PersonParam) =
+                query {
+                    for i in dbContext.PersonParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.PersonParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type SampleParamHandler =
 
@@ -351,6 +450,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SampleParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
+                query {
+                    for i in dbContext.SampleParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SampleParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type ModificationParamHandler =
 
             static member init
@@ -395,6 +515,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ModificationParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
+                query {
+                    for i in dbContext.ModificationParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ModificationParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type PeptideParamHandler =
 
@@ -441,6 +582,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:PeptideParam) =
+                query {
+                    for i in dbContext.PeptideParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.PeptideParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type TranslationTableParamHandler =
 
             static member init
@@ -485,6 +647,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.TranslationTableParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
+                query {
+                    for i in dbContext.TranslationTableParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.TranslationTableParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type MeasureParamHandler =
 
@@ -531,6 +714,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MeasureParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:MeasureParam) =
+                query {
+                    for i in dbContext.MeasureParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.MeasureParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type AmbiguousResidueParamHandler =
 
             static member init
@@ -575,6 +779,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
+                query {
+                    for i in dbContext.AmbiguousResidueParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.AmbiguousResidueParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type MassTableParamHandler =
 
@@ -621,6 +846,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MassTableParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:MassTableParam) =
+                query {
+                    for i in dbContext.MassTableParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.MassTableParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type IonTypeParamHandler =
 
             static member init
@@ -665,6 +911,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.IonTypeParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:IonTypeParam) =
+                query {
+                    for i in dbContext.IonTypeParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.IonTypeParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type SpecificityRuleParamHandler =
 
@@ -711,6 +978,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
+                query {
+                    for i in dbContext.SpecificityRuleParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SpecificityRuleParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type SearchModificationParamHandler =
 
             static member init
@@ -755,6 +1043,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchModificationParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
+                query {
+                    for i in dbContext.SearchModificationParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SearchModificationParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type EnzymeNameParamHandler =
 
@@ -801,6 +1110,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
+                query {
+                    for i in dbContext.EnzymeNameParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.EnzymeNameParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type IncludeParamHandler =
 
             static member init
@@ -845,6 +1175,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:IncludeParam) =
+                query {
+                    for i in dbContext.IncludeParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.IncludeParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type ExcludeParamHandler =
 
@@ -891,6 +1242,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ExcludeParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:ExcludeParam) =
+                query {
+                    for i in dbContext.ExcludeParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ExcludeParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type AdditionalSearchParamHandler =
 
             static member init
@@ -935,6 +1307,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
+                query {
+                    for i in dbContext.AdditionalSearchParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.AdditionalSearchParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type FragmentToleranceParamHandler =
 
@@ -981,6 +1374,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
+                query {
+                    for i in dbContext.FragmentToleranceParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.FragmentToleranceParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type ParentToleranceParamHandler =
 
             static member init
@@ -1025,6 +1439,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ParentToleranceParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
+                query {
+                    for i in dbContext.ParentToleranceParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ParentToleranceParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type ThresholdParamHandler =
 
@@ -1071,6 +1506,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ThresholdParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:ThresholdParam) =
+                query {
+                    for i in dbContext.ThresholdParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ThresholdParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type SearchDatabaseParamHandler =
 
             static member init
@@ -1115,6 +1571,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
+                query {
+                    for i in dbContext.SearchDatabaseParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SearchDatabaseParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type DBSequenceParamHandler =
 
@@ -1161,6 +1638,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.DBSequenceParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
+                query {
+                    for i in dbContext.DBSequenceParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.DBSequenceParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type PeptideEvidenceParamHandler =
 
             static member init
@@ -1205,6 +1703,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
+                query {
+                    for i in dbContext.PeptideEvidenceParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.PeptideEvidenceParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type SpectrumIdentificationItemParamHandler =
 
@@ -1251,6 +1770,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
+                query {
+                    for i in dbContext.SpectrumIdentificationItemParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SpectrumIdentificationItemParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type SpectrumIdentificationResultParamHandler =
 
             static member init
@@ -1295,6 +1835,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
+                query {
+                    for i in dbContext.SpectrumIdentificationResultParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SpectrumIdentificationResultParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type SpectrumIdentificationListParamHandler =
 
@@ -1341,6 +1902,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
+                query {
+                    for i in dbContext.SpectrumIdentificationListParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SpectrumIdentificationListParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type AnalysisParamHandler =
 
             static member init
@@ -1385,6 +1967,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AnalysisParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:AnalysisParam) =
+                query {
+                    for i in dbContext.AnalysisParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.AnalysisParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type SourceFileParamHandler =
 
@@ -1431,6 +2034,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SourceFileParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:SourceFileParam) =
+                query {
+                    for i in dbContext.SourceFileParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.SourceFileParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type ProteinDetectionHypothesisParamHandler =
 
             static member init
@@ -1475,6 +2099,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
+                query {
+                    for i in dbContext.ProteinDetectionHypothesisParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ProteinDetectionHypothesisParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type ProteinAmbiguityGroupParamHandler =
 
@@ -1521,6 +2166,27 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
+            static member addParamToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
+                query {
+                    for i in dbContext.ProteinAmbiguityGroupParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ProteinAmbiguityGroupParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
+
         type ProteinDetectionListParamHandler =
 
             static member init
@@ -1565,6 +2231,27 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
+
+            static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
+                query {
+                    for i in dbContext.ProteinDetectionListParam.Local do
+                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                           then select i
+                        }
+                |> (fun term -> 
+                    if Seq.length term < 1 
+                        then 
+                            query {
+                                    for i in dbContext.ProteinDetectionListParam do
+                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                           then select (i)
+                                    }
+                            |> (fun term' -> if (term'.Count()) < 1
+                                                then dbContext.Add item |> ignore
+                                                else ()
+                                )
+                        else ()
+                   )
 
         type OrganizationHandler =
             static member init

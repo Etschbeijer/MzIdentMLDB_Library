@@ -545,25 +545,24 @@ let ontologyTestI =
 TermHandler.tryFindByID sqliteContext "Teest"
 TermHandler.tryFindByID sqliteContext "MS:0000000"
 
-let addTerm1 (dbContext : MzIdentML) (item:Term) =
+let addTermToContext (dbContext : MzIdentML) (item:Term) =
     query {
-        for i in dbContext.Term do
-            if i.Name = item.Name && i.Ontology=item.Ontology
+        for i in dbContext.Term.Local do
+            if i.ID=item.ID || i.Name=item.Name
                then select i
           }
     |> (fun term -> 
         if Seq.length term < 1 
             then 
                 query {
-                       for i in dbContext.Term.Local do
-                           if i.Name = item.Name && i.Ontology=item.Ontology 
+                       for i in dbContext.Term do
+                           if i.ID=item.ID || i.Name=item.Name
                               then select (i)
                       }
-                |> (fun term' -> if (Seq.length term' < 1)
+                |> (fun term' -> if (term'.Count()) < 1
                                     then dbContext.Add item |> ignore
-                                         ()
                                     else ()
-                       )
+                   )
             else ()
        )
 
@@ -579,11 +578,17 @@ let addTerm2 (dbContext : MzIdentML) (item:Term) =
                        else ()
        )
 
+
+addTermToContext sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 sqliteContext.SaveChanges()
 
-let x = addTerm1 sqliteContext (TermHandler.init("TEEEEEEEEEEEST", Ontology=(OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
-let y = addTerm1 sqliteContext (TermHandler.init("MS:0000000", "Proteomics Standards Initiative Mass Spectrometry Vocabularies", (OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
+let x = addTermToContext sqliteContext (TermHandler.init("TEEEEEEEEEEEST", Ontology=(OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
+let y = addTermToContext sqliteContext (TermHandler.init("MS:0000000", "Proteomics Standards Initiative Mass Spectrometry Vocabularies", (OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
 let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
+
+#time
+for i = 0 to 10000 do addTermToContext sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
+
 
 Seq.length 
 Seq.length
