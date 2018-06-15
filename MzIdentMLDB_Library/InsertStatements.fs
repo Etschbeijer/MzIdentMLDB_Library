@@ -142,15 +142,15 @@ module InsertStatements =
                     for i in dbContext.Term.Local do
                         if i.ID=item.ID || i.Name=item.Name
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
-                                    for i in dbContext.Term do
-                                        if i.ID=item.ID || i.Name=item.Name
-                                           then select (i)
-                                    }
+                                   for i in dbContext.Term do
+                                       if i.ID=item.ID || i.Name=item.Name
+                                          then select (i)
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -191,15 +191,15 @@ module InsertStatements =
                     for i in dbContext.Ontology.Local do
                         if i.ID=item.ID
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
-                                    for i in dbContext.Ontology do
-                                        if i.ID=item.ID
-                                           then select (i)
-                                    }
+                                   for i in dbContext.Ontology do
+                                       if i.ID=item.ID
+                                          then select (i)
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -255,17 +255,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:CVParam) =
                 query {
                     for i in dbContext.CVParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
-                                    for i in dbContext.CVParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
-                                           then select (i)
-                                    }
+                                   for i in dbContext.CVParam do
+                                       if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
+                                          then select (i)
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -321,17 +321,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:OrganizationParam) =
                 query {
                     for i in dbContext.OrganizationParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.OrganizationParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -387,17 +387,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:PersonParam) =
                 query {
                     for i in dbContext.PersonParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.PersonParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -453,17 +453,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
                 query {
                     for i in dbContext.SampleParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SampleParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -519,17 +519,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
                 query {
                     for i in dbContext.ModificationParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ModificationParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -585,17 +585,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:PeptideParam) =
                 query {
                     for i in dbContext.PeptideParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.PeptideParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -651,17 +651,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
                 query {
                     for i in dbContext.TranslationTableParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.TranslationTableParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -717,17 +717,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:MeasureParam) =
                 query {
                     for i in dbContext.MeasureParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.MeasureParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -783,17 +783,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
                 query {
                     for i in dbContext.AmbiguousResidueParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.AmbiguousResidueParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -849,17 +849,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:MassTableParam) =
                 query {
                     for i in dbContext.MassTableParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.MassTableParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -915,17 +915,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:IonTypeParam) =
                 query {
                     for i in dbContext.IonTypeParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.IonTypeParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -981,17 +981,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
                 query {
                     for i in dbContext.SpecificityRuleParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SpecificityRuleParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1047,17 +1047,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
                 query {
                     for i in dbContext.SearchModificationParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SearchModificationParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1113,17 +1113,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
                 query {
                     for i in dbContext.EnzymeNameParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.EnzymeNameParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1179,17 +1179,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:IncludeParam) =
                 query {
                     for i in dbContext.IncludeParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.IncludeParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1245,17 +1245,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ExcludeParam) =
                 query {
                     for i in dbContext.ExcludeParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ExcludeParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1311,17 +1311,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
                 query {
                     for i in dbContext.AdditionalSearchParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.AdditionalSearchParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1377,17 +1377,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
                 query {
                     for i in dbContext.FragmentToleranceParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.FragmentToleranceParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1443,17 +1443,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
                 query {
                     for i in dbContext.ParentToleranceParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ParentToleranceParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1509,17 +1509,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ThresholdParam) =
                 query {
                     for i in dbContext.ThresholdParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ThresholdParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1575,17 +1575,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
                 query {
                     for i in dbContext.SearchDatabaseParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SearchDatabaseParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1641,17 +1641,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
                 query {
                     for i in dbContext.DBSequenceParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.DBSequenceParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1707,17 +1707,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
                 query {
                     for i in dbContext.PeptideEvidenceParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.PeptideEvidenceParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1773,17 +1773,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationItemParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SpectrumIdentificationItemParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1839,17 +1839,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationResultParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SpectrumIdentificationResultParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1905,17 +1905,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationListParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SpectrumIdentificationListParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -1971,17 +1971,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:AnalysisParam) =
                 query {
                     for i in dbContext.AnalysisParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.AnalysisParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -2037,17 +2037,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:SourceFileParam) =
                 query {
                     for i in dbContext.SourceFileParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.SourceFileParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -2103,17 +2103,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
                 query {
                     for i in dbContext.ProteinDetectionHypothesisParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ProteinDetectionHypothesisParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -2169,17 +2169,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
                 query {
                     for i in dbContext.ProteinAmbiguityGroupParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ProteinAmbiguityGroupParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()
@@ -2235,17 +2235,17 @@ module InsertStatements =
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
                 query {
                     for i in dbContext.ProteinDetectionListParam.Local do
-                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                            then select i
-                        }
+                      }
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                     for i in dbContext.ProteinDetectionListParam do
-                                        if i.ID=item.ID || i.Name=item.Name || i.Value=item.Value
+                                        if i.ID=item.ID || (i.Name=item.Name && i.Value=item.Value)
                                            then select (i)
-                                    }
+                                  }
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then dbContext.Add item |> ignore
                                                 else ()

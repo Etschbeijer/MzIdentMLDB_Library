@@ -589,8 +589,12 @@ let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 #time
 for i = 0 to 10000 do addTermToContext sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 
+let testI = CVParamHandler.init("Test", (TermHandler.tryFindByID sqliteContext "MS:0000000").Value, "IDI", "Test")
 
-Seq.length 
-Seq.length
+let testII = CVParamHandler.init("TestI", (TermHandler.tryFindByID sqliteContext "MS:0000000").Value, "IDIII", "TestI")
 
+CVParamHandler.addParamToContext sqliteContext testI
 
+CVParamHandler.addParamToContext sqliteContext testII
+
+sqliteContext.SaveChanges()
