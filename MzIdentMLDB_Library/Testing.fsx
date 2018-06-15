@@ -53,29 +53,29 @@ let initStandardDB (dbContext : MzIdentML) =
         let ontology =  OntologyHandler.init ("PSI-MS")
         fromPsiMS
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore) 
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore) 
 
     let termsPride =
         let ontology =  OntologyHandler.init ("PRIDE")
         fromPride
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnimod =
         let ontology =  OntologyHandler.init ("UNIMOD")
         fromUniMod
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnit_Ontology =
         let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
         fromUnit_Ontology
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let userOntology =
         OntologyHandler.init("UserParam")
-        |> ContextHandler.addToContext dbContext |> ignore
+        |> ContextHandler.tryAddToContext dbContext |> ignore
 
     dbContext.Database.EnsureCreated() |> ignore
     dbContext.SaveChanges()
@@ -131,7 +131,7 @@ let termTestII =
         TermHandler.init("II")
     let termWithName =
         TermHandler.addName "TestName" termBasic
-    ContextHandler.addToContext sqliteContext termWithName
+    ContextHandler.tryAddToContext sqliteContext termWithName
 
 let ontologyTest =
     let ontologyBasic =
@@ -140,7 +140,7 @@ let ontologyTest =
         OntologyHandler.addTerm (TermHandler.tryFindByID sqliteContext "I") ontologyBasic
     let ontologyTermWithOntology =
         TermHandler.addOntology ontologyBasic ontologyWithTerm.Terms.[0]
-    ContextHandler.addToContext sqliteContext ontologyBasic
+    ContextHandler.tryAddToContext sqliteContext ontologyBasic
 
 let cvParamTest =
     let cvParamBasic =
@@ -154,11 +154,11 @@ let cvParamTestI =
         CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
     //let cvParamWithUnit =
     //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
-    ContextHandler.addToContext sqliteContext cvParamBasic
+    ContextHandler.tryAddToContext sqliteContext cvParamBasic
 
 //let analysisSoftwareTest =
 //    let I = AnalysisSoftwareHandler.init(cvParamTest)
-//    AnalysisSoftwareHandler.addToContext sqliteContext I
+//    AnalysisSoftwareHandler.tryAddToContext sqliteContext I
 
 sqliteContext.SaveChanges()
 
@@ -171,7 +171,7 @@ let organizationTest =
     //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
     //let organizationWithDetail = 
     //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
-    ContextHandler.addToContext sqliteContext organizationBasic
+    ContextHandler.tryAddToContext sqliteContext organizationBasic
 
 sqliteContext.Organization.Find("I")
 sqliteContext.SaveChanges()
@@ -553,7 +553,7 @@ let ontologyTestI =
 //        //         |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
 //        //        )
 //        //        mzIdentMLWithProteinDetectionProtocol
-//        //MzIdentMLHandler.addToContext dbContext 
+//        //MzIdentMLHandler.tryAddToContext dbContext 
 //        mzIdentMLBasic
 
 //let testMzIdentML =
@@ -564,27 +564,7 @@ let ontologyTestI =
 
 //initStandardDB sqliteContext
 
-let tryAdd (dbContext:MzIdentML) (id:'a) (item:'b) =
-    let x = dbContext.Find(item.GetType(),id)
-    match x with
-    |null -> dbContext.Add item |> ignore
-             true
-    |_ -> false
-
-let tryAddAndInsert (dbContext:MzIdentML) (id:'a) (item:'b) =
-    let x = dbContext.Find(item.GetType(),id)
-    match x with
-    |null -> dbContext.Add item      |> ignore
-             dbContext.SaveChanges() |> ignore
-             true
-    |_ -> false
-
-let tryAddAndInsert' (dbContext:MzIdentML) (item:'b) =
-    try
-        dbContext.Add item      |> ignore
-        dbContext.SaveChanges() |> ignore
-        true
-    with
-    | _ -> false 
 
 
+TermHandler.tryFindByID sqliteContext "Teest"
+TermHandler.tryFindByID sqliteContext "MS:0000000"

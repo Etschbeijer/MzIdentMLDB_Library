@@ -51,6 +51,11 @@ module InsertStatements =
                 |Some x -> addCollectionToList inputCollection x
                 |None -> inputCollection  
 
+            let tryFind (item:'a) =
+                match item with
+                |null -> None
+                |_ -> Some item
+
         // Defining the objectHandlers of the entities of the dbContext.
 
         open HelperFunctions
@@ -93,10 +98,10 @@ module InsertStatements =
                  FileIO.readFile filePath
                  |> Obo.parseOboTerms
 
-             static member addToContext (context:MzIdentML) (item:'b) =
+             static member tryAddToContext (context:MzIdentML) (item:'b) =
                     context.Add(item)
 
-             static member addToContextAndInsert (context:MzIdentML) (item:'b) =
+             static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
                     context.Add(item) |> ignore
                     context.SaveChanges()
 
@@ -129,7 +134,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (termID:string) =
-                context.Term.Find(termID)
+                tryFind (context.Term.Find(termID))
         
         type OntologyHandler =
             static member init
@@ -164,12 +169,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (ontologyID:string) =
-                context.Ontology.Find(ontologyID)
-
-
-            static member tryFind
-                (context:MzIdentML) (ontologyTerm:OntologyTerm) =
-                OntologyHandler.tryFindByID context (OntologyTerm.ToString  ontologyTerm)
+                tryFind (context.Ontology.Find(ontologyID))
             
         type CVParamHandler =
 
@@ -214,7 +214,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.CVParam.Find(paramID)
+                tryFind (context.CVParam.Find(paramID))
 
         type OrganizationParamHandler =
 
@@ -259,7 +259,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.OrganizationParam.Find(paramID)
+                tryFind (context.OrganizationParam.Find(paramID))
 
         type PersonParamHandler =
 
@@ -304,7 +304,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.PersonParam.Find(paramID)
+                tryFind (context.PersonParam.Find(paramID))
 
         type SampleParamHandler =
 
@@ -349,7 +349,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SampleParam.Find(paramID)
+                tryFind (context.SampleParam.Find(paramID))
 
         type ModificationParamHandler =
 
@@ -394,7 +394,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ModificationParam.Find(paramID)
+                tryFind (context.ModificationParam.Find(paramID))
 
         type PeptideParamHandler =
 
@@ -439,7 +439,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.PeptideParam.Find(paramID)
+                tryFind (context.PeptideParam.Find(paramID))
 
         type TranslationTableParamHandler =
 
@@ -484,7 +484,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.TranslationTableParam.Find(paramID)
+                tryFind (context.TranslationTableParam.Find(paramID))
 
         type MeasureParamHandler =
 
@@ -529,7 +529,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.MeasureParam.Find(paramID)
+                tryFind (context.MeasureParam.Find(paramID))
 
         type AmbiguousResidueParamHandler =
 
@@ -574,7 +574,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.AmbiguousResidueParam.Find(paramID)
+                tryFind (context.AmbiguousResidueParam.Find(paramID))
 
         type MassTableParamHandler =
 
@@ -619,7 +619,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.MassTableParam.Find(paramID)
+                tryFind (context.MassTableParam.Find(paramID))
 
         type IonTypeParamHandler =
 
@@ -664,7 +664,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.IonTypeParam.Find(paramID)
+                tryFind (context.IonTypeParam.Find(paramID))
 
         type SpecificityRuleParamHandler =
 
@@ -709,7 +709,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SpecificityRuleParam.Find(paramID)
+                tryFind (context.SpecificityRuleParam.Find(paramID))
 
         type SearchModificationParamHandler =
 
@@ -754,7 +754,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SearchModificationParam.Find(paramID)
+                tryFind (context.SearchModificationParam.Find(paramID))
 
         type EnzymeNameParamHandler =
 
@@ -799,7 +799,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.EnzymeNameParam.Find(paramID)
+                tryFind (context.EnzymeNameParam.Find(paramID))
 
         type IncludeParamHandler =
 
@@ -844,7 +844,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.EnzymeNameParam.Find(paramID)
+                tryFind (context.EnzymeNameParam.Find(paramID))
 
         type ExcludeParamHandler =
 
@@ -889,7 +889,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ExcludeParam.Find(paramID)
+                tryFind (context.ExcludeParam.Find(paramID))
 
         type AdditionalSearchParamHandler =
 
@@ -934,7 +934,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.AdditionalSearchParam.Find(paramID)
+                tryFind (context.AdditionalSearchParam.Find(paramID))
 
         type FragmentToleranceParamHandler =
 
@@ -979,7 +979,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.FragmentToleranceParam.Find(paramID)
+                tryFind (context.FragmentToleranceParam.Find(paramID))
 
         type ParentToleranceParamHandler =
 
@@ -1024,7 +1024,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ParentToleranceParam.Find(paramID)
+                tryFind (context.ParentToleranceParam.Find(paramID))
 
         type ThresholdParamHandler =
 
@@ -1069,7 +1069,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ThresholdParam.Find(paramID)
+                tryFind (context.ThresholdParam.Find(paramID))
 
         type SearchDatabaseParamHandler =
 
@@ -1114,7 +1114,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SearchDatabaseParam.Find(paramID)
+                tryFind (context.SearchDatabaseParam.Find(paramID))
 
         type DBSequenceParamHandler =
 
@@ -1159,7 +1159,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.DBSequenceParam.Find(paramID)
+                tryFind (context.DBSequenceParam.Find(paramID))
 
         type PeptideEvidenceParamHandler =
 
@@ -1204,7 +1204,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.PeptideEvidenceParam.Find(paramID)
+                tryFind (context.PeptideEvidenceParam.Find(paramID))
 
         type SpectrumIdentificationItemParamHandler =
 
@@ -1249,7 +1249,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SpectrumIdentificationItemParam.Find(paramID)
+                tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
         type SpectrumIdentificationResultParamHandler =
 
@@ -1294,7 +1294,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SpectrumIdentificationResultParam.Find(paramID)
+                tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
 
         type SpectrumIdentificationListParamHandler =
 
@@ -1339,7 +1339,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SpectrumIdentificationListParam.Find(paramID)
+                tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
         type AnalysisParamHandler =
 
@@ -1384,7 +1384,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.AnalysisParam.Find(paramID)
+                tryFind (context.AnalysisParam.Find(paramID))
 
         type SourceFileParamHandler =
 
@@ -1429,7 +1429,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.SourceFileParam.Find(paramID)
+                tryFind (context.SourceFileParam.Find(paramID))
 
         type ProteinDetectionHypothesisParamHandler =
 
@@ -1474,7 +1474,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ProteinDetectionHypothesisParam.Find(paramID)
+                tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
 
         type ProteinAmbiguityGroupParamHandler =
 
@@ -1519,7 +1519,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ProteinAmbiguityGroupParam.Find(paramID)
+                tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
         type ProteinDetectionListParamHandler =
 
@@ -1564,7 +1564,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
-                context.ProteinDetectionListParam.Find(paramID)
+                tryFind (context.ProteinDetectionListParam.Find(paramID))
 
         type OrganizationHandler =
             static member init
@@ -1609,7 +1609,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (organizationID:string) =
-                context.Organization.Find(organizationID)
+                tryFind (context.Organization.Find(organizationID))
 
         type PersonHandler =
             static member init
@@ -1679,7 +1679,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (personID:string) =
-                context.Person.Find(personID)
+                tryFind (context.Person.Find(personID))
 
         type ContactRoleHandler =
             static member init
@@ -1699,7 +1699,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (contactRoleID:string) =
-                context.ContactRole.Find(contactRoleID)
+                tryFind (context.ContactRole.Find(contactRoleID))
 
         type AnalysisSoftwareHandler =
             static member init
@@ -1765,7 +1765,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (analysisSoftwareID:string) =
-                context.AnalysisSoftware.Find(analysisSoftwareID)
+                tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
 
         type SubSampleHandler =
             static member init
@@ -1789,7 +1789,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (subSampleID:string) =
-                context.SubSample.Find(subSampleID)
+                tryFind (context.SubSample.Find(subSampleID))
 
         type SampleHandler =
             static member init
@@ -1860,7 +1860,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (contactRolesID:string) =
-                context.Sample.Find(contactRolesID)
+                tryFind (context.Sample.Find(contactRolesID))
 
         type ModificationHandler =
             static member init
@@ -1909,7 +1909,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (modificationID:string) =
-                context.Modification.Find(modificationID)
+                tryFind (context.Modification.Find(modificationID))
 
         type SubstitutionModificationHandler =
             static member init
@@ -1953,7 +1953,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (substitutionModificationID:string) =
-                context.SubstitutionModification.Find(substitutionModificationID)
+                tryFind (context.SubstitutionModification.Find(substitutionModificationID))
 
         type PeptideHandler =
             static member init
@@ -2026,7 +2026,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (peptideID:string) =
-                context.Peptide.Find(peptideID)
+                tryFind (context.Peptide.Find(peptideID))
 
         type TranslationTableHandler =
             static member init
@@ -2063,7 +2063,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (translationTableID:string) =
-                context.TranslationTable.Find(translationTableID)
+                tryFind (context.TranslationTable.Find(translationTableID))
 
         type MeasureHandler =
             static member init
@@ -2088,7 +2088,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (measureID:string) =
-                context.Measure.Find(measureID)
+                tryFind (context.Measure.Find(measureID))
 
         type ResidueHandler =
             static member init
@@ -2107,7 +2107,7 @@ module InsertStatements =
 
             static member findResidueByID
                 (context:MzIdentML) (residueID:string) =
-                context.Residue.Find(residueID)
+                tryFind (context.Residue.Find(residueID))
 
         type AmbiguousResidueHandler =
             static member init
@@ -2127,7 +2127,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (ambiguousResidueID:string) =
-                context.AmbiguousResidue.Find(ambiguousResidueID)
+                tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
 
         type MassTableHandler =
             static member init
@@ -2192,7 +2192,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (massTableID:string) =
-                context.MassTable.Find(massTableID)
+                tryFind (context.MassTable.Find(massTableID))
 
         type ValueHandler =
             static member init
@@ -2210,7 +2210,7 @@ module InsertStatements =
 
             static member findValueByID
                 (context:MzIdentML) (valueID:string) =
-                context.Value.Find(valueID)
+                tryFind (context.Value.Find(valueID))
 
         type FragmentArrayHandler =
             static member init
@@ -2230,7 +2230,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (fragmentArrayID:string) =
-                context.FragmentArray.Find(fragmentArrayID)
+                tryFind (context.FragmentArray.Find(fragmentArrayID))
 
         type IndexHandler =
             static member init
@@ -2248,7 +2248,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (indexID:string) =
-                context.Index.Find(indexID)
+                tryFind (context.Index.Find(indexID))
 
         type IonTypeHandler =
             static member init
@@ -2291,7 +2291,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (ionTypeID:string) =
-                context.Iontype.Find(ionTypeID)
+                tryFind (context.Iontype.Find(ionTypeID))
 
         type SpectraDataHandler =
             static member init
@@ -2328,7 +2328,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectraDataID:string) =
-                context.SpectraData.Find(spectraDataID)
+                tryFind (context.SpectraData.Find(spectraDataID))
 
         type SpecificityRulesHandler =
             static member init
@@ -2346,7 +2346,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (specificityRuleID:string) =
-                context.SpecificityRule.Find(specificityRuleID)
+                tryFind (context.SpecificityRule.Find(specificityRuleID))
 
         type SearchModificationHandler =
             static member init
@@ -2382,7 +2382,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (searchModificationID:string) =
-                context.SearchModification.Find(searchModificationID)
+                tryFind (context.SearchModification.Find(searchModificationID))
 
         type EnzymeHandler =
             static member init
@@ -2467,7 +2467,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (enzymeID:string) =
-                context.Enzyme.Find(enzymeID)
+                tryFind (context.Enzyme.Find(enzymeID))
 
         type FilterHandler =
             static member init
@@ -2511,7 +2511,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (filterID:string) =
-                context.Filter.Find(filterID)
+                tryFind (context.Filter.Find(filterID))
 
         type FrameHandler =
             static member init
@@ -2525,7 +2525,7 @@ module InsertStatements =
 
             static member findFrameByID
                 (context:MzIdentML) (frameID:string) =
-                context.Frame.Find(frameID)
+                tryFind (context.Frame.Find(frameID))
 
         type SpectrumIdentificationProtocolHandler =
             static member init
@@ -2688,7 +2688,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
-                context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID)
+                tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
         type SearchDatabaseHandler =
             static member init
@@ -2771,7 +2771,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (searchDatabaseID:string) =
-                context.SearchDatabase.Find(searchDatabaseID)
+                tryFind (context.SearchDatabase.Find(searchDatabaseID))
 
         type DBSequenceHandler =
             static member init
@@ -2836,7 +2836,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (dbSequenceID:string) =
-                context.DBSequence.Find(dbSequenceID)
+                tryFind (context.DBSequence.Find(dbSequenceID))
 
         type PeptideEvidenceHandler =
             static member init
@@ -2941,7 +2941,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (peptideEvidenceID:string) =
-                context.PeptideEvidence.Find(peptideEvidenceID)
+                tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
         type SpectrumIdentificationItemHandler =
             static member init
@@ -3051,7 +3051,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationItemID:string) =
-                context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID)
+                tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
 
         type SpectrumIdentificationResultHandler =
             static member init
@@ -3098,7 +3098,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationResultID:string) =
-                context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID)
+                tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
 
         type SpectrumIdentificationListHandler =
             static member init
@@ -3158,7 +3158,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationListID:string) =
-                context.SpectrumIdentificationList.Find(spectrumIdentificationListID)
+                tryFind (context.SpectrumIdentificationList.Find(spectrumIdentificationListID))
 
         type SpectrumIdentificationHandler =
             static member init
@@ -3206,7 +3206,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationID:string) =
-                context.SpectrumIdentification.Find(spectrumIdentificationID)
+                tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
 
         type ProteinDetectionProtocolHandler =
             static member init
@@ -3255,7 +3255,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionProtocolID:string) =
-                context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID)
+                tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
 
         type SourceFileHandler =
             static member init
@@ -3308,7 +3308,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (sourceFileID:string) =
-                context.SourceFile.Find(sourceFileID)
+                tryFind (context.SourceFile.Find(sourceFileID))
 
         type InputsHandler =
             static member init
@@ -3360,7 +3360,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (inputsID:string) =
-                context.Inputs.Find(inputsID)
+                tryFind (context.Inputs.Find(inputsID))
 
         type PeptideHypothesisHandler =
             static member init
@@ -3380,7 +3380,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (peptideHypothesisID:string) =
-                context.PeptideHypothesis.Find(peptideHypothesisID)
+                tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
 
         type ProteinDetectionHypothesisHandler =
             static member init
@@ -3431,7 +3431,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionHypothesisID:string) =
-                context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID)
+                tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
 
         type ProteinAmbiguityGroupHandler =
             static member init
@@ -3470,7 +3470,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (proteinAmbiguityGroupID:string) =
-                context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID)
+                tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
 
         type ProteinDetectionListHandler =
             static member init
@@ -3520,7 +3520,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionListID:string) =
-                context.ProteinDetectionList.Find(proteinDetectionListID)
+                tryFind (context.ProteinDetectionList.Find(proteinDetectionListID))
 
         type AnalysisDataHandler =
             static member init
@@ -3554,7 +3554,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (analysisDataID:string) =
-                context.AnalysisData.Find(analysisDataID)
+                tryFind (context.AnalysisData.Find(analysisDataID))
 
         type ProteinDetectionHandler =
             static member init
@@ -3592,7 +3592,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionID:string) =
-                context.ProteinDetection.Find(proteinDetectionID)
+                tryFind (context.ProteinDetection.Find(proteinDetectionID))
 
         type BiblioGraphicReferenceHandler =
             static member init
@@ -3703,7 +3703,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (biblioGraphicReferenceID:string) =
-                context.BiblioGraphicReference.Find(biblioGraphicReferenceID)
+                tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
 
         type ProviderHandler =
             static member init
@@ -3751,7 +3751,7 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (providerID:string) =
-                context.Provider.Find(providerID)
+                tryFind (context.Provider.Find(providerID))
 
         type MzIdentMLHandler =
             static member init
@@ -3954,4 +3954,4 @@ module InsertStatements =
 
             static member tryFindByID
                 (context:MzIdentML) (mzIdentMLID:string) =
-                context.MzIdentMLDocument.Find(mzIdentMLID)
+                tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
