@@ -83,35 +83,36 @@ module InsertStatements =
 
         type ContextHandler =
 
-            ///Creats connection for SQLite-Context and DataBase.
+            ///Creates connection for SQLite-context and database.
             static member sqliteConnection (path:string) =
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
                 optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
                 new MzIdentML(optionsBuilder.Options)       
 
-            ///Creats connection for SQL-Context and DataBase.
+            ///Creats connection for SQL-context and DataBase.
             static member sqlConnection() =
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
                 optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
                 new MzIdentML(optionsBuilder.Options) 
 
-            ///Reads Obo-File.
+            ///Reads Obo-file and creates sequence of Obo.Terms.
             static member fromFileObo (filePath:string) =
                 FileIO.readFile filePath
                 |> Obo.parseOboTerms
 
-            ///Tries to add the object to the DataBase-Context.
+            ///Tries to add the object to the database-context.
             static member tryAddToContext (context:MzIdentML) (item:'b) =
                 context.Add(item)
 
-            ///Tries to add the Object to the DataBase-Context and insert it in the DataBase in the next step.
+            ///Tries to add the Object to the DataBase-Context and insert it in the database in the next step.
             static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
                 context.Add(item) |> ignore
                 context.SaveChanges()
 
         type TermHandler =
+            ///Initializes a term-object with at least all necessary parameters.
             static member init
                 (
                     id        : string,
@@ -128,16 +129,19 @@ module InsertStatements =
                          (Nullable(DateTime.Now))
                         )
 
+            ///Adds a name to an existing term-object.
             static member addName
                 (name:string) (term:Term) =
                 term.Name <- name
                 term
                     
+            ///Adds an ontology to an existing term-object.
             static member addOntology
                 (ontology:Ontology) (term:Term) =
                 term.Ontology <- ontology
                 term
 
+            ///Tries to find a term-object in the context and database, based on its ID.
             static member tryFindByID
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
@@ -164,6 +168,7 @@ module InsertStatements =
                    )
         
         type OntologyHandler =
+            ///Initializes a ontology-object with at least all necessary parameters.
             static member init
                 (
                     id         : string,
@@ -177,16 +182,19 @@ module InsertStatements =
                              Nullable(DateTime.Now)
                             )
 
+            ///Adds a term to an existing ontology-object.
             static member addTerm
                 (term:Term) (ontology:Ontology) =
                 let result = ontology.Terms <- addToList ontology.Terms term
                 ontology
 
+            ///Adds a collection of terms to an existing ontology-object
             static member addTerms
                 (terms:seq<Term>) (ontology:Ontology) =
                 let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                 ontology
 
+            ///Tries to find a ontology-object in the context and database, based on its ID.
             static member tryFindByID
                 (context:MzIdentML) (ontologyID:string) =
                 tryFind (context.Ontology.Find(ontologyID))
@@ -213,7 +221,7 @@ module InsertStatements =
                    )
 
         type CVParamHandler =
-
+            ///Initializes a cvparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -280,7 +288,7 @@ module InsertStatements =
                    )
 
         type OrganizationParamHandler =
-
+            ///Initializes a organizationparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -347,7 +355,7 @@ module InsertStatements =
                    )
 
         type PersonParamHandler =
-
+            ///Initializes a personparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -414,7 +422,7 @@ module InsertStatements =
                    )
 
         type SampleParamHandler =
-
+            ///Initializes a sampleparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -481,7 +489,7 @@ module InsertStatements =
                    )
 
         type ModificationParamHandler =
-
+            ///Initializes a modificationparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -548,7 +556,7 @@ module InsertStatements =
                    )
 
         type PeptideParamHandler =
-
+            ///Initializes a peptideparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -615,7 +623,7 @@ module InsertStatements =
                    )
 
         type TranslationTableParamHandler =
-
+            ///Initializes a translationtableparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -682,7 +690,7 @@ module InsertStatements =
                    )
 
         type MeasureParamHandler =
-
+            ///Initializes a measureparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -749,7 +757,7 @@ module InsertStatements =
                    )
 
         type AmbiguousResidueParamHandler =
-
+            ///Initializes a ambiguousresidueparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -816,7 +824,7 @@ module InsertStatements =
                    )
 
         type MassTableParamHandler =
-
+            ///Initializes a masstableparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -883,7 +891,7 @@ module InsertStatements =
                    )
 
         type IonTypeParamHandler =
-
+            ///Initializes a iontypeparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -950,7 +958,7 @@ module InsertStatements =
                    )
 
         type SpecificityRuleParamHandler =
-
+            ///Initializes a specificityruleparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1017,7 +1025,7 @@ module InsertStatements =
                    )
 
         type SearchModificationParamHandler =
-
+            ///Initializes a searchmodificationparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1084,7 +1092,7 @@ module InsertStatements =
                    )
 
         type EnzymeNameParamHandler =
-
+            ///Initializes a enzymenameparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1151,7 +1159,7 @@ module InsertStatements =
                    )
 
         type IncludeParamHandler =
-
+            ///Initializes a includeparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1218,7 +1226,7 @@ module InsertStatements =
                    )
 
         type ExcludeParamHandler =
-
+            ///Initializes a excludeparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1285,7 +1293,7 @@ module InsertStatements =
                    )
 
         type AdditionalSearchParamHandler =
-
+            ///Initializes a additionalssearchparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1352,7 +1360,7 @@ module InsertStatements =
                    )
 
         type FragmentToleranceParamHandler =
-
+            ///Initializes a fragmenttoleranceparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1419,7 +1427,7 @@ module InsertStatements =
                    )
 
         type ParentToleranceParamHandler =
-
+            ///Initializes a parenttoleranceparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1486,7 +1494,7 @@ module InsertStatements =
                    )
 
         type ThresholdParamHandler =
-
+            ///Initializes a thresholdparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1553,7 +1561,7 @@ module InsertStatements =
                    )
 
         type SearchDatabaseParamHandler =
-
+            ///Initializes a searchdatabaseparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1620,7 +1628,7 @@ module InsertStatements =
                    )
 
         type DBSequenceParamHandler =
-
+            ///Initializes a dbsequenceparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1687,7 +1695,7 @@ module InsertStatements =
                    )
 
         type PeptideEvidenceParamHandler =
-
+            ///Initializes a peptideevidenceparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1754,7 +1762,7 @@ module InsertStatements =
                    )
 
         type SpectrumIdentificationItemParamHandler =
-
+            ///Initializes a spectrumidentificationparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1821,7 +1829,7 @@ module InsertStatements =
                    )
 
         type SpectrumIdentificationResultParamHandler =
-
+            ///Initializes a spectrumidentificationresultparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1888,7 +1896,7 @@ module InsertStatements =
                    )
 
         type SpectrumIdentificationListParamHandler =
-
+            ///Initializes a spectrumidentificationlistparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -1955,7 +1963,7 @@ module InsertStatements =
                    )
 
         type AnalysisParamHandler =
-
+            ///Initializes a analysisparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -2022,7 +2030,7 @@ module InsertStatements =
                    )
 
         type SourceFileParamHandler =
-
+            ///Initializes a sourcefileparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -2089,7 +2097,7 @@ module InsertStatements =
                    )
 
         type ProteinDetectionHypothesisParamHandler =
-
+            ///Initializes a proteindetectionhypothesisparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -2156,7 +2164,7 @@ module InsertStatements =
                    )
 
         type ProteinAmbiguityGroupParamHandler =
-
+            ///Initializes a proteinambiguitygroupparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
@@ -2223,7 +2231,7 @@ module InsertStatements =
                    )
 
         type ProteinDetectionListParamHandler =
-
+            ///Initializes a proteindetectionlistparam-object with at least all necessary parameters.
             static member init
                 (
                     name      : string,
