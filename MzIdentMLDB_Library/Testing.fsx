@@ -87,36 +87,36 @@ let termTryFindTestI =
 
 termTryFindTestI
 
-let CVParamInit =
-    CVParamHandler.init("Test", null,unit=termTryFindTestI)
+//let CVParamInit =
+//    CVParamHandler.init("Test", null,unit=termTryFindTestI)
 
-testQueryable sqliteContext "MS:0000000"
-testQueryable sqliteContext "I"
+//testQueryable sqliteContext "MS:0000000"
+//testQueryable sqliteContext "I"
 
 
-takeTermEntry sqliteContext "MS:0000000"
-|> (fun item -> sqliteContext.Term.Add(item))
-sqliteContext.SaveChanges()
+//takeTermEntry sqliteContext "MS:0000000"
+//|> (fun item -> sqliteContext.Term.Add(item))
+//sqliteContext.SaveChanges()
 
-sqliteContext.Term.Find("MS:0000000")
-|> (fun item -> sqliteContext.Term.Add(item))
-sqliteContext.SaveChanges()
+//sqliteContext.Term.Find("MS:0000000")
+//|> (fun item -> sqliteContext.Term.Add(item))
+//sqliteContext.SaveChanges()
 
-let termTestII =
-    let termBasic =
-        TermHandler.init("II")
-    let termWithName =
-        TermHandler.addName "TestName" termBasic
-    ContextHandler.tryAddToContext sqliteContext termWithName
+//let termTestII =
+//    let termBasic =
+//        TermHandler.init("II")
+//    let termWithName =
+//        TermHandler.addName "TestName" termBasic
+//    ContextHandler.tryAddToContext sqliteContext termWithName
 
-let ontologyTest =
-    let ontologyBasic =
-        OntologyHandler.init("Test")
-    let ontologyWithTerm =
-        OntologyHandler.addTerm (TermHandler.tryFindByID sqliteContext "I") ontologyBasic
-    let ontologyTermWithOntology =
-        TermHandler.addOntology ontologyBasic ontologyWithTerm.Terms.[0]
-    ContextHandler.tryAddToContext sqliteContext ontologyBasic
+//let ontologyTest =
+//    let ontologyBasic =
+//        OntologyHandler.init("Test")
+//    let ontologyWithTerm =
+//        OntologyHandler.addTerm (TermHandler.tryFindByID sqliteContext "I") ontologyBasic
+//    let ontologyTermWithOntology =
+//        TermHandler.addOntology ontologyBasic ontologyWithTerm.Terms.[0]
+//    ContextHandler.tryAddToContext sqliteContext ontologyBasic
 
 let cvParamTest =
     let cvParamBasic =
@@ -591,7 +591,7 @@ for i = 0 to 10000 do addTermToContext sqliteContext (TermHandler.init("TEEEEEEE
 
 let testI = CVParamHandler.init("Test", (TermHandler.tryFindByID sqliteContext "MS:0000000").Value, "IDI", "Test")
 
-let testII = CVParamHandler.init("TestI", (TermHandler.tryFindByID sqliteContext "MS:0000000").Value, "IDIII", "TestI")
+let testII = CVParamHandler.init("TestI", (TermHandler.tryFindByID sqliteContext "MS:0000000").Value, "IDII", "TestI")
 
 CVParamHandler.addParamToContext sqliteContext testI
 

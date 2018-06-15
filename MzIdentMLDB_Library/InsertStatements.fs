@@ -252,6 +252,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:CVParam) =
                 query {
                     for i in dbContext.CVParam.Local do
@@ -318,6 +319,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.OrganizationParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:OrganizationParam) =
                 query {
                     for i in dbContext.OrganizationParam.Local do
@@ -384,6 +386,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PersonParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:PersonParam) =
                 query {
                     for i in dbContext.PersonParam.Local do
@@ -450,6 +453,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SampleParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
                 query {
                     for i in dbContext.SampleParam.Local do
@@ -516,6 +520,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ModificationParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SampleParam) =
                 query {
                     for i in dbContext.ModificationParam.Local do
@@ -582,6 +587,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:PeptideParam) =
                 query {
                     for i in dbContext.PeptideParam.Local do
@@ -648,6 +654,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.TranslationTableParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
                 query {
                     for i in dbContext.TranslationTableParam.Local do
@@ -714,6 +721,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MeasureParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:MeasureParam) =
                 query {
                     for i in dbContext.MeasureParam.Local do
@@ -780,6 +788,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
                 query {
                     for i in dbContext.AmbiguousResidueParam.Local do
@@ -846,6 +855,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MassTableParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:MassTableParam) =
                 query {
                     for i in dbContext.MassTableParam.Local do
@@ -912,6 +922,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.IonTypeParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:IonTypeParam) =
                 query {
                     for i in dbContext.IonTypeParam.Local do
@@ -978,6 +989,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
                 query {
                     for i in dbContext.SpecificityRuleParam.Local do
@@ -1044,6 +1056,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchModificationParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
                 query {
                     for i in dbContext.SearchModificationParam.Local do
@@ -1110,6 +1123,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
                 query {
                     for i in dbContext.EnzymeNameParam.Local do
@@ -1176,6 +1190,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:IncludeParam) =
                 query {
                     for i in dbContext.IncludeParam.Local do
@@ -1242,6 +1257,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ExcludeParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ExcludeParam) =
                 query {
                     for i in dbContext.ExcludeParam.Local do
@@ -1308,6 +1324,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
                 query {
                     for i in dbContext.AdditionalSearchParam.Local do
@@ -1374,6 +1391,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
                 query {
                     for i in dbContext.FragmentToleranceParam.Local do
@@ -1440,6 +1458,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ParentToleranceParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
                 query {
                     for i in dbContext.ParentToleranceParam.Local do
@@ -1506,6 +1525,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ThresholdParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ThresholdParam) =
                 query {
                     for i in dbContext.ThresholdParam.Local do
@@ -1572,6 +1592,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
                 query {
                     for i in dbContext.SearchDatabaseParam.Local do
@@ -1638,6 +1659,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.DBSequenceParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
                 query {
                     for i in dbContext.DBSequenceParam.Local do
@@ -1704,6 +1726,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
                 query {
                     for i in dbContext.PeptideEvidenceParam.Local do
@@ -1770,6 +1793,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationItemParam.Local do
@@ -1836,6 +1860,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationResultParam.Local do
@@ -1902,6 +1927,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
                 query {
                     for i in dbContext.SpectrumIdentificationListParam.Local do
@@ -1968,6 +1994,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AnalysisParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:AnalysisParam) =
                 query {
                     for i in dbContext.AnalysisParam.Local do
@@ -2034,6 +2061,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SourceFileParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:SourceFileParam) =
                 query {
                     for i in dbContext.SourceFileParam.Local do
@@ -2100,6 +2128,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
                 query {
                     for i in dbContext.ProteinDetectionHypothesisParam.Local do
@@ -2166,6 +2195,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
                 query {
                     for i in dbContext.ProteinAmbiguityGroupParam.Local do
@@ -2232,6 +2262,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
 
+            ///Checks if object exists in context and if not adds it to the context.
             static member addParamToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
                 query {
                     for i in dbContext.ProteinDetectionListParam.Local do
