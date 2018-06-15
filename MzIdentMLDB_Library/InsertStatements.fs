@@ -2298,6 +2298,7 @@ module InsertStatements =
                    )
 
         type OrganizationHandler =
+            ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
                     ?id      : string,
@@ -2343,6 +2344,7 @@ module InsertStatements =
                 tryFind (context.Organization.Find(organizationID))
 
         type PersonHandler =
+        ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
                     ?id             : string,
@@ -2413,6 +2415,7 @@ module InsertStatements =
                 tryFind (context.Person.Find(personID))
 
         type ContactRoleHandler =
+            ///Initializes a contactrole-object with at least all necessary parameters.
             static member init
                 (   
                     person : Person, 
@@ -2433,6 +2436,7 @@ module InsertStatements =
                 tryFind (context.ContactRole.Find(contactRoleID))
 
         type AnalysisSoftwareHandler =
+            ///Initializes a analysissoftware-object with at least all necessary parameters.
             static member init
                 (
                     softwareName       : CVParam,
@@ -2499,6 +2503,7 @@ module InsertStatements =
                 tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
 
         type SubSampleHandler =
+            ///Initializes a subsample-object with at least all necessary parameters.
             static member init
                 (
                     ?id          : string,
@@ -2523,6 +2528,7 @@ module InsertStatements =
                 tryFind (context.SubSample.Find(subSampleID))
 
         type SampleHandler =
+            ///Initializes a sample-object with at least all necessary parameters.
             static member init
                 (
                     ?id           : string,
@@ -2594,6 +2600,7 @@ module InsertStatements =
                 tryFind (context.Sample.Find(contactRolesID))
 
         type ModificationHandler =
+            ///Initializes a modification-object with at least all necessary parameters.
             static member init
                 (
                     details                : seq<ModificationParam>,
@@ -2643,6 +2650,7 @@ module InsertStatements =
                 tryFind (context.Modification.Find(modificationID))
 
         type SubstitutionModificationHandler =
+            ///Initializes a substitutionmodification-object with at least all necessary parameters.
             static member init
                 (
                     originalResidue        : string,
@@ -2687,6 +2695,7 @@ module InsertStatements =
                 tryFind (context.SubstitutionModification.Find(substitutionModificationID))
 
         type PeptideHandler =
+            ///Initializes a peptide-object with at least all necessary parameters.
             static member init
                 (
                     peptideSequence            : string,
@@ -2760,6 +2769,7 @@ module InsertStatements =
                 tryFind (context.Peptide.Find(peptideID))
 
         type TranslationTableHandler =
+            ///Initializes a translationtable-object with at least all necessary parameters.
             static member init
                 (
                     ?id      : string,
@@ -2797,6 +2807,7 @@ module InsertStatements =
                 tryFind (context.TranslationTable.Find(translationTableID))
 
         type MeasureHandler =
+            ///Initializes a measure-object with at least all necessary parameters.
             static member init
                 (
                     details  : seq<MeasureParam>,
@@ -2822,6 +2833,7 @@ module InsertStatements =
                 tryFind (context.Measure.Find(measureID))
 
         type ResidueHandler =
+            ///Initializes a residue-object with at least all necessary parameters.
             static member init
                 (
                     code    : string,
@@ -2861,6 +2873,7 @@ module InsertStatements =
                 tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
 
         type MassTableHandler =
+            ///Initializes a masstable-object with at least all necessary parameters.
             static member init
                 (
                     msLevel           : string,
@@ -2926,6 +2939,7 @@ module InsertStatements =
                 tryFind (context.MassTable.Find(massTableID))
 
         type ValueHandler =
+            ///Initializes a value-object with at least all necessary parameters.
             static member init
                 (
                     value   : float,
@@ -2944,6 +2958,7 @@ module InsertStatements =
                 tryFind (context.Value.Find(valueID))
 
         type FragmentArrayHandler =
+            ///Initializes a fragmentarray-object with at least all necessary parameters.
             static member init
                 (
                     measure : Measure,
@@ -2964,6 +2979,7 @@ module InsertStatements =
                 tryFind (context.FragmentArray.Find(fragmentArrayID))
 
         type IndexHandler =
+            ///Initializes a index-object with at least all necessary parameters.
             static member init
                 (
                     index : int,
@@ -2982,6 +2998,7 @@ module InsertStatements =
                 tryFind (context.Index.Find(indexID))
 
         type IonTypeHandler =
+            ///Initializes a iontype-object with at least all necessary parameters.
             static member init
                 (
                     details        : seq<IonTypeParam>,
@@ -3025,6 +3042,7 @@ module InsertStatements =
                 tryFind (context.Iontype.Find(ionTypeID))
 
         type SpectraDataHandler =
+            ///Initializes a spectradata-object with at least all necessary parameters.
             static member init
                 ( 
                     location                     : string,
@@ -3062,6 +3080,7 @@ module InsertStatements =
                 tryFind (context.SpectraData.Find(spectraDataID))
 
         type SpecificityRulesHandler =
+            ///Initializes a specificityrules-object with at least all necessary parameters.
             static member init
                 ( 
                     details    : seq<SpecificityRuleParam>,
@@ -3080,6 +3099,7 @@ module InsertStatements =
                 tryFind (context.SpecificityRule.Find(specificityRuleID))
 
         type SearchModificationHandler =
+            ///Initializes a searchmodification-object with at least all necessary parameters.
             static member init
                 ( 
                     fixedMod          : bool,
@@ -3116,6 +3136,7 @@ module InsertStatements =
                 tryFind (context.SearchModification.Find(searchModificationID))
 
         type EnzymeHandler =
+            ///Initializes a enzyme-object with at least all necessary parameters.
             static member init
                 (
                     ?id              : string,
@@ -3201,6 +3222,7 @@ module InsertStatements =
                 tryFind (context.Enzyme.Find(enzymeID))
 
         type FilterHandler =
+            ///Initializes a filter-object with at least all necessary parameters.
             static member init
                 (
                     filterType : CVParam,
@@ -3245,6 +3267,7 @@ module InsertStatements =
                 tryFind (context.Filter.Find(filterID))
 
         type FrameHandler =
+            ///Initializes a frame-object with at least all necessary parameters.
             static member init
                 ( 
                     frame : int,
@@ -3259,6 +3282,7 @@ module InsertStatements =
                 tryFind (context.Frame.Find(frameID))
 
         type SpectrumIdentificationProtocolHandler =
+            ///Initializes a spectrumidentificationprotocol-object with at least all necessary parameters.
             static member init
                 (
                     analysisSoftware        : AnalysisSoftware,
@@ -3422,6 +3446,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
         type SearchDatabaseHandler =
+            ///Initializes a searchdatabase-object with at least all necessary parameters.
             static member init
                 (
                     location                     : string,
@@ -3505,6 +3530,7 @@ module InsertStatements =
                 tryFind (context.SearchDatabase.Find(searchDatabaseID))
 
         type DBSequenceHandler =
+            ///Initializes a dbsequence-object with at least all necessary parameters.
             static member init
                 (
                     accession      : string,
@@ -3570,6 +3596,7 @@ module InsertStatements =
                 tryFind (context.DBSequence.Find(dbSequenceID))
 
         type PeptideEvidenceHandler =
+            ///Initializes a peptideevidence-object with at least all necessary parameters.
             static member init
                 (
                     dbSequence                  : DBSequence,
@@ -3675,6 +3702,7 @@ module InsertStatements =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
         type SpectrumIdentificationItemHandler =
+            ///Initializes a spectrumidentificationitem-object with at least all necessary parameters.
             static member init
                 (
                     peptide                       : Peptide,
@@ -3785,6 +3813,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
 
         type SpectrumIdentificationResultHandler =
+            ///Initializes a spectrumidentificationresult-object with at least all necessary parameters.
             static member init
                 (
                     spectraData                 : SpectraData,
@@ -3832,6 +3861,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
 
         type SpectrumIdentificationListHandler =
+            ///Initializes a spectrumidentificationlist-object with at least all necessary parameters.
             static member init
                 (
                     spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
@@ -3892,6 +3922,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationList.Find(spectrumIdentificationListID))
 
         type SpectrumIdentificationHandler =
+            ///Initializes a spectrumidentification-object with at least all necessary parameters.
             static member init
                 (
                     spectrumIdentificationList     : SpectrumIdentificationList,
@@ -3940,6 +3971,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
 
         type ProteinDetectionProtocolHandler =
+            ///Initializes a proteindetectionprotocol-object with at least all necessary parameters.
             static member init
                 (
                     analysisSoftware : AnalysisSoftware,
@@ -3989,6 +4021,7 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
 
         type SourceFileHandler =
+            ///Initializes a sourcefile-object with at least all necessary parameters.
             static member init
                 (             
                     location                     : string,
@@ -4042,6 +4075,7 @@ module InsertStatements =
                 tryFind (context.SourceFile.Find(sourceFileID))
 
         type InputsHandler =
+            ///Initializes an inputs-object with at least all necessary parameters.
             static member init
                 (              
                     spectraData     : seq<SpectraData>,
@@ -4094,6 +4128,7 @@ module InsertStatements =
                 tryFind (context.Inputs.Find(inputsID))
 
         type PeptideHypothesisHandler =
+            ///Initializes a peptidehypothesis-object with at least all necessary parameters.
             static member init
                 (              
                     peptideEvidence             : PeptideEvidence,
@@ -4114,6 +4149,7 @@ module InsertStatements =
                 tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
 
         type ProteinDetectionHypothesisHandler =
+            ///Initializes a proteindetectionhypothesis-object with at least all necessary parameters.
             static member init
                 (             
                     passThreshold     : bool,
@@ -4165,6 +4201,7 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
 
         type ProteinAmbiguityGroupHandler =
+            ///Initializes a proteinambiguitygroup-object with at least all necessary parameters.
             static member init
                 (             
                     proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
@@ -4204,6 +4241,7 @@ module InsertStatements =
                 tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
 
         type ProteinDetectionListHandler =
+            ///Initializes a proteindetectionlist-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                     : string,
@@ -4254,6 +4292,7 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionList.Find(proteinDetectionListID))
 
         type AnalysisDataHandler =
+            ///Initializes a analysisdata-object with at least all necessary parameters.
             static member init
                 (             
                     spectrumIdentificationList : seq<SpectrumIdentificationList>,
@@ -4288,6 +4327,7 @@ module InsertStatements =
                 tryFind (context.AnalysisData.Find(analysisDataID))
 
         type ProteinDetectionHandler =
+            ///Initializes a proteindetection-object with at least all necessary parameters.
             static member init
                 (             
                     proteinDetectionList        : ProteinDetectionList,
@@ -4326,6 +4366,7 @@ module InsertStatements =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
 
         type BiblioGraphicReferenceHandler =
+            ///Initializes a bibliographicreference-object with at least all necessary parameters.
             static member init
                 (             
                     ?id          : string,
@@ -4437,6 +4478,7 @@ module InsertStatements =
                 tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
 
         type ProviderHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
                     ?id               : string,
@@ -4485,6 +4527,7 @@ module InsertStatements =
                 tryFind (context.Provider.Find(providerID))
 
         type MzIdentMLHandler =
+            ///Initializes a mzidentml-object with at least all necessary parameters.
             static member init
                 (             
                     ?inputs                         : Inputs,
