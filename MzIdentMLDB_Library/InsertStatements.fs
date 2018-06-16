@@ -225,16 +225,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new CVParam(
-                            id', 
+                            Nullable(id'), 
                             value', 
                             term, 
                             unit', 
@@ -260,16 +260,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new OrganizationParam(
-                                      id', 
+                                      Nullable(id'), 
                                       value', 
                                       term, 
                                       unit', 
@@ -295,16 +295,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PersonParam(
-                                id', 
+                                Nullable(id'), 
                                 value', 
                                 term, 
                                 unit', 
@@ -330,17 +330,17 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term,
                     ?unitName : string
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SampleParam(
-                                id', 
+                                Nullable(id'), 
                                 value', 
                                 term, 
                                 unit', 
@@ -366,16 +366,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ModificationParam(
-                                      id', 
+                                      Nullable(id'), 
                                       value', 
                                       term, 
                                       unit', 
@@ -401,16 +401,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PeptideParam(
-                                 id', 
+                                 Nullable(id'), 
                                  value', 
                                  term, 
                                  unit', 
@@ -436,16 +436,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new TranslationTableParam(
-                                          id', 
+                                          Nullable(id'), 
                                           value', 
                                           term, 
                                           unit', 
@@ -471,16 +471,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new MeasureParam(
-                                 id', 
+                                 Nullable(id'), 
                                  value', 
                                  term, 
                                  unit', 
@@ -506,16 +506,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new AmbiguousResidueParam(
-                                          id', 
+                                          Nullable(id'), 
                                           value', 
                                           term, 
                                           unit', 
@@ -541,16 +541,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new MassTableParam(
-                                   id', 
+                                   Nullable(id'), 
                                    value', 
                                    term, 
                                    unit', 
@@ -576,16 +576,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new IonTypeParam(
-                                 id', 
+                                 Nullable(id'), 
                                  value', 
                                  term, 
                                  unit', 
@@ -611,16 +611,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpecificityRuleParam(
-                                         id', 
+                                         Nullable(id'), 
                                          value', 
                                          term, 
                                          unit', 
@@ -646,16 +646,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SearchModificationParam(
-                                            id', 
+                                            Nullable(id'), 
                                             value', 
                                             term, 
                                             unit',  
@@ -681,16 +681,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new EnzymeNameParam(
-                                    id',  
+                                    Nullable(id'),  
                                     value', 
                                     term, 
                                     unit', 
@@ -716,16 +716,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new IncludeParam(
-                                 id', 
+                                 Nullable(id'), 
                                  value', 
                                  term, 
                                  unit',  
@@ -751,16 +751,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ExcludeParam(
-                                 id', 
+                                 Nullable(id'), 
                                  value', 
                                  term, 
                                  unit',  
@@ -786,16 +786,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new AdditionalSearchParam(
-                                          id', 
+                                          Nullable(id'), 
                                           value', 
                                           term, 
                                           unit',  
@@ -821,16 +821,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new FragmentToleranceParam(
-                                           id',  
+                                           Nullable(id'),  
                                            value', 
                                            term, 
                                            unit', 
@@ -856,16 +856,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ParentToleranceParam(
-                                         id', 
+                                         Nullable(id'), 
                                          value', 
                                          term, 
                                          unit', 
@@ -891,16 +891,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ThresholdParam(
-                                   id', 
+                                   Nullable(id'), 
                                    value', 
                                    term, 
                                    unit', 
@@ -926,16 +926,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SearchDatabaseParam(
-                                        id', 
+                                        Nullable(id'), 
                                         value', 
                                         term, 
                                         unit', 
@@ -961,16 +961,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new DBSequenceParam(
-                                    id', 
+                                    Nullable(id'), 
                                     value', 
                                     term, 
                                     unit', 
@@ -996,17 +996,17 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term,
                     ?unitName : string
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PeptideEvidenceParam(
-                                         id',
+                                         Nullable(id'),
                                          value', 
                                          term, 
                                          unit', 
@@ -1032,16 +1032,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationItemParam(
-                                                    id', 
+                                                    Nullable(id'), 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -1067,16 +1067,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationResultParam(
-                                                      id', 
+                                                      Nullable(id'), 
                                                       value', 
                                                       term, 
                                                       unit', 
@@ -1102,16 +1102,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationListParam(
-                                                    id', 
+                                                    Nullable(id'), 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -1137,16 +1137,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new AnalysisParam(
-                                  id',  
+                                  Nullable(id'),  
                                   value', 
                                   term, 
                                   unit',  
@@ -1172,16 +1172,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SourceFileParam(
-                                    id',  
+                                    Nullable(id'),  
                                     value', 
                                     term, 
                                     unit', 
@@ -1207,16 +1207,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ProteinDetectionHypothesisParam(
-                                                    id', 
+                                                    Nullable(id'), 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -1242,16 +1242,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new  ProteinAmbiguityGroupParam(
-                                                id', 
+                                                Nullable(id'), 
                                                 value', 
                                                 term, 
                                                 unit', 
@@ -1277,16 +1277,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : string,
+                    ?id       : Guid,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'       = defaultArg id (System.Guid.NewGuid())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new ProteinDetectionListParam(
-                                              id',
+                                              Nullable(id'),
                                               value', 
                                               term, 
                                               unit', 
@@ -1311,18 +1311,18 @@ module InsertStatements =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : string,
+                    ?id      : Guid,
                     ?name    : string,
                     ?details : seq<OrganizationParam>,
                     ?parent  : string
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'      = defaultArg id (System.Guid.NewGuid())
                 let name'    = defaultArg name Unchecked.defaultof<string>
                 let details' = convertOptionToList details
                 let parent'  = defaultArg parent Unchecked.defaultof<string>
                     
                 new Organization(
-                                 id', 
+                                 Nullable(id'), 
                                  name', 
                                  details',  
                                  parent', 
@@ -1357,7 +1357,7 @@ module InsertStatements =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id             : string,
+                    ?id             : Guid,
                     ?name           : string,
                     ?firstName      : string,
                     ?midInitials    : string,
@@ -1365,14 +1365,14 @@ module InsertStatements =
                     ?contactDetails : seq<PersonParam>,
                     ?organizations  : seq<Organization> 
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'          = defaultArg id (System.Guid.NewGuid())
                 let name'        = defaultArg name Unchecked.defaultof<string>
                 let firstName'   = defaultArg firstName Unchecked.defaultof<string>
                 let midInitials' = defaultArg midInitials Unchecked.defaultof<string>
                 let lastName'    = defaultArg lastName Unchecked.defaultof<string>
                     
                 new Person(
-                           id', 
+                           Nullable(id'), 
                            name', 
                            firstName',  
                            midInitials', 
@@ -1430,12 +1430,12 @@ module InsertStatements =
                 (   
                     person : Person, 
                     role   : CVParam,
-                    ?id    : string
+                    ?id    : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new ContactRole(
-                                id', 
+                                Nullable(id'), 
                                 person, 
                                 role, 
                                 Nullable(DateTime.Now)
@@ -1450,7 +1450,7 @@ module InsertStatements =
             static member init
                 (
                     softwareName       : CVParam,
-                    ?id                : string,
+                    ?id                : Guid,
                     ?name              : string,
                     ?uri               : string,
                     ?version           : string,
@@ -1458,7 +1458,7 @@ module InsertStatements =
                     ?softwareDeveloper : ContactRole,
                     ?mzIdentML         : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid())
                 let name'           = defaultArg name Unchecked.defaultof<string>
                 let uri'            = defaultArg uri Unchecked.defaultof<string>
                 let version'        = defaultArg version Unchecked.defaultof<string>
@@ -1467,7 +1467,7 @@ module InsertStatements =
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new AnalysisSoftware(
-                                     id', 
+                                     Nullable(id'), 
                                      name', 
                                      uri', 
                                      version', 
@@ -1516,14 +1516,14 @@ module InsertStatements =
             ///Initializes a subsample-object with at least all necessary parameters.
             static member init
                 (
-                    ?id          : string,
+                    ?id          : Guid,
                     ?sample      : Sample
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'          = defaultArg id (System.Guid.NewGuid())
                 let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
                     
                 new SubSample(
-                              id', 
+                              Nullable(id'), 
                               Sample', 
                               Nullable(DateTime.Now)
                              )
@@ -1541,14 +1541,14 @@ module InsertStatements =
             ///Initializes a sample-object with at least all necessary parameters.
             static member init
                 (
-                    ?id           : string,
+                    ?id           : Guid,
                     ?name         : string,
                     ?contactRoles : seq<ContactRole>,
                     ?subSamples   : seq<SubSample>,
                     ?details      : seq<SampleParam>,
                     ?mzIdentML    : MzIdentMLDocument
                 ) =
-                let id'           = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'           = defaultArg id (System.Guid.NewGuid())
                 let name'         = defaultArg name Unchecked.defaultof<string>
                 let contactRoles' = convertOptionToList contactRoles
                 let subSamples'   = convertOptionToList subSamples
@@ -1556,7 +1556,7 @@ module InsertStatements =
                 let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Sample(
-                           id', 
+                           Nullable(id'), 
                            name', 
                            contactRoles', 
                            subSamples', 
@@ -1614,20 +1614,20 @@ module InsertStatements =
             static member init
                 (
                     details                : seq<ModificationParam>,
-                    ?id                    : string,
+                    ?id                    : Guid,
                     ?residues              : string,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                    = defaultArg id (System.Guid.NewGuid())
                 let residues'              = defaultArg residues Unchecked.defaultof<string>
                 let location'              = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                 let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
                     
                 new Modification(
-                                 id', 
+                                 Nullable(id'), 
                                  residues', 
                                  Nullable(location'), 
                                  Nullable(monoIsotopicMassDelta'), 
@@ -1665,18 +1665,18 @@ module InsertStatements =
                 (
                     originalResidue        : string,
                     replacementResidue     : string,
-                    ?id                    : string,
+                    ?id                    : Guid,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                    = defaultArg id (System.Guid.NewGuid())
                 let location'              = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                 let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
 
                 new SubstitutionModification(
-                                             id', 
+                                             Nullable(id'), 
                                              originalResidue, 
                                              replacementResidue, 
                                              Nullable(location'), 
@@ -1709,14 +1709,14 @@ module InsertStatements =
             static member init
                 (
                     peptideSequence            : string,
-                    ?id                        : string,
+                    ?id                        : Guid,
                     ?name                      : string,                    
                     ?modifications             : seq<Modification>,
                     ?substitutionModifications : seq<SubstitutionModification>,
                     ?details                   : seq<PeptideParam>,
                     ?mzIdentML                 : MzIdentMLDocument
                 ) =
-                let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                        = defaultArg id (System.Guid.NewGuid())
                 let name'                      = defaultArg name Unchecked.defaultof<string>
                 let modifications'             = convertOptionToList modifications
                 let substitutionModifications' = convertOptionToList substitutionModifications
@@ -1724,7 +1724,7 @@ module InsertStatements =
                 let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
                 new Peptide(
-                            id', 
+                            Nullable(id'), 
                             name', 
                             peptideSequence, 
                             modifications', 
@@ -1782,16 +1782,16 @@ module InsertStatements =
             ///Initializes a translationtable-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : string,
+                    ?id      : Guid,
                     ?name    : string,
                     ?details : seq<TranslationTableParam>
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'      = defaultArg id (System.Guid.NewGuid())
                 let name'    = defaultArg name Unchecked.defaultof<string>
                 let details' = convertOptionToList details
                     
                 new TranslationTable(
-                                     id', 
+                                     Nullable(id'), 
                                      name', 
                                      details', 
                                      Nullable(DateTime.Now)
@@ -1821,14 +1821,14 @@ module InsertStatements =
             static member init
                 (
                     details  : seq<MeasureParam>,
-                    ?id      : string,
+                    ?id      : Guid,
                     ?name    : string 
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'   = defaultArg id (System.Guid.NewGuid())
                 let name' = defaultArg name Unchecked.defaultof<string>
                     
                 new Measure(
-                            id', 
+                            Nullable(id'), 
                             name', 
                             details |> List, Nullable(DateTime.Now)
                            )
@@ -1848,11 +1848,11 @@ module InsertStatements =
                 (
                     code    : string,
                     mass    : float,
-                    ?id     : string
+                    ?id     : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                 new Residue(
-                            id', 
+                            Nullable(id'), 
                             code, 
                             Nullable(mass), 
                             Nullable(DateTime.Now)
@@ -1867,12 +1867,12 @@ module InsertStatements =
                 (
                     code    : string,
                     details : seq<AmbiguousResidueParam>,
-                    ?id     : string
+                    ?id     : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new AmbiguousResidue(
-                                     id', 
+                                     Nullable(id'), 
                                      code, 
                                      details |> List, 
                                      Nullable(DateTime.Now)
@@ -1887,20 +1887,20 @@ module InsertStatements =
             static member init
                 (
                     msLevel           : string,
-                    ?id               : string,
+                    ?id               : Guid,
                     ?name             : string,
                     ?residue          : seq<Residue>,
                     ?ambiguousResidue : seq<AmbiguousResidue>,
                     ?details          : seq<MassTableParam>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'               = defaultArg id (System.Guid.NewGuid())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let residue'          = convertOptionToList residue
                 let ambiguousResidue' = convertOptionToList ambiguousResidue
                 let details'          = convertOptionToList details
                     
                 new MassTable(
-                              id', 
+                              Nullable(id'), 
                               name', 
                               msLevel, 
                               residue', 
@@ -1953,12 +1953,12 @@ module InsertStatements =
             static member init
                 (
                     value   : float,
-                    ?id     : string
+                    ?id     : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new Value(
-                          id', 
+                          Nullable(id'), 
                           Nullable(value), 
                           Nullable(DateTime.Now)
                          )
@@ -1973,12 +1973,12 @@ module InsertStatements =
                 (
                     measure : Measure,
                     values  : seq<Value>,
-                    ?id     : string
+                    ?id     : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new FragmentArray(
-                                  id', 
+                                  Nullable(id'), 
                                   measure, 
                                   values |> List, 
                                   Nullable(DateTime.Now)
@@ -1993,12 +1993,12 @@ module InsertStatements =
             static member init
                 (
                     index : int,
-                    ?id   : string
+                    ?id   : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
 
                 new Index(
-                          id', 
+                          Nullable(id'), 
                           Nullable(index), 
                           Nullable(DateTime.Now)
                          )
@@ -2012,16 +2012,16 @@ module InsertStatements =
             static member init
                 (
                     details        : seq<IonTypeParam>,
-                    ?id            : string,
+                    ?id            : Guid,
                     ?index         : seq<Index>,
                     ?fragmentArray : seq<FragmentArray>
                 ) =
-                let id'            = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'            = defaultArg id (System.Guid.NewGuid())
                 let index'         = convertOptionToList index
                 let fragmentArray' = convertOptionToList fragmentArray
                     
                 new IonType(
-                            id', 
+                            Nullable(id'), 
                             index', 
                             fragmentArray', 
                             details |> List, Nullable(DateTime.Now)
@@ -2058,16 +2058,16 @@ module InsertStatements =
                     location                     : string,
                     fileFormat                   : CVParam,
                     spectrumIDFormat             : CVParam,
-                    ?id                          : string,
+                    ?id                          : Guid,
                     ?name                        : string,
                     ?externalFormatDocumentation : string
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                          = defaultArg id (System.Guid.NewGuid())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
 
                 new SpectraData(
-                                id', 
+                                Nullable(id'), 
                                 name', 
                                 location, 
                                 externalFormatDocumentation', 
@@ -2094,12 +2094,12 @@ module InsertStatements =
             static member init
                 ( 
                     details    : seq<SpecificityRuleParam>,
-                    ?id        : string
+                    ?id        : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new SpecificityRule(
-                                    id', 
+                                    Nullable(id'), 
                                     details |> List, 
                                     Nullable(DateTime.Now)
                                    )
@@ -2116,14 +2116,14 @@ module InsertStatements =
                     massDelta         : float,
                     residues          : string,
                     details           : seq<SearchModificationParam>,
-                    ?id               : string,
+                    ?id               : Guid,
                     ?specificityRules : seq<SpecificityRule>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'               = defaultArg id (System.Guid.NewGuid())
                 let specificityRules' = convertOptionToList specificityRules
                     
                 new SearchModification(
-                                       id', 
+                                       Nullable(id'), 
                                        Nullable(fixedMod), 
                                        Nullable(massDelta), 
                                        residues, 
@@ -2149,7 +2149,7 @@ module InsertStatements =
             ///Initializes a enzyme-object with at least all necessary parameters.
             static member init
                 (
-                    ?id              : string,
+                    ?id              : Guid,
                     ?name            : string,
                     ?cTermGain       : string,
                     ?nTermGain       : string,
@@ -2159,7 +2159,7 @@ module InsertStatements =
                     ?siteRegexc      : string,
                     ?enzymeName      : seq<EnzymeNameParam>
                 ) =
-                let id'              = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'              = defaultArg id (System.Guid.NewGuid())
                 let name'            = defaultArg name Unchecked.defaultof<string>
                 let cTermGain'       = defaultArg cTermGain Unchecked.defaultof<string>
                 let nTermGain'       = defaultArg nTermGain Unchecked.defaultof<string>
@@ -2170,7 +2170,7 @@ module InsertStatements =
                 let enzymeName'      = convertOptionToList enzymeName
                     
                 new Enzyme(
-                           id', 
+                           Nullable(id'), 
                            name', 
                            cTermGain', 
                            nTermGain', 
@@ -2236,16 +2236,16 @@ module InsertStatements =
             static member init
                 (
                     filterType : CVParam,
-                    ?id        : string,
+                    ?id        : Guid,
                     ?includes  : seq<IncludeParam>,
                     ?excludes  : seq<ExcludeParam>
                 ) =
-                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'         = defaultArg id (System.Guid.NewGuid())
                 let includes'   = convertOptionToList includes
                 let excludes'   = convertOptionToList excludes
                     
                 new Filter(
-                           id', 
+                           Nullable(id'), 
                            filterType, 
                            includes', 
                            excludes', 
@@ -2281,11 +2281,15 @@ module InsertStatements =
             static member init
                 ( 
                     frame : int,
-                    ?id   : string
+                    ?id   : Guid
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'   = defaultArg id (System.Guid.NewGuid())
                     
-                new Frame(id', Nullable(frame), Nullable(DateTime.Now))
+                new Frame(
+                          Nullable(id'), 
+                          Nullable(frame), 
+                          Nullable(DateTime.Now)
+                         )
 
             static member findFrameByID
                 (context:MzIdentML) (frameID:string) =
@@ -2298,7 +2302,7 @@ module InsertStatements =
                     analysisSoftware        : AnalysisSoftware,
                     searchType              : CVParam ,
                     threshold               : seq<ThresholdParam>,
-                    ?id                     : string,
+                    ?id                     : Guid,
                     ?name                   : string,
                     ?additionalSearchParams : seq<AdditionalSearchParam>,
                     ?modificationParams     : seq<SearchModification>,
@@ -2312,7 +2316,7 @@ module InsertStatements =
                     ?translationTable       : seq<TranslationTable>,
                     ?mzIdentML              : MzIdentMLDocument
                 ) =
-                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                     = defaultArg id (System.Guid.NewGuid())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
                 let additionalSearchParams' = convertOptionToList additionalSearchParams
                 let modificationParams'     = convertOptionToList modificationParams
@@ -2327,7 +2331,7 @@ module InsertStatements =
                 let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new SpectrumIdentificationProtocol(
-                                                   id', 
+                                                   Nullable(id'), 
                                                    name', 
                                                    analysisSoftware, 
                                                    searchType, 
@@ -2462,7 +2466,7 @@ module InsertStatements =
                     location                     : string,
                     fileFormat                   : CVParam,
                     databaseName                 : CVParam,
-                    ?id                          : string,
+                    ?id                          : Guid,
                     ?name                        : string,                    
                     ?numDatabaseSequences        : int64,
                     ?numResidues                 : int64,
@@ -2471,7 +2475,7 @@ module InsertStatements =
                     ?externalFormatDocumentation : string,
                     ?details                     : seq<SearchDatabaseParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                          = defaultArg id (System.Guid.NewGuid())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let numDatabaseSequences'        = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
                 let numResidues'                 = defaultArg numResidues Unchecked.defaultof<int64>
@@ -2481,7 +2485,7 @@ module InsertStatements =
                 let details'                     = convertOptionToList details
                     
                 new SearchDatabase(
-                                   id', 
+                                   Nullable(id'), 
                                    name', 
                                    location, 
                                    Nullable(numDatabaseSequences'), 
@@ -2545,14 +2549,14 @@ module InsertStatements =
                 (
                     accession      : string,
                     searchDatabase : SearchDatabase,
-                    ?id            : string,
+                    ?id            : Guid,
                     ?name          : string,
                     ?sequence      : string,
                     ?length        : int,
                     ?details       : seq<DBSequenceParam>,
                     ?mzIdentML     : MzIdentMLDocument
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'        = defaultArg id (System.Guid.NewGuid())
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let sequence'  = defaultArg sequence Unchecked.defaultof<string>
                 let length'    = defaultArg length Unchecked.defaultof<int>
@@ -2560,7 +2564,7 @@ module InsertStatements =
                 let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new DBSequence(
-                               id', 
+                               Nullable(id'), 
                                name', 
                                accession, 
                                searchDatabase, 
@@ -2611,7 +2615,7 @@ module InsertStatements =
                 (
                     dbSequence                  : DBSequence,
                     peptide                     : Peptide,
-                    ?id                         : string,
+                    ?id                         : Guid,
                     ?name                       : string,
                     ?start                      : int,
                     ?end'                       : int,
@@ -2623,7 +2627,7 @@ module InsertStatements =
                     ?details                    : seq<PeptideEvidenceParam>,
                     ?mzIdentML                  : MzIdentMLDocument
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                         = defaultArg id (System.Guid.NewGuid())
                 let name'                       = defaultArg name Unchecked.defaultof<string>
                 let start'                      = defaultArg start Unchecked.defaultof<int>
                 let end''                       = defaultArg end' Unchecked.defaultof<int>
@@ -2636,7 +2640,7 @@ module InsertStatements =
                 let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new PeptideEvidence(
-                                    id', 
+                                    Nullable(id'), 
                                     name', 
                                     dbSequence, 
                                     peptide, 
@@ -2720,7 +2724,7 @@ module InsertStatements =
                     experimentalMassToCharge      : float,
                     passThreshold                 : bool,
                     rank                          : int,
-                    ?id                           : string,
+                    ?id                           : Guid,
                     ?name                         : string,
                     ?sample                       : Sample,
                     ?massTable                    : MassTable,
@@ -2730,7 +2734,7 @@ module InsertStatements =
                     ?calculatedPI                 : float,
                     ?details                      : seq<SpectrumIdentificationItemParam>
                 ) =
-                let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                           = defaultArg id (System.Guid.NewGuid())
                 let name'                         = defaultArg name Unchecked.defaultof<string>
                 let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
                 let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
@@ -2741,7 +2745,7 @@ module InsertStatements =
                 let details'                      = convertOptionToList details
                     
                 new SpectrumIdentificationItem(
-                                               id', 
+                                               Nullable(id'), 
                                                name', 
                                                sample', 
                                                massTable', 
@@ -2829,16 +2833,16 @@ module InsertStatements =
                     spectraData                 : SpectraData,
                     spectrumID                  : string,
                     spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
-                    ?id                         : string,
+                    ?id                         : Guid,
                     ?name                       : string,
                     ?details                    : seq<SpectrumIdentificationResultParam>
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                         = defaultArg id (System.Guid.NewGuid())
                 let name'                       = defaultArg name Unchecked.defaultof<string>
                 let details'                    = convertOptionToList details
                     
                 new SpectrumIdentificationResult(
-                                                 id', 
+                                                 Nullable(id'), 
                                                  name', 
                                                  spectraData, 
                                                  spectrumID, 
@@ -2875,20 +2879,20 @@ module InsertStatements =
             static member init
                 (
                     spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
-                    ?id                          : string,
+                    ?id                          : Guid,
                     ?name                        : string,
                     ?numSequencesSearched        : int64,
                     ?fragmentationTable          : seq<Measure>,
                     ?details                     : seq<SpectrumIdentificationListParam>          
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                   = defaultArg id (System.Guid.NewGuid())
                 let name'                 = defaultArg name Unchecked.defaultof<string>
                 let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int64>
                 let fragmentationTable'   = convertOptionToList fragmentationTable
                 let details'              = convertOptionToList details
                     
                 new SpectrumIdentificationList(
-                                               id', 
+                                               Nullable(id'), 
                                                name', 
                                                Nullable(numSequencesSearched'), 
                                                fragmentationTable', 
@@ -2939,18 +2943,18 @@ module InsertStatements =
                     spectrumIdentificationProtocol : SpectrumIdentificationProtocol,
                     spectraData                    : seq<SpectraData>,
                     searchDatabase                 : seq<SearchDatabase>,
-                    ?id                            : string,
+                    ?id                            : Guid,
                     ?name                          : string,
                     ?activityDate                  : DateTime,
                     ?mzIdentML                     : MzIdentMLDocument
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'               = defaultArg id (System.Guid.NewGuid())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
                 let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new SpectrumIdentification(
-                                           id', 
+                                           Nullable(id'), 
                                            name',
                                            Nullable(activityDate'), 
                                            spectrumIdentificationList, 
@@ -2986,18 +2990,18 @@ module InsertStatements =
                 (
                     analysisSoftware : AnalysisSoftware,
                     threshold        : seq<ThresholdParam>,
-                    ?id              : string,
+                    ?id              : Guid,
                     ?name            : string,
                     ?analysisParams  : seq<AnalysisParam>,
                     ?mzIdentML       : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid())
                 let name'           = defaultArg name Unchecked.defaultof<string>
                 let analysisParams' = convertOptionToList analysisParams
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetectionProtocol(
-                                             id', 
+                                             Nullable(id'), 
                                              name', 
                                              analysisSoftware, 
                                              analysisParams', 
@@ -3036,18 +3040,18 @@ module InsertStatements =
                 (             
                     location                     : string,
                     fileFormat                   : CVParam,
-                    ?id                          : string,
+                    ?id                          : Guid,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?details                     : seq<SourceFileParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                          = defaultArg id (System.Guid.NewGuid())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                     
                 new SourceFile(
-                               id', 
+                               Nullable(id'), 
                                name', 
                                location, 
                                externalFormatDocumentation', 
@@ -3089,18 +3093,18 @@ module InsertStatements =
             static member init
                 (              
                     spectraData     : seq<SpectraData>,
-                    ?id             : string,
+                    ?id             : Guid,
                     ?sourceFile     : seq<SourceFile>,
                     ?searchDatabase : seq<SearchDatabase>,
                     ?mzIdentML      : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid())
                 let sourceFile'     = convertOptionToList sourceFile
                 let searchDatabase' = convertOptionToList searchDatabase
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Inputs(
-                           id', 
+                           Nullable(id'), 
                            sourceFile', 
                            searchDatabase', 
                            spectraData |> List, 
@@ -3143,12 +3147,12 @@ module InsertStatements =
                 (              
                     peptideEvidence             : PeptideEvidence,
                     spectrumIdentificationItems : seq<SpectrumIdentificationItem>,
-                    ?id                         : string
+                    ?id                         : Guid
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid())
                     
                 new PeptideHypothesis(
-                                      id', 
+                                      Nullable(id'), 
                                       peptideEvidence, 
                                       spectrumIdentificationItems |> List, 
                                       Nullable(DateTime.Now)
@@ -3165,18 +3169,18 @@ module InsertStatements =
                     passThreshold     : bool,
                     dbSequence        : DBSequence,
                     peptideHypothesis : seq<PeptideHypothesis>,
-                    ?id               : string,
+                    ?id               : Guid,
                     ?name             : string,
                     ?details          : seq<ProteinDetectionHypothesisParam>,
                     ?mzIdentML        : MzIdentMLDocument
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'        = defaultArg id (System.Guid.NewGuid())
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let details'   = convertOptionToList details
                 let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetectionHypothesis(
-                                               id', 
+                                               Nullable(id'), 
                                                name', 
                                                Nullable(passThreshold), 
                                                dbSequence, 
@@ -3215,16 +3219,16 @@ module InsertStatements =
             static member init
                 (             
                     proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
-                    ?id                       : string,
+                    ?id                       : Guid,
                     ?name                     : string,
                     ?details                  : seq<ProteinAmbiguityGroupParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                          = defaultArg id (System.Guid.NewGuid())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                     
                 new ProteinAmbiguityGroup(
-                                          id', 
+                                          Nullable(id'), 
                                           name', 
                                           proteinDetecionHypothesis |> List, 
                                           details', 
@@ -3254,18 +3258,18 @@ module InsertStatements =
             ///Initializes a proteindetectionlist-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id                     : string,
+                    ?id                     : Guid,
                     ?name                   : string,
                     ?proteinAmbiguityGroups : seq<ProteinAmbiguityGroup>,
                     ?details                : seq<ProteinDetectionListParam>
                 ) =
-                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                     = defaultArg id (System.Guid.NewGuid())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
                 let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
                 let details'                = convertOptionToList details
                     
                 new ProteinDetectionList(
-                                         id', 
+                                         Nullable(id'), 
                                          name', 
                                          proteinAmbiguityGroups', 
                                          details', 
@@ -3306,16 +3310,16 @@ module InsertStatements =
             static member init
                 (             
                     spectrumIdentificationList : seq<SpectrumIdentificationList>,
-                    ?id                        : string,
+                    ?id                        : Guid,
                     ?proteinDetectionList      : ProteinDetectionList,
                     ?mzIdentML                 : MzIdentMLDocument
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                   = defaultArg id (System.Guid.NewGuid())
                 let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
                 let mzIdentML'            = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new AnalysisData(
-                                 id', 
+                                 Nullable(id'), 
                                  spectrumIdentificationList |> List, 
                                  proteinDetectionList', 
                                  mzIdentML', 
@@ -3343,16 +3347,16 @@ module InsertStatements =
                     proteinDetectionList        : ProteinDetectionList,
                     proteinDetectionProtocol    : ProteinDetectionProtocol,
                     spectrumIdentificationLists : seq<SpectrumIdentificationList>,
-                    ?id                         : string,
+                    ?id                         : Guid,
                     ?name                       : string,
                     ?activityDate               : DateTime
                 ) =
-                let id'           = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'           = defaultArg id (System.Guid.NewGuid())
                 let name'         = defaultArg name Unchecked.defaultof<string>
                 let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
                     
                 new ProteinDetection(
-                                     id', 
+                                     Nullable(id'), 
                                      name', 
                                      Nullable(activityDate'), 
                                      proteinDetectionList, 
@@ -3379,7 +3383,7 @@ module InsertStatements =
             ///Initializes a bibliographicreference-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id          : string,
+                    ?id          : Guid,
                     ?name        : string,
                     ?authors     : string,
                     ?doi         : string,
@@ -3393,7 +3397,7 @@ module InsertStatements =
                     ?year        : int,
                     ?mzIdentML   : MzIdentMLDocument
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'          = defaultArg id (System.Guid.NewGuid())
                 let name'        = defaultArg name Unchecked.defaultof<string>
                 let authors'     = defaultArg authors Unchecked.defaultof<string>
                 let doi'         = defaultArg doi Unchecked.defaultof<string>
@@ -3408,7 +3412,7 @@ module InsertStatements =
                 let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new BiblioGraphicReference(
-                                           id', 
+                                           Nullable(id'), 
                                            name', 
                                            authors', 
                                            doi', editor', 
@@ -3491,20 +3495,20 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id               : string,
+                    ?id               : Guid,
                     ?name             : string,
                     ?analysisSoftware : AnalysisSoftware,
                     ?contactRole      : ContactRole,
                     ?mzIdentML        : MzIdentMLDocument
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'               = defaultArg id (System.Guid.NewGuid())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                 let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
                 let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
                 new Provider(
-                             id', 
+                             Nullable(id'), 
                              name', 
                              analysisSoftware', 
                              contactRole', 
@@ -3545,7 +3549,7 @@ module InsertStatements =
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
                     ?analysisData                   : AnalysisData,
-                    ?id                             : string,
+                    ?id                             : Guid,
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
                     ?provider                       : Provider,
@@ -3559,7 +3563,7 @@ module InsertStatements =
                     ?proteinDetectionProtocol       : ProteinDetectionProtocol,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
-                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                             = defaultArg id (System.Guid.NewGuid())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
@@ -3578,7 +3582,7 @@ module InsertStatements =
                 let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
-                                      id', 
+                                      Nullable(id'), 
                                       name',
                                       version',
                                       analysisSoftwares', 
