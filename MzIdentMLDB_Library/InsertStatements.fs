@@ -146,10 +146,19 @@ module InsertStatements =
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
 
-            static member addTermToContext (dbContext:MzIdentML) (item:Term) =
+            static member private matchTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
+                if item1.Name=item2.Name && item1.Ontology=item2.Ontology
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- System.Guid.NewGuid().ToString()
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:Term) =
                 query {
                     for i in dbContext.Term.Local do
-                        if i.ID=item.ID || i.Name=item.Name
+                        if i.Name = item.Name
                            then select i
                       }
                 |> (fun term -> 
@@ -157,15 +166,24 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Term do
-                                       if i.ID=item.ID || i.Name=item.Name
+                                       if i.Name = item.Name
                                           then select i
                                   }
                             |> (fun term' -> if (term'.Count()) < 1
-                                                then dbContext.Add item |> ignore
-                                                else ()
-                                )
-                        else ()
+                                                then let tmp = dbContext.Term.Find(item.ID)
+                                                     if tmp.ID = item.ID 
+                                                        then item.ID <- System.Guid.NewGuid().ToString()
+                                                             dbContext.Add item |> ignore
+                                                        else dbContext.Add item |> ignore
+                                                else term'
+                                                     |> Seq.iter (fun termItem -> TermHandler.matchTerms dbContext termItem item)
+                               )
+                        else term
+                             |> Seq.iter (fun termItem -> TermHandler.matchTerms dbContext termItem item)
                    )
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:Term) =
+                TermHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
         
         type OntologyHandler =
             ///Initializes a ontology-object with at least all necessary parameters.

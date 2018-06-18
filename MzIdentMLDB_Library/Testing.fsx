@@ -547,10 +547,14 @@ TermHandler.tryFindByID sqliteContext "MS:0000000"
 
 //Rewrite function, so that it takes all correspending object out of context and then compare them because otherwise the checking lasts to long!
 
-let matchTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
+let private matchTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
     if item1.Name=item2.Name && item1.Ontology=item2.Ontology
-       then printfn "Same"
-       else dbContext.Add item2 |> ignore
+       then ()
+       else 
+            if item1.ID = item2.ID
+               then item2.ID <- System.Guid.NewGuid().ToString()
+                    dbContext.Add item2 |> ignore
+               else dbContext.Add item2 |> ignore
 
 let addTermToContext (dbContext : MzIdentML) (item:Term) =
     query {
@@ -567,12 +571,16 @@ let addTermToContext (dbContext : MzIdentML) (item:Term) =
                               then select i
                       }
                 |> (fun term' -> if (term'.Count()) < 1
-                                    then printfn "Not part of DB"
-                                         dbContext.Add item |> ignore
+                                    then let tmp = dbContext.Term.Find(item.ID)
+                                         if tmp.ID = item.ID 
+                                            then item.ID <- System.Guid.NewGuid().ToString()
+                                                 dbContext.Add item |> ignore
+                                            else dbContext.Add item |> ignore
                                     else term'
                                          |> Seq.iter (fun termItem -> matchTerms dbContext termItem item)
                    )
-            else printfn "Part of local-context"
+            else term
+                 |> Seq.iter (fun termItem -> matchTerms dbContext termItem item)
        )
 
 let addTerm2 (dbContext : MzIdentML) (item:Term) =
@@ -596,13 +604,12 @@ let y = addTermToContext sqliteContext (TermHandler.init("MS:0000000", "Proteomi
 let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 
 #time
-let termTest = TermHandler.init("I","II")
+let termTest = TermHandler.init("I","III")
 
 let addedtermTest =
     sqliteContext.Add termTest
 
 for i = 0 to 10000 do
-    addTermToContext sqliteContext termTest
+    TermHandler.addToContext sqliteContext termTest
 
 sqliteContext.SaveChanges()
-
