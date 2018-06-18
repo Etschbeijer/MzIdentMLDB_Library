@@ -146,8 +146,8 @@ module InsertStatements =
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
 
-            static member private matchTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
-                if item1.Name=item2.Name && item1.Ontology=item2.Ontology
+            static member private matchAndAddTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
+                if item1.Ontology=item2.Ontology
                    then ()
                    else 
                         if item1.ID = item2.ID
@@ -159,16 +159,18 @@ module InsertStatements =
                 query {
                     for i in dbContext.Term.Local do
                         if i.Name = item.Name
-                           then select i
+                           then select (i, i.Ontology)
                       }
+                |> Seq.map (fun (term, _) -> term)
                 |> (fun term -> 
                     if Seq.length term < 1 
                         then 
                             query {
                                    for i in dbContext.Term do
                                        if i.Name = item.Name
-                                          then select i
+                                          then select (i, i.Ontology)
                                   }
+                            |> Seq.map (fun (term, _) -> term)
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then let tmp = dbContext.Term.Find(item.ID)
                                                      if tmp.ID = item.ID 
@@ -176,11 +178,12 @@ module InsertStatements =
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
                                                 else term'
-                                                     |> Seq.iter (fun termItem -> TermHandler.matchTerms dbContext termItem item)
+                                                     |> Seq.iter (fun termItem -> TermHandler.matchAndAddTerms dbContext termItem item)
                                )
                         else term
-                             |> Seq.iter (fun termItem -> TermHandler.matchTerms dbContext termItem item)
+                             |> Seq.iter (fun termItem -> TermHandler.matchAndAddTerms dbContext termItem item)
                    )
+
             static member addToContextAndInsert (dbContext : MzIdentML) (item:Term) =
                 TermHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -217,26 +220,45 @@ module InsertStatements =
                 (context:MzIdentML) (ontologyID:string) =
                 tryFind (context.Ontology.Find(ontologyID))
             
-            static member addOntologyToContext (dbContext:MzIdentML) (item:Ontology) =
-                query {
-                    for i in dbContext.Ontology.Local do
-                        if i.ID=item.ID
-                           then select i
-                      }
-                |> (fun term -> 
-                    if Seq.length term < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Ontology do
-                                       if i.ID=item.ID
-                                          then select i
-                                  }
-                            |> (fun term' -> if (term'.Count()) < 1
-                                                then dbContext.Add item |> ignore
-                                                else ()
-                                )
-                        else ()
-                   )
+            //static member private matchAndAddOntologies (dbContext:MzIdentML) (item1:Ontology) (item2:Ontology) =
+            //    if item1.ID=item2.ID && item1.Terms=item2.Terms
+            //       then ()
+            //       else 
+            //            if item1.ID = item2.ID
+            //               then item2.ID <- System.Guid.NewGuid().ToString()
+            //                    dbContext.Add item2 |> ignore
+            //               else dbContext.Add item2 |> ignore
+
+            //static member addToContext (dbContext : MzIdentML) (item:Ontology) =
+            //    query {
+            //        for i in dbContext.Ontology.Local do
+            //            if item.Terms = item.Terms
+            //               then select i
+            //          }
+            //    |> (fun term -> 
+            //        if Seq.length term < 1 
+            //            then 
+            //                query {
+            //                       for i in dbContext.Term do
+            //                           if item.Terms = item.Terms
+            //                              then select i
+            //                      }
+            //                |> (fun term' -> if (term'.Count()) < 1
+            //                                    then let tmp = dbContext.Ontology.Find(item.ID)
+            //                                         if tmp.ID = item.ID 
+            //                                            then item.ID <- System.Guid.NewGuid().ToString()
+            //                                                 dbContext.Add item |> ignore
+            //                                            else dbContext.Add item |> ignore
+            //                                    else term'
+            //                                         |> Seq.iter (fun termItem -> OntologyHandler.matchAndAddOntologies dbContext termItem item)
+            //                   )
+            //            else term
+            //                 |> Seq.iter (fun termItem -> OntologyHandler.matchAndAddOntologies dbContext termItem item)
+            //       )
+
+            //static member addToContextAndInsert (dbContext : MzIdentML) (item:Term) =
+            //    TermHandler.addToContext dbContext item |> ignore
+            //    dbContext.SaveChanges()
 
         type CVParamHandler =
             ///Initializes a cvparam-object with at least all necessary parameters.
@@ -272,6 +294,48 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
+
+            static member private matchAndAddParams (dbContext:MzIdentML) (item1:CVParam) (item2:CVParam) =
+                if item1.Value=item2.Value && item1.Unit=item2.Unit
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- Nullable(System.Guid.NewGuid())
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:CVParam) =
+                query {
+                    for i in dbContext.CVParam.Local do
+                        if i.Term = item.Term
+                           then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if Seq.length param < 1 
+                        then 
+                            query {
+                                   for i in dbContext.CVParam do
+                                       if i.Term = item.Term
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param' -> if (param'.Count()) < 1
+                                                then let tmp = dbContext.CVParam.Find(item.ID)
+                                                     if tmp.ID = item.ID 
+                                                        then item.ID <- Nullable(System.Guid.NewGuid())
+                                                             dbContext.Add item |> ignore
+                                                        else dbContext.Add item |> ignore
+                                                else param'
+                                                     |> Seq.iter (fun paramItem -> CVParamHandler.matchAndAddParams dbContext paramItem item)
+                               )
+                        else param
+                             |> Seq.iter (fun paramItem -> CVParamHandler.matchAndAddParams dbContext paramItem item)
+                   )
+
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:CVParam) =
+                CVParamHandler.matchAndAddParams dbContext item |> ignore
+                dbContext.SaveChanges()
 
         type OrganizationParamHandler =
             ///Initializes a organizationparam-object with at least all necessary parameters.
