@@ -157,9 +157,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Term) =
                 query {
-                    for i in dbContext.Term.Local do
-                        if i.Name = item.Name
-                           then select (i, i.Ontology)
+                        for i in dbContext.Term.Local do
+                            if i.Name = item.Name
+                               then select (i, i.Ontology)
                       }
                 |> Seq.map (fun (term, _) -> term)
                 |> (fun term -> 
@@ -306,9 +306,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:CVParam) =
                 query {
-                    for i in dbContext.CVParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.CVParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -383,9 +383,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:OrganizationParam) =
                 query {
-                    for i in dbContext.OrganizationParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.OrganizationParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -460,9 +460,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:PersonParam) =
                 query {
-                    for i in dbContext.PersonParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.PersonParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -538,9 +538,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SampleParam) =
                 query {
-                    for i in dbContext.SampleParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SampleParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -615,9 +615,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ModificationParam) =
                 query {
-                    for i in dbContext.ModificationParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ModificationParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -692,9 +692,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:PeptideParam) =
                 query {
-                    for i in dbContext.PeptideParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.PeptideParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -769,9 +769,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:TranslationTableParam) =
                 query {
-                    for i in dbContext.TranslationTableParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.TranslationTableParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -846,9 +846,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:MeasureParam) =
                 query {
-                    for i in dbContext.MeasureParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.MeasureParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -923,9 +923,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AmbiguousResidueParam) =
                 query {
-                    for i in dbContext.AmbiguousResidueParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.AmbiguousResidueParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1000,9 +1000,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:MassTableParam) =
                 query {
-                    for i in dbContext.MassTableParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.MassTableParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1077,9 +1077,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:IonTypeParam) =
                 query {
-                    for i in dbContext.IonTypeParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.IonTypeParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1154,9 +1154,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpecificityRuleParam) =
                 query {
-                    for i in dbContext.SpecificityRuleParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SpecificityRuleParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1231,9 +1231,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SearchModificationParam) =
                 query {
-                    for i in dbContext.SearchModificationParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SearchModificationParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1308,9 +1308,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:EnzymeNameParam) =
                 query {
-                    for i in dbContext.EnzymeNameParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.EnzymeNameParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1385,9 +1385,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:IncludeParam) =
                 query {
-                    for i in dbContext.IncludeParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.IncludeParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1462,9 +1462,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ExcludeParam) =
                 query {
-                    for i in dbContext.ExcludeParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ExcludeParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1539,9 +1539,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AdditionalSearchParam) =
                 query {
-                    for i in dbContext.AdditionalSearchParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.AdditionalSearchParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1616,9 +1616,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:FragmentToleranceParam) =
                 query {
-                    for i in dbContext.FragmentToleranceParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.FragmentToleranceParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1693,9 +1693,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ParentToleranceParam) =
                 query {
-                    for i in dbContext.ParentToleranceParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ParentToleranceParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1770,9 +1770,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ThresholdParam) =
                 query {
-                    for i in dbContext.ThresholdParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ThresholdParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1847,9 +1847,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SearchDatabaseParam) =
                 query {
-                    for i in dbContext.SearchDatabaseParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SearchDatabaseParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -1924,9 +1924,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:DBSequenceParam) =
                 query {
-                    for i in dbContext.DBSequenceParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.DBSequenceParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2002,9 +2002,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:PeptideEvidenceParam) =
                 query {
-                    for i in dbContext.PeptideEvidenceParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.PeptideEvidenceParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2079,9 +2079,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationItemParam) =
                 query {
-                    for i in dbContext.SpectrumIdentificationItemParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SpectrumIdentificationItemParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2156,9 +2156,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationResultParam) =
                 query {
-                    for i in dbContext.SpectrumIdentificationResultParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SpectrumIdentificationResultParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2233,9 +2233,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationListParam) =
                 query {
-                    for i in dbContext.SpectrumIdentificationListParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SpectrumIdentificationListParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2310,9 +2310,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AnalysisParam) =
                 query {
-                    for i in dbContext.AnalysisParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.AnalysisParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2387,9 +2387,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SourceFileParam) =
                 query {
-                    for i in dbContext.SourceFileParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.SourceFileParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2464,9 +2464,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinDetectionHypothesisParam) =
                 query {
-                    for i in dbContext.ProteinDetectionHypothesisParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ProteinDetectionHypothesisParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2541,9 +2541,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinAmbiguityGroupParam) =
                 query {
-                    for i in dbContext.ProteinAmbiguityGroupParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ProteinAmbiguityGroupParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2618,9 +2618,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinDetectionListParam) =
                 query {
-                    for i in dbContext.ProteinDetectionListParam.Local do
-                        if i.Term = item.Term
-                           then select (i, i.Term, i.Unit)
+                       for i in dbContext.ProteinDetectionListParam.Local do
+                           if i.Term = item.Term
+                              then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
                 |> (fun param -> 
@@ -2706,9 +2706,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Organization) =
                 query {
-                    for i in dbContext.Organization.Local do
-                        if i.Name = item.Name
-                           then select (i, i.Details)
+                       for i in dbContext.Organization.Local do
+                           if i.Name = item.Name
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (organization, _ ) -> organization)
                 |> (fun organization -> 
@@ -2821,9 +2821,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Person) =
                 query {
-                    for i in dbContext.Person.Local do
-                        if i.Name = item.Name
-                           then select (i, i.Details, i.Organizations)
+                       for i in dbContext.Person.Local do
+                           if i.Name = item.Name
+                              then select (i, i.Details, i.Organizations)
                       }
                 |> Seq.map (fun (person, _, _) -> person)
                 |> (fun person -> 
@@ -2884,9 +2884,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ContactRole) =
                 query {
-                    for i in dbContext.ContactRole.Local do
-                        if i.Person = item.Person
-                           then select (i, i.Role)
+                       for i in dbContext.ContactRole.Local do
+                           if i.Person = item.Person
+                              then select (i, i.Role)
                       }
                 |> Seq.map (fun (contactRole, _) -> contactRole)
                 |> (fun contactRole -> 
@@ -2995,9 +2995,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AnalysisSoftware) =
                 query {
-                    for i in dbContext.AnalysisSoftware.Local do
-                        if i.SoftwareName=item.SoftwareName
-                           then select (i, i.ContactRole, i.MzIdentMLDocument)
+                       for i in dbContext.AnalysisSoftware.Local do
+                           if i.SoftwareName=item.SoftwareName
+                              then select (i, i.ContactRole, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
                 |> (fun analysisSoftware -> 
@@ -3059,9 +3059,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SubSample) =
                 query {
-                    for i in dbContext.SubSample.Local do
-                        if i.Sample=item.Sample
-                           then select (i, i.Sample)
+                       for i in dbContext.SubSample.Local do
+                           if i.Sample=item.Sample
+                              then select (i, i.Sample)
                       }
                 |> Seq.map (fun (subSample, _) -> subSample)
                 |> (fun subSample -> 
@@ -3174,9 +3174,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Sample) =
                 query {
-                    for i in dbContext.Sample.Local do
-                        if i.Name=item.Name
-                           then select (i, i.ContactRoles, i.SubSamples, i.Details)
+                       for i in dbContext.Sample.Local do
+                           if i.Name=item.Name
+                              then select (i, i.ContactRoles, i.SubSamples, i.Details)
                       }
                 |> Seq.map (fun (sample, _, _, _) -> sample)
                 |> (fun sample -> 
@@ -3267,9 +3267,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Modification) =
                 query {
-                    for i in dbContext.Modification.Local do
-                        if i.MonoIsotopicMassDelta=item.MonoIsotopicMassDelta
-                           then select (i, i.Details)
+                       for i in dbContext.Modification.Local do
+                           if i.MonoIsotopicMassDelta=item.MonoIsotopicMassDelta
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (modification, _) -> modification)
                 |> (fun modification -> 
@@ -3355,9 +3355,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SubstitutionModification) =
                 query {
-                    for i in dbContext.SubstitutionModification.Local do
-                        if i.MonoIsotopicMassDelta=item.MonoIsotopicMassDelta
-                           then select i
+                       for i in dbContext.SubstitutionModification.Local do
+                           if i.MonoIsotopicMassDelta=item.MonoIsotopicMassDelta
+                              then select i
                       }
                 |> (fun substitutionModification -> 
                     if Seq.length substitutionModification < 1 
@@ -3470,9 +3470,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Peptide) =
                 query {
-                    for i in dbContext.Peptide.Local do
-                        if i.PeptideSequence=item.PeptideSequence
-                           then select (i, i.Modifications, i.SubstitutionModifications, i.Details)
+                       for i in dbContext.Peptide.Local do
+                           if i.PeptideSequence=item.PeptideSequence
+                              then select (i, i.Modifications, i.SubstitutionModifications, i.Details)
                       }
                 |> Seq.map (fun (peptide, _, _, _) -> peptide)
                 |> (fun peptide -> 
@@ -3550,9 +3550,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:TranslationTable) =
                 query {
-                    for i in dbContext.TranslationTable.Local do
-                        if i.Name=item.Name
-                           then select (i, i.Details)
+                       for i in dbContext.TranslationTable.Local do
+                           if i.Name=item.Name
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (translationTable, _) -> translationTable)
                 |> (fun translationTable -> 
@@ -3618,9 +3618,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Measure) =
                 query {
-                    for i in dbContext.Measure.Local do
-                        if i.Name=item.Name
-                           then select (i, i.Details)
+                       for i in dbContext.Measure.Local do
+                           if i.Name=item.Name
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (measure, _) -> measure)
                 |> (fun measure -> 
@@ -3680,9 +3680,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Residue) =
                 query {
-                    for i in dbContext.Residue.Local do
-                        if i.Code=item.Code
-                           then select i
+                       for i in dbContext.Residue.Local do
+                           if i.Code=item.Code
+                              then select i
                       }
                 |> (fun residue -> 
                     if Seq.length residue < 1 
@@ -3740,9 +3740,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AmbiguousResidue) =
                 query {
-                    for i in dbContext.AmbiguousResidue.Local do
-                        if i.Code=item.Code
-                           then select (i, i.Details)
+                       for i in dbContext.AmbiguousResidue.Local do
+                           if i.Code=item.Code
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
                 |> (fun ambiguousResidue -> 
@@ -3849,9 +3849,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:MassTable) =
                 query {
-                    for i in dbContext.MassTable.Local do
-                        if i.Name=item.Name
-                           then select (i, i.Residues, i.AmbiguousResidues, i.Details)
+                       for i in dbContext.MassTable.Local do
+                           if i.Name=item.Name
+                              then select (i, i.Residues, i.AmbiguousResidues, i.Details)
                       }
                 |> Seq.map (fun (massTable, _, _, _) -> massTable)
                 |> (fun massTable -> 
@@ -3907,9 +3907,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Value) =
                 query {
-                    for i in dbContext.Value.Local do
-                        if i.Value=item.Value
-                           then select i
+                       for i in dbContext.Value.Local do
+                           if i.Value=item.Value
+                              then select i
                       }
                 |> (fun value -> 
                     if Seq.length value < 1 
@@ -3968,9 +3968,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:FragmentArray) =
                 query {
-                    for i in dbContext.FragmentArray.Local do
-                        if i.Measure=item.Measure
-                           then select (i, i.Values)
+                       for i in dbContext.FragmentArray.Local do
+                           if i.Measure=item.Measure
+                              then select (i, i.Values)
                       }
                 |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
                 |> (fun fragmentArray -> 
@@ -4026,9 +4026,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Index) =
                 query {
-                    for i in dbContext.Index.Local do
-                        if i.Index=item.Index
-                           then select i
+                       for i in dbContext.Index.Local do
+                           if i.Index=item.Index
+                              then select i
                       }
                 |> (fun fragmentArray -> 
                     if Seq.length fragmentArray < 1 
@@ -4110,9 +4110,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:IonType) =
                 query {
-                    for i in dbContext.IonType.Local do
-                        if i.Index=item.Index
-                           then select (i, i.FragmentArrays, i.Details)
+                       for i in dbContext.IonType.Local do
+                           if i.Index=item.Index
+                              then select (i, i.FragmentArrays, i.Details)
                       }
                 |> Seq.map (fun (ionType, _, _) -> ionType)
                 |> (fun fragmentArray -> 
@@ -4192,9 +4192,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectraData) =
                 query {
-                    for i in dbContext.SpectraData.Local do
-                        if i.SpectrumIDFormat=item.SpectrumIDFormat
-                           then select (i, i.FileFormat, i.SpectrumIDFormat)
+                       for i in dbContext.SpectraData.Local do
+                           if i.SpectrumIDFormat=item.SpectrumIDFormat
+                              then select (i, i.FileFormat, i.SpectrumIDFormat)
                       }
                 |> Seq.map (fun (spectraData, _, _) -> spectraData)
                 |> (fun spectraData -> 
@@ -4250,9 +4250,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpecificityRule) =
                 query {
-                    for i in dbContext.SpecificityRule.Local do
-                        if i.Details=item.Details
-                           then select (i, i.Details)
+                       for i in dbContext.SpecificityRule.Local do
+                           if i.Details=item.Details
+                              then select (i, i.Details)
                       }
                 |> Seq.map (fun (specificityRule, _) -> specificityRule)
                 |> (fun specificityRule -> 
@@ -4331,9 +4331,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SearchModification) =
                 query {
-                    for i in dbContext.SearchModification.Local do
-                        if i.MassDelta=item.MassDelta
-                           then select (i, i.SpecificityRules, i.Details)
+                       for i in dbContext.SearchModification.Local do
+                           if i.MassDelta=item.MassDelta
+                              then select (i, i.SpecificityRules, i.Details)
                       }
                 |> Seq.map (fun (searchModification, _, _) -> searchModification)
                 |> (fun searchModification -> 
@@ -4462,9 +4462,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Enzyme) =
                 query {
-                    for i in dbContext.Enzyme.Local do
-                        if i.Name=item.Name
-                           then select (i, i.EnzymeName)
+                       for i in dbContext.Enzyme.Local do
+                           if i.Name=item.Name
+                              then select (i, i.EnzymeName)
                       }
                 |> Seq.map (fun (enzyme, _) -> enzyme)
                 |> (fun enzyme -> 
@@ -4550,9 +4550,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Filter) =
                 query {
-                    for i in dbContext.Filter.Local do
-                        if i.FilterType=item.FilterType
-                           then select (i, i.FilterType, i.Includes, i.Excludes)
+                       for i in dbContext.Filter.Local do
+                           if i.FilterType=item.FilterType
+                              then select (i, i.FilterType, i.Includes, i.Excludes)
                       }
                 |> Seq.map (fun (filter, _, _, _) -> filter)
                 |> (fun filter -> 
@@ -4608,9 +4608,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Frame) =
                 query {
-                    for i in dbContext.Frame.Local do
-                        if i.Frame=item.Frame
-                           then select i
+                       for i in dbContext.Frame.Local do
+                           if i.Frame=item.Frame
+                              then select i
                       }
                 |> (fun frame -> 
                     if Seq.length frame < 1 
@@ -4817,13 +4817,13 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationProtocol) =
                 query {
-                    for i in dbContext.SpectrumIdentificationProtocol.Local do
-                        if i.SearchType=item.SearchType
-                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
-                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
-                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                        i.MzIdentMLDocument
-                                       )
+                       for i in dbContext.SpectrumIdentificationProtocol.Local do
+                           if i.SearchType=item.SearchType
+                              then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
+                                           i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
+                                           i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
+                                           i.MzIdentMLDocument
+                                          )
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
                 |> (fun spectrumIdentificationProtocol -> 
@@ -4955,9 +4955,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SearchDatabase) =
                 query {
-                    for i in dbContext.SearchDatabase.Local do
-                        if i.DatabaseName=item.DatabaseName
-                           then select (i, i.DatabaseName, i.FileFormat, i.Details)
+                       for i in dbContext.SearchDatabase.Local do
+                           if i.DatabaseName=item.DatabaseName
+                              then select (i, i.DatabaseName, i.FileFormat, i.Details)
                       }
                 |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
                 |> (fun searchDatabase -> 
@@ -5066,9 +5066,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:DBSequence) =
                 query {
-                    for i in dbContext.DBSequence.Local do
-                        if i.Accession=item.Accession
-                           then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                       for i in dbContext.DBSequence.Local do
+                           if i.Accession=item.Accession
+                              then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
@@ -5219,9 +5219,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:PeptideEvidence) =
                 query {
-                    for i in dbContext.PeptideEvidence.Local do
-                        if i.Peptide=item.Peptide
-                           then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                       for i in dbContext.PeptideEvidence.Local do
+                           if i.Peptide=item.Peptide
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
@@ -5377,9 +5377,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationItem) =
                 query {
-                    for i in dbContext.SpectrumIdentificationItem.Local do
-                        if i.Peptide=item.Peptide
-                           then select (i, i.Peptide, i.Sample, i.MassTable, 
+                       for i in dbContext.SpectrumIdentificationItem.Local do
+                           if i.Peptide=item.Peptide
+                              then select (i, i.Peptide, i.Sample, i.MassTable, 
                                         i.PeptideEvidences, i.Fragmentations, i.Details
                                        )
                       }
@@ -5472,9 +5472,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationResult) =
                 query {
-                    for i in dbContext.SpectrumIdentificationResult.Local do
-                        if i.SpectraData=item.SpectraData
-                           then select (i, i.SpectrumIdentificationItem, i.Details)
+                       for i in dbContext.SpectrumIdentificationResult.Local do
+                           if i.SpectraData=item.SpectraData
+                              then select (i, i.SpectrumIdentificationItem, i.Details)
                       }
                 |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
                 |> (fun spectrumIdentificationResult -> 
@@ -5577,9 +5577,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentificationList) =
                 query {
-                    for i in dbContext.SpectrumIdentificationList.Local do
-                        if i.Name=item.Name
-                           then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
+                       for i in dbContext.SpectrumIdentificationList.Local do
+                           if i.Name=item.Name
+                              then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
                       }
                 |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
                 |> (fun spectrumIdentificationList -> 
@@ -5672,11 +5672,11 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SpectrumIdentification) =
                 query {
-                    for i in dbContext.SpectrumIdentification.Local do
-                        if i.SpectrumIdentificationProtocol=item.SpectrumIdentificationProtocol
-                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                        i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
-                                       )
+                       for i in dbContext.SpectrumIdentification.Local do
+                           if i.SpectrumIdentificationProtocol=item.SpectrumIdentificationProtocol
+                              then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
+                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                          )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
                 |> (fun spectrumIdentification -> 
@@ -5770,9 +5770,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinDetectionProtocol) =
                 query {
-                    for i in dbContext.ProteinDetectionProtocol.Local do
-                        if i.AnalysisSoftware=item.AnalysisSoftware
-                           then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                       for i in dbContext.ProteinDetectionProtocol.Local do
+                           if i.AnalysisSoftware=item.AnalysisSoftware
+                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
@@ -5868,9 +5868,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:SourceFile) =
                 query {
-                    for i in dbContext.SourceFile.Local do
-                        if i.FileFormat=item.FileFormat
-                           then select (i, i.FileFormat, i.Details)
+                       for i in dbContext.SourceFile.Local do
+                           if i.FileFormat=item.FileFormat
+                              then select (i, i.FileFormat, i.Details)
                       }
                 |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
                 |> (fun sourceFile -> 
@@ -5965,9 +5965,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:Inputs) =
                 query {
-                    for i in dbContext.Inputs.Local do
-                        if i.SpectraData=item.SpectraData
-                           then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                       for i in dbContext.Inputs.Local do
+                           if i.SpectraData=item.SpectraData
+                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
                 |> (fun inputs -> 
@@ -6029,9 +6029,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:PeptideHypothesis) =
                 query {
-                    for i in dbContext.PeptideHypothesis.Local do
-                        if i.PeptideEvidence=item.PeptideEvidence
-                           then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
+                       for i in dbContext.PeptideHypothesis.Local do
+                           if i.PeptideEvidence=item.PeptideEvidence
+                              then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                       }
                 |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
                 |> (fun peptideHypothesis -> 
@@ -6125,9 +6125,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinDetectionHypothesis) =
                 query {
-                    for i in dbContext.ProteinDetectionHypothesis.Local do
-                        if i.DBSequence=item.DBSequence
-                           then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                       for i in dbContext.ProteinDetectionHypothesis.Local do
+                           if i.DBSequence=item.DBSequence
+                              then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
                 |> (fun proteinDetectionHypothesis -> 
@@ -6208,9 +6208,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinAmbiguityGroup) =
                 query {
-                    for i in dbContext.ProteinAmbiguityGroup.Local do
-                        if i.ProteinDetecionHypothesis=item.ProteinDetecionHypothesis
-                           then select (i, i.ProteinDetecionHypothesis, i.Details)
+                       for i in dbContext.ProteinAmbiguityGroup.Local do
+                           if i.ProteinDetecionHypothesis=item.ProteinDetecionHypothesis
+                              then select (i, i.ProteinDetecionHypothesis, i.Details)
                       }
                 |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
                 |> (fun proteinAmbiguityGroup -> 
@@ -6302,9 +6302,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:ProteinDetectionList) =
                 query {
-                    for i in dbContext.ProteinDetectionList.Local do
-                        if i.Name=item.Name
-                           then select (i, i.ProteinAmbiguityGroups, i.Details)
+                       for i in dbContext.ProteinDetectionList.Local do
+                           if i.Name=item.Name
+                              then select (i, i.ProteinAmbiguityGroups, i.Details)
                       }
                 |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
                 |> (fun proteinDetectionList -> 
@@ -6380,9 +6380,9 @@ module InsertStatements =
 
             static member addToContext (dbContext : MzIdentML) (item:AnalysisData) =
                 query {
-                    for i in dbContext.AnalysisData.Local do
-                        if i.SpectrumIdentificationList=item.SpectrumIdentificationList
-                           then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                       for i in dbContext.AnalysisData.Local do
+                           if i.SpectrumIdentificationList=item.SpectrumIdentificationList
+                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
                 |> (fun analysisData -> 
@@ -6449,6 +6449,50 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionID:string) =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
+
+            static member private matchAndAddProteinDetection (dbContext:MzIdentML) (item1:ProteinDetection) (item2:ProteinDetection) =
+                if item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
+                   item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
+
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- Nullable(System.Guid.NewGuid())
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:ProteinDetection) =
+                query {
+                       for i in dbContext.ProteinDetection.Local do
+                           if i.ProteinDetectionList=item.ProteinDetectionList
+                              then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
+                      }
+                |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
+                |> (fun proteinDetection -> 
+                    if Seq.length proteinDetection < 1 
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetection do
+                                       if i.ProteinDetectionList=item.ProteinDetectionList
+                                          then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
+                                  }
+                            |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
+                            |> (fun proteinDetection' -> if (proteinDetection'.Count()) < 1
+                                                                               then let tmp = dbContext.ProteinDetection.Find(item.ID)
+                                                                                    if tmp.ID = item.ID 
+                                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
+                                                                                            dbContext.Add item |> ignore
+                                                                                       else dbContext.Add item |> ignore
+                                                                               else proteinDetection'
+                                                                                    |> Seq.iter (fun proteinDetectionItem -> ProteinDetectionHandler.matchAndAddProteinDetection dbContext proteinDetectionItem item)
+                               )
+                        else proteinDetection
+                             |> Seq.iter (fun proteinDetectionItem -> ProteinDetectionHandler.matchAndAddProteinDetection dbContext proteinDetectionItem item)
+                   )
+
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:ProteinDetection) =
+                ProteinDetectionHandler.matchAndAddProteinDetection dbContext item |> ignore
+                dbContext.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
             ///Initializes a bibliographicreference-object with at least all necessary parameters.
@@ -6562,6 +6606,51 @@ module InsertStatements =
                 (context:MzIdentML) (biblioGraphicReferenceID:string) =
                 tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
 
+            static member private matchAndAddBiblioGraphicReference (dbContext:MzIdentML) (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
+                if item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
+                   item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
+                   item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- Nullable(System.Guid.NewGuid())
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:BiblioGraphicReference) =
+                query {
+                       for i in dbContext.BiblioGraphicReference.Local do
+                           if i.Name=item.Name
+                              then select (i, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
+                |> (fun biblioGraphicReference -> 
+                    if Seq.length biblioGraphicReference < 1 
+                        then 
+                            query {
+                                   for i in dbContext.BiblioGraphicReference do
+                                       if i.Name=item.Name
+                                          then select (i, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
+                            |> (fun biblioGraphicReference' -> if (biblioGraphicReference'.Count()) < 1
+                                                                               then let tmp = dbContext.BiblioGraphicReference.Find(item.ID)
+                                                                                    if tmp.ID = item.ID 
+                                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
+                                                                                            dbContext.Add item |> ignore
+                                                                                       else dbContext.Add item |> ignore
+                                                                               else biblioGraphicReference'
+                                                                                    |> Seq.iter (fun biblioGraphicReferenceItem -> BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext biblioGraphicReferenceItem item)
+                               )
+                        else biblioGraphicReference
+                             |> Seq.iter (fun biblioGraphicReferenceItem -> BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext biblioGraphicReferenceItem item)
+                   )
+
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:BiblioGraphicReference) =
+                BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext item |> ignore
+                dbContext.SaveChanges()
+
         type ProviderHandler =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
@@ -6610,6 +6699,50 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (providerID:string) =
                 tryFind (context.Provider.Find(providerID))
+
+            static member private matchAndAddProvider (dbContext:MzIdentML) (item1:Provider) (item2:Provider) =
+                if item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
+                   item1.MzIdentMLDocument=item2.MzIdentMLDocument 
+
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- Nullable(System.Guid.NewGuid())
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:Provider) =
+                query {
+                       for i in dbContext.Provider.Local do
+                           if i.Name=item.Name
+                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> (fun provider -> 
+                    if Seq.length provider < 1 
+                        then 
+                            query {
+                                   for i in dbContext.Provider do
+                                       if i.Name=item.Name
+                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> (fun provider' -> if (provider'.Count()) < 1
+                                                               then let tmp = dbContext.Provider.Find(item.ID)
+                                                                    if tmp.ID = item.ID 
+                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
+                                                                            dbContext.Add item |> ignore
+                                                                       else dbContext.Add item |> ignore
+                                                               else provider'
+                                                                    |> Seq.iter (fun providerItem -> ProviderHandler.matchAndAddProvider dbContext providerItem item)
+                               )
+                        else provider
+                             |> Seq.iter (fun providerItem -> ProviderHandler.matchAndAddProvider dbContext providerItem item)
+                   )
+
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:Provider) =
+                ProviderHandler.matchAndAddProvider dbContext item |> ignore
+                dbContext.SaveChanges()
 
         type MzIdentMLHandler =
             ///Initializes a mzidentml-object with at least all necessary parameters.
@@ -6814,3 +6947,58 @@ module InsertStatements =
             static member tryFindByID
                 (context:MzIdentML) (mzIdentMLID:string) =
                 tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
+
+            static member private matchAndAddMzIdentMLDocument (dbContext:MzIdentML) (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
+                if item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
+                   item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+                   item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
+                   item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
+                   item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+                   item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.AnalysisData=item2.AnalysisData &&
+                   item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
+
+                   then ()
+                   else 
+                        if item1.ID = item2.ID
+                           then item2.ID <- Nullable(System.Guid.NewGuid())
+                                dbContext.Add item2 |> ignore
+                           else dbContext.Add item2 |> ignore
+
+            static member addToContext (dbContext : MzIdentML) (item:MzIdentMLDocument) =
+                query {
+                       for i in dbContext.MzIdentMLDocument.Local do
+                           if i.Inputs=item.Inputs
+                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                          )
+                      }
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> (fun mzIdentMLDocument -> 
+                    if Seq.length mzIdentMLDocument < 1 
+                        then 
+                            query {
+                                   for i in dbContext.MzIdentMLDocument do
+                                       if i.Inputs=item.Inputs
+                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                      )
+                                  }
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> (fun mzIdentMLDocument' -> if (mzIdentMLDocument'.Count()) < 1
+                                                                                 then let tmp = dbContext.MzIdentMLDocument.Find(item.ID)
+                                                                                      if tmp.ID = item.ID 
+                                                                                         then item.ID <- Nullable(System.Guid.NewGuid())
+                                                                                              dbContext.Add item |> ignore
+                                                                                         else dbContext.Add item |> ignore
+                                                                                 else mzIdentMLDocument'
+                                                                                      |> Seq.iter (fun mzIdentMLDocumentItem -> MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext mzIdentMLDocumentItem item)
+                               )
+                        else mzIdentMLDocument
+                             |> Seq.iter (fun mzIdentMLDocumentItem -> MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext mzIdentMLDocumentItem item)
+                   )
+
+            static member addToContextAndInsert (dbContext : MzIdentML) (item:MzIdentMLDocument) =
+                MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext item |> ignore
+                dbContext.SaveChanges()
