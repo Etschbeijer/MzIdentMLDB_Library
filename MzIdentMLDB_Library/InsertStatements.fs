@@ -192,7 +192,7 @@ module InsertStatements =
                             |> Seq.map (fun (term, _) -> term)
                             |> (fun term' -> if (term'.Count()) < 1
                                                 then let tmp = dbContext.Term.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- System.Guid.NewGuid().ToString()
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -264,7 +264,7 @@ module InsertStatements =
             //                      }
             //                |> (fun term' -> if (term'.Count()) < 1
             //                                    then let tmp = dbContext.Ontology.Find(item.ID)
-            //                                         if tmp.ID = item.ID 
+            //                                         if tmp <> null
             //                                            then item.ID <- System.Guid.NewGuid().ToString()
             //                                                 dbContext.Add item |> ignore
             //                                            else dbContext.Add item |> ignore
@@ -360,7 +360,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.CVParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -456,7 +456,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.OrganizationParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -552,7 +552,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.PersonParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -649,7 +649,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SampleParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -745,7 +745,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ModificationParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -841,7 +841,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ModificationParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -937,7 +937,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.TranslationTableParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1033,7 +1033,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.MeasureParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1129,7 +1129,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.AmbiguousResidueParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1225,7 +1225,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.MassTableParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1321,7 +1321,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.IonTypeParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1417,7 +1417,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SpecificityRuleParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1513,7 +1513,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SearchModificationParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1609,7 +1609,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.EnzymeNameParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1705,7 +1705,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.IncludeParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1801,7 +1801,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ExcludeParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1897,7 +1897,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.AdditionalSearchParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -1993,7 +1993,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.FragmentToleranceParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2089,7 +2089,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ParentToleranceParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2185,7 +2185,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ThresholdParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2281,7 +2281,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SearchDatabaseParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2377,7 +2377,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.DBSequenceParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2474,7 +2474,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.PeptideEvidenceParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2570,7 +2570,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SpectrumIdentificationItemParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2666,7 +2666,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SpectrumIdentificationResultParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2762,7 +2762,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SpectrumIdentificationListParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2858,7 +2858,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.AnalysisParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -2954,7 +2954,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.SourceFileParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -3050,7 +3050,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ProteinDetectionHypothesisParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -3146,7 +3146,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ProteinAmbiguityGroupParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -3242,7 +3242,7 @@ module InsertStatements =
                             |> Seq.map (fun (param,_ ,_) -> param)
                             |> (fun param' -> if (param'.Count()) < 1
                                                 then let tmp = dbContext.ProteinDetectionListParam.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -3349,7 +3349,7 @@ module InsertStatements =
                             |> Seq.map (fun (organization, _ ) -> organization)
                             |> (fun organization' -> if (organization'.Count()) < 1
                                                      then let tmp = dbContext.Organization.Find(item.ID)
-                                                          if tmp.ID = item.ID 
+                                                          if tmp <> null
                                                              then item.ID <- Nullable(System.Guid.NewGuid())
                                                                   dbContext.Add item |> ignore
                                                              else dbContext.Add item |> ignore
@@ -3483,7 +3483,7 @@ module InsertStatements =
                             |> Seq.map (fun (person, _, _) -> person)
                             |> (fun person' -> if (person'.Count()) < 1
                                                 then let tmp = dbContext.Person.Find(item.ID)
-                                                     if tmp.ID = item.ID 
+                                                     if tmp <> null
                                                         then item.ID <- Nullable(System.Guid.NewGuid())
                                                              dbContext.Add item |> ignore
                                                         else dbContext.Add item |> ignore
@@ -3565,7 +3565,7 @@ module InsertStatements =
                             |> Seq.map (fun (contactRole, _) -> contactRole)
                             |> (fun contactRole' -> if (contactRole'.Count()) < 1
                                                     then let tmp = dbContext.ContactRole.Find(item.ID)
-                                                         if tmp.ID = item.ID 
+                                                         if tmp <> null
                                                             then item.ID <- Nullable(System.Guid.NewGuid())
                                                                  dbContext.Add item |> ignore
                                                             else dbContext.Add item |> ignore
@@ -3695,7 +3695,7 @@ module InsertStatements =
                             |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
                             |> (fun analysisSoftware' -> if (analysisSoftware'.Count()) < 1
                                                          then let tmp = dbContext.AnalysisSoftware.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -3778,7 +3778,7 @@ module InsertStatements =
                             |> Seq.map (fun (subSample, _) -> subSample)
                             |> (fun subSample' -> if (subSample'.Count()) < 1
                                                          then let tmp = dbContext.SubSample.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -3912,7 +3912,7 @@ module InsertStatements =
                             |> Seq.map (fun (sample, _, _, _) -> sample)
                             |> (fun sample' -> if (sample'.Count()) < 1
                                                          then let tmp = dbContext.Sample.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4024,7 +4024,7 @@ module InsertStatements =
                             |> Seq.map (fun (modification, _) -> modification)
                             |> (fun modification' -> if (modification'.Count()) < 1
                                                          then let tmp = dbContext.Modification.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4128,7 +4128,7 @@ module InsertStatements =
                                   }
                             |> (fun substitutionModification' -> if (substitutionModification'.Count()) < 1
                                                                  then let tmp = dbContext.SubstitutionModification.Find(item.ID)
-                                                                      if tmp.ID = item.ID 
+                                                                      if tmp <> null
                                                                          then item.ID <- Nullable(System.Guid.NewGuid())
                                                                               dbContext.Add item |> ignore
                                                                          else dbContext.Add item |> ignore
@@ -4264,7 +4264,7 @@ module InsertStatements =
                             |> Seq.map (fun (peptide, _, _, _) -> peptide)
                             |> (fun peptide' -> if (peptide'.Count()) < 1
                                                          then let tmp = dbContext.Peptide.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4363,7 +4363,7 @@ module InsertStatements =
                             |> Seq.map (fun (translationTable, _) -> translationTable)
                             |> (fun translationTable' -> if (translationTable'.Count()) < 1
                                                          then let tmp = dbContext.TranslationTable.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4450,7 +4450,7 @@ module InsertStatements =
                             |> Seq.map (fun (measure, _) -> measure)
                             |> (fun measure' -> if (measure'.Count()) < 1
                                                          then let tmp = dbContext.Measure.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4528,7 +4528,7 @@ module InsertStatements =
                                   }
                             |> (fun residue' -> if (residue'.Count()) < 1
                                                          then let tmp = dbContext.Residue.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4609,7 +4609,7 @@ module InsertStatements =
                             |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
                             |> (fun ambiguousResidue' -> if (ambiguousResidue'.Count()) < 1
                                                          then let tmp = dbContext.AmbiguousResidue.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4737,7 +4737,7 @@ module InsertStatements =
                             |> Seq.map (fun (massTable, _, _, _) -> massTable)
                             |> (fun massTable' -> if (massTable'.Count()) < 1
                                                          then let tmp = dbContext.MassTable.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4811,7 +4811,7 @@ module InsertStatements =
                                   }
                             |> (fun value' -> if (value'.Count()) < 1
                                                          then let tmp = dbContext.Value.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4893,7 +4893,7 @@ module InsertStatements =
                             |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
                             |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
                                                          then let tmp = dbContext.FragmentArray.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -4967,7 +4967,7 @@ module InsertStatements =
                                   }
                             |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
                                                          then let tmp = dbContext.Index.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -5073,7 +5073,7 @@ module InsertStatements =
                             |> Seq.map (fun (ionType, _, _) -> ionType)
                             |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
                                                          then let tmp = dbContext.IonType.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -5174,7 +5174,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectraData, _, _) -> spectraData)
                             |> (fun spectraData' -> if (spectraData'.Count()) < 1
                                                          then let tmp = dbContext.SpectraData.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -5252,7 +5252,7 @@ module InsertStatements =
                             |> Seq.map (fun (specificityRule, _) -> specificityRule)
                             |> (fun specificityRule' -> if (specificityRule'.Count()) < 1
                                                          then let tmp = dbContext.SpecificityRule.Find(item.ID)
-                                                              if tmp.ID = item.ID 
+                                                              if tmp <> null
                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                       dbContext.Add item |> ignore
                                                                  else dbContext.Add item |> ignore
@@ -5352,7 +5352,7 @@ module InsertStatements =
                             |> Seq.map (fun (searchModification, _, _) -> searchModification)
                             |> (fun searchModification' -> if (searchModification'.Count()) < 1
                                                             then let tmp = dbContext.SearchModification.Find(item.ID)
-                                                                 if tmp.ID = item.ID 
+                                                                 if tmp <> null
                                                                     then item.ID <- Nullable(System.Guid.NewGuid())
                                                                          dbContext.Add item |> ignore
                                                                     else dbContext.Add item |> ignore
@@ -5502,7 +5502,7 @@ module InsertStatements =
                             |> Seq.map (fun (enzyme, _) -> enzyme)
                             |> (fun enzyme' -> if (enzyme'.Count()) < 1
                                                             then let tmp = dbContext.Enzyme.Find(item.ID)
-                                                                 if tmp.ID = item.ID 
+                                                                 if tmp <> null
                                                                     then item.ID <- Nullable(System.Guid.NewGuid())
                                                                          dbContext.Add item |> ignore
                                                                     else dbContext.Add item |> ignore
@@ -5609,7 +5609,7 @@ module InsertStatements =
                             |> Seq.map (fun (filter, _, _, _) -> filter)
                             |> (fun filter' -> if (filter'.Count()) < 1
                                                             then let tmp = dbContext.Filter.Find(item.ID)
-                                                                 if tmp.ID = item.ID 
+                                                                 if tmp <> null
                                                                     then item.ID <- Nullable(System.Guid.NewGuid())
                                                                          dbContext.Add item |> ignore
                                                                     else dbContext.Add item |> ignore
@@ -5683,7 +5683,7 @@ module InsertStatements =
                                   }
                             |> (fun frame' -> if (frame'.Count()) < 1
                                                             then let tmp = dbContext.Frame.Find(item.ID)
-                                                                 if tmp.ID = item.ID 
+                                                                 if tmp <> null
                                                                     then item.ID <- Nullable(System.Guid.NewGuid())
                                                                          dbContext.Add item |> ignore
                                                                     else dbContext.Add item |> ignore
@@ -5929,7 +5929,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
                             |> (fun spectrumIdentificationProtocol' -> if (spectrumIdentificationProtocol'.Count()) < 1
                                                                            then let tmp = dbContext.SpectrumIdentificationProtocol.Find(item.ID)
-                                                                                if tmp.ID = item.ID 
+                                                                                if tmp <> null
                                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                      dbContext.Add item |> ignore
                                                                                 else dbContext.Add item |> ignore
@@ -6078,7 +6078,7 @@ module InsertStatements =
                             |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
                             |> (fun searchDatabase' -> if (searchDatabase'.Count()) < 1
                                                                            then let tmp = dbContext.SearchDatabase.Find(item.ID)
-                                                                                if tmp.ID = item.ID 
+                                                                                if tmp <> null
                                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                      dbContext.Add item |> ignore
                                                                                 else dbContext.Add item |> ignore
@@ -6208,7 +6208,7 @@ module InsertStatements =
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                             |> (fun dbSequence' -> if (dbSequence'.Count()) < 1
                                                                            then let tmp = dbContext.DBSequence.Find(item.ID)
-                                                                                if tmp.ID = item.ID 
+                                                                                if tmp <> null
                                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                      dbContext.Add item |> ignore
                                                                                 else dbContext.Add item |> ignore
@@ -6380,7 +6380,7 @@ module InsertStatements =
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                             |> (fun peptideEvidence' -> if (peptideEvidence'.Count()) < 1
                                                                              then let tmp = dbContext.PeptideEvidence.Find(item.ID)
-                                                                                  if tmp.ID = item.ID 
+                                                                                  if tmp <> null
                                                                                   then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                        dbContext.Add item |> ignore
                                                                                   else dbContext.Add item |> ignore
@@ -6565,7 +6565,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
                             |> (fun spectrumIdentificationItem' -> if (spectrumIdentificationItem'.Count()) < 1
                                                                                                    then let tmp = dbContext.SpectrumIdentificationItem.Find(item.ID)
-                                                                                                        if tmp.ID = item.ID 
+                                                                                                        if tmp <> null
                                                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                                 dbContext.Add item |> ignore
                                                                                                         else dbContext.Add item |> ignore
@@ -6675,7 +6675,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
                             |> (fun spectrumIdentificationResult' -> if (spectrumIdentificationResult'.Count()) < 1
                                                                                                        then let tmp = dbContext.SpectrumIdentificationResult.Find(item.ID)
-                                                                                                            if tmp.ID = item.ID 
+                                                                                                            if tmp <> null
                                                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                                     dbContext.Add item |> ignore
                                                                                                                else dbContext.Add item |> ignore
@@ -6799,7 +6799,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
                             |> (fun spectrumIdentificationList' -> if (spectrumIdentificationList'.Count()) < 1
                                                                                                    then let tmp = dbContext.SpectrumIdentificationList.Find(item.ID)
-                                                                                                        if tmp.ID = item.ID 
+                                                                                                        if tmp <> null
                                                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                                 dbContext.Add item |> ignore
                                                                                                             else dbContext.Add item |> ignore
@@ -6921,7 +6921,7 @@ module InsertStatements =
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
                             |> (fun spectrumIdentification' -> if (spectrumIdentification'.Count()) < 1
                                                                                            then let tmp = dbContext.SpectrumIdentification.Find(item.ID)
-                                                                                                if tmp.ID = item.ID 
+                                                                                                if tmp <> null
                                                                                                    then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                         dbContext.Add item |> ignore
                                                                                                    else dbContext.Add item |> ignore
@@ -7034,7 +7034,7 @@ module InsertStatements =
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                             |> (fun proteinDetectionProtocol' -> if (proteinDetectionProtocol'.Count()) < 1
                                                                                                then let tmp = dbContext.ProteinDetectionProtocol.Find(item.ID)
-                                                                                                    if tmp.ID = item.ID 
+                                                                                                    if tmp <> null
                                                                                                        then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                             dbContext.Add item |> ignore
                                                                                                        else dbContext.Add item |> ignore
@@ -7151,7 +7151,7 @@ module InsertStatements =
                             |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
                             |> (fun sourceFile' -> if (sourceFile'.Count()) < 1
                                                                    then let tmp = dbContext.SourceFile.Find(item.ID)
-                                                                        if tmp.ID = item.ID 
+                                                                        if tmp <> null
                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                 dbContext.Add item |> ignore
                                                                            else dbContext.Add item |> ignore
@@ -7268,7 +7268,7 @@ module InsertStatements =
                             |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
                             |> (fun inputs' -> if (inputs'.Count()) < 1
                                                                    then let tmp = dbContext.Inputs.Find(item.ID)
-                                                                        if tmp.ID = item.ID 
+                                                                        if tmp <> null
                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                 dbContext.Add item |> ignore
                                                                            else dbContext.Add item |> ignore
@@ -7351,7 +7351,7 @@ module InsertStatements =
                             |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
                             |> (fun peptideHypothesis' -> if (peptideHypothesis'.Count()) < 1
                                                                    then let tmp = dbContext.PeptideHypothesis.Find(item.ID)
-                                                                        if tmp.ID = item.ID 
+                                                                        if tmp <> null
                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                 dbContext.Add item |> ignore
                                                                            else dbContext.Add item |> ignore
@@ -7466,7 +7466,7 @@ module InsertStatements =
                             |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
                             |> (fun proteinDetectionHypothesis' -> if (proteinDetectionHypothesis'.Count()) < 1
                                                                                                    then let tmp = dbContext.ProteinDetectionHypothesis.Find(item.ID)
-                                                                                                        if tmp.ID = item.ID 
+                                                                                                        if tmp <> null
                                                                                                            then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                                 dbContext.Add item |> ignore
                                                                                                            else dbContext.Add item |> ignore
@@ -7568,7 +7568,7 @@ module InsertStatements =
                             |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
                             |> (fun proteinAmbiguityGroup' -> if (proteinAmbiguityGroup'.Count()) < 1
                                                                                          then let tmp = dbContext.ProteinAmbiguityGroup.Find(item.ID)
-                                                                                              if tmp.ID = item.ID 
+                                                                                              if tmp <> null
                                                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                       dbContext.Add item |> ignore
                                                                                                  else dbContext.Add item |> ignore
@@ -7681,7 +7681,7 @@ module InsertStatements =
                             |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
                             |> (fun proteinDetectionList' -> if (proteinDetectionList'.Count()) < 1
                                                                                        then let tmp = dbContext.ProteinDetectionList.Find(item.ID)
-                                                                                            if tmp.ID = item.ID 
+                                                                                            if tmp <> null
                                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                                     dbContext.Add item |> ignore
                                                                                                else dbContext.Add item |> ignore
@@ -7778,7 +7778,7 @@ module InsertStatements =
                             |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
                             |> (fun analysisData' -> if (analysisData'.Count()) < 1
                                                                        then let tmp = dbContext.AnalysisData.Find(item.ID)
-                                                                            if tmp.ID = item.ID 
+                                                                            if tmp <> null
                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                     dbContext.Add item |> ignore
                                                                                else dbContext.Add item |> ignore
@@ -7880,7 +7880,7 @@ module InsertStatements =
                             |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
                             |> (fun proteinDetection' -> if (proteinDetection'.Count()) < 1
                                                                                then let tmp = dbContext.ProteinDetection.Find(item.ID)
-                                                                                    if tmp.ID = item.ID 
+                                                                                    if tmp <> null
                                                                                        then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                             dbContext.Add item |> ignore
                                                                                        else dbContext.Add item |> ignore
@@ -8056,7 +8056,7 @@ module InsertStatements =
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                             |> (fun biblioGraphicReference' -> if (biblioGraphicReference'.Count()) < 1
                                                                                then let tmp = dbContext.BiblioGraphicReference.Find(item.ID)
-                                                                                    if tmp.ID = item.ID 
+                                                                                    if tmp <> null
                                                                                        then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                             dbContext.Add item |> ignore
                                                                                        else dbContext.Add item |> ignore
@@ -8168,7 +8168,7 @@ module InsertStatements =
                             |> Seq.map (fun (provider, _, _, _) -> provider)
                             |> (fun provider' -> if (provider'.Count()) < 1
                                                                then let tmp = dbContext.Provider.Find(item.ID)
-                                                                    if tmp.ID = item.ID 
+                                                                    if tmp <> null
                                                                        then item.ID <- Nullable(System.Guid.NewGuid())
                                                                             dbContext.Add item |> ignore
                                                                        else dbContext.Add item |> ignore
@@ -8452,7 +8452,7 @@ module InsertStatements =
                             |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument' -> if (mzIdentMLDocument'.Count()) < 1
                                                                                  then let tmp = dbContext.MzIdentMLDocument.Find(item.ID)
-                                                                                      if tmp.ID = item.ID 
+                                                                                      if tmp <> null
                                                                                          then item.ID <- Nullable(System.Guid.NewGuid())
                                                                                               dbContext.Add item |> ignore
                                                                                          else dbContext.Add item |> ignore

@@ -606,11 +606,16 @@ let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 #time
 let termTest = TermHandler.init("I","III")
 
+let CVParamTest = CVParamHandler.init(termTest)
+
 let addedtermTest =
     sqliteContext.Add termTest
 
 for i = 0 to 10000 do
     TermHandler.addToContext sqliteContext termTest
+
+for i = 0 to 10000 do
+    CVParamHandler.addToContext sqliteContext CVParamTest
 
 sqliteContext.SaveChanges()
 
