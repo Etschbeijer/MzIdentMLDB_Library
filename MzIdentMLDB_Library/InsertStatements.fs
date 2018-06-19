@@ -314,10 +314,10 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
 
-            static member tryFindByTerm (dbContext:MzIdentML) (item:Term) =
+            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.CVParam.Local do
-                           if i.Term = item
+                           if i.Term.ID=id
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -326,53 +326,39 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.CVParam do
-                                       if i.Term = item
+                                       if i.Term.ID=id
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
-                        else param
+                            |> (fun param -> if Seq.length param < 1
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
                    )
 
-            static member private matchAndAddParams (dbContext:MzIdentML) (item1:CVParam) (item2:CVParam) =
-                if item1.Value=item2.Value && item1.Unit=item2.Unit
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
             static member addToContext (dbContext:MzIdentML) (item:CVParam) =
-                query {
-                       for i in dbContext.CVParam.Local do
-                           if i.Term = item.Term
-                              then select (i, i.Term, i.Unit)
-                      }
-                |> Seq.map (fun (param,_ ,_) -> param)
-                |> (fun param -> 
-                    if Seq.length param < 1 
-                        then 
-                            query {
-                                   for i in dbContext.CVParam do
-                                       if i.Term = item.Term
-                                          then select (i, i.Term, i.Unit)
-                                  }
-                            |> Seq.map (fun (param,_ ,_) -> param)
-                            |> (fun param' -> if (param'.Count()) < 1
-                                                then let tmp = dbContext.CVParam.Find(item.ID)
-                                                     if tmp <> null
-                                                        then item.ID <- Nullable(System.Guid.NewGuid())
-                                                             dbContext.Add item |> ignore
-                                                        else dbContext.Add item |> ignore
-                                                else param'
-                                                     |> Seq.iter (fun paramItem -> CVParamHandler.matchAndAddParams dbContext paramItem item)
-                               )
-                        else param
-                             |> Seq.iter (fun paramItem -> CVParamHandler.matchAndAddParams dbContext paramItem item)
-                   )
+                    CVParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> (fun cvParams ->
+                                                                                match Seq.exists (fun param -> param<>null) cvParams with
+                                                                                |true -> cvParams |> Seq.map (fun cvParam -> match CVParamHandler.hasEqualFieldValues cvParam item with
+                                                                                                                             |true -> null
+                                                                                                                             |false -> dbContext.Add item
+                                                                                                 ) |> ignore
+
+                                                                                |false -> printfn "Not part of context and db"
+                                                                                          dbContext.Add item |> ignore
+                                                               )
+                                                 |None -> ()
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:CVParam) =
-                CVParamHandler.matchAndAddParams dbContext item |> ignore
+                CVParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type OrganizationParamHandler =

@@ -619,12 +619,16 @@ for i = 0 to 10000 do
 
 sqliteContext.SaveChanges()
 
-let list1 = ["A"; "A"; "A"]
-let list2 = ["B"; "B"; "B"]
-let list3 = ["A"; "A"]
+let testQuery (dbContext:MzIdentML) (item:CVParam) =
+    query {
+           for i in dbContext.CVParam do
+               if i.Term.ID = item.Term.ID && i.Term.Name = item.Term.Name && i.Term.Ontology = item.Term.Ontology
+                  then select (i, i.Term, i.Unit)
+          }
+    |> Seq.map (fun (param,_ ,_) -> param)
+    |> Seq.map (fun cvParam -> ContextHandler.tryAddToContext dbContext cvParam)
 
-list1 = list2
-list1 = list1
-list1 = list3
 
-sqliteContext.CVParam.Find(CVParamTest.ID) <> null
+let x = testQuery sqliteContext CVParamTest
+
+Seq.item 0 x
