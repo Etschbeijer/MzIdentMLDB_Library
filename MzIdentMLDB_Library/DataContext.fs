@@ -1141,7 +1141,7 @@ module DataModel =
             member this.Index with get() = index' and set(value) = index' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-    ///Iontype defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
+    ///IonType defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
     and [<AllowNullLiteral>]
         IonType (id:Nullable<Guid>, index:List<Index>, fragmentArrays:List<FragmentArray>, 
                  details:List<IonTypeParam>, rowVersion:Nullable<DateTime>
@@ -1217,7 +1217,7 @@ module DataModel =
             member this.MassDelta with get() = massDelta' and set(value) = massDelta' <- value
             member this.Residues with get() = residues' and set(value) = residues' <- value
             member this.SpecificityRules with get() = specificityRules' and set(value) = specificityRules' <- value
-            member this.SearchModificationParams with get() = searchModificationParams' and set(value) = searchModificationParams' <- value
+            member this.Details with get() = searchModificationParams' and set(value) = searchModificationParams' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
@@ -1554,7 +1554,7 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.ActivityDate with get() = activityDate' and set(value) = activityDate' <- value
-            member this.SpectrumidentificationList with get() = spectrumidentificationList' and set(value) = spectrumidentificationList' <- value
+            member this.SpectrumIdentificationList with get() = spectrumidentificationList' and set(value) = spectrumidentificationList' <- value
             member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
             member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
@@ -1586,14 +1586,14 @@ module DataModel =
 
     ///A file from which this mzIdentML instance was created.
     and [<AllowNullLiteral>] 
-        SourceFile (id:Nullable<Guid>, name:string, location:string, externalFormatDocumentation:string, fileFormatParam:CVParam,
+        SourceFile (id:Nullable<Guid>, name:string, location:string, externalFormatDocumentation:string, fileFormat:CVParam,
                     details:List<SourceFileParam>, rowVersion:Nullable<DateTime>
                    ) =
             let mutable id'                          = id
             let mutable name'                        = name
             let mutable location'                    = location
             let mutable externalFormatDocumentation' = externalFormatDocumentation
-            let mutable fileFormatParam'             = fileFormatParam
+            let mutable fileFormat'                  = fileFormat
             let mutable details'                     = details
             let mutable rowVersion'                  = rowVersion
 
@@ -1603,7 +1603,7 @@ module DataModel =
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Location with get() = location' and set(value) = location' <- value
             member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
-            member this.FileFormatParam with get() = fileFormatParam' and set(value) = fileFormatParam' <- value
+            member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
@@ -2012,7 +2012,7 @@ module DataModel =
 
             [<DefaultValue>] 
             val mutable m_IonType : DbSet<IonType>
-            member public this.Iontype with get() = this.m_IonType
+            member public this.IonType with get() = this.m_IonType
                                                     and set value = this.m_IonType <- value
 
             [<DefaultValue>] 
