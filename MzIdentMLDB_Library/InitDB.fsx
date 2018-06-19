@@ -50,29 +50,29 @@ let initStandardDB (dbContext : MzIdentML) =
         let ontology =  OntologyHandler.init ("PSI-MS")
         fromPsiMS
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore) 
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore) 
 
     let termsPride =
         let ontology =  OntologyHandler.init ("PRIDE")
         fromPride
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnimod =
         let ontology =  OntologyHandler.init ("UNIMOD")
         fromUniMod
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnit_Ontology =
         let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
         fromUnit_Ontology
         |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.addToContext dbContext term |> ignore)
+        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let userOntology =
         OntologyHandler.init("UserParam")
-        |> ContextHandler.addToContext dbContext |> ignore
+        |> ContextHandler.tryAddToContext dbContext |> ignore
 
     dbContext.Database.EnsureCreated() |> ignore
     dbContext.SaveChanges()

@@ -626,3 +626,5 @@ let list3 = ["A"; "A"]
 list1 = list2
 list1 = list1
 list1 = list3
+
+sqliteContext.CVParam.Find(CVParamTest.ID) <> null
