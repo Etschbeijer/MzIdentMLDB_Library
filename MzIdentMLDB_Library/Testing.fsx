@@ -613,3 +613,11 @@ for i = 0 to 10000 do
     TermHandler.addToContext sqliteContext termTest
 
 sqliteContext.SaveChanges()
+
+let list1 = ["A"; "A"; "A"]
+let list2 = ["B"; "B"; "B"]
+let list3 = ["A"; "A"]
+
+list1 = list2
+list1 = list1
+list1 = list3

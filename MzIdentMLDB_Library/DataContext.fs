@@ -1686,7 +1686,7 @@ module DataModel =
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
-            member this.ProteinDetecionHypothesis with get() = proteinDetecionHypothesis' and set(value) = proteinDetecionHypothesis' <- value
+            member this.ProteinDetectionHypothesis with get() = proteinDetecionHypothesis' and set(value) = proteinDetecionHypothesis' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
