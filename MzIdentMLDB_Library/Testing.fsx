@@ -118,19 +118,19 @@ termTryFindTestI
 //        TermHandler.addOntology ontologyBasic ontologyWithTerm.Terms.[0]
 //    ContextHandler.tryAddToContext sqliteContext ontologyBasic
 
-let cvParamTest =
-    let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
-    //let cvParamWithUnit =
-    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
-    sqliteContext.CVParam.Add(cvParamBasic)
+//let cvParamTest =
+//    let cvParamBasic =
+//        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
+//    //let cvParamWithUnit =
+//    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
+//    sqliteContext.CVParam.Add(cvParamBasic)
 
-let cvParamTestI =
-    let cvParamBasic =
-        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
-    //let cvParamWithUnit =
-    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
-    ContextHandler.tryAddToContext sqliteContext cvParamBasic
+//let cvParamTestI =
+//    let cvParamBasic =
+//        CVParamHandler.init("Name", TermHandler.init("I",null,(OntologyHandler.init(""))))
+//    //let cvParamWithUnit =
+//    //    CVParamHandler.addUnit cvParamBasic (CVParamHandler.findTermByID sqliteContext "II")
+//    ContextHandler.tryAddToContext sqliteContext cvParamBasic
 
 //let analysisSoftwareTest =
 //    let I = AnalysisSoftwareHandler.init(cvParamTest)
@@ -138,16 +138,16 @@ let cvParamTestI =
 
 sqliteContext.SaveChanges()
 
-let organizationTest =
-    let organizationBasic =
-        OrganizationHandler.init("I","Test")
-    let organizationDetail =
-        CVParamHandler.tryFindByID sqliteContext "I"
-    //let organizationDetailWithUnit =
-    //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
-    //let organizationWithDetail = 
-    //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
-    ContextHandler.tryAddToContext sqliteContext organizationBasic
+//let organizationTest =
+//    let organizationBasic =
+//        OrganizationHandler.init("I","Test")
+//    let organizationDetail =
+//        CVParamHandler.tryFindByID sqliteContext "I"
+//    //let organizationDetailWithUnit =
+//    //    CVParamHandler.addUnit organizationDetail (TermHandler.init("", null, (OntologyHandler.init(""))))
+//    //let organizationWithDetail = 
+//    //    OrganizationHandler.addDetail organizationBasic organizationDetailWithUnit
+//    ContextHandler.tryAddToContext sqliteContext organizationBasic
 
 sqliteContext.Organization.Find("I")
 sqliteContext.SaveChanges()
