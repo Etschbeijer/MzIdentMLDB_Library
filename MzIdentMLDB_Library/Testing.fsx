@@ -363,7 +363,7 @@ type TermIDByName =
     | Carbamidomethyl
     | Oxidation
     | NTerminalGlutamateToPyroglutamateConversion
-    | NTerminalGlutamateGlutamicAcidToPyroglutamateConversion
+    | NTerminalGlutamicAcidToPyroglutamateConversion
     | Acetyl
     | AmmoniaLoss
     static member toString (item:TermIDByName) =
@@ -404,6 +404,6 @@ type TermIDByName =
         | Carbamidomethyl -> "UNIMOD:4"
         | Oxidation -> "UNIMOD:35"
         | NTerminalGlutamateToPyroglutamateConversion -> "UNIMOD:28"
-        | NTerminalGlutamateGlutamicAcidToPyroglutamateConversion -> "UNIMOD:27"
+        | NTerminalGlutamicAcidToPyroglutamateConversion -> "UNIMOD:27"
         | Acetyl -> "UNIMOD:1"
         | AmmoniaLoss -> "UNIMOD:385"
