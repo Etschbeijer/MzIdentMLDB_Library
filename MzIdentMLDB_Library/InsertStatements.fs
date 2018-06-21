@@ -3593,7 +3593,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (measure, _) -> measure)
                 |> (fun measure -> 
-                    if Seq.length measure < 1 
+                    if (Seq.exists (fun measure' -> measure' <> null) measure) = false
                         then 
                             query {
                                    for i in dbContext.Measure do
@@ -3601,49 +3601,29 @@ module InsertStatements =
                                           then select (i, i.Details)
                                   }
                             |> Seq.map (fun (measure, _) -> measure)
-                        else measure
+                            |> (fun measure -> if (Seq.exists (fun measure' -> measure' <> null) measure) = false
+                                                   then None
+                                                   else Some measure
+                               )
+                        else Some measure
                    )
 
-            static member private matchAndAddMeasures (dbContext:MzIdentML) (item1:Measure) (item2:Measure) =
-                if item1.Details=item2.Details
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Measure) (item2:Measure) =
+                item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:Measure) =
-                query {
-                       for i in dbContext.Measure.Local do
-                           if i.Name=item.Name
-                              then select (i, i.Details)
-                      }
-                |> Seq.map (fun (measure, _) -> measure)
-                |> (fun measure -> 
-                    if Seq.length measure < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Measure do
-                                       if i.Name=item.Name
-                                          then select (i, i.Details)
-                                  }
-                            |> Seq.map (fun (measure, _) -> measure)
-                            |> (fun measure' -> if (measure'.Count()) < 1
-                                                         then let tmp = dbContext.Measure.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else measure'
-                                                              |> Seq.iter (fun measureItem -> MeasureHandler.matchAndAddMeasures dbContext measureItem item)
-                               )
-                        else measure
-                             |> Seq.iter (fun measureItem -> MeasureHandler.matchAndAddMeasures dbContext measureItem item)
-                   )
+                    MeasureHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MeasureHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Measure) =
-                MeasureHandler.matchAndAddMeasures dbContext item |> ignore
+                MeasureHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ResidueHandler =
@@ -3662,66 +3642,48 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            static member findResidueByID
+            static member tryFindByID
                 (context:MzIdentML) (residueID:string) =
                 tryFind (context.Residue.Find(residueID))
 
-            static member tryFindByCode (dbContext:MzIdentML) (item:string) =
+            static member tryFindByCode (dbContext:MzIdentML) (code:string) =
                 query {
                        for i in dbContext.Residue.Local do
-                           if i.Code=item
+                           if i.Code=code
                               then select i
                       }
                 |> (fun residue -> 
-                    if Seq.length residue < 1 
+                    if (Seq.exists (fun residue' -> residue' <> null) residue) = false
                         then 
                             query {
                                    for i in dbContext.Residue do
-                                       if i.Code=item
+                                       if i.Code=code
                                           then select i
                                   }
-                            |> Seq.map (fun residue -> residue)
-                        else residue
+                            |> Seq.map (fun (residue) -> residue)
+                            |> (fun residue -> if (Seq.exists (fun residue' -> residue' <> null) residue) = false
+                                                   then None
+                                                   else Some residue
+                               )
+                        else Some residue
                    )
 
-            static member private matchAndAddResidues (dbContext:MzIdentML) (item1:Residue) (item2:Residue) =
-                if item1.Mass=item2.Mass
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Residue) (item2:Residue) =
+                item1.Mass=item2.Mass
 
             static member addToContext (dbContext:MzIdentML) (item:Residue) =
-                query {
-                       for i in dbContext.Residue.Local do
-                           if i.Code=item.Code
-                              then select i
-                      }
-                |> (fun residue -> 
-                    if Seq.length residue < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Residue do
-                                       if i.Code=item.Code
-                                          then select i
-                                  }
-                            |> (fun residue' -> if (residue'.Count()) < 1
-                                                         then let tmp = dbContext.Residue.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else residue'
-                                                              |> Seq.iter (fun residueItem -> ResidueHandler.matchAndAddResidues dbContext residueItem item)
-                               )
-                        else residue
-                             |> Seq.iter (fun residueItem -> ResidueHandler.matchAndAddResidues dbContext residueItem item)
-                   )
+                    ResidueHandler.tryFindByCode dbContext item.Code
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ResidueHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Residue) =
-                ResidueHandler.matchAndAddResidues dbContext item |> ignore
+                ResidueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type AmbiguousResidueHandler =
@@ -3744,65 +3706,45 @@ module InsertStatements =
                 (context:MzIdentML) (ambiguousResidueID:string) =
                 tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
 
-            static member tryFindByCode (dbContext:MzIdentML) (item:string) =
+            static member tryFindByCode (dbContext:MzIdentML) (code:string) =
                 query {
                        for i in dbContext.AmbiguousResidue.Local do
-                           if i.Code=item
+                           if i.Code=code
                               then select (i, i.Details)
                       }
                 |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
                 |> (fun ambiguousResidue -> 
-                    if Seq.length ambiguousResidue < 1 
+                    if (Seq.exists (fun ambiguousResidue' -> ambiguousResidue' <> null) ambiguousResidue) = false
                         then 
                             query {
                                    for i in dbContext.AmbiguousResidue do
-                                       if i.Code=item
+                                       if i.Code=code
                                           then select (i, i.Details)
                                   }
                             |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
-                        else ambiguousResidue
+                            |> (fun ambiguousResidue -> if (Seq.exists (fun ambiguousResidue' -> ambiguousResidue' <> null) ambiguousResidue) = false
+                                                            then None
+                                                            else Some ambiguousResidue
+                               )
+                        else Some ambiguousResidue
                    )
 
-            static member private matchAndAddAmbiguousResidues (dbContext:MzIdentML) (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
-                if item1.Details=item2.Details
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
+                item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:AmbiguousResidue) =
-                query {
-                       for i in dbContext.AmbiguousResidue.Local do
-                           if i.Code=item.Code
-                              then select (i, i.Details)
-                      }
-                |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
-                |> (fun ambiguousResidue -> 
-                    if Seq.length ambiguousResidue < 1 
-                        then 
-                            query {
-                                   for i in dbContext.AmbiguousResidue do
-                                       if i.Code=item.Code
-                                          then select (i, i.Details)
-                                  }
-                            |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
-                            |> (fun ambiguousResidue' -> if (ambiguousResidue'.Count()) < 1
-                                                         then let tmp = dbContext.AmbiguousResidue.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else ambiguousResidue'
-                                                              |> Seq.iter (fun ambiguousResidueItem -> AmbiguousResidueHandler.matchAndAddAmbiguousResidues dbContext ambiguousResidueItem item)
-                               )
-                        else ambiguousResidue
-                             |> Seq.iter (fun ambiguousResidueItem -> AmbiguousResidueHandler.matchAndAddAmbiguousResidues dbContext ambiguousResidueItem item)
-                   )
+                    AmbiguousResidueHandler.tryFindByCode dbContext item.Code
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AmbiguousResidueHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AmbiguousResidue) =
-                AmbiguousResidueHandler.matchAndAddAmbiguousResidues dbContext item |> ignore
+                AmbiguousResidueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type MassTableHandler =
@@ -3879,7 +3821,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (massTable, _, _, _) -> massTable)
                 |> (fun massTable -> 
-                    if Seq.length massTable < 1 
+                    if (Seq.exists (fun massTable' -> massTable' <> null) massTable) = false
                         then 
                             query {
                                    for i in dbContext.MassTable do
@@ -3887,50 +3829,29 @@ module InsertStatements =
                                           then select (i, i.Residues, i.AmbiguousResidues, i.Details)
                                   }
                             |> Seq.map (fun (massTable, _, _, _) -> massTable)
-                        else massTable
+                            |> (fun massTable -> if (Seq.exists (fun massTable' -> massTable' <> null) massTable) = false
+                                                            then None
+                                                            else Some massTable
+                               )
+                        else Some massTable
                    )
 
-            static member private matchAndAddMassTables (dbContext:MzIdentML) (item1:MassTable) (item2:MassTable) =
-                if item1.MSLevel=item2.MSLevel && item1.Residues=item2.Residues && 
-                   item1.AmbiguousResidues=item2.AmbiguousResidues && item1.Details=item2.Details
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
+                item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:MassTable) =
-                query {
-                       for i in dbContext.MassTable.Local do
-                           if i.Name=item.Name
-                              then select (i, i.Residues, i.AmbiguousResidues, i.Details)
-                      }
-                |> Seq.map (fun (massTable, _, _, _) -> massTable)
-                |> (fun massTable -> 
-                    if Seq.length massTable < 1 
-                        then 
-                            query {
-                                   for i in dbContext.MassTable do
-                                       if i.Name=item.Name
-                                          then select (i, i.Residues, i.AmbiguousResidues, i.Details)
-                                  }
-                            |> Seq.map (fun (massTable, _, _, _) -> massTable)
-                            |> (fun massTable' -> if (massTable'.Count()) < 1
-                                                         then let tmp = dbContext.MassTable.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else massTable'
-                                                              |> Seq.iter (fun massTableItem -> MassTableHandler.matchAndAddMassTables dbContext massTableItem item)
-                               )
-                        else massTable
-                             |> Seq.iter (fun massTableItem -> MassTableHandler.matchAndAddMassTables dbContext massTableItem item)
-                   )
+                    MassTableHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MassTableHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MassTable) =
-                MassTableHandler.matchAndAddMassTables dbContext item |> ignore
+                MassTableHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ValueHandler =
@@ -3952,59 +3873,44 @@ module InsertStatements =
                 (context:MzIdentML) (valueID:string) =
                 tryFind (context.Value.Find(valueID))
 
-            static member tryFindByValue (dbContext:MzIdentML) (item:float) =
+            static member tryFindByValue (dbContext:MzIdentML) (item:Nullable<float>) =
                 query {
                        for i in dbContext.Value.Local do
-                           if i.Value=Nullable(item)
+                           if i.Value=item
                               then select i
                       }
                 |> (fun value -> 
-                    if Seq.length value < 1 
+                    if (Seq.exists (fun value' -> value' <> null) value) = false
                         then 
                             query {
                                    for i in dbContext.Value do
-                                       if i.Value=Nullable(item)
+                                       if i.Value=item
                                           then select i
                                   }
-                            |> Seq.map (fun valueItem -> valueItem)
-                        else value
+                            |> Seq.map (fun (value) -> value)
+                            |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
+                                                            then None
+                                                            else Some value
+                               )
+                        else Some value
                    )
 
-            static member private matchAndAddValues (dbContext:MzIdentML) (item1:Value) (item2:Value) =
-                if item1.ID = item2.ID
-                   then item2.ID <- Nullable(System.Guid.NewGuid())
-                        dbContext.Add item2 |> ignore
-                   else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Value) (item2:Value) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:Value) =
-                query {
-                       for i in dbContext.Value.Local do
-                           if i.Value=item.Value
-                              then select i
-                      }
-                |> (fun value -> 
-                    if Seq.length value < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Value do
-                                       if i.Value=item.Value
-                                          then select i
-                                  }
-                            |> (fun value' -> if (value'.Count()) < 1
-                                                         then let tmp = dbContext.Value.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else value'
-                                                              |> Seq.iter (fun valueItem -> ValueHandler.matchAndAddValues dbContext valueItem item)
-                               )
-                        else value
-                             |> Seq.iter (fun valueItem -> ValueHandler.matchAndAddValues dbContext valueItem item)
-                   )
+                    ValueHandler.tryFindByValue dbContext item.Value
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ValueHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Value) =
-                ValueHandler.matchAndAddValues dbContext item |> ignore
+                ValueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type FragmentArrayHandler =
@@ -4028,65 +3934,45 @@ module InsertStatements =
                 (context:MzIdentML) (fragmentArrayID:string) =
                 tryFind (context.FragmentArray.Find(fragmentArrayID))
 
-            static member tryFindByMeasure (dbContext:MzIdentML) (item:Measure) =
+            static member tryFindByMeasureName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.FragmentArray.Local do
-                           if i.Measure=item
+                           if i.Measure.Name=name
                               then select (i, i.Values)
                       }
                 |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
                 |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
+                    if (Seq.exists (fun fragmentArray' -> fragmentArray' <> null) fragmentArray) = false
                         then 
                             query {
                                    for i in dbContext.FragmentArray do
-                                       if i.Measure=item
+                                       if i.Measure.Name=name
                                           then select (i, i.Values)
                                   }
                             |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
-                        else fragmentArray
+                            |> (fun fragmentArray -> if (Seq.exists (fun fragmentArray' -> fragmentArray' <> null) fragmentArray) = false
+                                                            then None
+                                                            else Some fragmentArray
+                               )
+                        else Some fragmentArray
                    )
 
-            static member private matchAndAddFragmentArrays (dbContext:MzIdentML) (item1:FragmentArray) (item2:FragmentArray) =
-                if item1.Values=item2.Values
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:FragmentArray) (item2:FragmentArray) =
+                item1.Values=item2.Values
 
             static member addToContext (dbContext:MzIdentML) (item:FragmentArray) =
-                query {
-                       for i in dbContext.FragmentArray.Local do
-                           if i.Measure=item.Measure
-                              then select (i, i.Values)
-                      }
-                |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
-                |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
-                        then 
-                            query {
-                                   for i in dbContext.FragmentArray do
-                                       if i.Measure=item.Measure
-                                          then select (i, i.Values)
-                                  }
-                            |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
-                            |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
-                                                         then let tmp = dbContext.FragmentArray.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else fragmentArray'
-                                                              |> Seq.iter (fun fragmentArrayItem -> FragmentArrayHandler.matchAndAddFragmentArrays dbContext fragmentArrayItem item)
-                               )
-                        else fragmentArray
-                             |> Seq.iter (fun fragmentArrayItem -> FragmentArrayHandler.matchAndAddFragmentArrays dbContext fragmentArrayItem item)
-                   )
+                    FragmentArrayHandler.tryFindByMeasureName dbContext item.Measure.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match FragmentArrayHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:FragmentArray) =
-                FragmentArrayHandler.matchAndAddFragmentArrays dbContext item |> ignore
+                FragmentArrayHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type IndexHandler =
@@ -4108,59 +3994,44 @@ module InsertStatements =
                 (context:MzIdentML) (indexID:string) =
                 tryFind (context.Index.Find(indexID))
 
-            static member tryFindByIndex (dbContext:MzIdentML) (item:int) =
+            static member tryFindByIndexItem (dbContext:MzIdentML) (item:Nullable<int>) =
                 query {
                        for i in dbContext.Index.Local do
-                           if i.Index=Nullable(item)
+                           if i.Index=item
                               then select i
                       }
-                |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
+                |> (fun index -> 
+                    if (Seq.exists (fun index' -> index' <> null) index) = false
                         then 
                             query {
                                    for i in dbContext.Index do
-                                       if i.Index=Nullable(item)
+                                       if i.Index=item
                                           then select i
                                   }
-                            |> Seq.map (fun indexItem -> indexItem)
-                        else fragmentArray
+                            |> Seq.map (fun (index) -> index)
+                            |> (fun index -> if (Seq.exists (fun index' -> index' <> null) index) = false
+                                                            then None
+                                                            else Some index
+                               )
+                        else Some index
                    )
 
-            static member private matchAndAddIndeces (dbContext:MzIdentML) (item1:Index) (item2:Index) =
-                if item1.ID = item2.ID
-                   then item2.ID <- Nullable(System.Guid.NewGuid())
-                        dbContext.Add item2 |> ignore
-                   else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Index) (item2:Index) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:Index) =
-                query {
-                       for i in dbContext.Index.Local do
-                           if i.Index=item.Index
-                              then select i
-                      }
-                |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Index do
-                                       if i.Index=item.Index
-                                          then select i
-                                  }
-                            |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
-                                                         then let tmp = dbContext.Index.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else fragmentArray'
-                                                              |> Seq.iter (fun fragmentArrayItem -> IndexHandler.matchAndAddIndeces dbContext fragmentArrayItem item)
-                               )
-                        else fragmentArray
-                             |> Seq.iter (fun fragmentArrayItem -> IndexHandler.matchAndAddIndeces dbContext fragmentArrayItem item)
-                   )
+                    IndexHandler.tryFindByIndexItem dbContext item.Index
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match IndexHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Index) =
-                IndexHandler.matchAndAddIndeces dbContext item |> ignore
+                IndexHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type IonTypeHandler =
@@ -4207,66 +4078,45 @@ module InsertStatements =
                 (context:MzIdentML) (ionTypeID:string) =
                 tryFind (context.IonType.Find(ionTypeID))
 
-            static member tryFindByIndex (dbContext:MzIdentML) (item:seq<Index>) =
-                let newItem = item |> List
+            static member tryFindByDetails (dbContext:MzIdentML) (details:seq<IonTypeParam>) =
                 query {
                        for i in dbContext.IonType.Local do
-                           if i.Index=newItem
+                           if i.Details=(details |> List)
                               then select (i, i.FragmentArrays, i.Details)
                       }
                 |> Seq.map (fun (ionType, _, _) -> ionType)
-                |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
+                |> (fun ionType -> 
+                    if (Seq.exists (fun ionType' -> ionType' <> null) ionType) = false
                         then 
                             query {
                                    for i in dbContext.IonType do
-                                       if i.Index=newItem
+                                       if i.Details=(details |> List)
                                           then select (i, i.FragmentArrays, i.Details)
                                   }
                             |> Seq.map (fun (ionType, _, _) -> ionType)
-                        else fragmentArray
+                            |> (fun ionType -> if (Seq.exists (fun ionType' -> ionType' <> null) ionType) = false
+                                                            then None
+                                                            else Some ionType
+                               )
+                        else Some ionType
                    )
 
-            static member private matchAndAddIonTypes (dbContext:MzIdentML) (item1:IonType) (item2:IonType) =
-                if item1.FragmentArrays=item2.FragmentArrays && item1.Details=item2.Details
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:IonType) (item2:IonType) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:IonType) =
-                query {
-                       for i in dbContext.IonType.Local do
-                           if i.Index=item.Index
-                              then select (i, i.FragmentArrays, i.Details)
-                      }
-                |> Seq.map (fun (ionType, _, _) -> ionType)
-                |> (fun fragmentArray -> 
-                    if Seq.length fragmentArray < 1 
-                        then 
-                            query {
-                                   for i in dbContext.IonType do
-                                       if i.Index=item.Index
-                                          then select (i, i.FragmentArrays, i.Details)
-                                  }
-                            |> Seq.map (fun (ionType, _, _) -> ionType)
-                            |> (fun fragmentArray' -> if (fragmentArray'.Count()) < 1
-                                                         then let tmp = dbContext.IonType.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else fragmentArray'
-                                                              |> Seq.iter (fun fragmentArrayItem -> IonTypeHandler.matchAndAddIonTypes dbContext fragmentArrayItem item)
-                               )
-                        else fragmentArray
-                             |> Seq.iter (fun fragmentArrayItem -> IonTypeHandler.matchAndAddIonTypes dbContext fragmentArrayItem item)
-                   )
+                    IonTypeHandler.tryFindByDetails dbContext item.Details
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match IonTypeHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IonType) =
-                IonTypeHandler.matchAndAddIonTypes dbContext item |> ignore
+                IonTypeHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectraDataHandler =
@@ -4307,67 +4157,45 @@ module InsertStatements =
                 (context:MzIdentML) (spectraDataID:string) =
                 tryFind (context.SpectraData.Find(spectraDataID))
 
-            static member tryFindBYSpectrumIDFormat (dbContext:MzIdentML) (item:CVParam) =
+            static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
                 query {
                        for i in dbContext.SpectraData.Local do
-                           if i.SpectrumIDFormat=item
+                           if i.Location=location
                               then select (i, i.FileFormat, i.SpectrumIDFormat)
                       }
                 |> Seq.map (fun (spectraData, _, _) -> spectraData)
                 |> (fun spectraData -> 
-                    if Seq.length spectraData < 1 
+                    if (Seq.exists (fun spectraData' -> spectraData' <> null) spectraData) = false
                         then 
                             query {
                                    for i in dbContext.SpectraData do
-                                       if i.SpectrumIDFormat=item
+                                       if i.Location=location
                                           then select (i, i.FileFormat, i.SpectrumIDFormat)
                                   }
                             |> Seq.map (fun (spectraData, _, _) -> spectraData)
-                        else spectraData
+                            |> (fun spectraData -> if (Seq.exists (fun spectraData' -> spectraData' <> null) spectraData) = false
+                                                            then None
+                                                            else Some spectraData
+                               )
+                        else Some spectraData
                    )
 
-            static member private matchAndAddSpectraDatas (dbContext:MzIdentML) (item1:SpectraData) (item2:SpectraData) =
-                if item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-                   item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
-                
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectraData) (item2:SpectraData) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:SpectraData) =
-                query {
-                       for i in dbContext.SpectraData.Local do
-                           if i.SpectrumIDFormat=item.SpectrumIDFormat
-                              then select (i, i.FileFormat, i.SpectrumIDFormat)
-                      }
-                |> Seq.map (fun (spectraData, _, _) -> spectraData)
-                |> (fun spectraData -> 
-                    if Seq.length spectraData < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectraData do
-                                       if i.SpectrumIDFormat=item.SpectrumIDFormat
-                                          then select (i, i.FileFormat, i.SpectrumIDFormat)
-                                  }
-                            |> Seq.map (fun (spectraData, _, _) -> spectraData)
-                            |> (fun spectraData' -> if (spectraData'.Count()) < 1
-                                                         then let tmp = dbContext.SpectraData.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else spectraData'
-                                                              |> Seq.iter (fun spectraDataItem -> SpectraDataHandler.matchAndAddSpectraDatas dbContext spectraDataItem item)
-                               )
-                        else spectraData
-                             |> Seq.iter (fun spectraDataItem -> SpectraDataHandler.matchAndAddSpectraDatas dbContext spectraDataItem item)
-                   )
+                    SpectraDataHandler.tryFindByLocation dbContext item.Location
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectraDataHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectraData) =
-                SpectraDataHandler.matchAndAddSpectraDatas dbContext item |> ignore
+                SpectraDataHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpecificityRulesHandler =
@@ -4389,63 +4217,45 @@ module InsertStatements =
                 (context:MzIdentML) (specificityRuleID:string) =
                 tryFind (context.SpecificityRule.Find(specificityRuleID))
 
-            static member tryFindByCVParams (dbContext:MzIdentML) (item:seq<SpecificityRuleParam>) =
-                let newItem = item |> List
+            static member tryFindByDetails (dbContext:MzIdentML) (details:seq<SpecificityRuleParam>) =
                 query {
                        for i in dbContext.SpecificityRule.Local do
-                           if i.Details=newItem
+                           if i.Details=(details |> List)
                               then select (i, i.Details)
                       }
                 |> Seq.map (fun (specificityRule, _) -> specificityRule)
                 |> (fun specificityRule -> 
-                    if Seq.length specificityRule < 1 
+                    if (Seq.exists (fun specificityRule' -> specificityRule' <> null) specificityRule) = false
                         then 
                             query {
                                    for i in dbContext.SpecificityRule do
-                                       if i.Details=newItem
+                                       if i.Details=(details |> List)
                                           then select (i, i.Details)
                                   }
                             |> Seq.map (fun (specificityRule, _) -> specificityRule)
-                        else specificityRule
+                            |> (fun specificityRule -> if (Seq.exists (fun specificityRule' -> specificityRule' <> null) specificityRule) = false
+                                                            then None
+                                                            else Some specificityRule
+                               )
+                        else Some specificityRule
                    )
 
-            static member private matchAndAddSpecificityRules (dbContext:MzIdentML) (item1:SpecificityRule) (item2:SpecificityRule) =
-                if item1.ID = item2.ID
-                   then item2.ID <- Nullable(System.Guid.NewGuid())
-                        dbContext.Add item2 |> ignore
-                   else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpecificityRule) (item2:SpecificityRule) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:SpecificityRule) =
-                query {
-                       for i in dbContext.SpecificityRule.Local do
-                           if i.Details=item.Details
-                              then select (i, i.Details)
-                      }
-                |> Seq.map (fun (specificityRule, _) -> specificityRule)
-                |> (fun specificityRule -> 
-                    if Seq.length specificityRule < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpecificityRule do
-                                       if i.Details=item.Details
-                                          then select (i, i.Details)
-                                  }
-                            |> Seq.map (fun (specificityRule, _) -> specificityRule)
-                            |> (fun specificityRule' -> if (specificityRule'.Count()) < 1
-                                                         then let tmp = dbContext.SpecificityRule.Find(item.ID)
-                                                              if tmp <> null
-                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                      dbContext.Add item |> ignore
-                                                                 else dbContext.Add item |> ignore
-                                                         else specificityRule'
-                                                              |> Seq.iter (fun specificityRuleItem -> SpecificityRulesHandler.matchAndAddSpecificityRules dbContext specificityRuleItem item)
-                               )
-                        else specificityRule
-                             |> Seq.iter (fun specificityRuleItem -> SpecificityRulesHandler.matchAndAddSpecificityRules dbContext specificityRuleItem item)
-                   )
+                    SpecificityRulesHandler.tryFindByDetails dbContext item.Details
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpecificityRulesHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpecificityRule) =
-                SpecificityRulesHandler.matchAndAddSpecificityRules dbContext item |> ignore
+                SpecificityRulesHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SearchModificationHandler =
@@ -4485,67 +4295,46 @@ module InsertStatements =
                 (context:MzIdentML) (searchModificationID:string) =
                 tryFind (context.SearchModification.Find(searchModificationID))
 
-            static member tryFindByMassDelta (dbContext:MzIdentML) (item:float) =
+            static member tryFindByMassDelta (dbContext:MzIdentML) (massDelta:Nullable<float>) =
                 query {
                        for i in dbContext.SearchModification.Local do
-                           if i.MassDelta=Nullable(item)
+                           if i.MassDelta=massDelta
                               then select (i, i.SpecificityRules, i.Details)
                       }
                 |> Seq.map (fun (searchModification, _, _) -> searchModification)
                 |> (fun searchModification -> 
-                    if Seq.length searchModification < 1 
+                    if (Seq.exists (fun searchModification' -> searchModification' <> null) searchModification) = false
                         then 
                             query {
                                    for i in dbContext.SearchModification do
-                                       if i.MassDelta=Nullable(item)
+                                       if i.MassDelta=massDelta
                                           then select (i, i.SpecificityRules, i.Details)
                                   }
                             |> Seq.map (fun (searchModification, _, _) -> searchModification)
-                        else searchModification
+                            |> (fun searchModification -> if (Seq.exists (fun searchModification' -> searchModification' <> null) searchModification) = false
+                                                            then None
+                                                            else Some searchModification
+                               )
+                        else Some searchModification
                    )
 
-            static member private matchAndAddSearchModifications (dbContext:MzIdentML) (item1:SearchModification) (item2:SearchModification) =
-                if item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
-                   item1.SpecificityRules=item2.SpecificityRules && item1.Details=item2.Details
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
+                item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
+                item1.SpecificityRules=item2.SpecificityRules && item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:SearchModification) =
-                query {
-                       for i in dbContext.SearchModification.Local do
-                           if i.MassDelta=item.MassDelta
-                              then select (i, i.SpecificityRules, i.Details)
-                      }
-                |> Seq.map (fun (searchModification, _, _) -> searchModification)
-                |> (fun searchModification -> 
-                    if Seq.length searchModification < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SearchModification do
-                                       if i.MassDelta=item.MassDelta
-                                          then select (i, i.SpecificityRules, i.Details)
-                                  }
-                            |> Seq.map (fun (searchModification, _, _) -> searchModification)
-                            |> (fun searchModification' -> if (searchModification'.Count()) < 1
-                                                            then let tmp = dbContext.SearchModification.Find(item.ID)
-                                                                 if tmp <> null
-                                                                    then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                         dbContext.Add item |> ignore
-                                                                    else dbContext.Add item |> ignore
-                                                            else searchModification'
-                                                                 |> Seq.iter (fun searchModificationItem -> SearchModificationHandler.matchAndAddSearchModifications dbContext searchModificationItem item)
-                               )
-                        else searchModification
-                             |> Seq.iter (fun searchModificationItem -> SearchModificationHandler.matchAndAddSearchModifications dbContext searchModificationItem item)
-                   )
+                    SearchModificationHandler.tryFindByMassDelta dbContext item.MassDelta
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchModificationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchModification) =
-                SearchModificationHandler.matchAndAddSearchModifications dbContext item |> ignore
+                SearchModificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type EnzymeHandler =
@@ -4642,7 +4431,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (enzyme, _) -> enzyme)
                 |> (fun enzyme -> 
-                    if Seq.length enzyme < 1 
+                    if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
                         then 
                             query {
                                    for i in dbContext.Enzyme do
@@ -4650,52 +4439,31 @@ module InsertStatements =
                                           then select (i, i.EnzymeName)
                                   }
                             |> Seq.map (fun (enzyme, _) -> enzyme)
-                        else enzyme
+                            |> (fun enzyme -> if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
+                                                            then None
+                                                            else Some enzyme
+                               )
+                        else Some enzyme
                    )
 
-            static member private matchAndAddEnzymes (dbContext:MzIdentML) (item1:Enzyme) (item2:Enzyme) =
-                if item1.CTermGain=item2.CTermGain && item1.NTermGain=item2.NTermGain && item1.MinDistance=item2.MinDistance &&
-                   item1.MissedCleavages=item2.MissedCleavages && item1.SemiSpecific=item2.SemiSpecific &&
-                   item1.SiteRegexc=item2.SiteRegexc && item1.EnzymeName=item2.EnzymeName
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Enzyme) (item2:Enzyme) =
+                item1.CTermGain=item2.CTermGain && item1.NTermGain=item2.NTermGain && item1.MinDistance=item2.MinDistance &&
+                item1.MissedCleavages=item2.MissedCleavages && item1.SemiSpecific=item2.SemiSpecific &&
+                item1.SiteRegexc=item2.SiteRegexc && item1.EnzymeName=item2.EnzymeName
 
             static member addToContext (dbContext:MzIdentML) (item:Enzyme) =
-                query {
-                       for i in dbContext.Enzyme.Local do
-                           if i.Name=item.Name
-                              then select (i, i.EnzymeName)
-                      }
-                |> Seq.map (fun (enzyme, _) -> enzyme)
-                |> (fun enzyme -> 
-                    if Seq.length enzyme < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Enzyme do
-                                       if i.Name=item.Name
-                                          then select (i, i.EnzymeName)
-                                  }
-                            |> Seq.map (fun (enzyme, _) -> enzyme)
-                            |> (fun enzyme' -> if (enzyme'.Count()) < 1
-                                                            then let tmp = dbContext.Enzyme.Find(item.ID)
-                                                                 if tmp <> null
-                                                                    then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                         dbContext.Add item |> ignore
-                                                                    else dbContext.Add item |> ignore
-                                                            else enzyme'
-                                                                 |> Seq.iter (fun enzymeItem -> EnzymeHandler.matchAndAddEnzymes dbContext enzymeItem item)
-                               )
-                        else enzyme
-                             |> Seq.iter (fun enzymeItem -> EnzymeHandler.matchAndAddEnzymes dbContext enzymeItem item)
-                   )
+                    EnzymeHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match EnzymeHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Enzyme) =
-                EnzymeHandler.matchAndAddEnzymes dbContext item |> ignore
+                EnzymeHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type FilterHandler =
@@ -4743,66 +4511,45 @@ module InsertStatements =
                 (context:MzIdentML) (filterID:string) =
                 tryFind (context.Filter.Find(filterID))
 
-            static member tryFindByFilterType (dbContext:MzIdentML) (item:CVParam) =
+            static member tryFindByFilterTypeName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Filter.Local do
-                           if i.FilterType=item
+                           if i.FilterType.Term.Name=name
                               then select (i, i.FilterType, i.Includes, i.Excludes)
                       }
                 |> Seq.map (fun (filter, _, _, _) -> filter)
-                |> (fun filter -> 
-                    if Seq.length filter < 1 
+                |> (fun enzyme -> 
+                    if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
                         then 
                             query {
                                    for i in dbContext.Filter do
-                                       if i.FilterType=item
+                                       if i.FilterType.Term.Name=name
                                           then select (i, i.FilterType, i.Includes, i.Excludes)
                                   }
                             |> Seq.map (fun (filter, _, _, _) -> filter)
-                        else filter
+                            |> (fun enzyme -> if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
+                                                            then None
+                                                            else Some enzyme
+                               )
+                        else Some enzyme
                    )
 
-            static member private matchAndAddFilters (dbContext:MzIdentML) (item1:Filter) (item2:Filter) =
-                if item1.Includes=item2.Includes && item1.Excludes=item2.Excludes
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Filter) (item2:Filter) =
+                item1.Includes=item2.Includes && item1.Excludes=item2.Excludes
 
             static member addToContext (dbContext:MzIdentML) (item:Filter) =
-                query {
-                       for i in dbContext.Filter.Local do
-                           if i.FilterType=item.FilterType
-                              then select (i, i.FilterType, i.Includes, i.Excludes)
-                      }
-                |> Seq.map (fun (filter, _, _, _) -> filter)
-                |> (fun filter -> 
-                    if Seq.length filter < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Filter do
-                                       if i.FilterType=item.FilterType
-                                          then select (i, i.FilterType, i.Includes, i.Excludes)
-                                  }
-                            |> Seq.map (fun (filter, _, _, _) -> filter)
-                            |> (fun filter' -> if (filter'.Count()) < 1
-                                                            then let tmp = dbContext.Filter.Find(item.ID)
-                                                                 if tmp <> null
-                                                                    then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                         dbContext.Add item |> ignore
-                                                                    else dbContext.Add item |> ignore
-                                                            else filter'
-                                                                 |> Seq.iter (fun filterItem -> FilterHandler.matchAndAddFilters dbContext filterItem item)
-                               )
-                        else filter
-                             |> Seq.iter (fun filterItem -> FilterHandler.matchAndAddFilters dbContext filterItem item)
-                   )
+                    FilterHandler.tryFindByFilterTypeName dbContext item.FilterType.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match FilterHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Filter) =
-                FilterHandler.matchAndAddFilters dbContext item |> ignore
+                FilterHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type FrameHandler =
@@ -4824,59 +4571,44 @@ module InsertStatements =
                 (context:MzIdentML) (frameID:string) =
                 tryFind (context.Frame.Find(frameID))
 
-            static member tryFindByFrame (dbContext:MzIdentML) (item:int) =
+            static member tryFindByFrameItem (dbContext:MzIdentML) (item:Nullable<int>) =
                 query {
                        for i in dbContext.Frame.Local do
-                           if i.Frame=Nullable(item)
+                           if i.Frame=item
                               then select i
                       }
                 |> (fun frame -> 
-                    if Seq.length frame < 1 
+                    if (Seq.exists (fun frame' -> frame' <> null) frame) = false
                         then 
                             query {
                                    for i in dbContext.Frame do
-                                       if i.Frame=Nullable(item)
+                                       if i.Frame=item
                                           then select i
                                   }
-                            |> Seq.map (fun frameItem -> frameItem)
-                        else frame
+                            |> Seq.map (fun (frame) -> frame)
+                            |> (fun frame -> if (Seq.exists (fun frame' -> frame' <> null) frame) = false
+                                                            then None
+                                                            else Some frame
+                               )
+                        else Some frame
                    )
 
-            static member private matchAndAddFrames (dbContext:MzIdentML) (item1:Frame) (item2:Frame) =
-                if item1.ID = item2.ID
-                   then item2.ID <- Nullable(System.Guid.NewGuid())
-                        dbContext.Add item2 |> ignore
-                   else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Frame) (item2:Frame) =
+                item1.ID = item2.ID
 
             static member addToContext (dbContext:MzIdentML) (item:Frame) =
-                query {
-                       for i in dbContext.Frame.Local do
-                           if i.Frame=item.Frame
-                              then select i
-                      }
-                |> (fun frame -> 
-                    if Seq.length frame < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Frame do
-                                       if i.Frame=item.Frame
-                                          then select i
-                                  }
-                            |> (fun frame' -> if (frame'.Count()) < 1
-                                                            then let tmp = dbContext.Frame.Find(item.ID)
-                                                                 if tmp <> null
-                                                                    then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                         dbContext.Add item |> ignore
-                                                                    else dbContext.Add item |> ignore
-                                                            else frame'
-                                                                 |> Seq.iter (fun frameItem -> FrameHandler.matchAndAddFrames dbContext frameItem item)
-                               )
-                        else frame
-                             |> Seq.iter (fun frameItem -> FrameHandler.matchAndAddFrames dbContext frameItem item)
-                   )
+                    FrameHandler.tryFindByFrameItem dbContext item.Frame
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match FrameHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Frame) =
-                FrameHandler.matchAndAddFrames dbContext item |> ignore
+                FrameHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationProtocolHandler =
@@ -5043,10 +4775,10 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
-            static member tryFindBySearchType (dbContext:MzIdentML) (item:CVParam) =
+            static member tryFindByAnalysisSoftwareSoftwareName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationProtocol.Local do
-                           if i.SearchType=item
+                           if i.AnalysisSoftware.SoftwareName.Term.Name=name
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
@@ -5055,11 +4787,11 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
                 |> (fun spectrumIdentificationProtocol -> 
-                    if Seq.length spectrumIdentificationProtocol < 1 
+                    if (Seq.exists (fun spectrumIdentificationProtocol' -> spectrumIdentificationProtocol' <> null) spectrumIdentificationProtocol) = false
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationProtocol do
-                                       if i.SearchType=item
+                                       if i.AnalysisSoftware.SoftwareName.Term.Name=name
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
@@ -5067,62 +4799,33 @@ module InsertStatements =
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
-                        else spectrumIdentificationProtocol
+                            |> (fun spectrumIdentificationProtocol -> if (Seq.exists (fun spectrumIdentificationProtocol' -> spectrumIdentificationProtocol' <> null) spectrumIdentificationProtocol) = false
+                                                                        then None
+                                                                        else Some spectrumIdentificationProtocol
+                               )
+                        else Some spectrumIdentificationProtocol
                    )
 
-            static member private matchAndAddSpectrumIdentificationProtocols (dbContext:MzIdentML) (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
-                if item1.AnalysisSoftware=item2.AnalysisSoftware && item1.Threshold=item2.Threshold && 
-                   item1.AdditionalSearchParams=item2.AdditionalSearchParams && item1.ModificationParams=item2.ModificationParams && 
-                   item1.Enzymes=item2.Enzymes && item1.MassTables=item2.MassTables && item1.FragmentTolerance=item2.FragmentTolerance &&
-                   item1.ParentTolerance=item2.ParentTolerance && item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames &&
-                   item1.TranslationTables=item2.TranslationTables && item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
+                item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && 
+                item1.AdditionalSearchParams=item2.AdditionalSearchParams && item1.ModificationParams=item2.ModificationParams && 
+                item1.Enzymes=item2.Enzymes && item1.MassTables=item2.MassTables && item1.FragmentTolerance=item2.FragmentTolerance &&
+                item1.ParentTolerance=item2.ParentTolerance && item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames &&
+                item1.TranslationTables=item2.TranslationTables && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                query {
-                       for i in dbContext.SpectrumIdentificationProtocol.Local do
-                           if i.SearchType=item.SearchType
-                              then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
-                                           i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
-                                           i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                           i.MzIdentMLDocument
-                                          )
-                      }
-                |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
-                |> (fun spectrumIdentificationProtocol -> 
-                    if Seq.length spectrumIdentificationProtocol < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectrumIdentificationProtocol do
-                                       if i.SearchType=item.SearchType
-                                          then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
-                                                       i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
-                                                       i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                                       i.MzIdentMLDocument
-                                                      )
-                                  }
-                            |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
-                            |> (fun spectrumIdentificationProtocol' -> if (spectrumIdentificationProtocol'.Count()) < 1
-                                                                           then let tmp = dbContext.SpectrumIdentificationProtocol.Find(item.ID)
-                                                                                if tmp <> null
-                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                     dbContext.Add item |> ignore
-                                                                                else dbContext.Add item |> ignore
-                                                                           else spectrumIdentificationProtocol'
-                                                                                |> Seq.iter (fun spectrumIdentificationProtocolItem -> SpectrumIdentificationProtocolHandler.matchAndAddSpectrumIdentificationProtocols dbContext spectrumIdentificationProtocolItem item)
-                               )
-                        else spectrumIdentificationProtocol
-                             |> Seq.iter (fun spectrumIdentificationProtocolItem -> SpectrumIdentificationProtocolHandler.matchAndAddSpectrumIdentificationProtocols dbContext spectrumIdentificationProtocolItem item)
-                   )
+                    SpectrumIdentificationProtocolHandler.tryFindByAnalysisSoftwareSoftwareName dbContext item.AnalysisSoftware.SoftwareName.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationProtocolHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                SpectrumIdentificationProtocolHandler.matchAndAddSpectrumIdentificationProtocols dbContext item |> ignore
+                SpectrumIdentificationProtocolHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SearchDatabaseHandler =
@@ -5209,69 +4912,48 @@ module InsertStatements =
                 (context:MzIdentML) (searchDatabaseID:string) =
                 tryFind (context.SearchDatabase.Find(searchDatabaseID))
 
-            static member tryFindByDatabaseName (dbContext:MzIdentML) (item:CVParam) =
+            static member tryFindByDatabaseNameName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchDatabase.Local do
-                           if i.DatabaseName=item
+                           if i.DatabaseName.Term.Name=name
                               then select (i, i.DatabaseName, i.FileFormat, i.Details)
                       }
                 |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
                 |> (fun searchDatabase -> 
-                    if Seq.length searchDatabase < 1 
+                    if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
                         then 
                             query {
                                    for i in dbContext.SearchDatabase do
-                                       if i.DatabaseName=item
+                                       if i.DatabaseName.Term.Name=name
                                           then select (i, i.DatabaseName, i.FileFormat, i.Details)
                                   }
                             |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
-                        else searchDatabase
+                            |> (fun searchDatabase -> if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
+                                                          then None
+                                                          else Some searchDatabase
+                               )
+                        else Some searchDatabase
                    )
 
-            static member private matchAndAddSearchDatabases (dbContext:MzIdentML) (item1:SearchDatabase) (item2:SearchDatabase) =
-                if item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
-                   item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
-                   item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
-                   item1.Details=item2.Details && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SearchDatabase) (item2:SearchDatabase) =
+               item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
+               item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
+               item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
+               item1.Details=item2.Details && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
 
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabase) =
-                query {
-                       for i in dbContext.SearchDatabase.Local do
-                           if i.DatabaseName=item.DatabaseName
-                              then select (i, i.DatabaseName, i.FileFormat, i.Details)
-                      }
-                |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
-                |> (fun searchDatabase -> 
-                    if Seq.length searchDatabase < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SearchDatabase do
-                                       if i.DatabaseName=item.DatabaseName
-                                          then select (i, i.DatabaseName, i.FileFormat, i.Details)
-                                  }
-                            |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
-                            |> (fun searchDatabase' -> if (searchDatabase'.Count()) < 1
-                                                                           then let tmp = dbContext.SearchDatabase.Find(item.ID)
-                                                                                if tmp <> null
-                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                     dbContext.Add item |> ignore
-                                                                                else dbContext.Add item |> ignore
-                                                                           else searchDatabase'
-                                                                                |> Seq.iter (fun searchDatabaseItem -> SearchDatabaseHandler.matchAndAddSearchDatabases dbContext searchDatabaseItem item)
-                               )
-                        else searchDatabase
-                             |> Seq.iter (fun searchDatabaseItem -> SearchDatabaseHandler.matchAndAddSearchDatabases dbContext searchDatabaseItem item)
-                   )
+                    SearchDatabaseHandler.tryFindByDatabaseNameName dbContext item.DatabaseName.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchDatabaseHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchDatabase) =
-                SearchDatabaseHandler.matchAndAddSearchDatabases dbContext item |> ignore
+                SearchDatabaseHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type DBSequenceHandler =
@@ -5336,72 +5018,47 @@ module InsertStatements =
                 let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                 dbSequence
 
-            static member tryFindByID
-                (context:MzIdentML) (dbSequenceID:string) =
-                tryFind (context.DBSequence.Find(dbSequenceID))
-
-            static member tryFindByAccession (dbContext:MzIdentML) (item:string) =
+            static member tryFindByAccession (dbContext:MzIdentML) (accession:string) =
                 query {
                        for i in dbContext.DBSequence.Local do
-                           if i.Accession=item
+                           if i.Accession=accession
                               then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
-                    if Seq.length dbSequence < 1 
+                    if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
                         then 
                             query {
                                    for i in dbContext.DBSequence do
-                                       if i.Accession=item
+                                       if i.Accession=accession
                                           then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
-                        else dbSequence
+                            |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+                                                          then None
+                                                          else Some dbSequence
+                               )
+                        else Some dbSequence
                    )
 
-            static member private matchAndAddDBSequence (dbContext:MzIdentML) (item1:DBSequence) (item2:DBSequence) =
-                if item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
-                   item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
-                   item1.SearchDatabase=item2.SearchDatabase
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
+               item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
+               item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
+               item1.SearchDatabase=item2.SearchDatabase
 
             static member addToContext (dbContext:MzIdentML) (item:DBSequence) =
-                query {
-                       for i in dbContext.DBSequence.Local do
-                           if i.Accession=item.Accession
-                              then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
-                      }
-                |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
-                |> (fun dbSequence -> 
-                    if Seq.length dbSequence < 1 
-                        then 
-                            query {
-                                   for i in dbContext.DBSequence do
-                                       if i.Accession=item.Accession
-                                          then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
-                                  }
-                            |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
-                            |> (fun dbSequence' -> if (dbSequence'.Count()) < 1
-                                                                           then let tmp = dbContext.DBSequence.Find(item.ID)
-                                                                                if tmp <> null
-                                                                                then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                     dbContext.Add item |> ignore
-                                                                                else dbContext.Add item |> ignore
-                                                                           else dbSequence'
-                                                                                |> Seq.iter (fun dbSequenceItem -> DBSequenceHandler.matchAndAddDBSequence dbContext dbSequenceItem item)
-                               )
-                        else dbSequence
-                             |> Seq.iter (fun dbSequenceItem -> DBSequenceHandler.matchAndAddDBSequence dbContext dbSequenceItem item)
-                   )
+                    DBSequenceHandler.tryFindByAccession dbContext item.Accession
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match DBSequenceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:DBSequence) =
-                DBSequenceHandler.matchAndAddDBSequence dbContext item |> ignore
+                DBSequenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type PeptideEvidenceHandler =
@@ -5510,70 +5167,49 @@ module InsertStatements =
                 (context:MzIdentML) (peptideEvidenceID:string) =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
-            static member tryFindByPeptide (dbContext:MzIdentML) (item:Peptide) =
+            static member tryFindByDBSequenceAccession (dbContext:MzIdentML) (accession:string) =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
-                           if i.Peptide=item
+                           if i.DBSequence.Accession=accession
                               then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
-                    if Seq.length peptideEvidence < 1 
+                    if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
                         then 
                             query {
                                    for i in dbContext.PeptideEvidence do
-                                       if i.Peptide=item
+                                       if i.DBSequence.Accession=accession
                                           then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
-                        else peptideEvidence
+                            |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
+                                                          then None
+                                                          else Some peptideEvidence
+                               )
+                        else Some peptideEvidence
                    )
 
-            static member private matchAndAddPeptideEvidence (dbContext:MzIdentML) (item1:PeptideEvidence) (item2:PeptideEvidence) =
-                if item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
-                   item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
-                   item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
-                   item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
-                   item1.DBSequence=item2.DBSequence
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:PeptideEvidence) (item2:PeptideEvidence) =
+               item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
+               item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
+               item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
+               item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
+               item1.DBSequence=item2.DBSequence
 
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidence) =
-                query {
-                       for i in dbContext.PeptideEvidence.Local do
-                           if i.Peptide=item.Peptide
-                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
-                      }
-                |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
-                |> (fun peptideEvidence -> 
-                    if Seq.length peptideEvidence < 1 
-                        then 
-                            query {
-                                   for i in dbContext.PeptideEvidence do
-                                       if i.Peptide=item.Peptide
-                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
-                                  }
-                            |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
-                            |> (fun peptideEvidence' -> if (peptideEvidence'.Count()) < 1
-                                                                             then let tmp = dbContext.PeptideEvidence.Find(item.ID)
-                                                                                  if tmp <> null
-                                                                                  then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                       dbContext.Add item |> ignore
-                                                                                  else dbContext.Add item |> ignore
-                                                                             else peptideEvidence'
-                                                                                  |> Seq.iter (fun peptideEvidenceItem -> PeptideEvidenceHandler.matchAndAddPeptideEvidence dbContext peptideEvidenceItem item)
-                               )
-                        else peptideEvidence
-                             |> Seq.iter (fun peptideEvidenceItem -> PeptideEvidenceHandler.matchAndAddPeptideEvidence dbContext peptideEvidenceItem item)
-                   )
+                    PeptideEvidenceHandler.tryFindByDBSequenceAccession dbContext item.DBSequence.Accession
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideEvidenceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideEvidence) =
-                PeptideEvidenceHandler.matchAndAddPeptideEvidence dbContext item |> ignore
+                PeptideEvidenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationItemHandler =
@@ -5687,78 +5323,53 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationItemID:string) =
                 tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
 
-            static member tryFindByPeptide (dbContext:MzIdentML) (item:Peptide) =
+            static member tryFindByPeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItem.Local do
-                           if i.Peptide=item
+                           if i.Peptide.PeptideSequence=peptideSequence
                               then select (i, i.Peptide, i.Sample, i.MassTable, 
-                                        i.PeptideEvidences, i.Fragmentations, i.Details
-                                       )
+                                           i.PeptideEvidences, i.Fragmentations, i.Details
+                                          )
                       }
                 |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
                 |> (fun spectrumIdentificationItem -> 
-                    if Seq.length spectrumIdentificationItem < 1 
+                    if (Seq.exists (fun spectrumIdentificationItem' -> spectrumIdentificationItem' <> null) spectrumIdentificationItem) = false
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationItem do
-                                       if i.Peptide=item
+                                       if i.Peptide.PeptideSequence=peptideSequence
                                           then select (i, i.Peptide, i.Sample, i.MassTable, 
                                                        i.PeptideEvidences, i.Fragmentations, i.Details
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
-                        else spectrumIdentificationItem
+                            |> (fun peptideEvidence -> if (Seq.exists (fun spectrumIdentificationItem' -> spectrumIdentificationItem' <> null) spectrumIdentificationItem) = false
+                                                          then None
+                                                          else Some spectrumIdentificationItem
+                               )
+                        else Some spectrumIdentificationItem
                    )
 
-            static member private matchAndAddSpectrumIdentificationItem (dbContext:MzIdentML) (item1:SpectrumIdentificationItem) (item2:SpectrumIdentificationItem) =
-                if item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
-                   item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
-                   item1.Fragmentations=item2.Fragmentations && item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && 
-                   item1.CalculatedPI=item2.CalculatedPI && item1.Details=item2.Details && item1.ChargeState=item2.ChargeState && 
-                   item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectrumIdentificationItem) (item2:SpectrumIdentificationItem) =
+               item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
+               item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
+               item1.Fragmentations=item2.Fragmentations && item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && 
+               item1.CalculatedPI=item2.CalculatedPI && item1.Details=item2.Details && item1.ChargeState=item2.ChargeState && 
+               item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge && item1.Peptide=item2.Peptide
 
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
-                query {
-                       for i in dbContext.SpectrumIdentificationItem.Local do
-                           if i.Peptide=item.Peptide
-                              then select (i, i.Peptide, i.Sample, i.MassTable, 
-                                        i.PeptideEvidences, i.Fragmentations, i.Details
-                                       )
-                      }
-                |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
-                |> (fun spectrumIdentificationItem -> 
-                    if Seq.length spectrumIdentificationItem < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectrumIdentificationItem do
-                                       if i.Peptide=item.Peptide
-                                          then select (i, i.Peptide, i.Sample, i.MassTable, 
-                                                       i.PeptideEvidences, i.Fragmentations, i.Details
-                                                      )
-                                  }
-                            |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
-                            |> (fun spectrumIdentificationItem' -> if (spectrumIdentificationItem'.Count()) < 1
-                                                                                                   then let tmp = dbContext.SpectrumIdentificationItem.Find(item.ID)
-                                                                                                        if tmp <> null
-                                                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                                dbContext.Add item |> ignore
-                                                                                                        else dbContext.Add item |> ignore
-                                                                                                   else spectrumIdentificationItem'
-                                                                                                        |> Seq.iter (fun spectrumIdentificationItemsItem -> SpectrumIdentificationItemHandler.matchAndAddSpectrumIdentificationItem dbContext spectrumIdentificationItemsItem item)
-                               )
-                        else spectrumIdentificationItem
-                             |> Seq.iter (fun spectrumIdentificationItemsItem -> SpectrumIdentificationItemHandler.matchAndAddSpectrumIdentificationItem dbContext spectrumIdentificationItemsItem item)
-                   )
+                    SpectrumIdentificationItemHandler.tryFindByPeptideSequence dbContext item.Peptide.PeptideSequence
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationItemHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
-                SpectrumIdentificationItemHandler.matchAndAddSpectrumIdentificationItem dbContext item |> ignore
+                SpectrumIdentificationItemHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationResultHandler =
@@ -5809,66 +5420,46 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationResultID:string) =
                 tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
 
-            static member tryFindBySpectraData (dbContext:MzIdentML) (item:SpectraData) =
+            static member tryFindBySpectrumID (dbContext:MzIdentML) (spectrumID:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResult.Local do
-                           if i.SpectraData=item
-                              then select (i, i.SpectrumIdentificationItem, i.Details)
+                           if i.SpectrumID=spectrumID
+                              then select (i, i.SpectraData, i.SpectrumIdentificationItem, i.Details)
                       }
-                |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
+                |> Seq.map (fun (spectrumIdentificationResult, _, _, _) -> spectrumIdentificationResult)
                 |> (fun spectrumIdentificationResult -> 
-                    if Seq.length spectrumIdentificationResult < 1 
+                    if (Seq.exists (fun spectrumIdentificationResult' -> spectrumIdentificationResult' <> null) spectrumIdentificationResult) = false
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationResult do
-                                       if i.SpectraData=item
-                                          then select (i, i.SpectrumIdentificationItem, i.Details)
+                                       if i.SpectrumID=spectrumID
+                                          then select (i, i.SpectraData, i.SpectrumIdentificationItem, i.Details)
                                   }
-                            |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
-                        else spectrumIdentificationResult
+                            |> Seq.map (fun (spectrumIdentificationResult, _, _, _) -> spectrumIdentificationResult)
+                            |> (fun spectrumIdentificationResult -> if (Seq.exists (fun spectrumIdentificationResult' -> spectrumIdentificationResult' <> null) spectrumIdentificationResult) = false
+                                                                      then None
+                                                                      else Some spectrumIdentificationResult
+                               )
+                        else Some spectrumIdentificationResult
                    )
 
-            static member private matchAndAddSpectrumIdentificationResult (dbContext:MzIdentML) (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
-                if item1.Name=item2.Name
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
+               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && item1.Details=item2.Details && 
+               item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
 
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResult) =
-                query {
-                       for i in dbContext.SpectrumIdentificationResult.Local do
-                           if i.SpectraData=item.SpectraData
-                              then select (i, i.SpectrumIdentificationItem, i.Details)
-                      }
-                |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
-                |> (fun spectrumIdentificationResult -> 
-                    if Seq.length spectrumIdentificationResult < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectrumIdentificationResult do
-                                       if i.SpectraData=item.SpectraData
-                                          then select (i, i.SpectrumIdentificationItem, i.Details)
-                                  }
-                            |> Seq.map (fun (spectrumIdentificationResult, _, _) -> spectrumIdentificationResult)
-                            |> (fun spectrumIdentificationResult' -> if (spectrumIdentificationResult'.Count()) < 1
-                                                                                                       then let tmp = dbContext.SpectrumIdentificationResult.Find(item.ID)
-                                                                                                            if tmp <> null
-                                                                                                               then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                                    dbContext.Add item |> ignore
-                                                                                                               else dbContext.Add item |> ignore
-                                                                                                       else spectrumIdentificationResult'
-                                                                                                            |> Seq.iter (fun spectrumIdentificationResultItem -> SpectrumIdentificationResultHandler.matchAndAddSpectrumIdentificationResult dbContext spectrumIdentificationResultItem item)
-                               )
-                        else spectrumIdentificationResult
-                             |> Seq.iter (fun spectrumIdentificationResultItem -> SpectrumIdentificationResultHandler.matchAndAddSpectrumIdentificationResult dbContext spectrumIdentificationResultItem item)
-                   )
+                    SpectrumIdentificationResultHandler.tryFindBySpectrumID dbContext item.SpectrumID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationResultHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationResult) =
-                SpectrumIdentificationResultHandler.matchAndAddSpectrumIdentificationResult dbContext item |> ignore
+                SpectrumIdentificationResultHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationListHandler =
@@ -5940,7 +5531,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
                 |> (fun spectrumIdentificationList -> 
-                    if Seq.length spectrumIdentificationList < 1 
+                    if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationList do
@@ -5948,51 +5539,30 @@ module InsertStatements =
                                           then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
                                   }
                             |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
-                        else spectrumIdentificationList
+                            |> (fun spectrumIdentificationList -> if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
+                                                                      then None
+                                                                      else Some spectrumIdentificationList
+                               )
+                        else Some spectrumIdentificationList
                    )
 
-            static member private matchAndAddSpectrumIdentificationList (dbContext:MzIdentML) (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
-                if item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
-                   item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && item1.Details=item2.Details
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
+               item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
+               item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationList) =
-                query {
-                       for i in dbContext.SpectrumIdentificationList.Local do
-                           if i.Name=item.Name
-                              then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
-                      }
-                |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
-                |> (fun spectrumIdentificationList -> 
-                    if Seq.length spectrumIdentificationList < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectrumIdentificationList do
-                                       if i.Name=item.Name
-                                          then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
-                                  }
-                            |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
-                            |> (fun spectrumIdentificationList' -> if (spectrumIdentificationList'.Count()) < 1
-                                                                                                   then let tmp = dbContext.SpectrumIdentificationList.Find(item.ID)
-                                                                                                        if tmp <> null
-                                                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                                dbContext.Add item |> ignore
-                                                                                                            else dbContext.Add item |> ignore
-                                                                                                   else spectrumIdentificationList'
-                                                                                                        |> Seq.iter (fun spectrumIdentificationListItem -> SpectrumIdentificationListHandler.matchAndAddSpectrumIdentificationList dbContext spectrumIdentificationListItem item)
-                               )
-                        else spectrumIdentificationList
-                             |> Seq.iter (fun spectrumIdentificationListItem -> SpectrumIdentificationListHandler.matchAndAddSpectrumIdentificationList dbContext spectrumIdentificationListItem item)
-                   )
+                    SpectrumIdentificationListHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationListHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationList) =
-                SpectrumIdentificationListHandler.matchAndAddSpectrumIdentificationList dbContext item |> ignore
+                SpectrumIdentificationListHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationHandler =
@@ -6044,77 +5614,52 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationID:string) =
                 tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
 
-            static member tryFindBySpectrumIdentificationProtocol (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentification.Local do
-                           if i.SpectrumIdentificationProtocol=item
+                           if i.Name=name
                               then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
                                            i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
-                |> (fun spectrumIdentification -> 
-                    if Seq.length spectrumIdentification < 1 
+                |> (fun spectrumIdentificationList -> 
+                    if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentification do
-                                       if i.SpectrumIdentificationProtocol=item
+                                       if i.Name=name
                                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
                                                        i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
-                        else spectrumIdentification
+                            |> (fun spectrumIdentificationList -> if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
+                                                                      then None
+                                                                      else Some spectrumIdentificationList
+                               )
+                        else Some spectrumIdentificationList
                    )
 
-            static member private matchAndAddSpectrumIdentification (dbContext:MzIdentML) (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
-                if item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
-                   item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Name=item2.Name &&
-                   item1.SpectraData=item2.SpectraData && item1.SearchDatabase=item2.SearchDatabase &&
-                   item1.ActivityDate=item2.ActivityDate
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
+               item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
+               item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Name=item2.Name &&
+               item1.SpectraData=item2.SpectraData && item1.SearchDatabase=item2.SearchDatabase &&
+               item1.ActivityDate=item2.ActivityDate
 
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentification) =
-                query {
-                       for i in dbContext.SpectrumIdentification.Local do
-                           if i.SpectrumIdentificationProtocol=item.SpectrumIdentificationProtocol
-                              then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
-                                          )
-                      }
-                |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
-                |> (fun spectrumIdentification -> 
-                    if Seq.length spectrumIdentification < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SpectrumIdentification do
-                                       if i.SpectrumIdentificationProtocol=item.SpectrumIdentificationProtocol
-                                          then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
-                                                      )
-                                  }
-                            |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
-                            |> (fun spectrumIdentification' -> if (spectrumIdentification'.Count()) < 1
-                                                                                           then let tmp = dbContext.SpectrumIdentification.Find(item.ID)
-                                                                                                if tmp <> null
-                                                                                                   then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                        dbContext.Add item |> ignore
-                                                                                                   else dbContext.Add item |> ignore
-                                                                                           else spectrumIdentification'
-                                                                                                |> Seq.iter (fun spectrumIdentificationItem -> SpectrumIdentificationHandler.matchAndAddSpectrumIdentification dbContext spectrumIdentificationItem item)
-                               )
-                        else spectrumIdentification
-                             |> Seq.iter (fun spectrumIdentificationItem -> SpectrumIdentificationHandler.matchAndAddSpectrumIdentification dbContext spectrumIdentificationItem item)
-                   )
+                    SpectrumIdentificationHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentification) =
-                SpectrumIdentificationHandler.matchAndAddSpectrumIdentification dbContext item |> ignore
+                SpectrumIdentificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProteinDetectionProtocolHandler =
@@ -6167,67 +5712,46 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionProtocolID:string) =
                 tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
 
-            static member tryFindByAnalysisSoftware (dbContext:MzIdentML) (item:AnalysisSoftware) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
-                           if i.AnalysisSoftware=item
+                           if i.Name=name
                               then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
-                    if Seq.length proteinDetectionProtocol < 1 
+                    if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionProtocol do
-                                       if i.AnalysisSoftware=item
+                                       if i.Name=name
                                           then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
-                        else proteinDetectionProtocol
+                            |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
+                                                                      then None
+                                                                      else Some proteinDetectionProtocol
+                               )
+                        else Some proteinDetectionProtocol
                    )
 
-            static member private matchAndAddProteinDetectionProtocol (dbContext:MzIdentML) (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
-                if item1.Threshold=item2.Threshold && item1.Name=item2.Name &&
-                   item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
+               item1.Threshold=item2.Threshold && item1.Name=item2.Name && item1.AnalysisSoftware=item2.AnalysisSoftware &&
+               item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionProtocol) =
-                query {
-                       for i in dbContext.ProteinDetectionProtocol.Local do
-                           if i.AnalysisSoftware=item.AnalysisSoftware
-                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
-                |> (fun proteinDetectionProtocol -> 
-                    if Seq.length proteinDetectionProtocol < 1 
-                        then 
-                            query {
-                                   for i in dbContext.ProteinDetectionProtocol do
-                                       if i.AnalysisSoftware=item.AnalysisSoftware
-                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
-                            |> (fun proteinDetectionProtocol' -> if (proteinDetectionProtocol'.Count()) < 1
-                                                                                               then let tmp = dbContext.ProteinDetectionProtocol.Find(item.ID)
-                                                                                                    if tmp <> null
-                                                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                            dbContext.Add item |> ignore
-                                                                                                       else dbContext.Add item |> ignore
-                                                                                               else proteinDetectionProtocol'
-                                                                                                    |> Seq.iter (fun proteinDetectionProtocolItem -> ProteinDetectionProtocolHandler.matchAndAddProteinDetectionProtocol dbContext proteinDetectionProtocolItem item)
-                               )
-                        else proteinDetectionProtocol
-                             |> Seq.iter (fun proteinDetectionProtocolItem -> ProteinDetectionProtocolHandler.matchAndAddProteinDetectionProtocol dbContext proteinDetectionProtocolItem item)
-                   )
+                    ProteinDetectionProtocolHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionProtocolHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionProtocol) =
-                ProteinDetectionProtocolHandler.matchAndAddProteinDetectionProtocol dbContext item |> ignore
+                ProteinDetectionProtocolHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type SourceFileHandler =
@@ -6284,67 +5808,46 @@ module InsertStatements =
                 (context:MzIdentML) (sourceFileID:string) =
                 tryFind (context.SourceFile.Find(sourceFileID))
 
-            static member tryFindByFileFormat (dbContext:MzIdentML) (item:CVParam) =
+            static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
                 query {
                        for i in dbContext.SourceFile.Local do
-                           if i.FileFormat=item
+                           if i.Location=location
                               then select (i, i.FileFormat, i.Details)
                       }
                 |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
                 |> (fun sourceFile -> 
-                    if Seq.length sourceFile < 1 
+                    if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
                         then 
                             query {
                                    for i in dbContext.SourceFile do
-                                       if i.FileFormat=item
+                                       if i.Location=location
                                           then select (i, i.FileFormat, i.Details)
                                   }
                             |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
-                        else sourceFile
+                            |> (fun sourceFile -> if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                                                      then None
+                                                      else Some sourceFile
+                               )
+                        else Some sourceFile
                    )
 
-            static member private matchAndAddSourceFiles (dbContext:MzIdentML) (item1:SourceFile) (item2:SourceFile) =
-                if item1.Location=item2.Location && item1.Name=item2.Name && item1.Details=item2.Details &&
-                   item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
+               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && item1.Details=item2.Details &&
+               item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
             static member addToContext (dbContext:MzIdentML) (item:SourceFile) =
-                query {
-                       for i in dbContext.SourceFile.Local do
-                           if i.FileFormat=item.FileFormat
-                              then select (i, i.FileFormat, i.Details)
-                      }
-                |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
-                |> (fun sourceFile -> 
-                    if Seq.length sourceFile < 1 
-                        then 
-                            query {
-                                   for i in dbContext.SourceFile do
-                                       if i.FileFormat=item.FileFormat
-                                          then select (i, i.FileFormat, i.Details)
-                                  }
-                            |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
-                            |> (fun sourceFile' -> if (sourceFile'.Count()) < 1
-                                                                   then let tmp = dbContext.SourceFile.Find(item.ID)
-                                                                        if tmp <> null
-                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                dbContext.Add item |> ignore
-                                                                           else dbContext.Add item |> ignore
-                                                                   else sourceFile'
-                                                                        |> Seq.iter (fun sourceFileItem -> SourceFileHandler.matchAndAddSourceFiles dbContext sourceFileItem item)
-                               )
-                        else sourceFile
-                             |> Seq.iter (fun sourceFileItem -> SourceFileHandler.matchAndAddSourceFiles dbContext sourceFileItem item)
-                   )
+                    SourceFileHandler.tryFindByLocation dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SourceFileHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SourceFile) =
-                SourceFileHandler.matchAndAddSourceFiles dbContext item |> ignore
+                SourceFileHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type InputsHandler =
@@ -6400,68 +5903,46 @@ module InsertStatements =
                 (context:MzIdentML) (inputsID:string) =
                 tryFind (context.Inputs.Find(inputsID))
 
-            static member tryFindBySpectraData (dbContext:MzIdentML) (item:seq<SpectraData>) =
-                let newItem = item |> List
+            static member tryFindBySpectraData (dbContext:MzIdentML) (spectraData:seq<SpectraData>) =
                 query {
                        for i in dbContext.Inputs.Local do
-                           if i.SpectraData=newItem
+                           if i.SpectraData=(spectraData |> List)
                               then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
                 |> (fun inputs -> 
-                    if Seq.length inputs < 1 
+                    if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
                         then 
                             query {
                                    for i in dbContext.Inputs do
-                                       if i.SpectraData=newItem
+                                       if i.SpectraData=(spectraData |> List)
                                           then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
-                        else inputs
+                            |> (fun inputs -> if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
+                                                  then None
+                                                  else Some inputs
+                               )
+                        else Some inputs
                    )
 
-            static member private matchAndAddInputs (dbContext:MzIdentML) (item1:Inputs) (item2:Inputs) =
-                if item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
-                   item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
+               item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
+               item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:Inputs) =
-                query {
-                       for i in dbContext.Inputs.Local do
-                           if i.SpectraData=item.SpectraData
-                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
-                |> (fun inputs -> 
-                    if Seq.length inputs < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Inputs do
-                                       if i.SpectraData=item.SpectraData
-                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
-                            |> (fun inputs' -> if (inputs'.Count()) < 1
-                                                                   then let tmp = dbContext.Inputs.Find(item.ID)
-                                                                        if tmp <> null
-                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                dbContext.Add item |> ignore
-                                                                           else dbContext.Add item |> ignore
-                                                                   else inputs'
-                                                                        |> Seq.iter (fun inputItem -> InputsHandler.matchAndAddInputs dbContext inputItem item)
-                               )
-                        else inputs
-                             |> Seq.iter (fun inputItem -> InputsHandler.matchAndAddInputs dbContext inputItem item)
-                   )
+                    InputsHandler.tryFindBySpectraData dbContext item.SpectraData
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match InputsHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Inputs) =
-                InputsHandler.matchAndAddInputs dbContext item |> ignore
+                InputsHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type PeptideHypothesisHandler =
@@ -6485,66 +5966,45 @@ module InsertStatements =
                 (context:MzIdentML) (peptideHypothesisID:string) =
                 tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
 
-            static member tryFindByPeptideEvidence (dbContext:MzIdentML) (item:PeptideEvidence) =
+            static member tryFindByPeptideEvidenceName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideHypothesis.Local do
-                           if i.PeptideEvidence=item
+                           if i.PeptideEvidence.Name=name
                               then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                       }
                 |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
                 |> (fun peptideHypothesis -> 
-                    if Seq.length peptideHypothesis < 1 
+                    if (Seq.exists (fun peptideHypothesis' -> peptideHypothesis' <> null) peptideHypothesis) = false
                         then 
                             query {
                                    for i in dbContext.PeptideHypothesis do
-                                       if i.PeptideEvidence=item
+                                       if i.PeptideEvidence.Name=name
                                           then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                                   }
                             |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
-                        else peptideHypothesis
+                            |> (fun peptideHypothesis -> if (Seq.exists (fun peptideHypothesis' -> peptideHypothesis' <> null) peptideHypothesis) = false
+                                                             then None
+                                                             else Some peptideHypothesis
+                               )
+                        else Some peptideHypothesis
                    )
 
-            static member private matchAndAddPeptideHypothesis (dbContext:MzIdentML) (item1:PeptideHypothesis) (item2:PeptideHypothesis) =
-                if item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:PeptideHypothesis) (item2:PeptideHypothesis) =
+               item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
 
             static member addToContext (dbContext:MzIdentML) (item:PeptideHypothesis) =
-                query {
-                       for i in dbContext.PeptideHypothesis.Local do
-                           if i.PeptideEvidence=item.PeptideEvidence
-                              then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
-                      }
-                |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
-                |> (fun peptideHypothesis -> 
-                    if Seq.length peptideHypothesis < 1 
-                        then 
-                            query {
-                                   for i in dbContext.PeptideHypothesis do
-                                       if i.PeptideEvidence=item.PeptideEvidence
-                                          then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
-                                  }
-                            |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
-                            |> (fun peptideHypothesis' -> if (peptideHypothesis'.Count()) < 1
-                                                                   then let tmp = dbContext.PeptideHypothesis.Find(item.ID)
-                                                                        if tmp <> null
-                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                dbContext.Add item |> ignore
-                                                                           else dbContext.Add item |> ignore
-                                                                   else peptideHypothesis'
-                                                                        |> Seq.iter (fun peptideHypothesisItem -> PeptideHypothesisHandler.matchAndAddPeptideHypothesis dbContext peptideHypothesisItem item)
-                               )
-                        else peptideHypothesis
-                             |> Seq.iter (fun peptideHypothesisItem -> PeptideHypothesisHandler.matchAndAddPeptideHypothesis dbContext peptideHypothesisItem item)
-                   )
+                    PeptideHypothesisHandler.tryFindByPeptideEvidenceName dbContext item.PeptideEvidence.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideHypothesisHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideHypothesis) =
-                PeptideHypothesisHandler.matchAndAddPeptideHypothesis dbContext item |> ignore
+                PeptideHypothesisHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProteinDetectionHypothesisHandler =
@@ -6599,67 +6059,46 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionHypothesisID:string) =
                 tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
 
-            static member tryFindByDBSequence (dbContext:MzIdentML) (item:DBSequence) =
+            static member tryFindByDBSequenceName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesis.Local do
-                           if i.DBSequence=item
+                           if i.DBSequence.Name=name
                               then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
                 |> (fun proteinDetectionHypothesis -> 
-                    if Seq.length proteinDetectionHypothesis < 1 
+                    if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesis do
-                                       if i.DBSequence=item
+                                       if i.DBSequence.Name=name
                                           then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
-                        else proteinDetectionHypothesis
+                            |> (fun proteinDetectionHypothesis -> if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
+                                                                      then None
+                                                                      else Some proteinDetectionHypothesis
+                               )
+                        else Some proteinDetectionHypothesis
                    )
 
-            static member private matchAndAddProteinDetectionHypothesis (dbContext:MzIdentML) (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
-                if item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
-                   item1.Name=item2.Name && item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
+               item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
+               item1.Name=item2.Name && item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
-                query {
-                       for i in dbContext.ProteinDetectionHypothesis.Local do
-                           if i.DBSequence=item.DBSequence
-                              then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
-                |> (fun proteinDetectionHypothesis -> 
-                    if Seq.length proteinDetectionHypothesis < 1 
-                        then 
-                            query {
-                                   for i in dbContext.ProteinDetectionHypothesis do
-                                       if i.DBSequence=item.DBSequence
-                                          then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
-                            |> (fun proteinDetectionHypothesis' -> if (proteinDetectionHypothesis'.Count()) < 1
-                                                                                                   then let tmp = dbContext.ProteinDetectionHypothesis.Find(item.ID)
-                                                                                                        if tmp <> null
-                                                                                                           then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                                dbContext.Add item |> ignore
-                                                                                                           else dbContext.Add item |> ignore
-                                                                                                   else proteinDetectionHypothesis'
-                                                                                                        |> Seq.iter (fun proteinDetectionHypothesisItem -> ProteinDetectionHypothesisHandler.matchAndAddProteinDetectionHypothesis dbContext proteinDetectionHypothesisItem item)
-                               )
-                        else proteinDetectionHypothesis
-                             |> Seq.iter (fun proteinDetectionHypothesisItem -> ProteinDetectionHypothesisHandler.matchAndAddProteinDetectionHypothesis dbContext proteinDetectionHypothesisItem item)
-                   )
+                    ProteinDetectionHypothesisHandler.tryFindByDBSequenceName dbContext item.DBSequence.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionHypothesisHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
-                ProteinDetectionHypothesisHandler.matchAndAddProteinDetectionHypothesis dbContext item |> ignore
+                ProteinDetectionHypothesisHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProteinAmbiguityGroupHandler =
@@ -6702,66 +6141,45 @@ module InsertStatements =
                 (context:MzIdentML) (proteinAmbiguityGroupID:string) =
                 tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
 
-            static member tryFindByName (dbContext:MzIdentML) (item:string) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroup.Local do
-                           if i.Name=item
+                           if i.Name=name
                               then select (i, i.ProteinDetectionHypothesis, i.Details)
                       }
                 |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
                 |> (fun proteinAmbiguityGroup -> 
-                    if Seq.length proteinAmbiguityGroup < 1 
+                    if (Seq.exists (fun proteinAmbiguityGroup' -> proteinAmbiguityGroup' <> null) proteinAmbiguityGroup) = false
                         then 
                             query {
                                    for i in dbContext.ProteinAmbiguityGroup do
-                                       if i.Name=item
+                                       if i.Name=name
                                           then select (i, i.ProteinDetectionHypothesis, i.Details)
                                   }
                             |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
-                        else proteinAmbiguityGroup
+                            |> (fun proteinAmbiguityGroup -> if (Seq.exists (fun proteinAmbiguityGroup' -> proteinAmbiguityGroup' <> null) proteinAmbiguityGroup) = false
+                                                                      then None
+                                                                      else Some proteinAmbiguityGroup
+                               )
+                        else Some proteinAmbiguityGroup
                    )
 
-            static member private matchAndAddProteinAmbiguityGroups (dbContext:MzIdentML) (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
-                if item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && item1.Details=item2.Details
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
+               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroup) =
-                query {
-                       for i in dbContext.ProteinAmbiguityGroup.Local do
-                           if i.Name=item.Name
-                              then select (i, i.ProteinDetectionHypothesis, i.Details)
-                      }
-                |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
-                |> (fun proteinAmbiguityGroup -> 
-                    if Seq.length proteinAmbiguityGroup < 1 
-                        then 
-                            query {
-                                   for i in dbContext.ProteinAmbiguityGroup do
-                                       if i.Name=item.Name
-                                          then select (i, i.ProteinDetectionHypothesis, i.Details)
-                                  }
-                            |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
-                            |> (fun proteinAmbiguityGroup' -> if (proteinAmbiguityGroup'.Count()) < 1
-                                                                                         then let tmp = dbContext.ProteinAmbiguityGroup.Find(item.ID)
-                                                                                              if tmp <> null
-                                                                                                 then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                      dbContext.Add item |> ignore
-                                                                                                 else dbContext.Add item |> ignore
-                                                                                         else proteinAmbiguityGroup'
-                                                                                              |> Seq.iter (fun proteinAmbiguityGroupItem -> ProteinAmbiguityGroupHandler.matchAndAddProteinAmbiguityGroups dbContext proteinAmbiguityGroupItem item)
-                               )
-                        else proteinAmbiguityGroup
-                             |> Seq.iter (fun proteinAmbiguityGroupItem -> ProteinAmbiguityGroupHandler.matchAndAddProteinAmbiguityGroups dbContext proteinAmbiguityGroupItem item)
-                   )
+                    ProteinAmbiguityGroupHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinAmbiguityGroupHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinAmbiguityGroup) =
-                ProteinAmbiguityGroupHandler.matchAndAddProteinAmbiguityGroups dbContext item |> ignore
+                ProteinAmbiguityGroupHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProteinDetectionListHandler =
@@ -6821,9 +6239,9 @@ module InsertStatements =
                            if i.Name=name
                               then select (i, i.ProteinAmbiguityGroups, i.Details)
                       }
-                |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
+                |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
                 |> (fun proteinDetectionList -> 
-                    if Seq.length proteinDetectionList < 1 
+                    if (Seq.exists (fun proteinDetectionList' -> proteinDetectionList' <> null) proteinDetectionList) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionList do
@@ -6831,50 +6249,29 @@ module InsertStatements =
                                           then select (i, i.ProteinAmbiguityGroups, i.Details)
                                   }
                             |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
-                        else proteinDetectionList
+                            |> (fun proteinDetectionList -> if (Seq.exists (fun proteinDetectionList' -> proteinDetectionList' <> null) proteinDetectionList) = false
+                                                                      then None
+                                                                      else Some proteinDetectionList
+                               )
+                        else Some proteinDetectionList
                    )
 
-            static member private matchAndAddProteinDetectionList (dbContext:MzIdentML) (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
-                if item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && item1.Details=item2.Details
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
+               item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && item1.Details=item2.Details
 
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionList) =
-                query {
-                       for i in dbContext.ProteinDetectionList.Local do
-                           if i.Name=item.Name
-                              then select (i, i.ProteinAmbiguityGroups, i.Details)
-                      }
-                |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
-                |> (fun proteinDetectionList -> 
-                    if Seq.length proteinDetectionList < 1 
-                        then 
-                            query {
-                                   for i in dbContext.ProteinDetectionList do
-                                       if i.Name=item.Name
-                                          then select (i, i.ProteinAmbiguityGroups, i.Details)
-                                  }
-                            |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
-                            |> (fun proteinDetectionList' -> if (proteinDetectionList'.Count()) < 1
-                                                                                       then let tmp = dbContext.ProteinDetectionList.Find(item.ID)
-                                                                                            if tmp <> null
-                                                                                               then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                                    dbContext.Add item |> ignore
-                                                                                               else dbContext.Add item |> ignore
-                                                                                       else proteinDetectionList'
-                                                                                            |> Seq.iter (fun proteinDetectionListItem -> ProteinDetectionListHandler.matchAndAddProteinDetectionList dbContext proteinDetectionListItem item)
-                               )
-                        else proteinDetectionList
-                             |> Seq.iter (fun proteinDetectionListItem -> ProteinDetectionListHandler.matchAndAddProteinDetectionList dbContext proteinDetectionListItem item)
-                   )
+                    ProteinDetectionListHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionListHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionList) =
-                ProteinDetectionListHandler.matchAndAddProteinDetectionList dbContext item |> ignore
+                ProteinDetectionListHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type AnalysisDataHandler =
@@ -6912,66 +6309,45 @@ module InsertStatements =
                 (context:MzIdentML) (analysisDataID:string) =
                 tryFind (context.AnalysisData.Find(analysisDataID))
 
-            static member tryFindBySpectrumIdentificationList (dbContext:MzIdentML) (item:ProteinDetectionList) =
+            static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AnalysisData.Local do
-                           if i.ProteinDetectionList=item
+                           if i.ProteinDetectionList.Name=name
                               then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
                 |> (fun analysisData -> 
-                    if Seq.length analysisData < 1 
+                    if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisData do
-                                       if i.ProteinDetectionList=item
+                                       if i.ProteinDetectionList.Name=name
                                           then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
-                        else analysisData
+                            |> (fun analysisData -> if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
+                                                        then None
+                                                        else Some analysisData
+                               )
+                        else Some analysisData
                    )
 
-            static member private matchAndAddAnalysisData (dbContext:MzIdentML) (item1:AnalysisData) (item2:AnalysisData) =
-                if item1.ProteinDetectionList=item2.ProteinDetectionList && item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:AnalysisData) (item2:AnalysisData) =
+               item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:AnalysisData) =
-                query {
-                       for i in dbContext.AnalysisData.Local do
-                           if i.SpectrumIdentificationList=item.SpectrumIdentificationList
-                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
-                |> (fun analysisData -> 
-                    if Seq.length analysisData < 1 
-                        then 
-                            query {
-                                   for i in dbContext.AnalysisData do
-                                       if i.SpectrumIdentificationList=item.SpectrumIdentificationList
-                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
-                            |> (fun analysisData' -> if (analysisData'.Count()) < 1
-                                                                       then let tmp = dbContext.AnalysisData.Find(item.ID)
-                                                                            if tmp <> null
-                                                                               then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                    dbContext.Add item |> ignore
-                                                                               else dbContext.Add item |> ignore
-                                                                       else analysisData'
-                                                                            |> Seq.iter (fun analysisDataItem -> AnalysisDataHandler.matchAndAddAnalysisData dbContext analysisDataItem item)
-                               )
-                        else analysisData
-                             |> Seq.iter (fun analysisDataItem -> AnalysisDataHandler.matchAndAddAnalysisData dbContext analysisDataItem item)
-                   )
+                    AnalysisDataHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AnalysisDataHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisData) =
-                AnalysisDataHandler.matchAndAddAnalysisData dbContext item |> ignore
+                AnalysisDataHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProteinDetectionHandler =
@@ -7013,67 +6389,46 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionID:string) =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
 
-            static member tryFindByProteinDetectionList (dbContext:MzIdentML) (item:ProteinDetectionList) =
+            static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetection.Local do
-                           if i.ProteinDetectionList=item
+                           if i.ProteinDetectionList.Name=name
                               then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
                       }
                 |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
                 |> (fun proteinDetection -> 
-                    if Seq.length proteinDetection < 1 
+                    if (Seq.exists (fun proteinDetection' -> proteinDetection' <> null) proteinDetection) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetection do
-                                       if i.ProteinDetectionList=item
+                                       if i.ProteinDetectionList.Name=name
                                           then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
                                   }
                             |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
-                        else proteinDetection
+                            |> (fun proteinDetection -> if (Seq.exists (fun proteinDetection' -> proteinDetection' <> null) proteinDetection) = false
+                                                        then None
+                                                        else Some proteinDetection
+                               )
+                        else Some proteinDetection
                    )
 
-            static member private matchAndAddProteinDetection (dbContext:MzIdentML) (item1:ProteinDetection) (item2:ProteinDetection) =
-                if item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
-                   item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:ProteinDetection) (item2:ProteinDetection) =
+               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
+               item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
 
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetection) =
-                query {
-                       for i in dbContext.ProteinDetection.Local do
-                           if i.ProteinDetectionList=item.ProteinDetectionList
-                              then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
-                      }
-                |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
-                |> (fun proteinDetection -> 
-                    if Seq.length proteinDetection < 1 
-                        then 
-                            query {
-                                   for i in dbContext.ProteinDetection do
-                                       if i.ProteinDetectionList=item.ProteinDetectionList
-                                          then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
-                                  }
-                            |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
-                            |> (fun proteinDetection' -> if (proteinDetection'.Count()) < 1
-                                                                               then let tmp = dbContext.ProteinDetection.Find(item.ID)
-                                                                                    if tmp <> null
-                                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                            dbContext.Add item |> ignore
-                                                                                       else dbContext.Add item |> ignore
-                                                                               else proteinDetection'
-                                                                                    |> Seq.iter (fun proteinDetectionItem -> ProteinDetectionHandler.matchAndAddProteinDetection dbContext proteinDetectionItem item)
-                               )
-                        else proteinDetection
-                             |> Seq.iter (fun proteinDetectionItem -> ProteinDetectionHandler.matchAndAddProteinDetection dbContext proteinDetectionItem item)
-                   )
+                    ProteinDetectionHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetection) =
-                ProteinDetectionHandler.matchAndAddProteinDetection dbContext item |> ignore
+                ProteinDetectionHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
@@ -7196,7 +6551,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                 |> (fun biblioGraphicReference -> 
-                    if Seq.length biblioGraphicReference < 1 
+                    if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
                         then 
                             query {
                                    for i in dbContext.BiblioGraphicReference do
@@ -7204,52 +6559,31 @@ module InsertStatements =
                                           then select (i, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
-                        else biblioGraphicReference
+                            |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                                                                  then None
+                                                                  else Some biblioGraphicReference
+                               )
+                        else Some biblioGraphicReference
                    )
 
-            static member private matchAndAddBiblioGraphicReference (dbContext:MzIdentML) (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
-                if item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
-                   item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
-                   item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocument=item2.MzIdentMLDocument
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
+               item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
+               item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
+               item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             static member addToContext (dbContext:MzIdentML) (item:BiblioGraphicReference) =
-                query {
-                       for i in dbContext.BiblioGraphicReference.Local do
-                           if i.Name=item.Name
-                              then select (i, i.MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
-                |> (fun biblioGraphicReference -> 
-                    if Seq.length biblioGraphicReference < 1 
-                        then 
-                            query {
-                                   for i in dbContext.BiblioGraphicReference do
-                                       if i.Name=item.Name
-                                          then select (i, i.MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
-                            |> (fun biblioGraphicReference' -> if (biblioGraphicReference'.Count()) < 1
-                                                                               then let tmp = dbContext.BiblioGraphicReference.Find(item.ID)
-                                                                                    if tmp <> null
-                                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                            dbContext.Add item |> ignore
-                                                                                       else dbContext.Add item |> ignore
-                                                                               else biblioGraphicReference'
-                                                                                    |> Seq.iter (fun biblioGraphicReferenceItem -> BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext biblioGraphicReferenceItem item)
-                               )
-                        else biblioGraphicReference
-                             |> Seq.iter (fun biblioGraphicReferenceItem -> BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext biblioGraphicReferenceItem item)
-                   )
+                    BiblioGraphicReferenceHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match BiblioGraphicReferenceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:BiblioGraphicReference) =
-                BiblioGraphicReferenceHandler.matchAndAddBiblioGraphicReference dbContext item |> ignore
+                BiblioGraphicReferenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
         type ProviderHandler =
@@ -7309,7 +6643,7 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (provider, _, _, _) -> provider)
                 |> (fun provider -> 
-                    if Seq.length provider < 1 
+                    if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
@@ -7317,54 +6651,33 @@ module InsertStatements =
                                           then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (provider, _, _, _) -> provider)
-                        else provider
+                            |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
+                                                    then None
+                                                    else Some provider
+                               )
+                        else Some provider
                    )
 
-            static member private matchAndAddProvider (dbContext:MzIdentML) (item1:Provider) (item2:Provider) =
-                if item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
-                   item1.MzIdentMLDocument=item2.MzIdentMLDocument 
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
+               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
+               item1.MzIdentMLDocument=item2.MzIdentMLDocument 
 
             static member addToContext (dbContext:MzIdentML) (item:Provider) =
-                query {
-                       for i in dbContext.Provider.Local do
-                           if i.Name=item.Name
-                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
-                      }
-                |> Seq.map (fun (provider, _, _, _) -> provider)
-                |> (fun provider -> 
-                    if Seq.length provider < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Provider do
-                                       if i.Name=item.Name
-                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
-                                  }
-                            |> Seq.map (fun (provider, _, _, _) -> provider)
-                            |> (fun provider' -> if (provider'.Count()) < 1
-                                                               then let tmp = dbContext.Provider.Find(item.ID)
-                                                                    if tmp <> null
-                                                                       then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                            dbContext.Add item |> ignore
-                                                                       else dbContext.Add item |> ignore
-                                                               else provider'
-                                                                    |> Seq.iter (fun providerItem -> ProviderHandler.matchAndAddProvider dbContext providerItem item)
-                               )
-                        else provider
-                             |> Seq.iter (fun providerItem -> ProviderHandler.matchAndAddProvider dbContext providerItem item)
-                   )
+                    ProviderHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProviderHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Provider) =
-                ProviderHandler.matchAndAddProvider dbContext item |> ignore
+                ProviderHandler.addToContext dbContext item
                 dbContext.SaveChanges()
 
-        type MzIdentMLHandler =
+        type MzIdentMLDocumentHandler =
             ///Initializes a mzidentml-object with at least all necessary parameters.
             static member init
                 (             
@@ -7568,10 +6881,10 @@ module InsertStatements =
                 (context:MzIdentML) (mzIdentMLID:string) =
                 tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
 
-            static member tryFindByInputs (dbContext:MzIdentML) (item:Inputs) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
-                           if i.Inputs=item
+                           if i.Name=name
                               then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
                                            i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
                                            i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
@@ -7579,71 +6892,44 @@ module InsertStatements =
                       }
                 |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
-                    if Seq.length mzIdentMLDocument < 1 
+                    if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
                             query {
                                    for i in dbContext.MzIdentMLDocument do
-                                       if i.Inputs=item
+                                       if i.Name=name
                                           then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
                                                        i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
                                                        i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
                             |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
-                        else mzIdentMLDocument
+                            |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
+                                                             then None
+                                                             else Some mzIdentMLDocument
+                               )
+                        else Some mzIdentMLDocument
                    )
 
-            static member private matchAndAddMzIdentMLDocument (dbContext:MzIdentML) (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
-                if item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-                   item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
-                   item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
-                   item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
-                   item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
-                   item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.AnalysisData=item2.AnalysisData &&
-                   item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
-
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- Nullable(System.Guid.NewGuid())
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
+               item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
+               item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+               item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
+               item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
+               item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.AnalysisData=item2.AnalysisData &&
+               item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
             static member addToContext (dbContext:MzIdentML) (item:MzIdentMLDocument) =
-                query {
-                       for i in dbContext.MzIdentMLDocument.Local do
-                           if i.Inputs=item.Inputs
-                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
-                                          )
-                      }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
-                |> (fun mzIdentMLDocument -> 
-                    if Seq.length mzIdentMLDocument < 1 
-                        then 
-                            query {
-                                   for i in dbContext.MzIdentMLDocument do
-                                       if i.Inputs=item.Inputs
-                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
-                                                      )
-                                  }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
-                            |> (fun mzIdentMLDocument' -> if (mzIdentMLDocument'.Count()) < 1
-                                                                                 then let tmp = dbContext.MzIdentMLDocument.Find(item.ID)
-                                                                                      if tmp <> null
-                                                                                         then item.ID <- Nullable(System.Guid.NewGuid())
-                                                                                              dbContext.Add item |> ignore
-                                                                                         else dbContext.Add item |> ignore
-                                                                                 else mzIdentMLDocument'
-                                                                                      |> Seq.iter (fun mzIdentMLDocumentItem -> MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext mzIdentMLDocumentItem item)
-                               )
-                        else mzIdentMLDocument
-                             |> Seq.iter (fun mzIdentMLDocumentItem -> MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext mzIdentMLDocumentItem item)
-                   )
+                    MzIdentMLDocumentHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MzIdentMLDocumentHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MzIdentMLDocument) =
-                MzIdentMLHandler.matchAndAddMzIdentMLDocument dbContext item |> ignore
+                MzIdentMLDocumentHandler.addToContext dbContext item
                 dbContext.SaveChanges()
