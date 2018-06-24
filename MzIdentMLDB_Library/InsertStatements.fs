@@ -141,69 +141,48 @@ module InsertStatements =
                 term.Ontology <- ontology
                 term
 
-            ///Tries to find a term-object in the context and database, based on its ID.
+            ///Tries to find a term-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
 
-            ///Tries to find an ontology based on the name of its term.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
-                        for i in dbContext.Term.Local do
-                            if i.Name = name
-                               then select (i, i.Ontology)
+                       for i in dbContext.Term.Local do
+                           if i.Name=name
+                              then select (i, i.Ontology)
                       }
                 |> Seq.map (fun (term, _) -> term)
                 |> (fun term -> 
-                    if Seq.length term < 1 
+                    if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
                                    for i in dbContext.Term do
-                                       if i.Name = name
+                                       if i.Name=name
                                           then select (i, i.Ontology)
                                   }
                             |> Seq.map (fun (term, _) -> term)
-                        else term
+                            |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
+                                                then None
+                                                else Some term
+                               )
+                        else Some term
                    )
 
-            static member private matchAndAddTerms (dbContext:MzIdentML) (item1:Term) (item2:Term) =
-                if item1.Ontology=item2.Ontology
-                   then ()
-                   else 
-                        if item1.ID = item2.ID
-                           then item2.ID <- System.Guid.NewGuid().ToString()
-                                dbContext.Add item2 |> ignore
-                           else dbContext.Add item2 |> ignore
+            static member private hasEqualFieldValues (item1:Term) (item2:Term) =
+                item1.Ontology=item2.Ontology
 
             ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Term) =
-                query {
-                        for i in dbContext.Term.Local do
-                            if i.Name = item.Name
-                               then select (i, i.Ontology)
-                      }
-                |> Seq.map (fun (term, _) -> term)
-                |> (fun term -> 
-                    if Seq.length term < 1 
-                        then 
-                            query {
-                                   for i in dbContext.Term do
-                                       if i.Name = item.Name
-                                          then select (i, i.Ontology)
-                                  }
-                            |> Seq.map (fun (term, _) -> term)
-                            |> (fun term' -> if (term'.Count()) < 1
-                                                then let tmp = dbContext.Term.Find(item.ID)
-                                                     if tmp <> null
-                                                        then item.ID <- System.Guid.NewGuid().ToString()
-                                                             dbContext.Add item |> ignore
-                                                        else dbContext.Add item |> ignore
-                                                else term'
-                                                     |> Seq.iter (fun termItem -> TermHandler.matchAndAddTerms dbContext termItem item)
-                               )
-                        else term
-                             |> Seq.iter (fun termItem -> TermHandler.matchAndAddTerms dbContext termItem item)
-                   )
+                    TermHandler.tryFindByName dbContext item.Name
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match TermHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
             
             ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
@@ -238,50 +217,10 @@ module InsertStatements =
                 let result = ontology.Terms <- addCollectionToList ontology.Terms terms
                 ontology
 
-            ///Tries to find a ontology-object in the context and database, based on its ID.
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (ontologyID:string) =
                 tryFind (context.Ontology.Find(ontologyID))
-            
-            //static member private matchAndAddOntologies (dbContext:MzIdentML) (item1:Ontology) (item2:Ontology) =
-            //    if item1.ID=item2.ID && item1.Terms=item2.Terms
-            //       then ()
-            //       else 
-            //            if item1.ID = item2.ID
-            //               then item2.ID <- System.Guid.NewGuid().ToString()
-            //                    dbContext.Add item2 |> ignore
-            //               else dbContext.Add item2 |> ignore
-
-            //static member addToContext (dbContext:MzIdentML) (item:Ontology) =
-            //    query {
-            //        for i in dbContext.Ontology.Local do
-            //            if item.Terms = item.Terms
-            //               then select i
-            //          }
-            //    |> (fun term -> 
-            //        if Seq.length term < 1 
-            //            then 
-            //                query {
-            //                       for i in dbContext.Term do
-            //                           if item.Terms = item.Terms
-            //                              then select i
-            //                      }
-            //                |> (fun term' -> if (term'.Count()) < 1
-            //                                    then let tmp = dbContext.Ontology.Find(item.ID)
-            //                                         if tmp <> null
-            //                                            then item.ID <- System.Guid.NewGuid().ToString()
-            //                                                 dbContext.Add item |> ignore
-            //                                            else dbContext.Add item |> ignore
-            //                                    else term'
-            //                                         |> Seq.iter (fun termItem -> OntologyHandler.matchAndAddOntologies dbContext termItem item)
-            //                   )
-            //            else term
-            //                 |> Seq.iter (fun termItem -> OntologyHandler.matchAndAddOntologies dbContext termItem item)
-            //       )
-
-            //static member addToContextAndInsert (dbContext:MzIdentML) (item:Term) =
-            //    TermHandler.addToContext dbContext item |> ignore
-            //    dbContext.SaveChanges()
 
         type CVParamHandler =
             ///Initializes a cvparam-object with at least all necessary parameters.
@@ -304,16 +243,19 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (cvParam:CVParam) =
                 cvParam.Value <- value
                 cvParam
 
+            ///Replaces unit of existing object with new value.
             static member addUnit
                 (unit:Term) (cvParam:CVParam) =
                 cvParam.Unit <- unit
                 cvParam
 
+            ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
@@ -382,6 +324,7 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:OrganizationParam) =
                 param.Value <- value
@@ -392,6 +335,7 @@ module InsertStatements =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.OrganizationParam.Find(paramID))
@@ -460,6 +404,7 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:PersonParam) =
                 param.Value <- value
@@ -470,6 +415,7 @@ module InsertStatements =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PersonParam.Find(paramID))
@@ -539,16 +485,19 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SampleParam)  =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SampleParam)  =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SampleParam.Find(paramID))
@@ -617,16 +566,19 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ModificationParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ModificationParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ModificationParam.Find(paramID))
@@ -695,16 +647,19 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:PeptideParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:PeptideParam)  =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideParam.Find(paramID))
@@ -773,16 +728,19 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:TranslationTableParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:TranslationTableParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.TranslationTableParam.Find(paramID))
@@ -851,16 +809,19 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:MeasureParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:MeasureParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MeasureParam.Find(paramID))
@@ -929,16 +890,19 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:AmbiguousResidueParam)  =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:AmbiguousResidueParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
@@ -1007,16 +971,19 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:MassTableParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:MassTableParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MassTableParam.Find(paramID))
@@ -1085,16 +1052,19 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:IonTypeParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:IonTypeParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.IonTypeParam.Find(paramID))
@@ -1163,16 +1133,19 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SpecificityRuleParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SpecificityRuleParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
@@ -1241,16 +1214,19 @@ module InsertStatements =
                                             Nullable(DateTime.Now)
                                            )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SearchModificationParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SearchModificationParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchModificationParam.Find(paramID))
@@ -1319,16 +1295,19 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:EnzymeNameParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:EnzymeNameParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
@@ -1397,11 +1376,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:IncludeParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:IncludeParam) =
                 param.Unit <- unit
@@ -1471,16 +1452,19 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ExcludeParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ExcludeParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ExcludeParam.Find(paramID))
@@ -1549,16 +1533,19 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:AdditionalSearchParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:AdditionalSearchParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
@@ -1627,16 +1614,19 @@ module InsertStatements =
                                            Nullable(DateTime.Now)
                                           )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:FragmentToleranceParam)  =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:FragmentToleranceParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
@@ -1705,16 +1695,19 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ParentToleranceParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ParentToleranceParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ParentToleranceParam.Find(paramID))
@@ -1783,16 +1776,19 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ThresholdParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ThresholdParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ThresholdParam.Find(paramID))
@@ -1861,16 +1857,19 @@ module InsertStatements =
                                         Nullable(DateTime.Now)
                                        )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SearchDatabaseParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SearchDatabaseParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
@@ -1939,16 +1938,19 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:DBSequenceParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:DBSequenceParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.DBSequenceParam.Find(paramID))
@@ -2018,16 +2020,19 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:PeptideEvidenceParam)  =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:PeptideEvidenceParam)  =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
@@ -2096,16 +2101,19 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SpectrumIdentificationItemParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationItemParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
@@ -2174,16 +2182,19 @@ module InsertStatements =
                                                       Nullable(DateTime.Now)
                                                      )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SpectrumIdentificationResultParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationResultParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
@@ -2252,16 +2263,19 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SpectrumIdentificationListParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationListParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
@@ -2330,16 +2344,19 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:AnalysisParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:AnalysisParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AnalysisParam.Find(paramID))
@@ -2408,16 +2425,19 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:SourceFileParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:SourceFileParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SourceFileParam.Find(paramID))
@@ -2486,16 +2506,19 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ProteinDetectionHypothesisParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ProteinDetectionHypothesisParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
@@ -2564,16 +2587,19 @@ module InsertStatements =
                                                 Nullable(DateTime.Now)
                                                )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ProteinAmbiguityGroupParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ProteinAmbiguityGroupParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
@@ -2642,16 +2668,19 @@ module InsertStatements =
                                               Nullable(DateTime.Now)
                                              )
 
+            ///Replaces value of existing object with new value.
             static member addValue
                 (value:string) (param:ProteinDetectionListParam) =
                 param.Value <- value
                 param
 
+            ///Replaces value of existing object with new value.
             static member addUnit
                 (unit:Term) (param:ProteinDetectionListParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
@@ -2741,6 +2770,7 @@ module InsertStatements =
                 let result = organization.Details <- addCollectionToList organization.Details details
                 organization
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (organizationID:string) =
                 tryFind (context.Organization.Find(organizationID))
@@ -2855,6 +2885,7 @@ module InsertStatements =
                 let result = person.Organizations <- addCollectionToList person.Organizations organizations
                 person
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (personID:string) =
                 tryFind (context.Person.Find(personID))
@@ -2921,6 +2952,7 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (contactRoleID:string) =
                 tryFind (context.ContactRole.Find(contactRoleID))
@@ -3031,6 +3063,7 @@ module InsertStatements =
                 let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
                 analysisSoftware
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (analysisSoftwareID:string) =
                 tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
@@ -3101,6 +3134,7 @@ module InsertStatements =
                 subSample.Sample <- sampleID
                 subSample
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (subSampleID:string) =
                 tryFind (context.SubSample.Find(subSampleID))
@@ -3216,6 +3250,7 @@ module InsertStatements =
                 let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                 sample
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (contactRolesID:string) =
                 tryFind (context.Sample.Find(contactRolesID))
@@ -3310,6 +3345,7 @@ module InsertStatements =
                 modification.AvgMassDelta <- Nullable(avgMassDelta)
                 modification
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (modificationID:string) =
                 tryFind (context.Modification.Find(modificationID))
@@ -3399,6 +3435,7 @@ module InsertStatements =
                 substitutionModification.AvgMassDelta <- Nullable(avgMassDelta)
                 substitutionModification
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (substitutionModificationID:string) =
                 tryFind (context.SubstitutionModification.Find(substitutionModificationID))
@@ -3515,6 +3552,7 @@ module InsertStatements =
                 let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
                 peptide
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (peptideID:string) =
                 tryFind (context.Peptide.Find(peptideID))
@@ -3598,6 +3636,7 @@ module InsertStatements =
                 let result = translationTable.Details <- addCollectionToList translationTable.Details details
                 translationTable
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (translationTableID:string) =
                 tryFind (context.TranslationTable.Find(translationTableID))
@@ -3667,6 +3706,7 @@ module InsertStatements =
                 measure.Name <- name
                 measure
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (measureID:string) =
                 tryFind (context.Measure.Find(measureID))
@@ -3730,6 +3770,7 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (residueID:string) =
                 tryFind (context.Residue.Find(residueID))
@@ -3792,6 +3833,7 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (ambiguousResidueID:string) =
                 tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
@@ -3901,6 +3943,7 @@ module InsertStatements =
                 let result = massTable.Details <- addCollectionToList massTable.Details details
                 massTable
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (massTableID:string) =
                 tryFind (context.MassTable.Find(massTableID))
@@ -4026,6 +4069,7 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (fragmentArrayID:string) =
                 tryFind (context.FragmentArray.Find(fragmentArrayID))
@@ -4088,6 +4132,7 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (indexID:string) =
                 tryFind (context.Index.Find(indexID))
@@ -4174,6 +4219,7 @@ module InsertStatements =
                 let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                 ionType
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (ionTypeID:string) =
                 tryFind (context.IonType.Find(ionTypeID))
@@ -4255,6 +4301,7 @@ module InsertStatements =
                 spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
                 spectraData
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectraDataID:string) =
                 tryFind (context.SpectraData.Find(spectraDataID))
@@ -4317,6 +4364,7 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (specificityRuleID:string) =
                 tryFind (context.SpecificityRule.Find(specificityRuleID))
@@ -4397,6 +4445,7 @@ module InsertStatements =
                 let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                 searchModification
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (searchModificationID:string) =
                 tryFind (context.SearchModification.Find(searchModificationID))
@@ -4527,6 +4576,7 @@ module InsertStatements =
                 let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                 enzyme
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (enzymeID:string) =
                 tryFind (context.Enzyme.Find(enzymeID))
@@ -4617,6 +4667,7 @@ module InsertStatements =
                 let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                 filter
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (filterID:string) =
                 tryFind (context.Filter.Find(filterID))
@@ -4885,6 +4936,7 @@ module InsertStatements =
                 let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentificationProtocol
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
@@ -5024,6 +5076,7 @@ module InsertStatements =
                 let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
                 searchDatabase
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (searchDatabaseID:string) =
                 tryFind (context.SearchDatabase.Find(searchDatabaseID))
@@ -5283,6 +5336,7 @@ module InsertStatements =
                 let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
                 peptideEvidence
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (peptideEvidenceID:string) =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
@@ -5441,6 +5495,7 @@ module InsertStatements =
             //     (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
             //     spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationItemID:string) =
                 tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
@@ -5540,6 +5595,7 @@ module InsertStatements =
             //     (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
             //     spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationResultID:string) =
                 tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
@@ -5645,6 +5701,7 @@ module InsertStatements =
                 let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                 spectrumIdentificationList
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationListID:string) =
                 tryFind (context.SpectrumIdentificationList.Find(spectrumIdentificationListID))
@@ -5738,6 +5795,7 @@ module InsertStatements =
                 let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentification
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (spectrumIdentificationID:string) =
                 tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
@@ -5838,6 +5896,7 @@ module InsertStatements =
                 let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionProtocol
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionProtocolID:string) =
                 tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
@@ -5936,6 +5995,7 @@ module InsertStatements =
             //     (sourceFile:SourceFile) (inputs:Inputs) =
             //     sourceFile.Inputs <- inputs
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (sourceFileID:string) =
                 tryFind (context.SourceFile.Find(sourceFileID))
@@ -6033,6 +6093,7 @@ module InsertStatements =
                 let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                 inputs
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (inputsID:string) =
                 tryFind (context.Inputs.Find(inputsID))
@@ -6098,6 +6159,7 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (peptideHypothesisID:string) =
                 tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
@@ -6193,6 +6255,7 @@ module InsertStatements =
                 let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionHypothesis
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionHypothesisID:string) =
                 tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
@@ -6277,6 +6340,7 @@ module InsertStatements =
                 let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                 proteinAmbiguityGroup
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinAmbiguityGroupID:string) =
                 tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
@@ -6371,6 +6435,7 @@ module InsertStatements =
                 let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                 proteinDetectionList
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionListID:string) =
                 tryFind (context.ProteinDetectionList.Find(proteinDetectionListID))
@@ -6449,6 +6514,7 @@ module InsertStatements =
                 let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                 analysisData
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (analysisDataID:string) =
                 tryFind (context.AnalysisData.Find(analysisDataID))
@@ -6531,6 +6597,7 @@ module InsertStatements =
                 proteinDetection.ActivityDate <- Nullable(activityDate)
                 proteinDetection
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionID:string) =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
@@ -6687,6 +6754,7 @@ module InsertStatements =
                 let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
                 biblioGraphicReference
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (biblioGraphicReferenceID:string) =
                 tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
@@ -6781,6 +6849,7 @@ module InsertStatements =
                 let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                 provider
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (providerID:string) =
                 tryFind (context.Provider.Find(providerID))
@@ -7029,6 +7098,7 @@ module InsertStatements =
                 let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
                 mzIdentML
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (mzIdentMLID:string) =
                 tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
