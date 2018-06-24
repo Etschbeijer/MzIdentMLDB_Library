@@ -1183,23 +1183,23 @@ module DataModel =
             member this.SpectrumIDFormat with get() = spectrumIDFormat' and set(value) = spectrumIDFormat' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-    ///The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
-    and [<AllowNullLiteral>]
-        //Formerly Specificityrules
-        SpecificityRule (id:Nullable<Guid>, details:List<SpecificityRuleParam>, rowVersion:Nullable<DateTime>) =
-            let mutable id'         = id
-            let mutable details'    = details
-            let mutable rowVersion' = rowVersion
-        //
-            new() = SpecificityRule(Nullable(), null, Nullable())
+    /////The specificity rules of the searched modification including for example the probability of a modification's presence or peptide or protein termini.
+    //and [<AllowNullLiteral>]
+    //    //Formerly Specificityrules
+    //    SpecificityRule (id:Nullable<Guid>, details:List<SpecificityRuleParam>, rowVersion:Nullable<DateTime>) =
+    //        let mutable id'         = id
+    //        let mutable details'    = details
+    //        let mutable rowVersion' = rowVersion
+    //    //
+    //        new() = SpecificityRule(Nullable(), null, Nullable())
 
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Details with get() = details' and set(value) = details' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    //        member this.ID with get() = id' and set(value) = id' <- value
+    //        member this.Details with get() = details' and set(value) = details' <- value
+    //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Specification of a search modification as parameter for a spectra search.
     and [<AllowNullLiteral>]
-        SearchModification (id:Nullable<Guid>, fixedMod:Nullable<bool>, massDelta:Nullable<float>, residues:string, specificityRules:List<SpecificityRule>, 
+        SearchModification (id:Nullable<Guid>, fixedMod:Nullable<bool>, massDelta:Nullable<float>, residues:string, specificityRules:List<SpecificityRuleParam>, 
                             searchModificationParams:List<SearchModificationParam>, rowVersion:Nullable<DateTime>
                            ) =
             let mutable id'                       = id
@@ -2035,10 +2035,10 @@ module DataModel =
             member public this.SpectrumIdentificationList with get() = this.m_SpectrumIdentificationList
                                                                         and set value = this.m_SpectrumIdentificationList <- value
 
-            [<DefaultValue>] 
-            val mutable m_SpecificityRule : DbSet<SpecificityRule>
-            member public this.SpecificityRule with get() = this.m_SpecificityRule
-                                                            and set value = this.m_SpecificityRule <- value
+            //[<DefaultValue>] 
+            //val mutable m_SpecificityRule : DbSet<SpecificityRule>
+            //member public this.SpecificityRule with get() = this.m_SpecificityRule
+            //                                                and set value = this.m_SpecificityRule <- value
 
             [<DefaultValue>] 
             val mutable m_SearchModification : DbSet<SearchModification>
