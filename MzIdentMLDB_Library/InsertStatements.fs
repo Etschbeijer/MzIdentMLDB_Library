@@ -90,14 +90,14 @@ module InsertStatements =
                 optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
                 new MzIdentML(optionsBuilder.Options)       
 
-            ///Creats connection for SQL-context and dataBase.
+            ///Creats connection for SQL-context and database.
             static member sqlConnection() =
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
                 optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
                 new MzIdentML(optionsBuilder.Options) 
 
-            ///Reads Obo-file and creates sequence of Obo.Terms.
+            ///Reads obo-file and creates sequence of Obo.Terms.
             static member fromFileObo (filePath:string) =
                 FileIO.readFile filePath
                 |> Obo.parseOboTerms
@@ -106,7 +106,7 @@ module InsertStatements =
             static member tryAddToContext (context:MzIdentML) (item:'b) =
                 context.Add(item)
 
-            ///Tries to add the Object to the dataBase-context and insert it in the database.
+            ///Tries to add the object to the database-context and insert it in the database.
             static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
                 context.Add(item) |> ignore
                 context.SaveChanges()
@@ -146,6 +146,7 @@ module InsertStatements =
                 (context:MzIdentML) (termID:string) =
                 tryFind (context.Term.Find(termID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Term.Local do
@@ -169,6 +170,7 @@ module InsertStatements =
                         else Some term
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
                 item1.Ontology=item2.Ontology
 
@@ -249,7 +251,7 @@ module InsertStatements =
                 cvParam.Value <- value
                 cvParam
 
-            ///Replaces unit of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (cvParam:CVParam) =
                 cvParam.Unit <- unit
@@ -260,6 +262,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.CVParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.CVParam.Local do
@@ -283,6 +286,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -330,6 +334,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:OrganizationParam) =
                 param.Unit <- unit
@@ -340,6 +345,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.OrganizationParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.OrganizationParam.Local do
@@ -363,6 +369,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -410,6 +417,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:PersonParam) =
                 param.Unit <- unit
@@ -420,6 +428,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PersonParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.PersonParam.Local do
@@ -443,6 +452,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -491,7 +501,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SampleParam)  =
                 param.Unit <- unit
@@ -502,6 +512,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SampleParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SampleParam.Local do
@@ -525,6 +536,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SampleParam) (item2:SampleParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -572,7 +584,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ModificationParam) =
                 param.Unit <- unit
@@ -583,6 +595,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ModificationParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ModificationParam.Local do
@@ -606,6 +619,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ModificationParam) (item2:ModificationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -653,7 +667,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:PeptideParam)  =
                 param.Unit <- unit
@@ -664,6 +678,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.PeptideParam.Local do
@@ -687,6 +702,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideParam) (item2:PeptideParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -734,7 +750,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:TranslationTableParam) =
                 param.Unit <- unit
@@ -745,6 +761,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.TranslationTableParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.TranslationTableParam.Local do
@@ -768,6 +785,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTableParam) (item2:TranslationTableParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -815,7 +833,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:MeasureParam) =
                 param.Unit <- unit
@@ -826,6 +844,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MeasureParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.MeasureParam.Local do
@@ -849,6 +868,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:MeasureParam) (item2:MeasureParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -896,7 +916,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:AmbiguousResidueParam) =
                 param.Unit <- unit
@@ -907,6 +927,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.AmbiguousResidueParam.Local do
@@ -930,6 +951,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidueParam) (item2:AmbiguousResidueParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -977,7 +999,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:MassTableParam) =
                 param.Unit <- unit
@@ -988,6 +1010,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.MassTableParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.MassTableParam.Local do
@@ -1011,6 +1034,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:MassTableParam) (item2:MassTableParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1058,7 +1082,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:IonTypeParam) =
                 param.Unit <- unit
@@ -1069,6 +1093,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.IonTypeParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.IonTypeParam.Local do
@@ -1092,6 +1117,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:IonTypeParam) (item2:IonTypeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1139,7 +1165,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SpecificityRuleParam) =
                 param.Unit <- unit
@@ -1150,6 +1176,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SpecificityRuleParam.Local do
@@ -1173,6 +1200,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpecificityRuleParam) (item2:SpecificityRuleParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1220,7 +1248,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SearchModificationParam) =
                 param.Unit <- unit
@@ -1231,6 +1259,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchModificationParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SearchModificationParam.Local do
@@ -1254,6 +1283,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModificationParam) (item2:SearchModificationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1301,7 +1331,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:EnzymeNameParam) =
                 param.Unit <- unit
@@ -1312,6 +1342,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.EnzymeNameParam.Local do
@@ -1335,6 +1366,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:EnzymeNameParam) (item2:EnzymeNameParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1382,12 +1414,13 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:IncludeParam) =
                 param.Unit <- unit
                 param
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.IncludeParam.Local do
@@ -1411,6 +1444,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:IncludeParam) (item2:IncludeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1458,7 +1492,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ExcludeParam) =
                 param.Unit <- unit
@@ -1469,6 +1503,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ExcludeParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ExcludeParam.Local do
@@ -1492,6 +1527,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ExcludeParam) (item2:ExcludeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1539,7 +1575,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:AdditionalSearchParam) =
                 param.Unit <- unit
@@ -1550,6 +1586,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.AdditionalSearchParam.Local do
@@ -1573,6 +1610,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AdditionalSearchParam) (item2:AdditionalSearchParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1620,7 +1658,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:FragmentToleranceParam) =
                 param.Unit <- unit
@@ -1631,6 +1669,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.FragmentToleranceParam.Local do
@@ -1654,6 +1693,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentToleranceParam) (item2:FragmentToleranceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1701,7 +1741,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ParentToleranceParam) =
                 param.Unit <- unit
@@ -1712,6 +1752,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ParentToleranceParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ParentToleranceParam.Local do
@@ -1735,6 +1776,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ParentToleranceParam) (item2:ParentToleranceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1782,7 +1824,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ThresholdParam) =
                 param.Unit <- unit
@@ -1793,6 +1835,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ThresholdParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ThresholdParam.Local do
@@ -1816,6 +1859,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ThresholdParam) (item2:ThresholdParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1863,7 +1907,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SearchDatabaseParam) =
                 param.Unit <- unit
@@ -1874,6 +1918,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SearchDatabaseParam.Local do
@@ -1897,6 +1942,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -1944,7 +1990,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:DBSequenceParam) =
                 param.Unit <- unit
@@ -1955,6 +2001,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.DBSequenceParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.DBSequenceParam.Local do
@@ -1978,6 +2025,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequenceParam) (item2:DBSequenceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2026,7 +2074,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:PeptideEvidenceParam)  =
                 param.Unit <- unit
@@ -2037,6 +2085,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.PeptideEvidenceParam.Local do
@@ -2060,6 +2109,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidenceParam) (item2:PeptideEvidenceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2107,7 +2157,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationItemParam) =
                 param.Unit <- unit
@@ -2118,6 +2168,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItemParam.Local do
@@ -2141,6 +2192,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItemParam) (item2:SpectrumIdentificationItemParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2188,7 +2240,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationResultParam) =
                 param.Unit <- unit
@@ -2199,6 +2251,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResultParam.Local do
@@ -2222,6 +2275,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResultParam) (item2:SpectrumIdentificationResultParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2269,7 +2323,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SpectrumIdentificationListParam) =
                 param.Unit <- unit
@@ -2280,6 +2334,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationListParam.Local do
@@ -2303,6 +2358,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationListParam) (item2:SpectrumIdentificationListParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2350,7 +2406,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:AnalysisParam) =
                 param.Unit <- unit
@@ -2361,6 +2417,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.AnalysisParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.AnalysisParam.Local do
@@ -2384,6 +2441,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisParam) (item2:AnalysisParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2431,7 +2489,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:SourceFileParam) =
                 param.Unit <- unit
@@ -2442,6 +2500,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SourceFileParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SourceFileParam.Local do
@@ -2465,6 +2524,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFileParam) (item2:SourceFileParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2512,7 +2572,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ProteinDetectionHypothesisParam) =
                 param.Unit <- unit
@@ -2523,6 +2583,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesisParam.Local do
@@ -2546,6 +2607,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesisParam) (item2:ProteinDetectionHypothesisParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2593,7 +2655,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ProteinAmbiguityGroupParam) =
                 param.Unit <- unit
@@ -2604,6 +2666,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroupParam.Local do
@@ -2627,6 +2690,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroupParam) (item2:ProteinAmbiguityGroupParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2674,7 +2738,7 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces value of existing object with new value.
+            ///Replaces unit of existing object with new unit.
             static member addUnit
                 (unit:Term) (param:ProteinDetectionListParam) =
                 param.Unit <- unit
@@ -2685,6 +2749,7 @@ module InsertStatements =
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ProteinDetectionListParam.Local do
@@ -2708,6 +2773,7 @@ module InsertStatements =
                         else Some param
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionListParam) (item2:ProteinDetectionListParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
@@ -2775,6 +2841,7 @@ module InsertStatements =
                 (context:MzIdentML) (organizationID:string) =
                 tryFind (context.Organization.Find(organizationID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Organization.Local do
@@ -2798,6 +2865,7 @@ module InsertStatements =
                         else Some organization
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
                 item1.Details=item2.Details && item1.Parent=item2.Parent
 
@@ -2890,6 +2958,7 @@ module InsertStatements =
                 (context:MzIdentML) (personID:string) =
                 tryFind (context.Person.Find(personID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Person.Local do
@@ -2913,6 +2982,7 @@ module InsertStatements =
                         else Some person
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Person) (item2:Person) =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
@@ -2957,6 +3027,7 @@ module InsertStatements =
                 (context:MzIdentML) (contactRoleID:string) =
                 tryFind (context.ContactRole.Find(contactRoleID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPersonName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ContactRole.Local do
@@ -2980,6 +3051,7 @@ module InsertStatements =
                         else Some contactRole
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ContactRole) (item2:ContactRole) =
                 item1.Role=item2.Role
 
@@ -3068,6 +3140,7 @@ module InsertStatements =
                 (context:MzIdentML) (analysisSoftwareID:string) =
                 tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySoftwareNameName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AnalysisSoftware.Local do
@@ -3091,6 +3164,7 @@ module InsertStatements =
                         else Some analysisSoftware
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
                 item1.Name=item2.Name && item1.URI=item2.URI && item1.Version=item2.Version && 
                 item1.Customizations=item2.Customizations && item1.ContactRole=item2.ContactRole && 
@@ -3139,6 +3213,7 @@ module InsertStatements =
                 (context:MzIdentML) (subSampleID:string) =
                 tryFind (context.SubSample.Find(subSampleID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySampleName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SubSample.Local do
@@ -3162,6 +3237,7 @@ module InsertStatements =
                         else Some subSample
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SubSample) (item2:SubSample) =
                 item1.ID = item2.ID
 
@@ -3255,6 +3331,7 @@ module InsertStatements =
                 (context:MzIdentML) (contactRolesID:string) =
                 tryFind (context.Sample.Find(contactRolesID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySampleName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Sample.Local do
@@ -3278,6 +3355,7 @@ module InsertStatements =
                         else Some subSample
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Sample) (item2:Sample) =
                 item1.ContactRoles=item2.ContactRoles && item1.SubSamples=item2.SubSamples &&
                 item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
@@ -3350,6 +3428,7 @@ module InsertStatements =
                 (context:MzIdentML) (modificationID:string) =
                 tryFind (context.Modification.Find(modificationID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMonoIsotopicMassDelta (dbContext:MzIdentML) (monoIsotopicMassDelta:Nullable<float>) =
                 query {
                        for i in dbContext.Modification.Local do
@@ -3373,6 +3452,7 @@ module InsertStatements =
                         else Some modification
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
                 item1.Residues=item2.Residues && item1.Location=item2.Location &&
                 item1.AvgMassDelta=item2.AvgMassDelta && item1.Details=item2.Details
@@ -3440,6 +3520,7 @@ module InsertStatements =
                 (context:MzIdentML) (substitutionModificationID:string) =
                 tryFind (context.SubstitutionModification.Find(substitutionModificationID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMonoIsotopicMassDelta (dbContext:MzIdentML) (monoIsotopicMassDelta:Nullable<float>) =
                 query {
                        for i in dbContext.SubstitutionModification.Local do
@@ -3461,6 +3542,7 @@ module InsertStatements =
                         else Some substitutionModification
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SubstitutionModification) (item2:SubstitutionModification) =
                 item1.OriginalResidue=item2.OriginalResidue && item1.ReplacementResidue=item2.ReplacementResidue &&
                 item1.AvgMassDelta=item2.AvgMassDelta && item1.Location=item2.Location 
@@ -3557,6 +3639,7 @@ module InsertStatements =
                 (context:MzIdentML) (peptideID:string) =
                 tryFind (context.Peptide.Find(peptideID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPeptideSequence (dbContext:MzIdentML) (peptideSeq:string) =
                 query {
                        for i in dbContext.Peptide.Local do
@@ -3580,6 +3663,7 @@ module InsertStatements =
                         else Some peptide
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Peptide) (item2:Peptide) =
                 item1.Name=item2.Name && item1.Modifications=item2.Modifications &&
                 item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Details=item2.Details &&
@@ -3641,6 +3725,7 @@ module InsertStatements =
                 (context:MzIdentML) (translationTableID:string) =
                 tryFind (context.TranslationTable.Find(translationTableID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.TranslationTable.Local do
@@ -3664,6 +3749,7 @@ module InsertStatements =
                         else Some translationTable
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTable) (item2:TranslationTable) =
                 item1.Details=item2.Details
 
@@ -3711,6 +3797,7 @@ module InsertStatements =
                 (context:MzIdentML) (measureID:string) =
                 tryFind (context.Measure.Find(measureID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Measure.Local do
@@ -3734,6 +3821,7 @@ module InsertStatements =
                         else Some measure
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Measure) (item2:Measure) =
                 item1.Details=item2.Details
 
@@ -3775,6 +3863,7 @@ module InsertStatements =
                 (context:MzIdentML) (residueID:string) =
                 tryFind (context.Residue.Find(residueID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCode (dbContext:MzIdentML) (code:string) =
                 query {
                        for i in dbContext.Residue.Local do
@@ -3797,6 +3886,7 @@ module InsertStatements =
                         else Some residue
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Residue) (item2:Residue) =
                 item1.Mass=item2.Mass
 
@@ -3838,6 +3928,7 @@ module InsertStatements =
                 (context:MzIdentML) (ambiguousResidueID:string) =
                 tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCode (dbContext:MzIdentML) (code:string) =
                 query {
                        for i in dbContext.AmbiguousResidue.Local do
@@ -3861,6 +3952,7 @@ module InsertStatements =
                         else Some ambiguousResidue
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
                 item1.Details=item2.Details
 
@@ -3948,6 +4040,7 @@ module InsertStatements =
                 (context:MzIdentML) (massTableID:string) =
                 tryFind (context.MassTable.Find(massTableID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MassTable.Local do
@@ -3971,6 +4064,7 @@ module InsertStatements =
                         else Some massTable
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
                 item1.Details=item2.Details
 
@@ -4006,10 +4100,12 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            static member findValueByID
+            //Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
                 (context:MzIdentML) (valueID:string) =
                 tryFind (context.Value.Find(valueID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByValue (dbContext:MzIdentML) (item:Nullable<float>) =
                 query {
                        for i in dbContext.Value.Local do
@@ -4032,6 +4128,7 @@ module InsertStatements =
                         else Some value
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Value) (item2:Value) =
                 item1.ID = item2.ID
 
@@ -4074,6 +4171,7 @@ module InsertStatements =
                 (context:MzIdentML) (fragmentArrayID:string) =
                 tryFind (context.FragmentArray.Find(fragmentArrayID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMeasureName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.FragmentArray.Local do
@@ -4097,6 +4195,7 @@ module InsertStatements =
                         else Some fragmentArray
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentArray) (item2:FragmentArray) =
                 item1.Values=item2.Values
 
@@ -4137,6 +4236,7 @@ module InsertStatements =
                 (context:MzIdentML) (indexID:string) =
                 tryFind (context.Index.Find(indexID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByIndexItem (dbContext:MzIdentML) (item:Nullable<int>) =
                 query {
                        for i in dbContext.Index.Local do
@@ -4159,6 +4259,7 @@ module InsertStatements =
                         else Some index
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Index) (item2:Index) =
                 item1.ID = item2.ID
 
@@ -4224,6 +4325,7 @@ module InsertStatements =
                 (context:MzIdentML) (ionTypeID:string) =
                 tryFind (context.IonType.Find(ionTypeID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDetails (dbContext:MzIdentML) (details:seq<IonTypeParam>) =
                 query {
                        for i in dbContext.IonType.Local do
@@ -4247,6 +4349,7 @@ module InsertStatements =
                         else Some ionType
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:IonType) (item2:IonType) =
                 item1.ID = item2.ID
 
@@ -4306,6 +4409,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectraDataID:string) =
                 tryFind (context.SpectraData.Find(spectraDataID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
                 query {
                        for i in dbContext.SpectraData.Local do
@@ -4329,6 +4433,7 @@ module InsertStatements =
                         else Some spectraData
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectraData) (item2:SpectraData) =
                 item1.ID = item2.ID
 
@@ -4369,6 +4474,7 @@ module InsertStatements =
                 (context:MzIdentML) (specificityRuleID:string) =
                 tryFind (context.SpecificityRule.Find(specificityRuleID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDetails (dbContext:MzIdentML) (details:seq<SpecificityRuleParam>) =
                 query {
                        for i in dbContext.SpecificityRule.Local do
@@ -4392,6 +4498,7 @@ module InsertStatements =
                         else Some specificityRule
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpecificityRule) (item2:SpecificityRule) =
                 item1.ID = item2.ID
 
@@ -4450,6 +4557,7 @@ module InsertStatements =
                 (context:MzIdentML) (searchModificationID:string) =
                 tryFind (context.SearchModification.Find(searchModificationID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMassDelta (dbContext:MzIdentML) (massDelta:Nullable<float>) =
                 query {
                        for i in dbContext.SearchModification.Local do
@@ -4473,6 +4581,7 @@ module InsertStatements =
                         else Some searchModification
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
                 item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
                 item1.SpecificityRules=item2.SpecificityRules && item1.Details=item2.Details
@@ -4581,6 +4690,7 @@ module InsertStatements =
                 (context:MzIdentML) (enzymeID:string) =
                 tryFind (context.Enzyme.Find(enzymeID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Enzyme.Local do
@@ -4604,6 +4714,7 @@ module InsertStatements =
                         else Some enzyme
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Enzyme) (item2:Enzyme) =
                 item1.CTermGain=item2.CTermGain && item1.NTermGain=item2.NTermGain && item1.MinDistance=item2.MinDistance &&
                 item1.MissedCleavages=item2.MissedCleavages && item1.SemiSpecific=item2.SemiSpecific &&
@@ -4672,6 +4783,7 @@ module InsertStatements =
                 (context:MzIdentML) (filterID:string) =
                 tryFind (context.Filter.Find(filterID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFilterTypeName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Filter.Local do
@@ -4695,6 +4807,7 @@ module InsertStatements =
                         else Some enzyme
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Filter) (item2:Filter) =
                 item1.Includes=item2.Includes && item1.Excludes=item2.Excludes
 
@@ -4730,10 +4843,12 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            static member findFrameByID
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
                 (context:MzIdentML) (frameID:string) =
                 tryFind (context.Frame.Find(frameID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFrameItem (dbContext:MzIdentML) (item:Nullable<int>) =
                 query {
                        for i in dbContext.Frame.Local do
@@ -4756,6 +4871,7 @@ module InsertStatements =
                         else Some frame
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Frame) (item2:Frame) =
                 item1.ID = item2.ID
 
@@ -4941,6 +5057,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByAnalysisSoftwareSoftwareName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationProtocol.Local do
@@ -4972,6 +5089,7 @@ module InsertStatements =
                         else Some spectrumIdentificationProtocol
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
                 item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && 
                 item1.AdditionalSearchParams=item2.AdditionalSearchParams && item1.ModificationParams=item2.ModificationParams && 
@@ -5081,6 +5199,7 @@ module InsertStatements =
                 (context:MzIdentML) (searchDatabaseID:string) =
                 tryFind (context.SearchDatabase.Find(searchDatabaseID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDatabaseNameName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchDatabase.Local do
@@ -5104,6 +5223,7 @@ module InsertStatements =
                         else Some searchDatabase
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabase) (item2:SearchDatabase) =
                item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
                item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
@@ -5189,6 +5309,12 @@ module InsertStatements =
                 let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                 dbSequence
 
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzIdentML) (dbSequenceID:string) =
+                tryFind (context.DBSequence.Find(searchDatabaseID))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByAccession (dbContext:MzIdentML) (accession:string) =
                 query {
                        for i in dbContext.DBSequence.Local do
@@ -5212,6 +5338,7 @@ module InsertStatements =
                         else Some dbSequence
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
                item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
                item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
@@ -5341,6 +5468,7 @@ module InsertStatements =
                 (context:MzIdentML) (peptideEvidenceID:string) =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDBSequenceAccession (dbContext:MzIdentML) (accession:string) =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
@@ -5364,6 +5492,7 @@ module InsertStatements =
                         else Some peptideEvidence
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidence) (item2:PeptideEvidence) =
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
                item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
@@ -5500,6 +5629,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationItemID:string) =
                 tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItem.Local do
@@ -5527,6 +5657,7 @@ module InsertStatements =
                         else Some spectrumIdentificationItem
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItem) (item2:SpectrumIdentificationItem) =
                item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
                item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
@@ -5600,6 +5731,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationResultID:string) =
                 tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySpectrumID (dbContext:MzIdentML) (spectrumID:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResult.Local do
@@ -5623,6 +5755,7 @@ module InsertStatements =
                         else Some spectrumIdentificationResult
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
                item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && item1.Details=item2.Details && 
                item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
@@ -5706,6 +5839,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationListID:string) =
                 tryFind (context.SpectrumIdentificationList.Find(spectrumIdentificationListID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationList.Local do
@@ -5729,6 +5863,7 @@ module InsertStatements =
                         else Some spectrumIdentificationList
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
                item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
                item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && item1.Details=item2.Details
@@ -5800,6 +5935,7 @@ module InsertStatements =
                 (context:MzIdentML) (spectrumIdentificationID:string) =
                 tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentification.Local do
@@ -5827,6 +5963,7 @@ module InsertStatements =
                         else Some spectrumIdentificationList
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
                item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Name=item2.Name &&
@@ -5901,6 +6038,7 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionProtocolID:string) =
                 tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
@@ -5924,6 +6062,7 @@ module InsertStatements =
                         else Some proteinDetectionProtocol
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
                item1.Threshold=item2.Threshold && item1.Name=item2.Name && item1.AnalysisSoftware=item2.AnalysisSoftware &&
                item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocument=item2.MzIdentMLDocument
@@ -6000,6 +6139,7 @@ module InsertStatements =
                 (context:MzIdentML) (sourceFileID:string) =
                 tryFind (context.SourceFile.Find(sourceFileID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
                 query {
                        for i in dbContext.SourceFile.Local do
@@ -6023,6 +6163,7 @@ module InsertStatements =
                         else Some sourceFile
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
                item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && item1.Details=item2.Details &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
@@ -6098,6 +6239,7 @@ module InsertStatements =
                 (context:MzIdentML) (inputsID:string) =
                 tryFind (context.Inputs.Find(inputsID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySpectraData (dbContext:MzIdentML) (spectraData:seq<SpectraData>) =
                 query {
                        for i in dbContext.Inputs.Local do
@@ -6121,6 +6263,7 @@ module InsertStatements =
                         else Some inputs
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
                item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
                item1.MzIdentMLDocument=item2.MzIdentMLDocument
@@ -6164,6 +6307,7 @@ module InsertStatements =
                 (context:MzIdentML) (peptideHypothesisID:string) =
                 tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPeptideEvidenceName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideHypothesis.Local do
@@ -6187,6 +6331,7 @@ module InsertStatements =
                         else Some peptideHypothesis
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideHypothesis) (item2:PeptideHypothesis) =
                item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
 
@@ -6260,6 +6405,7 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionHypothesisID:string) =
                 tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDBSequenceName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesis.Local do
@@ -6283,6 +6429,7 @@ module InsertStatements =
                         else Some proteinDetectionHypothesis
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
                item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
                item1.Name=item2.Name && item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
@@ -6345,6 +6492,7 @@ module InsertStatements =
                 (context:MzIdentML) (proteinAmbiguityGroupID:string) =
                 tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroup.Local do
@@ -6368,6 +6516,7 @@ module InsertStatements =
                         else Some proteinAmbiguityGroup
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
                item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && item1.Details=item2.Details
 
@@ -6440,6 +6589,7 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionListID:string) =
                 tryFind (context.ProteinDetectionList.Find(proteinDetectionListID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionList.Local do
@@ -6463,6 +6613,7 @@ module InsertStatements =
                         else Some proteinDetectionList
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
                item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && item1.Details=item2.Details
 
@@ -6519,6 +6670,7 @@ module InsertStatements =
                 (context:MzIdentML) (analysisDataID:string) =
                 tryFind (context.AnalysisData.Find(analysisDataID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AnalysisData.Local do
@@ -6542,6 +6694,7 @@ module InsertStatements =
                         else Some analysisData
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisData) (item2:AnalysisData) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
@@ -6602,6 +6755,7 @@ module InsertStatements =
                 (context:MzIdentML) (proteinDetectionID:string) =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetection.Local do
@@ -6625,6 +6779,7 @@ module InsertStatements =
                         else Some proteinDetection
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetection) (item2:ProteinDetection) =
                item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
                item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
@@ -6759,6 +6914,7 @@ module InsertStatements =
                 (context:MzIdentML) (biblioGraphicReferenceID:string) =
                 tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
@@ -6782,6 +6938,7 @@ module InsertStatements =
                         else Some biblioGraphicReference
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
                item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
                item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
@@ -6854,6 +7011,7 @@ module InsertStatements =
                 (context:MzIdentML) (providerID:string) =
                 tryFind (context.Provider.Find(providerID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Provider.Local do
@@ -6877,6 +7035,7 @@ module InsertStatements =
                         else Some provider
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
                item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
                item1.MzIdentMLDocument=item2.MzIdentMLDocument 
@@ -7103,6 +7262,7 @@ module InsertStatements =
                 (context:MzIdentML) (mzIdentMLID:string) =
                 tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
 
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
@@ -7132,6 +7292,7 @@ module InsertStatements =
                         else Some mzIdentMLDocument
                    )
 
+            ///Checks whether all other fields of the current object and context objects have the same values or not.
             static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
                item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
