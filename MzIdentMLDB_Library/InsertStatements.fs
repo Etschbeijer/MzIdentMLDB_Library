@@ -263,10 +263,10 @@ module InsertStatements =
                 tryFind (context.CVParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.CVParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -275,7 +275,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.CVParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -346,10 +346,10 @@ module InsertStatements =
                 tryFind (context.OrganizationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.OrganizationParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -358,7 +358,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.OrganizationParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -429,10 +429,10 @@ module InsertStatements =
                 tryFind (context.PersonParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PersonParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -441,7 +441,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PersonParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -513,10 +513,10 @@ module InsertStatements =
                 tryFind (context.SampleParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SampleParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -525,7 +525,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SampleParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -596,10 +596,10 @@ module InsertStatements =
                 tryFind (context.ModificationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ModificationParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -608,7 +608,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ModificationParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -679,10 +679,10 @@ module InsertStatements =
                 tryFind (context.PeptideParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -691,7 +691,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -762,10 +762,10 @@ module InsertStatements =
                 tryFind (context.TranslationTableParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.TranslationTableParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -774,7 +774,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.TranslationTableParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -845,10 +845,10 @@ module InsertStatements =
                 tryFind (context.MeasureParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MeasureParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -857,7 +857,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MeasureParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -928,10 +928,10 @@ module InsertStatements =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AmbiguousResidueParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -940,7 +940,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AmbiguousResidueParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1011,10 +1011,10 @@ module InsertStatements =
                 tryFind (context.MassTableParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MassTableParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1023,7 +1023,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MassTableParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1094,10 +1094,10 @@ module InsertStatements =
                 tryFind (context.IonTypeParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.IonTypeParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1106,7 +1106,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IonTypeParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1177,10 +1177,10 @@ module InsertStatements =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpecificityRuleParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1189,7 +1189,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpecificityRuleParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1260,10 +1260,10 @@ module InsertStatements =
                 tryFind (context.SearchModificationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchModificationParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1272,7 +1272,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchModificationParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1343,10 +1343,10 @@ module InsertStatements =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.EnzymeNameParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1355,7 +1355,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.EnzymeNameParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1421,10 +1421,10 @@ module InsertStatements =
                 param
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.IncludeParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1433,7 +1433,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IncludeParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1504,10 +1504,10 @@ module InsertStatements =
                 tryFind (context.ExcludeParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ExcludeParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1516,7 +1516,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ExcludeParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1587,10 +1587,10 @@ module InsertStatements =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AdditionalSearchParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1599,7 +1599,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AdditionalSearchParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1670,10 +1670,10 @@ module InsertStatements =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.FragmentToleranceParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1682,7 +1682,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FragmentToleranceParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1753,10 +1753,10 @@ module InsertStatements =
                 tryFind (context.ParentToleranceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ParentToleranceParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1765,7 +1765,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ParentToleranceParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1836,10 +1836,10 @@ module InsertStatements =
                 tryFind (context.ThresholdParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ThresholdParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1848,7 +1848,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ThresholdParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1919,10 +1919,10 @@ module InsertStatements =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchDatabaseParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1931,7 +1931,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchDatabaseParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2002,10 +2002,10 @@ module InsertStatements =
                 tryFind (context.DBSequenceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.DBSequenceParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2014,7 +2014,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.DBSequenceParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2086,10 +2086,10 @@ module InsertStatements =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideEvidenceParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2098,7 +2098,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideEvidenceParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2169,10 +2169,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItemParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2181,7 +2181,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationItemParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2252,10 +2252,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResultParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2264,7 +2264,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationResultParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2335,10 +2335,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationListParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2347,7 +2347,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationListParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2418,10 +2418,10 @@ module InsertStatements =
                 tryFind (context.AnalysisParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AnalysisParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2430,7 +2430,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2501,10 +2501,10 @@ module InsertStatements =
                 tryFind (context.SourceFileParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SourceFileParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2513,7 +2513,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SourceFileParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2584,10 +2584,10 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesisParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2596,7 +2596,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesisParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2667,10 +2667,10 @@ module InsertStatements =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroupParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2679,7 +2679,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinAmbiguityGroupParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2750,10 +2750,10 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (id:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionListParam.Local do
-                           if i.Term.ID=id
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2762,7 +2762,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionListParam do
-                                       if i.Term.ID=id
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
