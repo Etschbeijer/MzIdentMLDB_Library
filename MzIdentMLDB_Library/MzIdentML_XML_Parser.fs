@@ -939,7 +939,7 @@
 
 //    let convertToEntity_MzIdentML (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.MzIdentMl) =
 //        let mzIdentMLBasic =  
-//            MzIdentMLHandler.init(
+//            MzIdentMLDocumentHandler.init(
 //                                  convertToEntity_Inputs dbContext mzIdentMLXML.DataCollection.Inputs,
 //                                  mzIdentMLXML.Version,
 //                                  mzIdentMLXML.AnalysisCollection.SpectrumIdentifications
@@ -948,10 +948,10 @@
 //                                  |> Array.map (fun spectrumIdentificationProtocol -> SpectrumIdentificationProtocolHandler.tryFindByID dbContext spectrumIdentificationProtocol.Id),
 //                                  convertToEntity_AnalysisData dbContext mzIdentMLXML.DataCollection.AnalysisData
 //                                 )
-//        let mzIdentMLWithName = setOption MzIdentMLHandler.addName mzIdentMLXML.Name mzIdentMLBasic
+//        let mzIdentMLWithName = setOption MzIdentMLDocumentHandler.addName mzIdentMLXML.Name mzIdentMLBasic
 //        let mzIdentMLWithAnalysisSoftwares =
 //                match mzIdentMLXML.AnalysisSoftwareList with
-//                 |Some x -> MzIdentMLHandler.addAnalysisSoftwares      
+//                 |Some x -> MzIdentMLDocumentHandler.addAnalysisSoftwares      
 //                                (x.AnalysisSoftwares
 //                                 |> Array.map (fun analysisSoftware -> AnalysisSoftwareHandler.tryFindByID dbContext analysisSoftware.Id)
 //                                )
@@ -959,14 +959,14 @@
 //                 |None -> mzIdentMLWithName
 //        let mzIDentMLWithProvider =
 //                (match mzIdentMLXML.Provider with
-//                 |Some x -> MzIdentMLHandler.addProvider
+//                 |Some x -> MzIdentMLDocumentHandler.addProvider
 //                                (convertToEntity_Provider dbContext x)
 //                                mzIdentMLWithAnalysisSoftwares
 //                 |None -> mzIdentMLWithAnalysisSoftwares
 //                )
 //        let mzIdentMLWithPersons =
 //                match mzIdentMLXML.AuditCollection with
-//                 |Some x -> MzIdentMLHandler.addPersons
+//                 |Some x -> MzIdentMLDocumentHandler.addPersons
 //                                (x.Persons
 //                                 |> Array.map (fun person -> PersonHandler.tryFindByID dbContext person.Id)
 //                                )
@@ -974,7 +974,7 @@
 //                 |None -> mzIDentMLWithProvider
 //        let mzIdentMLWithOrganizations =
 //                match mzIdentMLXML.AuditCollection with
-//                 |Some x -> MzIdentMLHandler.addOrganizations
+//                 |Some x -> MzIdentMLDocumentHandler.addOrganizations
 //                                (x.Organizations
 //                                 |> Array.map (fun organization -> OrganizationHandler.tryFindByID dbContext organization.Id)
 //                                )
@@ -982,7 +982,7 @@
 //                 |None -> mzIdentMLWithPersons
 //        let mzIdentMLWithSamples =
 //                match mzIdentMLXML.AnalysisSampleCollection with
-//                 |Some x -> MzIdentMLHandler.addSamples
+//                 |Some x -> MzIdentMLDocumentHandler.addSamples
 //                                (x.Samples
 //                                 |>Array.map (fun sample -> SampleHandler.tryFindByID dbContext sample.Id)
 //                                )
@@ -990,7 +990,7 @@
 //                 |None -> mzIdentMLWithOrganizations
 //        let mzIdentMLWithDBSequences =
 //                match mzIdentMLXML.SequenceCollection with
-//                 |Some x -> MzIdentMLHandler.addDBSequences
+//                 |Some x -> MzIdentMLDocumentHandler.addDBSequences
 //                                (x.DbSequences
 //                                 |> Array.map (fun dbSequence -> DBSequenceHandler.tryFindByID dbContext dbSequence.Id)
 //                                )
@@ -998,7 +998,7 @@
 //                 |None -> mzIdentMLWithSamples
 //        let mzIdentMLWithPeptides =
 //                match mzIdentMLXML.SequenceCollection with
-//                 |Some x -> MzIdentMLHandler.addPeptides
+//                 |Some x -> MzIdentMLDocumentHandler.addPeptides
 //                                (x.Peptides
 //                                 |> Array.map (fun peptide -> PeptideHandler.tryFindByID dbContext peptide.Id)
 //                                )
@@ -1006,7 +1006,7 @@
 //                 |None -> mzIdentMLWithDBSequences
 //        let mzIdentMLWithPeptideEvidences =
 //                match mzIdentMLXML.SequenceCollection with
-//                 |Some x -> MzIdentMLHandler.addPeptideEvidences
+//                 |Some x -> MzIdentMLDocumentHandler.addPeptideEvidences
 //                                (x.PeptideEvidences
 //                                 |> Array.map (fun peptideEvidence -> PeptideEvidenceHandler.tryFindByID dbContext peptideEvidence.Id)
 //                                )
@@ -1014,25 +1014,25 @@
 //                 |None -> mzIdentMLWithPeptides
 //        let mzIdentMLWithProteinDetection =
 //            (match mzIdentMLXML.AnalysisCollection.ProteinDetection with
-//             |Some x -> MzIdentMLHandler.addProteinDetection
+//             |Some x -> MzIdentMLDocumentHandler.addProteinDetection
 //                            (convertToEntity_ProteinDetection dbContext x)
 //                            mzIdentMLWithPeptideEvidences
 //             |None -> mzIdentMLWithPeptideEvidences
 //            )
 //        let mzIdentMLWithProteinDetectionProtocol =
 //            (match mzIdentMLXML.AnalysisProtocolCollection.ProteinDetectionProtocol with
-//             |Some x -> MzIdentMLHandler.addProteinDetectionProtocol
+//             |Some x -> MzIdentMLDocumentHandler.addProteinDetectionProtocol
 //                            (ProteinDetectionProtocolHandler.tryFindByID dbContext x.Id)
 //                            mzIdentMLWithProteinDetection
 //             |None -> mzIdentMLWithProteinDetection
 //            ) 
 //        //let mzIdentMLWithBiblioGraphicReference =
-//        //    MzIdentMLHandler.addBiblioGraphicReferences
+//        //    MzIdentMLDocumentHandler.addBiblioGraphicReferences
 //        //        (mzIdentMLXML.BibliographicReferences
 //        //         |> Array.map (fun bibliographicReference -> convertToEntity_BiblioGraphicReference dbContext bibliographicReference)
 //        //        )
 //        //        mzIdentMLWithProteinDetectionProtocol
-//        MzIdentMLHandler.addToContext dbContext mzIdentMLWithProteinDetectionProtocol
+//        MzIdentMLDocumentHandler.addToContext dbContext mzIdentMLWithProteinDetectionProtocol
 
 
 

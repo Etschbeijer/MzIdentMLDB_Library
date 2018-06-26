@@ -170,11 +170,11 @@ module InsertStatements =
                         else Some term
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
                 item1.Ontology=item2.Ontology
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Term) =
                     TermHandler.tryFindByName dbContext item.Name
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -187,7 +187,7 @@ module InsertStatements =
                        )
 
             
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Term) =
                 TermHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -229,16 +229,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new CVParam(
-                            Nullable(id'), 
+                            id', 
                             value', 
                             term, 
                             unit', 
@@ -286,11 +286,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:CVParam) =
                     CVParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -302,7 +302,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:CVParam) =
                 CVParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -312,16 +312,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new OrganizationParam(
-                                      Nullable(id'), 
+                                      id', 
                                       value', 
                                       term, 
                                       unit', 
@@ -369,23 +369,25 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:OrganizationParam) =
                     OrganizationParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
                                                  |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match OrganizationParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
+                                                            |> Seq.map (fun cvParam -> 
+                                                                match OrganizationParamHandler.hasEqualFieldValues cvParam item with
+                                                                |true -> null
+                                                                |false -> dbContext.Add item
                                                                        ) |> ignore
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:OrganizationParam) =
                 OrganizationParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -395,16 +397,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PersonParam(
-                                Nullable(id'), 
+                                id', 
                                 value', 
                                 term, 
                                 unit', 
@@ -452,11 +454,12 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PersonParam) =
                     PersonParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -468,7 +471,8 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PersonParam) =
                 PersonParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -478,17 +482,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
-                    ?unit     : Term,
-                    ?unitName : string
+                    ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SampleParam(
-                                Nullable(id'), 
+                                id', 
                                 value', 
                                 term, 
                                 unit', 
@@ -507,7 +510,7 @@ module InsertStatements =
                 param.Unit <- unit
                 param
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find an ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (paramID:string) =
                 tryFind (context.SampleParam.Find(paramID))
@@ -536,11 +539,12 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SampleParam) (item2:SampleParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SampleParam) =
                     SampleParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -552,7 +556,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SampleParam) =
                 SampleParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -562,16 +566,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ModificationParam(
-                                      Nullable(id'), 
+                                      id', 
                                       value', 
                                       term, 
                                       unit', 
@@ -619,11 +623,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ModificationParam) (item2:ModificationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ModificationParam) =
                     ModificationParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -635,7 +639,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ModificationParam) =
                 ModificationParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -645,16 +649,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PeptideParam(
-                                 Nullable(id'), 
+                                 id', 
                                  value', 
                                  term, 
                                  unit', 
@@ -702,11 +706,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideParam) (item2:PeptideParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideParam) =
                     PeptideParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -718,7 +722,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideParam) =
                 PeptideParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -728,16 +732,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new TranslationTableParam(
-                                          Nullable(id'), 
+                                          id', 
                                           value', 
                                           term, 
                                           unit', 
@@ -785,11 +789,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTableParam) (item2:TranslationTableParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
                     TranslationTableParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -801,7 +805,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:TranslationTableParam) =
                 TranslationTableParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -811,16 +815,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new MeasureParam(
-                                 Nullable(id'), 
+                                 id', 
                                  value', 
                                  term, 
                                  unit', 
@@ -868,11 +872,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MeasureParam) (item2:MeasureParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MeasureParam) =
                     MeasureParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -884,7 +888,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MeasureParam) =
                 MeasureParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -894,16 +898,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new AmbiguousResidueParam(
-                                          Nullable(id'), 
+                                          id', 
                                           value', 
                                           term, 
                                           unit', 
@@ -951,11 +955,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidueParam) (item2:AmbiguousResidueParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
                     AmbiguousResidueParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -967,7 +971,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
                 AmbiguousResidueParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -977,16 +981,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new MassTableParam(
-                                   Nullable(id'), 
+                                   id', 
                                    value', 
                                    term, 
                                    unit', 
@@ -1034,11 +1038,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTableParam) (item2:MassTableParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MassTableParam) =
                     MassTableParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1050,7 +1054,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MassTableParam) =
                 MassTableParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1060,16 +1064,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new IonTypeParam(
-                                 Nullable(id'), 
+                                 id', 
                                  value', 
                                  term, 
                                  unit', 
@@ -1117,11 +1121,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IonTypeParam) (item2:IonTypeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IonTypeParam) =
                     IonTypeParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1133,7 +1137,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IonTypeParam) =
                 IonTypeParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1143,16 +1147,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpecificityRuleParam(
-                                         Nullable(id'), 
+                                         id', 
                                          value', 
                                          term, 
                                          unit', 
@@ -1200,11 +1204,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpecificityRuleParam) (item2:SpecificityRuleParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
                     SpecificityRuleParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1216,7 +1220,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpecificityRuleParam) =
                 SpecificityRuleParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1226,16 +1230,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SearchModificationParam(
-                                            Nullable(id'), 
+                                            id', 
                                             value', 
                                             term, 
                                             unit',  
@@ -1283,11 +1287,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModificationParam) (item2:SearchModificationParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
                     SearchModificationParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1299,7 +1303,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchModificationParam) =
                 SearchModificationParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1309,16 +1313,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new EnzymeNameParam(
-                                    Nullable(id'),  
+                                    id',  
                                     value', 
                                     term, 
                                     unit', 
@@ -1366,11 +1370,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:EnzymeNameParam) (item2:EnzymeNameParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
                     EnzymeNameParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1382,7 +1386,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:EnzymeNameParam) =
                 EnzymeNameParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1392,16 +1396,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new IncludeParam(
-                                 Nullable(id'), 
+                                 id', 
                                  value', 
                                  term, 
                                  unit',  
@@ -1444,11 +1448,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IncludeParam) (item2:IncludeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IncludeParam) =
                     IncludeParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1460,7 +1464,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IncludeParam) =
                 IncludeParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1470,16 +1474,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ExcludeParam(
-                                 Nullable(id'), 
+                                 id', 
                                  value', 
                                  term, 
                                  unit',  
@@ -1527,11 +1531,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ExcludeParam) (item2:ExcludeParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ExcludeParam) =
                     ExcludeParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1543,7 +1547,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ExcludeParam) =
                 ExcludeParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1553,16 +1557,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new AdditionalSearchParam(
-                                          Nullable(id'), 
+                                          id', 
                                           value', 
                                           term, 
                                           unit',  
@@ -1610,11 +1614,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AdditionalSearchParam) (item2:AdditionalSearchParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
                     AdditionalSearchParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1626,7 +1630,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AdditionalSearchParam) =
                 AdditionalSearchParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1636,16 +1640,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new FragmentToleranceParam(
-                                           Nullable(id'),  
+                                           id',  
                                            value', 
                                            term, 
                                            unit', 
@@ -1693,11 +1697,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentToleranceParam) (item2:FragmentToleranceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
                     FragmentToleranceParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1709,7 +1713,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:FragmentToleranceParam) =
                 FragmentToleranceParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1719,16 +1723,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ParentToleranceParam(
-                                         Nullable(id'), 
+                                         id', 
                                          value', 
                                          term, 
                                          unit', 
@@ -1776,11 +1780,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ParentToleranceParam) (item2:ParentToleranceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
                     ParentToleranceParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1792,7 +1796,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ParentToleranceParam) =
                 ParentToleranceParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1802,16 +1806,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ThresholdParam(
-                                   Nullable(id'), 
+                                   id', 
                                    value', 
                                    term, 
                                    unit', 
@@ -1859,11 +1863,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ThresholdParam) (item2:ThresholdParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ThresholdParam) =
                     ThresholdParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1875,7 +1879,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ThresholdParam) =
                 ThresholdParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1885,16 +1889,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SearchDatabaseParam(
-                                        Nullable(id'), 
+                                        id', 
                                         value', 
                                         term, 
                                         unit', 
@@ -1942,11 +1946,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
                     SearchDatabaseParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -1958,7 +1962,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchDatabaseParam) =
                 SearchDatabaseParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -1968,16 +1972,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new DBSequenceParam(
-                                    Nullable(id'), 
+                                    id', 
                                     value', 
                                     term, 
                                     unit', 
@@ -2025,11 +2029,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequenceParam) (item2:DBSequenceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
                     DBSequenceParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2041,7 +2045,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:DBSequenceParam) =
                 DBSequenceParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2051,17 +2055,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
-                    ?unit     : Term,
-                    ?unitName : string
+                    ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new PeptideEvidenceParam(
-                                         Nullable(id'),
+                                         id',
                                          value', 
                                          term, 
                                          unit', 
@@ -2109,11 +2112,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidenceParam) (item2:PeptideEvidenceParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
                     PeptideEvidenceParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2125,7 +2128,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
                 PeptideEvidenceParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2135,16 +2138,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationItemParam(
-                                                    Nullable(id'), 
+                                                    id', 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -2192,11 +2195,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItemParam) (item2:SpectrumIdentificationItemParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
                     SpectrumIdentificationItemParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2208,7 +2211,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
                 SpectrumIdentificationItemParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2218,16 +2221,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationResultParam(
-                                                      Nullable(id'), 
+                                                      id', 
                                                       value', 
                                                       term, 
                                                       unit', 
@@ -2275,11 +2278,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResultParam) (item2:SpectrumIdentificationResultParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
                     SpectrumIdentificationResultParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2291,7 +2294,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
                 SpectrumIdentificationResultParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2301,16 +2304,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new SpectrumIdentificationListParam(
-                                                    Nullable(id'), 
+                                                    id', 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -2358,11 +2361,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationListParam) (item2:SpectrumIdentificationListParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
                     SpectrumIdentificationListParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2374,7 +2377,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
                 SpectrumIdentificationListParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2384,16 +2387,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new AnalysisParam(
-                                  Nullable(id'),  
+                                  id',  
                                   value', 
                                   term, 
                                   unit',  
@@ -2441,11 +2444,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisParam) (item2:AnalysisParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisParam) =
                     AnalysisParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2457,7 +2460,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisParam) =
                 AnalysisParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2467,16 +2470,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new SourceFileParam(
-                                    Nullable(id'),  
+                                    id',  
                                     value', 
                                     term, 
                                     unit', 
@@ -2524,11 +2527,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFileParam) (item2:SourceFileParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SourceFileParam) =
                     SourceFileParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2540,7 +2543,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SourceFileParam) =
                 SourceFileParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2550,16 +2553,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
                 new ProteinDetectionHypothesisParam(
-                                                    Nullable(id'), 
+                                                    id', 
                                                     value', 
                                                     term, 
                                                     unit',  
@@ -2607,11 +2610,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesisParam) (item2:ProteinDetectionHypothesisParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
                     ProteinDetectionHypothesisParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2623,7 +2626,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
                 ProteinDetectionHypothesisParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2633,16 +2636,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new  ProteinAmbiguityGroupParam(
-                                                Nullable(id'), 
+                                                id', 
                                                 value', 
                                                 term, 
                                                 unit', 
@@ -2690,11 +2693,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroupParam) (item2:ProteinAmbiguityGroupParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
                     ProteinAmbiguityGroupParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2706,7 +2709,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
                 ProteinAmbiguityGroupParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2716,16 +2719,16 @@ module InsertStatements =
             static member init
                 (
                     term      : Term,
-                    ?id       : Guid,
+                    ?id       : string,
                     ?value    : string,
                     ?unit     : Term
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid())
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
                 new ProteinDetectionListParam(
-                                              Nullable(id'),
+                                              id',
                                               value', 
                                               term, 
                                               unit', 
@@ -2773,11 +2776,11 @@ module InsertStatements =
                         else Some param
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionListParam) (item2:ProteinDetectionListParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
                     ProteinDetectionListParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
@@ -2789,7 +2792,7 @@ module InsertStatements =
                                                  |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
                 ProteinDetectionListParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2798,18 +2801,18 @@ module InsertStatements =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : Guid,
+                    ?id      : string,
                     ?name    : string,
                     ?details : seq<OrganizationParam>,
                     ?parent  : string
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid())
+                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'    = defaultArg name Unchecked.defaultof<string>
                 let details' = convertOptionToList details
                 let parent'  = defaultArg parent Unchecked.defaultof<string>
                     
                 new Organization(
-                                 Nullable(id'), 
+                                 id', 
                                  name', 
                                  details',  
                                  parent', 
@@ -2869,11 +2872,11 @@ module InsertStatements =
                         else Some organization
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
                 item1.Details=item2.Details && item1.Parent=item2.Parent
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Organization) =
                     OrganizationHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -2885,7 +2888,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Organization) =
                 OrganizationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -2894,7 +2897,7 @@ module InsertStatements =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id             : Guid,
+                    ?id             : string,
                     ?name           : string,
                     ?firstName      : string,
                     ?midInitials    : string,
@@ -2902,14 +2905,14 @@ module InsertStatements =
                     ?contactDetails : seq<PersonParam>,
                     ?organizations  : seq<Organization> 
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid())
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'        = defaultArg name Unchecked.defaultof<string>
                 let firstName'   = defaultArg firstName Unchecked.defaultof<string>
                 let midInitials' = defaultArg midInitials Unchecked.defaultof<string>
                 let lastName'    = defaultArg lastName Unchecked.defaultof<string>
                     
                 new Person(
-                           Nullable(id'), 
+                           id', 
                            name', 
                            firstName',  
                            midInitials', 
@@ -2994,13 +2997,13 @@ module InsertStatements =
                         else Some person
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Person) (item2:Person) =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
                 item1.Organizations=item2.Organizations && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Person) =
                     PersonHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3012,7 +3015,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Person) =
                 PersonHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -3023,12 +3026,12 @@ module InsertStatements =
                 (   
                     person : Person, 
                     role   : CVParam,
-                    ?id    : Guid
+                    ?id    : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new ContactRole(
-                                Nullable(id'), 
+                                id', 
                                 person, 
                                 role, 
                                 Nullable(DateTime.Now)
@@ -3063,11 +3066,11 @@ module InsertStatements =
                         else Some contactRole
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ContactRole) (item2:ContactRole) =
                 item1.Role=item2.Role
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ContactRole) =
                     ContactRoleHandler.tryFindByPersonName dbContext item.Person.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3079,7 +3082,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ContactRole) =
                 ContactRoleHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
@@ -3089,7 +3092,7 @@ module InsertStatements =
             static member init
                 (
                     softwareName       : CVParam,
-                    ?id                : Guid,
+                    ?id                : string,
                     ?name              : string,
                     ?uri               : string,
                     ?version           : string,
@@ -3097,7 +3100,7 @@ module InsertStatements =
                     ?softwareDeveloper : ContactRole,
                     ?mzIdentML         : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'           = defaultArg name Unchecked.defaultof<string>
                 let uri'            = defaultArg uri Unchecked.defaultof<string>
                 let version'        = defaultArg version Unchecked.defaultof<string>
@@ -3106,7 +3109,7 @@ module InsertStatements =
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new AnalysisSoftware(
-                                     Nullable(id'), 
+                                     id', 
                                      name', 
                                      uri', 
                                      version', 
@@ -3182,13 +3185,13 @@ module InsertStatements =
                         else Some analysisSoftware
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
                 item1.Name=item2.Name && item1.URI=item2.URI && item1.Version=item2.Version && 
                 item1.Customizations=item2.Customizations && item1.ContactRole=item2.ContactRole && 
                 item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisSoftware) =
                     AnalysisSoftwareHandler.tryFindBySoftwareNameName dbContext item.SoftwareName.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3200,7 +3203,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisSoftware) =
                 AnalysisSoftwareHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3209,14 +3212,14 @@ module InsertStatements =
             ///Initializes a subsample-object with at least all necessary parameters.
             static member init
                 (
-                    ?id          : Guid,
+                    ?id          : string,
                     ?sample      : Sample
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid())
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                 let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
                     
                 new SubSample(
-                              Nullable(id'), 
+                              id', 
                               Sample', 
                               Nullable(DateTime.Now)
                              )
@@ -3256,11 +3259,11 @@ module InsertStatements =
                         else Some subSample
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SubSample) (item2:SubSample) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SubSample) =
                     SubSampleHandler.tryFindBySampleName dbContext item.Sample.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3272,7 +3275,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SubSample) =
                 SubSampleHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3281,14 +3284,14 @@ module InsertStatements =
             ///Initializes a sample-object with at least all necessary parameters.
             static member init
                 (
-                    ?id           : Guid,
+                    ?id           : string,
                     ?name         : string,
                     ?contactRoles : seq<ContactRole>,
                     ?subSamples   : seq<SubSample>,
                     ?details      : seq<SampleParam>,
                     ?mzIdentML    : MzIdentMLDocument
                 ) =
-                let id'           = defaultArg id (System.Guid.NewGuid())
+                let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'         = defaultArg name Unchecked.defaultof<string>
                 let contactRoles' = convertOptionToList contactRoles
                 let subSamples'   = convertOptionToList subSamples
@@ -3296,7 +3299,7 @@ module InsertStatements =
                 let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Sample(
-                           Nullable(id'), 
+                           id', 
                            name', 
                            contactRoles', 
                            subSamples', 
@@ -3382,12 +3385,12 @@ module InsertStatements =
                         else Some subSample
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Sample) (item2:Sample) =
                 item1.ContactRoles=item2.ContactRoles && item1.SubSamples=item2.SubSamples &&
                 item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Sample) =
                     SampleHandler.tryFindBySampleName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3399,7 +3402,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Sample) =
                 SampleHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3409,20 +3412,20 @@ module InsertStatements =
             static member init
                 (
                     details                : seq<ModificationParam>,
-                    ?id                    : Guid,
+                    ?id                    : string,
                     ?residues              : string,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid())
+                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
                 let residues'              = defaultArg residues Unchecked.defaultof<string>
                 let location'              = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                 let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
                     
                 new Modification(
-                                 Nullable(id'), 
+                                 id', 
                                  residues', 
                                  Nullable(location'), 
                                  Nullable(monoIsotopicMassDelta'), 
@@ -3483,12 +3486,12 @@ module InsertStatements =
                         else Some modification
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
                 item1.Residues=item2.Residues && item1.Location=item2.Location &&
                 item1.AvgMassDelta=item2.AvgMassDelta && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Modification) =
                     ModificationHandler.tryFindByMonoIsotopicMassDelta dbContext item.MonoIsotopicMassDelta
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3500,7 +3503,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Modification) =
                 ModificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3511,18 +3514,18 @@ module InsertStatements =
                 (
                     originalResidue        : string,
                     replacementResidue     : string,
-                    ?id                    : Guid,
+                    ?id                    : string,
                     ?location              : int,
                     ?monoIsotopicMassDelta : float,
                     ?avgMassDelta          : float
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid())
+                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
                 let location'              = defaultArg location Unchecked.defaultof<int>
                 let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
                 let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
 
                 new SubstitutionModification(
-                                             Nullable(id'), 
+                                             id', 
                                              originalResidue, 
                                              replacementResidue, 
                                              Nullable(location'), 
@@ -3576,12 +3579,12 @@ module InsertStatements =
                         else Some substitutionModification
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SubstitutionModification) (item2:SubstitutionModification) =
                 item1.OriginalResidue=item2.OriginalResidue && item1.ReplacementResidue=item2.ReplacementResidue &&
                 item1.AvgMassDelta=item2.AvgMassDelta && item1.Location=item2.Location 
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SubstitutionModification) =
                     SubstitutionModificationHandler.tryFindByMonoIsotopicMassDelta dbContext item.MonoIsotopicMassDelta
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3593,7 +3596,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Modification) =
                 ModificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3603,14 +3606,14 @@ module InsertStatements =
             static member init
                 (
                     peptideSequence            : string,
-                    ?id                        : Guid,
+                    ?id                        : string,
                     ?name                      : string,                    
                     ?modifications             : seq<Modification>,
                     ?substitutionModifications : seq<SubstitutionModification>,
                     ?details                   : seq<PeptideParam>,
                     ?mzIdentML                 : MzIdentMLDocument
                 ) =
-                let id'                        = defaultArg id (System.Guid.NewGuid())
+                let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                      = defaultArg name Unchecked.defaultof<string>
                 let modifications'             = convertOptionToList modifications
                 let substitutionModifications' = convertOptionToList substitutionModifications
@@ -3618,7 +3621,7 @@ module InsertStatements =
                 let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
                 new Peptide(
-                            Nullable(id'), 
+                            id', 
                             name', 
                             peptideSequence, 
                             modifications', 
@@ -3705,13 +3708,13 @@ module InsertStatements =
                         else Some peptide
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Peptide) (item2:Peptide) =
                 item1.Name=item2.Name && item1.Modifications=item2.Modifications &&
                 item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Details=item2.Details &&
                 item1.SubstitutionModifications=item2.SubstitutionModifications
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Peptide) =
                     PeptideHandler.tryFindByPeptideSequence dbContext item.PeptideSequence
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3723,7 +3726,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Peptide) =
                 PeptideHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3732,16 +3735,16 @@ module InsertStatements =
             ///Initializes a translationtable-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : Guid,
+                    ?id      : string,
                     ?name    : string,
                     ?details : seq<TranslationTableParam>
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid())
+                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'    = defaultArg name Unchecked.defaultof<string>
                 let details' = convertOptionToList details
                     
                 new TranslationTable(
-                                     Nullable(id'), 
+                                     id', 
                                      name', 
                                      details', 
                                      Nullable(DateTime.Now)
@@ -3794,11 +3797,11 @@ module InsertStatements =
                         else Some translationTable
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTable) (item2:TranslationTable) =
                 item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:TranslationTable) =
                     TranslationTableHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3810,7 +3813,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:TranslationTable) =
                 TranslationTableHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3820,14 +3823,14 @@ module InsertStatements =
             static member init
                 (
                     details  : seq<MeasureParam>,
-                    ?id      : Guid,
+                    ?id      : string,
                     ?name    : string 
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid())
+                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                 let name' = defaultArg name Unchecked.defaultof<string>
                     
                 new Measure(
-                            Nullable(id'), 
+                            id', 
                             name', 
                             details |> List, Nullable(DateTime.Now)
                            )
@@ -3867,11 +3870,11 @@ module InsertStatements =
                         else Some measure
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Measure) (item2:Measure) =
                 item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Measure) =
                     MeasureHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3883,7 +3886,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Measure) =
                 MeasureHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3894,11 +3897,11 @@ module InsertStatements =
                 (
                     code    : string,
                     mass    : float,
-                    ?id     : Guid
+                    ?id     : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                 new Residue(
-                            Nullable(id'), 
+                            id', 
                             code, 
                             Nullable(mass), 
                             Nullable(DateTime.Now)
@@ -3932,11 +3935,11 @@ module InsertStatements =
                         else Some residue
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Residue) (item2:Residue) =
                 item1.Mass=item2.Mass
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Residue) =
                     ResidueHandler.tryFindByCode dbContext item.Code
                     |> (fun organizationCollection -> match organizationCollection with
@@ -3948,7 +3951,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Residue) =
                 ResidueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -3958,12 +3961,12 @@ module InsertStatements =
                 (
                     code    : string,
                     details : seq<AmbiguousResidueParam>,
-                    ?id     : Guid
+                    ?id     : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new AmbiguousResidue(
-                                     Nullable(id'), 
+                                     id', 
                                      code, 
                                      details |> List, 
                                      Nullable(DateTime.Now)
@@ -3998,11 +4001,11 @@ module InsertStatements =
                         else Some ambiguousResidue
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
                 item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AmbiguousResidue) =
                     AmbiguousResidueHandler.tryFindByCode dbContext item.Code
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4014,7 +4017,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AmbiguousResidue) =
                 AmbiguousResidueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4024,20 +4027,20 @@ module InsertStatements =
             static member init
                 (
                     msLevel           : string,
-                    ?id               : Guid,
+                    ?id               : string,
                     ?name             : string,
                     ?residue          : seq<Residue>,
                     ?ambiguousResidue : seq<AmbiguousResidue>,
                     ?details          : seq<MassTableParam>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid())
+                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let residue'          = convertOptionToList residue
                 let ambiguousResidue' = convertOptionToList ambiguousResidue
                 let details'          = convertOptionToList details
                     
                 new MassTable(
-                              Nullable(id'), 
+                              id', 
                               name', 
                               msLevel, 
                               residue', 
@@ -4117,11 +4120,11 @@ module InsertStatements =
                         else Some massTable
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
                 item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MassTable) =
                     MassTableHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4133,7 +4136,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MassTable) =
                 MassTableHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4143,12 +4146,12 @@ module InsertStatements =
             static member init
                 (
                     value   : float,
-                    ?id     : Guid
+                    ?id     : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new Value(
-                          Nullable(id'), 
+                          id', 
                           Nullable(value), 
                           Nullable(DateTime.Now)
                          )
@@ -4181,11 +4184,11 @@ module InsertStatements =
                         else Some value
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Value) (item2:Value) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Value) =
                     ValueHandler.tryFindByValue dbContext item.Value
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4197,7 +4200,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Value) =
                 ValueHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4208,12 +4211,12 @@ module InsertStatements =
                 (
                     measure : Measure,
                     values  : seq<Value>,
-                    ?id     : Guid
+                    ?id     : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new FragmentArray(
-                                  Nullable(id'), 
+                                  id', 
                                   measure, 
                                   values |> List, 
                                   Nullable(DateTime.Now)
@@ -4248,11 +4251,11 @@ module InsertStatements =
                         else Some fragmentArray
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentArray) (item2:FragmentArray) =
                 item1.Values=item2.Values
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentArray) =
                     FragmentArrayHandler.tryFindByMeasureName dbContext item.Measure.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4264,7 +4267,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:FragmentArray) =
                 FragmentArrayHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4274,12 +4277,12 @@ module InsertStatements =
             static member init
                 (
                     index : int,
-                    ?id   : Guid
+                    ?id   : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
 
                 new Index(
-                          Nullable(id'), 
+                          id', 
                           Nullable(index), 
                           Nullable(DateTime.Now)
                          )
@@ -4312,11 +4315,11 @@ module InsertStatements =
                         else Some index
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Index) (item2:Index) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Index) =
                     IndexHandler.tryFindByIndexItem dbContext item.Index
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4328,7 +4331,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Index) =
                 IndexHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4338,16 +4341,16 @@ module InsertStatements =
             static member init
                 (
                     details        : seq<IonTypeParam>,
-                    ?id            : Guid,
+                    ?id            : string,
                     ?index         : seq<Index>,
                     ?fragmentArray : seq<FragmentArray>
                 ) =
-                let id'            = defaultArg id (System.Guid.NewGuid())
+                let id'            = defaultArg id (System.Guid.NewGuid().ToString())
                 let index'         = convertOptionToList index
                 let fragmentArray' = convertOptionToList fragmentArray
                     
                 new IonType(
-                            Nullable(id'), 
+                            id', 
                             index', 
                             fragmentArray', 
                             details |> List, Nullable(DateTime.Now)
@@ -4406,11 +4409,11 @@ module InsertStatements =
                         else Some ionType
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IonType) (item2:IonType) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IonType) =
                     IonTypeHandler.tryFindByDetails dbContext item.Details
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4422,7 +4425,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IonType) =
                 IonTypeHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4434,16 +4437,16 @@ module InsertStatements =
                     location                     : string,
                     fileFormat                   : CVParam,
                     spectrumIDFormat             : CVParam,
-                    ?id                          : Guid,
+                    ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid())
+                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
 
                 new SpectraData(
-                                Nullable(id'), 
+                                id', 
                                 name', 
                                 location, 
                                 externalFormatDocumentation', 
@@ -4492,11 +4495,11 @@ module InsertStatements =
                         else Some spectraData
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectraData) (item2:SpectraData) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectraData) =
                     SpectraDataHandler.tryFindByLocation dbContext item.Location
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4508,7 +4511,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectraData) =
                 SpectraDataHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4518,12 +4521,12 @@ module InsertStatements =
         //    static member init
         //        ( 
         //            details    : seq<SpecificityRuleParam>,
-        //            ?id        : Guid
+        //            ?id        : string
         //        ) =
-        //        let id' = defaultArg id (System.Guid.NewGuid())
+        //        let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
         //        new SpecificityRule(
-        //                            Nullable(id'), 
+        //                            id', 
         //                            details |> List, 
         //                            Nullable(DateTime.Now)
         //                           )
@@ -4557,11 +4560,11 @@ module InsertStatements =
         //                else Some specificityRule
         //           )
 
-        //    ///Checks whether all other fields of the current object and context objects have the same values or not.
+        //    ///Checks whether all other fields of the current object and context object have the same values or not.
         //    static member private hasEqualFieldValues (item1:SpecificityRule) (item2:SpecificityRule) =
         //        item1.ID = item2.ID
 
-        //    ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
         //    static member addToContext (dbContext:MzIdentML) (item:SpecificityRule) =
         //            SpecificityRulesHandler.tryFindByDetails dbContext item.Details
         //            |> (fun organizationCollection -> match organizationCollection with
@@ -4573,7 +4576,7 @@ module InsertStatements =
         //                                              |None -> dbContext.Add item |> ignore
         //               )
 
-        //    ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
         //    static member addToContextAndInsert (dbContext:MzIdentML) (item:SpecificityRule) =
         //        SpecificityRulesHandler.addToContext dbContext item
         //        dbContext.SaveChanges()
@@ -4586,14 +4589,14 @@ module InsertStatements =
                     massDelta         : float,
                     residues          : string,
                     details           : seq<SearchModificationParam>,
-                    ?id               : Guid,
+                    ?id               : string,
                     ?specificityRules : seq<SpecificityRuleParam>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid())
+                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let specificityRules' = convertOptionToList specificityRules
                     
                 new SearchModification(
-                                       Nullable(id'), 
+                                       id', 
                                        Nullable(fixedMod), 
                                        Nullable(massDelta), 
                                        residues, 
@@ -4642,12 +4645,12 @@ module InsertStatements =
                         else Some searchModification
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
                 item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
                 item1.SpecificityRules=item2.SpecificityRules && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchModification) =
                     SearchModificationHandler.tryFindByMassDelta dbContext item.MassDelta
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4659,7 +4662,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchModification) =
                 SearchModificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4668,7 +4671,7 @@ module InsertStatements =
             ///Initializes a enzyme-object with at least all necessary parameters.
             static member init
                 (
-                    ?id              : Guid,
+                    ?id              : string,
                     ?name            : string,
                     ?cTermGain       : string,
                     ?nTermGain       : string,
@@ -4678,7 +4681,7 @@ module InsertStatements =
                     ?siteRegexc      : string,
                     ?enzymeName      : seq<EnzymeNameParam>
                 ) =
-                let id'              = defaultArg id (System.Guid.NewGuid())
+                let id'              = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'            = defaultArg name Unchecked.defaultof<string>
                 let cTermGain'       = defaultArg cTermGain Unchecked.defaultof<string>
                 let nTermGain'       = defaultArg nTermGain Unchecked.defaultof<string>
@@ -4689,7 +4692,7 @@ module InsertStatements =
                 let enzymeName'      = convertOptionToList enzymeName
                     
                 new Enzyme(
-                           Nullable(id'), 
+                           id', 
                            name', 
                            cTermGain', 
                            nTermGain', 
@@ -4784,13 +4787,13 @@ module InsertStatements =
                         else Some enzyme
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Enzyme) (item2:Enzyme) =
                 item1.CTermGain=item2.CTermGain && item1.NTermGain=item2.NTermGain && item1.MinDistance=item2.MinDistance &&
                 item1.MissedCleavages=item2.MissedCleavages && item1.SemiSpecific=item2.SemiSpecific &&
                 item1.SiteRegexc=item2.SiteRegexc && item1.EnzymeName=item2.EnzymeName
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Enzyme) =
                     EnzymeHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4802,7 +4805,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Enzyme) =
                 EnzymeHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4812,16 +4815,16 @@ module InsertStatements =
             static member init
                 (
                     filterType : CVParam,
-                    ?id        : Guid,
+                    ?id        : string,
                     ?includes  : seq<IncludeParam>,
                     ?excludes  : seq<ExcludeParam>
                 ) =
-                let id'         = defaultArg id (System.Guid.NewGuid())
+                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
                 let includes'   = convertOptionToList includes
                 let excludes'   = convertOptionToList excludes
                     
                 new Filter(
-                           Nullable(id'), 
+                           id', 
                            filterType, 
                            includes', 
                            excludes', 
@@ -4881,11 +4884,11 @@ module InsertStatements =
                         else Some enzyme
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Filter) (item2:Filter) =
                 item1.Includes=item2.Includes && item1.Excludes=item2.Excludes
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Filter) =
                     FilterHandler.tryFindByFilterTypeName dbContext item.FilterType.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4897,7 +4900,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Filter) =
                 FilterHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4907,12 +4910,12 @@ module InsertStatements =
             static member init
                 ( 
                     frame : int,
-                    ?id   : Guid
+                    ?id   : string
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid())
+                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new Frame(
-                          Nullable(id'), 
+                          id', 
                           Nullable(frame), 
                           Nullable(DateTime.Now)
                          )
@@ -4945,11 +4948,11 @@ module InsertStatements =
                         else Some frame
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Frame) (item2:Frame) =
                 item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Frame) =
                     FrameHandler.tryFindByFrameItem dbContext item.Frame
                     |> (fun organizationCollection -> match organizationCollection with
@@ -4961,7 +4964,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Frame) =
                 FrameHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -4973,7 +4976,7 @@ module InsertStatements =
                     analysisSoftware        : AnalysisSoftware,
                     searchType              : CVParam ,
                     threshold               : seq<ThresholdParam>,
-                    ?id                     : Guid,
+                    ?id                     : string,
                     ?name                   : string,
                     ?additionalSearchParams : seq<AdditionalSearchParam>,
                     ?modificationParams     : seq<SearchModification>,
@@ -4987,7 +4990,7 @@ module InsertStatements =
                     ?translationTable       : seq<TranslationTable>,
                     ?mzIdentML              : MzIdentMLDocument
                 ) =
-                let id'                     = defaultArg id (System.Guid.NewGuid())
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
                 let additionalSearchParams' = convertOptionToList additionalSearchParams
                 let modificationParams'     = convertOptionToList modificationParams
@@ -5002,7 +5005,7 @@ module InsertStatements =
                 let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new SpectrumIdentificationProtocol(
-                                                   Nullable(id'), 
+                                                   id', 
                                                    name', 
                                                    analysisSoftware, 
                                                    searchType, 
@@ -5028,13 +5031,13 @@ module InsertStatements =
                 spectrumIdentificationProtocol
 
             ///Adds a additionalsearchparam to an existing spectrumIdentificationprotocol-object.
-            static member addEnzymeAdditionalSearchParam
+            static member addAdditionalSearchParam
                 (additionalSearchParam:AdditionalSearchParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                 let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParam
                 spectrumIdentificationProtocol
 
             ///Adds a collection of additionalsearchparams to an existing spectrumIdentificationprotocol-object.
-            static member addEnzymeAdditionalSearchParams
+            static member addAdditionalSearchParams
                 (additionalSearchParams:seq<AdditionalSearchParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                 let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addCollectionToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParams
                 spectrumIdentificationProtocol
@@ -5184,7 +5187,7 @@ module InsertStatements =
                         else Some spectrumIdentificationProtocol
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
                 item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && 
                 item1.AdditionalSearchParams=item2.AdditionalSearchParams && item1.ModificationParams=item2.ModificationParams && 
@@ -5192,7 +5195,7 @@ module InsertStatements =
                 item1.ParentTolerance=item2.ParentTolerance && item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames &&
                 item1.TranslationTables=item2.TranslationTables && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
                     SpectrumIdentificationProtocolHandler.tryFindByAnalysisSoftwareSoftwareName dbContext item.AnalysisSoftware.SoftwareName.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5204,7 +5207,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
                 SpectrumIdentificationProtocolHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5216,7 +5219,7 @@ module InsertStatements =
                     location                     : string,
                     fileFormat                   : CVParam,
                     databaseName                 : CVParam,
-                    ?id                          : Guid,
+                    ?id                          : string,
                     ?name                        : string,                    
                     ?numDatabaseSequences        : int64,
                     ?numResidues                 : int64,
@@ -5225,7 +5228,7 @@ module InsertStatements =
                     ?externalFormatDocumentation : string,
                     ?details                     : seq<SearchDatabaseParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid())
+                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let numDatabaseSequences'        = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
                 let numResidues'                 = defaultArg numResidues Unchecked.defaultof<int64>
@@ -5235,7 +5238,7 @@ module InsertStatements =
                 let details'                     = convertOptionToList details
                     
                 new SearchDatabase(
-                                   Nullable(id'), 
+                                   id', 
                                    name', 
                                    location, 
                                    Nullable(numDatabaseSequences'), 
@@ -5326,14 +5329,14 @@ module InsertStatements =
                         else Some searchDatabase
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabase) (item2:SearchDatabase) =
                item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
                item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
                item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
                item1.Details=item2.Details && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabase) =
                     SearchDatabaseHandler.tryFindByDatabaseNameName dbContext item.DatabaseName.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5345,7 +5348,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchDatabase) =
                 SearchDatabaseHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5356,14 +5359,14 @@ module InsertStatements =
                 (
                     accession      : string,
                     searchDatabase : SearchDatabase,
-                    ?id            : Guid,
+                    ?id            : string,
                     ?name          : string,
                     ?sequence      : string,
                     ?length        : int,
                     ?details       : seq<DBSequenceParam>,
                     ?mzIdentML     : MzIdentMLDocument
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid())
+                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let sequence'  = defaultArg sequence Unchecked.defaultof<string>
                 let length'    = defaultArg length Unchecked.defaultof<int>
@@ -5371,7 +5374,7 @@ module InsertStatements =
                 let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new DBSequence(
-                               Nullable(id'), 
+                               id', 
                                name', 
                                accession, 
                                searchDatabase, 
@@ -5447,13 +5450,13 @@ module InsertStatements =
                         else Some dbSequence
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
                item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
                item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
                item1.SearchDatabase=item2.SearchDatabase
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:DBSequence) =
                     DBSequenceHandler.tryFindByAccession dbContext item.Accession
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5465,7 +5468,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:DBSequence) =
                 DBSequenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5476,7 +5479,7 @@ module InsertStatements =
                 (
                     dbSequence                  : DBSequence,
                     peptide                     : Peptide,
-                    ?id                         : Guid,
+                    ?id                         : string,
                     ?name                       : string,
                     ?start                      : int,
                     ?end'                       : int,
@@ -5488,7 +5491,7 @@ module InsertStatements =
                     ?details                    : seq<PeptideEvidenceParam>,
                     ?mzIdentML                  : MzIdentMLDocument
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid())
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                       = defaultArg name Unchecked.defaultof<string>
                 let start'                      = defaultArg start Unchecked.defaultof<int>
                 let end''                       = defaultArg end' Unchecked.defaultof<int>
@@ -5501,7 +5504,7 @@ module InsertStatements =
                 let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new PeptideEvidence(
-                                    Nullable(id'), 
+                                    id', 
                                     name', 
                                     dbSequence, 
                                     peptide, 
@@ -5612,7 +5615,7 @@ module InsertStatements =
                         else Some peptideEvidence
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidence) (item2:PeptideEvidence) =
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
                item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
@@ -5620,7 +5623,7 @@ module InsertStatements =
                item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
                item1.DBSequence=item2.DBSequence
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidence) =
                     PeptideEvidenceHandler.tryFindByDBSequenceAccession dbContext item.DBSequence.Accession
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5632,7 +5635,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideEvidence) =
                 PeptideEvidenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5646,7 +5649,7 @@ module InsertStatements =
                     experimentalMassToCharge      : float,
                     passThreshold                 : bool,
                     rank                          : int,
-                    ?id                           : Guid,
+                    ?id                           : string,
                     ?name                         : string,
                     ?sample                       : Sample,
                     ?massTable                    : MassTable,
@@ -5656,7 +5659,7 @@ module InsertStatements =
                     ?calculatedPI                 : float,
                     ?details                      : seq<SpectrumIdentificationItemParam>
                 ) =
-                let id'                           = defaultArg id (System.Guid.NewGuid())
+                let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                         = defaultArg name Unchecked.defaultof<string>
                 let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
                 let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
@@ -5667,7 +5670,7 @@ module InsertStatements =
                 let details'                      = convertOptionToList details
                     
                 new SpectrumIdentificationItem(
-                                               Nullable(id'), 
+                                               id', 
                                                name', 
                                                sample', 
                                                massTable', 
@@ -5787,7 +5790,7 @@ module InsertStatements =
                         else Some spectrumIdentificationItem
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItem) (item2:SpectrumIdentificationItem) =
                item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
                item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
@@ -5795,7 +5798,7 @@ module InsertStatements =
                item1.CalculatedPI=item2.CalculatedPI && item1.Details=item2.Details && item1.ChargeState=item2.ChargeState && 
                item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge && item1.Peptide=item2.Peptide
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
                     SpectrumIdentificationItemHandler.tryFindByPeptideSequence dbContext item.Peptide.PeptideSequence
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5807,7 +5810,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
                 SpectrumIdentificationItemHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5819,16 +5822,16 @@ module InsertStatements =
                     spectraData                 : SpectraData,
                     spectrumID                  : string,
                     spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
-                    ?id                         : Guid,
+                    ?id                         : string,
                     ?name                       : string,
                     ?details                    : seq<SpectrumIdentificationResultParam>
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid())
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                       = defaultArg name Unchecked.defaultof<string>
                 let details'                    = convertOptionToList details
                     
                 new SpectrumIdentificationResult(
-                                                 Nullable(id'), 
+                                                 id', 
                                                  name', 
                                                  spectraData, 
                                                  spectrumID, 
@@ -5888,12 +5891,12 @@ module InsertStatements =
                         else Some spectrumIdentificationResult
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
                item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && item1.Details=item2.Details && 
                item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResult) =
                     SpectrumIdentificationResultHandler.tryFindBySpectrumID dbContext item.SpectrumID
                     |> (fun organizationCollection -> match organizationCollection with
@@ -5905,7 +5908,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationResult) =
                 SpectrumIdentificationResultHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -5915,20 +5918,20 @@ module InsertStatements =
             static member init
                 (
                     spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
-                    ?id                          : Guid,
+                    ?id                          : string,
                     ?name                        : string,
                     ?numSequencesSearched        : int64,
                     ?fragmentationTable          : seq<Measure>,
                     ?details                     : seq<SpectrumIdentificationListParam>          
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid())
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                 = defaultArg name Unchecked.defaultof<string>
                 let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int64>
                 let fragmentationTable'   = convertOptionToList fragmentationTable
                 let details'              = convertOptionToList details
                     
                 new SpectrumIdentificationList(
-                                               Nullable(id'), 
+                                               id', 
                                                name', 
                                                Nullable(numSequencesSearched'), 
                                                fragmentationTable', 
@@ -6002,12 +6005,12 @@ module InsertStatements =
                         else Some spectrumIdentificationList
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
                item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
                item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationList) =
                     SpectrumIdentificationListHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6019,7 +6022,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationList) =
                 SpectrumIdentificationListHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6032,18 +6035,18 @@ module InsertStatements =
                     spectrumIdentificationProtocol : SpectrumIdentificationProtocol,
                     spectraData                    : seq<SpectraData>,
                     searchDatabase                 : seq<SearchDatabase>,
-                    ?id                            : Guid,
+                    ?id                            : string,
                     ?name                          : string,
                     ?activityDate                  : DateTime,
                     ?mzIdentML                     : MzIdentMLDocument
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid())
+                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
                 let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new SpectrumIdentification(
-                                           Nullable(id'), 
+                                           id', 
                                            name',
                                            Nullable(activityDate'), 
                                            spectrumIdentificationList, 
@@ -6105,14 +6108,14 @@ module InsertStatements =
                         else Some spectrumIdentificationList
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
                item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Name=item2.Name &&
                item1.SpectraData=item2.SpectraData && item1.SearchDatabase=item2.SearchDatabase &&
                item1.ActivityDate=item2.ActivityDate
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentification) =
                     SpectrumIdentificationHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6124,7 +6127,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentification) =
                 SpectrumIdentificationHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6135,18 +6138,18 @@ module InsertStatements =
                 (
                     analysisSoftware : AnalysisSoftware,
                     threshold        : seq<ThresholdParam>,
-                    ?id              : Guid,
+                    ?id              : string,
                     ?name            : string,
                     ?analysisParams  : seq<AnalysisParam>,
                     ?mzIdentML       : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'           = defaultArg name Unchecked.defaultof<string>
                 let analysisParams' = convertOptionToList analysisParams
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetectionProtocol(
-                                             Nullable(id'), 
+                                             id', 
                                              name', 
                                              analysisSoftware, 
                                              analysisParams', 
@@ -6208,12 +6211,12 @@ module InsertStatements =
                         else Some proteinDetectionProtocol
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
                item1.Threshold=item2.Threshold && item1.Name=item2.Name && item1.AnalysisSoftware=item2.AnalysisSoftware &&
                item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionProtocol) =
                     ProteinDetectionProtocolHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6225,7 +6228,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionProtocol) =
                 ProteinDetectionProtocolHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6236,18 +6239,18 @@ module InsertStatements =
                 (             
                     location                     : string,
                     fileFormat                   : CVParam,
-                    ?id                          : Guid,
+                    ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?details                     : seq<SourceFileParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid())
+                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                     
                 new SourceFile(
-                               Nullable(id'), 
+                               id', 
                                name', 
                                location, 
                                externalFormatDocumentation', 
@@ -6313,12 +6316,12 @@ module InsertStatements =
                         else Some sourceFile
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
                item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && item1.Details=item2.Details &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SourceFile) =
                     SourceFileHandler.tryFindByLocation dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6330,7 +6333,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SourceFile) =
                 SourceFileHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6340,18 +6343,18 @@ module InsertStatements =
             static member init
                 (              
                     spectraData     : seq<SpectraData>,
-                    ?id             : Guid,
+                    ?id             : string,
                     ?sourceFile     : seq<SourceFile>,
                     ?searchDatabase : seq<SearchDatabase>,
                     ?mzIdentML      : MzIdentMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let sourceFile'     = convertOptionToList sourceFile
                 let searchDatabase' = convertOptionToList searchDatabase
                 let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Inputs(
-                           Nullable(id'), 
+                           id', 
                            sourceFile', 
                            searchDatabase', 
                            spectraData |> List, 
@@ -6418,12 +6421,12 @@ module InsertStatements =
                         else Some inputs
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
                item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
                item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Inputs) =
                     InputsHandler.tryFindBySpectraData dbContext item.SpectraData
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6435,7 +6438,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Inputs) =
                 InputsHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6446,12 +6449,12 @@ module InsertStatements =
                 (              
                     peptideEvidence             : PeptideEvidence,
                     spectrumIdentificationItems : seq<SpectrumIdentificationItem>,
-                    ?id                         : Guid
+                    ?id                         : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
                 new PeptideHypothesis(
-                                      Nullable(id'), 
+                                      id', 
                                       peptideEvidence, 
                                       spectrumIdentificationItems |> List, 
                                       Nullable(DateTime.Now)
@@ -6486,11 +6489,11 @@ module InsertStatements =
                         else Some peptideHypothesis
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideHypothesis) (item2:PeptideHypothesis) =
                item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideHypothesis) =
                     PeptideHypothesisHandler.tryFindByPeptideEvidenceName dbContext item.PeptideEvidence.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6502,7 +6505,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideHypothesis) =
                 PeptideHypothesisHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6514,18 +6517,18 @@ module InsertStatements =
                     passThreshold     : bool,
                     dbSequence        : DBSequence,
                     peptideHypothesis : seq<PeptideHypothesis>,
-                    ?id               : Guid,
+                    ?id               : string,
                     ?name             : string,
                     ?details          : seq<ProteinDetectionHypothesisParam>,
                     ?mzIdentML        : MzIdentMLDocument
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid())
+                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let details'   = convertOptionToList details
                 let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetectionHypothesis(
-                                               Nullable(id'), 
+                                               id', 
                                                name', 
                                                Nullable(passThreshold), 
                                                dbSequence, 
@@ -6588,12 +6591,12 @@ module InsertStatements =
                         else Some proteinDetectionHypothesis
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
                item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
                item1.Name=item2.Name && item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
                     ProteinDetectionHypothesisHandler.tryFindByDBSequenceName dbContext item.DBSequence.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6605,7 +6608,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
                 ProteinDetectionHypothesisHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6615,16 +6618,16 @@ module InsertStatements =
             static member init
                 (             
                     proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
-                    ?id                       : Guid,
+                    ?id                       : string,
                     ?name                     : string,
                     ?details                  : seq<ProteinAmbiguityGroupParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid())
+                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                     
                 new ProteinAmbiguityGroup(
-                                          Nullable(id'), 
+                                          id', 
                                           name', 
                                           proteinDetecionHypothesis |> List, 
                                           details', 
@@ -6678,11 +6681,11 @@ module InsertStatements =
                         else Some proteinAmbiguityGroup
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
                item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroup) =
                     ProteinAmbiguityGroupHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6694,7 +6697,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinAmbiguityGroup) =
                 ProteinAmbiguityGroupHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6703,18 +6706,18 @@ module InsertStatements =
             ///Initializes a proteindetectionlist-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id                     : Guid,
+                    ?id                     : string,
                     ?name                   : string,
                     ?proteinAmbiguityGroups : seq<ProteinAmbiguityGroup>,
                     ?details                : seq<ProteinDetectionListParam>
                 ) =
-                let id'                     = defaultArg id (System.Guid.NewGuid())
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
                 let proteinAmbiguityGroups' = convertOptionToList proteinAmbiguityGroups
                 let details'                = convertOptionToList details
                     
                 new ProteinDetectionList(
-                                         Nullable(id'), 
+                                         id', 
                                          name', 
                                          proteinAmbiguityGroups', 
                                          details', 
@@ -6780,11 +6783,11 @@ module InsertStatements =
                         else Some proteinDetectionList
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
                item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && item1.Details=item2.Details
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionList) =
                     ProteinDetectionListHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6796,7 +6799,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionList) =
                 ProteinDetectionListHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6806,16 +6809,16 @@ module InsertStatements =
             static member init
                 (             
                     spectrumIdentificationList : seq<SpectrumIdentificationList>,
-                    ?id                        : Guid,
+                    ?id                        : string,
                     ?proteinDetectionList      : ProteinDetectionList,
                     ?mzIdentML                 : MzIdentMLDocument
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid())
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                 let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
                 let mzIdentML'            = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new AnalysisData(
-                                 Nullable(id'), 
+                                 id', 
                                  spectrumIdentificationList |> List, 
                                  proteinDetectionList', 
                                  mzIdentML', 
@@ -6863,11 +6866,11 @@ module InsertStatements =
                         else Some analysisData
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisData) (item2:AnalysisData) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisData) =
                     AnalysisDataHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6879,7 +6882,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisData) =
                 AnalysisDataHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6891,21 +6894,24 @@ module InsertStatements =
                     proteinDetectionList        : ProteinDetectionList,
                     proteinDetectionProtocol    : ProteinDetectionProtocol,
                     spectrumIdentificationLists : seq<SpectrumIdentificationList>,
-                    ?id                         : Guid,
+                    ?id                         : string,
                     ?name                       : string,
-                    ?activityDate               : DateTime
+                    ?activityDate               : DateTime,
+                    ?mzIdentMLDocument          : MzIdentMLDocument
                 ) =
-                let id'           = defaultArg id (System.Guid.NewGuid())
-                let name'         = defaultArg name Unchecked.defaultof<string>
-                let activityDate' = defaultArg activityDate Unchecked.defaultof<DateTime>
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let activityDate'      = defaultArg activityDate Unchecked.defaultof<DateTime>
+                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetection(
-                                     Nullable(id'), 
+                                     id', 
                                      name', 
                                      Nullable(activityDate'), 
                                      proteinDetectionList, 
                                      proteinDetectionProtocol,
-                                     spectrumIdentificationLists |> List, 
+                                     spectrumIdentificationLists |> List,
+                                     mzIdentMLDocument',
                                      Nullable(DateTime.Now)
                                     )
 
@@ -6950,12 +6956,12 @@ module InsertStatements =
                         else Some proteinDetection
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetection) (item2:ProteinDetection) =
                item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
                item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetection) =
                     ProteinDetectionHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -6967,7 +6973,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetection) =
                 ProteinDetectionHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -6976,7 +6982,7 @@ module InsertStatements =
             ///Initializes a bibliographicreference-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id          : Guid,
+                    ?id          : string,
                     ?name        : string,
                     ?authors     : string,
                     ?doi         : string,
@@ -6990,7 +6996,7 @@ module InsertStatements =
                     ?year        : int,
                     ?mzIdentML   : MzIdentMLDocument
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid())
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'        = defaultArg name Unchecked.defaultof<string>
                 let authors'     = defaultArg authors Unchecked.defaultof<string>
                 let doi'         = defaultArg doi Unchecked.defaultof<string>
@@ -7005,7 +7011,7 @@ module InsertStatements =
                 let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new BiblioGraphicReference(
-                                           Nullable(id'), 
+                                           id', 
                                            name', 
                                            authors', 
                                            doi', editor', 
@@ -7121,13 +7127,13 @@ module InsertStatements =
                         else Some biblioGraphicReference
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
                item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
                item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
                item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:BiblioGraphicReference) =
                     BiblioGraphicReferenceHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -7139,7 +7145,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:BiblioGraphicReference) =
                 BiblioGraphicReferenceHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -7148,20 +7154,20 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id               : Guid,
+                    ?id               : string,
                     ?name             : string,
                     ?analysisSoftware : AnalysisSoftware,
                     ?contactRole      : ContactRole,
                     ?mzIdentML        : MzIdentMLDocument
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid())
+                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                 let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
                 let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
                 new Provider(
-                             Nullable(id'), 
+                             id', 
                              name', 
                              analysisSoftware', 
                              contactRole', 
@@ -7222,12 +7228,12 @@ module InsertStatements =
                         else Some provider
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
                item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
                item1.MzIdentMLDocument=item2.MzIdentMLDocument 
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Provider) =
                     ProviderHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -7239,7 +7245,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Provider) =
                 ProviderHandler.addToContext dbContext item
                 dbContext.SaveChanges()
@@ -7253,7 +7259,7 @@ module InsertStatements =
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
                     ?analysisData                   : AnalysisData,
-                    ?id                             : Guid,
+                    ?id                             : string,
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
                     ?provider                       : Provider,
@@ -7267,7 +7273,7 @@ module InsertStatements =
                     ?proteinDetectionProtocol       : ProteinDetectionProtocol,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
-                let id'                             = defaultArg id (System.Guid.NewGuid())
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
@@ -7286,7 +7292,7 @@ module InsertStatements =
                 let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
-                                      Nullable(id'), 
+                                      id', 
                                       name',
                                       version',
                                       analysisSoftwares', 
@@ -7307,7 +7313,6 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
                     
-
             ///Replaces name of existing object with new name.
             static member addName
                 (name:string) (mzIdentML:MzIdentMLDocument) =
@@ -7332,11 +7337,11 @@ module InsertStatements =
                 let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
                 mzIdentML
 
-            ///Replaces provider of existing object with new provider.
-            static member addProvider
-                (provider:Provider) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Provider <- provider
-                mzIdentML
+            /////Replaces provider of existing object with new provider.
+            //static member addProvider
+            //    (provider:Provider) (mzIdentML:MzIdentMLDocument) =
+            //    mzIdentML.Provider <- provider
+            //    mzIdentML
 
             ///Adds a person to an existing mzidentmldocument-object.
             static member addPerson
@@ -7423,11 +7428,11 @@ module InsertStatements =
                 let result = mzIdentML.SpectrumIdentification <- addCollectionToList mzIdentML.SpectrumIdentification spectrumIdentification
                 mzIdentML
 
-            ///Replaces proteindetection of existing object with new proteindetection.
-            static member addProteinDetection
-                (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetection <- proteinDetection
-                mzIdentML
+            /////Replaces proteindetection of existing object with new proteindetection.
+            //static member addProteinDetection
+            //    (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
+            //    mzIdentML.ProteinDetection <- proteinDetection
+            //    mzIdentML
 
             ///Adds a spectrumidentificationprotocol to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocol
@@ -7441,23 +7446,23 @@ module InsertStatements =
                 let result = mzIdentML.SpectrumIdentificationProtocol <- addCollectionToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
                 mzIdentML
 
-            ///Replaces proteindetectionprotocol of existing object with new proteindetectionprotocol.
-            static member addProteinDetectionProtocol
-                (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
-                mzIdentML
+            /////Replaces proteindetectionprotocol of existing object with new proteindetectionprotocol.
+            //static member addProteinDetectionProtocol
+            //    (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
+            //    mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
+            //    mzIdentML
 
-            ///Replaces inputs of existing object with new inputs.
-            static member addInputs
-                (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Inputs <- inputs
-                mzIdentML
+            /////Replaces inputs of existing object with new inputs.
+            //static member addInputs
+            //    (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
+            //    mzIdentML.Inputs <- inputs
+            //    mzIdentML
 
-            ///Replaces analysisdata of existing object with new analysisdata.
-            static member addAnalysisData
-                (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.AnalysisData <- analysisData
-                mzIdentML
+            /////Replaces analysisdata of existing object with new analysisdata.
+            //static member addAnalysisData
+            //    (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
+            //    mzIdentML.AnalysisData <- analysisData
+            //    mzIdentML
 
             ///Adds a bibliographicreference to an existing mzidentmldocument-object.
             static member addBiblioGraphicReference
@@ -7481,24 +7486,24 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                              then select (i, (*i.Inputs,*) i.AnalysisSoftwares, (*i.Provider,*) i.Persons, i.Organizations, i.Samples,
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, (*i.ProteinDetection,*)
+                                           i.SpectrumIdentificationProtocol, (*i.ProteinDetectionProtocol, i.AnalysisData,*) i.BiblioGraphicReferences
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
                             query {
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.Name=name
-                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                          then select (i, (*i.Inputs,*) i.AnalysisSoftwares, (*i.Provider,*) i.Persons, i.Organizations, i.Samples,
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, (*i.ProteinDetection,*)
+                                                       i.SpectrumIdentificationProtocol, (*i.ProteinDetectionProtocol, i.AnalysisData,*) i.BiblioGraphicReferences
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, __, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                              then None
                                                              else Some mzIdentMLDocument
@@ -7506,17 +7511,17 @@ module InsertStatements =
                         else Some mzIdentMLDocument
                    )
 
-            ///Checks whether all other fields of the current object and context objects have the same values or not.
+            ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-               item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+               (*item1.Provider=item2.Provider &&*) item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
-               item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
-               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.AnalysisData=item2.AnalysisData &&
+               (*item1.ProteinDetection=item2.ProteinDetection &&*) item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+               (*item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&*)
                item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is added to the context and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MzIdentMLDocument) =
                     MzIdentMLDocumentHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
@@ -7528,7 +7533,7 @@ module InsertStatements =
                                                       |None -> dbContext.Add item |> ignore
                        )
 
-            ///First checks if any object with same field-values (except primary key) excists within the context or database. If no entry exists, a new object is first added to the context and then to the database and else does nothing.
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MzIdentMLDocument) =
                 MzIdentMLDocumentHandler.addToContext dbContext item
                 dbContext.SaveChanges()

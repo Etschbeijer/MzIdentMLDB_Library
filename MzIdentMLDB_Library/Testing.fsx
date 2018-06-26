@@ -33,8 +33,6 @@ let standardDBPathSQLite = fileDir + "\Databases\Test.db"
 
 let sqliteContext = ContextHandler.sqliteConnection standardDBPathSQLite
 
-//let sqlConntection = ContextHandler.sqlConnection()
-//sqlConntection.Database.EnsureCreated()
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
@@ -81,11 +79,6 @@ let initStandardDB (dbContext : MzIdentML) =
 
     dbContext.Database.EnsureCreated() |> ignore
     dbContext.SaveChanges()
-
-let termTryFindTestI =
-    TermHandler.tryFindByID sqliteContext "Test"
-
-termTryFindTestI
 
 //initStandardDB sqliteContext
 
@@ -407,3 +400,185 @@ type TermIDByName =
         | NTerminalGlutamicAcidToPyroglutamateConversion -> "UNIMOD:27"
         | Acetyl -> "UNIMOD:1"
         | AmmoniaLoss -> "UNIMOD:385"
+
+
+let initDBofMzIdentML (dbContext:MzIdentML) (mzIdentML:SchemePeptideShaker.MzIdentMl) =
+
+    //let mzIdenML =
+    //    MzIdentMLDocumentHandler.init(version=mzIdentML.Version, name=mzIdentML.Id)
+    //    |> dbContext.Add
+    //mzIdenML
+    let organization =
+        let mzIdentMLOrganization = mzIdentML.AuditCollection.Value.Organizations.[0]
+        let organizationParams =
+            mzIdentMLOrganization.CvParams
+            |> Seq.map (fun cvParam -> OrganizationParamHandler.init(
+                                                                     (TermHandler.tryFindByID 
+                                                                        dbContext cvParam.Accession
+                                                                     ).Value,
+                                                                    value = cvParam.Value.Value
+                                                                    )
+                       )
+        OrganizationHandler.init(name=mzIdentMLOrganization.Name.Value)
+        |> OrganizationHandler.addDetails organizationParams
+        //|> OrganizationHandler.addToContext dbContext
+    let person =
+        let mzIdentMLPerson = mzIdentML.AuditCollection.Value.Persons.[0]
+        let personParams = 
+            mzIdentMLPerson.CvParams
+            |> Seq.map (fun cvParam -> PersonParamHandler.init(
+                                                               (TermHandler.tryFindByID 
+                                                               dbContext cvParam.Accession
+                                                               ).Value,
+                                                               value = cvParam.Value.Value
+                                                              )
+                       )
+        PersonHandler.init(name=mzIdentMLPerson.Id, firstName=mzIdentMLPerson.FirstName.Value)
+        |> PersonHandler.addLastName mzIdentMLPerson.LastName.Value
+        |> PersonHandler.addDetails personParams
+        |> PersonHandler.addOrganization organization
+    let analysisSoftware =
+        let mzIdentMLAnalysisSoftware = mzIdentML.AnalysisSoftwareList.Value.AnalysisSoftwares.[0]
+        AnalysisSoftwareHandler.init(
+                                     (CVParamHandler.init(
+                                                          (TermHandler.tryFindByID 
+                                                            dbContext mzIdentMLAnalysisSoftware.SoftwareName.CvParam.Value.Accession
+                                                          ).Value
+                                                         )
+                                     )
+                                    )
+        |> AnalysisSoftwareHandler.addName mzIdentMLAnalysisSoftware.Name.Value
+        |> AnalysisSoftwareHandler.addURI mzIdentMLAnalysisSoftware.Uri.Value
+        //|> AnalysisSoftwareHandler.addMzIdentML mzIdenML
+        |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper
+           (ContactRoleHandler.init(
+                                    person, 
+                                    mzIdentMLAnalysisSoftware.ContactRole.Value.Role.CvParam
+                                    |> (fun cvParam -> CVParamHandler.init(
+                                                                           (TermHandler.tryFindByID 
+                                                                           dbContext cvParam.Accession
+                                                                           ).Value
+                                                                          )
+                                       )
+                                   )
+           )
+        //|> AnalysisSoftwareHandler.addToContext dbContext
+    let searchDatabase =
+        SearchDatabaseHandler.init(
+                                   "file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta",
+                                   mzIdentML.DataCollection.Inputs.SearchDatabases.[0].CvParams.[0]
+                                   |> (fun cvParam -> CVParamHandler.init(
+                                                                          (TermHandler.tryFindByID 
+                                                                          dbContext cvParam.Accession
+                                                                          ).Value
+                                                                         )
+                                      ),
+                                   CVParamHandler.init(
+                                                       TermHandler.init(
+                                                                        "UserParam",
+                                                                        "UniprotHuman", 
+                                                                        (OntologyHandler.tryFindByID dbContext "UserParam").Value
+                                                                       )
+                                                      )
+                                  )
+        |> SearchDatabaseHandler.addNumDatabaseSequences mzIdentML.DataCollection.Inputs.SearchDatabases.[0].NumDatabaseSequences.Value
+    let dbSequence =
+        let mzIdentMLDBSequence = mzIdentML.SequenceCollection.Value.DbSequences.[0]
+        DBSequenceHandler.init(mzIdentMLDBSequence.Accession, searchDatabase)
+    let peptide =
+        let mzIdentMLPeptide = mzIdentML.SequenceCollection.Value.Peptides.[0]
+        PeptideHandler.init(mzIdentMLPeptide.PeptideSequence)
+        |> PeptideHandler.addModification (ModificationHandler.init([mzIdentMLPeptide.Modifications.[0].CvParams.[0]
+                                                                    |> (fun cvParam -> ModificationParamHandler.init(
+                                                                                                                     (TermHandler.tryFindByID 
+                                                                                                                     dbContext cvParam.Accession
+                                                                                                                    ).Value
+                                                                         )
+                                                                        )],
+                                                                    residues="C",
+                                                                    monoIsotopicMassDelta=57.021464
+                                                                   )
+                                          )
+        //|> PeptideHandler.addMzIdentML mzIdenML
+    let peptideEvidence =
+        let mzIdentMLPeptideEvidence = mzIdentML.SequenceCollection.Value.PeptideEvidences.[0]
+        PeptideEvidenceHandler.init(dbSequence, peptide)
+        |> PeptideEvidenceHandler.addIsDecoy mzIdentMLPeptideEvidence.IsDecoy.Value
+        |> PeptideEvidenceHandler.addPre mzIdentMLPeptideEvidence.Pre.Value
+        |> PeptideEvidenceHandler.addPost mzIdentMLPeptideEvidence.Post.Value
+        |> PeptideEvidenceHandler.addStart mzIdentMLPeptideEvidence.Start.Value
+        |> PeptideEvidenceHandler.addEnd mzIdentMLPeptideEvidence.End.Value
+    let spectrumIdentificationProtocol =
+        let mzIdentMLSpectrumIdentification = mzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols.[0]
+        SpectrumIdentificationProtocolHandler.init(
+                                                   analysisSoftware,
+                                                   mzIdentMLSpectrumIdentification.SearchType.CvParam
+                                                   |> (fun cvParam -> CVParamHandler.init(
+                                                                                          (TermHandler.tryFindByID 
+                                                                                               dbContext cvParam.Value.Accession
+                                                                                          ).Value
+                                                                                         )
+                                                      ),
+                                                   mzIdentMLSpectrumIdentification.Threshold.CvParams
+                                                   |> Seq.map (fun cvParam -> ThresholdParamHandler.init(
+                                                                                                         (TermHandler.tryFindByID 
+                                                                                                            dbContext cvParam.Accession
+                                                                                                         ).Value
+                                                                                                        )
+                                                      )
+                                                  )
+        |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParams
+            (mzIdentMLSpectrumIdentification.AdditionalSearchParams.Value.CvParams
+            |> Seq.map (fun cvParam -> AdditionalSearchParamHandler.init(
+                                                                         (TermHandler.tryFindByID 
+                                                                            dbContext cvParam.Accession
+                                                                         ).Value
+                                                                        )
+                       )
+            )
+        |> SpectrumIdentificationProtocolHandler.addModificationParam
+            (SearchModificationHandler.init(true,57.02,"C",
+                (mzIdentMLSpectrumIdentification.ModificationParams.Value.SearchModifications.[0].CvParams
+                |> Seq.map (fun cvParam -> SearchModificationParamHandler.init(
+                                                                               (TermHandler.tryFindByID 
+                                                                                    dbContext cvParam.Accession
+                                                                               ).Value
+                                                                              )
+                           )
+                                           )
+                )
+            )
+        |> SpectrumIdentificationProtocolHandler.addToContext dbContext
+            
+    spectrumIdentificationProtocol
+
+    let enzymes =
+        let mzIdentMLEnzymes = mzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols.[0]
+        EnzymeHandler.init()
+        |> EnzymeHandler.addSemiSpecific false
+        |> EnzymeHandler.addName "Trypsin"
+        |> EnzymeHandler.addEnzymeName
+            (mzIdentMLEnzymes.Enzymes.Value.Enzymes.[0].EnzymeName.Value.CvParams.[0]
+            |> (fun cvParam -> EnzymeNameParamHandler.init(
+                                                           (TermHandler.tryFindByID 
+                                                           dbContext cvParam.Accession
+                                                           ).Value
+                                                          )
+               )
+            )
+    enzymes
+initDBofMzIdentML sqliteContext samplePeptideShaker
+
+MzIdentMLDocumentHandler.init()
+|> sqliteContext.Add
+
+PersonHandler.init()
+|> sqliteContext.Add
+
+CVParamHandler.init(
+                    TermHandler.init("Test", "Test")
+                   )
+|> sqliteContext.Add
+
+
+sqliteContext.SaveChanges()
