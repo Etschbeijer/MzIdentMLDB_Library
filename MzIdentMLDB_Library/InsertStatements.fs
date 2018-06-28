@@ -3151,7 +3151,7 @@ module InsertStatements =
                 analysisSoftware
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (analysisSoftware:AnalysisSoftware)=
                 let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
                 analysisSoftware
@@ -3166,18 +3166,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisSoftware.Local do
                            if i.SoftwareName.Term.Name = name
-                              then select (i, i.ContactRole, i.MzIdentMLDocument)
+                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
                       }
-                |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
+                |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                 |> (fun analysisSoftware -> 
                     if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisSoftware do
                                        if i.SoftwareName.Term.Name = name
-                                          then select (i, i.ContactRole, i.MzIdentMLDocument)
+                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
                                   }
-                            |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
+                            |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                             |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
                                                             then None
                                                             else Some analysisSoftware
@@ -3351,7 +3351,7 @@ module InsertStatements =
                 sample
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (sample:Sample) =
                 let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                 sample
@@ -3674,7 +3674,7 @@ module InsertStatements =
                 peptide
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (peptide:Peptide) =
                 let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
                 peptide
@@ -5145,7 +5145,7 @@ module InsertStatements =
                 spectrumIdentificationProtocol
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                 let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentificationProtocol
@@ -5156,10 +5156,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByAnalysisSoftwareSoftwareName (dbContext:MzIdentML) (name:string) =
+            static member tryFindName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationProtocol.Local do
-                           if i.AnalysisSoftware.SoftwareName.Term.Name=name
+                           if i.Name=name
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
@@ -5172,7 +5172,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationProtocol do
-                                       if i.AnalysisSoftware.SoftwareName.Term.Name=name
+                                       if i.Name=name
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
@@ -5197,7 +5197,7 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                    SpectrumIdentificationProtocolHandler.tryFindByAnalysisSoftwareSoftwareName dbContext item.AnalysisSoftware.SoftwareName.Term.Name
+                    SpectrumIdentificationProtocolHandler.tryFindName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationProtocolHandler.hasEqualFieldValues organization item with
@@ -5306,10 +5306,10 @@ module InsertStatements =
                 tryFind (context.SearchDatabase.Find(searchDatabaseID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDatabaseNameName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
                 query {
                        for i in dbContext.SearchDatabase.Local do
-                           if i.DatabaseName.Term.Name=name
+                           if i.Location=location
                               then select (i, i.DatabaseName, i.FileFormat, i.Details)
                       }
                 |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
@@ -5318,7 +5318,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchDatabase do
-                                       if i.DatabaseName.Term.Name=name
+                                       if i.Location=location
                                           then select (i, i.DatabaseName, i.FileFormat, i.Details)
                                   }
                             |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
@@ -5338,7 +5338,7 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabase) =
-                    SearchDatabaseHandler.tryFindByDatabaseNameName dbContext item.DatabaseName.Term.Name
+                    SearchDatabaseHandler.tryFindByLocation dbContext item.Location
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchDatabaseHandler.hasEqualFieldValues organization item with
@@ -5416,7 +5416,7 @@ module InsertStatements =
                 dbSequence
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (dbSequence:DBSequence) =
                 let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                 dbSequence
@@ -5581,7 +5581,7 @@ module InsertStatements =
                 peptideEvidence
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (peptideEvidence:PeptideEvidence) =
                 let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
                 peptideEvidence
@@ -5592,10 +5592,10 @@ module InsertStatements =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDBSequenceAccession (dbContext:MzIdentML) (accession:string) =
+            static member tryFindByDBSequenceAccession (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
-                           if i.DBSequence.Accession=accession
+                           if i.Name=name
                               then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
@@ -5604,7 +5604,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideEvidence do
-                                       if i.DBSequence.Accession=accession
+                                       if i.Name=name
                                           then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
@@ -5625,7 +5625,7 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidence) =
-                    PeptideEvidenceHandler.tryFindByDBSequenceAccession dbContext item.DBSequence.Accession
+                    PeptideEvidenceHandler.tryFindByDBSequenceAccession dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideEvidenceHandler.hasEqualFieldValues organization item with
@@ -6070,7 +6070,7 @@ module InsertStatements =
                 spectrumIdentification
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentification:SpectrumIdentification) =
                 let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentification
@@ -6177,7 +6177,7 @@ module InsertStatements =
                 proteinDetectionProtocol
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                 let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionProtocol
@@ -6387,7 +6387,7 @@ module InsertStatements =
                 inputs
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (inputs:Inputs) =
                 let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                 inputs
@@ -6398,10 +6398,10 @@ module InsertStatements =
                 tryFind (context.Inputs.Find(inputsID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySpectraData (dbContext:MzIdentML) (spectraData:seq<SpectraData>) =
+            static member tryFindBySpectraData (dbContext:MzIdentML) (mzIdentMlDocument:MzIdentMLDocument) =
                 query {
                        for i in dbContext.Inputs.Local do
-                           if i.SpectraData=(spectraData |> List)
+                           if i.MzIdentMLDocument=mzIdentMlDocument
                               then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
@@ -6410,7 +6410,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Inputs do
-                                       if i.SpectraData=(spectraData |> List)
+                                       if i.MzIdentMLDocument=mzIdentMlDocument
                                           then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
@@ -6424,11 +6424,11 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
                item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
-               item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.SpectraData=item2.SpectraData
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Inputs) =
-                    InputsHandler.tryFindBySpectraData dbContext item.SpectraData
+                    InputsHandler.tryFindBySpectraData dbContext item.MzIdentMLDocument
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match InputsHandler.hasEqualFieldValues organization item with
@@ -6557,7 +6557,7 @@ module InsertStatements =
                 proteinDetectionHypothesis
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                 let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionHypothesis
@@ -6832,7 +6832,7 @@ module InsertStatements =
                 analysisData
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (analysisData:AnalysisData) =
                 let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                 analysisData
@@ -6843,10 +6843,10 @@ module InsertStatements =
                 tryFind (context.AnalysisData.Find(analysisDataID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByMzIdentMLDocument (dbContext:MzIdentML) (mzIdentMLDocument:MzIdentMLDocument) =
                 query {
                        for i in dbContext.AnalysisData.Local do
-                           if i.ProteinDetectionList.Name=name
+                           if i.MzIdentMLDocument=mzIdentMLDocument
                               then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
@@ -6855,7 +6855,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisData do
-                                       if i.ProteinDetectionList.Name=name
+                                       if i.MzIdentMLDocument=mzIdentMLDocument
                                           then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
@@ -6868,11 +6868,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisData) (item2:AnalysisData) =
-               item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
+               item1.ProteinDetectionList=item2.ProteinDetectionList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisData) =
-                    AnalysisDataHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
+                    AnalysisDataHandler.tryFindByMzIdentMLDocument dbContext item.MzIdentMLDocument
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisDataHandler.hasEqualFieldValues organization item with
@@ -6927,16 +6928,22 @@ module InsertStatements =
                 proteinDetection.ActivityDate <- Nullable(activityDate)
                 proteinDetection
 
+            ///Replaces mzidentmldocument of existing object with new mzidentmldocument.
+            static member addMzIdentMLDocument
+                (mzIdentML:MzIdentMLDocument) (proteinDetection:ProteinDetection) =
+                proteinDetection.MzIdentMLDocument <- mzIdentML
+                proteinDetection
+
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (proteinDetectionID:string) =
                 tryFind (context.ProteinDetection.Find(proteinDetectionID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByProteinDetectionListName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetection.Local do
-                           if i.ProteinDetectionList.Name=name
+                           if i.Name=name
                               then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
                       }
                 |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
@@ -6945,7 +6952,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetection do
-                                       if i.ProteinDetectionList.Name=name
+                                       if i.Name=name
                                           then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
                                   }
                             |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
@@ -6963,7 +6970,7 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetection) =
-                    ProteinDetectionHandler.tryFindByProteinDetectionListName dbContext item.ProteinDetectionList.Name
+                    ProteinDetectionHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionHandler.hasEqualFieldValues organization item with
@@ -7093,7 +7100,7 @@ module InsertStatements =
                 biblioGraphicReference
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (biblioGraphicReference:BiblioGraphicReference) =
                 let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
                 biblioGraphicReference
@@ -7194,7 +7201,7 @@ module InsertStatements =
                 provider
 
             ///Replaces mzidentml of existing object with new mzidentml.
-            static member addMzIdentML
+            static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
                 let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                 provider
@@ -7254,30 +7261,30 @@ module InsertStatements =
             ///Initializes a mzidentml-object with at least all necessary parameters.
             static member init
                 (             
-                    ?inputs                         : Inputs,
+                    //?inputs                         : Inputs,
                     ?version                        : string,
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
-                    ?analysisData                   : AnalysisData,
+                    //?analysisData                   : AnalysisData,
                     ?id                             : string,
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
-                    ?provider                       : Provider,
+                    //?provider                       : Provider,
                     ?persons                        : seq<Person>,
                     ?organizations                  : seq<Organization>,
                     ?samples                        : seq<Sample>,
                     ?dbSequences                    : seq<DBSequence>,
                     ?peptides                       : seq<Peptide>,
                     ?peptideEvidences               : seq<PeptideEvidence>,
-                    ?proteinDetection               : ProteinDetection,
-                    ?proteinDetectionProtocol       : ProteinDetectionProtocol,
+                    //?proteinDetection               : ProteinDetection,
+                    //?proteinDetectionProtocol       : ProteinDetectionProtocol,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
-                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
+                //let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
                 let persons'                        = convertOptionToList persons
                 let organizations'                  = convertOptionToList organizations
                 let samples'                        = convertOptionToList samples
@@ -7285,18 +7292,18 @@ module InsertStatements =
                 let peptides'                       = convertOptionToList peptides
                 let peptideEvidences'               = convertOptionToList peptideEvidences
                 let spectrumIdentification'         = convertOptionToList spectrumIdentification
-                let proteinDetection'               = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
+                //let proteinDetection'               = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
                 let spectrumIdentificationProtocol' = convertOptionToList spectrumIdentificationProtocol
-                let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
-                let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
-                let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
+                //let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
+                //let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
+                //let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
                                       id', 
                                       name',
                                       version',
                                       analysisSoftwares', 
-                                      provider', 
+                                      //provider', 
                                       persons', 
                                       organizations', 
                                       samples', 
@@ -7304,11 +7311,11 @@ module InsertStatements =
                                       peptides', 
                                       peptideEvidences', 
                                       spectrumIdentification',
-                                      proteinDetection',
+                                      //proteinDetection',
                                       spectrumIdentificationProtocol',
-                                      proteinDetectionProtocol', 
-                                      inputs', 
-                                      analysisData',
+                                      //proteinDetectionProtocol', 
+                                      //inputs', 
+                                      //analysisData',
                                       biblioGraphicReferences',
                                       Nullable(DateTime.Now)
                                      )

@@ -1820,7 +1820,7 @@ module DataModel =
                           name:string, 
                           version:string,
                           analysisSoftwares:List<AnalysisSoftware>,
-                          provider:Provider,
+                          //provider:Provider,
                           persons:List<Person>, 
                           organizations:List<Organization>, 
                           samples:List<Sample>, 
@@ -1828,11 +1828,11 @@ module DataModel =
                           peptides:List<Peptide>,
                           peptideEvidences:List<PeptideEvidence>, 
                           spectrumIdentification:List<SpectrumIdentification>, 
-                          proteinDetection:ProteinDetection, 
+                          //proteinDetection:ProteinDetection, 
                           spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
-                          proteinDetectionProtocol:ProteinDetectionProtocol,
-                          inputs:Inputs,
-                          analysisData:AnalysisData,
+                          //proteinDetectionProtocol:ProteinDetectionProtocol,
+                          //inputs:Inputs,
+                          //analysisData:AnalysisData,
                           biblioGraphicReferences:List<BiblioGraphicReference>,
                           rowVersion:Nullable<DateTime>
                          ) =
@@ -1840,7 +1840,7 @@ module DataModel =
             let mutable name'                           = name
             let mutable version'                        = version
             let mutable analysisSoftwares'              = analysisSoftwares
-            let mutable provider'                       = provider
+            //let mutable provider'                       = provider
             let mutable persons'                        = persons
             let mutable organizations'                  = organizations
             let mutable samples'                        = samples
@@ -1848,15 +1848,15 @@ module DataModel =
             let mutable peptides'                       = peptides
             let mutable peptideEvidences'               = peptideEvidences
             let mutable spectrumIdentification'         = spectrumIdentification
-            let mutable proteinDetection'               = proteinDetection
+            //let mutable proteinDetection'               = proteinDetection
             let mutable spectrumIdentificationProtocol' = spectrumIdentificationProtocol
-            let mutable proteinDetectionProtocol'       = proteinDetectionProtocol
-            let mutable inputs'                         = inputs
-            let mutable analysisData'                   = analysisData
+            //let mutable proteinDetectionProtocol'       = proteinDetectionProtocol
+            //let mutable inputs'                         = inputs
+            //let mutable analysisData'                   = analysisData
             let mutable biblioGraphicReferences'        = biblioGraphicReferences
             let mutable rowVersion'                     = rowVersion
 
-            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
+            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value

@@ -24,12 +24,11 @@ open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open System.Collections.ObjectModel
-
-//open MzIdentMLDataBase.XMLParsing
+open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLite = fileDir + "\Databases\Test.db"
+let standardDBPathSQLite = fileDir + "\Databases\Test2.db"
 
 let sqliteContext = ContextHandler.sqliteConnection standardDBPathSQLite
 
@@ -144,7 +143,6 @@ let x = addTermToContext sqliteContext (TermHandler.init("TEEEEEEEEEEEST", Ontol
 let y = addTermToContext sqliteContext (TermHandler.init("MS:0000000", "Proteomics Standards Initiative Mass Spectrometry Vocabularies", (OntologyHandler.tryFindByID sqliteContext "PSI-MS").Value))
 let z = addTerm2 sqliteContext (TermHandler.init("TEEEEEEEEEEEST"))
 
-#time
 let termTest = TermHandler.init("I","III")
 
 let CVParamTest = CVParamHandler.init(termTest)
@@ -173,151 +171,6 @@ let testQuery (dbContext:MzIdentML) (item:CVParam) =
 testQuery sqliteContext CVParamTest
 
 Seq.item 0 (testQuery sqliteContext CVParamTest)
-
-type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
-let  samplePeptideShaker = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.txt") 
-
-let removeDoubleTerms (xmlMzIdentML : SchemePeptideShaker.MzIdentMl) =
-    let cvParamAccessionListOfXMLFile =
-        [|
-        (if xmlMzIdentML.AnalysisProtocolCollection.ProteinDetectionProtocol.IsSome 
-            then xmlMzIdentML.AnalysisProtocolCollection.ProteinDetectionProtocol.Value.Threshold.CvParams
-                |> Array.map (fun cvParamItem -> cvParamItem.Accession)
-            else [|null|])
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-            |> Array.map (fun spectrumIdentificationProtocolItem -> if spectrumIdentificationProtocolItem.AdditionalSearchParams.IsSome 
-                                                                        then spectrumIdentificationProtocolItem.AdditionalSearchParams. Value.CvParams
-                                                                            |> Array.map (fun cvParamItem -> cvParamItem.Accession)
-
-                                                                        else [|null|]))
-                                    |> Array.concat
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-            |> Array.map (fun spectrumIdentificationProtocolItem -> if spectrumIdentificationProtocolItem.Enzymes.IsSome 
-                                                                        then 
-                                                                            if spectrumIdentificationProtocolItem.Enzymes.IsSome 
-                                                                                then spectrumIdentificationProtocolItem.Enzymes.Value.Enzymes
-                                                                                     |> Array.map (fun enzymeItem -> enzymeItem.EnzymeName.Value.CvParams
-                                                                                                                     |> Array.map (fun cvParamitem -> cvParamitem.Accession))
-                                                                                else [|[|null|]|]
-                                                                        else [|[|null|]|]))
-                                    |> Array.concat
-                                    |> Array.concat
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-            |> Array.map (fun spectrumIdentificationProtocolItem -> if spectrumIdentificationProtocolItem.FragmentTolerance.IsSome
-                                                                        then spectrumIdentificationProtocolItem.FragmentTolerance.Value.CvParams
-                                                                             |> Array.map (fun cvParamItem -> cvParamItem.Accession)
-                                                                        else [|null|]))
-                                    |> Array.concat
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-            |> Array.map (fun spectrumIdentificationProtocolItem -> if spectrumIdentificationProtocolItem.ModificationParams.IsSome 
-                                                                        then spectrumIdentificationProtocolItem.ModificationParams.Value.SearchModifications
-                                                                             |> Array.map (fun searchModificationItem -> searchModificationItem.SpecificityRules
-                                                                                                                            |> Array.map (fun specificityRuleItem -> specificityRuleItem.CvParams
-                                                                                                                                                                    |> Array.map (fun cvParamitem -> cvParamitem.Accession)))
-                                                                        else [|[|[|null|]|]|]))
-                                    |> Array.concat
-                                    |> Array.concat
-                                    |> Array.concat
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-            |> Array.map (fun spectrumIdentificationProtocolItem -> if spectrumIdentificationProtocolItem.ParentTolerance.IsSome 
-                                                                        then spectrumIdentificationProtocolItem.ParentTolerance.Value.CvParams
-                                                                            |> Array.map (fun cvParamItem -> cvParamItem.Accession)
-                                                                        else [|null|]))
-                                    |> Array.concat
-
-        (xmlMzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-        |> Array.map (fun spectrumIdentificationProtocolItem -> spectrumIdentificationProtocolItem.Threshold.CvParams
-                                                                |> Array.map (fun cvParamItem -> cvParamItem.Accession)))
-                                    |> Array.concat
-
-        (if xmlMzIdentML.AnalysisSoftwareList.IsSome 
-            then xmlMzIdentML.AnalysisSoftwareList.Value.AnalysisSoftwares
-                |> Array.map (fun analysisSoftwareItem -> if analysisSoftwareItem.ContactRole.IsSome 
-                                                             then analysisSoftwareItem.ContactRole.Value.Role.CvParam.Accession
-                                                             else null)
-            else [|null|])
-
-        (if xmlMzIdentML.AnalysisSoftwareList.IsSome 
-        then xmlMzIdentML.AnalysisSoftwareList.Value.AnalysisSoftwares
-          |> Array.map (fun analysisSoftwareItem -> if analysisSoftwareItem.SoftwareName.CvParam.IsSome 
-                                                        then analysisSoftwareItem.SoftwareName.CvParam.Value.Accession
-                                                        else null)
-        else [|null|])
-
-        (if xmlMzIdentML.AuditCollection.IsSome 
-        then xmlMzIdentML.AuditCollection.Value.Organizations
-          |> Array.map (fun orgItem -> orgItem.CvParams
-                                        |> Array.map (fun cvParamItem -> cvParamItem.Accession))
-                            |> Array.concat
-        else [|null|])
-
-        (if xmlMzIdentML.AuditCollection.IsSome 
-            then xmlMzIdentML.AuditCollection.Value.Persons
-                |> Array.map (fun personItem -> personItem.CvParams
-                                                |> Array.map (fun cvParamItem -> cvParamItem.Accession))
-                                                |> Array.concat
-        else [|null|])
-
-        (if xmlMzIdentML.DataCollection.AnalysisData.ProteinDetectionList.IsSome 
-            then xmlMzIdentML.DataCollection.AnalysisData.ProteinDetectionList.Value.CvParams
-                |> Array.map (fun cvParamItem -> cvParamItem.Accession)
-            else [|null|])
-
-        (if xmlMzIdentML.DataCollection.AnalysisData.ProteinDetectionList.IsSome 
-            then xmlMzIdentML.DataCollection.AnalysisData.ProteinDetectionList.Value.ProteinAmbiguityGroups
-                |> Array.map (fun proteinAmbiguityGroupsItem -> proteinAmbiguityGroupsItem.CvParams
-                                                                |> Array.map (fun cvParamItem -> cvParamItem.Accession))
-                                                                |> Array.concat
-            else [|null|])
-
-        (xmlMzIdentML.DataCollection.AnalysisData.SpectrumIdentificationList
-            |> Array.map (fun spectrumIdentificationitem -> if spectrumIdentificationitem.FragmentationTable.IsSome
-                                                                then spectrumIdentificationitem.FragmentationTable.Value.Measures
-                                                                    |> Array.map (fun measureItem -> measureItem.CvParams
-                                                                                                     |> Array.map (fun cvParamItem -> cvParamItem.Accession))
-                                                                else [|[|null|]|])
-                                                 |> Array.concat
-                                                 |> Array.concat)
-
-        (xmlMzIdentML.DataCollection.AnalysisData.SpectrumIdentificationList
-            |> Array.map (fun spectrumIdentificationItem -> spectrumIdentificationItem.SpectrumIdentificationResults
-                                                            |> Array.map (fun spectrumIdentificationResultItem -> spectrumIdentificationResultItem.CvParams
-                                                                                                                    |> Array.map (fun cvParamItem -> cvParamItem.Accession)))
-                                                              |> Array.concat
-                                                              |> Array.concat)
-
-        (if xmlMzIdentML.SequenceCollection.IsSome
-            then xmlMzIdentML.SequenceCollection.Value.DbSequences
-                 |> Array.map (fun dbSeqItem -> dbSeqItem.CvParams
-                                                |> Array.map (fun cvParamitem -> cvParamitem.Accession))
-                                                |> Array.concat
-            else [|null|])
-
-        (if xmlMzIdentML.SequenceCollection.IsSome 
-            then xmlMzIdentML.SequenceCollection.Value.Peptides
-                |> Array.map (fun peptideItem -> peptideItem.Modifications
-                                                    |> Array.map (fun modificationItem -> modificationItem.CvParams
-                                                                                            |> Array.map (fun cvParamItem -> cvParamItem.Accession)))
-                                                |> Array.concat
-                                                |> Array.concat
-        else [|null|])
-    |]
-    cvParamAccessionListOfXMLFile
-    |> Array.concat
-
-let keepDuplicates collection =
-    let d = System.Collections.Generic.Dictionary()
-    [| for i in collection do match d.TryGetValue i with
-                              | (false,_) -> d.[i] <- (); yield i
-                              | _ -> () |]
-
-let test1 = removeDoubleTerms samplePeptideShaker
-let test2 = keepDuplicates test1
 
 type TermIDByName =
     | ProteinGroupLevelFDR
@@ -401,184 +254,122 @@ type TermIDByName =
         | Acetyl -> "UNIMOD:1"
         | AmmoniaLoss -> "UNIMOD:385"
 
-
-let initDBofMzIdentML (dbContext:MzIdentML) (mzIdentML:SchemePeptideShaker.MzIdentMl) =
-
-    //let mzIdenML =
-    //    MzIdentMLDocumentHandler.init(version=mzIdentML.Version, name=mzIdentML.Id)
-    //    |> dbContext.Add
-    //mzIdenML
-    let organization =
-        let mzIdentMLOrganization = mzIdentML.AuditCollection.Value.Organizations.[0]
-        let organizationParams =
-            mzIdentMLOrganization.CvParams
-            |> Seq.map (fun cvParam -> OrganizationParamHandler.init(
-                                                                     (TermHandler.tryFindByID 
-                                                                        dbContext cvParam.Accession
-                                                                     ).Value,
-                                                                    value = cvParam.Value.Value
-                                                                    )
-                       )
-        OrganizationHandler.init(name=mzIdentMLOrganization.Name.Value)
-        |> OrganizationHandler.addDetails organizationParams
-        //|> OrganizationHandler.addToContext dbContext
-    let person =
-        let mzIdentMLPerson = mzIdentML.AuditCollection.Value.Persons.[0]
-        let personParams = 
-            mzIdentMLPerson.CvParams
-            |> Seq.map (fun cvParam -> PersonParamHandler.init(
-                                                               (TermHandler.tryFindByID 
-                                                               dbContext cvParam.Accession
-                                                               ).Value,
-                                                               value = cvParam.Value.Value
-                                                              )
-                       )
-        PersonHandler.init(name=mzIdentMLPerson.Id, firstName=mzIdentMLPerson.FirstName.Value)
-        |> PersonHandler.addLastName mzIdentMLPerson.LastName.Value
-        |> PersonHandler.addDetails personParams
-        |> PersonHandler.addOrganization organization
-    let analysisSoftware =
-        let mzIdentMLAnalysisSoftware = mzIdentML.AnalysisSoftwareList.Value.AnalysisSoftwares.[0]
-        AnalysisSoftwareHandler.init(
-                                     (CVParamHandler.init(
-                                                          (TermHandler.tryFindByID 
-                                                            dbContext mzIdentMLAnalysisSoftware.SoftwareName.CvParam.Value.Accession
-                                                          ).Value
-                                                         )
-                                     )
-                                    )
-        |> AnalysisSoftwareHandler.addName mzIdentMLAnalysisSoftware.Name.Value
-        |> AnalysisSoftwareHandler.addURI mzIdentMLAnalysisSoftware.Uri.Value
-        //|> AnalysisSoftwareHandler.addMzIdentML mzIdenML
-        |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper
-           (ContactRoleHandler.init(
-                                    person, 
-                                    mzIdentMLAnalysisSoftware.ContactRole.Value.Role.CvParam
-                                    |> (fun cvParam -> CVParamHandler.init(
-                                                                           (TermHandler.tryFindByID 
-                                                                           dbContext cvParam.Accession
-                                                                           ).Value
-                                                                          )
-                                       )
-                                   )
-           )
-        //|> AnalysisSoftwareHandler.addToContext dbContext
-    let searchDatabase =
-        SearchDatabaseHandler.init(
-                                   "file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta",
-                                   mzIdentML.DataCollection.Inputs.SearchDatabases.[0].CvParams.[0]
-                                   |> (fun cvParam -> CVParamHandler.init(
-                                                                          (TermHandler.tryFindByID 
-                                                                          dbContext cvParam.Accession
-                                                                          ).Value
-                                                                         )
-                                      ),
-                                   CVParamHandler.init(
-                                                       TermHandler.init(
-                                                                        "UserParam",
-                                                                        "UniprotHuman", 
-                                                                        (OntologyHandler.tryFindByID dbContext "UserParam").Value
-                                                                       )
-                                                      )
-                                  )
-        |> SearchDatabaseHandler.addNumDatabaseSequences mzIdentML.DataCollection.Inputs.SearchDatabases.[0].NumDatabaseSequences.Value
-    let dbSequence =
-        let mzIdentMLDBSequence = mzIdentML.SequenceCollection.Value.DbSequences.[0]
-        DBSequenceHandler.init(mzIdentMLDBSequence.Accession, searchDatabase)
-    let peptide =
-        let mzIdentMLPeptide = mzIdentML.SequenceCollection.Value.Peptides.[0]
-        PeptideHandler.init(mzIdentMLPeptide.PeptideSequence)
-        |> PeptideHandler.addModification (ModificationHandler.init([mzIdentMLPeptide.Modifications.[0].CvParams.[0]
-                                                                    |> (fun cvParam -> ModificationParamHandler.init(
-                                                                                                                     (TermHandler.tryFindByID 
-                                                                                                                     dbContext cvParam.Accession
-                                                                                                                    ).Value
-                                                                         )
-                                                                        )],
-                                                                    residues="C",
-                                                                    monoIsotopicMassDelta=57.021464
-                                                                   )
-                                          )
-        //|> PeptideHandler.addMzIdentML mzIdenML
-    let peptideEvidence =
-        let mzIdentMLPeptideEvidence = mzIdentML.SequenceCollection.Value.PeptideEvidences.[0]
-        PeptideEvidenceHandler.init(dbSequence, peptide)
-        |> PeptideEvidenceHandler.addIsDecoy mzIdentMLPeptideEvidence.IsDecoy.Value
-        |> PeptideEvidenceHandler.addPre mzIdentMLPeptideEvidence.Pre.Value
-        |> PeptideEvidenceHandler.addPost mzIdentMLPeptideEvidence.Post.Value
-        |> PeptideEvidenceHandler.addStart mzIdentMLPeptideEvidence.Start.Value
-        |> PeptideEvidenceHandler.addEnd mzIdentMLPeptideEvidence.End.Value
-    let spectrumIdentificationProtocol =
-        let mzIdentMLSpectrumIdentification = mzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols.[0]
-        SpectrumIdentificationProtocolHandler.init(
-                                                   analysisSoftware,
-                                                   mzIdentMLSpectrumIdentification.SearchType.CvParam
-                                                   |> (fun cvParam -> CVParamHandler.init(
-                                                                                          (TermHandler.tryFindByID 
-                                                                                               dbContext cvParam.Value.Accession
-                                                                                          ).Value
-                                                                                         )
-                                                      ),
-                                                   mzIdentMLSpectrumIdentification.Threshold.CvParams
-                                                   |> Seq.map (fun cvParam -> ThresholdParamHandler.init(
-                                                                                                         (TermHandler.tryFindByID 
-                                                                                                            dbContext cvParam.Accession
-                                                                                                         ).Value
-                                                                                                        )
-                                                      )
-                                                  )
-        |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParams
-            (mzIdentMLSpectrumIdentification.AdditionalSearchParams.Value.CvParams
-            |> Seq.map (fun cvParam -> AdditionalSearchParamHandler.init(
-                                                                         (TermHandler.tryFindByID 
-                                                                            dbContext cvParam.Accession
-                                                                         ).Value
-                                                                        )
-                       )
-            )
-        |> SpectrumIdentificationProtocolHandler.addModificationParam
-            (SearchModificationHandler.init(true,57.02,"C",
-                (mzIdentMLSpectrumIdentification.ModificationParams.Value.SearchModifications.[0].CvParams
-                |> Seq.map (fun cvParam -> SearchModificationParamHandler.init(
-                                                                               (TermHandler.tryFindByID 
-                                                                                    dbContext cvParam.Accession
-                                                                               ).Value
-                                                                              )
-                           )
-                                           )
-                )
-            )
-        |> SpectrumIdentificationProtocolHandler.addToContext dbContext
-            
-    spectrumIdentificationProtocol
-
-    let enzymes =
-        let mzIdentMLEnzymes = mzIdentML.AnalysisProtocolCollection.SpectrumIdentificationProtocols.[0]
-        EnzymeHandler.init()
-        |> EnzymeHandler.addSemiSpecific false
-        |> EnzymeHandler.addName "Trypsin"
-        |> EnzymeHandler.addEnzymeName
-            (mzIdentMLEnzymes.Enzymes.Value.Enzymes.[0].EnzymeName.Value.CvParams.[0]
-            |> (fun cvParam -> EnzymeNameParamHandler.init(
-                                                           (TermHandler.tryFindByID 
-                                                           dbContext cvParam.Accession
-                                                           ).Value
-                                                          )
-               )
-            )
-    enzymes
-initDBofMzIdentML sqliteContext samplePeptideShaker
-
-MzIdentMLDocumentHandler.init()
-|> sqliteContext.Add
-
-PersonHandler.init()
-|> sqliteContext.Add
-
-CVParamHandler.init(
-                    TermHandler.init("Test", "Test")
-                   )
-|> sqliteContext.Add
+#time
+type SchemePeptideShaker = XmlProvider<Schema = "..\MzIdentMLDB_Library\XML_Files\MzIdentMLScheme1_2.xsd">
+let  samplePeptideShaker = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_Files\PeptideShaker_mzid_1_2_example.txt") 
 
 
-sqliteContext.SaveChanges()
+samplePeptideShaker.AuditCollection.Value.Organizations
+|> Array.map (fun organization -> convertToEntity_Organization sqliteContext organization)
+
+samplePeptideShaker.AuditCollection.Value.Persons
+|> Array.map (fun person -> convertToEntity_Person  sqliteContext person)
+
+samplePeptideShaker.AnalysisSoftwareList.Value.AnalysisSoftwares
+|> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware sqliteContext analysisSoftware)
+
+samplePeptideShaker.SequenceCollection.Value.Peptides
+|> Array.map (fun peptide -> convertToEntity_Peptide sqliteContext peptide)
+
+samplePeptideShaker.AnalysisProtocolCollection.SpectrumIdentificationProtocols
+|> Array.map (fun item -> convertToEntity_SpectrumIdentificationProtocol sqliteContext item)
+
+convertToEntity_DBSequence sqliteContext samplePeptideShaker.SequenceCollection.Value.DbSequences.[0]
+
+samplePeptideShaker.SequenceCollection.Value.PeptideEvidences
+|> Array.map (fun item -> convertToEntity_PeptideEvidence sqliteContext item)
+
+samplePeptideShaker.DataCollection.Inputs.SpectraDatas
+|> Array.map (fun item -> convertToEntity_SpectraData sqliteContext item)
+
+samplePeptideShaker.DataCollection.Inputs.SourceFiles
+|> Array.map (fun item -> convertToEntity_SourceFile sqliteContext item)
+
+samplePeptideShaker.DataCollection.Inputs.SearchDatabases
+|> Array.map (fun item -> convertToEntity_SearchDatabase sqliteContext item)
+
+convertToEntity_MzIdentML sqliteContext samplePeptideShaker
+
+convertToEntity_AnalysisData sqliteContext samplePeptideShaker.DataCollection.AnalysisData
+
+samplePeptideShaker.DataCollection.Inputs
+|> (fun item -> convertToEntity_Inputs sqliteContext item)
+
+convertToEntity_Provider sqliteContext samplePeptideShaker.Provider.Value
+
+convertToEntity_ProteinDetectionProtocol sqliteContext samplePeptideShaker.AnalysisProtocolCollection.ProteinDetectionProtocol.Value
+
+convertToEntity_ProteinDetection sqliteContext samplePeptideShaker.AnalysisCollection.ProteinDetection.Value
+
+
+//sqliteContext.SaveChanges()
+
+
+let convertToEntity_AnalysisData1 (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.AnalysisData) =
+    let analysisDataBasic = 
+        AnalysisDataHandler.init(
+                                    mzIdentMLXML.SpectrumIdentificationList
+                                    |> Array.map (fun spectrumIdentificationList -> convertToEntity_SpectrumIdentificationList dbContext spectrumIdentificationList)
+                                )
+    let analysisDataWithProteinDetectionList = 
+        (match mzIdentMLXML.ProteinDetectionList with
+            |Some x -> AnalysisDataHandler.addProteinDetectionList
+                        (convertToEntity_ProteinDetectionList dbContext x)
+                        analysisDataBasic
+            |None -> analysisDataBasic
+        )
+    let analysisDataWithMzIdentMLDocument =
+        AnalysisDataHandler.addMzIdentMLDocument (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2"|> (fun item -> match item with
+                                                                                                                                        | Some x -> x
+                                                                                                                                        | None -> null
+                                                                                                                            )) analysisDataWithProteinDetectionList
+    analysisDataWithMzIdentMLDocument
+
+
+
+let t =
+    samplePeptideShaker.DataCollection.AnalysisData
+    |> (fun item -> convertToEntity_AnalysisData1 sqliteContext item) 
+
+t
+|> AnalysisDataHandler.addToContext sqliteContext
+
+1+1
+
+
+
+let convertToEntity_ProteinDetection1 (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.ProteinDetection) =
+        let proteinDetectionBasic = 
+            ProteinDetectionHandler.init(
+                                         (ProteinDetectionListHandler.tryFindByID dbContext mzIdentMLXML.ProteinDetectionListRef|> (fun item -> match item with
+                                                                                                                                                | Some x -> x
+                                                                                                                                                | None -> null
+                                                                                                                                    )),
+                                         (ProteinDetectionProtocolHandler.tryFindByID dbContext mzIdentMLXML.ProteinDetectionProtocolRef|> (fun item -> match item with
+                                                                                                                                                        | Some x -> x
+                                                                                                                                                        | None -> null
+                                                                                                                                            )),
+                                         mzIdentMLXML.InputSpectrumIdentifications
+                                         |> Array.map (fun spectrumIdentificationList -> (SpectrumIdentificationListHandler.tryFindByID dbContext spectrumIdentificationList.SpectrumIdentificationListRef|> (fun item -> match item with
+                                                                                                                                                                                                                            | Some x -> x
+                                                                                                                                                                                                                            | None -> null
+                                                                                                                                                                                                               ))),
+                                         mzIdentMLXML.Id
+                                        )
+        let proteinDetectionWithName = 
+            setOption ProteinDetectionHandler.addName mzIdentMLXML.Name proteinDetectionBasic
+        let proteinDetectionWithActivityDate = 
+            setOption ProteinDetectionHandler.addActivityDate mzIdentMLXML.ActivityDate proteinDetectionWithName
+        let proteinDetectionWithMzIdentML =
+            ProteinDetectionHandler.addMzIdentMLDocument (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2"|> (fun item -> match item with
+                                                                                                                                                | Some x -> x
+                                                                                                                                                | None -> null
+                                                                                                                                   )) proteinDetectionWithActivityDate
+        proteinDetectionBasic
+
+let m =
+    convertToEntity_ProteinDetection1 
+        sqliteContext 
+        samplePeptideShaker.AnalysisCollection.ProteinDetection.Value
+
+m.MzIdentMLDocument
