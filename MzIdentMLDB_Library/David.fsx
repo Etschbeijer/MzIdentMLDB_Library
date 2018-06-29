@@ -25,144 +25,467 @@ open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLite = fileDir + "\Databases\Test.db"
+let standardDBPathSQLite = fileDir + "\Databases\Test3.db"
 
 let sqliteContext = ContextHandler.sqliteConnection standardDBPathSQLite
 
 
-let fromPsiMS =
-    ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
+//let fromPsiMS =
+//    ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
 
-let fromPride =
-    ContextHandler.fromFileObo (fileDir + "\Ontologies\Pride.txt")
+//let fromPride =
+//    ContextHandler.fromFileObo (fileDir + "\Ontologies\Pride.txt")
 
-let fromUniMod =
-    ContextHandler.fromFileObo (fileDir + "\Ontologies\Unimod.txt")
+//let fromUniMod =
+//    ContextHandler.fromFileObo (fileDir + "\Ontologies\Unimod.txt")
 
-let fromUnit_Ontology =
-    ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
+//let fromUnit_Ontology =
+//    ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
         
  
-let initStandardDB (dbContext : MzIdentML) =
+//let initStandardDB (dbContext : MzIdentML) =
 
-    let termsPSIMS =
-        let ontology =  OntologyHandler.init ("PSI-MS")
-        fromPsiMS
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore) 
+//    let termsPSIMS =
+//        let ontology =  OntologyHandler.init ("PSI-MS")
+//        fromPsiMS
+//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+//        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore) 
 
-    let termsPride =
-        let ontology =  OntologyHandler.init ("PRIDE")
-        fromPride
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
+//    let termsPride =
+//        let ontology =  OntologyHandler.init ("PRIDE")
+//        fromPride
+//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+//        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
-    let termsUnimod =
-        let ontology =  OntologyHandler.init ("UNIMOD")
-        fromUniMod
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
+//    let termsUnimod =
+//        let ontology =  OntologyHandler.init ("UNIMOD")
+//        fromUniMod
+//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+//        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
-    let termsUnit_Ontology =
-        let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
-        fromUnit_Ontology
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
-        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
+//    let termsUnit_Ontology =
+//        let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
+//        fromUnit_Ontology
+//        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+//        |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
-    let userOntology =
-        OntologyHandler.init("UserParam")
-        |> ContextHandler.tryAddToContext dbContext |> ignore
+//    let userOntology =
+//        OntologyHandler.init("UserParam")
+//        |> ContextHandler.tryAddToContext dbContext |> ignore
 
-    dbContext.Database.EnsureCreated() |> ignore
-    dbContext.SaveChanges()
+//    dbContext.Database.EnsureCreated() |> ignore
+//    dbContext.SaveChanges()
 
-initStandardDB sqliteContext
-
-type TestType =
-    | Software
-    | TuKL
-    | CSB
-    | BioTech
-    | SoftwareVendor
-    | David
-    | Timo
-    | Michael
-    static member toString (x:TestType) =
-        match x with
-        | Software  -> "MS:1000531"
-        | TuKL -> "TechnischeUniversität KaisersLautern"
-        | CSB -> "Computational Systems Biology"
-        | BioTech -> "BioTech"
-        | SoftwareVendor -> "MS:1001267"
-        | David -> "2"
-        | Timo -> "1"
-        | Michael -> "3"
-
-TestType.toString Software
-
-let organizations =
-    [
-     OrganizationHandler.init(TestType.toString TuKL);
-     OrganizationHandler.init(TestType.toString CSB)
-        |> OrganizationHandler.addParent(TestType.toString TuKL);
-    OrganizationHandler.init(TestType.toString BioTech)
-        |> OrganizationHandler.addParent(TestType.toString TuKL)
-    ]
-    |> List.map (fun organization -> ContextHandler.addToContext sqliteContext organization)
+//initStandardDB sqliteContext
 
 
-let persons =
-    [
-     PersonHandler.init("1")
-     |> PersonHandler.addFirstName "Timo"
-     |> PersonHandler.addLastName "Mühlhaus"
-     |> PersonHandler.addOrganization 
-        (OrganizationHandler.tryFindByID 
-            sqliteContext 
-            (TestType.toString CSB)
-        );
-     PersonHandler.init("2")
-     |> PersonHandler.addFirstName "David"
-     |> PersonHandler.addLastName "Zimmer"
-     |> PersonHandler.addOrganization 
-            (OrganizationHandler.tryFindByID 
-                sqliteContext 
-                (TestType.toString CSB)
-            );
-     PersonHandler.init("3")
-     |> PersonHandler.addFirstName "Michael"
-     |> PersonHandler.addLastName "Schroda"
-     |> PersonHandler.addOrganization 
-            (OrganizationHandler.tryFindByID 
-                sqliteContext 
-                (TestType.toString BioTech)
+
+//Create new dbContent based on xml-file
+
+
+let createDBEntry (dbContext:MzIdentML) =
+    let mzIdentMLDocument =
+        MzIdentMLDocumentHandler.init(
+                                      "1.2.0",
+                                      id="PeptideShaker v1.12.2"
+                                     )
+        |> MzIdentMLDocumentHandler.addToContext dbContext
+
+    let organization =
+        OrganizationHandler.init("ORG_DOC_OWNER")
+        |> OrganizationHandler.addName("Test")
+        |> OrganizationHandler.addDetail
+            (OrganizationParamHandler.init(
+                                           (TermHandler.tryFindByID dbContext "MS:1000586").Value
+                                          )
             )
-    ]
-    |> List.map (fun person -> ContextHandler.addToContext sqliteContext person)
+        |> OrganizationHandler.addToContext dbContext
 
-let analysisSoftware =
-    AnalysisSoftwareHandler.init(
-                                 CVParamHandler.init(
-                                                     "MzIdentMLTest", 
-                                                     TermHandler.tryFindByID 
-                                                        sqliteContext 
-                                                        (TestType.toString Software)
+    let person = 
+        PersonHandler.init("PROVIDER")
+        |> PersonHandler.addFirstName "test"
+        |> PersonHandler.addLastName "test"
+        |> PersonHandler.addDetail 
+            (PersonParamHandler.init(
+                                     (TermHandler.tryFindByID dbContext "MS:1000587").Value
+                                    )
+            )
+        |> PersonHandler.addOrganization
+            (OrganizationHandler.tryFindByID 
+                dbContext
+                "ORG_DOC_OWNER"
+            ).Value
+        |> PersonHandler.addToContext dbContext
+    
+    let contactRole =
+        ContactRoleHandler.init(
+                                (PersonHandler.tryFindByID dbContext "PROVIDER").Value,
+                                CVParamHandler.init(
+                                                    (TermHandler.tryFindByID dbContext "MS:1001271").Value
+                                                   ),
+                                "PROVIDER"
+                               )
+        |> ContactRoleHandler.addToContext dbContext
+    
+    let analysisSoftware =
+        AnalysisSoftwareHandler.init(
+            CVParamHandler.init(
+                                (TermHandler.tryFindByID dbContext "MS:1002458").Value
+                            ),
+            "ID_software"
+                                    )
+        |> AnalysisSoftwareHandler.addName "PeptideShaker"
+        |> AnalysisSoftwareHandler.addURI "http://compomics.github.io/projects/peptide-shaker.html"
+        |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper
+            (ContactRoleHandler.tryFindByID dbContext "PROVIDER").Value
+        |> AnalysisSoftwareHandler.addMzIdentMLDocument
+            (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2").Value
+        |> AnalysisSoftwareHandler.addToContext dbContext
+    
+    let provider =
+        ProviderHandler.init("PROVIDER")
+        |> ProviderHandler.addContactRole
+            (ContactRoleHandler.tryFindByID dbContext "PROVIDER").Value
+        |> ProviderHandler.addMzIdentMLDocument 
+            (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2").Value
+        |> ProviderHandler.addToContext dbContext
+
+    let peptide =
+        PeptideHandler.init("SIQFVDWCPTGFK", "SIQFVDWCPTGFK")
+        |> PeptideHandler.addModification
+            (ModificationHandler.init(
+                                      [ModificationParamHandler.init(
+                                                                     (TermHandler.tryFindByID 
+                                                                        dbContext 
+                                                                        "UNIMOD:4"
+                                                                     ).Value
+                                                                    )
+                                      ]
+                                     )
+             |> ModificationHandler.addMonoIsotopicMassDelta 57.021464
+             |> ModificationHandler.addLocation 8
+             |> ModificationHandler.addResidues "C"
+            )
+        |> PeptideHandler.addToContext dbContext
+
+    //let spectrumIdentification =
+    //    SpectrumIdentificationHandler.init(
+    //                                       (SpectrumIdentificationListHandler.tryFindByID dbContext "SIL_1").Value,
+    //                                       (SpectrumIdentificationProtocolHandler.tryFindByID dbContext "SearchProtocol_1").Value,
+    //                                       (SpectraDataHandler.tryFindByID dbContext "qExactive01819.mgf").Value,
+    //                                       (SearchDatabaseHandler.tryFindByID dbContext "SearchDB_1").Value,
+    //                                       "SpecIdent_1"
+    //                                      )
+    //    |> SpectrumIdentificationHandler.addToContext dbContext
+    
+    //let proteinDetection =
+    //    ProteinDetectionHandler.init(
+    //                                 (ProteinDetectionListHandler.tryFindByID dbContext "Protein_groups").Value,
+    //                                 (ProteinDetectionProtocolHandler.tryFindByID dbContext "PeptideShaker_1").Value,
+    //                                 (SpectrumIdentificationListHandler.tryFindByID dbContext "SIL_1").Value,
+    //                                 "PD_1"
+    //                                )
+    //    |> ProteinDetectionHandler.addToContext dbContext
+
+    let spectrumIdentificationProtocol =
+        SpectrumIdentificationProtocolHandler.init(
+                                                   (AnalysisSoftwareHandler.tryFindByID 
+                                                        dbContext 
+                                                        "ID_software"
+                                                   ).Value,
+                                                   (CVParamHandler.init(
+                                                                        (TermHandler.tryFindByID 
+                                                                            dbContext 
+                                                                            "MS:1001083"
+                                                                        ).Value
+                                                                       )
+                                                   ),
+                                                   [(ThresholdParamHandler.init(
+                                                                                (TermHandler.tryFindByID 
+                                                                                    dbContext 
+                                                                                    "MS:1001364"
+                                                                                ).Value
+                                                                               )
+                                                   )],
+                                                   "SearchProtocol_1"
+                                                  )
+        |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParam
+                (AdditionalSearchParamHandler.init(
+                                                   (TermHandler.tryFindByID dbContext "MS:1001211").Value
+                                                  )
+                )
+        |> SpectrumIdentificationProtocolHandler.addModificationParams
+            [(SearchModificationHandler.init(
+                                             true,
+                                             57.021464,
+                                             "C",
+                                             [SearchModificationParamHandler.init(
+                                                                                  (TermHandler.tryFindByID
+                                                                                    dbContext
+                                                                                    "UNIMOD:4"
+                                                                                   ).Value
+                                                                                  )
+                                             ]
+                                            )
+            )]
+        |> SpectrumIdentificationProtocolHandler.addEnzyme
+            (EnzymeHandler.init(
+                                "Enz1",
+                                "Trypsin",
+                                semiSpecific=false,
+                                missedCleavages=2
+                               )
+            |> EnzymeHandler.addEnzymeName
+                (EnzymeNameParamHandler.init(
+                                             (TermHandler.tryFindByID dbContext "MS:1001251").Value
+                                            )
+                )
+            )
+        |> SpectrumIdentificationProtocolHandler.addIndependent_Enzymes false
+        |> SpectrumIdentificationProtocolHandler.addFragmentTolerance
+            (FragmentToleranceParamHandler.init(
+                                                (TermHandler.tryFindByID dbContext "MS:1001412").Value
+                                               )
+            )
+        |> SpectrumIdentificationProtocolHandler.addParentTolerance
+            (ParentToleranceParamHandler.init(
+                                              (TermHandler.tryFindByID dbContext "MS:1001412").Value
+                                             )
+            )
+        |> SpectrumIdentificationProtocolHandler.addToContext dbContext
+
+    let proteinDetectionProtocol =
+        ProteinDetectionProtocolHandler.init(
+            (AnalysisSoftwareHandler.tryFindByID 
+            dbContext "ID_software"
+            ).Value,
+            [(ThresholdParamHandler.init(
+                                        (TermHandler.tryFindByID
+                                            dbContext "MS:1002369"
+                                        ).Value
+                                        )
+            |> ThresholdParamHandler.addValue "0.01"
+            )],
+            "PeptideShaker_1"
+                                            )
+        |> ProteinDetectionProtocolHandler.addToContext dbContext
+    
+    let inputs =
+        InputsHandler.init(
+            [(SpectraDataHandler.init(
+                                        "file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/qExactive01819.mgf",
+                                        CVParamHandler.init(
+                                                            (TermHandler.tryFindByID 
+                                                            dbContext "MS:1001062"
+                                                            ).Value
+                                                        ),
+                                        CVParamHandler.init(
+                                                            (TermHandler.tryFindByID
+                                                            dbContext "MS:1000774"
+                                                            ).Value
+                                                        ),
+                                        "qExactive01819.mgf",
+                                        "qExactive01819.mgf"
+                                    )
+            )]
+                          )
+        |> InputsHandler.addSourceFile
+            (SourceFileHandler.init(
+                "file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/.PeptideShaker_unzip_temp/searchgui_out_PeptideShaker_temp/qExactive01819.omx",
+                CVParamHandler.init(
+                                    (TermHandler.tryFindByID dbContext "MS:1001400").Value
+                                    ),
+                "SourceFile_1"
+                                   )
+            )
+        |> InputsHandler.addSearchDatabase
+            (SearchDatabaseHandler.init(
+                "file:/C:/Users/hba041/My_Git_Applications/peptide-shaker.wiki/data/2016_04_05/uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta",
+                CVParamHandler.init(
+                                    (TermHandler.tryFindByID dbContext "MS:1001348").Value
+                                    ),
+                CVParamHandler.init(
+                                    (TermHandler.init("uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta")
+                                        |> TermHandler.addOntology
+                                            (OntologyHandler.tryFindByID dbContext "UserParam").Value
+                                    )
+                                    ),
+                "SearchDB_1"
+                                       )
+             |> SearchDatabaseHandler.addNumDatabaseSequences 40400L
+            )
+        |> InputsHandler.addMzIdentMLDocument
+            (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2").Value
+        |> InputsHandler.addToContext dbContext
+    
+    let dbSequence =
+        DBSequenceHandler.init(
+                               "P27348",
+                               (SearchDatabaseHandler.tryFindByID dbContext "SearchDB_1").Value,
+                               "P27348"
+                              )
+        |> DBSequenceHandler.addDetail
+            (DBSequenceParamHandler.init(
+                                         (TermHandler.tryFindByID dbContext "MS:1001088").Value
+                                        )
+            |> DBSequenceParamHandler.addValue "1433T_HUMAN 14-3-3 protein theta OS=Homo sapiens GN=YWHAQ PE=1 SV=1"
+            )
+        |> DBSequenceHandler.addToContext dbContext
+
+    let peptideEvidence =
+        PeptideEvidenceHandler.init(
+                                    (DBSequenceHandler.tryFindByID dbContext "P27348").Value,
+                                    (PeptideHandler.tryFindByID dbContext "SIQFVDWCPTGFK").Value,
+                                    "PepEv_1"
+                                   )
+        |> PeptideEvidenceHandler.addIsDecoy false
+        |> PeptideEvidenceHandler.addPre "R"
+        |> PeptideEvidenceHandler.addPost "V"
+        |> PeptideEvidenceHandler.addStart 340
+        |> PeptideEvidenceHandler.addEnd 352
+        |> PeptideEvidenceHandler.addToContext dbContext
+
+    let fragmentationTable =
+        MeasureHandler.init(
+                    [MeasureParamHandler.init(
+                                              (TermHandler.tryFindByID
+                                                 dbContext
+                                                 "MS:1001225"
+                                              ).Value
+                                             )
+                     |> MeasureParamHandler.addUnit
+                            (TermHandler.tryFindByID
+                                                 dbContext
+                                                 "MS:1000040"
+                                              ).Value
+                    ],
+                    "Measure_MZ"
+                           )
+        |> MeasureHandler.addToContext dbContext
+
+    let spectrumIdentificationList =
+        SpectrumIdentificationListHandler.init(
+            [SpectrumIdentificationResultHandler.init(
+                (SpectraDataHandler.tryFindByID dbContext "qExactive01819.mgf").Value,
+                "index=11104",
+                [SpectrumIdentificationItemHandler.init(
+                                                        (PeptideHandler.tryFindByID
+                                                            dbContext
+                                                            "SIQFVDWCPTGFK"
+                                                        ).Value,
+                                                        3,
+                                                        372.228240966797,
+                                                        false,
+                                                        1,
+                                                        "SII_1_1"
+                                                        )
+                |> SpectrumIdentificationItemHandler.addPeptideEvidence
+                    (PeptideEvidenceHandler.tryFindByID
+                        dbContext
+                        "PepEv_1"
+                    ).Value
+                |> SpectrumIdentificationItemHandler.addFragmentation
+                    (IonTypeHandler.init(
+                                            [IonTypeParamHandler.init(
+                                                                    (TermHandler.tryFindByID
+                                                                        dbContext
+                                                                        "MS:1001224"
+                                                                    ).Value
+                                                                    )
+                                            ]
+                                        )
+                    |> IonTypeHandler.addIndex (IndexHandler.init(1))
+                    |> IonTypeHandler.addFragmentArray
+                        (FragmentArrayHandler.init(
+                                                    (MeasureHandler.tryFindByID 
+                                                        dbContext
+                                                        "Measure_MZ"
+                                                    ).Value,
+                                                    [ValueHandler.init(335.2040405)]
                                                     )
-                                )
-    |> AnalysisSoftwareHandler.addName "MzIdentMLDatanBank"
-    |> AnalysisSoftwareHandler.addVersion "0.8"
-    |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper (ContactRoleHandler.init(
-                                                                                     PersonHandler.tryFindByID 
-                                                                                        sqliteContext 
-                                                                                        (TestType.toString David),
-                                                                                     CVParamHandler.init
-                                                                                        ("MasterStudent", 
-                                                                                         TermHandler.tryFindByID 
-                                                                                            sqliteContext 
-                                                                                            (TestType.toString SoftwareVendor)
-                                                                                        )
-                                                                                    )
-                                                            )
-    |> ContextHandler.addToContext sqliteContext
+                        )
+                    )
+                |> SpectrumIdentificationItemHandler.addDetail
+                    (SpectrumIdentificationItemParamHandler.init(
+                                                                    (TermHandler.tryFindByID
+                                                                    dbContext "MS:1002466"
+                                                                    ).Value
+                                                                )
+                        |> SpectrumIdentificationItemParamHandler.addValue "0.0"
+                    )
 
-sqliteContext.SaveChanges()
+                ],
+                "SIR_1"
+                                                     )
+            |> SpectrumIdentificationResultHandler.addDetail
+                (SpectrumIdentificationResultParamHandler.init(
+                                                               (TermHandler.tryFindByID
+                                                                    dbContext
+                                                                    "MS:1002466"
+                                                               ).Value
+                                                              )
+                )
+            ],
+            "SIL_1"                                      
+                                                    )
+        |> SpectrumIdentificationListHandler.addFragmentationTable
+                (MeasureHandler.tryFindByID dbContext "Measure_MZ").Value
+        |> SpectrumIdentificationListHandler.addToContext dbContext
+
+    let proteinDetectionList =
+        ProteinDetectionListHandler.init("Protein_groups")
+        |> ProteinDetectionListHandler.addProteinAmbiguityGroup
+            (ProteinAmbiguityGroupHandler.init(
+                [ProteinDetectionHypothesisHandler.init(
+                                                        true,
+                                                        (DBSequenceHandler.tryFindByID
+                                                            dbContext 
+                                                            "P27348"
+                                                        ).Value,
+                                                        [PeptideHypothesisHandler.init(
+                                                            (PeptideEvidenceHandler.tryFindByID
+                                                                dbContext
+                                                                "PepEv_1"
+                                                            ).Value,
+                                                            [(SpectrumIdentificationItemHandler.tryFindByID
+                                                                dbContext
+                                                                "SII_1_1"
+                                                             ).Value
+                                                            ]
+                                                                                      )
+                                                        ],
+                                                        "PAG_0"
+                                                       )
+                 |> ProteinDetectionHypothesisHandler.addDetail
+                        (ProteinDetectionHypothesisParamHandler.init(
+                                                                     (TermHandler.tryFindByID
+                                                                        dbContext "MS:1002403"
+                                                                     ).Value
+                                                                    )
+                        )
+                ]   
+                                                       )
+        |> ProteinAmbiguityGroupHandler.addDetail
+                        (ProteinAmbiguityGroupParamHandler.init(
+                                                                (TermHandler.tryFindByID
+                                                                dbContext "MS:1002470"
+                                                                ).Value
+                                                               )
+                         |> ProteinAmbiguityGroupParamHandler.addValue "100.0"
+                        )
+            )
+        |> ProteinDetectionListHandler.addToContext dbContext
+
+    let analysisData =
+        AnalysisDataHandler.init(
+            [(SpectrumIdentificationListHandler.tryFindByID dbContext "SIL_1").Value]
+                                )
+        |> AnalysisDataHandler.addProteinDetectionList
+            (ProteinDetectionListHandler.tryFindByID dbContext "Protein_groups").Value
+        |> AnalysisDataHandler.addMzIdentMLDocument
+            (MzIdentMLDocumentHandler.tryFindByID dbContext "PeptideShaker v1.12.2").Value
+        |> AnalysisDataHandler.addToContext dbContext
+    analysisData
+
+let testDBContext =
+    createDBEntry sqliteContext

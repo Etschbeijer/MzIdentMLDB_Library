@@ -5592,7 +5592,7 @@ module InsertStatements =
                 tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDBSequenceAccession (dbContext:MzIdentML) (name:string) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
                            if i.Name=name
@@ -5625,7 +5625,7 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidence) =
-                    PeptideEvidenceHandler.tryFindByDBSequenceAccession dbContext item.Name
+                    PeptideEvidenceHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideEvidenceHandler.hasEqualFieldValues organization item with
