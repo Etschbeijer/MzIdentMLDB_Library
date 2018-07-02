@@ -78,6 +78,7 @@
     <None Include="dlls\FSharp.Care.dll" />
     <None Include="InitDB.fsx" />
     <None Include="David.fsx" />
+    <None Include="MaxPlankTest.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
