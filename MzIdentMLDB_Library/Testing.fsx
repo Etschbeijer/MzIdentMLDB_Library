@@ -28,7 +28,7 @@ open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLite = fileDir + "\Databases\Test2.db"
+let standardDBPathSQLite = fileDir + "\Databases\Test1.db"
 
 let sqliteContext = ContextHandler.sqliteConnection standardDBPathSQLite
 
@@ -260,33 +260,34 @@ let  samplePeptideShaker = SchemePeptideShaker.Load("..\MzIdentMLDB_Library\XML_
 
 
 samplePeptideShaker.AuditCollection.Value.Organizations
-|> Array.map (fun organization -> convertToEntity_Organization sqliteContext organization)
+|> Array.iter (fun organization -> convertToEntity_Organization sqliteContext organization)
 
 samplePeptideShaker.AuditCollection.Value.Persons
-|> Array.map (fun person -> convertToEntity_Person  sqliteContext person)
+|> Array.iter (fun person -> convertToEntity_Person  sqliteContext person)
 
 samplePeptideShaker.AnalysisSoftwareList.Value.AnalysisSoftwares
-|> Array.map (fun analysisSoftware -> convertToEntity_AnalysisSoftware sqliteContext analysisSoftware)
+|> Array.iter (fun analysisSoftware -> convertToEntity_AnalysisSoftware sqliteContext analysisSoftware)
 
 samplePeptideShaker.SequenceCollection.Value.Peptides
-|> Array.map (fun peptide -> convertToEntity_Peptide sqliteContext peptide)
+|> Array.iter (fun peptide -> convertToEntity_Peptide sqliteContext peptide)
 
 samplePeptideShaker.AnalysisProtocolCollection.SpectrumIdentificationProtocols
-|> Array.map (fun item -> convertToEntity_SpectrumIdentificationProtocol sqliteContext item)
+|> Array.iter (fun item -> convertToEntity_SpectrumIdentificationProtocol sqliteContext item)
 
-convertToEntity_DBSequence sqliteContext samplePeptideShaker.SequenceCollection.Value.DbSequences.[0]
+samplePeptideShaker.SequenceCollection.Value.DbSequences
+|> Array.iter (fun item -> convertToEntity_DBSequence sqliteContext item)
 
 samplePeptideShaker.SequenceCollection.Value.PeptideEvidences
-|> Array.map (fun item -> convertToEntity_PeptideEvidence sqliteContext item)
+|> Array.iter (fun item -> convertToEntity_PeptideEvidence sqliteContext item)
 
 samplePeptideShaker.DataCollection.Inputs.SpectraDatas
-|> Array.map (fun item -> convertToEntity_SpectraData sqliteContext item)
+|> Array.iter (fun item -> convertToEntity_SpectraData sqliteContext item)
 
 samplePeptideShaker.DataCollection.Inputs.SourceFiles
-|> Array.map (fun item -> convertToEntity_SourceFile sqliteContext item)
+|> Array.iter (fun item -> convertToEntity_SourceFile sqliteContext item)
 
 samplePeptideShaker.DataCollection.Inputs.SearchDatabases
-|> Array.map (fun item -> convertToEntity_SearchDatabase sqliteContext item)
+|> Array.iter (fun item -> convertToEntity_SearchDatabase sqliteContext item)
 
 convertToEntity_MzIdentML sqliteContext samplePeptideShaker
 

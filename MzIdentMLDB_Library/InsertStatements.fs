@@ -129,13 +129,13 @@ module InsertStatements =
                          (Nullable(DateTime.Now))
                         )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces a name of an existing object with new name.
             static member addName
                 (name:string) (term:Term) =
                 term.Name <- name
                 term
                     
-            ///Adds an ontology to an existing term-object.
+            ///Replaces an ontology of an existing term-object with new ontology.
             static member addOntology
                 (ontology:Ontology) (term:Term) =
                 term.Ontology <- ontology
