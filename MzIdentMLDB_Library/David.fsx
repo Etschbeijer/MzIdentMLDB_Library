@@ -833,8 +833,11 @@ let createDBEntry2 (dbContext:MzIdentML) =
                 CVParamHandler.init(
                     (TermHandler.init("uniprot-human-reviewed-trypsin-april-2016_concatenated_target_decoy.fasta")
                         |> TermHandler.addOntology
-                            (OntologyHandler.tryFindByID dbContext "UserParam").Value
-                                    )
+                            (OntologyHandler.tryFindByID 
+                                dbContext 
+                                "UserParam"
+                            ).Value
+                    )
                                     ),
                 "SearchDB_1"
                                        )
@@ -855,8 +858,8 @@ let createDBEntry2 (dbContext:MzIdentML) =
         |> DBSequenceHandler.addDetail
             (DBSequenceParamHandler.init(
                 (TermHandler.tryFindByID 
-                dbContext
-                (TermIDByName.toID ProteinDescription)
+                    dbContext
+                    (TermIDByName.toID ProteinDescription)
                 ).Value
                                         )
             |> DBSequenceParamHandler.addValue "1433T_HUMAN 14-3-3 protein theta OS=Homo sapiens GN=YWHAQ PE=1 SV=1"
@@ -877,19 +880,19 @@ let createDBEntry2 (dbContext:MzIdentML) =
 
     let fragmentationTable =
         MeasureHandler.init(
-                    [MeasureParamHandler.init(
-                        (TermHandler.tryFindByID
-                            dbContext
-                            (TermIDByName.toID ProductIonMasstoChargeRatio)
-                        ).Value
-                                             )
-                     |> MeasureParamHandler.addUnit
-                            (TermHandler.tryFindByID
-                                dbContext
-                                (TermIDByName.toID MZRatio)
-                            ).Value
-                    ],
-                    "Measure_MZ"
+            [MeasureParamHandler.init(
+                (TermHandler.tryFindByID
+                    dbContext
+                    (TermIDByName.toID ProductIonMasstoChargeRatio)
+                ).Value
+                                        )
+                |> MeasureParamHandler.addUnit
+                    (TermHandler.tryFindByID
+                        dbContext
+                        (TermIDByName.toID MZRatio)
+                    ).Value
+            ],
+            "Measure_MZ"
                            )
 
     let spectrumIdentificationList =
