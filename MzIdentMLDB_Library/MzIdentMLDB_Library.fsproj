@@ -79,6 +79,8 @@
     <None Include="InitDB.fsx" />
     <None Include="David.fsx" />
     <None Include="MaxPlankTest.fsx" />
+    <Content Include="MaxPlankData\evidence.txt" />
+    <Content Include="MaxPlankData\proteinGroups.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
