@@ -695,6 +695,18 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
+    and [<AllowNullLiteral>] [<Table("SpectrumIdentificationProtocolParams")>]
+        SpectrumIdentificationProtocolParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
+            //inherit CVParam(null, null, null, null, Nullable())
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = SpectrumIdentificationProtocolParam(null, null, null, null, Nullable())
+
+    ///A single entry from an ontology or a controlled vocabulary.
     and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
         AnalysisParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
@@ -1287,6 +1299,7 @@ module DataModel =
                                         fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                         threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
                                         translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, 
+                                        spectrumIdentificationProtocolparam:List<SpectrumIdentificationProtocolParam>, 
                                         rowVersion:Nullable<DateTime>
                                        ) =
             let mutable id'                     = id
@@ -1311,9 +1324,11 @@ module DataModel =
             let mutable translationTables'      = translationTables
             //
             let mutable mzIdentMLDocument'      = mzIdentMLDocument
+            //Own insertion
+            let mutable spectrumIdentificationProtocolparam' = spectrumIdentificationProtocolparam
             let mutable rowVersion'             = rowVersion
 
-            new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, Nullable())
+            new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1331,6 +1346,7 @@ module DataModel =
             member this.Frames with get() = frames' and set(value) = frames' <- value
             member this.TranslationTables with get() = translationTables' and set(value) = translationTables' <- value
             member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.SpectrumIdentificationProtocolParams with get() = spectrumIdentificationProtocolparam' and set(value) = spectrumIdentificationProtocolparam' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database for searching mass spectra.
@@ -2062,6 +2078,11 @@ module DataModel =
             member public this.Frame with get() = this.m_Frame
                                                     and set value = this.m_Frame <- value
 
+            [<DefaultValue>] 
+            val mutable m_SpectrumIdentificationProtocolParam : DbSet<SpectrumIdentificationProtocolParam>
+            member public this.SpectrumIdentificationProtocolParam with get() = this.m_SpectrumIdentificationProtocolParam
+                                                                            and set value = this.m_SpectrumIdentificationProtocolParam <- value
+            
             [<DefaultValue>] 
             val mutable m_SpectrumIdentificationProtocol : DbSet<SpectrumIdentificationProtocol>
             member public this.SpectrumIdentificationProtocol with get() = this.m_SpectrumIdentificationProtocol

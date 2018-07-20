@@ -5096,6 +5096,7 @@ module InsertStatements =
                     ?databaseFilters        : seq<Filter>,
                     ?frames                 : seq<Frame>,
                     ?translationTable       : seq<TranslationTable>,
+                    ?spectrumIdentificationProtocolparam : seq<SpectrumIdentificationProtocolParam>,
                     ?mzIdentML              : MzIdentMLDocument
                 ) =
                 let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
@@ -5110,6 +5111,7 @@ module InsertStatements =
                 let databaseFilters'        = convertOptionToList databaseFilters
                 let frames'                 = convertOptionToList frames
                 let translationTable'       = convertOptionToList translationTable
+                let spectrumIdentificationProtocolparam' = convertOptionToList spectrumIdentificationProtocolparam
                 let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new SpectrumIdentificationProtocol(
@@ -5129,6 +5131,7 @@ module InsertStatements =
                                                    frames', 
                                                    translationTable', 
                                                    mzIdentML', 
+                                                   spectrumIdentificationProtocolparam',
                                                    Nullable(DateTime.Now)
                                                   )
 
@@ -5250,6 +5253,18 @@ module InsertStatements =
             static member addTranslationTables
                 (translationTables:seq<TranslationTable>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                 let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
+                spectrumIdentificationProtocol
+
+            ///Adds a spectrumIdentificationProtocolParam to an existing spectrumIdentificationprotocol-object.
+            static member addSpectrumIdentificationProtocolParam
+                (spectrumIdentificationProtocolParam:SpectrumIdentificationProtocolParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
+                let result = spectrumIdentificationProtocol.SpectrumIdentificationProtocolParams <- addToList spectrumIdentificationProtocol.SpectrumIdentificationProtocolParams spectrumIdentificationProtocolParam
+                spectrumIdentificationProtocol
+
+            ///Adds a collection of spectrumIdentificationProtocolParams to an existing spectrumIdentificationprotocol-object.
+            static member addSpectrumIdentificationProtocolParams
+                (spectrumIdentificationProtocolParams:seq<SpectrumIdentificationProtocolParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
+                let result = spectrumIdentificationProtocol.SpectrumIdentificationProtocolParams <- addCollectionToList spectrumIdentificationProtocol.SpectrumIdentificationProtocolParams spectrumIdentificationProtocolParams
                 spectrumIdentificationProtocol
 
             ///Replaces mzidentml of existing object with new mzidentml.
