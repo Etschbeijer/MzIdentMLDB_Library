@@ -1219,6 +1219,34 @@ module MaxPlankFileTest =
             (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
         |> TermHandler.addToContext sqliteContext
 
+    let user67 =
+        TermHandler.init("User:0000067")
+        |> TermHandler.addName "MaxQuant: Peptides used for protein quantification"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user68 =
+        TermHandler.init("User:0000068")
+        |> TermHandler.addName "MaxQuant: Discard unmodified counterpart peptides"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user69 =
+        TermHandler.init("User:0000069")
+        |> TermHandler.addName "MaxQuant: Min. ratio count"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user70 =
+        TermHandler.init("User:0000070")
+        |> TermHandler.addName "MaxQuant: Use delta score"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
     type TermIDByName =
             //Else
             | RawFile
@@ -1253,6 +1281,8 @@ module MaxPlankFileTest =
             | SideFDR
             ///
             | UseNormRatios
+            ///
+            |UseDeltaScores
 
             //AminoAcids
             ///Sequence of amino acids.
@@ -1277,6 +1307,8 @@ module MaxPlankFileTest =
             | QValue
             ///True or FALSe of contaminants are included or not
             | Contaminants
+            ///Determines which kind of peptide is used to identify the protein.
+            | PeptidesForProteinQuantification
 
             //Peptides
             ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -1310,6 +1342,10 @@ module MaxPlankFileTest =
             | FractionOfTotalSpectrum
             ///Number of possible distributions of the modifications over the peptide sequence.
             | Combinatorics
+            ///
+            | DiscardUnmodifiedPeptide
+            ///
+            | MinRatioCount
 
             //Nucleic Acids
             ///Seuqence of nucleic acids.
@@ -1602,31 +1638,51 @@ module MaxPlankFileTest =
                 | ProteinFDR -> "User:0000064"
                 | SideFDR -> "User:0000065"
                 | UseNormRatios -> "User:0000066"
+                | PeptidesForProteinQuantification -> "User:0000067"
+                | DiscardUnmodifiedPeptide -> "User:0000068"
+                | MinRatioCount -> "User:0000069"
+                | UseDeltaScores -> "User:0000070"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
 
-    let fileFormat =
+    let fileFormat1 =
         CVParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID FileFormat)).Value
                            )
         |> CVParamHandler.addValue "Tab seperated"
 
+    let fileFormat2 =
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID FileFormat)).Value
+                           )
+        |> CVParamHandler.addValue "FASTA"
 
-    let databaseName =
+    let databaseName1 =
         CVParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID RawFile)).Value
                            )
         |> CVParamHandler.addValue "20170518 TM FSconc3009"
 
+    let databaseName2 =
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID RawFile)).Value
+                           )
+        |> CVParamHandler.addValue "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
+
 
     let searchDatabase =
+        [
         SearchDatabaseHandler.init(
-            "local", fileFormat, databaseName, "20170518 TM FSconc3009"
-                                  )
+            "local", fileFormat1, databaseName1, "20170518 TM FSconc3009"
+                                  );
+        SearchDatabaseHandler.init(
+            "local", fileFormat2, databaseName2, "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
+                                  );
+        ]
 
     let dbSequence =
-        DBSequenceHandler.init("AAIEASFGSVDEMK", searchDatabase)
+        DBSequenceHandler.init("AAIEASFGSVDEMK", searchDatabase.[0])
         |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
         |> DBSequenceHandler.addLength 14
 
@@ -2516,11 +2572,11 @@ module MaxPlankFileTest =
     let spectradata =
         [
         SpectraDataHandler.init(
-            "local", fileFormat, spectrumIDFormat
+            "local", fileFormat1, spectrumIDFormat
                                )
         |> SpectraDataHandler.addName "20170518 TM FSconc3001";
         SpectraDataHandler.init(
-            "local", fileFormat, spectrumIDFormat
+            "local", fileFormat1, spectrumIDFormat
                                )
         |> SpectraDataHandler.addName "20170518 TM FSconc3002";
         ]
@@ -2684,6 +2740,26 @@ module MaxPlankFileTest =
         |> FragmentToleranceParamHandler.addValue "TRUE";
         ]
 
+    let spectrumIdentificationProcolparams =
+        [
+        SpectrumIdentificationProtocolParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
+                                                       )
+        |> SpectrumIdentificationProtocolParamHandler.addValue "Razor";
+        SpectrumIdentificationProtocolParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+                                                       )
+        |> SpectrumIdentificationProtocolParamHandler.addValue "TRUE";
+        SpectrumIdentificationProtocolParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MinRatioCount)).Value
+                                                       )
+        |> SpectrumIdentificationProtocolParamHandler.addValue "2";
+        SpectrumIdentificationProtocolParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID UseDeltaScores)).Value
+                                                       )
+        |> SpectrumIdentificationProtocolParamHandler.addValue "TRUE";
+        ]
+
     let spectrumIdentificationProtocol =
         SpectrumIdentificationProtocolHandler.init(
             analysisSoftware, searchType, threshold
@@ -2733,5 +2809,5 @@ module MaxPlankFileTest =
 
     let spectrumIdentification = 
         SpectrumIdentificationHandler.init(
-            spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, [searchDatabase]
+            spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, searchDatabase
                                           )

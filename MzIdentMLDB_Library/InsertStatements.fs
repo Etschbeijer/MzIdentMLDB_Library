@@ -2432,6 +2432,91 @@ module InsertStatements =
                 SpectrumIdentificationListParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
+        type SpectrumIdentificationProtocolParamHandler =
+            ///Initializes a fragmenttoleranceparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new SpectrumIdentificationProtocolParam(
+                                           id',  
+                                           value', 
+                                           term, 
+                                           unit', 
+                                           Nullable(DateTime.Now)
+                                          )
+
+            ///Replaces value of existing object with new value.
+            static member addValue
+                (value:string) (param:SpectrumIdentificationProtocolParam)  =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new unit.
+            static member addUnit
+                (unit:Term) (param:SpectrumIdentificationProtocolParam) =
+                param.Unit <- unit
+                param
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzIdentML) (paramID:string) =
+                tryFind (context.SpectrumIdentificationProtocolParam.Find(paramID))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationProtocolParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationProtocolParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocolParam) (item2:SpectrumIdentificationProtocolParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocolParam) =
+                    SpectrumIdentificationProtocolParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SpectrumIdentificationProtocolParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationProtocolParam) =
+                SpectrumIdentificationProtocolParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
         type AnalysisParamHandler =
             ///Initializes a analysisparam-object with at least all necessary parameters.
             static member init
