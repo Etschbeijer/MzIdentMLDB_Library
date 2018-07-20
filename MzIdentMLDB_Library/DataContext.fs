@@ -1115,7 +1115,7 @@ module DataModel =
 
     ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
     and [<AllowNullLiteral>]
-        FragmentArray (id:string, measure:Measure, values:List<Value>, rowVersion:Nullable<DateTime>) =
+        FragmentArray (id:string, measure:CVParam, values:List<Value>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable measure'    = measure
             let mutable values'     = values

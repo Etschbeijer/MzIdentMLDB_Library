@@ -1050,6 +1050,34 @@ module MaxPlankFileTest =
         |> TermHandler.addOntology 
             (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
         |> TermHandler.addToContext sqliteContext
+
+    let user43 =
+        TermHandler.init("User:0000043")
+        |> TermHandler.addName "MaxQuant: Score difference"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user44 =
+        TermHandler.init("User:0000044")
+        |> TermHandler.addName "MaxQuant: Combinatorics"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user45 =
+        TermHandler.init("User:0000045")
+        |> TermHandler.addName "MaxQuant: Matches"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
+
+    let user46 =
+        TermHandler.init("User:0000046")
+        |> TermHandler.addName "MaxQuant: Intensities"
+        |> TermHandler.addOntology 
+            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+        |> TermHandler.addToContext sqliteContext
         
     type TermIDByName =
             //Else
@@ -1124,6 +1152,8 @@ module MaxPlankFileTest =
             ///The percentage the parent ion intensity makes up of the total
             ///intensity of the whole MS spectrum.
             | FractionOfTotalSpectrum
+            ///Number of possible distributions of the modifications over the peptide sequence.
+            | Combinatorics
 
             //Nucleic Acids
             ///Seuqence of nucleic acids.
@@ -1246,6 +1276,15 @@ module MaxPlankFileTest =
             ///This number indicates which MS/MS scan this one is in the
             ///consecutive order of the MS/MS scans that are acquired after an MS scan.
             | ScanEventNumber
+            ///Score difference to the second best positioning of modifications
+            ///identified peptide with the same amino acid sequence.
+            | ScoreDifference
+            ///The species of the peaks in the fragmentation spectrum after TopN filtering
+            | Matches
+            ///Kind of ion after fragmentation of peptide.
+            | Fragment
+            ///The species of the peaks in the fragmentation spectrum after TopN filtering.
+            | IntensitiesOfFragments
 
             //Units
             | Minute
@@ -1344,6 +1383,11 @@ module MaxPlankFileTest =
                 | PrecursorApexOffset -> "User:0000040"
                 | PrecursorApexOffsetTime -> "User:0000041"
                 | ScanEventNumber -> "User:0000042"
+                | ScoreDifference -> "User:0000043"
+                | Combinatorics -> "User:0000044"
+                | Matches -> "User:0000045"
+                | Fragment -> "MS:1002695"
+                | IntensitiesOfFragments -> "User:0000046"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
@@ -1566,6 +1610,58 @@ module MaxPlankFileTest =
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MSMSIsotopIndices)).Value
                                                    )
         |> SpectrumIdentificationItemParamHandler.addValue "0";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScanNumber)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "15159";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IonInjectionTime)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID TotalIonCurrent)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "92047";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID FilteredPeaks)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "135";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ParentIntensityFraction)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.8484042";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.001671316";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID BasePeakFraction)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.07051102";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "15140";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PrecursorIntensity)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "10131";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PrecursorApexFraction)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.905362";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PrecursorApexOffset)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "-2";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.06315041";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScanEventNumber)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "19";
         ]
 
     let spectrumidentificationItemPeptideUnmodified =
@@ -1602,6 +1698,10 @@ module MaxPlankFileTest =
         |> ModificationParamHandler.addValue "21.372"
         |> ModificationParamHandler.addUnit
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Minute)).Value;
+        ModificationParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Combinatorics)).Value
+                                     )
+        |> ModificationParamHandler.addValue "1";
         ]
 
     let modificationMOxidized =
@@ -1838,12 +1938,56 @@ module MaxPlankFileTest =
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScanEventNumber)).Value
                                                    )
         |> SpectrumIdentificationItemParamHandler.addValue "14";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScoreDifference)).Value
+                                                   )
+        |> SpectrumIdentificationItemParamHandler.addValue "69.045";
+        ]
+
+    let measureParamsIntensietiesMOxidized =
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensitiesOfFragments)).Value
+                                )
+
+    let valueIntensitiesMOxized =
+        [68;150;85;204;622;418;683;548;34;102;34;34;34;17;68;204;85;85;85;34;51;17;34;17;34;34;17]
+        |> Seq.map (fun value -> ValueHandler.init (float value))
+
+    let fragmentArrayMOXidized =
+        [
+        FragmentArrayHandler.init(
+            measureParamsIntensietiesMOxidized, valueIntensitiesMOxized
+                                 );
+        FragmentArrayHandler.init(
+            measureParamsIntensietiesMOxidized, valueIntensitiesMOxized
+                                 );
+
+        ]
+  
+    let ionTypeParamMOxidized =
+        [
+        IonTypeParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Fragment)).Value
+                                )
+        |> IonTypeParamHandler.addValue 
+            "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
+        
+        ]
+
+    let fragmentationsMOxidized =
+        [
+        IonTypeHandler.init(
+            ionTypeParamMOxidized
+                           )
+        |> IonTypeHandler.addIndex (IndexHandler.init 0)
+        |> IonTypeHandler.addFragmentArrays fragmentArrayMOXidized
         ]
 
     let spectrumidentificationItemPeptideMOxidized =
         SpectrumIdentificationItemHandler.init(
             peptideMOxidized, 2, 735.84531, true, -1
                                               )
+        |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsMOxidized
         |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideMOxidized
 
     let peptideHypothesis =
@@ -1964,10 +2108,16 @@ module MaxPlankFileTest =
                            )
 
     let spectradata =
+        [
         SpectraDataHandler.init(
             "local", fileFormat, spectrumIDFormat
                                )
-        |> SpectraDataHandler.addName "20170518 TM FSconc3001"
+        |> SpectraDataHandler.addName "20170518 TM FSconc3001";
+        SpectraDataHandler.init(
+            "local", fileFormat, spectrumIDFormat
+                               )
+        |> SpectraDataHandler.addName "20170518 TM FSconc3002";
+        ]
 
     let softwareName =
         CVParamHandler.init(
@@ -2014,7 +2164,19 @@ module MaxPlankFileTest =
         |> SpectrumIdentificationProtocolHandler.addEnzyme enzyme
         |> SpectrumIdentificationProtocolHandler.addModificationParam searchModificationParams
 
-    let spectrumIdentificationResultParam =
+    let spectrumIdentificationResultParamMOxidized =
+        [
+        SpectrumIdentificationResultParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID BasePeakIntension)).Value
+                                                     )
+        |> SpectrumIdentificationResultParamHandler.addValue "0";
+        SpectrumIdentificationResultParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ElapsedTime)).Value
+                                                     )
+        |> SpectrumIdentificationResultParamHandler.addValue "1";
+        ]
+
+    let spectrumIdentificationResultParamUnModified =
         [
         SpectrumIdentificationResultParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID BasePeakIntension)).Value
@@ -2029,11 +2191,13 @@ module MaxPlankFileTest =
     let spectrumIdentificationResult =
         [
         SpectrumIdentificationResultHandler.init(
-            spectradata, "568", [spectrumidentificationItemPeptideMOxidized]
+            spectradata.[0], "568", [spectrumidentificationItemPeptideMOxidized]
                                                 )
+        |> SpectrumIdentificationResultHandler.addDetails spectrumIdentificationResultParamMOxidized;
         SpectrumIdentificationResultHandler.init(
-            spectradata, "", [spectrumidentificationItemPeptideUnmodified]
+            spectradata.[1], "576", [spectrumidentificationItemPeptideUnmodified]
                                                 )
+        |> SpectrumIdentificationResultHandler.addDetails spectrumIdentificationResultParamUnModified
         ]
         
     let spectrumIdentificationList =
@@ -2041,5 +2205,5 @@ module MaxPlankFileTest =
 
     let spectrumIdentification = 
         SpectrumIdentificationHandler.init(
-            spectrumIdentificationList, spectrumIdentificationProtocol, [spectradata], [searchDatabase]
+            spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, [searchDatabase]
                                           )

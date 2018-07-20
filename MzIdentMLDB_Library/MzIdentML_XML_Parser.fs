@@ -431,7 +431,7 @@ module XMLParsing =
 //Stup because there is a problem with the xmlFile with the values of the FragmentArray/////////////////
     let convertToEntity_FragmentArray (dbContext:MzIdentML) (mzIdentMLXML:SchemePeptideShaker.FragmentArray) =
         let fragmentArrayBasic = FragmentArrayHandler.init(
-                                                           (MeasureHandler.tryFindByID dbContext mzIdentMLXML.MeasureRef|> (fun item -> match item with
+                                                           (CVParamHandler.tryFindByID dbContext mzIdentMLXML.MeasureRef|> (fun item -> match item with
                                                                                                                                         | Some x -> x
                                                                                                                                         | None -> null
                                                                                                                            )), 

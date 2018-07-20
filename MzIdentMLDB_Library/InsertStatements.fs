@@ -4299,7 +4299,7 @@ module InsertStatements =
             ///Initializes a fragmentarray-object with at least all necessary parameters.
             static member init
                 (
-                    measure : Measure,
+                    measure : CVParam,
                     values  : seq<Value>,
                     ?id     : string
                 ) =
@@ -4321,7 +4321,7 @@ module InsertStatements =
             static member tryFindByMeasureName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.FragmentArray.Local do
-                           if i.Measure.Name=name
+                           if i.Measure.Value=name
                               then select (i, i.Values)
                       }
                 |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
@@ -4330,7 +4330,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FragmentArray do
-                                       if i.Measure.Name=name
+                                       if i.Measure.Value=name
                                           then select (i, i.Values)
                                   }
                             |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
@@ -4348,7 +4348,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentArray) =
-                    FragmentArrayHandler.tryFindByMeasureName dbContext item.Measure.Name
+                    FragmentArrayHandler.tryFindByMeasureName dbContext item.Measure.Value
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FragmentArrayHandler.hasEqualFieldValues organization item with
