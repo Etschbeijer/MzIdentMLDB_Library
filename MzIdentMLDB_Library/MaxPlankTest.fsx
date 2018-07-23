@@ -1074,7 +1074,7 @@ module MaxPlankFileTest =
 
     let user46 =
         TermHandler.init("User:0000046")
-        |> TermHandler.addName "MaxQuant: Intensities"
+        |> TermHandler.addName "MaxQuant: Mass Deviation"
         |> TermHandler.addOntology 
             (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
         |> TermHandler.addToContext sqliteContext
@@ -1508,6 +1508,23 @@ module MaxPlankFileTest =
             | TopPeakPer100Da
             ///
             | MSMSDeisotoping
+            ///Mass error of the recalibrated mass-over-charge value of the
+            ///precursor ion in comparison to the predicted monoisotopic
+            ///mass of the identified peptide sequence in parts per million.
+            | MassErrorPpm
+            ///Mass error of the recalibrated mass-over-charge value of the
+            ///precursor ion in comparison to the predicted monoisotopic
+            ///mass of the identified peptide sequence in percent.
+            | MassErrorPercent
+            ///Mass error of the recalibrated mass-over-charge value of the
+            ///precursor ion in comparison to the predicted monoisotopic
+            ///mass of the identified peptide sequence in dalton.
+            | MassErrorDa
+            ///
+            | MassDeviation
+
+            //Ion fragment types
+
 
             //Units
             | Minute
@@ -1516,6 +1533,7 @@ module MaxPlankFileTest =
             | Percent
             | Dalton
             | KiloDalton
+            | NumberOfDetections
 
             //File
             /// Values are seperated by tab(s).
@@ -1612,7 +1630,7 @@ module MaxPlankFileTest =
                 | Combinatorics -> "User:0000044"
                 | Matches -> "User:0000045"
                 | Fragment -> "MS:1002695"
-                | IntensitiesOfFragments -> "User:0000046"
+                | IntensitiesOfFragments -> "MS:1001226"
                 | Dalton -> "MS:1000212"
                 | KiloDalton -> "UO:0000222"
                 | NumberOfMatches -> "User:0000047"
@@ -1642,9 +1660,59 @@ module MaxPlankFileTest =
                 | DiscardUnmodifiedPeptide -> "User:0000068"
                 | MinRatioCount -> "User:0000069"
                 | UseDeltaScores -> "User:0000070"
+                | MassErrorPpm -> "PRIDE:0000083"
+                | MassErrorPercent -> "PRIDE:0000085"
+                | MassErrorDa -> "PRIDE:0000086"
+                | NumberOfDetections -> "MS:1000131"
+                | MassDeviation -> "User:0000046"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
+    let measureParam =
+        [
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassErrorPpm)).Value
+                                )
+        |> MeasureParamHandler.addUnit 
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Ppm)).Value;
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassErrorPercent)).Value
+                                )
+        |> MeasureParamHandler.addUnit 
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Percent)).Value;
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassErrorDa)).Value
+                                )
+        |> MeasureParamHandler.addUnit 
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Dalton)).Value;
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDeviation)).Value,
+                "Mass Deviations [ppm]"
+                                )
+        |> MeasureParamHandler.addUnit 
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Ppm)).Value;
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDeviation)).Value,
+                "Mass Deviations [Da]"
+                                )
+        |> MeasureParamHandler.addUnit 
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Dalton)).Value;
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Mass)).Value,
+                "Mass"
+                                )
+        MeasureParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensitiesOfFragments)).Value,
+                "Intensities"
+                                )
+        |> MeasureParamHandler.addUnit
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfDetections)).Value
+        ]
+
+
+
+    let fragmentationTable =
+        MeasureHandler.init(measureParam)
 
     let fileFormat1 =
         CVParamHandler.init(
@@ -1936,119 +2004,134 @@ module MaxPlankFileTest =
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScoreDifference)).Value
                                                    )
         |> SpectrumIdentificationItemParamHandler.addValue "NaN";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfMatches)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "26";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensityCoverage)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.5504808";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeakCoverage)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.1851852";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "None";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ETDIdentificationType)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
         ]
 
-    let measureParamsIntensietiesUnModified =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensitiesOfFragments)).Value
-                                )
-        |> CVParamHandler.addValue 
-            "y4;y5;y6;y7;y8;y9;y10;y11;y5-NH3;y7-H2O;y7-NH3;y8-H2O;y9-H2O;y10-H2O;y11-H2O;y11-NH3;y11(2+);y12(2+);b4;b4-H2O;b5;b6;b6-H2O;b7;b7-H2O;b8"
 
     let valueIntensitiesUnModified =
         [177;129;154;811;571;803;959;640;34;51;68;51;85;68;135;34;51;68;434;34;164;68;68;34;34;51]
-        |> Seq.map (fun value -> ValueHandler.init (float value))
-
-    let measureParamsMassDeviationsDaltonUnModified =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDefect)).Value
-                                )
-        |> CVParamHandler.addValue 
-            "y4;y5;y6;y7;y8;y9;y10;y11;y5-NH3;y7-H2O;y7-NH3;y8-H2O;y9-H2O;y10-H2O;y11-H2O;y11-NH3;y11(2+);y12(2+);b4;b4-H2O;b5;b6;b6-H2O;b7;b7-H2O;b8"
-        |> CVParamHandler.addUnit 
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Dalton)).Value
 
     let valueMassDeviationsDaltonUnModified =
         [
-        0.00357427;0.00393288;0.008461593;-0.002829286;0.004859461;-0.01884633;-0.01274995;-0.003771845;-0.01300172;-0.02979815;0.001000052;
-        -0.002043101;-0.003109885;0.01681768;0.006003371;0.0058705;0.0009094998;-0.001203112;0.0005502771;-0.01015722;0.007309517;0.01232744;
-        -0.003247674;-0.001948987;0.01491439;0.003216534
+        0.00357427;0.00393288;0.008461593;-0.002829286;0.004859461;-0.01884633;-0.01274995;-0.003771845;
+        -0.01300172;-0.02979815;0.001000052; -0.002043101;-0.003109885;0.01681768;0.006003371;0.0058705;
+        0.0009094998;-0.001203112;0.0005502771;-0.01015722;0.007309517;0.01232744; -0.003247674;-0.001948987;
+        0.01491439;0.003216534
         ]
-        |> Seq.map (fun value -> ValueHandler.init value)
 
-    let measureParamsMassDeviationsPPMUnModified =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDefect)).Value
-                                )
-        |> CVParamHandler.addValue 
+    let measureFragmentsUnModified =
             "y4;y5;y6;y7;y8;y9;y10;y11;y5-NH3;y7-H2O;y7-NH3;y8-H2O;y9-H2O;y10-H2O;y11-H2O;y11-NH3;y11(2+);y12(2+);b4;b4-H2O;b5;b6;b6-H2O;b7;b7-H2O;b8"
-        |> CVParamHandler.addUnit 
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Ppm)).Value
 
     let valueMassDeviationsPPMUnModified =
         [
-        6.844385;6.330212;11.94609;-3.696733;5.325973;-18.85643;-11.91033;-3.144439;-21.51614;-39.87101;1.336402;-2.284314;-3.168703;15.97948;
-        5.081108;4.964514;1.515163;-1.831752;1.428521;-27.6607;16.02128;22.6914;-6.182867;-2.823197;22.18347;4.303839
+        6.844385;6.330212;11.94609;-3.696733;5.325973;-18.85643;-11.91033;-3.144439;-21.51614;-39.87101;
+        1.336402;-2.284314;-3.168703;15.97948; 5.081108;4.964514;1.515163;-1.831752;1.428521;-27.6607;
+        16.02128;22.6914;-6.182867;-2.823197;22.18347;4.303839
         ]
-        |> Seq.map (fun value -> ValueHandler.init value)
 
     let measureParamsMassDeviationsMassesUnModified =
-        CVParamHandler.init(
+        MeasureParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Mass)).Value
                                 )
-        |> CVParamHandler.addValue 
+        |> MeasureParamHandler.addValue 
             "y4;y5;y6;y7;y8;y9;y10;y11;y5-NH3;y7-H2O;y7-NH3;y8-H2O;y9-H2O;y10-H2O;y11-H2O;y11-NH3;y11(2+);y12(2+);b4;b4-H2O;b5;b6;b6-H2O;b7;b7-H2O;b8"
 
-    let valueMassDeviationsMassesUnModified =
+    let valueMassesUnModified =
         [
-        522.219250635495;621.287305940905;708.314805638216;765.3475602406;912.408285409533;999.464019606072;1070.49503701499;1199.52865200952;
-        604.277691442015;747.363964421907;748.317181800882;894.404623285356;981.43771847911;1052.45490470087;1181.50831210729;1182.49246056335;
-        600.265168815957;656.809313417653;385.207610841753;367.207753655009;456.237965389838;543.264975874201;525.269986304516;690.347666220192;
+        522.219250635495;621.287305940905;708.314805638216;765.3475602406;912.408285409533;999.464019606072;
+        1070.49503701499;1199.52865200952; 604.277691442015;747.363964421907;748.317181800882;894.404623285356;
+        981.43771847911;1052.45490470087;1181.50831210729;1182.49246056335; 600.265168815957;656.809313417653;
+        385.207610841753;367.207753655009;456.237965389838;543.264975874201;525.269986304516;690.347666220192;
         672.320238153757;747.363964421907
         ]
-        |> Seq.map (fun value -> ValueHandler.init value)
 
-    let fragmentArrayUnModified =
+    let fragmentArrayUnModified1 =
         [
         FragmentArrayHandler.init(
-            measureParamsIntensietiesUnModified, valueIntensitiesUnModified
+            (MeasureHandler.tryFindByID sqliteContext "Intensities").Value, 
+            177.
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsDaltonUnModified, valueMassDeviationsDaltonUnModified
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [Da]").Value, 
+            0.00357427
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsPPMUnModified, valueMassDeviationsPPMUnModified
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [ppm]").Value,
+            6.844385
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsMassesUnModified, valueMassDeviationsMassesUnModified
+            (MeasureHandler.tryFindByID sqliteContext "Mass").Value,
+            522.219250635495
                                  );
         ]
   
-    let ionTypeParamUnModified =
+    let ionTypeParamUnModified1 =
         [
         IonTypeParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Fragment)).Value
                                 )
-        |> IonTypeParamHandler.addValue "y- and b-ions";
+        |> IonTypeParamHandler.addValue "y4";
+        ]
+
+    let fragmentArrayUnModified2 =
+        [
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Intensities").Value, 
+            129.
+                                 );
+        FragmentArrayHandler.init(
+             (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [Da]").Value, 
+             0.00393288
+                                 );
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [ppm]").Value,
+            6.330212
+                                 );
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Mass").Value,
+            621.287305940905
+                                 );
+        ]
+  
+    let ionTypeParamUnModified2 =
+        [
         IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfMatches)).Value
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Fragment)).Value
                                 )
-        |> IonTypeParamHandler.addValue "26";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensityCoverage)).Value
-                                )
-        |> IonTypeParamHandler.addValue "0.5504808";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeakCoverage)).Value
-                                )
-        |> IonTypeParamHandler.addValue "0.1851852";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
-                                )
-        |> IonTypeParamHandler.addValue "None";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ETDIdentificationType)).Value
-                                )
-        |> IonTypeParamHandler.addValue "Unknown";
+        |> IonTypeParamHandler.addValue "y5";
         ]
 
     let fragmentationsUnModified =
         [
         IonTypeHandler.init(
-            ionTypeParamUnModified
+            ionTypeParamUnModified1
                            )
         |> IonTypeHandler.addIndex (IndexHandler.init 0)
-        |> IonTypeHandler.addFragmentArrays fragmentArrayUnModified
+        |> IonTypeHandler.addFragmentArrays fragmentArrayUnModified1;
+        IonTypeHandler.init(
+            ionTypeParamUnModified2
+                           )
+        |> IonTypeHandler.addIndex (IndexHandler.init 0)
+        |> IonTypeHandler.addFragmentArrays fragmentArrayUnModified2
         ]
 
 
@@ -2056,6 +2139,7 @@ module MaxPlankFileTest =
         SpectrumIdentificationItemHandler.init(
             peptideUnmodified, 2, 727.84714, true, -1
                                               )
+        |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsUnModified
         |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideUnmodified
 
     let modificationParams =
@@ -2330,119 +2414,128 @@ module MaxPlankFileTest =
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ScoreDifference)).Value
                                                    )
         |> SpectrumIdentificationItemParamHandler.addValue "69.045";
-        ]
-
-    let measureParamsIntensietiesMOxidized =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensitiesOfFragments)).Value
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfMatches)).Value
                                 )
-        |> CVParamHandler.addValue 
-            "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
+        |> SpectrumIdentificationItemParamHandler.addValue "27";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensityCoverage)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.4059861";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeakCoverage)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "0.1719745";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "None";
+        SpectrumIdentificationItemParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ETDIdentificationType)).Value
+                                )
+        |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
+        ]
 
     let valueIntensitiesMOxized =
         [68;150;85;204;622;418;683;548;34;102;34;34;34;17;68;204;85;85;85;34;51;17;34;17;34;34;17]
-        |> Seq.map (fun value -> ValueHandler.init (float value))
-
-    let measureParamsMassDeviationsDaltonMOxidized =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDefect)).Value
-                                )
-        |> CVParamHandler.addValue 
-            "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
-        |> CVParamHandler.addUnit 
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Dalton)).Value
 
     let valueMassDeviationsDaltonMOxized =
         [
-        0.005498344;-0.003835145;0.005161485;0.01738624;-0.005117801;-0.002557511;0.01119273;0.0122177;-0.006379636;-2.509175E-05;
-        0.02011697;0.0001084094;0.001737067;0.003105442;0.003946549;-0.007037913;-0.004313142;0.007871579;-0.002417978;-0.00719715;
-        0.01309856;0.008905692;0.002088337;0.005445614;-0.00520534;-0.03854265;0.006262494
+        0.005498344;-0.003835145;0.005161485;0.01738624;-0.005117801;-0.002557511;0.01119273;0.0122177;
+        -0.006379636;-2.509175E-05; 0.02011697;0.0001084094;0.001737067;0.003105442;0.003946549;-0.007037913;
+        -0.004313142;0.007871579;-0.002417978;-0.00719715; 0.01309856;0.008905692;0.002088337;0.005445614;
+        -0.00520534;-0.03854265;0.006262494
         ]
-        |> Seq.map (fun value -> ValueHandler.init value)
-
-    let measureParamsMassDeviationsPPMMOxidized =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassDefect)).Value
-                                )
-        |> CVParamHandler.addValue 
-            "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
-        |> CVParamHandler.addUnit 
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Ppm)).Value
 
     let valueMassDeviationsPPMMOxized =
         [
-        12.99276;-7.125587;8.099229;24.00417;-6.54999;-2.75472;11.02267;11.24537;-15.74493;-0.03287147;18.82824;0.2133104;3.194662;5.105448;
-        5.936431;-18.27008;-9.453469;14.48927;-4.603313;-9.629913;17.95939;10.67329;2.558025;5.833781;-5.686024;-36.75864;5.318326
+        12.99276;-7.125587;8.099229;24.00417;-6.54999;-2.75472;11.02267;11.24537;-15.74493;-0.03287147;
+        18.82824;0.2133104;3.194662;5.105448; 5.936431;-18.27008;-9.453469;14.48927;-4.603313;-9.629913;
+        17.95939;10.67329;2.558025;5.833781;-5.686024;-36.75864;5.318326
         ]
-        |> Seq.map (fun value -> ValueHandler.init value)
 
-    let measureParamsMassDeviationsMassesMOxidized =
-        CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Mass)).Value
-                                )
-        |> CVParamHandler.addValue 
-            "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
+    let measureFragmentsMOxidized =
+        "y3;y4;y5;y6;y7;y8;y9;y10;y3-H2O;y7-H2O;y10-H2O;y9(2+);y10(2+);y11(2+);y12(2+);b4;b5;
+        b6;b6-H2O;b8;b8-H2O;b9;b9-H2O;b10;b10-H2O;b11;b12"
 
     let valueMassDeviationsMassesMOxized =
         [
-        423.185298151502;538.221574671891;637.280991958579;724.30079561233;781.344763377517;928.410617004186;1015.42889516821;1086.46498399296;
-        405.186611445428;763.329105982246;1068.44652003759;508.22357377536;543.740502011698;608.260430184701;664.801621067737;385.215199032386;
-        456.249588048393;543.269431737229;525.269156608527;747.374378106757;729.343517707074;834.390303674119;816.386556342786;933.462177668826;
+        423.185298151502;538.221574671891;637.280991958579;724.30079561233;781.344763377517;928.410617004186;
+        1015.42889516821;1086.46498399296; 405.186611445428;763.329105982246;1068.44652003759;508.22357377536;
+        543.740502011698;608.260430184701;664.801621067737;385.215199032386; 456.249588048393;543.269431737229;
+        525.269156608527;747.374378106757;729.343517707074;834.390303674119;816.386556342786;933.462177668826;
         915.462263936226;1048.53310896602;1177.53089691696
         ]
         |> Seq.map (fun value -> ValueHandler.init value)
 
-    let fragmentArrayMOXidized =
+    let fragmentArrayMOXidized1 =
         [
         FragmentArrayHandler.init(
-            measureParamsIntensietiesMOxidized, valueIntensitiesMOxized
+            (MeasureHandler.tryFindByID sqliteContext "Intensities").Value, 
+            68.
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsDaltonMOxidized, valueMassDeviationsDaltonMOxized
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [Da]").Value, 
+            0.005498344
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsPPMMOxidized, valueMassDeviationsPPMMOxized
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [ppm]").Value,
+            12.99276
                                  );
         FragmentArrayHandler.init(
-            measureParamsMassDeviationsMassesMOxidized, valueMassDeviationsMassesMOxized
+            (MeasureHandler.tryFindByID sqliteContext "Mass").Value,
+            423.185298151502
                                  );
         ]
   
-    let ionTypeParamMOxidized =
+    let ionTypeParamMOxidized1 =
         [
         IonTypeParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Fragment)).Value
                                 )
-        |> IonTypeParamHandler.addValue "y- and b-ions";
+        |> IonTypeParamHandler.addValue "y3";
+        ]
+
+    let fragmentArrayMOXidized2 =
+        [
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Intensities").Value, 
+            150.
+                                 );
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [Da]").Value, 
+            -0.003835145
+                                 );
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Mass Deviations [ppm]").Value,
+            -7.125587
+                                 );
+        FragmentArrayHandler.init(
+            (MeasureHandler.tryFindByID sqliteContext "Mass").Value,
+            538.221574671891
+                                 );
+        ]
+  
+    let ionTypeParamMOxidized2 =
+        [
         IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfMatches)).Value
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Fragment)).Value
                                 )
-        |> IonTypeParamHandler.addValue "27";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID IntensityCoverage)).Value
-                                )
-        |> IonTypeParamHandler.addValue "0.4059861";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeakCoverage)).Value
-                                )
-        |> IonTypeParamHandler.addValue "0.1719745";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
-                                )
-        |> IonTypeParamHandler.addValue "None";
-        IonTypeParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ETDIdentificationType)).Value
-                                )
-        |> IonTypeParamHandler.addValue "Unknown";
+        |> IonTypeParamHandler.addValue "y4";
         ]
 
     let fragmentationsMOxidized =
         [
         IonTypeHandler.init(
-            ionTypeParamMOxidized
+            ionTypeParamMOxidized1
                            )
         |> IonTypeHandler.addIndex (IndexHandler.init 0)
-        |> IonTypeHandler.addFragmentArrays fragmentArrayMOXidized
+        |> IonTypeHandler.addFragmentArrays fragmentArrayMOXidized1;
+        IonTypeHandler.init(
+            ionTypeParamMOxidized2
+                           )
+        |> IonTypeHandler.addIndex (IndexHandler.init 0)
+        |> IonTypeHandler.addFragmentArrays fragmentArrayMOXidized2;
         ]
 
     let spectrumidentificationItemPeptideMOxidized =
@@ -2740,25 +2833,31 @@ module MaxPlankFileTest =
         |> FragmentToleranceParamHandler.addValue "TRUE";
         ]
 
-    let spectrumIdentificationProcolparams =
+    let analysisProcolparams =
         [
-        SpectrumIdentificationProtocolParamHandler.init(
+        AnalysisParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
                                                        )
-        |> SpectrumIdentificationProtocolParamHandler.addValue "Razor";
-        SpectrumIdentificationProtocolParamHandler.init(
+        |> AnalysisParamHandler.addValue "Razor";
+        AnalysisParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
                                                        )
-        |> SpectrumIdentificationProtocolParamHandler.addValue "TRUE";
-        SpectrumIdentificationProtocolParamHandler.init(
+        |> AnalysisParamHandler.addValue "TRUE";
+        AnalysisParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MinRatioCount)).Value
                                                        )
-        |> SpectrumIdentificationProtocolParamHandler.addValue "2";
-        SpectrumIdentificationProtocolParamHandler.init(
+        |> AnalysisParamHandler.addValue "2";
+        AnalysisParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID UseDeltaScores)).Value
                                                        )
-        |> SpectrumIdentificationProtocolParamHandler.addValue "TRUE";
+        |> AnalysisParamHandler.addValue "TRUE";
         ]
+
+    let proteinDetectionProtocol =
+        ProteinDetectionProtocolHandler.init(
+            analysisSoftware, threshold
+                                            )
+        |> ProteinDetectionProtocolHandler.addAnalysisParams analysisProcolparams
 
     let spectrumIdentificationProtocol =
         SpectrumIdentificationProtocolHandler.init(
@@ -2767,6 +2866,7 @@ module MaxPlankFileTest =
         |> SpectrumIdentificationProtocolHandler.addEnzyme enzyme
         |> SpectrumIdentificationProtocolHandler.addModificationParams searchModificationParams
         |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParams additionalSearchParams
+        |> SpectrumIdentificationProtocolHandler.addFragmentTolerances fragmentTolerance
 
     let spectrumIdentificationResultParamMOxidized =
         [
@@ -2806,6 +2906,7 @@ module MaxPlankFileTest =
         
     let spectrumIdentificationList =
         SpectrumIdentificationListHandler.init(spectrumIdentificationResult)
+        |> SpectrumIdentificationListHandler.addFragmentationTable fragmentationTable
 
     let spectrumIdentification = 
         SpectrumIdentificationHandler.init(

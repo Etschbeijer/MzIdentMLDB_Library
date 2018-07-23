@@ -694,30 +694,30 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SpectrumIdentificationProtocolParams")>]
-        SpectrumIdentificationProtocolParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
-            let mutable id'         = id
-            let mutable value'      = value
-            let mutable term'       = term
-            let mutable unit'       = unit
-            let mutable rowVersion' = rowVersion
+    /////A single entry from an ontology or a controlled vocabulary.
+    //and [<AllowNullLiteral>] [<Table("SpectrumIdentificationProtocolParams")>]
+    //    SpectrumIdentificationProtocolParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
+    //        //inherit CVParam(null, null, null, null, Nullable())
+    //        let mutable id'         = id
+    //        let mutable value'      = value
+    //        let mutable term'       = term
+    //        let mutable unit'       = unit
+    //        let mutable rowVersion' = rowVersion
 
-            new() = SpectrumIdentificationProtocolParam(null, null, null, null, Nullable())
+    //        new() = SpectrumIdentificationProtocolParam(null, null, null, null, Nullable())
 
-            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Value with get() = value' and set(value) = value' <- value
-            member this.Term with get() = term' and set(value) = term' <- value
-            member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.RowVersion = x.RowVersion
+    //        [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+    //        member this.ID with get() = id' and set(value) = id' <- value
+    //        member this.Value with get() = value' and set(value) = value' <- value
+    //        member this.Term with get() = term' and set(value) = term' <- value
+    //        member this.Unit with get() = unit' and set(value) = unit' <- value
+    //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    //        interface CVParamBase with
+    //            member x.ID         = x.ID
+    //            member x.Value      = x.Value
+    //            member x.Term       = x.Term
+    //            member x.Unit       = x.Unit
+    //            member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
@@ -1140,13 +1140,13 @@ module DataModel =
 
     ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
     and [<AllowNullLiteral>]
-        FragmentArray (id:string, measure:CVParam, values:List<Value>, rowVersion:Nullable<DateTime>) =
+        FragmentArray (id:string, measure:Measure, values:Nullable<float>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable measure'    = measure
             let mutable values'     = values
             let mutable rowVersion' = rowVersion
 
-            new() = FragmentArray(null, null, null, Nullable())
+            new() = FragmentArray(null, null, Nullable(), Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Measure with get() = measure' and set(value) = measure' <- value
@@ -1312,7 +1312,6 @@ module DataModel =
                                         fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                         threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
                                         translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, 
-                                        spectrumIdentificationProtocolparam:List<SpectrumIdentificationProtocolParam>, 
                                         rowVersion:Nullable<DateTime>
                                        ) =
             let mutable id'                     = id
@@ -1337,11 +1336,9 @@ module DataModel =
             let mutable translationTables'      = translationTables
             //
             let mutable mzIdentMLDocument'      = mzIdentMLDocument
-            //Own insertion
-            let mutable spectrumIdentificationProtocolparam' = spectrumIdentificationProtocolparam
             let mutable rowVersion'             = rowVersion
 
-            new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, null, Nullable())
+            new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1358,8 +1355,7 @@ module DataModel =
             member this.DatabaseFilters with get() = databaseFilters' and set(value) = databaseFilters' <- value
             member this.Frames with get() = frames' and set(value) = frames' <- value
             member this.TranslationTables with get() = translationTables' and set(value) = translationTables' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
-            member this.SpectrumIdentificationProtocolParams with get() = spectrumIdentificationProtocolparam' and set(value) = spectrumIdentificationProtocolparam' <- value
+            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value  
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database for searching mass spectra.
@@ -2091,10 +2087,10 @@ module DataModel =
             member public this.Frame with get() = this.m_Frame
                                                     and set value = this.m_Frame <- value
 
-            [<DefaultValue>] 
-            val mutable m_SpectrumIdentificationProtocolParam : DbSet<SpectrumIdentificationProtocolParam>
-            member public this.SpectrumIdentificationProtocolParam with get() = this.m_SpectrumIdentificationProtocolParam
-                                                                            and set value = this.m_SpectrumIdentificationProtocolParam <- value
+            //[<DefaultValue>] 
+            //val mutable m_SpectrumIdentificationProtocolParam : DbSet<SpectrumIdentificationProtocolParam>
+            //member public this.SpectrumIdentificationProtocolParam with get() = this.m_SpectrumIdentificationProtocolParam
+            //                                                                and set value = this.m_SpectrumIdentificationProtocolParam <- value
             
             [<DefaultValue>] 
             val mutable m_SpectrumIdentificationProtocol : DbSet<SpectrumIdentificationProtocol>
