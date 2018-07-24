@@ -1177,12 +1177,12 @@ module MaxPlankFileTest =
             (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
         |> TermHandler.addToContext sqliteContext
 
-    let user61 =
-        TermHandler.init("User:0000061")
-        |> TermHandler.addName "MaxQuant: MS/MS tolerance"
-        |> TermHandler.addOntology 
-            (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
-        |> TermHandler.addToContext sqliteContext
+    //let user61 =
+    //    TermHandler.init("User:0000061")
+    //    |> TermHandler.addName "MaxQuant: MS/MS tolerance"
+    //    |> TermHandler.addOntology 
+    //        (OntologyHandler.tryFindByID sqliteContext "UserParam").Value
+    //    |> TermHandler.addToContext sqliteContext
 
     let user62 =
         TermHandler.init("User:0000062")
@@ -1502,7 +1502,7 @@ module MaxPlankFileTest =
             | MinPep
             ///
             | DecoyMode
-            ///
+            ///The error window on experimental MS/MS fragment ion mass values.
             | MSMSTolerance
             ///
             | TopPeakPer100Da
@@ -1649,7 +1649,7 @@ module MaxPlankFileTest =
                 | DecoyMode -> "User:0000058"
                 | SpecialAAs -> "User:0000059"
                 | Contaminants -> "User:0000060"
-                | MSMSTolerance -> "User:0000061"
+                | MSMSTolerance -> "MS:1001655"
                 | TopPeakPer100Da -> "User:0000062"
                 | MSMSDeisotoping -> "MS:1000033"
                 | PSMFDR -> "User:0000063"
