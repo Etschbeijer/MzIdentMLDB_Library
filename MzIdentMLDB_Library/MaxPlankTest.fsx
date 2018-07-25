@@ -1709,8 +1709,6 @@ module MaxPlankFileTest =
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NumberOfDetections)).Value
         ]
 
-
-
     let fragmentationTable =
         MeasureHandler.init(measureParam)
 
@@ -1794,8 +1792,24 @@ module MaxPlankFileTest =
         |> PeptideParamHandler.addValue "1453.6797";
         ]
 
+    let modificationParamsUnModified =
+        [
+        ModificationParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Combinatorics)).Value
+                                     )
+        |> ModificationParamHandler.addValue "0";
+        ModificationParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
+                                     )
+        |> ModificationParamHandler.addValue "None";
+        ]
+
+    let modificationUnmodified =
+        ModificationHandler.init(modificationParamsUnModified, "124")
+
     let peptideUnmodified =
         PeptideHandler.init("AAIEASFGSVDEMK", "119")
+        |> PeptideHandler.addModification modificationUnmodified
         |> PeptideHandler.addDetails peptideParamUnmodified
 
     let peptideEvidenceParams =
@@ -2017,10 +2031,6 @@ module MaxPlankFileTest =
                                 )
         |> SpectrumIdentificationItemParamHandler.addValue "0.1851852";
         SpectrumIdentificationItemParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
-                                )
-        |> SpectrumIdentificationItemParamHandler.addValue "None";
-        SpectrumIdentificationItemParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID ETDIdentificationType)).Value
                                 )
         |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
@@ -2142,42 +2152,24 @@ module MaxPlankFileTest =
         |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsUnModified
         |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideUnmodified
 
-    let modificationParams =
+    let modificationParamsMOxidized =
         [
         ModificationParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID UniqueToProteins)).Value
                                      )
         |> ModificationParamHandler.addValue "Oxidation";
         ModificationParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID MassPrecursorIon)).Value
-                                     )
-        |> ModificationParamHandler.addValue "1469.6708";
-        ModificationParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID RetentionTime)).Value
-                                     )
-        |> ModificationParamHandler.addValue "21.489"
-        |> ModificationParamHandler.addUnit
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Minute)).Value;
-        ModificationParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID RetentionTime)).Value
-                                     )
-        |> ModificationParamHandler.addValue "21.489"
-        |> ModificationParamHandler.addUnit
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Minute)).Value;
-        ModificationParamHandler.init(
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID CalibratedRetentionTime)).Value
-                                     )
-        |> ModificationParamHandler.addValue "21.372"
-        |> ModificationParamHandler.addUnit
-            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Minute)).Value;
-        ModificationParamHandler.init(
             (TermHandler.tryFindByID sqliteContext (TermIDByName.toID Combinatorics)).Value
                                      )
         |> ModificationParamHandler.addValue "1";
+        ModificationParamHandler.init(
+            (TermHandler.tryFindByID sqliteContext (TermIDByName.toID NeutralIonLoss)).Value
+                                     )
+        |> ModificationParamHandler.addValue "None";
         ]
 
     let modificationMOxidized =
-        ModificationHandler.init(modificationParams, "123")
+        ModificationHandler.init(modificationParamsMOxidized, "123")
         |> ModificationHandler.addResidues "M"
         |> ModificationHandler.addLocation 13
 
