@@ -55,10 +55,10 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="DataContext.fs" />
-    <Compile Include="InsertStatements.fs" />
-    <Compile Include="MzIdentML_XML_Parser.fs" />
-    <None Include="Testing.fsx" />
+    <Compile Include="DataContextMzIdentML.fs" />
+    <Compile Include="InsertStatementsMzIdentML.fs" />
+    <Compile Include="MzIdentML_XML_ParserMzIdentML.fs" />
+    <None Include="TestingMzIdentML.fsx" />
     <Content Include="packages.config" />
     <Content Include="Ontologies\Pride.txt" />
     <Content Include="Ontologies\Psi-MS.txt" />
@@ -76,9 +76,9 @@
     <None Include="dlls\BioFSharp.IO.dll" />
     <None Include="dlls\FSharp.Care.IO.dll" />
     <None Include="dlls\FSharp.Care.dll" />
-    <None Include="InitDB.fsx" />
-    <None Include="David.fsx" />
-    <None Include="MaxPlankTest.fsx" />
+    <None Include="InitDBMzIdentML.fsx" />
+    <None Include="DavidMzIdentML.fsx" />
+    <None Include="MaxQuantTestMzIdentML.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
