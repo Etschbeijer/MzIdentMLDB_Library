@@ -79,6 +79,7 @@
     <None Include="InitDBMzIdentML.fsx" />
     <None Include="DavidMzIdentML.fsx" />
     <None Include="MaxQuantTestMzIdentML.fsx" />
+    <Compile Include="DataContextMzQuantML.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
