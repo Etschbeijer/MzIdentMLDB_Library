@@ -1603,14 +1603,14 @@ module DataModel =
     
     ///Root element of the instance document. 
     type [<AllowNullLiteral>]
-        MzQuantML (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
-                   provider:Provider, persons:List<Person>, organzations:List<Organization>, analysisSummary:List<AnalysisSummaryParam>, 
-                   inputFiles:List<InputFile>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
-                   bibliographicReferences:List<BiblioGraphicReference>, studyVariables:List<StudyVariable>, 
-                   ratios:List<Ratio>, proteinGroups:List<ProteinGroup>, proteins:List<Protein>, 
-                   peptideConsensi:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
-                   features:List<Feature>, rowVersion:Nullable<DateTime>
-                  ) =
+        MzQuantMLDocument (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
+                           provider:Provider, persons:List<Person>, organzations:List<Organization>, analysisSummary:List<AnalysisSummaryParam>, 
+                           inputFiles:List<InputFile>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
+                           bibliographicReferences:List<BiblioGraphicReference>, studyVariables:List<StudyVariable>, 
+                           ratios:List<Ratio>, proteinGroups:List<ProteinGroup>, proteins:List<Protein>, 
+                           peptideConsensi:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
+                           features:List<Feature>, rowVersion:Nullable<DateTime>
+                          ) =
             let mutable id'                      = id
             let mutable name'                    = name
             let mutable creationDate'            = creationDate
@@ -1655,9 +1655,9 @@ module DataModel =
             //
             let mutable rowVersion'              = rowVersion
 
-            new() = MzQuantML(null, null, Nullable(), null, null, null, null, null, null, null, null, null,
-                              null, null, null, null, null, null, null, null, Nullable()
-                             )
+            new() = MzQuantMLDocument(null, null, Nullable(), null, null, null, null, null, null, null, null, null,
+                                      null, null, null, null, null, null, null, null, Nullable()
+                                     )
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1680,3 +1680,245 @@ module DataModel =
             member this.SmallMolecules with get() = smallMolecules' and set(value) = smallMolecules' <- value
             member this.Features with get() = features' and set(value) = features' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+
+    type MzQuantML =
+     
+            inherit DbContext
+
+            new(options : DbContextOptions<MzIdentML>) = {inherit DbContext(options)}
+
+            [<DefaultValue>] 
+            val mutable m_term : DbSet<Term>
+            member public this.Term with get() = this.m_term
+                                                 and set value = this.m_term <- value
+
+            [<DefaultValue>] 
+            val mutable m_ontology : DbSet<Term>
+            member public this.Ontology with get() = this.m_ontology
+                                                     and set value = this.m_ontology <- value
+
+            [<DefaultValue>] 
+            val mutable m_AnalysisSoftware : DbSet<Term>
+            member public this.AnalysisSoftware with get() = this.m_AnalysisSoftware
+                                                             and set value = this.m_AnalysisSoftware <- value
+
+            [<DefaultValue>] 
+            val mutable m_SourceFile : DbSet<Term>
+            member public this.SourceFile with get() = this.m_SourceFile
+                                                       and set value = this.m_SourceFile <- value
+
+            [<DefaultValue>] 
+            val mutable m_Organization : DbSet<Term>
+            member public this.Organization with get() = this.m_Organization
+                                                         and set value = this.m_Organization <- value
+
+            [<DefaultValue>] 
+            val mutable m_Person : DbSet<Term>
+            member public this.Person with get() = this.m_Person
+                                                   and set value = this.m_Person <- value
+
+            [<DefaultValue>] 
+            val mutable m_ContactRole : DbSet<Term>
+            member public this.ContactRole with get() = this.m_ContactRole
+                                                        and set value = this.m_ContactRole <- value
+
+            [<DefaultValue>] 
+            val mutable m_Provider : DbSet<Term>
+            member public this.Provider with get() = this.m_Provider
+                                                     and set value = this.m_Provider <- value
+
+            [<DefaultValue>] 
+            val mutable m_SearchDatabase : DbSet<Term>
+            member public this.SearchDatabase with get() = this.m_SearchDatabase
+                                                           and set value = this.m_SearchDatabase <- value
+
+            [<DefaultValue>] 
+            val mutable m_IdentificationFile : DbSet<Term>
+            member public this.IdentificationFile with get() = this.m_IdentificationFile
+                                                               and set value = this.m_IdentificationFile <- value
+
+            [<DefaultValue>] 
+            val mutable m_IdentificationRef : DbSet<Term>
+            member public this.IdentificationRef with get() = this.m_IdentificationRef
+                                                              and set value = this.m_IdentificationRef <- value
+
+            [<DefaultValue>] 
+            val mutable m_MethodFile : DbSet<Term>
+            member public this.MethodFile with get() = this.m_MethodFile
+                                                       and set value = this.m_MethodFile <- value
+
+            [<DefaultValue>] 
+            val mutable m_RawFile : DbSet<Term>
+            member public this.RawFile with get() = this.m_RawFile
+                                                    and set value = this.m_RawFile <- value
+
+            [<DefaultValue>] 
+            val mutable m_RawFilesGroup : DbSet<Term>
+            member public this.RawFilesGroup with get() = this.m_RawFilesGroup
+                                                          and set value = this.m_RawFilesGroup <- value
+
+            [<DefaultValue>] 
+            val mutable m_InputFile : DbSet<Term>
+            member public this.InputFile with get() = this.m_InputFile
+                                                      and set value = this.m_InputFile <- value
+
+            [<DefaultValue>] 
+            val mutable m_Modification : DbSet<Term>
+            member public this.Modification with get() = this.m_Modification
+                                                         and set value = this.m_Modification <- value
+
+            [<DefaultValue>] 
+            val mutable m_Assay : DbSet<Term>
+            member public this.Assay with get() = this.m_Assay
+                                                  and set value = this.m_Assay <- value
+
+            [<DefaultValue>] 
+            val mutable m_StudyVariable : DbSet<Term>
+            member public this.StudyVariable with get() = this.m_StudyVariable
+                                                          and set value = this.m_StudyVariable <- value
+
+            [<DefaultValue>] 
+            val mutable m_Ratio : DbSet<Term>
+            member public this.Ratio with get() = this.m_Ratio
+                                                    and set value = this.m_Ratio <- value
+
+            [<DefaultValue>] 
+            val mutable m_MassTrace : DbSet<Term>
+            member public this.MassTrace with get() = this.m_MassTrace
+                                                      and set value = this.m_MassTrace <- value
+
+            [<DefaultValue>] 
+            val mutable m_Column : DbSet<Term>
+            member public this.Column with get() = this.m_Column
+                                                   and set value = this.m_Column <- value
+
+            [<DefaultValue>] 
+            val mutable m_DataMatrix : DbSet<Term>
+            member public this.DataMatrix with get() = this.m_DataMatrix
+                                                       and set value = this.m_DataMatrix <- value
+
+            [<DefaultValue>] 
+            val mutable m_AssayQuantLayer : DbSet<Term>
+            member public this.AssayQuantLayer with get() = this.m_AssayQuantLayer
+                                                            and set value = this.m_AssayQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_GlobalQuantLayer : DbSet<Term>
+            member public this.GlobalQuantLayer with get() = this.m_GlobalQuantLayer
+                                                             and set value = this.m_GlobalQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_MS2AssayQuantLayer : DbSet<Term>
+            member public this.MS2AssayQuantLayer with get() = this.m_MS2AssayQuantLayer
+                                                               and set value = this.m_MS2AssayQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_StudyVariableQuantLayer : DbSet<Term>
+            member public this.StudyVariableQuantLayer with get() = this.m_StudyVariableQuantLayer
+                                                                    and set value = this.m_StudyVariableQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_RatioQuantLayer : DbSet<Term>
+            member public this.RatioQuantLayer with get() = this.m_RatioQuantLayer
+                                                            and set value = this.m_RatioQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProcessingMethod : DbSet<Term>
+            member public this.ProcessingMethod with get() = this.m_ProcessingMethod
+                                                             and set value = this.m_ProcessingMethod <- value
+
+            [<DefaultValue>] 
+            val mutable m_DataProcessing : DbSet<Term>
+            member public this.DataProcessing with get() = this.m_DataProcessing
+                                                           and set value = this.m_DataProcessing <- value
+
+            [<DefaultValue>] 
+            val mutable m_DBIdentificationRef : DbSet<Term>
+            member public this.DBIdentificationRef with get() = this.m_DBIdentificationRef
+                                                                and set value = this.m_DBIdentificationRef <- value
+
+            [<DefaultValue>] 
+            val mutable m_Feature : DbSet<Term>
+            member public this.Feature with get() = this.m_Feature
+                                                    and set value = this.m_Feature <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMolecule : DbSet<Term>
+            member public this.SmallMolecule with get() = this.m_SmallMolecule
+                                                          and set value = this.m_SmallMolecule <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeList : DbSet<Term>
+            member public this.SmallMoleculeList with get() = this.m_SmallMoleculeList
+                                                              and set value = this.m_SmallMoleculeList <- value
+
+            [<DefaultValue>] 
+            val mutable m_FeatureQuantLayer : DbSet<Term>
+            member public this.FeatureQuantLayer with get() = this.m_FeatureQuantLayer
+                                                              and set value = this.m_FeatureQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_MS2RatioQuantLayer : DbSet<Term>
+            member public this.MS2RatioQuantLayer with get() = this.m_MS2RatioQuantLayer
+                                                               and set value = this.m_MS2RatioQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_MS2StudyVariableQuantLayer : DbSet<Term>
+            member public this.MS2StudyVariableQuantLayer with get() = this.m_MS2StudyVariableQuantLayer
+                                                                       and set value = this.m_MS2StudyVariableQuantLayer <- value
+
+            [<DefaultValue>] 
+            val mutable m_FeatureList : DbSet<Term>
+            member public this.FeatureList with get() = this.m_FeatureList
+                                                        and set value = this.m_FeatureList <- value
+
+            [<DefaultValue>] 
+            val mutable m_EvidenceRef : DbSet<Term>
+            member public this.EvidenceRef with get() = this.m_EvidenceRef
+                                                        and set value = this.m_EvidenceRef <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideConsensus : DbSet<Term>
+            member public this.PeptideConsensus with get() = this.m_PeptideConsensus
+                                                             and set value = this.m_PeptideConsensus <- value
+
+            [<DefaultValue>] 
+            val mutable m_Protein : DbSet<Term>
+            member public this.Protein with get() = this.m_Protein
+                                                    and set value = this.m_Protein <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinList : DbSet<Term>
+            member public this.ProteinList with get() = this.m_ProteinList
+                                                        and set value = this.m_ProteinList <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinRef : DbSet<Term>
+            member public this.ProteinRef with get() = this.m_ProteinRef
+                                                       and set value = this.m_ProteinRef <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinGroup : DbSet<Term>
+            member public this.ProteinGroup with get() = this.m_ProteinGroup
+                                                         and set value = this.m_ProteinGroup <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinGroupList : DbSet<Term>
+            member public this.ProteinGroupList with get() = this.m_ProteinGroupList
+                                                             and set value = this.m_ProteinGroupList <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideConsensusList : DbSet<Term>
+            member public this.PeptideConsensusList with get() = this.m_PeptideConsensusList
+                                                                 and set value = this.m_PeptideConsensusList <- value
+
+            [<DefaultValue>] 
+            val mutable m_BiblioGraphicReference : DbSet<Term>
+            member public this.BiblioGraphicReference with get() = this.m_BiblioGraphicReference
+                                                                   and set value = this.m_BiblioGraphicReference <- value
+
+            [<DefaultValue>] 
+            val mutable m_MzQuantMLDocument : DbSet<Term>
+            member public this.MzQuantMLDocument with get() = this.m_MzQuantMLDocument
+                                                              and set value = this.m_MzQuantMLDocument <- value
