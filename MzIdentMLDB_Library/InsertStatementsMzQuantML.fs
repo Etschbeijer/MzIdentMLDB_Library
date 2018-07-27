@@ -471,3 +471,268 @@ module InsertStatements =
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PersonParam) =
                 PersonParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
+
+        type AnalysisSoftwareParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new AnalysisSoftwareParam(
+                                          id', 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          Nullable(DateTime.Now)
+                                         )
+
+            ///Replaces value of existing object with new value.
+            static member addValue
+                (value:string) (param:AnalysisSoftwareParam) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new unit.
+            static member addUnit
+                (unit:Term) (param:AnalysisSoftwareParam) =
+                param.Unit <- unit
+                param
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzQuantML) (paramID:string) =
+                tryFind (context.PersonParam.Find(paramID))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
+                query {
+                       for i in dbContext.AnalysisSoftwareParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftwareParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AnalysisSoftwareParam) (item2:AnalysisSoftwareParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
+                    AnalysisSoftwareParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match AnalysisSoftwareParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
+                AnalysisSoftwareParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+//////////////////////////////////////////
+//End of paramHandlers//////////////////////////////////////////////
+//////////////////////////////////////////
+
+        type AnalysisSoftwareHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    id        : string,
+                    version   : string,
+                    ?details  : seq<AnalysisSoftwareParam>
+                ) =
+
+                let details'  = convertOptionToList details
+                    
+                new AnalysisSoftware(
+                                     id, 
+                                     version, 
+                                     details', 
+                                     Nullable(DateTime.Now)
+                                    )
+
+            ///Adds new enzymename to collection of enzymenames.
+            static member addDetail
+                (analysisSoftwareParam:AnalysisSoftwareParam) (analysisSoftware:AnalysisSoftware) =
+                let result = analysisSoftware.Details <- addToList analysisSoftware.Details analysisSoftwareParam
+                analysisSoftware
+
+            ///Add new collection of enzymenames to collection of enzymenames.
+            static member addDetails
+                (analysisSoftwareParams:seq<AnalysisSoftwareParam>) (analysisSoftware:AnalysisSoftware) =
+                let result = analysisSoftware.Details <- addCollectionToList analysisSoftware.Details analysisSoftwareParams
+                analysisSoftware
+
+            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzQuantML) (analysisSoftwareID:string) =
+                tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
+
+            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByVersion (dbContext:MzQuantML) (version:string) =
+                query {
+                       for i in dbContext.AnalysisSoftware.Local do
+                           if i.Version=version
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                |> (fun analysisSoftware -> 
+                    if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftware do
+                                       if i.Version=version
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                            |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                                                            then None
+                                                            else Some analysisSoftware
+                               )
+                        else Some analysisSoftware
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
+                item1.Details=item2.Details
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftware) =
+                    AnalysisSoftwareHandler.tryFindByVersion dbContext item.Version
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftware) =
+                AnalysisSoftwareHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type SourceFileHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    id                           : string,
+                    location                     : string,
+                    ?name                        : string,
+                    ?externalFormatDocumentation : string,
+                    ?fileFormat                  : CVParam
+                ) =
+
+                let name'                         = defaultArg name Unchecked.defaultof<string>
+                let externalFormatDocumentation'  = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let fileFormat'                   = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                    
+                new SourceFile(
+                               id,
+                               name',
+                               location, 
+                               externalFormatDocumentation',
+                               fileFormat',
+                               Nullable(DateTime.Now)
+                              )
+
+            ///Replaces name of existing object with new name.
+            static member addName
+                (name:string) (sourceFile:SourceFile) =
+                sourceFile.Name <- name
+                sourceFile
+
+            ///Replaces externalFormatDocumentation of existing object with new externalFormatDocumentation.
+            static member addExternalFormatDocumentation
+                (externalFormatDocumentation:string) (sourceFile:SourceFile) =
+                sourceFile.ExternalFormatDocumentation <- externalFormatDocumentation
+                sourceFile
+
+            ///Replaces fileFormat of existing object with new fileFormat.
+            static member addFileFormat
+                (fileFormat:CVParam) (sourceFile:SourceFile) =
+                sourceFile.FileFormat <- fileFormat
+                sourceFile
+
+            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzQuantML) (sourceFileID:string) =
+                tryFind (context.SourceFile.Find(sourceFileID))
+
+            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByVersion (dbContext:MzQuantML) (name:string) =
+                query {
+                       for i in dbContext.SourceFile.Local do
+                           if i.Name=name
+                              then select (i, i.FileFormat)
+                      }
+                |> Seq.map (fun (sourceFile, _) -> sourceFile)
+                |> (fun sourceFile -> 
+                    if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.SourceFile do
+                                       if i.Name=name
+                                          then select (i, i.FileFormat)
+                                  }
+                            |> Seq.map (fun (sourceFile, _) -> sourceFile)
+                            |> (fun sourceFile -> if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                                                            then None
+                                                            else Some sourceFile
+                               )
+                        else Some sourceFile
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
+                item1.FileFormat=item2.FileFormat
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:SourceFile) =
+                    SourceFileHandler.tryFindByVersion dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SourceFileHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:SourceFile) =
+                SourceFileHandler.addToContext dbContext item
+                dbContext.SaveChanges()

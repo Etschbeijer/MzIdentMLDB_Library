@@ -4923,13 +4923,13 @@ module InsertStatements =
                 enzyme.SiteRegexc <- siteRegexc
                 enzyme
 
-            ///Replaces enzymename of existing object with new enzymename.
+            ///Adds new enzymename to collection of enzymenames.
             static member addEnzymeName
                 (enzymeName:EnzymeNameParam) (enzyme:Enzyme) =
                 let result = enzyme.EnzymeName <- addToList enzyme.EnzymeName enzymeName
                 enzyme
 
-            ///Replaces name of existing object with new name.
+            ///Add new collection of enzymenames to collection of enzymenames.
             static member addEnzymeNames
                 (enzymeNames:seq<EnzymeNameParam>) (enzyme:Enzyme) =
                 let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
