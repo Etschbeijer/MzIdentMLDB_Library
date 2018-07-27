@@ -5,6 +5,7 @@ open System.ComponentModel.DataAnnotations.Schema
 open Microsoft.EntityFrameworkCore
 open System.Collections.Generic
 
+
 module DataModel =
     open MzIdentMLDataBase.DataModel
 
@@ -554,6 +555,52 @@ module DataModel =
             let mutable rowVersion' = rowVersion
 
             new() = ProcessingMethodParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
+    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+        OrganizationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = OrganizationParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
+    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+        PersonParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = PersonParam(null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1686,7 +1733,7 @@ module DataModel =
      
             inherit DbContext
 
-            new(options : DbContextOptions<MzIdentML>) = {inherit DbContext(options)}
+            new(options : DbContextOptions<MzQuantML>) = {inherit DbContext(options)}
 
             [<DefaultValue>] 
             val mutable m_term : DbSet<Term>
@@ -1922,3 +1969,126 @@ module DataModel =
             val mutable m_MzQuantMLDocument : DbSet<Term>
             member public this.MzQuantMLDocument with get() = this.m_MzQuantMLDocument
                                                               and set value = this.m_MzQuantMLDocument <- value
+
+            [<DefaultValue>] 
+            val mutable m_CVParam : DbSet<Term>
+            member public this.CVParam with get() = this.m_CVParam
+                                                    and set value = this.m_CVParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_AnalysisSummaryParam : DbSet<Term>
+            member public this.AnalysisSummaryParam with get() = this.m_AnalysisSummaryParam
+                                                                 and set value = this.m_AnalysisSummaryParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_FeatureParam : DbSet<Term>
+            member public this.FeatureParam with get() = this.m_FeatureParam
+                                                         and set value = this.m_FeatureParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_FeatureListParam : DbSet<Term>
+            member public this.FeatureListParam with get() = this.m_FeatureListParam
+                                                             and set value = this.m_FeatureListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_IdentificationFileParam : DbSet<Term>
+            member public this.IdentificationFileParam with get() = this.m_IdentificationFileParam
+                                                                    and set value = this.m_IdentificationFileParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_AssayParam : DbSet<Term>
+            member public this.AssayParam with get() = this.m_AssayParam
+                                                       and set value = this.m_AssayParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideConsensusParam : DbSet<Term>
+            member public this.PeptideConsensusParam with get() = this.m_PeptideConsensusParam
+                                                                  and set value = this.m_PeptideConsensusParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideConsensusListParam : DbSet<Term>
+            member public this.PeptideConsensusListParam with get() = this.m_PeptideConsensusListParam
+                                                                      and set value = this.m_PeptideConsensusListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProcessingmethodParam : DbSet<Term>
+            member public this.ProcessingmethodParam with get() = this.m_ProcessingmethodParam
+                                                                  and set value = this.m_ProcessingmethodParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinParam : DbSet<Term>
+            member public this.ProteinParam with get() = this.m_ProteinParam
+                                                         and set value = this.m_ProteinParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinListParam : DbSet<Term>
+            member public this.ProteinListParam with get() = this.m_ProteinListParam
+                                                             and set value = this.m_ProteinListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinGroupParam : DbSet<Term>
+            member public this.ProteinGroupParam with get() = this.m_ProteinGroupParam
+                                                              and set value = this.m_ProteinGroupParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinGroupListParam : DbSet<Term>
+            member public this.ProteinGroupListParam with get() = this.m_ProteinGroupListParam
+                                                                  and set value = this.m_ProteinGroupListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_RatioCalculationParam : DbSet<Term>
+            member public this.RatioCalculationParam with get() = this.m_RatioCalculationParam
+                                                                  and set value = this.m_RatioCalculationParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_RawFileParam : DbSet<Term>
+            member public this.RawFileParam with get() = this.m_RawFileParam
+                                                         and set value = this.m_RawFileParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_RawFileGroupParam : DbSet<Term>
+            member public this.RawFileGroupParam with get() = this.m_RawFileGroupParam
+                                                              and set value = this.m_RawFileGroupParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_SearchDatabaseParam : DbSet<Term>
+            member public this.SearchDatabaseParam with get() = this.m_SearchDatabaseParam
+                                                                and set value = this.m_SearchDatabaseParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeParam : DbSet<Term>
+            member public this.SmallMoleculeParam with get() = this.m_SmallMoleculeParam
+                                                               and set value = this.m_SmallMoleculeParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeListParam : DbSet<Term>
+            member public this.SmallMoleculeListParam with get() = this.m_SmallMoleculeListParam
+                                                                   and set value = this.m_SmallMoleculeListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_AnalysisSoftwareParam : DbSet<Term>
+            member public this.AnalysisSoftwareParam with get() = this.m_AnalysisSoftwareParam
+                                                                  and set value = this.m_AnalysisSoftwareParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_StudyVariableParam : DbSet<Term>
+            member public this.StudyVariableParam with get() = this.m_StudyVariableParam
+                                                               and set value = this.m_StudyVariableParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProcessingMethodParam : DbSet<Term>
+            member public this.ProcessingMethodParam with get() = this.m_ProcessingMethodParam
+                                                                  and set value = this.m_ProcessingMethodParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_OrganizationParam : DbSet<Term>
+            member public this.OrganizationParam with get() = this.m_OrganizationParam
+                                                              and set value = this.m_OrganizationParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_PersonParam : DbSet<Term>
+            member public this.PersonParam with get() = this.m_PersonParam
+                                                        and set value = this.m_PersonParam <- value
+
+
+

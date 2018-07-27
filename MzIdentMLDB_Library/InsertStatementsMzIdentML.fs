@@ -71,16 +71,6 @@ module InsertStatements =
                 | PRIDE  -> "PRIDE"
                 | UNIMOD -> "UNIMOD"
 
-        type ExampleTerm =
-            |  A 
-            |  B 
-            |  C of string 
-            static member ToString (x:ExampleTerm) =
-                match x with
-                | A  -> "A"
-                | B  -> "B"
-                | C v -> sprintf "C %s" v
-
         type ContextHandler =
 
             ///Creates connection for SQLite-context and database.
