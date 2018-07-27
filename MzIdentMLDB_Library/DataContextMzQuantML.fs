@@ -4,11 +4,9 @@ open System
 open System.ComponentModel.DataAnnotations.Schema
 open Microsoft.EntityFrameworkCore
 open System.Collections.Generic
-open MzIdentMLDataBase
 
 module DataModel =
     open MzIdentMLDataBase.DataModel
-    open DataModel
 
     type [<AllowNullLiteral>]
         Term (id:string, name:string, ontology:Ontology, rowVersion:Nullable<DateTime>) =
@@ -24,7 +22,6 @@ module DataModel =
             member this.Ontology with get() = ontology' and set(value) = ontology' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
         
-    
     ///Standarized vocabulary for MS-Database.
     and [<AllowNullLiteral>]
         Ontology (id:string, terms:List<Term>, rowVersion:Nullable<DateTime>) =
@@ -879,26 +876,26 @@ module DataModel =
             member this.Detail with get() = detail' and set(value) = detail' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-    ///A specification of labels or tags used to define the assay within the raw file, 
-    ///such as heavy labelling or iTRAQ tag mass. The Label and Modification is mandatory 
-    ///so a specific term is provided under Modification for unlabeled sample for label-free and, 
-    ///for example, so-called light samples in a labelling experiment.
-    type [<AllowNullLiteral>]
-        Label (id:string, modifications:List<Modification>, rowVersion:Nullable<DateTime>) =
-            let mutable id'            = id
-            let mutable modifications' = modifications
-            let mutable rowVersion'    = rowVersion
+    /////A specification of labels or tags used to define the assay within the raw file, 
+    /////such as heavy labelling or iTRAQ tag mass. The Label and Modification is mandatory 
+    /////so a specific term is provided under Modification for unlabeled sample for label-free and, 
+    /////for example, so-called light samples in a labelling experiment.
+    //type [<AllowNullLiteral>]
+    //    Label (id:string, modifications:List<Modification>, rowVersion:Nullable<DateTime>) =
+    //        let mutable id'            = id
+    //        let mutable modifications' = modifications
+    //        let mutable rowVersion'    = rowVersion
 
-            new() = Label(null, null, Nullable())
+    //        new() = Label(null, null, Nullable())
 
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Modifications with get() = modifications' and set(value) = modifications' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    //        member this.ID with get() = id' and set(value) = id' <- value
+    //        member this.Modifications with get() = modifications' and set(value) = modifications' <- value
+    //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Describes a single analysis of a sample (e.g. with the channel mapping in iTRAQ), 
     ///which could constitute multiple raw files e.g. if pre-separation steps have occurred. 
     type [<AllowNullLiteral>]
-        Assay (id:string, name:string, rawFilesGroup:RawFilesGroup, label:Label,
+        Assay (id:string, name:string, rawFilesGroup:RawFilesGroup, label:List<Modification>,
                identificationFile:IdentificationFile, details:List<AssayParam>, 
                rowVersion:Nullable<DateTime>
               ) =
@@ -1608,10 +1605,10 @@ module DataModel =
     type [<AllowNullLiteral>]
         MzQuantML (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
                    provider:Provider, persons:List<Person>, organzations:List<Organization>, analysisSummary:List<AnalysisSummaryParam>, 
-                   inputFiles:List<InputFile>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, 
+                   inputFiles:List<InputFile>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
                    bibliographicReferences:List<BiblioGraphicReference>, studyVariables:List<StudyVariable>, 
                    ratios:List<Ratio>, proteinGroups:List<ProteinGroup>, proteins:List<Protein>, 
-                   peptideConsensuses:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
+                   peptideConsensi:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
                    features:List<Feature>, rowVersion:Nullable<DateTime>
                   ) =
             let mutable id'                      = id
@@ -1619,26 +1616,47 @@ module DataModel =
             let mutable creationDate'            = creationDate
             let mutable version'                 = version
             let mutable provider'                = provider
-            //Audicollection
+            //Formerly Audicollection
             let mutable persons'                 = persons
             let mutable organzations'            = organzations
             //
             let mutable analysisSummary'         = analysisSummary
+            //Formerly SoftwareList
             let mutable analysisSoftwares'       = analysisSoftwares
+            //
             let mutable inputFiles'              = inputFiles
+            //Formerly DataProcessingList
             let mutable dataProcessings'         = dataProcessings
+            //
             let mutable bibliographicReferences' = bibliographicReferences
-            let mutable studiVariables'          = studyVariables
+            //Formerly AssayList
+            let mutable assays'                  = assays
+            //
+            //Formerly StudyVariableList
+            let mutable studyVariables'          = studyVariables
+            //
+            //Formerly RatioList
             let mutable ratios'                  = ratios
+            //
+            //Formerly ProteinGroupList
             let mutable proteinGroups'           = proteinGroups
+            //
+            //Formerly ProteinList
             let mutable proteins'                = proteins
-            let mutable peptideConsensuses'      = peptideConsensuses
+            //
+            //Formerly PeptideConsensusList
+            let mutable peptideConsensi'         = peptideConsensi
+            //
+            //Formerly SmallMoceluleList
             let mutable smallMolecules'          = smallMolecules
+            //
+            //Formerly FeatureList
             let mutable features'                = features
+            //
             let mutable rowVersion'              = rowVersion
 
             new() = MzQuantML(null, null, Nullable(), null, null, null, null, null, null, null, null, null,
-                              null, null, null, null, null, null, null, Nullable()
+                              null, null, null, null, null, null, null, null, Nullable()
                              )
 
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1653,11 +1671,12 @@ module DataModel =
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
             member this.BibliographicReferences with get() = bibliographicReferences' and set(value) = bibliographicReferences' <- value
-            member this.StudiVariables with get() = studiVariables' and set(value) = studiVariables' <- value
+            member this.Assays with get() = assays' and set(value) = assays' <- value
+            member this.StudyVariables with get() = studyVariables' and set(value) = studyVariables' <- value
             member this.Ratios with get() = ratios' and set(value) = ratios' <- value
             member this.ProteinGroups with get() = proteinGroups' and set(value) = proteinGroups' <- value
             member this.Proteins with get() = proteins' and set(value) = proteins' <- value
-            member this.PeptideConsensuses with get() = peptideConsensuses' and set(value) = peptideConsensuses' <- value
+            member this.PeptideConsensi with get() = peptideConsensi' and set(value) = peptideConsensi' <- value
             member this.SmallMolecules with get() = smallMolecules' and set(value) = smallMolecules' <- value
             member this.Features with get() = features' and set(value) = features' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
