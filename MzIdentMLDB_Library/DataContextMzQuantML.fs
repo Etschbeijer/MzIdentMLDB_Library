@@ -407,14 +407,14 @@ module DataModel =
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("RawFileParams")>]
-        RawFileGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+        RawFilesGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
             let mutable unit'       = unit
             let mutable rowVersion' = rowVersion
 
-            new() = RawFileGroupParam(null, null, null, null, Nullable())
+            new() = RawFilesGroupParam(null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -615,6 +615,29 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
+    type [<AllowNullLiteral>] [<Table("MassTrace")>]
+        MassTraceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = MassTraceParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
     ////////////////////////////////////////////////////////////////////////////////////////////
     //End of params///////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -752,14 +775,14 @@ module DataModel =
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
-            member this.location with get() = location' and set(value) = location' <- value
-            member this.numDatabaseEntries with get() = numDatabaseEntries' and set(value) = numDatabaseEntries' <- value
-            member this.releaseDate with get() = releaseDate' and set(value) = releaseDate' <- value
-            member this.version with get() = version' and set(value) = version' <- value
-            member this.externalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
-            member this.fileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
-            member this.databaseName with get() = databaseName' and set(value) = databaseName' <- value
-            member this.details with get() = details' and set(value) = details' <- value
+            member this.Location with get() = location' and set(value) = location' <- value
+            member this.NumDatabaseEntries with get() = numDatabaseEntries' and set(value) = numDatabaseEntries' <- value
+            member this.ReleaseDate with get() = releaseDate' and set(value) = releaseDate' <- value
+            member this.Version with get() = version' and set(value) = version' <- value
+            member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
+            member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
+            member this.DatabaseName with get() = databaseName' and set(value) = databaseName' <- value
+            member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A single identification file associated with this analysis.
@@ -840,13 +863,13 @@ module DataModel =
     ///Note, the name raw file does not necessarily imply that the file has not been processed, since in some quant methods, 
     ///processed peak list formats such as MGF or DTA can be used, which could be referenced here.
     type [<AllowNullLiteral>]
-        RawFile (id:string, name:string, location:string, methodFiles:MethodFile, externalFormatDocumentation:string, 
+        RawFile (id:string, name:string, location:string, methodFile:MethodFile, externalFormatDocumentation:string, 
                  fileFormat:CVParam, details:List<RawFileParam>, rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'                          = id
             let mutable name'                        = name
             let mutable location'                    = location
-            let mutable methodFiles'                 = methodFiles
+            let mutable methodFile'                  = methodFile
             let mutable externalFormatDocumentation' = externalFormatDocumentation
             let mutable fileFormat'                  = fileFormat
             let mutable details'                     = details
@@ -857,7 +880,7 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Location with get() = location' and set(value) = location' <- value
-            member this.MethodFiles with get() = methodFiles' and set(value) = methodFiles' <- value
+            member this.MethodFile with get() = methodFile' and set(value) = methodFile' <- value
             member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
             member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
             member this.Details with get() = details' and set(value) = details' <- value
@@ -867,7 +890,7 @@ module DataModel =
     ///This is mandatory unless raw files were not used for quantitation e.g. spectral counting. 
     ///Multiple raw files should only be provided within a group if they have been used for sample pre-fractionation which are later summed together.
     type [<AllowNullLiteral>]
-        RawFilesGroup (id:string, rawFiles:List<RawFile>, details:List<RawFileGroupParam> ,rowVersion:Nullable<DateTime>) =
+        RawFilesGroup (id:string, rawFiles:List<RawFile>, details:List<RawFilesGroupParam> ,rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable rawFiles'   = rawFiles
             let mutable details'    = details
@@ -882,24 +905,24 @@ module DataModel =
 
     ///A single methods file associated with this analysis e.g. a TraML file used for SRM analysis.
     type [<AllowNullLiteral>]
-        InputFile (id:string, rawFilesGroups:List<RawFilesGroup>, methodFiles:List<MethodFile>,
-                   identificationFile:IdentificationFile, searchDatabases:List<SearchDatabase>,
-                   sourceFiles:List<SourceFile>, rowVersion:Nullable<DateTime>
-                  ) =
-            let mutable id'                 = id
-            let mutable rawFilesGroups'     = rawFilesGroups
-            let mutable methodFiles'        = methodFiles
-            let mutable identificationFile' = identificationFile
-            let mutable searchDatabases'    = searchDatabases
-            let mutable sourceFiles'        = sourceFiles
-            let mutable rowVersion'         = rowVersion
+        InputFiles (id:string, rawFilesGroups:List<RawFilesGroup>, methodFiles:List<MethodFile>,
+                    identificationFiles:List<IdentificationFile>, searchDatabases:List<SearchDatabase>,
+                    sourceFiles:List<SourceFile>, rowVersion:Nullable<DateTime>
+                   ) =
+            let mutable id'                  = id
+            let mutable rawFilesGroups'      = rawFilesGroups
+            let mutable methodFiles'         = methodFiles
+            let mutable identificationFiles' = identificationFiles
+            let mutable searchDatabases'     = searchDatabases
+            let mutable sourceFiles'         = sourceFiles
+            let mutable rowVersion'          = rowVersion
 
-            new() = InputFile(null, null, null, null, null, null, Nullable())
+            new() = InputFiles(null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.RawFilesGroups with get() = rawFilesGroups' and set(value) = rawFilesGroups' <- value
             member this.MethodFiles with get() = methodFiles' and set(value) = methodFiles' <- value
-            member this.IdentificationFile with get() = identificationFile' and set(value) = identificationFile' <- value
+            member this.IdentificationFiles with get() = identificationFiles' and set(value) = identificationFiles' <- value
             member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
             member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -986,8 +1009,9 @@ module DataModel =
     ///However, StudyVariables MAY contain 1 to many Assays, thus allowing more complex ratios to be constructed 
     ///if needed via use of StudyVariables with unbalanced numbers of Assays.
     type [<AllowNullLiteral>]
-        Ratio (id:string, name:string, denominator:StudyVariable, numerator:StudyVariable, ratioCalculation:List<RatioCalculationParam>,
-               numeratorDataType:CVParam, denominatorDataType:CVParam, rowVersion:Nullable<DateTime>
+        Ratio (id:string, name:string, denominator:StudyVariable, numerator:StudyVariable, 
+               ratioCalculation:List<RatioCalculationParam>, numeratorDataType:CVParam, 
+               denominatorDataType:CVParam, rowVersion:Nullable<DateTime>
               ) =
             let mutable id'                  = id
             let mutable name'                = name
@@ -1009,21 +1033,21 @@ module DataModel =
             member this.DenominatorDataType with get() = denominatorDataType' and set(value) = denominatorDataType' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-    ///The coordinates defining the feature in RT and MZ space, given as boundary points or 
-    ///a series of rectangles, as encoded by the MassTraceEncoding cvParam on the FeatureList. 
-    type [<AllowNullLiteral>]
-        MassTrace (id:string, value:Nullable<float>, detail:CVParam, rowVersion:Nullable<DateTime>) =
-            let mutable id'         = id
-            let mutable value'      = value
-            let mutable detail'     = detail
-            let mutable rowVersion' = rowVersion
+    /////The coordinates defining the feature in RT and MZ space, given as boundary points or 
+    /////a series of rectangles, as encoded by the MassTraceEncoding cvParam on the FeatureList. 
+    //type [<AllowNullLiteral>]
+    //    MassTrace (id:string, value:Nullable<float>, detail:CVParam, rowVersion:Nullable<DateTime>) =
+    //        let mutable id'         = id
+    //        let mutable value'      = value
+    //        let mutable detail'     = detail
+    //        let mutable rowVersion' = rowVersion
 
-            new() = MassTrace(null, Nullable(), null, Nullable())
+    //        new() = MassTrace(null, Nullable(), null, Nullable())
 
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Value with get() = value' and set(value) = value' <- value
-            member this.Detail with get() = detail' and set(value) = detail' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    //        member this.ID with get() = id' and set(value) = id' <- value
+    //        member this.Value with get() = value' and set(value) = value' <- value
+    //        member this.Detail with get() = detail' and set(value) = detail' <- value
+    //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The datatype and index position of one column of data in the DataMatrix.
     type [<AllowNullLiteral>]
@@ -1239,17 +1263,18 @@ module DataModel =
     ///scans e.g. MS2 tagging approaches, a Feature corresponds with the mz of the parent ions only.
     type [<AllowNullLiteral>]
         Feature (id:string, charge:Nullable<int>, fkChromatochram:string, mz:Nullable<float>, rawFile:string, 
-                 retentionTime:Nullable<float>, fkSpectrum:string, massTrace:MassTrace,
+                 retentionTime:Nullable<float>, fkSpectrum:string, massTraces:seq<MassTraceParam>,
                  details:List<FeatureParam>, rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'              = id
             let mutable charge'          = charge
             let mutable fkChromatochram' = fkChromatochram
+            let mutable mz'              = mz
             let mutable rawFile'         = rawFile
             [<Column("RT")>]
             let mutable retentionTime'   = retentionTime
             let mutable fkSpectrum'      = fkSpectrum
-            let mutable massTrace'       = massTrace
+            let mutable massTraces'       = massTraces
             let mutable details'         = details
             let mutable rowVersion'      = rowVersion
 
@@ -1258,10 +1283,11 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Charge with get() = charge' and set(value) = charge' <- value            
             member this.FKChromatochram with get() = fkChromatochram' and set(value) = fkChromatochram' <- value
+            member this.MZ with get() = mz' and set(value) = mz' <- value
             member this.RawFile with get() = rawFile' and set(value) = rawFile' <- value
             member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
             member this.FKSpectrum with get() = fkSpectrum' and set(value) = fkSpectrum' <- value
-            member this.MassTrace with get() = massTrace' and set(value) = massTrace' <- value
+            member this.MassTraces with get() = massTraces' and set(value) = massTraces' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
@@ -1652,7 +1678,7 @@ module DataModel =
     type [<AllowNullLiteral>]
         MzQuantMLDocument (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
                            provider:Provider, persons:List<Person>, organzations:List<Organization>, analysisSummary:List<AnalysisSummaryParam>, 
-                           inputFiles:List<InputFile>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
+                           inputFiles:List<InputFiles>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
                            bibliographicReferences:List<BiblioGraphicReference>, studyVariables:List<StudyVariable>, 
                            ratios:List<Ratio>, proteinGroups:List<ProteinGroup>, proteins:List<Protein>, 
                            peptideConsensi:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
@@ -1806,9 +1832,9 @@ module DataModel =
                                                           and set value = this.m_RawFilesGroup <- value
 
             [<DefaultValue>] 
-            val mutable m_InputFile : DbSet<InputFile>
-            member public this.InputFile with get() = this.m_InputFile
-                                                      and set value = this.m_InputFile <- value
+            val mutable m_InputFiles : DbSet<InputFiles>
+            member public this.InputFiles with get() = this.m_InputFiles
+                                                      and set value = this.m_InputFiles <- value
 
             [<DefaultValue>] 
             val mutable m_Modification : DbSet<Modification>
@@ -2046,9 +2072,9 @@ module DataModel =
                                                          and set value = this.m_RawFileParam <- value
 
             [<DefaultValue>] 
-            val mutable m_RawFileGroupParam : DbSet<RawFileGroupParam>
-            member public this.RawFileGroupParam with get() = this.m_RawFileGroupParam
-                                                              and set value = this.m_RawFileGroupParam <- value
+            val mutable m_RawFilesGroupParam : DbSet<RawFilesGroupParam>
+            member public this.RawFilesGroupParam with get() = this.m_RawFilesGroupParam
+                                                              and set value = this.m_RawFilesGroupParam <- value
 
             [<DefaultValue>] 
             val mutable m_SearchDatabaseParam : DbSet<SearchDatabaseParam>

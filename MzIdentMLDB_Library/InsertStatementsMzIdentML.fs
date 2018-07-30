@@ -7742,10 +7742,12 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-               (*item1.Provider=item2.Provider &&*) item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+               (*item1.Provider=item2.Provider &&*) 
+               item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
-               (*item1.ProteinDetection=item2.ProteinDetection &&*) item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+               (*item1.ProteinDetection=item2.ProteinDetection &&*) 
+               item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
                (*item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&*)
                item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
