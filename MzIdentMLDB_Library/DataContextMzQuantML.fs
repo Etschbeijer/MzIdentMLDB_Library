@@ -308,7 +308,31 @@ module DataModel =
                 member x.Term       = x.Term
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
-            
+  
+    ///A single entry from an ontology or a controlled vocabulary.
+    type [<AllowNullLiteral>] [<Table("ProteinRefParams")>]
+        ProteinRefParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = ProteinRefParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinGroupParams")>]
         ProteinGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
@@ -1228,7 +1252,7 @@ module DataModel =
             let mutable analysisSoftware'      = analysisSoftware
             let mutable inputObjects'          = inputObjects
             let mutable outputObjects'         = outputObjects
-            let mutable processingMethods' = processingMethods
+            let mutable processingMethods'     = processingMethods
             let mutable rowVersion'            = rowVersion
 
             new() = DataProcessing(null,Nullable(), null,  null,  null,  null, Nullable())
@@ -1238,7 +1262,7 @@ module DataModel =
             member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
             member this.InputObjects with get() = inputObjects' and set(value) = inputObjects' <- value
             member this.OutputObjects with get() = outputObjects' and set(value) = outputObjects' <- value            
-            member this.DataprocessingMethods with get() = processingMethods' and set(value) = processingMethods' <- value
+            member this.ProcessingMethods with get() = processingMethods' and set(value) = processingMethods' <- value
             member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///External database references for the small molecule identification.
@@ -1262,19 +1286,19 @@ module DataModel =
     ///can be added in the associated QuantLayers. For techniques that analyse data from single 
     ///scans e.g. MS2 tagging approaches, a Feature corresponds with the mz of the parent ions only.
     type [<AllowNullLiteral>]
-        Feature (id:string, charge:Nullable<int>, fkChromatochram:string, mz:Nullable<float>, rawFile:string, 
-                 retentionTime:Nullable<float>, fkSpectrum:string, massTraces:seq<MassTraceParam>,
+        Feature (id:string, charge:Nullable<int>, fkChromatogram:string, mz:Nullable<float>, rawFile:RawFile, 
+                 retentionTime:Nullable<float>, fkSpectrum:string, massTraces:List<MassTraceParam>,
                  details:List<FeatureParam>, rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'              = id
             let mutable charge'          = charge
-            let mutable fkChromatochram' = fkChromatochram
+            let mutable fkChromatogram'  = fkChromatogram
             let mutable mz'              = mz
             let mutable rawFile'         = rawFile
             [<Column("RT")>]
             let mutable retentionTime'   = retentionTime
             let mutable fkSpectrum'      = fkSpectrum
-            let mutable massTraces'       = massTraces
+            let mutable massTraces'      = massTraces
             let mutable details'         = details
             let mutable rowVersion'      = rowVersion
 
@@ -1282,7 +1306,7 @@ module DataModel =
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Charge with get() = charge' and set(value) = charge' <- value            
-            member this.FKChromatochram with get() = fkChromatochram' and set(value) = fkChromatochram' <- value
+            member this.FKChromatogram with get() = fkChromatogram' and set(value) = fkChromatogram' <- value
             member this.MZ with get() = mz' and set(value) = mz' <- value
             member this.RawFile with get() = rawFile' and set(value) = rawFile' <- value
             member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
@@ -1293,13 +1317,13 @@ module DataModel =
 
     ///An element to represent a unique identifier of a small molecule for which quantitative values are reported.
     type [<AllowNullLiteral>]
-        SmallMolecule (id:string, modifications:List<Modification>, dbIdentificationRefs:List<DBIdentificationRef>, feature:Feature, 
+        SmallMolecule (id:string, modifications:List<Modification>, dbIdentificationRefs:List<DBIdentificationRef>, features:List<Feature>, 
                        details:List<SmallMoleculeParam>, rowVersion:Nullable<DateTime>
                       ) =
             let mutable id'                   = id
             let mutable modifications'        = modifications
             let mutable dbIdentificationRefs' = dbIdentificationRefs
-            let mutable feature'              = feature
+            let mutable features'             = features
             let mutable details'              = details
             let mutable rowVersion'           = rowVersion
 
@@ -1308,33 +1332,33 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value            
             member this.DBIdentificationRefs with get() = dbIdentificationRefs' and set(value) = dbIdentificationRefs' <- value
-            member this.Feature with get() = feature' and set(value) = feature' <- value            
+            member this.Features with get() = features' and set(value) = features' <- value            
             member this.Details with get() = details' and set(value) = details' <- value
             member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///TThe list of all individual proteins (i.e. ungrouped) for which quantitation values are being reported. 
     ///If quantitation is done on protein groups, the constituent proteins should be listed here with no QuantLayers.
     type [<AllowNullLiteral>]
-        SmallMoleculeList (id:string, proteins:List<SmallMolecule>, globalQuantLayer:List<GlobalQuantLayer>,assayQuantLayer:List<AssayQuantLayer>, 
-                           studyVariableQuantLayer:List<StudyVariableQuantLayer>, ratioQuantLayer:List<RatioQuantLayer>,
+        SmallMoleculeList (id:string, smallMolecules:List<SmallMolecule>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
+                           studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
                            details:List<SmallMoleculeListParam>, rowVersion:Nullable<DateTime>
                           ) =
-            let mutable id'                      = id
-            let mutable proteins'                = proteins
-            let mutable globalQuantLayer'        = globalQuantLayer
-            let mutable assayQuantLayer'         = assayQuantLayer
-            let mutable studyVariableQuantLayer' = studyVariableQuantLayer
+            let mutable id'                       = id
+            let mutable smallMolecules'           = smallMolecules
+            let mutable globalQuantLayers'        = globalQuantLayers
+            let mutable assayQuantLayers'         = assayQuantLayers
+            let mutable studyVariableQuantLayers' = studyVariableQuantLayers
             let mutable ratioQuantLayer'         = ratioQuantLayer
-            let mutable details'                 = details
-            let mutable rowVersion'              = rowVersion
+            let mutable details'                  = details
+            let mutable rowVersion'               = rowVersion
 
             new() = SmallMoleculeList(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
-            member this.Proteins with get() = proteins' and set(value) = proteins' <- value
-            member this.GlobalQuantLayer with get() = globalQuantLayer' and set(value) = globalQuantLayer' <- value
-            member this.AssayQuantLayer with get() = assayQuantLayer' and set(value) = assayQuantLayer' <- value
-            member this.StudyVariableQuantLayer with get() = studyVariableQuantLayer' and set(value) = studyVariableQuantLayer' <- value
+            member this.SmallMolecules with get() = smallMolecules' and set(value) = smallMolecules' <- value
+            member this.GlobalQuantLayers with get() = globalQuantLayers' and set(value) = globalQuantLayers' <- value
+            member this.AssayQuantLayers with get() = assayQuantLayers' and set(value) = assayQuantLayers' <- value
+            member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -1427,28 +1451,28 @@ module DataModel =
             member this.Features with get() = features' and set(value) = features' <- value
             member this.FeatureQuantLayers with get() = featureQuantLayers' and set(value) = featureQuantLayers' <- value
             member this.MS2AssayQuantLayers with get() = ms2AssayQuantLayers' and set(value) = ms2AssayQuantLayers' <- value
-            member this.MS2StudyVariableQuantLayer with get() = ms2StudyVariableQuantLayer' and set(value) = ms2StudyVariableQuantLayer' <- value
-            member this.MS2RatioQuantLayer with get() = ms2RatioQuantLayer' and set(value) = ms2RatioQuantLayer' <- value
+            member this.MS2StudyVariableQuantLayers with get() = ms2StudyVariableQuantLayer' and set(value) = ms2StudyVariableQuantLayer' <- value
+            member this.MS2RatioQuantLayers with get() = ms2RatioQuantLayer' and set(value) = ms2RatioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Evidence associated with the PeptideConsensus, including mandatory associations to features and 
     ///optional references to identifications that have been assigned to the feature.
     type [<AllowNullLiteral>]
-        EvidenceRef (id:string, externalFileRef:string, feature:Feature, fkExternalFileRef:string, 
+        EvidenceRef (id:string, assays:List<Assay>, feature:Feature, fkExternalFileRef:string, 
                      identificationFile:IdentificationFile, rowVersion:Nullable<DateTime>
                     ) =
-            let mutable id'             = id
-            let mutable externalFileRef' = externalFileRef
-            let mutable feature' = feature
-            let mutable fkExternalFileRef' = fkExternalFileRef
+            let mutable id'                 = id
+            let mutable assays'             = assays
+            let mutable feature'            = feature
+            let mutable fkExternalFileRef'  = fkExternalFileRef
             let mutable identificationFile' = identificationFile
-            let mutable rowVersion'     = rowVersion
+            let mutable rowVersion'         = rowVersion
 
             new() = EvidenceRef(null, null,  null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
-            member this.ExternalFileRef with get() = externalFileRef' and set(value) = externalFileRef' <- value            
+            member this.Assays with get() = assays' and set(value) = assays' <- value            
             member this.Feature with get() = feature' and set(value) = feature' <- value
             member this.FKExternalFileRef with get() = fkExternalFileRef' and set(value) = fkExternalFileRef' <- value
             member this.IdentificationFile with get() = identificationFile' and set(value) = identificationFile' <- value
@@ -1461,9 +1485,9 @@ module DataModel =
     ///if they are differentially quantified. If peptides with different charge states are aggregated, 
     ///they should be represented by a single PeptideConsensus element.
     type [<AllowNullLiteral>]
-        PeptideConsensus (id:string, charge:Nullable<float>, searchDatabase:SearchDatabase, 
+        PeptideConsensus (id:string, charge:Nullable<int>, searchDatabase:SearchDatabase, 
                           dataMatrix:DataMatrix, peptideSequence:string, modifications:List<Modification>,
-                          evidence:List<EvidenceRef>, details:List<PeptideConsensusParam>,
+                          evidenceRefs:List<EvidenceRef>, details:List<PeptideConsensusParam>,
                           rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'              = id
@@ -1472,7 +1496,7 @@ module DataModel =
             let mutable dataMatrix'      = dataMatrix
             let mutable peptideSequence' = peptideSequence
             let mutable modifications'   = modifications
-            let mutable evidence'        = evidence
+            let mutable evidenceRefs'    = evidenceRefs
             let mutable details'         = details
             let mutable rowVersion'      = rowVersion
 
@@ -1484,57 +1508,57 @@ module DataModel =
             member this.DataMatrix with get() = dataMatrix' and set(value) = dataMatrix' <- value
             member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
-            member this.Evidence with get() = evidence' and set(value) = evidence' <- value
+            member this.EvidenceRefs with get() = evidenceRefs' and set(value) = evidenceRefs' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///One protein that has been quantified in the file, including references to peptides 
     ///on which the quantification is based. 
     type [<AllowNullLiteral>]
-        Protein (id:string, accession:string, searchDatabase:SearchDatabase, identificationRef:List<IdentificationRef>, 
-                 peptideConsensus:PeptideConsensus, details:List<ProteinParam>, rowVersion:Nullable<DateTime>
+        Protein (id:string, accession:string, searchDatabase:SearchDatabase, identificationRefs:List<IdentificationRef>, 
+                 peptideConsensi:List<PeptideConsensus>, details:List<ProteinParam>, rowVersion:Nullable<DateTime>
                 ) =
-            let mutable id'                = id
-            let mutable accession'         = accession
-            let mutable searchDatabase'    = searchDatabase
-            let mutable identificationRef' = identificationRef
-            let mutable peptideConsensus'  = peptideConsensus
-            let mutable details'           = details
-            let mutable rowVersion'        = rowVersion
+            let mutable id'                 = id
+            let mutable accession'          = accession
+            let mutable searchDatabase'     = searchDatabase
+            let mutable identificationRefs' = identificationRefs
+            let mutable peptideConsensi'    = peptideConsensi
+            let mutable details'            = details
+            let mutable rowVersion'         = rowVersion
 
             new() = Protein(null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
-            member this.IdentificationRef with get() = identificationRef' and set(value) = identificationRef' <- value
-            member this.PeptideConsensus with get() = peptideConsensus' and set(value) = peptideConsensus' <- value
+            member this.IdentificationRefs with get() = identificationRefs' and set(value) = identificationRefs' <- value
+            member this.PeptideConsensi with get() = peptideConsensi' and set(value) = peptideConsensi' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///TThe list of all individual proteins (i.e. ungrouped) for which quantitation values are being reported. 
     ///If quantitation is done on protein groups, the constituent proteins should be listed here with no QuantLayers.
     type [<AllowNullLiteral>]
-        ProteinList (id:string, proteins:List<Protein>, globalQuantLayer:List<GlobalQuantLayer>,assayQuantLayer:List<AssayQuantLayer>, 
-                     studyVariableQuantLayer:List<StudyVariableQuantLayer>, ratioQuantLayer:List<RatioQuantLayer>,
+        ProteinList (id:string, proteins:List<Protein>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
+                     studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
                      details:List<ProteinListParam>, rowVersion:Nullable<DateTime>
                     ) =
-            let mutable id'                      = id
-            let mutable proteins'                = proteins
-            let mutable globalQuantLayer'        = globalQuantLayer
-            let mutable assayQuantLayer'         = assayQuantLayer
-            let mutable studyVariableQuantLayer' = studyVariableQuantLayer
+            let mutable id'                       = id
+            let mutable proteins'                 = proteins
+            let mutable globalQuantLayers'        = globalQuantLayers
+            let mutable assayQuantLayers'         = assayQuantLayers
+            let mutable studyVariableQuantLayers' = studyVariableQuantLayers
             let mutable ratioQuantLayer'         = ratioQuantLayer
-            let mutable details'                 = details
-            let mutable rowVersion'              = rowVersion
+            let mutable details'                  = details
+            let mutable rowVersion'               = rowVersion
 
             new() = ProteinList(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Proteins with get() = proteins' and set(value) = proteins' <- value
-            member this.GlobalQuantLayer with get() = globalQuantLayer' and set(value) = globalQuantLayer' <- value
-            member this.AssayQuantLayer with get() = assayQuantLayer' and set(value) = assayQuantLayer' <- value
-            member this.StudyVariableQuantLayer with get() = studyVariableQuantLayer' and set(value) = studyVariableQuantLayer' <- value
+            member this.GlobalQuantLayers with get() = globalQuantLayers' and set(value) = globalQuantLayers' <- value
+            member this.AssayQuantLayers with get() = assayQuantLayers' and set(value) = assayQuantLayers' <- value
+            member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -1543,7 +1567,7 @@ module DataModel =
     ///along with CV terms describing the role it plays within the group, 
     ///such as representative or anchor protein, same set or sub-set.
     type [<AllowNullLiteral>]
-        ProteinRef (id:string, protein:Protein, details:List<ProteinParam>, rowVersion:Nullable<DateTime>
+        ProteinRef (id:string, protein:Protein, details:List<ProteinRefParam>, rowVersion:Nullable<DateTime>
                    ) =
             let mutable id'         = id
             let mutable protein'    = protein
@@ -1560,48 +1584,48 @@ module DataModel =
     ///A grouping of quantified proteins based on ambiguous assignment of peptide evidence to protein identification. 
     ///The semantics of elements within the group, such as a leading protein or those sharing equal evidence can be reported using cvParams.
     type [<AllowNullLiteral>]
-        ProteinGroup (id:string, searchDatabase:SearchDatabase, identificationRef:List<IdentificationRef>, 
+        ProteinGroup (id:string, searchDatabase:SearchDatabase, identificationRefs:List<IdentificationRef>, 
                       proteinRefs:List<ProteinRef>, details:List<ProteinGroupParam>, rowVersion:Nullable<DateTime>
                      ) =
-            let mutable id'                = id
-            let mutable searchDatabase'    = searchDatabase
-            let mutable identificationRef' = identificationRef
-            let mutable proteinRefs'       = proteinRefs
-            let mutable details'           = details
-            let mutable rowVersion'        = rowVersion
+            let mutable id'                 = id
+            let mutable searchDatabase'     = searchDatabase
+            let mutable identificationRefs' = identificationRefs
+            let mutable proteinRefs'        = proteinRefs
+            let mutable details'            = details
+            let mutable rowVersion'         = rowVersion
 
             new() = ProteinGroup(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
-            member this.IdentificationRef with get() = identificationRef' and set(value) = identificationRef' <- value
-            member this.Protein with get() = proteinRefs' and set(value) = proteinRefs' <- value
+            member this.IdentificationRefs with get() = identificationRefs' and set(value) = identificationRefs' <- value
+            member this.ProteinRefs with get() = proteinRefs' and set(value) = proteinRefs' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
     ///The list of all groups of proteins with conflicting evidence for which quantitation values are being reported 
     ///along with quantitative values about those protein groups.
     type [<AllowNullLiteral>]
-        ProteinGroupList (id:string, proteinGroups:List<ProteinGroup>, globalQuantLayer:List<GlobalQuantLayer>,assayQuantLayer:List<AssayQuantLayer>, 
-                          studyVariableQuantLayer:List<StudyVariableQuantLayer>, ratioQuantLayer:List<RatioQuantLayer>,
+        ProteinGroupList (id:string, proteinGroups:List<ProteinGroup>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
+                          studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
                           details:List<ProteinGroupListParam>, rowVersion:Nullable<DateTime>
                          ) =
-            let mutable id'                      = id
-            let mutable proteinGroups'           = proteinGroups
-            let mutable globalQuantLayer'        = globalQuantLayer
-            let mutable assayQuantLayer'         = assayQuantLayer
-            let mutable studyVariableQuantLayer' = studyVariableQuantLayer
+            let mutable id'                       = id
+            let mutable proteinGroups'            = proteinGroups
+            let mutable globalQuantLayers'        = globalQuantLayers
+            let mutable assayQuantLayers'         = assayQuantLayers
+            let mutable studyVariableQuantLayers' = studyVariableQuantLayers
             let mutable ratioQuantLayer'         = ratioQuantLayer
-            let mutable details'                 = details
-            let mutable rowVersion'              = rowVersion
+            let mutable details'                  = details
+            let mutable rowVersion'               = rowVersion
 
             new() = ProteinGroupList(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
-            member this.ProteinGroup with get() = proteinGroups' and set(value) = proteinGroups' <- value
-            member this.GlobalQuantLayer with get() = globalQuantLayer' and set(value) = globalQuantLayer' <- value
-            member this.AssayQuantLayer with get() = assayQuantLayer' and set(value) = assayQuantLayer' <- value
-            member this.StudyVariableQuantLayer with get() = studyVariableQuantLayer' and set(value) = studyVariableQuantLayer' <- value
+            member this.ProteinGroups with get() = proteinGroups' and set(value) = proteinGroups' <- value
+            member this.GlobalQuantLayers with get() = globalQuantLayers' and set(value) = globalQuantLayers' <- value
+            member this.AssayQuantLayers with get() = assayQuantLayers' and set(value) = assayQuantLayers' <- value
+            member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -1609,29 +1633,29 @@ module DataModel =
     ///The list of all peptides for which quantitation values are reported. 
     type [<AllowNullLiteral>]
         PeptideConsensusList (id:string, finalResult:Nullable<bool>, peptideConsensi:List<PeptideConsensus>, 
-                              globalQuantLayer:List<GlobalQuantLayer>, assayQuantLayer:List<AssayQuantLayer>, 
-                              studyVariableQuantLayer:List<StudyVariableQuantLayer>, 
+                              globalQuantLayers:List<GlobalQuantLayer>, assayQuantLayers:List<AssayQuantLayer>, 
+                              studyVariableQuantLayers:List<StudyVariableQuantLayer>, 
                               ratioQuantLayer:RatioQuantLayer, details:List<PeptideConsensusListParam>, 
                               rowVersion:Nullable<DateTime>
                              ) =
-            let mutable id'                      = id
-            let mutable finalResult'             = finalResult
-            let mutable peptideConsensi'         = peptideConsensi
-            let mutable globalQuantLayer'        = globalQuantLayer
-            let mutable assayQuantLayer'         = assayQuantLayer
-            let mutable studyVariableQuantLayer' = studyVariableQuantLayer
-            let mutable ratioQuantLayer'         = ratioQuantLayer
-            let mutable details'                 = details
-            let mutable rowVersion'              = rowVersion
+            let mutable id'                       = id
+            let mutable finalResult'              = finalResult
+            let mutable peptideConsensi'          = peptideConsensi
+            let mutable globalQuantLayers'        = globalQuantLayers
+            let mutable assayQuantLayers'         = assayQuantLayers
+            let mutable studyVariableQuantLayers' = studyVariableQuantLayers
+            let mutable ratioQuantLayer'          = ratioQuantLayer
+            let mutable details'                  = details
+            let mutable rowVersion'               = rowVersion
 
             new() = PeptideConsensusList(null, Nullable(), null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.FinalResult with get() = finalResult' and set(value) = finalResult' <- value
             member this.PeptideConsensi with get() = peptideConsensi' and set(value) = peptideConsensi' <- value
-            member this.GlobalQuantLayer with get() = globalQuantLayer' and set(value) = globalQuantLayer' <- value
-            member this.AssayQuantLayer with get() = assayQuantLayer' and set(value) = assayQuantLayer' <- value
-            member this.StudyVariableQuantLayer with get() = studyVariableQuantLayer' and set(value) = studyVariableQuantLayer' <- value
+            member this.GlobalQuantLayers with get() = globalQuantLayers' and set(value) = globalQuantLayers' <- value
+            member this.AssayQuantLayers with get() = assayQuantLayers' and set(value) = assayQuantLayers' <- value
+            member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -1640,7 +1664,7 @@ module DataModel =
     and [<AllowNullLiteral>] 
         BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                 issue:string, pages:string, publication:string, publisher:string, title:string,
-                                volume:string, year:Nullable<int>, mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                volume:string, year:Nullable<int>, (*mzQuantML:MzQuantMLDocument,*) rowVersion:Nullable<DateTime>
                                ) =
             let mutable id'          = id
             let mutable name'        = name
@@ -1654,10 +1678,10 @@ module DataModel =
             let mutable title'       = title
             let mutable volume'      = volume
             let mutable year'        = year
-            let mutable mzIdentML'   = mzIdentML
+            //let mutable mzIdentML'   = mzIdentML
             let mutable rowVersion'  = rowVersion
 
-            new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), null, Nullable())
+            new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), (*null,*) Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1671,18 +1695,20 @@ module DataModel =
             member this.Title with get() = title' and set(value) = title' <- value
             member this.Volume with get() = volume' and set(value) = volume' <- value
             member this.Year with get() = year' and set(value) = year' <- value
-            member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
+            //member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
     ///Root element of the instance document. 
     type [<AllowNullLiteral>]
         MzQuantMLDocument (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
-                           provider:Provider, persons:List<Person>, organzations:List<Organization>, analysisSummary:List<AnalysisSummaryParam>, 
-                           inputFiles:List<InputFiles>, analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, assays:List<Assay>,
-                           bibliographicReferences:List<BiblioGraphicReference>, studyVariables:List<StudyVariable>, 
-                           ratios:List<Ratio>, proteinGroups:List<ProteinGroup>, proteins:List<Protein>, 
-                           peptideConsensi:List<PeptideConsensus>, smallMolecules:List<SmallMolecule>, 
-                           features:List<Feature>, rowVersion:Nullable<DateTime>
+                           provider:Provider, persons:List<Person>, organizations:List<Organization>, 
+                           analysisSummary:List<AnalysisSummaryParam>, inputFiles:List<InputFiles>, 
+                           analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, 
+                           assays:List<Assay>, biblioGraphicReferences:List<BiblioGraphicReference>, 
+                           studyVariables:List<StudyVariable>, ratios:List<Ratio>, 
+                           proteinGroupList:ProteinGroupList, proteinList:ProteinList, 
+                           peptideConsensusList:PeptideConsensusList, smallMoleculeList:SmallMoleculeList, 
+                           featureList:FeatureList, rowVersion:Nullable<DateTime>
                           ) =
             let mutable id'                      = id
             let mutable name'                    = name
@@ -1691,7 +1717,7 @@ module DataModel =
             let mutable provider'                = provider
             //Formerly Audicollection
             let mutable persons'                 = persons
-            let mutable organzations'            = organzations
+            let mutable organizations'           = organizations
             //
             let mutable analysisSummary'         = analysisSummary
             //Formerly SoftwareList
@@ -1701,7 +1727,7 @@ module DataModel =
             //Formerly DataProcessingList
             let mutable dataProcessings'         = dataProcessings
             //
-            let mutable bibliographicReferences' = bibliographicReferences
+            let mutable biblioGraphicReferences' = biblioGraphicReferences
             //Formerly AssayList
             let mutable assays'                  = assays
             //
@@ -1712,19 +1738,19 @@ module DataModel =
             let mutable ratios'                  = ratios
             //
             //Formerly ProteinGroupList
-            let mutable proteinGroups'           = proteinGroups
+            let mutable proteinGroupList'        = proteinGroupList
             //
             //Formerly ProteinList
-            let mutable proteins'                = proteins
+            let mutable proteinList'             = proteinList
             //
             //Formerly PeptideConsensusList
-            let mutable peptideConsensi'         = peptideConsensi
+            let mutable peptideConsensusList'    = peptideConsensusList
             //
             //Formerly SmallMoceluleList
-            let mutable smallMolecules'          = smallMolecules
+            let mutable smallMoleculeList'       = smallMoleculeList
             //
             //Formerly FeatureList
-            let mutable features'                = features
+            let mutable featureList'             = featureList
             //
             let mutable rowVersion'              = rowVersion
 
@@ -1738,20 +1764,20 @@ module DataModel =
             member this.Version with get() = version' and set(value) = version' <- value
             member this.Provider with get() = provider' and set(value) = provider' <- value
             member this.Persons with get() = persons' and set(value) = persons' <- value
-            member this.Organzations with get() = organzations' and set(value) = organzations' <- value
+            member this.Organizations with get() = organizations' and set(value) = organizations' <- value
             member this.AnalysisSummary with get() = analysisSummary' and set(value) = analysisSummary' <- value
             member this.AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
-            member this.BibliographicReferences with get() = bibliographicReferences' and set(value) = bibliographicReferences' <- value
+            member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
             member this.Assays with get() = assays' and set(value) = assays' <- value
             member this.StudyVariables with get() = studyVariables' and set(value) = studyVariables' <- value
             member this.Ratios with get() = ratios' and set(value) = ratios' <- value
-            member this.ProteinGroups with get() = proteinGroups' and set(value) = proteinGroups' <- value
-            member this.Proteins with get() = proteins' and set(value) = proteins' <- value
-            member this.PeptideConsensi with get() = peptideConsensi' and set(value) = peptideConsensi' <- value
-            member this.SmallMolecules with get() = smallMolecules' and set(value) = smallMolecules' <- value
-            member this.Features with get() = features' and set(value) = features' <- value
+            member this.ProteinGroupList with get() = proteinGroupList' and set(value) = proteinGroupList' <- value
+            member this.ProteinList with get() = proteinList' and set(value) = proteinList' <- value
+            member this.PeptideConsensusList with get() = peptideConsensusList' and set(value) = peptideConsensusList' <- value
+            member this.SmallMoleculeList with get() = smallMoleculeList' and set(value) = smallMoleculeList' <- value
+            member this.FeatureList with get() = featureList' and set(value) = featureList' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
 
@@ -1856,10 +1882,10 @@ module DataModel =
             member public this.Ratio with get() = this.m_Ratio
                                                     and set value = this.m_Ratio <- value
 
-            [<DefaultValue>] 
-            val mutable m_MassTrace : DbSet<MassTrace>
-            member public this.MassTrace with get() = this.m_MassTrace
-                                                      and set value = this.m_MassTrace <- value
+            //[<DefaultValue>] 
+            //val mutable m_MassTrace : DbSet<MassTrace>
+            //member public this.MassTrace with get() = this.m_MassTrace
+            //                                          and set value = this.m_MassTrace <- value
 
             [<DefaultValue>] 
             val mutable m_Column : DbSet<Column>
