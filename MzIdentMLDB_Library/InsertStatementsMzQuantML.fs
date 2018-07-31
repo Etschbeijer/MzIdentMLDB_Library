@@ -6344,23 +6344,31 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.Name=name
-                              then select i
+                              then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                           i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
+                                           i.SmallMoleculeList
+                                          )
                       }
-                |> Seq.map (fun (biblioGraphicReference) -> biblioGraphicReference)
-                |> (fun biblioGraphicReference -> 
-                    if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> (fun mzQuantML -> 
+                    if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                         then 
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.Name=name
-                                          then select i
+                                          then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                                       i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
+                                                       i.SmallMoleculeList
+                                                      )
                                   }
-                            |> Seq.map (fun (biblioGraphicReference) -> biblioGraphicReference)
-                            |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                                                                 then None
-                                                                else Some biblioGraphicReference
+                                                                else Some mzQuantML
                                )
-                        else Some biblioGraphicReference
+                        else Some mzQuantML
                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
