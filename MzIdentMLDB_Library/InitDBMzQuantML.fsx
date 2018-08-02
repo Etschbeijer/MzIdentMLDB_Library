@@ -20,15 +20,15 @@ open System.Linq
 open System.Collections.Generic
 open FSharp.Data
 open Microsoft.EntityFrameworkCore
-open MzIdentMLDataBase.DataModel
-open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzQuantMLDataBase.DataModel
+open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 //open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
-let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
+let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
 
 
 let fromPsiMS =
@@ -44,7 +44,7 @@ let fromUnit_Ontology =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
         
  
-let initStandardDB (dbContext : MzIdentML) =
+let initStandardDB (dbContext : MzQuantML) =
 
     let termsPSIMS =
         let ontology =  OntologyHandler.init ("PSI-MS")
@@ -78,6 +78,6 @@ let initStandardDB (dbContext : MzIdentML) =
     dbContext.SaveChanges()
 
 
-let sqliteMzIdentMLDB =
+let sqliteMzQuantMLDB =
     initStandardDB sqliteMzIdentMLContext
 

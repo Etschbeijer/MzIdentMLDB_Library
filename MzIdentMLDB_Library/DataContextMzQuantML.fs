@@ -214,7 +214,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("PeptideConsensusParams")>]
+    type [<AllowNullLiteral>] [<Table("PeptideConsensusListParams")>]
         PeptideConsensusListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -223,30 +223,6 @@ module DataModel =
             let mutable rowVersion' = rowVersion
 
             new() = PeptideConsensusListParam(null, null, null, null, Nullable())
-
-            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Value with get() = value' and set(value) = value' <- value
-            member this.Term with get() = term' and set(value) = term' <- value
-            member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-            interface CVParamBase with
-                member x.ID         = x.ID
-                member x.Value      = x.Value
-                member x.Term       = x.Term
-                member x.Unit       = x.Unit
-                member x.RowVersion = x.RowVersion
-
-    ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("ProcessingmethodParams")>]
-        ProcessingmethodParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
-            let mutable id'         = id
-            let mutable value'      = value
-            let mutable term'       = term
-            let mutable unit'       = unit
-            let mutable rowVersion' = rowVersion
-
-            new() = ProcessingmethodParam(null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -286,7 +262,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("ProteinParams")>]
+    type [<AllowNullLiteral>] [<Table("ProteinListParam")>]
         ProteinListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -358,7 +334,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("ProteinGroupParams")>]
+    type [<AllowNullLiteral>] [<Table("ProteinGroupListParams")>]
         ProteinGroupListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -430,7 +406,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("RawFilesGroupParams")>]
         RawFilesGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -454,7 +430,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
         SearchDatabaseParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -478,7 +454,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("SmallMoleculeParams")>]
         SmallMoleculeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -501,7 +477,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("SmallMoleculeListParams")>]
         SmallMoleculeListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -524,7 +500,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("AnalysisSoftwareParams")>]
         AnalysisSoftwareParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -547,7 +523,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("StudyVariableParams")>]
         StudyVariableParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -570,7 +546,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("ProcessingMethodParams")>]
         ProcessingMethodParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -593,7 +569,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("OrganizationParams")>]
         OrganizationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -616,7 +592,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("RawFileParams")>]
+    type [<AllowNullLiteral>] [<Table("PersonParams")>]
         PersonParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -639,7 +615,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    type [<AllowNullLiteral>] [<Table("MassTrace")>]
+    type [<AllowNullLiteral>] [<Table("MassTraceParams")>]
         MassTraceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -2063,9 +2039,9 @@ module DataModel =
                                                                       and set value = this.m_PeptideConsensusListParam <- value
 
             [<DefaultValue>] 
-            val mutable m_ProcessingmethodParam : DbSet<ProcessingmethodParam>
-            member public this.ProcessingmethodParam with get() = this.m_ProcessingmethodParam
-                                                                  and set value = this.m_ProcessingmethodParam <- value
+            val mutable m_ProcessingMethodParam : DbSet<ProcessingMethodParam>
+            member public this.ProcessingMethodParam with get() = this.m_ProcessingMethodParam
+                                                                  and set value = this.m_ProcessingMethodParam <- value
 
             [<DefaultValue>] 
             val mutable m_ProteinParam : DbSet<ProteinParam>
@@ -2126,11 +2102,6 @@ module DataModel =
             val mutable m_StudyVariableParam : DbSet<StudyVariableParam>
             member public this.StudyVariableParam with get() = this.m_StudyVariableParam
                                                                and set value = this.m_StudyVariableParam <- value
-
-            [<DefaultValue>] 
-            val mutable m_ProcessingMethodParam : DbSet<ProcessingMethodParam>
-            member public this.ProcessingMethodParam with get() = this.m_ProcessingMethodParam
-                                                                  and set value = this.m_ProcessingMethodParam <- value
 
             [<DefaultValue>] 
             val mutable m_OrganizationParam : DbSet<OrganizationParam>
