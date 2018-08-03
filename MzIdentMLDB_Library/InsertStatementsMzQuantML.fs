@@ -237,13 +237,13 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (table:CVParam) =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:CVParam) =
                 table.Unit <- unit
@@ -322,13 +322,13 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (table:OrganizationParam) =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:OrganizationParam) =
                 table.Unit <- unit
@@ -408,13 +408,13 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (table:PersonParam) =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (param:PersonParam) =
                 param.Unit <- unit
@@ -493,13 +493,13 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:AnalysisSoftwareParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:AnalysisSoftwareParam) =
                 table.Unit <- unit
@@ -578,13 +578,13 @@ module InsertStatements =
                                         Nullable(DateTime.Now)
                                        )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:SearchDatabaseParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:SearchDatabaseParam) =
                 table.Unit <- unit
@@ -663,13 +663,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:RawFileParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:RawFileParam) =
                 table.Unit <- unit
@@ -748,13 +748,13 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:AssayParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:AssayParam) =
                 table.Unit <- unit
@@ -833,13 +833,13 @@ module InsertStatements =
                                        Nullable(DateTime.Now)
                                       )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:AssayParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:StudyVariableParam) =
                 table.Unit <- unit
@@ -918,13 +918,13 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:RatioCalculationParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:RatioCalculationParam) =
                 table.Unit <- unit
@@ -1003,13 +1003,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:FeatureParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:FeatureParam) =
                 table.Unit <- unit
@@ -1088,13 +1088,13 @@ module InsertStatements =
                                        Nullable(DateTime.Now)
                                       )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:SmallMoleculeParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:SmallMoleculeParam) =
                 table.Unit <- unit
@@ -1173,13 +1173,13 @@ module InsertStatements =
                                            Nullable(DateTime.Now)
                                           )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:SmallMoleculeListParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:SmallMoleculeListParam) =
                 table.Unit <- unit
@@ -1258,13 +1258,13 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:PeptideConsensusParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:PeptideConsensusParam) =
                 table.Unit <- unit
@@ -1343,13 +1343,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:ProteinParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:ProteinParam) =
                 table.Unit <- unit
@@ -1428,13 +1428,13 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:ProteinListParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:ProteinListParam) =
                 table.Unit <- unit
@@ -1513,13 +1513,13 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:ProteinGroupParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:ProteinGroupParam) =
                 table.Unit <- unit
@@ -1598,13 +1598,13 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:ProteinGroupListParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:ProteinGroupListParam) =
                 table.Unit <- unit
@@ -1683,13 +1683,13 @@ module InsertStatements =
                                               Nullable(DateTime.Now)
                                              )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
                 (value:string) (param:PeptideConsensusListParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
                 (unit:Term) (table:PeptideConsensusListParam) =
                 table.Unit <- unit
@@ -1857,19 +1857,19 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:SourceFile) =
                 table.Name <- name
                 table
 
-            ///Replaces externalFormatDocumentation of existing object with new externalFormatDocumentation.
+            ///Replaces externalFormatDocumentation of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:SourceFile) =
                 table.ExternalFormatDocumentation <- externalFormatDocumentation
                 table
 
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces fileFormat of existing object with new one.
             static member addFileFormat
                 (fileFormat:CVParam) (table:SourceFile) =
                 table.FileFormat <- fileFormat
@@ -1949,13 +1949,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:Organization) =
                 table.Name <- name
                 table
 
-            ///Replaces parent of existing object with new parent.
+            ///Replaces parent of existing object with new one.
             static member addParent
                 (parent:string) (table:Organization) =
                 table.Parent <- parent
@@ -1973,12 +1973,12 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Organization.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find an organization-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Organization.Local do
@@ -2056,25 +2056,25 @@ module InsertStatements =
                            Nullable(DateTime.Now)
                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:Person) =
                 table.Name <- name
                 table
 
-            ///Replaces firstname of existing object with new firstname.
+            ///Replaces firstname of existing object with new one.
             static member addFirstName
                 (firstName:string) (table:Person) =
                 table.FirstName <- firstName
                 table
 
-            ///Replaces midinitials of existing object with new midinitials.
+            ///Replaces midinitials of existing object with new one.
             static member addMidInitials
                 (midInitials:string) (table:Person) =
                 table.MidInitials <- midInitials
                 table
 
-            ///Replaces lastname of existing object with new lastname.
+            ///Replaces lastname of existing object with new one.
             static member addLastName
                 (lastName:string) (table:Person) =
                 table.LastName <- lastName
@@ -2103,12 +2103,12 @@ module InsertStatements =
                 let result = table.Organizations <- addCollectionToList table.Organizations organizations
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a person-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Person.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a person-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Person.Local do
@@ -2174,12 +2174,12 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ContactRole.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a contactRole-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPersonName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ContactRole.Local do
@@ -2251,19 +2251,19 @@ module InsertStatements =
                              Nullable(DateTime.Now)
                             )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:Provider) =
                 table.Name <- name
                 table
 
-            ///Replaces analysissoftware of existing object with new analysissoftware.
+            ///Replaces analysissoftware of existing object with new one.
             static member addAnalysisSoftware
                 (analysisSoftware:AnalysisSoftware) (table:Provider) =
                 table.AnalysisSoftware <- analysisSoftware
                 table
 
-            ///Replaces contactrole of existing object with new contactrole.
+            ///Replaces contactrole of existing object with new one.
             static member addContactRole
                 (contactRole:ContactRole) (table:Provider) =
                 table.ContactRole <- contactRole
@@ -2275,12 +2275,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Provider.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a provider-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Provider.Local do
@@ -2369,43 +2369,43 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:SearchDatabase) =
                 table.Name <- name
                 table
 
-            ///Replaces numDatabaseEntries of existing object with new numDatabaseEntries.
+            ///Replaces numDatabaseEntries of existing object with new one.
             static member addNumDatabaseEntries
                 (numDatabaseEntries:int) (table:SearchDatabase) =
                 table.NumDatabaseEntries <- Nullable(numDatabaseEntries)
                 table
 
-            ///Replaces releaseDate of existing object with new releaseDate.
+            ///Replaces releaseDate of existing object with new one.
             static member addReleaseDate
                 (releaseDate:DateTime) (table:SearchDatabase) =
                 table.ReleaseDate <- Nullable(releaseDate)
                 table
 
-            ///Replaces version of existing object with new version.
+            ///Replaces version of existing object with new one.
             static member addVersion
                 (version:string) (table:SearchDatabase) =
                 table.Version <- version
                 table
 
-            ///Replaces version of existing object with new version.
+            ///Replaces version of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:SearchDatabase) =
                 table.Version <- externalFormatDocumentation
                 table
 
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces fileFormat of existing object with new one.
             static member addFileFormat
                 (fileFormat:CVParam) (table:SearchDatabase) =
                 table.FileFormat <- fileFormat
                 table
             
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces databaseName of existing object with new one.
             static member addDatabaseName
                 (databaseName:CVParam) (table:SearchDatabase) =
                 table.DatabaseName <- databaseName
@@ -2428,12 +2428,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.SearchDatabase.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a searchDatabase-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
                 query {
                        for i in dbContext.SearchDatabase.Local do
@@ -2517,25 +2517,25 @@ module InsertStatements =
                                        Nullable(DateTime.Now)
                                       )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:IdentificationFile) =
                 table.Name <- name
                 table
 
-            ///Replaces searchDatabase of existing object with new searchDatabase.
+            ///Replaces searchDatabase of existing object with new one.
             static member addNumSearchDatabase
                 (searchDatabase:SearchDatabase) (table:IdentificationFile) =
                 table.SearchDatabase <- searchDatabase
                 table
 
-            ///Replaces externalFormatDocumentation of existing object with new externalFormatDocumentation.
+            ///Replaces externalFormatDocumentation of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:IdentificationFile) =
                 table.ExternalFormatDocumentation <- externalFormatDocumentation
                 table
 
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces fileFormat of existing object with new one.
             static member addFileFormat
                 (fileFormat:CVParam) (table:IdentificationFile) =
                 table.FileFormat <- fileFormat
@@ -2558,12 +2558,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a identificationFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.IdentificationFile.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a identificationFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
                 query {
                        for i in dbContext.IdentificationFile.Local do
@@ -2638,12 +2638,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.IdentificationRef.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a identificationRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFKIdentificationFile (dbContext:MzQuantML) (fkIdentificationFile:string) =
                 query {
                        for i in dbContext.IdentificationRef.Local do
@@ -2717,19 +2717,19 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:MethodFile) =
                 table.Name <- name
                 table
 
-            ///Replaces externalFormatDocumentation of existing object with new externalFormatDocumentation.
+            ///Replaces externalFormatDocumentation of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:MethodFile) =
                 table.ExternalFormatDocumentation <- externalFormatDocumentation
                 table
 
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces fileFormat of existing object with new one.
             static member addFileFormat
                 (fileFormat:CVParam) (table:MethodFile) =
                 table.FileFormat <- fileFormat
@@ -2741,12 +2741,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.MethodFile.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a methodFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
                 query {
                        for i in dbContext.MethodFile.Local do
@@ -2827,25 +2827,25 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:RawFile) =
                 table.Name <- name
                 table
 
-            ///Replaces name of existing object with new name.
+            ///Replaces methodFile of existing object with new one.
             static member addMethodFile
                 (methodFile:MethodFile) (table:RawFile) =
                 table.MethodFile <- methodFile
                 table
 
-            ///Replaces externalFormatDocumentation of existing object with new externalFormatDocumentation.
+            ///Replaces externalFormatDocumentation of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:RawFile) =
                 table.ExternalFormatDocumentation <- externalFormatDocumentation
                 table
 
-            ///Replaces fileFormat of existing object with new fileFormat.
+            ///Replaces fileFormat of existing object with new one.
             static member addFileFormat
                 (fileFormat:CVParam) (table:RawFile) =
                 table.FileFormat <- fileFormat
@@ -2867,12 +2867,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a rawFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.RawFile.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a rawFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (location:string) =
                 query {
                        for i in dbContext.RawFile.Local do
@@ -2942,22 +2942,22 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a rawFile to an existing object.
             static member addRawFile (detail:RawFile) (table:RawFilesGroup) =
                 let result = table.RawFiles <- addToList table.RawFiles detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of rawFile to an existing object.
             static member addRawFiles (details:seq<RawFile>) (table:RawFilesGroup) =
                 let result = table.RawFiles <- addCollectionToList table.RawFiles details
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a rawFilesGroupParam to an existing object.
             static member addDetail (detail:RawFilesGroupParam) (table:RawFilesGroup) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of rawFilesGroupParams to an existing object.
             static member addDetails (details:seq<RawFilesGroupParam>) (table:RawFilesGroup) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
@@ -2968,12 +2968,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a rawFilesGroup-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
-                tryFind (context.RawFile.Find(id))
+                tryFind (context.RawFilesGroup.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a rawFilesGroup-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFiles (dbContext:MzQuantML) (rawFiles:seq<RawFile>) =
                 query {
                        for i in dbContext.RawFilesGroup.Local do
@@ -3051,52 +3051,52 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a rawFilesGroup to an existing object.
             static member addRawFilesGroup (detail:RawFilesGroup) (table:InputFiles) =
                 let result = table.RawFilesGroups <- addToList table.RawFilesGroups detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of rawFilesGroups to an existing object.
             static member addRawFilesGroups (details:seq<RawFilesGroup>) (table:InputFiles) =
                 let result = table.RawFilesGroups <- addCollectionToList table.RawFilesGroups details
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a methodFile to an existing object.
             static member addMethodFile (detail:MethodFile) (table:InputFiles) =
                 let result = table.MethodFiles <- addToList table.MethodFiles detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of methodFiles to an existing object.
             static member addMethodFiles (details:seq<MethodFile>) (table:InputFiles) =
                 let result = table.MethodFiles <- addCollectionToList table.MethodFiles details
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a identificationFile to an existing object.
             static member addIdentificationFile (detail:IdentificationFile) (table:InputFiles) =
                 let result = table.IdentificationFiles <- addToList table.IdentificationFiles detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of identificationFiles to an existing object.
             static member addIdentificationFiles (details:seq<IdentificationFile>) (table:InputFiles) =
                 let result = table.IdentificationFiles <- addCollectionToList table.IdentificationFiles details
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a searchDatabase to an existing object.
             static member addSearchDatabase (detail:SearchDatabase) (table:InputFiles) =
                 let result = table.SearchDatabases <- addToList table.SearchDatabases detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of searchDatabases to an existing object.
             static member addDetails (details:seq<SearchDatabase>) (table:InputFiles) =
                 let result = table.SearchDatabases <- addCollectionToList table.SearchDatabases details
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a sourceFile to an existing object.
             static member addSourceFile (detail:SourceFile) (table:InputFiles) =
                 let result = table.SourceFiles <- addToList table.SourceFiles detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of sourceFiles to an existing object.
             static member addSourceFiles (details:seq<SourceFile>) (table:InputFiles) =
                 let result = table.SourceFiles <- addCollectionToList table.SourceFiles details
                 table
@@ -3107,12 +3107,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a inputFiles-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
-                tryFind (context.RawFile.Find(id))
+                tryFind (context.InputFiles.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a inputFiles-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFilesGroups (dbContext:MzQuantML) (rawFilesGroups:seq<RawFilesGroup>) =
                 query {
                        for i in dbContext.InputFiles.Local do
@@ -3184,13 +3184,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addMassDelta
                 (massDelta:float) (table:Modification) =
                 table.MassDelta <- Nullable(massDelta)
                 table
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addResidues
                 (residues:string) (table:Modification) =
                 table.Residues <- residues
@@ -3202,12 +3202,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Modification.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a modification-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (detail:CVParam) =
                 query {
                        for i in dbContext.Modification.Local do
@@ -3284,7 +3284,7 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:Assay) =
                 table.Name <- name
@@ -3312,12 +3312,12 @@ module InsertStatements =
                 let result = table.Label <- addCollectionToList table.Label modifications
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a assayParam to an existing object.
             static member addDetail (detail:AssayParam) (table:Assay) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of assayParams to an existing object.
             static member addDetails (details:seq<AssayParam>) (table:Assay) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
@@ -3328,12 +3328,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Assay.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find an assay-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Assay.Local do
@@ -3404,18 +3404,18 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:StudyVariable) =
                 table.Name <- name
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a studyVariableParam to an existing object.
             static member addDetail (detail:StudyVariableParam) (table:StudyVariable) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of studyVariableParams to an existing object.
             static member addDetails (details:seq<StudyVariableParam>) (table:StudyVariable) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
@@ -3426,12 +3426,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a studyVariable-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.StudyVariable.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a studyVariable-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.StudyVariable.Local do
@@ -3507,18 +3507,18 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:Ratio) =
                 table.Name <- name
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a ratioCalculationParam to an existing object.
             static member addRatioCalculationParam (ratioCalculationParam:RatioCalculationParam) (table:Ratio) =
                 let result = table.RatioCalculation <- addToList table.RatioCalculation ratioCalculationParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of ratioCalculationParams to an existing object.
             static member addRatioCalculationParams (ratioCalculationParams:seq<RatioCalculationParam>) (table:Ratio) =
                 let result = table.RatioCalculation <- addCollectionToList table.RatioCalculation ratioCalculationParams
                 table
@@ -3529,12 +3529,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Ratio.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a ratio-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Ratio.Local do
@@ -3602,12 +3602,12 @@ module InsertStatements =
                            Nullable(DateTime.Now)
                           )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a column-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Column.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a column-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByIndex (dbContext:MzQuantML) (index:Nullable<int>) =
                 query {
                        for i in dbContext.Column.Local do
@@ -3671,12 +3671,12 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a dataMatrix-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.DataMatrix.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a dataMatrix-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRow (dbContext:MzQuantML) (row:string) =
                 query {
                        for i in dbContext.DataMatrix.Local do
@@ -3744,12 +3744,12 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a assayQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.AssayQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a assayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.AssayQuantLayer.Local do
@@ -3815,12 +3815,12 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a globalQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.GlobalQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a globalQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
                 query {
                        for i in dbContext.GlobalQuantLayer.Local do
@@ -3888,12 +3888,12 @@ module InsertStatements =
                                        Nullable(DateTime.Now)
                                       )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.MS2AssayQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.MS2AssayQuantLayer.Local do
@@ -3961,12 +3961,12 @@ module InsertStatements =
                                             Nullable(DateTime.Now)
                                            )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.StudyVariableQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.StudyVariableQuantLayer.Local do
@@ -4032,12 +4032,12 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a ratioQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.RatioQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a ratioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.RatioQuantLayer.Local do
@@ -4104,12 +4104,12 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a processingMethodParam to an existing object.
             static member addDetail (processingMethodParam:ProcessingMethodParam) (table:ProcessingMethod) =
                 let result = table.Details <- addToList table.Details processingMethodParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of processingMethodParams to an existing object.
             static member addDetails (processingMethodParams:seq<ProcessingMethodParam>) (table:ProcessingMethod) =
                 let result = table.Details <- addCollectionToList table.Details processingMethodParams
                 table
@@ -4120,12 +4120,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a processingMethod-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ProcessingMethod.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a processingMethod-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
                 query {
                        for i in dbContext.ProcessingMethod.Local do
@@ -4227,12 +4227,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.DataProcessing.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a dataProcessing-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
                 query {
                        for i in dbContext.DataProcessing.Local do
@@ -4299,12 +4299,12 @@ module InsertStatements =
                                         Nullable(DateTime.Now)
                                        )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a dbIdentificationRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.DBIdentificationRef.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a dbIdentificationRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFKExternalFile (dbContext:MzQuantML) (fkExternalFile:string) =
                 query {
                        for i in dbContext.DBIdentificationRef.Local do
@@ -4387,40 +4387,40 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            ///Replaces inputObjects of existing object with new one.
+            ///Replaces fkChromatogram of existing object with new one.
             static member addFKChromatogram
                 (fkChromatogram:string) (table:Feature) =
                 table.FKChromatogram <- fkChromatogram
                 table
 
-            ///Replaces outputObjects of existing object with new one.
+            ///Replaces rawFile of existing object with new one.
             static member addRawFile
                 (rawFile:RawFile) (table:Feature) =
                 table.RawFile <- rawFile
                 table
 
-            ///Replaces inputObjects of existing object with new one.
+            ///Replaces fkSpectrum of existing object with new one.
             static member addFKSpectrum
                 (fkSpectrum:string) (table:Feature) =
                 table.FKSpectrum <- fkSpectrum
                 table
             
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a massTraceParam to an existing object.
             static member addMassTrace (massTraceParam:MassTraceParam) (table:Feature) =
                 let result = table.MassTraces <- addToList table.MassTraces massTraceParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of massTraceParams to an existing object.
             static member addMassTraces (massTraceParams:seq<MassTraceParam>) (table:Feature) =
                 let result = table.MassTraces <- addCollectionToList table.MassTraces massTraceParams
                 table
 
-                        ///Adds a identificationFileParam to an existing object.
+            ///Adds a processingMethodParam to an existing object.
             static member addDetail (processingMethodParam:FeatureParam) (table:Feature) =
                 let result = table.Details <- addToList table.Details processingMethodParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of processingMethodParams to an existing object.
             static member addDetails (processingMethodParams:seq<FeatureParam>) (table:Feature) =
                 let result = table.Details <- addCollectionToList table.Details processingMethodParams
                 table
@@ -4431,12 +4431,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a feature-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.Feature.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a feature-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByOrder (dbContext:MzQuantML) (mz:Nullable<float>) =
                 query {
                        for i in dbContext.Feature.Local do
@@ -4522,32 +4522,32 @@ module InsertStatements =
                 let result = table.Modifications <- addCollectionToList table.Modifications modifications
                 table
 
-            ///Adds a modification to an existing object.
+            ///Adds a dbIdentificationRef to an existing object.
             static member addDBIdentificationRef (dbIdentificationRef:DBIdentificationRef) (table:SmallMolecule) =
                 let result = table.DBIdentificationRefs <- addToList table.DBIdentificationRefs dbIdentificationRef
                 table
 
-            ///Adds a collection of modifications to an existing object.
+            ///Adds a collection of dbIdentificationRefs to an existing object.
             static member addDBIdentificationRefs (dbIdentificationRefs:seq<DBIdentificationRef>) (table:SmallMolecule) =
                 let result = table.DBIdentificationRefs <- addCollectionToList table.DBIdentificationRefs dbIdentificationRefs
                 table
 
-            ///Adds a modification to an existing object.
+            ///Adds a feature to an existing object.
             static member addFeature (feature:Feature) (table:SmallMolecule) =
                 let result = table.Features <- addToList table.Features feature
                 table
 
-            ///Adds a collection of modifications to an existing object.
+            ///Adds a collection of features to an existing object.
             static member addFeatures (features:seq<Feature>) (table:SmallMolecule) =
                 let result = table.Features <- addCollectionToList table.Features features
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a smallMoleculeParam to an existing object.
             static member addDetail (smallMoleculeParam:SmallMoleculeParam) (table:SmallMolecule) =
                 let result = table.Details <- addToList table.Details smallMoleculeParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of smallMoleculeParams to an existing object.
             static member addDetails (smallMoleculeParam:seq<SmallMoleculeParam>) (table:SmallMolecule) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParam
                 table
@@ -4558,12 +4558,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a smallMolecule-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.SmallMolecule.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a smallMolecule-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByModifications (dbContext:MzQuantML) (modifications:seq<Modification>) =
                 query {
                        for i in dbContext.SmallMolecule.Local do
@@ -4677,12 +4677,12 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a smallMoleculeParam to an existing object.
             static member addDetail (smallMoleculeParam:SmallMoleculeListParam) (table:SmallMoleculeList) =
                 let result = table.Details <- addToList table.Details smallMoleculeParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of smallMoleculeParams to an existing object.
             static member addDetails (smallMoleculeParams:seq<SmallMoleculeListParam>) (table:SmallMoleculeList) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
                 table
@@ -4693,12 +4693,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a smallMoleculeList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.SmallMoleculeList.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a smallMoleculeList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySmallMolecules (dbContext:MzQuantML) (smallMolecules:seq<SmallMolecule>) =
                 query {
                        for i in dbContext.SmallMoleculeList.Local do
@@ -4766,12 +4766,12 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a featureQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.FeatureQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a featureQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
                 query {
                        for i in dbContext.FeatureQuantLayer.Local do
@@ -4839,12 +4839,12 @@ module InsertStatements =
                                        Nullable(DateTime.Now)
                                       )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.MS2RatioQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.MS2RatioQuantLayer.Local do
@@ -4912,12 +4912,12 @@ module InsertStatements =
                                                Nullable(DateTime.Now)
                                               )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.MS2StudyVariableQuantLayer.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
                 query {
                        for i in dbContext.MS2StudyVariableQuantLayer.Local do
@@ -4998,52 +4998,52 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
             
-            ///Adds a modification to an existing object.
+            ///Adds a featureQuantLayer to an existing object.
             static member addModification (featureQuantLayer:FeatureQuantLayer) (table:FeatureList) =
                 let result = table.FeatureQuantLayers <- addToList table.FeatureQuantLayers featureQuantLayer
                 table
 
-            ///Adds a collection of modifications to an existing object.
+            ///Adds a collection of featureQuantLayers to an existing object.
             static member addModifications (featureQuantLayers:seq<FeatureQuantLayer>) (table:FeatureList) =
                 let result = table.FeatureQuantLayers <- addCollectionToList table.FeatureQuantLayers featureQuantLayers
                 table
 
-            ///Adds a modification to an existing object.
+            ///Adds a ms2AssayQuantLayer to an existing object.
             static member addMS2AssayQuantLayer (ms2AssayQuantLayer:MS2AssayQuantLayer) (table:FeatureList) =
                 let result = table.MS2AssayQuantLayers <- addToList table.MS2AssayQuantLayers ms2AssayQuantLayer
                 table
 
-            ///Adds a collection of modifications to an existing object.
+            ///Adds a collection of ms2AssayQuantLayers to an existing object.
             static member addMS2AssayQuantLayers (ms2AssayQuantLayers:seq<MS2AssayQuantLayer>) (table:FeatureList) =
                 let result = table.MS2AssayQuantLayers <- addCollectionToList table.MS2AssayQuantLayers ms2AssayQuantLayers
                 table
 
-            ///Adds a modification to an existing object.
+            ///Adds a ms2StudyVariableQuantLayer to an existing object.
             static member addMS2StudyVariableQuantLayer (ms2StudyVariableQuantLayer:MS2StudyVariableQuantLayer) (table:FeatureList) =
                 let result = table.MS2StudyVariableQuantLayers <- addToList table.MS2StudyVariableQuantLayers ms2StudyVariableQuantLayer
                 table
 
-            ///Adds a collection of modifications to an existing object.
+            ///Adds a collection of ms2StudyVariableQuantLayers to an existing object.
             static member addMS2StudyVariableQuantLayers (ms2StudyVariableQuantLayers:seq<MS2StudyVariableQuantLayer>) (table:FeatureList) =
                 let result = table.MS2StudyVariableQuantLayers <- addCollectionToList table.MS2StudyVariableQuantLayers ms2StudyVariableQuantLayers
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a ms2RatioQuantLayer to an existing object.
             static member addMS2RatioQuantLayer (ms2RatioQuantLayer:MS2RatioQuantLayer) (table:FeatureList) =
                 let result = table.MS2RatioQuantLayers <- addToList table.MS2RatioQuantLayers ms2RatioQuantLayer
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of ms2RatioQuantLayers to an existing object.
             static member addMS2RatioQuantLayers (ms2RatioQuantLayers:seq<MS2RatioQuantLayer>) (table:FeatureList) =
                 let result = table.MS2RatioQuantLayers <- addCollectionToList table.MS2RatioQuantLayers ms2RatioQuantLayers
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a featureListParam to an existing object.
             static member addDetail (featureListParam:FeatureListParam) (table:FeatureList) =
                 let result = table.Details <- addToList table.Details featureListParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of featureListParams to an existing object.
             static member addDetails (featureListParams:seq<FeatureListParam>) (table:FeatureList) =
                 let result = table.Details <- addCollectionToList table.Details featureListParams
                 table
@@ -5054,12 +5054,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.FeatureList.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a featureList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFilesGroup (dbContext:MzQuantML) (rawFilesGroup:RawFilesGroup) =
                 query {
                        for i in dbContext.FeatureList.Local do
@@ -5149,12 +5149,12 @@ module InsertStatements =
                 table.IdentificationFile <- identificationFile
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a evidenceRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.EvidenceRef.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a evidenceRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFeature (dbContext:MzQuantML) (feature:Feature) =
                 query {
                        for i in dbContext.EvidenceRef.Local do
@@ -5236,50 +5236,50 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Replaces fkExternalFileRef of existing object with new one.
+            ///Replaces searchDatabase of existing object with new one.
             static member addSearchDatabase
                 (searchDatabase:SearchDatabase) (table:PeptideConsensus) =
                 table.SearchDatabase <- searchDatabase
                 table
 
-            ///Replaces identificationFile of existing object with new one.
-            static member addOutputObjects
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
                 (dataMatrix:DataMatrix) (table:PeptideConsensus) =
                 table.DataMatrix <- dataMatrix
                 table
 
-            ///Replaces fkExternalFileRef of existing object with new one.
+            ///Replaces peptideSequence of existing object with new one.
             static member addPeptideSequence
                 (peptideSequence:string) (table:PeptideConsensus) =
                 table.PeptideSequence <- peptideSequence
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a modification to an existing object.
             static member addModification (modification:Modification) (table:PeptideConsensus) =
                 let result = table.Modifications <- addToList table.Modifications modification
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of modifications to an existing object.
             static member addModifications (modifications:seq<Modification>) (table:PeptideConsensus) =
                 let result = table.Modifications <- addCollectionToList table.Modifications modifications
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a peptideConsensusParam to an existing object.
             static member addDetail (detail:PeptideConsensusParam) (table:PeptideConsensus) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of peptideConsensusParams to an existing object.
             static member addDetails (details:seq<PeptideConsensusParam>) (table:PeptideConsensus) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a peptideConsensus-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.PeptideConsensus.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a peptideConsensus-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCharge (dbContext:MzQuantML) (charge:Nullable<int>) =
                 query {
                        for i in dbContext.PeptideConsensus.Local do
@@ -5361,7 +5361,7 @@ module InsertStatements =
                 let result = table.IdentificationRefs <- addToList table.IdentificationRefs identificationRef
                 table
 
-            ///Adds a collection of peptideConsensi to an existing object.
+            ///Adds a collection of identificationRefs to an existing object.
             static member addIdentificationRefs (identificationRefs:seq<IdentificationRef>) (table:Protein) =
                 let result = table.IdentificationRefs <- addCollectionToList table.IdentificationRefs identificationRefs
                 table
@@ -5376,22 +5376,22 @@ module InsertStatements =
                 let result = table.PeptideConsensi <- addCollectionToList table.PeptideConsensi peptideConsensi
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a proteinParam to an existing object.
             static member addDetail (detail:ProteinParam) (table:Protein) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of proteinParams to an existing object.
             static member addDetails (details:seq<ProteinParam>) (table:Protein) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a protein-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
-                tryFind (context.PeptideConsensus.Find(id))
+                tryFind (context.Protein.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a protein-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByAccession (dbContext:MzQuantML) (accession:string) =
                 query {
                        for i in dbContext.Protein.Local do
@@ -5506,12 +5506,12 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a proteinListParam to an existing object.
             static member addDetail (detail:ProteinListParam) (table:ProteinList) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of proteinListParams to an existing object.
             static member addDetails (details:seq<ProteinListParam>) (table:ProteinList) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
@@ -5522,12 +5522,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ProteinList.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a proteinList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteins (dbContext:MzQuantML) (proteins:seq<Protein>) =
                 query {
                        for i in dbContext.ProteinList.Local do
@@ -5596,22 +5596,22 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )  
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a proteinRefParam to an existing object.
             static member addDetail (detail:ProteinRefParam) (table:ProteinRef) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of proteinRefParams to an existing object.
             static member addDetails (details:seq<ProteinRefParam>) (table:ProteinRef) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a proteinRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ProteinRef.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a proteinRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProtein (dbContext:MzQuantML) (protein:Protein) =
                 query {
                        for i in dbContext.ProteinRef.Local do
@@ -5683,22 +5683,22 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )  
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a proteinGroupParam to an existing object.
             static member addDetail (detail:ProteinGroupParam) (table:ProteinGroup) =
                 let result = table.Details <- addToList table.Details detail
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of proteinGroupParams to an existing object.
             static member addDetails (details:seq<ProteinGroupParam>) (table:ProteinGroup) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a proteinGroup-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ProteinGroup.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a proteinGroup-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySearchDatabase (dbContext:MzQuantML) (searchDatabase:SearchDatabase) =
                 query {
                        for i in dbContext.ProteinGroup.Local do
@@ -5813,12 +5813,12 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a smallMoleculeParam to an existing object.
             static member addDetail (smallMoleculeParam:ProteinGroupListParam) (table:ProteinGroupList) =
                 let result = table.Details <- addToList table.Details smallMoleculeParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of smallMoleculeParams to an existing object.
             static member addDetails (smallMoleculeParams:seq<ProteinGroupListParam>) (table:ProteinGroupList) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
                 table
@@ -5829,12 +5829,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a proteinGroupList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.ProteinGroupList.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a proteinGroupList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySmallMolecules (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
                 query {
                        for i in dbContext.ProteinGroupList.Local do
@@ -5952,12 +5952,12 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
-            ///Adds a identificationFileParam to an existing object.
+            ///Adds a peptideConsensusListParam to an existing object.
             static member addDetail (peptideConsensusListParam:PeptideConsensusListParam) (table:PeptideConsensusList) =
                 let result = table.Details <- addToList table.Details peptideConsensusListParam
                 table
 
-            ///Adds a collection of identificationFileParams to an existing object.
+            ///Adds a collection of peptideConsensusListParams to an existing object.
             static member addDetails (peptideConsensusListParams:seq<PeptideConsensusListParam>) (table:PeptideConsensusList) =
                 let result = table.Details <- addCollectionToList table.Details peptideConsensusListParams
                 table
@@ -5968,12 +5968,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.PeptideConsensusList.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a peptideConsensusList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySmallMolecules (dbContext:MzQuantML) (finalResult:Nullable<bool>) =
                 query {
                        for i in dbContext.PeptideConsensusList.Local do
@@ -6090,12 +6090,12 @@ module InsertStatements =
                 table.Editor <- editor
                 table
 
-            /////Replaces name of existing object with new one.
+            /////Replaces issue of existing object with new one.
             static member addIssue (issue:string) (table:BiblioGraphicReference) =
                 table.Issue <- issue
                 table
 
-            /////Replaces name of existing object with new one.
+            /////Replaces pages of existing object with new one.
             static member addPages (pages:string) (table:BiblioGraphicReference) =
                 table.Pages <- pages
                 table
@@ -6131,12 +6131,12 @@ module InsertStatements =
             //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
             //    provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.BiblioGraphicReference.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a biblioGraphicReference-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
@@ -6334,12 +6334,12 @@ module InsertStatements =
                 table.Ratios <- addCollectionToList table.Ratios ratios
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a mzQuantMLDocument-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.MzQuantMLDocument.Find(id))
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a mzQuantMLDocument-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
