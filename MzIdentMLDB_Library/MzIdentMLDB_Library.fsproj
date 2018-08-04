@@ -82,6 +82,8 @@
     <Compile Include="DataContextMzQuantML.fs" />
     <Compile Include="InsertStatementsMzQuantML.fs" />
     <None Include="InitDBMzQuantML.fsx" />
+    <Compile Include="DataContextMzTab.fs" />
+    <None Include="InitDBMzTab.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
