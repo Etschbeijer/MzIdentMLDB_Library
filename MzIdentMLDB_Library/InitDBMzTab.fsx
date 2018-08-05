@@ -26,7 +26,7 @@ open MzTabDataBase.InsertStatements.ObjectHandlers
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzTab1.db"
 
 let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
 
@@ -44,7 +44,7 @@ let fromUnit_Ontology =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Unit_Ontology.txt")
         
  
-let initStandardDB (dbContext : MzIdentML) =
+let initStandardDB (dbContext : MzTab) =
 
     let termsPSIMS =
         let ontology =  OntologyHandler.init ("PSI-MS")

@@ -83,6 +83,7 @@
     <Compile Include="InsertStatementsMzQuantML.fs" />
     <None Include="InitDBMzQuantML.fsx" />
     <Compile Include="DataContextMzTab.fs" />
+    <Compile Include="InsertStatementsMzTab.fs" />
     <None Include="InitDBMzTab.fsx" />
   </ItemGroup>
   <ItemGroup>

@@ -1295,7 +1295,8 @@ module DataModel =
         | Identification = 0 
         | Quantification = 1
 
-    ///A single entry from an ontology or a controlled vocabulary.
+    ///The metadata section can provide additional information about the dataset(s) 
+    ///reported in the mzTab file.
     type [<AllowNullLiteral>]
          MetaData (id:string, title:string, description:string, version:string, mode:MzTabMode, 
                    mzType:MzType, sampleProcessings:List<SampleProcessing>, instruments:List<Instrument>,
@@ -1367,6 +1368,80 @@ module DataModel =
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+    ///The metadata section can provide additional information about the dataset(s) 
+    ///reported in the mzTab file.
+    type [<AllowNullLiteral>]
+         ProteinSection
+                  (id:string, title:string, description:string, version:string, mode:MzTabMode, 
+                   mzType:MzType, sampleProcessings:List<SampleProcessing>, instruments:List<Instrument>,
+                   analysisSoftwares:List<AnalysisSoftware>, searchEngineScores:List<SearchEngineScore>,
+                   falseDiscoveryRates:List<FalseDiscoveryRate>, publications:List<BiblioGraphicReference>, 
+                   persons:List<Person>, uri:List<URI>, fixedModifications:List<FixedModification>, 
+                   variableModifications:List<VariableModification>, quantification:Quantification, 
+                   msRuns:List<MSRun>, samples:List<Sample>, assays:List<Assay>, 
+                   studyVariables:List<StudyVariable>, colUnit:ColUnit, details:List<MetaDataParam>, 
+                   rowVersion:Nullable<DateTime>
+                  ) =  
+            let mutable id'                    = id
+            let mutable title'                 = title
+            let mutable description'           = description
+            let mutable version'               = version
+            let mutable mode'                  = mode
+            let mutable type'                  = mzType
+            let mutable sampleProcessings'     = sampleProcessings
+            let mutable instruments'           = instruments
+            let mutable analysisSoftwares'     = analysisSoftwares 
+            let mutable searchEngineScores'    = searchEngineScores
+            let mutable falseDiscoveryRates'   = falseDiscoveryRates
+            [<Column("publication[1-n]")>]
+            let mutable publications'          = publications
+            [<Column("contact[1-n]-name")>]
+            let mutable persons'               = persons
+            [<Column("uri[1-n]")>]
+            let mutable uri'                   = uri
+            let mutable fixedModifications'    = fixedModifications
+            let mutable variableModifications' = variableModifications
+            let mutable quantification'        = quantification
+            let mutable msRuns'                = msRuns
+            let mutable samples'               = samples
+            let mutable assays'                = assays
+            let mutable studyVariables'        = studyVariables
+            let mutable colUnit'               = colUnit
+            [<Column("custom[1-n]")>]
+            let mutable details'               = details
+            let mutable rowVersion'            = rowVersion
+
+            new() = ProteinSection
+                        (null, null, null, null, enum<MzTabMode>(-1), enum<MzType>(-1), null, null, 
+                         null, null, null, null, null, null, null, null, null, null, null, null, null,
+                         null, null, Nullable()
+                        )
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Title with get() = title' and set(value) = title' <- value
+            member this.Description with get() = description' and set(value) = description' <- value
+            member this.Version with get() = version' and set(value) = version' <- value
+            member this.Mode with get() = mode' and set(value) = mode' <- value
+            member this.Type with get() = type' and set(value) = type' <- value
+            member this.SampleProcessings with get() = sampleProcessings' and set(value) = sampleProcessings' <- value
+            member this.Instruments with get() = instruments' and set(value) = instruments' <- value
+            member this.AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
+            member this.SearchEngineScores with get() = searchEngineScores' and set(value) = searchEngineScores' <- value
+            member this.FalseDiscoveryRates with get() = falseDiscoveryRates' and set(value) = falseDiscoveryRates' <- value
+            member this.Publications with get() = publications' and set(value) = publications' <- value
+            member this.Persons with get() = persons' and set(value) = persons' <- value
+            member this.URI with get() = uri' and set(value) = uri' <- value
+            member this.FixedModifications with get() = fixedModifications' and set(value) = fixedModifications' <- value
+            member this.VariableModifications with get() = variableModifications' and set(value) = variableModifications' <- value
+            member this.Quantification with get() = quantification' and set(value) = quantification' <- value
+            member this.MSRuns with get() = msRuns' and set(value) = msRuns' <- value
+            member this.Samples with get() = samples' and set(value) = samples' <- value
+            member this.Assays with get() = assays' and set(value) = assays' <- value
+            member this.StudyVariables with get() = studyVariables' and set(value) = studyVariables' <- value
+            member this.ColUnit with get() = colUnit' and set(value) = colUnit' <- value
+            member this.Details with get() = details' and set(value) = details' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     type MzTab =
      
