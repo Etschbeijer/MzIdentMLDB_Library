@@ -1284,22 +1284,20 @@ module DataModel =
     ///‘Complete’ (when results for each assay/replicate are included) and 
     ///‘Summary’, when only the most representative results are reported.
     type MzTabMode =
-        | Null     = -1
         | Summary  = 0 
         | Complete = 1
 
     ///The results included in an mzTab file MUST be flagged as ‘Identification’ or ‘Quantification’ 
     ///- the latter encompassing approaches that are quantification only or quantification and identification.
     type MzType =
-        | Null           = -1
         | Identification = 0 
         | Quantification = 1
 
     ///The metadata section can provide additional information about the dataset(s) 
     ///reported in the mzTab file.
     type [<AllowNullLiteral>]
-         MetaData (id:string, title:string, description:string, version:string, mode:MzTabMode, 
-                   mzType:MzType, sampleProcessings:List<SampleProcessing>, instruments:List<Instrument>,
+         MetaData (id:string, title:string, description:string, version:string, mode:Nullable<MzTabMode>, 
+                   mzType:Nullable<MzType>, sampleProcessings:List<SampleProcessing>, instruments:List<Instrument>,
                    analysisSoftwares:List<AnalysisSoftware>, searchEngineScores:List<SearchEngineScore>,
                    falseDiscoveryRates:List<FalseDiscoveryRate>, publications:List<BiblioGraphicReference>, 
                    persons:List<Person>, uri:List<URI>, fixedModifications:List<FixedModification>, 
@@ -1337,7 +1335,7 @@ module DataModel =
             let mutable details'               = details
             let mutable rowVersion'            = rowVersion
 
-            new() = MetaData(null, null, null, null, enum<MzTabMode>(-1), enum<MzType>(-1), null, null, 
+            new() = MetaData(null, null, null, null,  Nullable(),  Nullable(), null, null, 
                              null, null, null, null, null, null, null, null, null, null, null, null, null,
                              null, null, Nullable()
                             )
@@ -1368,6 +1366,19 @@ module DataModel =
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+    ///The peptide's sequence.
+    type [<AllowNullLiteral>]
+        PeptideSequence (id:string, rowVersion:Nullable<DateTime>
+                         ) =
+            [<Column("sequence")>]
+            let mutable id'                       = id
+            let mutable rowVersion'               = rowVersion
+
+            new() = PeptideSequence(null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
     ///The accession of the protein in the source database.
     type [<AllowNullLiteral>]
         Accession (id:string, rowVersion:Nullable<DateTime>
@@ -1382,10 +1393,11 @@ module DataModel =
 
     ///A table describing the additional information for the proteins of the experiment.
     type [<AllowNullLiteral>]
-        AccessionParamaeter (id:string, accession:Accession, taxid:string, species:string,
+        AccessionParamaeter (id:string, peptideSequence:PeptideSequence, accession:Accession, taxid:string, species:string,
                              dataBase:string, dataBaseVersion:string, rowVersion:Nullable<DateTime>
                             ) =
             let mutable id'              = id
+            let mutable peptideSequence' = peptideSequence
             let mutable accession'       = accession
             let mutable taxid'           = taxid
             let mutable species'         = species
@@ -1394,9 +1406,10 @@ module DataModel =
             let mutable dataBaseVersion' = dataBaseVersion
             let mutable rowVersion'      = rowVersion
 
-            new() = AccessionParamaeter(null, null, null, null, null, null, Nullable())
+            new() = AccessionParamaeter(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.Taxid with get() = taxid' and set(value) = taxid' <- value
             member this.Species with get() = species' and set(value) = species' <- value
@@ -1430,11 +1443,13 @@ module DataModel =
 
     ///A table describing the additional information about the searchengines of the experiment.
     type [<AllowNullLiteral>]
-        SearchEngine (id:string, accession:Accession, searchEngineNames:List<SearchEgnineName>, 
+        SearchEngine (id:string, peptideSequence:PeptideSequence, accession:Accession, searchEngineNames:List<SearchEgnineName>, 
                       bestSearchEngineScore:Nullable<float>, searchEngineScoreMSRun:Nullable<float>, 
                       rowVersion:Nullable<DateTime>
                      ) =
             let mutable id'                     = id
+            [<Column("sequence")>]
+            let mutable peptideSequence'        = peptideSequence
             let mutable accession'              = accession
             [<Column("search_engine")>]
             let mutable searchEngineNames'      = searchEngineNames
@@ -1444,9 +1459,10 @@ module DataModel =
             let mutable searchEngineScoreMSRun' = searchEngineScoreMSRun
             let mutable rowVersion'             = rowVersion
 
-            new() = SearchEngine(null, null, null, Nullable(), Nullable(), Nullable())
+            new() = SearchEngine(null, null, null, null, Nullable(), Nullable(), Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.SearchEngineNames with get() = searchEngineNames' and set(value) = searchEngineNames' <- value
             member this.BestSearchEngineScore with get() = bestSearchEngineScore' and set(value) = bestSearchEngineScore' <- value
@@ -1503,7 +1519,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    ///A table describing the additional information about the peptides of the experiment.
+    ///A table describing the additional information about the proteins of the experiment.
     type [<AllowNullLiteral>]
         ProteinAbundance (id:string, accession:Accession, abundanceAssay:string, 
                           abundanceStudyVariable:string, abundanceSEDEVStudyVariable:string, 
@@ -1532,7 +1548,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///AdditionalInforamtion for proteinSection..
-    type [<AllowNullLiteral>] [<Table("opt_{identifier}_*")>]
+    type [<AllowNullLiteral>] [<Table("ProteinSectionParams")>]
         ProteinSectionParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
@@ -1555,8 +1571,7 @@ module DataModel =
                 member x.Unit       = x.Unit
                 member x.RowVersion = x.RowVersion
 
-    ///The metadata section can provide additional information about the dataset(s) 
-    ///reported in the mzTab file.
+    ///The protein section can provide additional information about the reported proteins in the mzTab file.
     type [<AllowNullLiteral>]
          ProteinSection (id:string, accession:Accession, description:string, accessionParameter:List<AccessionParamaeter>,
                          searchEngine:List<SearchEngine>, reliability:Nullable<int>, numPSMSMSRun:string,
@@ -1579,9 +1594,8 @@ module DataModel =
             let mutable goTerms'            = goTerms
             [<Column("protein_coverage")>]
             let mutable proteinCoverage'    = proteinCoverage
-            [<Column("protein_coverage")>]
+            [<Column("protein_abundance")>]
             let mutable proteinAbundance'   = proteinAbundance
-            [<Column("opt_{identifier}_*")>]
             let mutable details'            = details
             let mutable rowVersion'         = rowVersion
 
@@ -1605,7 +1619,284 @@ module DataModel =
             member this.ProteinAbundance with get() = proteinAbundance' and set(value) = proteinAbundance' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+  
+    ///AdditionalInforamtion for proteinSection..
+    type [<AllowNullLiteral>] [<Table("retention_time_window")>]
+        RetentionTimeWindow (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
 
+            new() = RetentionTimeWindow(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+    
+    ///A table describing the additional information about the retentionTime 
+    ///of the protein of the parent-protein.
+    type [<AllowNullLiteral>]
+        RetentionTime (id:string, peptideSequence:PeptideSequence, retentionTime:Nullable<float>, 
+                       retentionTimeWindow:List<RetentionTimeWindow>, rowVersion:Nullable<DateTime>
+                      ) =
+            let mutable id'                  = id
+            [<Column("Sequence")>]
+            let mutable peptideSequence'     = peptideSequence
+            [<Column("retention_time")>]
+            let mutable retentionTime'       = retentionTime
+            [<Column("retention_time_window")>]
+            let mutable retentionTimeWindow' = retentionTimeWindow
+            let mutable rowVersion'          = rowVersion
+
+            new() = RetentionTime(null, null, Nullable(), null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+            member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
+            member this.RetentionTimeWindow with get() = retentionTimeWindow' and set(value) = retentionTimeWindow' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+    ///A table describing the additional information about the peptides of the experiment.
+    type [<AllowNullLiteral>]
+        PeptideAbundance (id:string, peptideSequence:PeptideSequence, abundanceAssay:string, 
+                          abundanceStudyVariable:string, abundanceSEDEVStudyVariable:string, 
+                          abundanceSTDErrorStudyVariable:string, rowVersion:Nullable<DateTime>
+                         ) =
+            let mutable id'                             = id
+            [<Column("sequence")>]
+            let mutable peptideSequence'                = peptideSequence
+            [<Column("peptide_abundance_assay[1-n]")>]
+            let mutable abundanceAssay'                 = abundanceAssay
+            [<Column("peptide_abundance_study_variable[1-n]")>]
+            let mutable abundanceStudyVariable'         = abundanceStudyVariable
+            [<Column("peptide_abundance_stdev_study_variable[1-n]")>]
+            let mutable abundanceSEDEVStudyVariable'    = abundanceSEDEVStudyVariable
+            [<Column("peptide_abundance_std_error_study_variable[1-n]")>]
+            let mutable abundanceSTDErrorStudyVariable' = abundanceSTDErrorStudyVariable
+            let mutable rowVersion'                     = rowVersion
+
+            new() = PeptideAbundance(null, null, null, null, null, null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+            member this.AbundanceAssay with get() = abundanceAssay' and set(value) = abundanceAssay' <- value
+            member this.AbundanceStudyVariable with get() = abundanceStudyVariable' and set(value) = abundanceStudyVariable' <- value
+            member this.AbundanceSEDEVStudyVariable with get() = abundanceSEDEVStudyVariable' and set(value) = abundanceSEDEVStudyVariable' <- value
+            member this.AbundanceSTDErrorStudyVariable with get() = abundanceSTDErrorStudyVariable' and set(value) = abundanceSTDErrorStudyVariable' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    
+    ///AdditionalInforamtion for proteinSection.
+    type [<AllowNullLiteral>] [<Table("PeptideSectionParams")>]
+        PeptideSectionParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = PeptideSectionParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+    
+    ///The protein section can provide additional information about the reported peptides in the mzTab file.
+    type [<AllowNullLiteral>]
+         PeptideSection (id:string, peptideSequence:PeptideSequence, accession:Accession, unique:Nullable<bool>, 
+                         accessionParameter:List<AccessionParamaeter>, searchEngine:List<SearchEngine>, 
+                         reliability:Nullable<int>, modifications:List<Modification>, retentionTime:RetentionTime,
+                         charge:Nullable<float>, massToCharge:Nullable<float>, uri:string, 
+                         spectraRef:string, peptideAbundance:List<PeptideAbundance>, 
+                         details:List<PeptideSectionParam>, rowVersion:Nullable<DateTime>
+                        ) =  
+            let mutable id'                 = id
+            [<Column("sequence")>]
+            let mutable peptideSequence'    = peptideSequence
+            let mutable accession'          = accession
+            let mutable unique'             = unique
+            let mutable accessionParameter' = accessionParameter
+            let mutable searchEngine'       = searchEngine
+            let mutable reliability'        = reliability
+            let mutable modifications'      = modifications
+            let mutable retentionTime'      = retentionTime
+            let mutable charge'             = charge
+            [<Column("mass_to_charge")>]
+            let mutable massToCharge'       = massToCharge
+            let mutable uri'                = uri
+            [<Column("spectra_ref")>]
+            let mutable spectraRef'         = spectraRef
+            [<Column("peptide_coverage")>]
+            let mutable peptideAbundance'   = peptideAbundance
+            let mutable details'            = details
+            let mutable rowVersion'         = rowVersion
+
+            new() = PeptideSection(null, null, null, Nullable(), null, null, Nullable(), null, null, Nullable(), 
+                                   Nullable(), null,  null, null, null, Nullable()
+                                  )
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Sequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+            member this.Accession with get() = accession' and set(value) = accession' <- value
+            member this.Unique with get() = unique' and set(value) = unique' <- value
+            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
+            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.Reliability with get() = reliability' and set(value) = reliability' <- value
+            member this.Modifications with get() = modifications' and set(value) = modifications' <- value
+            member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
+            member this.Charge with get() = charge' and set(value) = charge' <- value
+            member this.MassToCharge with get() = massToCharge' and set(value) = massToCharge' <- value
+            member this.URI with get() = uri' and set(value) = uri' <- value
+            member this.SpectraRef with get() = spectraRef' and set(value) = spectraRef' <- value
+            member this.PeptideAbundance with get() = peptideAbundance' and set(value) = peptideAbundance' <- value
+            member this.Details with get() = details' and set(value) = details' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+    ///A unique identifier for a PSM within the file. 
+    ///If a PSM can be matched to multiple proteins, the same PSM should be represented on multiple rows 
+    ///with different accessions and the same PSM_ID.
+    type [<AllowNullLiteral>]  [<Table("PSM_ID")>]
+        PSMID (id:string, rowVersion:Nullable<DateTime>) =
+            [<Column("PSM_ID")>]
+            let mutable id'         = id
+            let mutable rowVersion' = rowVersion
+
+            new() = PSMID(null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    
+    ///A table describing the additional information about the peptides and protein based on the psm.
+    type [<AllowNullLiteral>]
+        PSMInformation (id:string, peptideSequence:string, pre:string, post:string, 
+                        start:Nullable<int>, ende:Nullable<int>, rowVersion:Nullable<DateTime>
+                       ) =
+            let mutable id'              = id
+            [<Column("sequence")>]
+            let mutable peptideSequence' = peptideSequence
+            let mutable pre'             = pre
+            let mutable post'            = post
+            let mutable start'           = start
+            [<Column("end")>]
+            let mutable end'             = ende
+            let mutable rowVersion'      = rowVersion
+
+            new() = PSMInformation(null, null, null, null, Nullable(), Nullable(), Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+            member this.Pre with get() = pre' and set(value) = pre' <- value
+            member this.Post with get() = post' and set(value) = post' <- value
+            member this.Start with get() = start' and set(value) = start' <- value
+            member this.End with get() = end' and set(value) = end' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+    
+    ///AdditionalInforamtion for psmSection.
+    type [<AllowNullLiteral>] [<Table("PSMSectionParams")>]
+        PSMSectionParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+            let mutable id'         = id
+            let mutable value'      = value
+            let mutable term'       = term
+            let mutable unit'       = unit
+            let mutable rowVersion' = rowVersion
+
+            new() = PSMSectionParam(null, null, null, null, Nullable())
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Value with get() = value' and set(value) = value' <- value
+            member this.Term with get() = term' and set(value) = term' <- value
+            member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            interface CVParamBase with
+                member x.ID         = x.ID
+                member x.Value      = x.Value
+                member x.Term       = x.Term
+                member x.Unit       = x.Unit
+                member x.RowVersion = x.RowVersion
+    
+    ///The protein section can provide additional information about the reported peptides in the mzTab file.
+    type [<AllowNullLiteral>]
+         PSMSection (id:string, peptideSequence:PeptideSequence, psmID:PSMID, accession:Accession, 
+                     unique:Nullable<bool>,  accessionParameter:List<AccessionParamaeter>, 
+                     searchEngine:List<SearchEngine>,  reliability:Nullable<int>, 
+                     modifications:List<Modification>, retentionTime:Nullable<float>,
+                     charge:Nullable<float>, experimentalMassToCharge:Nullable<float>, 
+                     calculatedMassToCharge:Nullable<float>, uri:string, 
+                     spectraRef:string, psmInformation:PSMInformation, 
+                     details:List<PSMSectionParam>, rowVersion:Nullable<DateTime>
+                    ) =  
+            let mutable id'                       = id
+            [<Column("sequence")>]
+            let mutable peptideSequence'          = peptideSequence
+            [<Column("PSM_ID")>]
+            let mutable psmID'                    = psmID
+            let mutable accession'                = accession
+            let mutable unique'                   = unique
+            let mutable accessionParameter'       = accessionParameter
+            let mutable searchEngine'             = searchEngine
+            let mutable reliability'              = reliability
+            let mutable modifications'            = modifications
+            let mutable retentionTime'            = retentionTime
+            let mutable charge'                   = charge
+            [<Column("exp_mass_to_charge")>]
+            let mutable experimentalMassToCharge' = experimentalMassToCharge
+            [<Column("calc_mass_to_charge")>]
+            let mutable calculatedMassToCharge'   = calculatedMassToCharge
+            let mutable uri'                      = uri
+            [<Column("spectra_ref")>]
+            let mutable spectraRef'               = spectraRef
+            [<Column("peptide_coverage")>]
+            let mutable psmInformation'         = psmInformation
+            let mutable details'                  = details
+            let mutable rowVersion'               = rowVersion
+
+            new() = PSMSection(null, null, null, null, Nullable(), null, null, Nullable(), null, Nullable(), 
+                               Nullable(), Nullable(), Nullable(), null,  null, null, null, Nullable()
+                              )
+
+            [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Sequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
+            member this.PSMID with get() = psmID' and set(value) = psmID' <- value
+            member this.Accession with get() = accession' and set(value) = accession' <- value
+            member this.Unique with get() = unique' and set(value) = unique' <- value
+            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
+            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.Reliability with get() = reliability' and set(value) = reliability' <- value
+            member this.Modifications with get() = modifications' and set(value) = modifications' <- value
+            member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
+            member this.Charge with get() = charge' and set(value) = charge' <- value
+            member this.ExperimentalMassToCharge with get() = experimentalMassToCharge' and set(value) = experimentalMassToCharge' <- value
+            member this.CalculatedMassToCharge with get() = calculatedMassToCharge' and set(value) = calculatedMassToCharge' <- value
+            member this.URI with get() = uri' and set(value) = uri' <- value
+            member this.SpectraRef with get() = spectraRef' and set(value) = spectraRef' <- value
+            member this.PSMInformation with get() = psmInformation' and set(value) = psmInformation' <- value
+            member this.Details with get() = details' and set(value) = details' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+    //Go on with small molecule section.
+    
     type MzTab =
      
             inherit DbContext
@@ -1631,3 +1922,13 @@ module DataModel =
             val mutable m_MetaData : DbSet<MetaData>
             member public this.MetaData with get() = this.m_MetaData
                                                      and set value = this.m_MetaData <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinSection : DbSet<ProteinSection>
+            member public this.ProteinSection with get() = this.m_ProteinSection
+                                                           and set value = this.m_ProteinSection <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideSection : DbSet<PeptideSection>
+            member public this.PeptideSection with get() = this.m_PeptideSection
+                                                           and set value = this.m_PeptideSection <- value
