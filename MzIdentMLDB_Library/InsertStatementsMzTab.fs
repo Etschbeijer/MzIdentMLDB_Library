@@ -394,7 +394,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AnalysisSoftwareParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a analysisSoftwareParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -650,7 +650,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MetaDataSectionParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a metaDataSectionParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -735,7 +735,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SampleParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a sampleParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -820,7 +820,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SpeciesHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a species-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -905,7 +905,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type TissueHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a tissue-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -990,7 +990,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type CellTypeHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a cellType-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1075,7 +1075,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type DiseaseHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a disease-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1160,7 +1160,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FixedModHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a fixedMod-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1245,7 +1245,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FixedModSiteHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a fixedModSite-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1330,7 +1330,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FixedModPositionHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a fixedModPosition-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1415,7 +1415,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type VariableModHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a variableMod-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1500,7 +1500,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type VariableModSiteHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a variableModSite-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1585,7 +1585,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type VariableModPositionHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a variableModPosition-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1670,7 +1670,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinSearchEngineScoreHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinSearchEngineScore-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1755,7 +1755,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideSearchEngineScoreHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a peptideSearchEngineScore-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1840,7 +1840,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PSMSearchEngineScoreHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a psmSearchEngineScore-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1925,7 +1925,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeSearchEngineScoreHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeSearchEngineScore-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2010,7 +2010,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunFormatHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunFormat-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2095,7 +2095,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunLocationHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunLocation-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2180,7 +2180,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunIDFormatHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunIDFormat-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2265,7 +2265,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunFragmentationMethodHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunFragmentationMethod-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2350,7 +2350,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunHashHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunHash-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2435,7 +2435,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunHashMethodHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a msRunMethod-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2520,7 +2520,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type QuantificationReagentHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a quantificationReagent-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2605,7 +2605,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type QuantificationModSiteHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a quantificationModSite-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2690,7 +2690,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type QuantificationModPositionHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a quantificationModPosition-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2775,7 +2775,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InstrumentNameHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a instrumentName-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2860,7 +2860,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InstrumentSourceHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a instrumentSource-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -2945,7 +2945,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InstrumentAnalyzerHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a instrumentAnalyzer-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3030,7 +3030,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InstrumentDetectorHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a instrumentDetector-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3115,7 +3115,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SearchEngineNameHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a searchEngineName-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3200,7 +3200,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ModificationHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a modification-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3285,7 +3285,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinSectionParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinSectionParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3370,7 +3370,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RetentionTimeWindowHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a retentionTimeWindow-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3455,7 +3455,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PSMSectionParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a psmSectionParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3540,7 +3540,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeSectionParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeSectionParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3629,7 +3629,7 @@ module InsertStatements =
 ////////////////////////////////////////////
 
         type SampleProcessingHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a sampleProcessing-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -3707,7 +3707,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AnalysisSoftwareHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a analysisSoftware-object with at least all necessary parameters.
             static member init
                 (
                     id        : string,
@@ -4019,7 +4019,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FixedModificationHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a fixedModification-object with at least all necessary parameters.
             static member init
                 (             
                     fixedMods          : seq<FixedMod>,
@@ -4113,7 +4113,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type VariableModificationHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a variableModification-object with at least all necessary parameters.
             static member init
                 (             
                     variableMods          : seq<VariableMod>,
@@ -4207,7 +4207,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InstrumentHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a instrument-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                   : string,
@@ -4326,7 +4326,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SearchEngineScoreHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a searchEngineScore-object with at least all necessary parameters.
             static member init
                 (             
                     proteinSearchEngineScores       : seq<ProteinSearchEngineScore>,
@@ -4505,7 +4505,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MSRunHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a msRun-object with at least all necessary parameters.
             static member init
                 (             
                     msRunLocations                   : seq<MSRunLocation>,
@@ -4642,7 +4642,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SampleHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a sample-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                              : string,
@@ -4786,7 +4786,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AssayHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a assay-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                              : string,
@@ -4910,7 +4910,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ColUnitHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a colUnit-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                              : string,
@@ -5014,7 +5014,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type StudyVariableHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a studyVariable-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                              : string,
@@ -5219,7 +5219,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AccessionParameterHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a accessionParameter-object with at least all necessary parameters.
             static member init
                 (             
                     identifiers                      : seq<Identifier>,
@@ -5301,7 +5301,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SearchEngineHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a searchEngine-object with at least all necessary parameters.
             static member init
                 (             
                     identifiers                      : seq<Identifier>,
@@ -5388,7 +5388,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideInfoHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a peptideInfo-object with at least all necessary parameters.
             static member init
                 (             
                     accession                        : Accession,
@@ -5478,7 +5478,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinAbundanceHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinAbundance-object with at least all necessary parameters.
             static member init
                 (             
                     accession                        : Accession,
@@ -5585,7 +5585,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RetentionTimeHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a retentionTime-object with at least all necessary parameters.
             static member init
                 (             
                     peptideSequence                  : PeptideSequence,
@@ -5675,7 +5675,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideAbundanceHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a peptideAbundance-object with at least all necessary parameters.
             static member init
                 (             
                     peptideSequence                  : PeptideSequence,
@@ -5782,7 +5782,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
         
         type PSMInformationHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a psmInformation-object with at least all necessary parameters.
             static member init
                 (             
                     peptideSequence                  : PeptideSequence,
@@ -5859,7 +5859,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
         
         type ChemicalHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a chemical-object with at least all necessary parameters.
             static member init
                 (             
                     identifiers                      : seq<Identifier>,
@@ -5934,7 +5934,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
  
         type SmallMoleculeAbundanceHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeAbundance-object with at least all necessary parameters.
             static member init
                 (             
                     identifiers                      : List<Identifier>,
@@ -6041,7 +6041,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinSectionHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinSection-object with at least all necessary parameters.
             static member init
                 (             
                     accession                        : Accession,
@@ -6210,7 +6210,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideSectionHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a peptideSection-object with at least all necessary parameters.
             static member init
                 (                
                     ?id                              : string,
@@ -6418,7 +6418,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PSMSectionHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a psmSection-object with at least all necessary parameters.
             static member init
                 (             
                     peptideSequence                  : PeptideSequence, 
@@ -6702,7 +6702,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MetaDataSectionHandler =
-            ///Initializes a smallMoleculeSection-object with at least all necessary parameters.
+            ///Initializes a metaDataSection-object with at least all necessary parameters.
             static member init
                 (             
                     description                      : string,
