@@ -301,6110 +301,6732 @@ module InsertStatements =
                 CVParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
-//        type OrganizationParamHandler =
-//            ///Initializes a organizationparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type FalseDiscoveryRateHandler =
+            ///Initializes a cvparam-object with at least all necessary parameters.
+            static member init
+                (
+                    ?id       : string,
+                    ?term     : Term,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let term'     = defaultArg term Unchecked.defaultof<Term>
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
-//                new OrganizationParam(
-//                                      id', 
-//                                      value', 
-//                                      term, 
-//                                      unit', 
-//                                      Nullable(DateTime.Now)
-//                                     )
+                new FalseDiscoveryRate(
+                                       id', 
+                                       value', 
+                                       term', 
+                                       unit', 
+                                       Nullable(DateTime.Now)
+                                      )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (table:OrganizationParam) =
-//                table.Value <- value
-//                table
+            ///Replaces term of existing object with new one.
+            static member addTerm
+                (term:Term) (table:FalseDiscoveryRate) =
+                table.Term <- term
+                table
+            
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (table:FalseDiscoveryRate) =
+                table.Value <- value
+                table
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:OrganizationParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:FalseDiscoveryRate) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzTab) (id:string) =
-//                tryFind (context.OrganizationParam.Find(id))
+            ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.FalseDiscoveryRate.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzTab) (name:string) =
-//                query {
-//                       for i in dbContext.OrganizationParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.OrganizationParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.FalseDiscoveryRate.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FalseDiscoveryRate do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:FalseDiscoveryRate) (item2:FalseDiscoveryRate) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:OrganizationParam) =
-//                    OrganizationParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> 
-//                                                                match OrganizationParamHandler.hasEqualFieldValues cvParam item with
-//                                                                |true -> null
-//                                                                |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:FalseDiscoveryRate) =
+                    FalseDiscoveryRateHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match FalseDiscoveryRateHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:OrganizationParam) =
-//                OrganizationParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:FalseDiscoveryRate) =
+                FalseDiscoveryRateHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type PersonParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type AnalysisSoftwareParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new PersonParam(
-//                                id', 
-//                                value', 
-//                                term, 
-//                                unit', 
-//                                Nullable(DateTime.Now)
-//                               )
+                new AnalysisSoftwareParam(
+                                          id', 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          Nullable(DateTime.Now)
+                                         )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (table:PersonParam) =
-//                table.Value <- value
-//                table
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:AnalysisSoftwareParam) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (param:PersonParam) =
-//                param.Unit <- unit
-//                param
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:AnalysisSoftwareParam) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.PersonParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.AnalysisSoftwareParam.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.PersonParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.PersonParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.AnalysisSoftwareParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftwareParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AnalysisSoftwareParam) (item2:AnalysisSoftwareParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:PersonParam) =
-//                    PersonParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match PersonParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:AnalysisSoftwareParam) =
+                    AnalysisSoftwareParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match AnalysisSoftwareParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:PersonParam) =
-//                PersonParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:AnalysisSoftwareParam) =
+                AnalysisSoftwareParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+        
+        type OrganizationParamHandler =
+            ///Initializes a organizationparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
 
-//        type AnalysisSoftwareParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                new OrganizationParam(
+                                      id', 
+                                      value', 
+                                      term, 
+                                      unit', 
+                                      Nullable(DateTime.Now)
+                                     )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (table:OrganizationParam) =
+                table.Value <- value
+                table
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:OrganizationParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.OrganizationParam.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.OrganizationParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.OrganizationParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:OrganizationParam) =
+                    OrganizationParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> 
+                                                                match OrganizationParamHandler.hasEqualFieldValues cvParam item with
+                                                                |true -> null
+                                                                |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:OrganizationParam) =
+                OrganizationParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type PersonParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new AnalysisSoftwareParam(
-//                                          id', 
-//                                          value', 
-//                                          term, 
-//                                          unit', 
-//                                          Nullable(DateTime.Now)
-//                                         )
+                new PersonParam(
+                                id', 
+                                value', 
+                                term, 
+                                unit', 
+                                Nullable(DateTime.Now)
+                               )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:AnalysisSoftwareParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (table:PersonParam) =
+                table.Value <- value
+                table
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:AnalysisSoftwareParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (param:PersonParam) =
+                param.Unit <- unit
+                param
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.AnalysisSoftwareParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PersonParam.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.AnalysisSoftwareParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.AnalysisSoftwareParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.PersonParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PersonParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:AnalysisSoftwareParam) (item2:AnalysisSoftwareParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
-//                    AnalysisSoftwareParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match AnalysisSoftwareParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PersonParam) =
+                    PersonParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match PersonParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
-//                AnalysisSoftwareParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PersonParam) =
+                PersonParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type SearchDatabaeParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type MetaDataSectionParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new SearchDatabaseParam(
-//                                        id', 
-//                                        value', 
-//                                        term, 
-//                                        unit', 
-//                                        Nullable(DateTime.Now)
-//                                       )
+                new MetaDataSectionParam(
+                                         id', 
+                                         value', 
+                                         term, 
+                                         unit', 
+                                         Nullable(DateTime.Now)
+                                        )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:SearchDatabaseParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MetaDataSectionParam) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:SearchDatabaseParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MetaDataSectionParam) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SearchDatabaseParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MetaDataSectionParam.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.SearchDatabaseParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SearchDatabaseParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MetaDataSectionParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MetaDataSectionParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MetaDataSectionParam) (item2:MetaDataSectionParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-//                    SearchDatabaeParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match SearchDatabaeParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MetaDataSectionParam) =
+                    MetaDataSectionParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MetaDataSectionParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-//                SearchDatabaeParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MetaDataSectionParam) =
+                MetaDataSectionParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type RawFileParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type SampleParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new RawFileParam(
-//                                 id', 
-//                                 value', 
-//                                 term, 
-//                                 unit', 
-//                                 Nullable(DateTime.Now)
-//                                )
+                new SampleParam(
+                                id', 
+                                value', 
+                                term, 
+                                unit', 
+                                Nullable(DateTime.Now)
+                               )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:RawFileParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:SampleParam) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:RawFileParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:SampleParam) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.RawFileParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SampleParam.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.RawFileParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.RawFileParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.SampleParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SampleParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:RawFileParam) (item2:RawFileParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SampleParam) (item2:SampleParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:RawFileParam) =
-//                    RawFileParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match RawFileParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SampleParam) =
+                    SampleParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SampleParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFileParam) =
-//                RawFileParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SampleParam) =
+                SampleParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type AssayParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type SpeciesHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new AssayParam(
-//                               id', 
-//                               value', 
-//                               term, 
-//                               unit', 
-//                               Nullable(DateTime.Now)
-//                              )
+                new Species(
+                            id', 
+                            value', 
+                            term, 
+                            unit', 
+                            Nullable(DateTime.Now)
+                           )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:AssayParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:Species) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:AssayParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:Species) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.AssayParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Species.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.AssayParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.AssayParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Species.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.Species do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:AssayParam) (item2:AssayParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Species) (item2:Species) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:AssayParam) =
-//                    AssayParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match AssayParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Species) =
+                    SpeciesHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SpeciesHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:AssayParam) =
-//                AssayParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Species) =
+                SpeciesHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type StudyVariableParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type TissueHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new StudyVariableParam(
-//                                       id', 
-//                                       value', 
-//                                       term, 
-//                                       unit', 
-//                                       Nullable(DateTime.Now)
-//                                      )
+                new Tissue(
+                           id', 
+                           value', 
+                           term, 
+                           unit', 
+                           Nullable(DateTime.Now)
+                          )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:AssayParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:Tissue) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:StudyVariableParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:Tissue) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.StudyVariableParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Tissue.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.StudyVariableParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.StudyVariableParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Tissue.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.Tissue do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:StudyVariableParam) (item2:StudyVariableParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Tissue) (item2:Tissue) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:StudyVariableParam) =
-//                    StudyVariableParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match StudyVariableParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Tissue) =
+                    TissueHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match TissueHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariableParam) =
-//                StudyVariableParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Tissue) =
+                TissueHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type RatioCalculationParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type CellTypeHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new RatioCalculationParam(
-//                                          id', 
-//                                          value', 
-//                                          term, 
-//                                          unit', 
-//                                          Nullable(DateTime.Now)
-//                                         )
+                new CellType(
+                             id', 
+                             value', 
+                             term, 
+                             unit', 
+                             Nullable(DateTime.Now)
+                            )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:RatioCalculationParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:CellType) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:RatioCalculationParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:CellType) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.RatioCalculationParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.CellType.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.RatioCalculationParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.RatioCalculationParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.CellType.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.CellType do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:RatioCalculationParam) (item2:RatioCalculationParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:CellType) (item2:CellType) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:RatioCalculationParam) =
-//                    RatioCalculationParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match RatioCalculationParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:CellType) =
+                    CellTypeHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match CellTypeHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:RatioCalculationParam) =
-//                RatioCalculationParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:CellType) =
+                CellTypeHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type FeatureParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type DiseaseHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new FeatureParam(
-//                                 id', 
-//                                 value', 
-//                                 term, 
-//                                 unit', 
-//                                 Nullable(DateTime.Now)
-//                                )
+                new Disease(
+                            id', 
+                            value', 
+                            term, 
+                            unit', 
+                            Nullable(DateTime.Now)
+                           )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:FeatureParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:Disease) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:FeatureParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:Disease) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.FeatureParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Disease.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.FeatureParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.FeatureParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Disease.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.Disease do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:FeatureParam) (item2:FeatureParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Disease) (item2:Disease) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:FeatureParam) =
-//                    FeatureParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match FeatureParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Disease) =
+                    DiseaseHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match DiseaseHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureParam) =
-//                FeatureParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Disease) =
+                DiseaseHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type SmallMoleculeParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type FixedModHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new SmallMoleculeParam(
-//                                       id', 
-//                                       value', 
-//                                       term, 
-//                                       unit', 
-//                                       Nullable(DateTime.Now)
-//                                      )
+                new FixedMod(
+                             id', 
+                             value', 
+                             term, 
+                             unit', 
+                             Nullable(DateTime.Now)
+                            )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:SmallMoleculeParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:FixedMod) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:SmallMoleculeParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:FixedMod) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SmallMoleculeParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.FixedMod.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.SmallMoleculeParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SmallMoleculeParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.FixedMod.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FixedMod do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SmallMoleculeParam) (item2:SmallMoleculeParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:FixedMod) (item2:FixedMod) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeParam) =
-//                    SmallMoleculeParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match SmallMoleculeParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:FixedMod) =
+                    FixedModHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match FixedModHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeParam) =
-//                SmallMoleculeParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:FixedMod) =
+                FixedModHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type SmallMoleculeListParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type FixedModSiteHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new SmallMoleculeListParam(
-//                                           id', 
-//                                           value', 
-//                                           term, 
-//                                           unit', 
-//                                           Nullable(DateTime.Now)
-//                                          )
+                new FixedModSite(
+                                 id', 
+                                 value', 
+                                 term, 
+                                 unit', 
+                                 Nullable(DateTime.Now)
+                                )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:SmallMoleculeListParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:FixedModSite) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:SmallMoleculeListParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:FixedModSite) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SmallMoleculeListParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.FixedModSite.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.SmallMoleculeListParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SmallMoleculeListParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.FixedModSite.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FixedModSite do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SmallMoleculeListParam) (item2:SmallMoleculeListParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:FixedModSite) (item2:FixedModSite) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeListParam) =
-//                    SmallMoleculeListParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match SmallMoleculeListParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:FixedModSite) =
+                    FixedModSiteHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match FixedModSiteHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeListParam) =
-//                SmallMoleculeListParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:FixedModSite) =
+                FixedModSiteHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type PeptideConsensusParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type FixedModPositionHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new PeptideConsensusParam(
-//                                          id', 
-//                                          value', 
-//                                          term, 
-//                                          unit', 
-//                                          Nullable(DateTime.Now)
-//                                         )
+                new FixedModPosition(
+                                     id', 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     Nullable(DateTime.Now)
+                                    )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:PeptideConsensusParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:FixedModPosition) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:PeptideConsensusParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:FixedModPosition) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.PeptideConsensusParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.FixedModPosition.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.PeptideConsensusParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.PeptideConsensusParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.FixedModPosition.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FixedModPosition do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:PeptideConsensusParam) (item2:PeptideConsensusParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:FixedModPosition) (item2:FixedModPosition) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusParam) =
-//                    PeptideConsensusParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match PeptideConsensusParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:FixedModPosition) =
+                    FixedModPositionHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match FixedModPositionHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusParam) =
-//                PeptideConsensusParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:FixedModPosition) =
+                FixedModPositionHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type ProteinParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type VariableModHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new ProteinParam(
-//                                 id', 
-//                                 value', 
-//                                 term, 
-//                                 unit', 
-//                                 Nullable(DateTime.Now)
-//                                )
+                new VariableMod(
+                                id', 
+                                value', 
+                                term, 
+                                unit', 
+                                Nullable(DateTime.Now)
+                               )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:ProteinParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:VariableMod) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:ProteinParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:VariableMod) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.VariableMod.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.ProteinParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.VariableMod.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.VariableMod do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinParam) (item2:ProteinParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:VariableMod) (item2:VariableMod) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinParam) =
-//                    ProteinParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match ProteinParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:VariableMod) =
+                    VariableModHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match VariableModHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinParam) =
-//                ProteinParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:VariableMod) =
+                VariableModHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type ProteinListParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type VariableModSiteHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new ProteinListParam(
-//                                     id', 
-//                                     value', 
-//                                     term, 
-//                                     unit', 
-//                                     Nullable(DateTime.Now)
-//                                    )
+                new VariableModSite(
+                                    id', 
+                                    value', 
+                                    term, 
+                                    unit', 
+                                    Nullable(DateTime.Now)
+                                   )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:ProteinListParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:VariableModSite) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:ProteinListParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:VariableModSite) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinListParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.VariableModSite.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.ProteinListParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinListParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.VariableModSite.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.VariableModSite do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinListParam) (item2:ProteinListParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:VariableModSite) (item2:VariableModSite) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinListParam) =
-//                    ProteinListParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match ProteinListParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:VariableModSite) =
+                    VariableModSiteHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match VariableModSiteHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinListParam) =
-//                ProteinListParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:VariableModSite) =
+                VariableModSiteHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type ProteinGroupParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type VariableModPositionHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new ProteinGroupParam(
-//                                      id', 
-//                                      value', 
-//                                      term, 
-//                                      unit', 
-//                                      Nullable(DateTime.Now)
-//                                     )
+                new VariableModPosition(
+                                        id', 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        Nullable(DateTime.Now)
+                                       )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:ProteinGroupParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:VariableModPosition) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:ProteinGroupParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:VariableModPosition) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinGroupParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.VariableModPosition.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.ProteinGroupParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinGroupParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.VariableModPosition.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.VariableModPosition do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinGroupParam) (item2:ProteinGroupParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:VariableModPosition) (item2:VariableModPosition) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinGroupParam) =
-//                    ProteinGroupParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match ProteinGroupParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:VariableModPosition) =
+                    VariableModPositionHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match VariableModPositionHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupParam) =
-//                ProteinGroupParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:VariableModPosition) =
+                VariableModPositionHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type ProteinGroupListParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type ProteinSearchEngineScoreHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new ProteinGroupListParam(
-//                                          id', 
-//                                          value', 
-//                                          term, 
-//                                          unit', 
-//                                          Nullable(DateTime.Now)
-//                                         )
+                new ProteinSearchEngineScore(
+                                             id', 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             Nullable(DateTime.Now)
+                                            )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:ProteinGroupListParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:ProteinSearchEngineScore) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:ProteinGroupListParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:ProteinSearchEngineScore) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinGroupListParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ProteinSearchEngineScore.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.ProteinGroupListParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinGroupListParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.ProteinSearchEngineScore.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinSearchEngineScore do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinGroupListParam) (item2:ProteinGroupListParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ProteinSearchEngineScore) (item2:ProteinSearchEngineScore) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinGroupListParam) =
-//                    ProteinGroupListParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match ProteinGroupListParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:ProteinSearchEngineScore) =
+                    ProteinSearchEngineScoreHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match ProteinSearchEngineScoreHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupListParam) =
-//                ProteinGroupListParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:ProteinSearchEngineScore) =
+                ProteinSearchEngineScoreHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type PeptideConsensusListParamHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    term      : Term,
-//                    ?id       : string,
-//                    ?value    : string,
-//                    ?unit     : Term
-//                ) =
-//                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-//                let value'    = defaultArg value Unchecked.defaultof<string>
-//                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+        type PeptideSearchEngineScoreHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new PeptideConsensusListParam(
-//                                              id', 
-//                                              value', 
-//                                              term, 
-//                                              unit', 
-//                                              Nullable(DateTime.Now)
-//                                             )
+                new PeptideSearchEngineScore(
+                                             id', 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             Nullable(DateTime.Now)
+                                            )
 
-//            ///Replaces value of existing object with new one.
-//            static member addValue
-//                (value:string) (param:PeptideConsensusListParam) =
-//                param.Value <- value
-//                param
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:PeptideSearchEngineScore) =
+                param.Value <- value
+                param
 
-//            ///Replaces unit of existing object with new one.
-//            static member addUnit
-//                (unit:Term) (table:PeptideConsensusListParam) =
-//                table.Unit <- unit
-//                table
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:PeptideSearchEngineScore) =
+                table.Unit <- unit
+                table
 
-//            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.PeptideConsensusListParam.Find(id))
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PeptideSearchEngineScore.Find(id))
 
-//            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.PeptideConsensusListParam.Local do
-//                           if i.Term.Name=name
-//                              then select (i, i.Term, i.Unit)
-//                      }
-//                |> Seq.map (fun (param,_ ,_) -> param)
-//                |> (fun param -> 
-//                    if (Seq.exists (fun param' -> param' <> null) param) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.PeptideConsensusListParam do
-//                                       if i.Term.Name=name
-//                                          then select (i, i.Term, i.Unit)
-//                                  }
-//                            |> Seq.map (fun (param,_ ,_) -> param)
-//                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some param
-//                   )
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.PeptideSearchEngineScore.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideSearchEngineScore do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:PeptideConsensusListParam) (item2:PeptideConsensusListParam) =
-//                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PeptideSearchEngineScore) (item2:PeptideSearchEngineScore) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusListParam) =
-//                    PeptideConsensusListParamHandler.tryFindByTermName dbContext item.Term.ID
-//                    |> (fun cvParamCollection -> match cvParamCollection with
-//                                                 |Some x -> x
-//                                                            |> Seq.map (fun cvParam -> match PeptideConsensusListParamHandler.hasEqualFieldValues cvParam item with
-//                                                                                       |true -> null
-//                                                                                       |false -> dbContext.Add item
-//                                                                       ) |> ignore
-//                                                 |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PeptideSearchEngineScore) =
+                    PeptideSearchEngineScoreHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match PeptideSearchEngineScoreHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusListParam) =
-//                PeptideConsensusListParamHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PeptideSearchEngineScore) =
+                PeptideSearchEngineScoreHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type PSMSearchEngineScoreHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new PSMSearchEngineScore(
+                                         id', 
+                                         value', 
+                                         term, 
+                                         unit', 
+                                         Nullable(DateTime.Now)
+                                        )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:PSMSearchEngineScore) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:PSMSearchEngineScore) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PSMSearchEngineScore.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.PSMSearchEngineScore.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PSMSearchEngineScore do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PSMSearchEngineScore) (item2:PSMSearchEngineScore) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PSMSearchEngineScore) =
+                    PSMSearchEngineScoreHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match PSMSearchEngineScoreHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PSMSearchEngineScore) =
+                PSMSearchEngineScoreHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type SmallMoleculeSearchEngineScoreHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new SmallMoleculeSearchEngineScore(
+                                                   id', 
+                                                   value', 
+                                                   term, 
+                                                   unit', 
+                                                   Nullable(DateTime.Now)
+                                                  )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:SmallMoleculeSearchEngineScore) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:SmallMoleculeSearchEngineScore) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SmallMoleculeSearchEngineScore.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.SmallMoleculeSearchEngineScore.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeSearchEngineScore do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SmallMoleculeSearchEngineScore) (item2:SmallMoleculeSearchEngineScore) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SmallMoleculeSearchEngineScore) =
+                    SmallMoleculeSearchEngineScoreHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SmallMoleculeSearchEngineScoreHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SmallMoleculeSearchEngineScore) =
+                SmallMoleculeSearchEngineScoreHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunFormatHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunFormat(
+                                id', 
+                                value', 
+                                term, 
+                                unit', 
+                                Nullable(DateTime.Now)
+                               )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunFormat) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunFormat) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunFormat.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunFormat.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunFormat do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunFormat) (item2:MSRunFormat) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunFormat) =
+                    MSRunFormatHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunFormatHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunFormat) =
+                MSRunFormatHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunLocationHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunLocation(
+                                  id', 
+                                  value', 
+                                  term, 
+                                  unit', 
+                                  Nullable(DateTime.Now)
+                                 )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunLocation) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunLocation) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunLocation.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunLocation.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunLocation do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunLocation) (item2:MSRunLocation) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunLocation) =
+                    MSRunLocationHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunLocationHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunLocation) =
+                MSRunLocationHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunIDFormatHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunIDFormat(
+                                  id', 
+                                  value', 
+                                  term, 
+                                  unit', 
+                                  Nullable(DateTime.Now)
+                                 )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunIDFormat) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunIDFormat) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunIDFormat.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunIDFormat.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunIDFormat do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunIDFormat) (item2:MSRunIDFormat) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunIDFormat) =
+                    MSRunIDFormatHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunIDFormatHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunIDFormat) =
+                MSRunIDFormatHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunFragmentationMethodHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunFragmentationMethod(
+                                             id', 
+                                             value', 
+                                             term, 
+                                             unit', 
+                                             Nullable(DateTime.Now)
+                                            )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunFragmentationMethod) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunFragmentationMethod) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunFragmentationMethod.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunFragmentationMethod.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunFragmentationMethod do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunFragmentationMethod) (item2:MSRunFragmentationMethod) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunFragmentationMethod) =
+                    MSRunFragmentationMethodHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunFragmentationMethodHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunFragmentationMethod) =
+                MSRunFragmentationMethodHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunHashHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunHash(
+                              id', 
+                              value', 
+                              term, 
+                              unit', 
+                              Nullable(DateTime.Now)
+                             )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunHash) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunHash) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunHash.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunHash.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunHash do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunHash) (item2:MSRunHash) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunHash) =
+                    MSRunHashHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunHashHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunHash) =
+                MSRunHashHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type MSRunHashMethodHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new MSRunHashMethod(
+                                    id', 
+                                    value', 
+                                    term, 
+                                    unit', 
+                                    Nullable(DateTime.Now)
+                                   )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:MSRunHashMethod) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:MSRunHashMethod) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRunHashMethod.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.MSRunHashMethod.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRunHashMethod do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRunHashMethod) (item2:MSRunHashMethod) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRunHashMethod) =
+                    MSRunHashMethodHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match MSRunHashMethodHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRunHashMethod) =
+                MSRunHashMethodHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type QuantificationReagentHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new QuantificationReagent(
+                                          id', 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          Nullable(DateTime.Now)
+                                         )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:QuantificationReagent) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:QuantificationReagent) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.QuantificationReagent.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.QuantificationReagent.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.QuantificationReagent do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:QuantificationReagent) (item2:QuantificationReagent) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:QuantificationReagent) =
+                    QuantificationReagentHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match QuantificationReagentHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:QuantificationReagent) =
+                QuantificationReagentHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type QuantificationModSiteHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new QuantificationModSite(
+                                          id', 
+                                          value', 
+                                          term, 
+                                          unit', 
+                                          Nullable(DateTime.Now)
+                                         )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:QuantificationModSite) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:QuantificationModSite) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.QuantificationModSite.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.QuantificationModSite.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.QuantificationModSite do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:QuantificationModSite) (item2:QuantificationModSite) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:QuantificationModSite) =
+                    QuantificationModSiteHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match QuantificationModSiteHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:QuantificationModSite) =
+                QuantificationModSiteHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type QuantificationModPositionHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new QuantificationModPosition(
+                                              id', 
+                                              value', 
+                                              term, 
+                                              unit', 
+                                              Nullable(DateTime.Now)
+                                             )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:QuantificationModPosition) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:QuantificationModPosition) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.QuantificationModPosition.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.QuantificationModPosition.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.QuantificationModPosition do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:QuantificationModPosition) (item2:QuantificationModPosition) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:QuantificationModPosition) =
+                    QuantificationModPositionHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match QuantificationModPositionHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:QuantificationModPosition) =
+                QuantificationModPositionHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type InstrumentNameHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new InstrumentName(
+                                   id', 
+                                   value', 
+                                   term, 
+                                   unit', 
+                                   Nullable(DateTime.Now)
+                                  )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:InstrumentName) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:InstrumentName) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.InstrumentName.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.InstrumentName.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.InstrumentName do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:InstrumentName) (item2:InstrumentName) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:InstrumentName) =
+                    InstrumentNameHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match InstrumentNameHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:InstrumentName) =
+                InstrumentNameHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type InstrumentSourceHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new InstrumentSource(
+                                     id', 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     Nullable(DateTime.Now)
+                                    )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:InstrumentSource) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:InstrumentSource) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.InstrumentSource.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.InstrumentSource.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.InstrumentSource do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:InstrumentSource) (item2:InstrumentSource) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:InstrumentSource) =
+                    InstrumentSourceHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match InstrumentSourceHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:InstrumentSource) =
+                InstrumentSourceHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type InstrumentAnalyzerHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new InstrumentAnalyzer(
+                                       id', 
+                                       value', 
+                                       term, 
+                                       unit', 
+                                       Nullable(DateTime.Now)
+                                      )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:InstrumentAnalyzer) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:InstrumentAnalyzer) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.InstrumentAnalyzer.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.InstrumentAnalyzer.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.InstrumentAnalyzer do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:InstrumentAnalyzer) (item2:InstrumentAnalyzer) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:InstrumentAnalyzer) =
+                    InstrumentAnalyzerHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match InstrumentAnalyzerHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:InstrumentAnalyzer) =
+                InstrumentAnalyzerHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type InstrumentDetectorHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new InstrumentDetector(
+                                       id', 
+                                       value', 
+                                       term, 
+                                       unit', 
+                                       Nullable(DateTime.Now)
+                                      )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:InstrumentDetector) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:InstrumentDetector) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.InstrumentDetector.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.InstrumentDetector.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.InstrumentDetector do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:InstrumentDetector) (item2:InstrumentDetector) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:InstrumentDetector) =
+                    InstrumentDetectorHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match InstrumentDetectorHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:InstrumentDetector) =
+                InstrumentDetectorHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type SearchEngineNameHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new SearchEngineName(
+                                     id', 
+                                     value', 
+                                     term, 
+                                     unit', 
+                                     Nullable(DateTime.Now)
+                                    )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:SearchEngineName) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:SearchEngineName) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SearchEngineName.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.SearchEngineName.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchEngineName do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SearchEngineName) (item2:SearchEngineName) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SearchEngineName) =
+                    SearchEngineNameHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SearchEngineNameHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SearchEngineName) =
+                SearchEngineNameHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type ModificationHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new Modification(
+                                 id', 
+                                 value', 
+                                 term, 
+                                 unit', 
+                                 Nullable(DateTime.Now)
+                                )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:Modification) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:Modification) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Modification.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Modification.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.Modification do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Modification) =
+                    ModificationHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match ModificationHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Modification) =
+                ModificationHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type ProteinSectionParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new ProteinSectionParam(
+                                        id', 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        Nullable(DateTime.Now)
+                                       )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:ProteinSectionParam) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:ProteinSectionParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ProteinSectionParam.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.ProteinSectionParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinSectionParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ProteinSectionParam) (item2:ProteinSectionParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:ProteinSectionParam) =
+                    ProteinSectionParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match ProteinSectionParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:ProteinSectionParam) =
+                ProteinSectionParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type RetentionTimeWindowHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new RetentionTimeWindow(
+                                        id', 
+                                        value', 
+                                        term, 
+                                        unit', 
+                                        Nullable(DateTime.Now)
+                                       )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:RetentionTimeWindow) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:RetentionTimeWindow) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.RetentionTimeWindow.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.RetentionTimeWindow.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.RetentionTimeWindow do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:RetentionTimeWindow) (item2:RetentionTimeWindow) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:RetentionTimeWindow) =
+                    RetentionTimeWindowHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match RetentionTimeWindowHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:RetentionTimeWindow) =
+                RetentionTimeWindowHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type PSMSectionParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new PSMSectionParam(
+                                    id', 
+                                    value', 
+                                    term, 
+                                    unit', 
+                                    Nullable(DateTime.Now)
+                                   )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:PSMSectionParam) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:PSMSectionParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PSMSectionParam.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.PSMSectionParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PSMSectionParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PSMSectionParam) (item2:PSMSectionParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PSMSectionParam) =
+                    PSMSectionParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match PSMSectionParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PSMSectionParam) =
+                PSMSectionParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
+        type SmallMoleculeSectionParamHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                    
+                new SmallMoleculeSectionParam(
+                                              id', 
+                                              value', 
+                                              term, 
+                                              unit', 
+                                              Nullable(DateTime.Now)
+                                             )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:SmallMoleculeSectionParam) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:SmallMoleculeSectionParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SmallMoleculeSectionParam.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.SmallMoleculeSectionParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeSectionParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SmallMoleculeSectionParam) (item2:SmallMoleculeSectionParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SmallMoleculeSectionParam) =
+                    SmallMoleculeSectionParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SmallMoleculeSectionParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SmallMoleculeSectionParam) =
+                SmallMoleculeSectionParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
 ////////////////////////////////////////////
 ////End of paramHandlers//////////////////////////////////////////////
 ////////////////////////////////////////////
 
-//        type AnalysisSoftwareHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    id        : string,
-//                    version   : string,
-//                    ?details  : seq<AnalysisSoftwareParam>
-//                ) =
-
-//                let details'  = convertOptionToList details
+        type SampleProcessingHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    term      : Term,
+                    ?id       : string,
+                    ?value    : string,
+                    ?unit     : Term
+                ) =
+                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'    = defaultArg value Unchecked.defaultof<string>
+                let unit'     = defaultArg unit Unchecked.defaultof<Term>
                     
-//                new AnalysisSoftware(
-//                                     id, 
-//                                     version, 
-//                                     details', 
-//                                     Nullable(DateTime.Now)
-//                                    )
+                new SampleProcessing(
+                                     id',
+                                     value',
+                                     term,
+                                     Nullable(DateTime.Now)
+                                    )
 
-//            ///Adds new enzymename to collection of enzymenames.
-//            static member addDetail
-//                (analysisSoftwareParam:AnalysisSoftwareParam) (table:AnalysisSoftware) =
-//                let result = table.Details <- addToList table.Details analysisSoftwareParam
-//                table
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:SampleProcessing) =
+                param.Value <- value
+                param
 
-//            ///Add new collection of enzymenames to collection of enzymenames.
-//            static member addDetails
-//                (analysisSoftwareParams:seq<AnalysisSoftwareParam>) (table:AnalysisSoftware) =
-//                let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams
-//                table
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SampleProcessing.Find(id))
 
-//            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.AnalysisSoftware.Find(id))
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.SampleProcessing.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term)
+                      }
+                |> Seq.map (fun (param,_ ) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SampleProcessing do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term)
+                                  }
+                            |> Seq.map (fun (param,_ ) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
 
-//            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByVersion (dbContext:MzQuantML) (version:string) =
-//                query {
-//                       for i in dbContext.AnalysisSoftware.Local do
-//                           if i.Version=version
-//                              then select (i, i.Details)
-//                      }
-//                |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
-//                |> (fun analysisSoftware -> 
-//                    if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.AnalysisSoftware do
-//                                       if i.Version=version
-//                                          then select (i, i.Details)
-//                                  }
-//                            |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
-//                            |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
-//                                                            then None
-//                                                            else Some analysisSoftware
-//                               )
-//                        else Some analysisSoftware
-//                   )
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SampleProcessing) (item2:SampleProcessing) =
+                item1.Value=item2.Value
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
-//                item1.Details=item2.Details
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SampleProcessing) =
+                    SampleProcessingHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match SampleProcessingHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftware) =
-//                    AnalysisSoftwareHandler.tryFindByVersion dbContext item.Version
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SampleProcessing) =
+                SampleProcessingHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftware) =
-//                AnalysisSoftwareHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+        type AnalysisSoftwareHandler =
+            ///Initializes a personparam-object with at least all necessary parameters.
+            static member init
+                (
+                    id        : string,
+                    version   : string,
+                    ?settings : seq<AnalysisSoftwareParam>
+                ) =
 
-//        type SourceFileHandler =
-//            ///Initializes a personparam-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    id                           : string,
-//                    location                     : string,
-//                    ?name                        : string,
-//                    ?externalFormatDocumentation : string,
-//                    ?fileFormat                  : CVParam
-//                ) =
-
-//                let name'                         = defaultArg name Unchecked.defaultof<string>
-//                let externalFormatDocumentation'  = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-//                let fileFormat'                   = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let settings'  = convertOptionToList settings
                     
-//                new SourceFile(
-//                               id,
-//                               name',
-//                               location, 
-//                               externalFormatDocumentation',
-//                               fileFormat',
-//                               Nullable(DateTime.Now)
-//                              )
+                new AnalysisSoftware(
+                                     id, 
+                                     version, 
+                                     settings', 
+                                     Nullable(DateTime.Now)
+                                    )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:SourceFile) =
-//                table.Name <- name
-//                table
+            ///Adds new setting to collection of enzymenames.
+            static member addSetting
+                (setting:AnalysisSoftwareParam) (table:AnalysisSoftware) =
+                let result = table.Settings <- addToList table.Settings setting
+                table
 
-//            ///Replaces externalFormatDocumentation of existing object with new one.
-//            static member addExternalFormatDocumentation
-//                (externalFormatDocumentation:string) (table:SourceFile) =
-//                table.ExternalFormatDocumentation <- externalFormatDocumentation
-//                table
+            ///Add new collection of settings to collection of enzymenames.
+            static member addSettings
+                (settings:seq<AnalysisSoftwareParam>) (table:AnalysisSoftware) =
+                let result = table.Settings <- addCollectionToList table.Settings settings
+                table
 
-//            ///Replaces fileFormat of existing object with new one.
-//            static member addFileFormat
-//                (fileFormat:CVParam) (table:SourceFile) =
-//                table.FileFormat <- fileFormat
-//                table
+            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.AnalysisSoftware.Find(id))
 
-//            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SourceFile.Find(id))
+            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByVersion (dbContext:MzTab) (version:string) =
+                query {
+                       for i in dbContext.AnalysisSoftware.Local do
+                           if i.Version=version
+                              then select (i, i.Settings)
+                      }
+                |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                |> (fun analysisSoftware -> 
+                    if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftware do
+                                       if i.Version=version
+                                          then select (i, i.Settings)
+                                  }
+                            |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                            |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                                                            then None
+                                                            else Some analysisSoftware
+                               )
+                        else Some analysisSoftware
+                   )
 
-//            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByVersion (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.SourceFile.Local do
-//                           if i.Name=name
-//                              then select (i, i.FileFormat)
-//                      }
-//                |> Seq.map (fun (sourceFile, _) -> sourceFile)
-//                |> (fun sourceFile -> 
-//                    if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SourceFile do
-//                                       if i.Name=name
-//                                          then select (i, i.FileFormat)
-//                                  }
-//                            |> Seq.map (fun (sourceFile, _) -> sourceFile)
-//                            |> (fun sourceFile -> if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
-//                                                            then None
-//                                                            else Some sourceFile
-//                               )
-//                        else Some sourceFile
-//                   )
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
+                item1.Settings=item2.Settings
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
-//                item1.FileFormat=item2.FileFormat
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:AnalysisSoftware) =
+                    AnalysisSoftwareHandler.tryFindByVersion dbContext item.Version
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SourceFile) =
-//                    SourceFileHandler.tryFindByVersion dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match SourceFileHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:AnalysisSoftware) =
+                AnalysisSoftwareHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SourceFile) =
-//                SourceFileHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type OrganizationHandler =
-//            ///Initializes a organization-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    ?id      : string,
-//                    ?name    : string,
-//                    ?details : seq<OrganizationParam>,
-//                    ?parent  : string
-//                ) =
-//                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'    = defaultArg name Unchecked.defaultof<string>
-//                let details' = convertOptionToList details
-//                let parent'  = defaultArg parent Unchecked.defaultof<string>
+        type OrganizationHandler =
+            ///Initializes a organization-object with at least all necessary parameters.
+            static member init
+                (
+                    ?id      : string,
+                    ?name    : string,
+                    ?details : seq<OrganizationParam>,
+                    ?parent  : string
+                ) =
+                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'    = defaultArg name Unchecked.defaultof<string>
+                let details' = convertOptionToList details
+                let parent'  = defaultArg parent Unchecked.defaultof<string>
                     
-//                new Organization(
-//                                 id', 
-//                                 name', 
-//                                 details',  
-//                                 parent', 
-//                                 Nullable(DateTime.Now)
-//                                )
+                new Organization(
+                                 id', 
+                                 name', 
+                                 details',  
+                                 parent', 
+                                 Nullable(DateTime.Now)
+                                )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:Organization) =
-//                table.Name <- name
-//                table
+            ///Replaces name of existing object with new one.
+            static member addName
+                (name:string) (table:Organization) =
+                table.Name <- name
+                table
 
-//            ///Replaces parent of existing object with new one.
-//            static member addParent
-//                (parent:string) (table:Organization) =
-//                table.Parent <- parent
-//                table
+            ///Replaces parent of existing object with new one.
+            static member addParent
+                (parent:string) (table:Organization) =
+                table.Parent <- parent
+                table
 
-//            ///Adds a organizationparam to an existing organization-object.
-//            static member addDetail
-//                (detail:OrganizationParam) (table:Organization) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
+            ///Adds a organizationparam to an existing organization-object.
+            static member addDetail
+                (detail:OrganizationParam) (table:Organization) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
-//            ///Adds a collection of organizationparams to an existing organization-object.
-//            static member addDetails
-//                (details:seq<OrganizationParam>) (table:Organization) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
+            ///Adds a collection of organizationparams to an existing organization-object.
+            static member addDetails
+                (details:seq<OrganizationParam>) (table:Organization) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
-//            ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Organization.Find(id))
+            ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Organization.Find(id))
 
-//            ///Tries to find an organization-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.Organization.Local do
-//                           if i.Name = name
-//                              then select (i, i.Details)
-//                      }
-//                |> Seq.map (fun (organization, _ ) -> organization)
-//                |> (fun organization -> 
-//                    if (Seq.exists (fun organization' -> organization' <> null) organization) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Organization do
-//                                       if i.Name = name
-//                                          then select (i, i.Details)
-//                                  }
-//                            |> Seq.map (fun (organization, _ ) -> organization)
-//                            |> (fun param -> if (Seq.exists (fun organization' -> organization' <> null) organization) = false
-//                                                then None
-//                                                else Some param
-//                               )
-//                        else Some organization
-//                   )
+            ///Tries to find an organization-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Organization.Local do
+                           if i.Name = name
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (organization, _ ) -> organization)
+                |> (fun organization -> 
+                    if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                        then 
+                            query {
+                                   for i in dbContext.Organization do
+                                       if i.Name = name
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (organization, _ ) -> organization)
+                            |> (fun param -> if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some organization
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
-//                item1.Details=item2.Details && item1.Parent=item2.Parent
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
+                item1.Details=item2.Details && item1.Parent=item2.Parent
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Organization) =
-//                    OrganizationHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match OrganizationHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Organization) =
+                    OrganizationHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match OrganizationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Organization) =
-//                OrganizationHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Organization) =
+                OrganizationHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type PersonHandler =
-//        ///Initializes a person-object with at least all necessary parameters.
-//            static member init
-//                (
-//                    ?id             : string,
-//                    ?name           : string,
-//                    ?firstName      : string,
-//                    ?midInitials    : string,
-//                    ?lastName       : string,
-//                    ?contactDetails : seq<PersonParam>,
-//                    ?organizations  : seq<Organization> 
-//                ) =
-//                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'           = defaultArg name Unchecked.defaultof<string>
-//                let firstName'      = defaultArg firstName Unchecked.defaultof<string>
-//                let midInitials'    = defaultArg midInitials Unchecked.defaultof<string>
-//                let lastName'       = defaultArg lastName Unchecked.defaultof<string>
-//                let contactDetails' = convertOptionToList contactDetails
-//                let organizations'  = convertOptionToList organizations
+        type PersonHandler =
+        ///Initializes a person-object with at least all necessary parameters.
+            static member init
+                (
+                    ?id             : string,
+                    ?name           : string,
+                    ?firstName      : string,
+                    ?midInitials    : string,
+                    ?lastName       : string,
+                    ?contactDetails : seq<PersonParam>,
+                    ?organizations  : seq<Organization> 
+                ) =
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'           = defaultArg name Unchecked.defaultof<string>
+                let firstName'      = defaultArg firstName Unchecked.defaultof<string>
+                let midInitials'    = defaultArg midInitials Unchecked.defaultof<string>
+                let lastName'       = defaultArg lastName Unchecked.defaultof<string>
+                let contactDetails' = convertOptionToList contactDetails
+                let organizations'  = convertOptionToList organizations
                     
-//                new Person(
-//                           id', 
-//                           name', 
-//                           firstName',  
-//                           midInitials', 
-//                           lastName', 
-//                           organizations',
-//                           contactDetails', 
-//                           Nullable(DateTime.Now)
-//                          )
+                new Person(
+                           id', 
+                           name', 
+                           firstName',  
+                           midInitials', 
+                           lastName', 
+                           organizations',
+                           contactDetails', 
+                           Nullable(DateTime.Now)
+                          )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:Person) =
-//                table.Name <- name
-//                table
+            ///Replaces name of existing object with new one.
+            static member addName
+                (name:string) (table:Person) =
+                table.Name <- name
+                table
 
-//            ///Replaces firstname of existing object with new one.
-//            static member addFirstName
-//                (firstName:string) (table:Person) =
-//                table.FirstName <- firstName
-//                table
+            ///Replaces firstname of existing object with new one.
+            static member addFirstName
+                (firstName:string) (table:Person) =
+                table.FirstName <- firstName
+                table
 
-//            ///Replaces midinitials of existing object with new one.
-//            static member addMidInitials
-//                (midInitials:string) (table:Person) =
-//                table.MidInitials <- midInitials
-//                table
+            ///Replaces midinitials of existing object with new one.
+            static member addMidInitials
+                (midInitials:string) (table:Person) =
+                table.MidInitials <- midInitials
+                table
 
-//            ///Replaces lastname of existing object with new one.
-//            static member addLastName
-//                (lastName:string) (table:Person) =
-//                table.LastName <- lastName
-//                table
+            ///Replaces lastname of existing object with new one.
+            static member addLastName
+                (lastName:string) (table:Person) =
+                table.LastName <- lastName
+                table
 
-//            ///Adds a personparam to an existing person-object.
-//            static member addDetail (detail:PersonParam) (table:Person) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
+            ///Adds a personparam to an existing person-object.
+            static member addDetail (detail:PersonParam) (table:Person) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
-//            ///Adds a collection of personparams to an existing person-object.
-//            static member addDetails
-//                (details:seq<PersonParam>) (table:Person) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
+            ///Adds a collection of personparams to an existing person-object.
+            static member addDetails
+                (details:seq<PersonParam>) (table:Person) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
-//            ///Adds a organization to an existing person-object.
-//            static member addOrganization
-//                (organization:Organization) (table:Person) =
-//                let result = table.Organizations <- addToList table.Organizations organization
-//                table
+            ///Adds a organization to an existing person-object.
+            static member addOrganization
+                (organization:Organization) (table:Person) =
+                let result = table.Organizations <- addToList table.Organizations organization
+                table
 
-//            ///Adds a collection of organizations to an existing person-object.
-//            static member addOrganizations
-//                (organizations:seq<Organization>) (table:Person) =
-//                let result = table.Organizations <- addCollectionToList table.Organizations organizations
-//                table
+            ///Adds a collection of organizations to an existing person-object.
+            static member addOrganizations
+                (organizations:seq<Organization>) (table:Person) =
+                let result = table.Organizations <- addCollectionToList table.Organizations organizations
+                table
 
-//            ///Tries to find a person-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Person.Find(id))
+            ///Tries to find a person-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Person.Find(id))
 
-//            ///Tries to find a person-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.Person.Local do
-//                           if i.Name = name
-//                              then select (i, i.Details, i.Organizations)
-//                      }
-//                |> Seq.map (fun (person, _, _) -> person)
-//                |> (fun person -> 
-//                    if (Seq.exists (fun person' -> person' <> null) person) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Person do
-//                                       if i.Name = name
-//                                          then select (i, i.Details, i.Organizations)
-//                                  }
-//                            |> Seq.map (fun (person, _, _) -> person)
-//                            |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
-//                                                then None
-//                                                else Some person
-//                               )
-//                        else Some person
-//                   )
+            ///Tries to find a person-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByName (dbContext:MzTab) (name:string) =
+                query {
+                       for i in dbContext.Person.Local do
+                           if i.Name = name
+                              then select (i, i.Details, i.Organizations)
+                      }
+                |> Seq.map (fun (person, _, _) -> person)
+                |> (fun person -> 
+                    if (Seq.exists (fun person' -> person' <> null) person) = false
+                        then 
+                            query {
+                                   for i in dbContext.Person do
+                                       if i.Name = name
+                                          then select (i, i.Details, i.Organizations)
+                                  }
+                            |> Seq.map (fun (person, _, _) -> person)
+                            |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
+                                                then None
+                                                else Some person
+                               )
+                        else Some person
+                   )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Person) (item2:Person) =
-//                item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
-//                item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
-//                item1.Organizations=item2.Organizations && item1.Details=item2.Details
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Person) (item2:Person) =
+                item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
+                item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
+                item1.Organizations=item2.Organizations && item1.Details=item2.Details
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Person) =
-//                    PersonHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match PersonHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Person) =
+                    PersonHandler.tryFindByName dbContext item.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PersonHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Person) =
-//                PersonHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Person) =
+                PersonHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
 
-//        type ContactRoleHandler =
-//            ///Initializes a contactrole-object with at least all necessary parameters.
-//            static member init
-//                (   
-//                    person : Person, 
-//                    role   : CVParam,
-//                    ?id    : string
-//                ) =
-//                let id' = defaultArg id (System.Guid.NewGuid().ToString())
-                    
-//                new ContactRole(
-//                                id', 
-//                                person, 
-//                                role, 
-//                                Nullable(DateTime.Now)
-//                               )
+        type FixedModificationHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    fixedMods          : seq<FixedMod>,
+                    ?id                : string,
+                    ?fixedModSites     : seq<FixedModSite>,
+                    ?fixedModPositions : seq<FixedModPosition>
+                ) =
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let fixedModSites'     = convertOptionToList fixedModSites
+                let fixedModPositions' = convertOptionToList fixedModPositions
 
-//            ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ContactRole.Find(id))
+                new FixedModification(
+                                      id', 
+                                      fixedMods |> List, 
+                                      fixedModSites', 
+                                      fixedModPositions',  
+                                      Nullable(DateTime.Now)
+                                     )
 
-//            ///Tries to find a contactRole-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByPersonName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.ContactRole.Local do
-//                           if i.Person.Name = name
-//                              then select (i, i.Role)
-//                      }
-//                |> Seq.map (fun (contactRole, _) -> contactRole)
-//                |> (fun contactRole -> 
-//                    if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ContactRole do
-//                                       if i.Person.Name = name
-//                                          then select (i, i.Role)
-//                                  }
-//                            |> Seq.map (fun (contactRole, _) -> contactRole)
-//                            |> (fun contactRole -> if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
-//                                                       then None
-//                                                       else Some contactRole
-//                               )
-//                        else Some contactRole
-//                   )
+            ///Adds a fixedModSite to an existing object.
+            static member addFixedModSite (fixedModSite:FixedModSite) (table:FixedModification) =
+                table.FixedModSites <- addToList table.FixedModSites fixedModSite
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ContactRole) (item2:ContactRole) =
-//                item1.Role=item2.Role
+            ///Adds a collection of fixedModSites to an existing object.
+            static member addFixedModSites (fixedModSites:seq<FixedModSite>) (table:FixedModification) =
+                table.FixedModSites <- addCollectionToList table.FixedModSites fixedModSites
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ContactRole) =
-//                    ContactRoleHandler.tryFindByPersonName dbContext item.Person.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ContactRoleHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Adds a fixedModPosition to an existing object.
+            static member addFixedModPosition (fixedModPosition:FixedModPosition) (table:FixedModification) =
+                table.FixedModPositions <- addToList table.FixedModPositions fixedModPosition
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ContactRole) =
-//                ContactRoleHandler.addToContext dbContext item |> ignore
-//                dbContext.SaveChanges()
+            ///Adds a collection of fixedModPositions to an existing object.
+            static member addFixedModPositions (fixedModPositions:seq<FixedModPosition>) (table:FixedModification) =
+                table.FixedModPositions <- addCollectionToList table.FixedModPositions fixedModPositions
+                table
 
-//        type ProviderHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    ?id               : string,
-//                    ?name             : string,
-//                    ?analysisSoftware : AnalysisSoftware,
-//                    ?contactRole      : ContactRole
-//                    //?mzIdentML        : MzIdentMLDocument
-//                ) =
-//                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'             = defaultArg name Unchecked.defaultof<string>
-//                let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
-//                let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Tries to find a fixedModification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.FixedModification.Find(id))
 
-//                new Provider(
-//                             id', 
-//                             name', 
-//                             analysisSoftware', 
-//                             contactRole', 
-//                             //mzIdentML', 
-//                             Nullable(DateTime.Now)
-//                            )
+            ///Tries to find a fixedModification-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByFixedMods (dbContext:MzTab) (fixedMods:seq<FixedMod>) =
+                query {
+                       for i in dbContext.FixedModification.Local do
+                           if i.FixedMods=(fixedMods |> List)
+                              then select (i, i.FixedModSites, i.FixedModPositions)
+                      }
+                |> Seq.map (fun (fixedModification, _, _) -> fixedModification)
+                |> (fun fixedModification -> 
+                    if (Seq.exists (fun fixedModification' -> fixedModification' <> null) fixedModification) = false
+                        then 
+                            query {
+                                   for i in dbContext.FixedModification do
+                                       if i.FixedMods=(fixedMods |> List)
+                                          then select (i, i.FixedModSites, i.FixedModPositions)
+                                  }
+                            |> Seq.map (fun (fixedModification, _, _) -> fixedModification)
+                            |> (fun fixedModification -> if (Seq.exists (fun fixedModification' -> fixedModification' <> null) fixedModification) = false
+                                                            then None
+                                                            else Some fixedModification
+                               )
+                        else Some fixedModification
+                   )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:Provider) =
-//                table.Name <- name
-//                table
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:FixedModification) (item2:FixedModification) =
+               item1.FixedModSites=item2.FixedModSites && item1.FixedModPositions=item2.FixedModPositions 
+               //&& item1.MzIdentMLDocument=item2.MzIdentMLDocument 
 
-//            ///Replaces analysissoftware of existing object with new one.
-//            static member addAnalysisSoftware
-//                (analysisSoftware:AnalysisSoftware) (table:Provider) =
-//                table.AnalysisSoftware <- analysisSoftware
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:FixedModification) =
+                    FixedModificationHandler.tryFindByFixedMods dbContext item.FixedMods
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match FixedModificationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///Replaces contactrole of existing object with new one.
-//            static member addContactRole
-//                (contactRole:ContactRole) (table:Provider) =
-//                table.ContactRole <- contactRole
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:FixedModification) =
+                FixedModificationHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+        type VariableModificationHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    variableMods          : seq<VariableMod>,
+                    ?id                   : string,
+                    ?variableModSites     : seq<VariableModSite>,
+                    ?variableModPositions : seq<VariableModPosition>
+                ) =
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+                let variableModSites'     = convertOptionToList variableModSites
+                let variableModPositions' = convertOptionToList variableModPositions
 
-//            ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Provider.Find(id))
+                new VariableModification(
+                                         id', 
+                                         variableMods |> List, 
+                                         variableModSites', 
+                                         variableModPositions',  
+                                         Nullable(DateTime.Now)
+                                        )
 
-//            ///Tries to find a provider-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.Provider.Local do
-//                           if i.Name=name
-//                              then select (i, i.AnalysisSoftware, i.ContactRole(*, i.MzIdentMLDocument*))
-//                      }
-//                |> Seq.map (fun (provider, _, _) -> provider)
-//                |> (fun provider -> 
-//                    if (Seq.exists (fun provider' -> provider' <> null) provider) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Provider do
-//                                       if i.Name=name
-//                                          then select (i, i.AnalysisSoftware, i.ContactRole(*, i.MzIdentMLDocument*))
-//                                  }
-//                            |> Seq.map (fun (provider, _, _) -> provider)
-//                            |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
-//                                                    then None
-//                                                    else Some provider
-//                               )
-//                        else Some provider
-//                   )
+            ///Adds a variableModSite to an existing object.
+            static member addVariableModSite (variableModSite:VariableModSite) (table:VariableModification) =
+                table.VariableModSites <- addToList table.VariableModSites variableModSite
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-//               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole 
-//               //&& item1.MzIdentMLDocument=item2.MzIdentMLDocument 
+            ///Adds a collection of variableModSites to an existing object.
+            static member addVariableModSites (variableModSites:seq<VariableModSite>) (table:VariableModification) =
+                table.VariableModSites <- addCollectionToList table.VariableModSites variableModSites
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Provider) =
-//                    ProviderHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProviderHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Adds a variablePosition to an existing object.
+            static member addVariableModPosition (variablePosition:VariableModPosition) (table:VariableModification) =
+                table.VariableModPositions <- addToList table.VariableModPositions variablePosition
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Provider) =
-//                ProviderHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Adds a collection of variablePositions to an existing object.
+            static member addVariableModPositions (variablePositions:seq<VariableModPosition>) (table:VariableModification) =
+                table.VariableModPositions <- addCollectionToList table.VariableModPositions variablePositions
+                table
 
-//        type SearchDatabaseHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    location                     : string,
-//                    databaseName                 : CVParam,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?numDatabaseEntries          : int,
-//                    ?releaseDate                 : DateTime,
-//                    ?version                     : string,
-//                    ?externalFormatDocumentation : string,
-//                    ?fileFormat                  : CVParam,
-//                    ?details                     : seq<SearchDatabaseParam>
-//                    //?mzIdentML        : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let numDatabaseEntries'          = defaultArg numDatabaseEntries Unchecked.defaultof<int>
-//                let releaseDate'                 = defaultArg releaseDate Unchecked.defaultof<DateTime>
-//                let version'                     = defaultArg version Unchecked.defaultof<string>
-//                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-//                let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Tries to find a variableModification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.VariableModification.Find(id))
 
-//                new SearchDatabase(
-//                                   id', 
-//                                   name', 
-//                                   location, 
-//                                   Nullable(numDatabaseEntries'),
-//                                   Nullable(releaseDate'),
-//                                   version',
-//                                   externalFormatDocumentation',
-//                                   fileFormat',
-//                                   databaseName,
-//                                   details',
-//                                   //mzIdentML', 
-//                                   Nullable(DateTime.Now)
-//                                  )
+            ///Tries to find a variableModification-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByVariableMods (dbContext:MzTab) (variabledMods:seq<VariableMod>) =
+                query {
+                       for i in dbContext.VariableModification.Local do
+                           if i.VariableMods=(variabledMods |> List)
+                              then select (i, i.VariableMods, i.VariableModSites, i.VariableModPositions)
+                      }
+                |> Seq.map (fun (variableModification, _, _, _) -> variableModification)
+                |> (fun variableModification -> 
+                    if (Seq.exists (fun variableModification' -> variableModification' <> null) variableModification) = false
+                        then 
+                            query {
+                                   for i in dbContext.VariableModification do
+                                       if i.VariableMods=(variabledMods |> List)
+                                          then select (i, i.VariableMods, i.VariableModSites, i.VariableModPositions)
+                                  }
+                            |> Seq.map (fun (variableModification, _, _, _) -> variableModification)
+                            |> (fun variableModification -> if (Seq.exists (fun variableModification' -> variableModification' <> null) variableModification) = false
+                                                            then None
+                                                            else Some variableModification
+                               )
+                        else Some variableModification
+                   )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:SearchDatabase) =
-//                table.Name <- name
-//                table
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:VariableModification) (item2:VariableModification) =
+               item1.VariableModSites=item2.VariableModSites && item1.VariableModPositions=item2.VariableModPositions 
+               //&& item1.MzIdentMLDocument=item2.MzIdentMLDocument 
 
-//            ///Replaces numDatabaseEntries of existing object with new one.
-//            static member addNumDatabaseEntries
-//                (numDatabaseEntries:int) (table:SearchDatabase) =
-//                table.NumDatabaseEntries <- Nullable(numDatabaseEntries)
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:VariableModification) =
+                    VariableModificationHandler.tryFindByVariableMods dbContext item.VariableMods
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match VariableModificationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///Replaces releaseDate of existing object with new one.
-//            static member addReleaseDate
-//                (releaseDate:DateTime) (table:SearchDatabase) =
-//                table.ReleaseDate <- Nullable(releaseDate)
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:VariableModification) =
+                VariableModificationHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            ///Replaces version of existing object with new one.
-//            static member addVersion
-//                (version:string) (table:SearchDatabase) =
-//                table.Version <- version
-//                table
+        type InstrumentHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                   : string,
+                    ?instrumentNames      : seq<InstrumentName>,
+                    ?instrumentSources    : seq<InstrumentSource>,
+                    ?instrumentAnalyzers  : seq<InstrumentAnalyzer>,
+                    ?instrumentDetectors  : seq<InstrumentDetector>
+                ) =
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+                let instrumentNames'      = convertOptionToList instrumentNames
+                let instrumentSources'    = convertOptionToList instrumentSources
+                let instrumentAnalyzers'  = convertOptionToList instrumentAnalyzers
+                let instrumentDetectors'  = convertOptionToList instrumentDetectors
 
-//            ///Replaces version of existing object with new one.
-//            static member addExternalFormatDocumentation
-//                (externalFormatDocumentation:string) (table:SearchDatabase) =
-//                table.Version <- externalFormatDocumentation
-//                table
+                new Instrument(
+                               id', 
+                               instrumentNames', 
+                               instrumentSources',
+                               instrumentAnalyzers',
+                               instrumentDetectors',
+                               Nullable(DateTime.Now)
+                              )
 
-//            ///Replaces fileFormat of existing object with new one.
-//            static member addFileFormat
-//                (fileFormat:CVParam) (table:SearchDatabase) =
-//                table.FileFormat <- fileFormat
-//                table
+            ///Adds a instrumentName to an existing object.
+            static member addInstrumentName (instrumentName:InstrumentName) (table:Instrument) =
+                table.InstrumentNames <- addToList table.InstrumentNames instrumentName
+                table
+
+            ///Adds a collection of instrumentNames to an existing object.
+            static member addInstrumentNames (instrumentNames:seq<InstrumentName>) (table:Instrument) =
+                table.InstrumentNames <- addCollectionToList table.InstrumentNames instrumentNames
+                table
+
+            ///Adds a instrumentSource to an existing object.
+            static member addInstrumentSource (instrumentSource:InstrumentSource) (table:Instrument) =
+                table.InstrumentSources <- addToList table.InstrumentSources instrumentSource
+                table
+
+            ///Adds a collection of instrumentSources to an existing object.
+            static member addInstrumentSources (instrumentSources:seq<InstrumentSource>) (table:Instrument) =
+                table.InstrumentSources <- addCollectionToList table.InstrumentSources instrumentSources
+                table
+
+            ///Adds a instrumentAnalyzer to an existing object.
+            static member addInstrumentAnalyzer (instrumentAnalyzer:InstrumentAnalyzer) (table:Instrument) =
+                table.InstrumentAnalyzers <- addToList table.InstrumentAnalyzers instrumentAnalyzer
+                table
+
+            ///Adds a collection of instrumentAnalyzers to an existing object.
+            static member addInstrumentAnalyzers (instrumentAnalyzers:seq<InstrumentAnalyzer>) (table:Instrument) =
+                table.InstrumentAnalyzers <- addCollectionToList table.InstrumentAnalyzers instrumentAnalyzers
+                table
+
+            ///Adds a instrumentDetector to an existing object.
+            static member addaddInstrumentDetector (instrumentDetector:InstrumentDetector) (table:Instrument) =
+                table.InstrumentDetectors <- addToList table.InstrumentDetectors instrumentDetector
+                table
+
+            ///Adds a collection of instrumentDetectors to an existing object.
+            static member addInstrumentDetectors (instrumentDetectors:seq<InstrumentDetector>) (table:Instrument) =
+                table.InstrumentDetectors <- addCollectionToList table.InstrumentDetectors instrumentDetectors
+                table
+
+            ///Tries to find a instrument-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Instrument.Find(id))
+
+            ///Tries to find a instrument-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByInstrumentNames (dbContext:MzTab) (instrumentNames:seq<InstrumentName>) =
+                query {
+                       for i in dbContext.Instrument.Local do
+                           if i.InstrumentNames=(instrumentNames |> List)
+                              then select (i, i.InstrumentNames, i.InstrumentSources , i.InstrumentAnalyzers, i.InstrumentDetectors)
+                      }
+                |> Seq.map (fun (instrument, _, _, _, _) -> instrument)
+                |> (fun instrument -> 
+                    if (Seq.exists (fun instrument' -> instrument' <> null) instrument) = false
+                        then 
+                            query {
+                                   for i in dbContext.Instrument do
+                                       if i.InstrumentNames=(instrumentNames |> List)
+                                          then select (i, i.InstrumentNames, i.InstrumentSources , i.InstrumentAnalyzers, i.InstrumentDetectors)
+                                  }
+                            |> Seq.map (fun (instrument, _, _, _, _) -> instrument)
+                            |> (fun instrument -> if (Seq.exists (fun instrument' -> instrument' <> null) instrument) = false
+                                                    then None
+                                                    else Some instrument
+                               )
+                        else Some instrument
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Instrument) (item2:Instrument) =
+               item1.InstrumentSources=item2.InstrumentSources && 
+               item1.InstrumentAnalyzers=item2.InstrumentAnalyzers && 
+               item1.InstrumentDetectors=item2.InstrumentDetectors  
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Instrument) =
+                    InstrumentHandler.tryFindByInstrumentNames dbContext item.InstrumentNames
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match InstrumentHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Instrument) =
+                InstrumentHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type SearchEngineScoreHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    proteinSearchEngineScores       : seq<ProteinSearchEngineScore>,
+                    peptideSearchEngineScores       : seq<PeptideSearchEngineScore>,
+                    psmSearchEngineScores           : seq<PSMSearchEngineScore>,
+                    smallMoleculeSearchEngineScores : seq<SmallMoleculeSearchEngineScore>,
+                    ?id                             : string
+                ) =
+
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+
+                new SearchEngineScore(
+                                      id', 
+                                      proteinSearchEngineScores |> List,
+                                      peptideSearchEngineScores |> List,
+                                      psmSearchEngineScores |> List,
+                                      smallMoleculeSearchEngineScores |> List,
+                                      Nullable(DateTime.Now)
+                                     )
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SearchEngineScore.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByProteinSearchEngineScores (dbContext:MzTab) (proteinSearchEngineScore:seq<ProteinSearchEngineScore>) =
+                query {
+                       for i in dbContext.SearchEngineScore.Local do
+                           if i.ProteinSearchEngineScores=(proteinSearchEngineScore |> List)
+                              then select (i, i.ProteinSearchEngineScores, i.PeptideSearchEngineScores , i.PSMSearchEngineScores, i.SmallMoleculeSearchEngineScores)
+                      }
+                |> Seq.map (fun (searchEngineScore, _, _, _, _) -> searchEngineScore)
+                |> (fun searchEngineScore -> 
+                    if (Seq.exists (fun searchEngineScore' -> searchEngineScore' <> null) searchEngineScore) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchEngineScore do
+                                       if i.ProteinSearchEngineScores=(proteinSearchEngineScore |> List)
+                                          then select (i, i.ProteinSearchEngineScores, i.PeptideSearchEngineScores , i.PSMSearchEngineScores, i.SmallMoleculeSearchEngineScores)
+                                  }
+                            |> Seq.map (fun (searchEngineScore, _, _, _, _) -> searchEngineScore)
+                            |> (fun searchEngineScore -> if (Seq.exists (fun searchEngineScore' -> searchEngineScore' <> null) searchEngineScore) = false
+                                                            then None
+                                                            else Some searchEngineScore
+                               )
+                        else Some searchEngineScore
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SearchEngineScore) (item2:SearchEngineScore) =
+               item1.PeptideSearchEngineScores=item2.PeptideSearchEngineScores && 
+               item1.PSMSearchEngineScores=item2.PSMSearchEngineScores && 
+               item1.SmallMoleculeSearchEngineScores=item2.SmallMoleculeSearchEngineScores  
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SearchEngineScore) =
+                    SearchEngineScoreHandler.tryFindByProteinSearchEngineScores dbContext item.ProteinSearchEngineScores
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchEngineScoreHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SearchEngineScore) =
+                SearchEngineScoreHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type QuantificationHandler =
+            ///Initializes a quantification-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                 : string,
+                    ?method             : CVParam,
+                    ?proteinUnit        : CVParam,
+                    ?peptideUnit        : CVParam,
+                    ?smallMoleculeUnit  : CVParam
+                ) =
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let method'            = defaultArg method Unchecked.defaultof<CVParam>
+                let proteinUnit'       = defaultArg proteinUnit Unchecked.defaultof<CVParam>
+                let peptideUnit'       = defaultArg peptideUnit Unchecked.defaultof<CVParam>
+                let smallMoleculeUnit' = defaultArg smallMoleculeUnit Unchecked.defaultof<CVParam>
+
+                new Quantification(
+                                   id', 
+                                   method', 
+                                   proteinUnit',
+                                   peptideUnit',
+                                   smallMoleculeUnit',
+                                   Nullable(DateTime.Now)
+                                 )
+
+            ///Replaces method of existing object with new one.
+            static member addMethod
+                (method:CVParam) (table:Quantification) =
+                table.Method <- method
+                table
+
+            ///Replaces proteinUnit of existing object with new one.
+            static member addProteinUnit
+                (proteinUnit:CVParam) (table:Quantification) =
+                table.ProteinUnit <- proteinUnit
+                table
+
+            ///Replaces peptideUnit of existing object with new one.
+            static member addPeptideUnit
+                (peptideUnit:CVParam) (table:Quantification) =
+                table.PeptideUnit <- peptideUnit
+                table
+
+            ///Replaces method of existing object with new one.
+            static member addSmallMoleculeUnit
+                (smallMoleculeUnit:CVParam) (table:Quantification) =
+                table.SmallMoleculeUnit <- smallMoleculeUnit
+                table
+
+            ///Tries to find a quantification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Quantification.Find(id))
+
+            ///Tries to find a instrument-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByMethod (dbContext:MzTab) (method:CVParam) =
+                query {
+                       for i in dbContext.Quantification.Local do
+                           if i.Method=method
+                              then select (i, i.Method, i.ProteinUnit , i.PeptideUnit, i.SmallMoleculeUnit)
+                      }
+                |> Seq.map (fun (quantification, _, _, _, _) -> quantification)
+                |> (fun quantification -> 
+                    if (Seq.exists (fun quantification' -> quantification' <> null) quantification) = false
+                        then 
+                            query {
+                                   for i in dbContext.Quantification do
+                                       if i.Method=method
+                                          then select (i, i.Method, i.ProteinUnit , i.PeptideUnit, i.SmallMoleculeUnit)
+                                  }
+                            |> Seq.map (fun (quantification, _, _, _, _) -> quantification)
+                            |> (fun quantification -> if (Seq.exists (fun quantification' -> quantification' <> null) quantification) = false
+                                                        then None
+                                                        else Some quantification
+                               )
+                        else Some quantification
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Quantification) (item2:Quantification) =
+               item1.ProteinUnit=item2.ProteinUnit && 
+               item1.PeptideUnit=item2.PeptideUnit && 
+               item1.SmallMoleculeUnit=item2.SmallMoleculeUnit  
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Quantification) =
+                    QuantificationHandler.tryFindByMethod dbContext item.Method
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match QuantificationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Quantification) =
+                QuantificationHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type MSRunHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    msRunLocations                   : seq<MSRunLocation>,
+                    ?id                              : string,
+                    ?msRunFormats                    : seq<MSRunFormat>,
+                    ?msRunIDFormats                  : seq<MSRunIDFormat>,
+                    ?msRunFragmentationMethods       : seq<MSRunFragmentationMethod>,
+                    ?msRunHashs                      : seq<MSRunHash>,
+                    ?msRunHashMethods                : seq<MSRunHashMethod>
+                ) =
+
+                let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
+                let msRunFormats'              = convertOptionToList msRunFormats
+                let msRunIDFormats'            = convertOptionToList msRunIDFormats
+                let msRunFragmentationMethods' = convertOptionToList msRunFragmentationMethods
+                let msRunHashs'                = convertOptionToList msRunHashs
+                let msRunHashMethods'          = convertOptionToList msRunHashMethods
+
+                new MSRun(
+                          id',
+                          msRunFormats',
+                          msRunLocations |> List,
+                          msRunIDFormats',
+                          msRunFragmentationMethods',
+                          msRunHashs',
+                          msRunHashMethods',                          
+                          Nullable(DateTime.Now)
+                         )
+
+            ///Adds a msRunFormat to an existing object.
+            static member addMSRunFormat (msRunFormat:MSRunFormat) (table:MSRun) =
+                table.MSRunFormats <- addToList table.MSRunFormats msRunFormat
+                table
+
+            ///Adds a collection of msRunFormats to an existing object.
+            static member addMSRunFormats (msRunFormats:seq<MSRunFormat>) (table:MSRun) =
+                table.MSRunFormats <- addCollectionToList table.MSRunFormats msRunFormats
+                table
+
+            ///Adds a msRunIDFormat to an existing object.
+            static member addMSRunIDFormat (msRunIDFormat:MSRunIDFormat) (table:MSRun) =
+                table.MSRunIDFormats <- addToList table.MSRunIDFormats msRunIDFormat
+                table
+
+            ///Adds a collection of msRunIDFormats to an existing object.
+            static member addMSRunIDFormats (msRunIDFormats:seq<MSRunIDFormat>) (table:MSRun) =
+                table.MSRunIDFormats <- addCollectionToList table.MSRunIDFormats msRunIDFormats
+                table
+
+            ///Adds a msRunFragmentationMethod to an existing object.
+            static member addMSRunFragmentationMethod (msRunFragmentationMethod:MSRunFragmentationMethod) (table:MSRun) =
+                table.MSRunFragmentationMethods <- addToList table.MSRunFragmentationMethods msRunFragmentationMethod
+                table
+
+            ///Adds a collection of msRunFragmentationMethods to an existing object.
+            static member addMSRunFragmentationMethods (msRunFragmentationMethods:seq<MSRunFragmentationMethod>) (table:MSRun) =
+                table.MSRunFragmentationMethods <- addCollectionToList table.MSRunFragmentationMethods msRunFragmentationMethods
+                table
+
+            ///Adds a msRunHash to an existing object.
+            static member addMSRunHash (msRunHash:MSRunHash) (table:MSRun) =
+                table.MSRunHashs <- addToList table.MSRunHashs msRunHash
+                table
+
+            ///Adds a collection of msRunHashs to an existing object.
+            static member addMSRunHashs (msRunHashs:seq<MSRunHash>) (table:MSRun) =
+                table.MSRunHashs <- addCollectionToList table.MSRunHashs msRunHashs
+                table
+
+            ///Adds a msRunHashMethod to an existing object.
+            static member addMSRunHashMethod (msRunHashMethod:MSRunHashMethod) (table:MSRun) =
+                table.MSRunHashMethods <- addToList table.MSRunHashMethods msRunHashMethod
+                table
+
+            ///Adds a collection of msRunHashMethods to an existing object.
+            static member addMSRunHashMethods (msRunHashMethods:seq<MSRunHashMethod>) (table:MSRun) =
+                table.MSRunHashMethods <- addCollectionToList table.MSRunHashMethods msRunHashMethods
+                table
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MSRun.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByMSRunLocations (dbContext:MzTab) (msRunLocations:seq<MSRunLocation>) =
+                query {
+                       for i in dbContext.MSRun.Local do
+                           if i.MSRunLocations=(msRunLocations |> List)
+                              then select (i, i.MSRunLocations, i.MSRunFormats, i.MSRunIDFormats , i.MSRunFragmentationMethods, i.MSRunHashs, i.MSRunHashMethods)
+                      }
+                |> Seq.map (fun (msRun, _, _, _, _, _, _) -> msRun)
+                |> (fun msRun -> 
+                    if (Seq.exists (fun msRun' -> msRun' <> null) msRun) = false
+                        then 
+                            query {
+                                   for i in dbContext.MSRun do
+                                       if i.MSRunLocations=(msRunLocations |> List)
+                                          then select (i, i.MSRunLocations, i.MSRunFormats, i.MSRunIDFormats , i.MSRunFragmentationMethods, i.MSRunHashs, i.MSRunHashMethods)
+                                  }
+                            |> Seq.map (fun (msRun, _, _, _, _, _, _) -> msRun)
+                            |> (fun msRun -> if (Seq.exists (fun msRun' -> msRun' <> null) msRun) = false
+                                                then None
+                                                else Some msRun
+                               )
+                        else Some msRun
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MSRun) (item2:MSRun) =
+               item1.MSRunFormats=item2.MSRunFormats && 
+               item1.MSRunIDFormats=item2.MSRunIDFormats && 
+               item1.MSRunFragmentationMethods=item2.MSRunFragmentationMethods && 
+               item1.MSRunHashs=item2.MSRunHashs &&
+               item1.MSRunHashMethods=item2.MSRunHashMethods  
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MSRun) =
+                    MSRunHandler.tryFindByMSRunLocations dbContext item.MSRunLocations
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MSRunHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MSRun) =
+                MSRunHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type SampleHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                              : string,
+                    ?description                     : string,
+                    ?species                         : seq<Species>,
+                    ?tissues                         : seq<Tissue>,
+                    ?cellTypes                       : seq<CellType>,
+                    ?diseases                        : seq<Disease>,
+                    ?details                         : seq<SampleParam>
+                ) =
+
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let description' = defaultArg description Unchecked.defaultof<string>
+                let species'     = convertOptionToList species
+                let tissues'     = convertOptionToList tissues
+                let cellTypes'   = convertOptionToList cellTypes
+                let diseases'    = convertOptionToList diseases
+                let details'     = convertOptionToList details
+
+                new Sample(
+                           id',
+                           description',
+                           species',
+                           tissues',
+                           cellTypes',
+                           diseases',
+                           details',                          
+                           Nullable(DateTime.Now)
+                          )
+
+            ///Replaces description of existing object with new one.
+            static member addDescription
+                (description:string) (table:Sample) =
+                table.Description <- description
+                table
+
+            ///Adds a species to an existing object.
+            static member addSpecies (species:Species) (table:Sample) =
+                table.Species <- addToList table.Species species
+                table
+
+            ///Adds a collection of species to an existing object.
+            static member addSpecieses (species:seq<Species>) (table:Sample) =
+                table.Species <- addCollectionToList table.Species species
+                table
+
+            ///Adds a tissue to an existing object.
+            static member addTissue (tissue:Tissue) (table:Sample) =
+                table.Tissues <- addToList table.Tissues tissue
+                table
+
+            ///Adds a collection of tissues to an existing object.
+            static member addTissues (tissues:seq<Tissue>) (table:Sample) =
+                table.Tissues <- addCollectionToList table.Tissues tissues
+                table
+
+            ///Adds a cellType to an existing object.
+            static member addCellType (cellType:CellType) (table:Sample) =
+                table.CellTypes <- addToList table.CellTypes cellType
+                table
+
+            ///Adds a collection of cellTypes to an existing object.
+            static member addCellTypes (cellTypes:seq<CellType>) (table:Sample) =
+                table.CellTypes <- addCollectionToList table.CellTypes cellTypes
+                table
+
+            ///Adds a disease to an existing object.
+            static member addDisease (disease:Disease) (table:Sample) =
+                table.Diseases <- addToList table.Diseases disease
+                table
+
+            ///Adds a collection of diseases to an existing object.
+            static member addDiseases (diseases:seq<Disease>) (table:Sample) =
+                table.Diseases <- addCollectionToList table.Diseases diseases
+                table
+
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:SampleParam) (table:Sample) =
+                table.Details <- addToList table.Details detail
+                table
+
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<SampleParam>) (table:Sample) =
+                table.Details <- addCollectionToList table.Details details
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Sample.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByDescription (dbContext:MzTab) (description:string) =
+                query {
+                       for i in dbContext.Sample.Local do
+                           if i.Description=description
+                              then select (i, i.Species, i.Tissues, i.CellTypes , i.Diseases, i.Details)
+                      }
+                |> Seq.map (fun (sample, _, _, _, _, _) -> sample)
+                |> (fun sample -> 
+                    if (Seq.exists (fun sample' -> sample' <> null) sample) = false
+                        then 
+                            query {
+                                   for i in dbContext.Sample do
+                                       if i.Description=description
+                                          then select (i, i.Species, i.Tissues, i.CellTypes , i.Diseases, i.Details)
+                                  }
+                            |> Seq.map (fun (sample, _, _, _, _, _) -> sample)
+                            |> (fun sample -> if (Seq.exists (fun sample' -> sample' <> null) sample) = false
+                                                then None
+                                                else Some sample
+                               )
+                        else Some sample
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Sample) (item2:Sample) =
+               item1.Species=item2.Species && 
+               item1.Tissues=item2.Tissues && 
+               item1.CellTypes=item2.CellTypes && 
+               item1.Diseases=item2.Diseases &&
+               item1.Details=item2.Details  
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Sample) =
+                    SampleHandler.tryFindByDescription dbContext item.Description
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SampleHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Sample) =
+                SampleHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type AssayHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                              : string,
+                    ?quantificationReagents          : seq<QuantificationReagent>,
+                    ?quantificationModSites          : seq<QuantificationModSite>,
+                    ?quantificationModPositions      : seq<QuantificationModPosition>,
+                    ?samples                         : seq<Sample>,
+                    ?msRuns                          : seq<MSRun>
+                ) =
+
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let quantificationReagents'     = convertOptionToList quantificationReagents
+                let quantificationModSites'     = convertOptionToList quantificationModSites
+                let quantificationModPositions' = convertOptionToList quantificationModPositions
+                let samples'                    = convertOptionToList samples
+                let msRuns'                     = convertOptionToList msRuns
+
+                new Assay(
+                           id',
+                           quantificationReagents',
+                           quantificationModSites',
+                           quantificationModPositions',
+                           samples',
+                           msRuns',                          
+                           Nullable(DateTime.Now)
+                          )
+
+            ///Adds a quantificationReagent to an existing object.
+            static member addQuantificationReagent (quantificationReagent:QuantificationReagent) (table:Assay) =
+                table.QuantificationReagents <- addToList table.QuantificationReagents quantificationReagent
+
+            ///Adds a collection of quantificationReagents to an existing object.
+            static member addQuantificationReagents (quantificationReagents:seq<QuantificationReagent>) (table:Assay) =
+                table.QuantificationReagents <- addCollectionToList table.QuantificationReagents quantificationReagents
+
+            ///Adds a quantificationModSite to an existing object.
+            static member addQuantificationModSite (quantificationModSite:QuantificationModSite) (table:Assay) =
+                table.QuantificationModSites <- addToList table.QuantificationModSites quantificationModSite
+
+            ///Adds a collection of quantificationModSites to an existing object.
+            static member addQuantificationModSites (quantificationModSites:seq<QuantificationModSite>) (table:Assay) =
+                table.QuantificationModSites <- addCollectionToList table.QuantificationModSites quantificationModSites
+
+            ///Adds a quantificationModPosition to an existing object.
+            static member addQuantificationModPosition (quantificationModPosition:QuantificationModPosition) (table:Assay) =
+                table.QuantificationModPositions <- addToList table.QuantificationModPositions quantificationModPosition
+
+            ///Adds a collection of quantificationModPositions to an existing object.
+            static member addQuantificationModPositions (quantificationModPositions:seq<QuantificationModPosition>) (table:Assay) =
+                table.QuantificationModPositions <- addCollectionToList table.QuantificationModPositions quantificationModPositions
+
+            ///Adds a sample to an existing object.
+            static member addSample (sample:Sample) (table:Assay) =
+                table.Samples <- addToList table.Samples sample
+
+            ///Adds a collection of samples to an existing object.
+            static member addSamples (samples:seq<Sample>) (table:Assay) =
+                table.Samples <- addCollectionToList table.Samples samples
+
+            ///Adds a msRun to an existing object.
+            static member addMSRun (msRun:MSRun) (table:Assay) =
+                table.MSRuns <- addToList table.MSRuns msRun
+
+            ///Adds a collection of msRuns to an existing object.
+            static member addMSRuns (msRuns:seq<MSRun>) (table:Assay) =
+                table.MSRuns <- addCollectionToList table.MSRuns msRuns
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Assay.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByQuantificationReagents (dbContext:MzTab) (quantificationReagent:seq<QuantificationReagent>) =
+                query {
+                       for i in dbContext.Assay.Local do
+                           if i.QuantificationReagents=(quantificationReagent |> List)
+                              then select (i, i.QuantificationReagents, i.QuantificationModSites, i.QuantificationModPositions , i.Samples, i.MSRuns)
+                      }
+                |> Seq.map (fun (sample, _, _, _, _, _) -> sample)
+                |> (fun assay -> 
+                    if (Seq.exists (fun assay' -> assay' <> null) assay) = false
+                        then 
+                            query {
+                                   for i in dbContext.Assay do
+                                       if i.QuantificationReagents=(quantificationReagent |> List)
+                                          then select (i, i.QuantificationReagents, i.QuantificationModSites, i.QuantificationModPositions , i.Samples, i.MSRuns)
+                                  }
+                            |> Seq.map (fun (assay, _, _, _, _, _) -> assay)
+                            |> (fun assay -> if (Seq.exists (fun assay' -> assay' <> null) assay) = false
+                                                then None
+                                                else Some assay
+                               )
+                        else Some assay
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Assay) (item2:Assay) =
+               item1.QuantificationModSites=item2.QuantificationModSites && 
+               item1.QuantificationModPositions=item2.QuantificationModPositions && 
+               item1.Samples=item2.Samples && 
+               item1.MSRuns=item2.MSRuns
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Assay) =
+                    AssayHandler.tryFindByQuantificationReagents dbContext item.QuantificationReagents
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AssayHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Assay) =
+                AssayHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type ColUnitHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                              : string,
+                    ?protein                         : CVParam,
+                    ?peptide                         : CVParam,
+                    ?psm                             : CVParam,
+                    ?smallMolecule                   : CVParam
+                ) =
+
+                let id'            = defaultArg id (System.Guid.NewGuid().ToString())
+                let protein'       = defaultArg protein Unchecked.defaultof<CVParam>
+                let peptide'       = defaultArg peptide Unchecked.defaultof<CVParam>
+                let psm'           = defaultArg psm Unchecked.defaultof<CVParam>
+                let smallMolecule' = defaultArg smallMolecule Unchecked.defaultof<CVParam>
+
+                new ColUnit(
+                            id',
+                            protein',
+                            peptide',
+                            psm',
+                            smallMolecule',
+                            Nullable(DateTime.Now)
+                           )
+
+            ///Replaces protein of existing object with new one.
+            static member addProtein
+                (protein:CVParam) (table:ColUnit) =
+                table.Protein <- protein
+                table
+
+            ///Replaces peptide of existing object with new one.
+            static member addPeptide
+                (peptide:CVParam) (table:ColUnit) =
+                table.Peptide <- peptide
+                table
+
+            ///Replaces psm of existing object with new one.
+            static member addPSM
+                (psm:CVParam) (table:ColUnit) =
+                table.PSM <- psm
+                table
+
+            ///Replaces smallMolecule of existing object with new one.
+            static member addSmallMolecule
+                (smallMolecule:CVParam) (table:ColUnit) =
+                table.SmallMolecule <- smallMolecule
+                table
+
+            ///Tries to find a colUnit-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ColUnit.Find(id))
+
+            ///Tries to find a colUnit-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByProtein (dbContext:MzTab) (protein:CVParam) =
+                query {
+                       for i in dbContext.ColUnit.Local do
+                           if i.Protein=protein
+                              then select (i, i.Protein, i.Peptide, i.PSM , i.SmallMolecule)
+                      }
+                |> Seq.map (fun (colUnit, _, _, _, _) -> colUnit)
+                |> (fun colUnit -> 
+                    if (Seq.exists (fun colUnit' -> colUnit' <> null) colUnit) = false
+                        then 
+                            query {
+                                   for i in dbContext.ColUnit do
+                                       if i.Protein=protein
+                                          then select (i, i.Protein, i.Peptide, i.PSM , i.SmallMolecule)
+                                  }
+                            |> Seq.map (fun (colUnit, _, _, _, _) -> colUnit)
+                            |> (fun colUnit -> if (Seq.exists (fun colUnit' -> colUnit' <> null) colUnit) = false
+                                                then None
+                                                else Some colUnit
+                               )
+                        else Some colUnit
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ColUnit) (item2:ColUnit) =
+               item1.Peptide=item2.Peptide && 
+               item1.PSM=item2.PSM && 
+               item1.SmallMolecule=item2.SmallMolecule
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:ColUnit) =
+                    ColUnitHandler.tryFindByProtein dbContext item.Protein
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ColUnitHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:ColUnit) =
+                ColUnitHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type StudyVariableHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    ?id                              : string,
+                    ?description                     : string,
+                    ?assays                          : string,
+                    ?samples                         : string
+                ) =
+
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let description' = defaultArg description Unchecked.defaultof<string>
+                let assays'      = defaultArg assays Unchecked.defaultof<string>
+                let samples'     = defaultArg samples Unchecked.defaultof<string>
+
+                new StudyVariable(
+                                  id',
+                                  description',
+                                  assays',
+                                  samples',                          
+                                  Nullable(DateTime.Now)
+                                  )
+
+            ///Replaces description of existing object with new one.
+            static member addDescription
+                (description:string) (table:StudyVariable) =
+                table.Description <- description
+                table
+
+            ///Replaces assayRefs of existing object with new one.
+            static member addAssayRefs
+                (assayRefs:string) (table:StudyVariable) =
+                table.AssayRefs <- assayRefs
+                table
+                
+            ///Replaces sampleRefs of existing object with new one.
+            static member addSampleRefs
+                (sampleRefs:string) (table:StudyVariable) =
+                table.SampleRefs <- sampleRefs
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.StudyVariable.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByDescription (dbContext:MzTab) (description:string) =
+                query {
+                       for i in dbContext.StudyVariable.Local do
+                           if i.Description=description
+                              then select i
+                      }
+                |> Seq.map (fun (studyVariable) -> studyVariable)
+                |> (fun studyVariable -> 
+                    if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
+                        then 
+                            query {
+                                   for i in dbContext.StudyVariable do
+                                       if i.Description=description
+                                          then select i
+                                  }
+                            |> Seq.map (fun (studyVariable) -> studyVariable)
+                            |> (fun studyVariable -> if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
+                                                        then None
+                                                        else Some studyVariable
+                               )
+                        else Some studyVariable
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:StudyVariable) (item2:StudyVariable) =
+               item1.AssayRefs=item2.AssayRefs && 
+               item1.SampleRefs=item2.SampleRefs 
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:StudyVariable) =
+                    StudyVariableHandler.tryFindByDescription dbContext item.Description
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match StudyVariableHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:StudyVariable) =
+                StudyVariableHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type IdentifierHandler =
+            ///Initializes a identifier-object with at least all necessary parameters.
+            static member init
+                (id : string) =
+
+                new Identifier(id, Nullable(DateTime.Now))
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Identifier.Find(id))
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Identifier) =
+                    IdentifierHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> null    
+                                                      |None -> dbContext.Add item
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Identifier) =
+                IdentifierHandler.addToContext dbContext item
+                dbContext.SaveChanges()    
+
+        type PeptideSequenceHandler =
+            ///Initializes a identifier-object with at least all necessary parameters.
+            static member init
+
+                (id : string) =
+
+                new PeptideSequence(id, Nullable(DateTime.Now))
+
+            ///Tries to find a peptideSequence-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PeptideSequence.Find(id))
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PeptideSequence) =
+                    PeptideSequenceHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> null    
+                                                      |None -> dbContext.Add item
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PeptideSequence) =
+                PeptideSequenceHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type AccessionHandler =
+            ///Initializes a identifier-object with at least all necessary parameters.
+            static member init
+
+                (id : string) =
+
+                new Accession(id, Nullable(DateTime.Now))
+
+            ///Tries to find a accession-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Accession.Find(id))
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Accession) =
+                    AccessionHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> null    
+                                                      |None -> dbContext.Add item
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Accession) =
+                AccessionHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type PSMIDHandler =
+            ///Initializes a identifier-object with at least all necessary parameters.
+            static member init
+
+                (id : string) =
+
+                new PSMID(id, Nullable(DateTime.Now))
+
+            ///Tries to find a accession-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PSMID.Find(id))
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PSMID) =
+                    PSMIDHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> null    
+                                                      |None -> dbContext.Add item
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PSMID) =
+                PSMIDHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type AccessionParameterHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    identifiers                      : seq<Identifier>,
+                    peptideSequence                  : PeptideSequence,
+                    accession                        : Accession,
+                    taxid                            : string,
+                    species                          : string,
+                    dataBase                         : string,
+                    dataBaseVersion                  : string,
+                    ?id                              : string
+                ) =
+
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+
+                new AccessionParameter(
+                                       id',
+                                       identifiers |> List,
+                                       peptideSequence,
+                                       accession,
+                                       taxid,
+                                       species,
+                                       dataBase,
+                                       dataBaseVersion,
+                                       Nullable(DateTime.Now)
+                                      )
+
+            ///Tries to find a accessionParameter-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.AccessionParameter.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTaxid (dbContext:MzTab) (taxid:string) =
+                query {
+                       for i in dbContext.AccessionParameter.Local do
+                           if i.Taxid=taxid
+                              then select (i, i.PeptideSequence, i.Identifiers, i.Accession )
+                      }
+                |> Seq.map (fun (accessionParameter, _, _, _) -> accessionParameter)
+                |> (fun accessionParameter -> 
+                    if (Seq.exists (fun accessionParameter' -> accessionParameter' <> null) accessionParameter) = false
+                        then 
+                            query {
+                                   for i in dbContext.AccessionParameter do
+                                       if i.Taxid=taxid
+                                          then select (i, i.PeptideSequence, i.Identifiers, i.Accession )
+                                  }
+                            |> Seq.map (fun (accessionParameter, _, _, _) -> accessionParameter)
+                            |> (fun accessionParameter -> if (Seq.exists (fun accessionParameter' -> accessionParameter' <> null) accessionParameter) = false
+                                                            then None
+                                                            else Some accessionParameter
+                               )
+                        else Some accessionParameter
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AccessionParameter) (item2:AccessionParameter) =
+               item1.Identifiers=item2.Identifiers && item1.PeptideSequence=item2.PeptideSequence && 
+               item1.Accession=item2.Accession && item1.Species=item2.Species && 
+               item1.DataBase=item2.DataBase && item1.DataBaseVersion=item2.DataBaseVersion
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:AccessionParameter) =
+                    AccessionParameterHandler.tryFindByTaxid dbContext item.Taxid
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AccessionParameterHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:AccessionParameter) =
+                AccessionParameterHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type SearchEngineHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    identifiers                      : seq<Identifier>,
+                    peptideSequence                  : PeptideSequence,
+                    accession                        : Accession,
+                    searchEngineNames                : seq<SearchEngineName>,
+                    bestSearchEngineScore            : float,
+                    ?id                              : string,
+                    ?searchEngineScoreMSRun          : float
+                ) =
+
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let searchEngineScoreMSRun' = defaultArg searchEngineScoreMSRun Unchecked.defaultof<float>
+
+                new SearchEngine(
+                                 id',
+                                 identifiers |> List,
+                                 peptideSequence,
+                                 accession,
+                                 searchEngineNames |> List,
+                                 Nullable(bestSearchEngineScore),
+                                 Nullable(searchEngineScoreMSRun'),                          
+                                 Nullable(DateTime.Now)
+                                )
+
+            ///Replaces searchEngineScoreMSRun of existing object with new one.
+            static member addSearchEngineScoreMSRun
+                (searchEngineScoreMSRun:float) (table:SearchEngine) =
+                table.SearchEngineScoreMSRun <- Nullable(searchEngineScoreMSRun)
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SearchEngine.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByBestSearchEngineScore (dbContext:MzTab) (bestSearchEngineScore:Nullable<float>) =
+                query {
+                       for i in dbContext.SearchEngine.Local do
+                           if i.BestSearchEngineScore=bestSearchEngineScore
+                              then select (i, i.Identifiers, i.PeptideSequence, i.Accession, i.SearchEngineNames)
+                      }
+                |> Seq.map (fun (searchEngine,_ , _ , _ ,_) -> searchEngine)
+                |> (fun searchEngine -> 
+                    if (Seq.exists (fun searchEngine' -> searchEngine' <> null) searchEngine) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchEngine do
+                                       if i.BestSearchEngineScore=bestSearchEngineScore
+                                          then select (i, i.Identifiers, i.PeptideSequence, i.Accession, i.SearchEngineNames)
+                                  }
+                            |> Seq.map (fun (searchEngine,_ , _ , _ ,_) -> searchEngine)
+                            |> (fun searchEngine -> if (Seq.exists (fun searchEngine' -> searchEngine' <> null) searchEngine) = false
+                                                        then None
+                                                        else Some searchEngine
+                               )
+                        else Some searchEngine
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SearchEngine) (item2:SearchEngine) =
+               item1.Identifiers=item2.Identifiers && item1.PeptideSequence=item2.PeptideSequence && 
+               item1.Accession=item2.Accession && item1.SearchEngineNames=item2.SearchEngineNames && 
+               item1.SearchEngineScoreMSRun=item2.SearchEngineScoreMSRun
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SearchEngine) =
+                    SearchEngineHandler.tryFindByBestSearchEngineScore dbContext item.BestSearchEngineScore
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchEngineHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SearchEngine) =
+                SearchEngineHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type PeptideInfoHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    accession                        : Accession,
+                    ambigutityMembers                : seq<Accession>,
+                    ?id                              : string,
+                    ?numPeptidesDistinctMSRun        : string,
+                    ?numPeptidesUniqueMSRun          : string
+                ) =
+
+                let id'                       = defaultArg id (System.Guid.NewGuid().ToString())
+                let numPeptidesDistinctMSRun' = defaultArg numPeptidesDistinctMSRun Unchecked.defaultof<string>
+                let numPeptidesUniqueMSRun'   = defaultArg numPeptidesUniqueMSRun Unchecked.defaultof<string>
+
+                new PeptideInfo(
+                                id',
+                                accession,
+                                numPeptidesDistinctMSRun',
+                                numPeptidesUniqueMSRun',
+                                ambigutityMembers |> List,
+                                Nullable(DateTime.Now)
+                               )
+
+            ///Replaces numPeptidesDistinctMSRun of existing object with new one.
+            static member addNumPeptidesDistinctMSRun
+                (numPeptidesDistinctMSRun:string) (table:PeptideInfo) =
+                table.NumPeptidesDistinctMSRun <- numPeptidesDistinctMSRun
+                table
+
+            ///Replaces numPeptidesUniqueMSRun of existing object with new one.
+            static member addNumPeptidesUniqueMSRun
+                (numPeptidesUniqueMSRun:string) (table:PeptideInfo) =
+                table.NumPeptidesUniqueMSRun <- numPeptidesUniqueMSRun
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PeptideInfo.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByAccession (dbContext:MzTab) (accession:Accession) =
+                query {
+                       for i in dbContext.PeptideInfo.Local do
+                           if i.Accession=accession
+                              then select (i, i.Accession, i.AmbigutityMembers)
+                      }
+                |> Seq.map (fun (peptideInfo,_ , _) -> peptideInfo)
+                |> (fun peptideInfo -> 
+                    if (Seq.exists (fun peptideInfo' -> peptideInfo' <> null) peptideInfo) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideInfo do
+                                       if i.Accession=accession
+                                          then select (i, i.Accession, i.AmbigutityMembers)
+                                  }
+                            |> Seq.map (fun (peptideInfo, _ ,_) -> peptideInfo)
+                            |> (fun peptideInfo -> if (Seq.exists (fun peptideInfo' -> peptideInfo' <> null) peptideInfo) = false
+                                                        then None
+                                                        else Some peptideInfo
+                               )
+                        else Some peptideInfo
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PeptideInfo) (item2:PeptideInfo) =
+               item1.AmbigutityMembers=item2.AmbigutityMembers && 
+               item1.NumPeptidesDistinctMSRun=item2.NumPeptidesDistinctMSRun && 
+               item1.NumPeptidesUniqueMSRun=item2.NumPeptidesUniqueMSRun
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PeptideInfo) =
+                    PeptideInfoHandler.tryFindByAccession dbContext item.Accession
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideInfoHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PeptideInfo) =
+                PeptideInfoHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type ProteinAbundanceHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    accession                        : Accession,
+                    ?id                              : string,
+                    ?abundanceAssay                  : string,
+                    ?abundanceStudyVariable          : string,
+                    ?abundanceSEDEVStudyVariable     : string,
+                    ?abundanceSTDErrorStudyVariable  : string
+                ) =
+
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let abundanceAssay'                 = defaultArg abundanceAssay Unchecked.defaultof<string>
+                let abundanceStudyVariable'         = defaultArg abundanceStudyVariable Unchecked.defaultof<string>
+                let abundanceSEDEVStudyVariable'    = defaultArg abundanceSEDEVStudyVariable Unchecked.defaultof<string>
+                let abundanceSTDErrorStudyVariable' = defaultArg abundanceSTDErrorStudyVariable Unchecked.defaultof<string>
+
+                new ProteinAbundance(
+                                     id',
+                                     accession,
+                                     abundanceAssay',
+                                     abundanceStudyVariable',
+                                     abundanceSEDEVStudyVariable',
+                                     abundanceSTDErrorStudyVariable',
+                                     Nullable(DateTime.Now)
+                                    )
+
+            ///Replaces abundanceAssay of existing object with new one.
+            static member addAbundanceAssay
+                (abundanceAssay:string) (table:ProteinAbundance) =
+                table.AbundanceAssay <- abundanceAssay
+                table
+
+            ///Replaces abundanceStudyVariable of existing object with new one.
+            static member addAbundanceStudyVariable
+                (abundanceStudyVariable:string) (table:ProteinAbundance) =
+                table.AbundanceStudyVariable <- abundanceStudyVariable
+                table
+
+            ///Replaces abundanceSEDEVStudyVariable of existing object with new one.
+            static member addAbundanceSEDEVStudyVariable
+                (abundanceSEDEVStudyVariable:string) (table:ProteinAbundance) =
+                table.AbundanceSEDEVStudyVariable <- abundanceSEDEVStudyVariable
+                table
+
+            ///Replaces abundanceSTDErrorStudyVariable of existing object with new one.
+            static member addAbundanceSTDErrorStudyVariable
+                (abundanceSTDErrorStudyVariable:string) (table:ProteinAbundance) =
+                table.AbundanceSTDErrorStudyVariable <- abundanceSTDErrorStudyVariable
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ProteinAbundance.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByAccession (dbContext:MzTab) (accession:Accession) =
+                query {
+                       for i in dbContext.ProteinAbundance.Local do
+                           if i.Accession=accession
+                              then select (i, i.Accession)
+                      }
+                |> Seq.map (fun (proteinAbundance,_) -> proteinAbundance)
+                |> (fun proteinAbundance -> 
+                    if (Seq.exists (fun proteinAbundance' -> proteinAbundance' <> null) proteinAbundance) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinAbundance do
+                                       if i.Accession=accession
+                                          then select (i, i.Accession)
+                                  }
+                            |> Seq.map (fun (proteinAbundance, _) -> proteinAbundance)
+                            |> (fun proteinAbundance -> if (Seq.exists (fun proteinAbundance' -> proteinAbundance' <> null) proteinAbundance) = false
+                                                        then None
+                                                        else Some proteinAbundance
+                               )
+                        else Some proteinAbundance
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ProteinAbundance) (item2:ProteinAbundance) =
+               item1.AbundanceAssay=item2.AbundanceAssay && 
+               item1.AbundanceStudyVariable=item2.AbundanceStudyVariable &&
+               item1.AbundanceSEDEVStudyVariable=item2.AbundanceSEDEVStudyVariable &&
+               item1.AbundanceSTDErrorStudyVariable=item2.AbundanceSTDErrorStudyVariable
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:ProteinAbundance) =
+                    ProteinAbundanceHandler.tryFindByAccession dbContext item.Accession
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinAbundanceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:ProteinAbundance) =
+                ProteinAbundanceHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type RetentionTimeHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    peptideSequence                  : PeptideSequence,
+                    ?id                              : string, 
+                    ?retentionTime                   : float, 
+                    ?retentionTimeWindow             : seq<RetentionTimeWindow>
+                ) =
+
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let retentionTime'       = defaultArg retentionTime Unchecked.defaultof<float>
+                let retentionTimeWindow' = convertOptionToList retentionTimeWindow
+
+                new RetentionTime(
+                                   id',
+                                   peptideSequence,
+                                   Nullable(retentionTime'),
+                                   retentionTimeWindow',
+                                   Nullable(DateTime.Now)
+                                  )
+
+            ///Replaces retentionTime of existing object with new one.
+            static member addRetentionTime
+                (retentionTime:float) (table:RetentionTime) =
+                table.RetentionTime <- Nullable(retentionTime)
+                table
+
+            ///Adds a retentionTimeWindow to an existing object.
+            static member addRetentionTimeWindow (retentionTimeWindow:RetentionTimeWindow) (table:RetentionTime) =
+                table.RetentionTimeWindow <- addToList table.RetentionTimeWindow retentionTimeWindow
+                table
+
+            ///Adds a collection of retentionTimeWindows to an existing object.
+            static member addRetentionTimeWindows (retentionTimeWindow:seq<RetentionTimeWindow>) (table:RetentionTime) =
+                table.RetentionTimeWindow <- addCollectionToList table.RetentionTimeWindow retentionTimeWindow
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.RetentionTime.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByRetentionTime (dbContext:MzTab) (retentionTimes:Nullable<float>) =
+                query {
+                       for i in dbContext.RetentionTime.Local do
+                           if i.RetentionTime=retentionTimes
+                              then select (i, i.PeptideSequence, i.RetentionTimeWindow)
+                      }
+                |> Seq.map (fun (retentionTime,_, _) -> retentionTime)
+                |> (fun retentionTime -> 
+                    if (Seq.exists (fun retentionTime' -> retentionTime' <> null) retentionTime) = false
+                        then 
+                            query {
+                                   for i in dbContext.RetentionTime do
+                                       if i.RetentionTime=retentionTimes
+                                          then select (i, i.PeptideSequence, i.RetentionTimeWindow)
+                                  }
+                            |> Seq.map (fun (retentionTime,_, _) -> retentionTime)
+                            |> (fun retentionTime -> if (Seq.exists (fun retentionTime' -> retentionTime' <> null) retentionTime) = false
+                                                        then None
+                                                        else Some retentionTime
+                               )
+                        else Some retentionTime
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:RetentionTime) (item2:RetentionTime) =
+               item1.PeptideSequence=item2.PeptideSequence && item1.RetentionTimeWindow=item2.RetentionTimeWindow
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:RetentionTime) =
+                    RetentionTimeHandler.tryFindByRetentionTime dbContext item.RetentionTime
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match RetentionTimeHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:RetentionTime) =
+                RetentionTimeHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type PeptideAbundanceHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    peptideSequence                  : PeptideSequence,
+                    ?id                              : string,
+                    ?abundanceAssay                  : string,
+                    ?abundanceStudyVariable          : string,
+                    ?abundanceSEDEVStudyVariable     : string,
+                    ?abundanceSTDErrorStudyVariable  : string
+                ) =
+
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let abundanceAssay'                 = defaultArg abundanceAssay Unchecked.defaultof<string>
+                let abundanceStudyVariable'         = defaultArg abundanceStudyVariable Unchecked.defaultof<string>
+                let abundanceSEDEVStudyVariable'    = defaultArg abundanceSEDEVStudyVariable Unchecked.defaultof<string>
+                let abundanceSTDErrorStudyVariable' = defaultArg abundanceSTDErrorStudyVariable Unchecked.defaultof<string>
+
+                new PeptideAbundance(
+                                     id',
+                                     peptideSequence,
+                                     abundanceAssay',
+                                     abundanceStudyVariable',
+                                     abundanceSEDEVStudyVariable',
+                                     abundanceSTDErrorStudyVariable',
+                                     Nullable(DateTime.Now)
+                                    )
+
+            ///Replaces abundanceAssay of existing object with new one.
+            static member addAbundanceAssay
+                (abundanceAssay:string) (table:PeptideAbundance) =
+                table.AbundanceAssay <- abundanceAssay
+                table
+
+            ///Replaces abundanceStudyVariable of existing object with new one.
+            static member addAbundanceStudyVariable
+                (abundanceStudyVariable:string) (table:PeptideAbundance) =
+                table.AbundanceStudyVariable <- abundanceStudyVariable
+                table
+
+            ///Replaces abundanceSEDEVStudyVariable of existing object with new one.
+            static member addAbundanceSEDEVStudyVariable
+                (abundanceSEDEVStudyVariable:string) (table:PeptideAbundance) =
+                table.AbundanceSEDEVStudyVariable <- abundanceSEDEVStudyVariable
+                table
+
+            ///Replaces abundanceSTDErrorStudyVariable of existing object with new one.
+            static member addAbundanceSTDErrorStudyVariable
+                (abundanceSTDErrorStudyVariable:string) (table:PeptideAbundance) =
+                table.AbundanceSTDErrorStudyVariable <- abundanceSTDErrorStudyVariable
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PeptideAbundance.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByPeptideSequence (dbContext:MzTab) (peptideSequence:PeptideSequence) =
+                query {
+                       for i in dbContext.PeptideAbundance.Local do
+                           if i.PeptideSequence=peptideSequence
+                              then select (i, i.PeptideSequence)
+                      }
+                |> Seq.map (fun (peptideAbundance,_) -> peptideAbundance)
+                |> (fun peptideAbundance -> 
+                    if (Seq.exists (fun peptideAbundance' -> peptideAbundance' <> null) peptideAbundance) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideAbundance do
+                                       if i.PeptideSequence=peptideSequence
+                                          then select (i, i.PeptideSequence)
+                                  }
+                            |> Seq.map (fun (peptideAbundance, _) -> peptideAbundance)
+                            |> (fun peptideAbundance -> if (Seq.exists (fun peptideAbundance' -> peptideAbundance' <> null) peptideAbundance) = false
+                                                        then None
+                                                        else Some peptideAbundance
+                               )
+                        else Some peptideAbundance
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PeptideAbundance) (item2:PeptideAbundance) =
+               item1.AbundanceAssay=item2.AbundanceAssay && 
+               item1.AbundanceStudyVariable=item2.AbundanceStudyVariable &&
+               item1.AbundanceSEDEVStudyVariable=item2.AbundanceSEDEVStudyVariable &&
+               item1.AbundanceSTDErrorStudyVariable=item2.AbundanceSTDErrorStudyVariable
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PeptideAbundance) =
+                    PeptideAbundanceHandler.tryFindByPeptideSequence dbContext item.PeptideSequence
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideAbundanceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PeptideAbundance) =
+                PeptideAbundanceHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+        
+        type PSMInformationHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    peptideSequence                  : PeptideSequence,
+                    pre                              : string,
+                    post                             : string,
+                    start                            : int,
+                    ende                             : int,
+                    ?id                              : string
+                ) =
+
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+
+                new PSMInformation(
+                                   id',
+                                   peptideSequence,
+                                   pre,
+                                   post,
+                                   Nullable(start),
+                                   Nullable(ende),
+                                   Nullable(DateTime.Now)
+                                  )
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PSMInformation.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByPre (dbContext:MzTab) (pre:string) =
+                query {
+                       for i in dbContext.PSMInformation.Local do
+                           if i.Pre=pre
+                              then select (i, i.PeptideSequence)
+                      }
+                |> Seq.map (fun (psmInformation,_) -> psmInformation)
+                |> (fun psmInformation -> 
+                    if (Seq.exists (fun psmInformation' -> psmInformation' <> null) psmInformation) = false
+                        then 
+                            query {
+                                   for i in dbContext.PSMInformation do
+                                       if i.Pre=pre
+                                          then select (i, i.PeptideSequence)
+                                  }
+                            |> Seq.map (fun (psmInformation,_) -> psmInformation)
+                            |> (fun psmInformation -> if (Seq.exists (fun psmInformation' -> psmInformation' <> null) psmInformation) = false
+                                                        then None
+                                                        else Some psmInformation
+                               )
+                        else Some psmInformation
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PSMInformation) (item2:PSMInformation) =
+               item1.PeptideSequence=item2.PeptideSequence && item1.Post=item2.Post &&
+               item1.Start=item2.Start && item1.End=item2.End
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PSMInformation) =
+                    PSMInformationHandler.tryFindByPre dbContext item.Pre
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PSMInformationHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PSMInformation) =
+                PSMInformationHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+        
+        type ChemicalHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    identifiers                      : seq<Identifier>,
+                    chemicalFormula                  : string,
+                    smiles                           : string,
+                    inchiKey                         : string,
+                    ?id                              : string
+                ) =
+
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+
+                new Chemical(
+                             id',
+                             identifiers |> List,
+                             chemicalFormula,
+                             smiles,
+                             inchiKey,
+                             Nullable(DateTime.Now)
+                            )
+
+            ///Tries to find a chemical-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.Chemical.Find(id))
+
+            ///Tries to find a chemical-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByChemicalFormula (dbContext:MzTab) (chemicalFormula:string) =
+                query {
+                       for i in dbContext.Chemical.Local do
+                           if i.ChemicalFormula=chemicalFormula
+                              then select (i, i.Identifiers)
+                      }
+                |> Seq.map (fun (chemical,_) -> chemical)
+                |> (fun chemical -> 
+                    if (Seq.exists (fun chemical' -> chemical' <> null) chemical) = false
+                        then 
+                            query {
+                                   for i in dbContext.Chemical do
+                                       if i.ChemicalFormula=chemicalFormula
+                                          then select (i, i.Identifiers)
+                                  }
+                            |> Seq.map (fun (chemical,_) -> chemical)
+                            |> (fun chemical -> if (Seq.exists (fun chemical' -> chemical' <> null) chemical) = false
+                                                        then None
+                                                        else Some chemical
+                               )
+                        else Some chemical
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:Chemical) (item2:Chemical) =
+               item1.ChemicalFormula=item2.ChemicalFormula && item1.Smiles=item2.Smiles && 
+               item1.InchiKey=item2.InchiKey
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:Chemical) =
+                    ChemicalHandler.tryFindByChemicalFormula dbContext item.ChemicalFormula
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ChemicalHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:Chemical) =
+                ChemicalHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+ 
+        type SmallMoleculeAbundanceHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    identifiers                      : List<Identifier>,
+                    ?id                              : string,
+                    ?abundanceAssay                  : string,
+                    ?abundanceStudyVariable          : string,
+                    ?abundanceSEDEVStudyVariable     : string,
+                    ?abundanceSTDErrorStudyVariable  : string
+                ) =
+
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let abundanceAssay'                 = defaultArg abundanceAssay Unchecked.defaultof<string>
+                let abundanceStudyVariable'         = defaultArg abundanceStudyVariable Unchecked.defaultof<string>
+                let abundanceSEDEVStudyVariable'    = defaultArg abundanceSEDEVStudyVariable Unchecked.defaultof<string>
+                let abundanceSTDErrorStudyVariable' = defaultArg abundanceSTDErrorStudyVariable Unchecked.defaultof<string>
+
+                new SmallMoleculeAbundance(
+                                           id',
+                                           identifiers |> List,
+                                           abundanceAssay',
+                                           abundanceStudyVariable',
+                                           abundanceSEDEVStudyVariable',
+                                           abundanceSTDErrorStudyVariable',
+                                           Nullable(DateTime.Now)
+                                          )
+
+            ///Replaces abundanceAssay of existing object with new one.
+            static member addAbundanceAssay
+                (abundanceAssay:string) (table:SmallMoleculeAbundance) =
+                table.AbundanceAssay <- abundanceAssay
+                table
+
+            ///Replaces abundanceStudyVariable of existing object with new one.
+            static member addAbundanceStudyVariable
+                (abundanceStudyVariable:string) (table:SmallMoleculeAbundance) =
+                table.AbundanceStudyVariable <- abundanceStudyVariable
+                table
+
+            ///Replaces abundanceSEDEVStudyVariable of existing object with new one.
+            static member addAbundanceSEDEVStudyVariable
+                (abundanceSEDEVStudyVariable:string) (table:SmallMoleculeAbundance) =
+                table.AbundanceSEDEVStudyVariable <- abundanceSEDEVStudyVariable
+                table
+
+            ///Replaces abundanceSTDErrorStudyVariable of existing object with new one.
+            static member addAbundanceSTDErrorStudyVariable
+                (abundanceSTDErrorStudyVariable:string) (table:SmallMoleculeAbundance) =
+                table.AbundanceSTDErrorStudyVariable <- abundanceSTDErrorStudyVariable
+                table
+
+            ///Tries to find a smallMoleculeAbundance-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PeptideAbundance.Find(id))
+
+            ///Tries to find a smallMoleculeAbundance-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByIdentifiers (dbContext:MzTab) (identifiers:List<Identifier>) =
+                query {
+                       for i in dbContext.SmallMoleculeAbundance.Local do
+                           if i.Identifiers=identifiers
+                              then select (i, i.Identifiers)
+                      }
+                |> Seq.map (fun (peptideAbundance,_) -> peptideAbundance)
+                |> (fun peptideAbundance -> 
+                    if (Seq.exists (fun peptideAbundance' -> peptideAbundance' <> null) peptideAbundance) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeAbundance do
+                                       if i.Identifiers=identifiers
+                                          then select (i, i.Identifiers)
+                                  }
+                            |> Seq.map (fun (peptideAbundance, _) -> peptideAbundance)
+                            |> (fun peptideAbundance -> if (Seq.exists (fun peptideAbundance' -> peptideAbundance' <> null) peptideAbundance) = false
+                                                        then None
+                                                        else Some peptideAbundance
+                               )
+                        else Some peptideAbundance
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SmallMoleculeAbundance) (item2:SmallMoleculeAbundance) =
+               item1.AbundanceAssay=item2.AbundanceAssay && 
+               item1.AbundanceStudyVariable=item2.AbundanceStudyVariable &&
+               item1.AbundanceSEDEVStudyVariable=item2.AbundanceSEDEVStudyVariable &&
+               item1.AbundanceSTDErrorStudyVariable=item2.AbundanceSTDErrorStudyVariable
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SmallMoleculeAbundance) =
+                    SmallMoleculeAbundanceHandler.tryFindByIdentifiers dbContext item.Identifiers
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SmallMoleculeAbundanceHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SmallMoleculeAbundance) =
+                SmallMoleculeAbundanceHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type ProteinSectionHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    accession                        : Accession,
+                    description                      : string,
+                    accessionParameters              : seq<AccessionParameter>,
+                    searchEngines                    : seq<SearchEngine>,
+                    modifications                    : seq<Modification>,
+                    ?id                              : string,
+                    ?reliability                     : int,
+                    ?numPSMSMSRun                    : string,
+                    ?peptideInfo                     : seq<PeptideInfo>,
+                    ?uri                             : string,
+                    ?goTerms                         : string, 
+                    ?proteinCoverage                 : float, 
+                    ?proteinAbundances               : seq<ProteinAbundance>,
+                    ?details                         : seq<ProteinSectionParam>
+                ) =
+
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let reliability'       = defaultArg reliability Unchecked.defaultof<int>
+                let numPSMSMSRun'      = defaultArg numPSMSMSRun Unchecked.defaultof<string>
+                let peptideInfo'       = convertOptionToList peptideInfo
+                let uri'               = defaultArg uri Unchecked.defaultof<string>
+                let goTerms'           = defaultArg goTerms Unchecked.defaultof<string>
+                let proteinCoverage'   = defaultArg proteinCoverage Unchecked.defaultof<float>
+                let proteinAbundances' = convertOptionToList proteinAbundances
+                let details'           = convertOptionToList details
+
+                new ProteinSection(
+                                   id',
+                                   accession,
+                                   description,
+                                   accessionParameters |> List,
+                                   searchEngines |> List,
+                                   Nullable(reliability'),
+                                   numPSMSMSRun',
+                                   peptideInfo',
+                                   modifications |> List,
+                                   uri',
+                                   goTerms',
+                                   Nullable(proteinCoverage'),
+                                   proteinAbundances' |> List,
+                                   details',
+                                   Nullable(DateTime.Now)
+                                  )
+
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (table:ProteinSection) =
+                table.Reliability <- Nullable(reliability)
+                table
+
+            ///Replaces numPSMSMSRun of existing object with new one.
+            static member addNumPSMSMSRun
+                (numPSMSMSRun:string) (table:ProteinSection) =
+                table.NumPSMSMSRun <- numPSMSMSRun
+                table
+
+            ///Adds a peptideInfo to an existing object.
+            static member addPeptideInfo (peptideInfo:PeptideInfo) (table:ProteinSection) =
+                table.PeptideInfos <- addToList table.PeptideInfos peptideInfo
+                table
+
+            ///Adds a collection of peptideInfos to an existing object.
+            static member addPeptideInfos (peptideInfos:seq<PeptideInfo>) (table:ProteinSection) =
+                table.PeptideInfos <- addCollectionToList table.PeptideInfos peptideInfos
+                table
+
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (table:ProteinSection) =
+                table.URI <- uri
+                table
+
+            ///Replaces goTerms of existing object with new one.
+            static member addGoTerms
+                (goTerms:string) (table:ProteinSection) =
+                table.GoTerms <- goTerms
+                table
+    
+            ///Replaces proteinCoverage of existing object with new one.
+            static member addProteinCoverage
+                (proteinCoverage:float) (table:ProteinSection) =
+                table.ProteinCoverage <- Nullable(proteinCoverage)
+                table
+
+            ///Adds a proteinAbundance to an existing object.
+            static member addProteinAbundance (proteinAbundance:ProteinAbundance) (table:ProteinSection) =
+                table.ProteinAbundances <- addToList table.ProteinAbundances proteinAbundance
+                table
+
+            ///Adds a collection of proteinAbundances to an existing object.
+            static member addProteinAbundances (proteinAbundances:seq<ProteinAbundance>) (table:ProteinSection) =
+                table.ProteinAbundances <- addCollectionToList table.ProteinAbundances proteinAbundances
+                table
+
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:ProteinSectionParam) (table:ProteinSection) =
+                table.Details <- addToList table.Details detail
+                table
+
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<ProteinSectionParam>) (table:ProteinSection) =
+                table.Details <- addCollectionToList table.Details details
+                table
+
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ProteinSection.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByDescription (dbContext:MzTab) (description:string) =
+                query {
+                       for i in dbContext.ProteinSection.Local do
+                           if i.Description=description
+                              then select (i, i.AccessionParameters, i.SearchEngines, 
+                                           i.Modifications, i.PeptideInfos, i.ProteinAbundances, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (proteinSection,_, _, _, _, _, _) -> proteinSection)
+                |> (fun proteinSection -> 
+                    if (Seq.exists (fun proteinSection' -> proteinSection' <> null) proteinSection) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinSection do
+                                       if i.Description=description
+                                          then select (i, i.AccessionParameters, i.SearchEngines, 
+                                                       i.Modifications, i.PeptideInfos, i.ProteinAbundances, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (proteinSection,_, _, _, _, _, _) -> proteinSection)
+                            |> (fun proteinSection -> if (Seq.exists (fun proteinSection' -> proteinSection' <> null) proteinSection) = false
+                                                        then None
+                                                        else Some proteinSection
+                               )
+                        else Some proteinSection
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ProteinSection) (item2:ProteinSection) =
+               item1.Accession=item2.Accession && item1.AccessionParameters=item2.AccessionParameters &&
+               item1.SearchEngines=item2.SearchEngines && item1.Modifications=item2.Modifications &&
+               item1.Reliability=item2.Reliability && item1.NumPSMSMSRun=item2.NumPSMSMSRun &&
+               item1.PeptideInfos=item2.PeptideInfos && item1.URI=item2.URI && item1.GoTerms=item2.GoTerms && 
+               item1.ProteinCoverage=item2.ProteinCoverage && item1.Details=item2.Details &&
+               item1.ProteinAbundances=item2.ProteinAbundances
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:ProteinSection) =
+                    ProteinSectionHandler.tryFindByDescription dbContext item.Description
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinSectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:ProteinSection) =
+                ProteinSectionHandler.addToContext dbContext item
+                dbContext.SaveChanges()
+
+        type PeptideSectionHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (                
+                    ?id                              : string,
+                    ?peptideSequence                 : PeptideSequence,
+                    ?accession                       : Accession,
+                    ?unique                          : bool,
+                    ?accessionParameters             : seq<AccessionParameter>,
+                    ?searchEngines                   : seq<SearchEngine>,
+                    ?reliability                     : int,
+                    ?modifications                   : seq<Modification>,
+                    ?retentionTime                   : RetentionTime,
+                    ?charge                          : float,
+                    ?massToCharge                    : float,
+                    ?uri                             : string,
+                    ?spectraRef                      : string, 
+                    ?details                         : seq<PeptideSectionParam>
+                ) =
+
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let peptideSequence'     = defaultArg peptideSequence Unchecked.defaultof<PeptideSequence>
+                let accession'           = defaultArg accession Unchecked.defaultof<Accession>
+                let unique'              = defaultArg unique Unchecked.defaultof<bool>
+                let accessionParameters' = convertOptionToList accessionParameters
+                let searchEngines'       = convertOptionToList searchEngines
+                let reliability'         = defaultArg reliability Unchecked.defaultof<int>
+                let modifications'       = convertOptionToList modifications
+                let retentionTime'       = defaultArg retentionTime Unchecked.defaultof<RetentionTime>
+                let charge'              = defaultArg charge Unchecked.defaultof<float>
+                let massToCharge'        = defaultArg massToCharge Unchecked.defaultof<float>
+                let uri'                 = defaultArg uri Unchecked.defaultof<string>
+                let spectraRef'          = defaultArg spectraRef Unchecked.defaultof<string>
+                let details'             = convertOptionToList details
+
+                new PeptideSection(
+                                   id',
+                                   peptideSequence',
+                                   accession',
+                                   Nullable(unique'),
+                                   accessionParameters',
+                                   searchEngines',
+                                   Nullable(reliability'),
+                                   modifications',
+                                   retentionTime',
+                                   Nullable(charge'),
+                                   Nullable(massToCharge'),
+                                   uri',
+                                   spectraRef',
+                                   details',
+                                   Nullable(DateTime.Now)
+                                  )
+
+            ///Replaces peptideSequence of existing object with new one.
+            static member addPeptideSequence
+                (peptideSequence:PeptideSequence) (table:PeptideSection) =
+                table.Sequence <- peptideSequence
+                table
             
-//            ///Replaces databaseName of existing object with new one.
-//            static member addDatabaseName
-//                (databaseName:CVParam) (table:SearchDatabase) =
-//                table.DatabaseName <- databaseName
-//                table
+            ///Replaces accession of existing object with new one.
+            static member addAccession
+                (accession:Accession) (table:PeptideSection) =
+                table.Accession <- accession
+                table
 
-//            ///Adds a searchDatabaseParam to an existing object.
-//            static member addDetail (detail:SearchDatabaseParam) (table:SearchDatabase) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
+            ///Replaces unique of existing object with new one.
+            static member addUnique
+                (unique:bool) (table:PeptideSection) =
+                table.Unique <- Nullable(unique)
+                table
 
-//            ///Adds a collection of searchDatabaseParams to an existing object.
-//            static member addDetails
-//                (details:seq<SearchDatabaseParam>) (table:SearchDatabase) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
+            ///Adds a accessionParameter to an existing object.
+            static member addAccessionParameter (accessionParameter:AccessionParameter) (table:PeptideSection) =
+                table.AccessionParameters <- addToList table.AccessionParameters accessionParameter
+                table
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+            ///Adds a collection of accessionParameters to an existing object.
+            static member addAccessionParameters (accessionParameters:seq<AccessionParameter>) (table:PeptideSection) =
+                table.AccessionParameters <- addCollectionToList table.AccessionParameters accessionParameters
+                table
 
-//            ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SearchDatabase.Find(id))
+            ///Adds a searchEngine to an existing object.
+            static member addSearchEngine (searchEngine:SearchEngine) (table:PeptideSection) =
+                table.SearchEngines <- addToList table.SearchEngines searchEngine
+                table
 
-//            ///Tries to find a searchDatabase-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
-//                query {
-//                       for i in dbContext.SearchDatabase.Local do
-//                           if i.Location=location
-//                              then select (i, i.FileFormat, i.DatabaseName, i.ReleaseDate, i.Details)
-//                      }
-//                |> Seq.map (fun (searchDatabase, _, _, _, _) -> searchDatabase)
-//                |> (fun searchDatabase -> 
-//                    if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SearchDatabase do
-//                                       if i.Location=location
-//                                          then select (i, i.FileFormat, i.DatabaseName, i.ReleaseDate, i.Details)
-//                                  }
-//                            |> Seq.map (fun (searchDatabase, _, _, _, _) -> searchDatabase)
-//                            |> (fun searchDatabase -> if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
-//                                                        then None
-//                                                        else Some searchDatabase
-//                               )
-//                        else Some searchDatabase
-//                   )
+            ///Adds a collection of searchEngines to an existing object.
+            static member addSearchEngines (searchEngines:seq<SearchEngine>) (table:PeptideSection) =
+                table.SearchEngines <- addCollectionToList table.SearchEngines searchEngines
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SearchDatabase) (item2:SearchDatabase) =
-//               item1.Name=item2.Name && item1.NumDatabaseEntries=item2.NumDatabaseEntries &&
-//               item1.ReleaseDate=item2.ReleaseDate && item1.Version=item2.Version &&
-//               item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-//               item1.FileFormat=item2.FileFormat && item1.DatabaseName=item2.DatabaseName &&
-//               item1.Details=item2.Details
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (table:PeptideSection) =
+                table.Reliability <- Nullable(reliability)
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SearchDatabase) =
-//                    SearchDatabaseHandler.tryFindByLocation dbContext item.Location
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match SearchDatabaseHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Adds a modification to an existing object.
+            static member addModification (modification:Modification) (table:PeptideSection) =
+                table.Modifications <- addToList table.Modifications modification
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SearchDatabase) =
-//                SearchDatabaseHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Adds a modifications of searchEngines to an existing object.
+            static member addModifications (modifications:seq<Modification>) (table:PeptideSection) =
+                table.Modifications <- addCollectionToList table.Modifications modifications
+                table
 
-//        type IdentificationFileHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    location                     : string,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?searchDatabase              : SearchDatabase,
-//                    ?externalFormatDocumentation : string,
-//                    ?fileFormat                  : CVParam,
-//                    ?details                     : seq<IdentificationFileParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
-//                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-//                let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Replaces retentionTime of existing object with new one.
+            static member addRetentionTime
+                (retentionTime:RetentionTime) (table:PeptideSection) =
+                table.RetentionTime <- retentionTime
+                table
 
-//                new IdentificationFile(
-//                                       id', 
-//                                       name', 
-//                                       location, 
-//                                       searchDatabase',
-//                                       externalFormatDocumentation',
-//                                       fileFormat',
-//                                       details',
-//                                       //mzIdentML', 
-//                                       Nullable(DateTime.Now)
-//                                      )
+            ///Replaces charge of existing object with new one.
+            static member addCharge
+                (charge:float) (table:PeptideSection) =
+                table.Charge <- Nullable(charge)
+                table
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:IdentificationFile) =
-//                table.Name <- name
-//                table
+            ///Replaces charge of existing object with new one.
+            static member addMassCharge
+                (massToCharge:float) (table:PeptideSection) =
+                table.MassToCharge <- Nullable(massToCharge)
+                table
 
-//            ///Replaces searchDatabase of existing object with new one.
-//            static member addNumSearchDatabase
-//                (searchDatabase:SearchDatabase) (table:IdentificationFile) =
-//                table.SearchDatabase <- searchDatabase
-//                table
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (table:PeptideSection) =
+                table.URI <- uri
+                table
 
-//            ///Replaces externalFormatDocumentation of existing object with new one.
-//            static member addExternalFormatDocumentation
-//                (externalFormatDocumentation:string) (table:IdentificationFile) =
-//                table.ExternalFormatDocumentation <- externalFormatDocumentation
-//                table
+            ///Replaces spectraRef of existing object with new one.
+            static member addSpectraRef
+                (spectraRef:string) (table:PeptideSection) =
+                table.SpectraRef <- spectraRef
+                table
 
-//            ///Replaces fileFormat of existing object with new one.
-//            static member addFileFormat
-//                (fileFormat:CVParam) (table:IdentificationFile) =
-//                table.FileFormat <- fileFormat
-//                table
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:PeptideSectionParam) (table:PeptideSection) =
+                table.Details <- addToList table.Details detail
+                table
 
-//            ///Adds a identificationFileParam to an existing object.
-//            static member addDetail (detail:IdentificationFileParam) (table:IdentificationFile) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<PeptideSectionParam>) (table:PeptideSection) =
+                table.Details <- addCollectionToList table.Details details
+                table
 
-//            ///Adds a collection of identificationFileParams to an existing object.
-//            static member addDetails
-//                (details:seq<IdentificationFileParam>) (table:IdentificationFile) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.ProteinSection.Find(id))
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByMassToCharge (dbContext:MzTab) (massToCharge:Nullable<float>) =
+                query {
+                       for i in dbContext.PeptideSection.Local do
+                           if i.MassToCharge=massToCharge
+                              then select (i, i.Sequence, i.AccessionParameters, i.SearchEngines, 
+                                           i.Modifications, i.RetentionTime, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (proteinSection,_, _, _, _, _, _) -> proteinSection)
+                |> (fun peptideSection -> 
+                    if (Seq.exists (fun peptideSection' -> peptideSection' <> null) peptideSection) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideSection do
+                                       if i.MassToCharge=massToCharge
+                                          then select (i, i.Sequence, i.AccessionParameters, i.SearchEngines, 
+                                                       i.Modifications, i.RetentionTime, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (peptideSection,_, _, _, _, _, _) -> peptideSection)
+                            |> (fun peptideSection -> if (Seq.exists (fun peptideSection' -> peptideSection' <> null) peptideSection) = false
+                                                        then None
+                                                        else Some peptideSection
+                               )
+                        else Some peptideSection
+                   )
 
-//            ///Tries to find a identificationFile-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.IdentificationFile.Find(id))
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PeptideSection) (item2:PeptideSection) =
+               item1.Sequence=item2.Sequence && item1.Accession=item2.Accession &&
+               item1.Unique=item2.Unique && item1.AccessionParameters=item2.AccessionParameters &&
+               item1.SearchEngines=item2.SearchEngines && item1.Reliability=item2.Reliability &&
+               item1.Modifications=item2.Modifications && item1.RetentionTime=item2.RetentionTime &&
+               item1.Charge=item2.Charge && item1.URI=item2.URI && item1.SpectraRef=item2.SpectraRef && 
+               item1.Details=item2.Details
 
-//            ///Tries to find a identificationFile-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
-//                query {
-//                       for i in dbContext.IdentificationFile.Local do
-//                           if i.Location=location
-//                              then select (i, i.FileFormat, i.SearchDatabase, i.Details)
-//                      }
-//                |> Seq.map (fun (identificationFile, _, _, _) -> identificationFile)
-//                |> (fun identificationFile -> 
-//                    if (Seq.exists (fun identificationFile' -> identificationFile' <> null) identificationFile) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.IdentificationFile do
-//                                       if i.Location=location
-//                                          then select (i, i.FileFormat, i.SearchDatabase, i.Details)
-//                                  }
-//                            |> Seq.map (fun (identificationFile, _, _, _) -> identificationFile)
-//                            |> (fun identificationFile -> if (Seq.exists (fun identificationFile' -> identificationFile' <> null) identificationFile) = false
-//                                                            then None
-//                                                            else Some identificationFile
-//                               )
-//                        else Some identificationFile
-//                   )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PeptideSection) =
+                    PeptideSectionHandler.tryFindByMassToCharge dbContext item.MassToCharge
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideSectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:IdentificationFile) (item2:IdentificationFile) =
-//               item1.Name=item2.Name && item1.SearchDatabase=item2.SearchDatabase &&
-//               item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-//               item1.FileFormat=item2.FileFormat && item1.Details=item2.Details
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PeptideSection) =
+                PeptideSectionHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:IdentificationFile) =
-//                    IdentificationFileHandler.tryFindByLocation dbContext item.Location
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match IdentificationFileHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+        type PSMSectionHandler =
+            ///Initializes a provider-object with at least all necessary parameters.
+            static member init
+                (             
+                    peptideSequence                  : PeptideSequence, 
+                    psmID                            : PSMID,
+                    accession                        : Accession,
+                    unique                           : bool,
+                    accessionParameters              : seq<AccessionParameter>,
+                    searchEngines                    : seq<SearchEngine>,
+                    modifications                    : seq<Modification>,
+                    retentionTime                    : float,
+                    charge                           : float,
+                    expMassToCharge                  : float,
+                    calcMassToCharge                 : float,
+                    psmInformation                   : PSMInformation,
+                    ?id                              : string,
+                    ?reliability                     : int,
+                    ?uri                             : string,
+                    ?spectraRef                      : string, 
+                    ?details                         : seq<PSMSectionParam>
+                ) =
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:IdentificationFile) =
-//                IdentificationFileHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let reliability'       = defaultArg reliability Unchecked.defaultof<int>
+                let uri'               = defaultArg uri Unchecked.defaultof<string>
+                let spectraRef'        = defaultArg spectraRef Unchecked.defaultof<string>
+                let details'           = convertOptionToList details
 
-//        type IdentificationRefHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    fkIdentificationFile : string,
-//                    identificationFile   : IdentificationFile,
-//                    ?id                  : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                new PSMSection(
+                               id',
+                               peptideSequence,
+                               psmID,
+                               accession,
+                               Nullable(unique),
+                               accessionParameters |> List,
+                               searchEngines |> List,
+                               Nullable(reliability'),
+                               modifications |> List,
+                               Nullable(retentionTime),
+                               Nullable(charge),
+                               Nullable(expMassToCharge),
+                               Nullable(calcMassToCharge),
+                               uri',
+                               spectraRef',
+                               psmInformation,
+                               details',
+                               Nullable(DateTime.Now)
+                              )
 
-//                new IdentificationRef(
-//                                      id', 
-//                                      fkIdentificationFile,
-//                                      identificationFile,
-//                                      //mzIdentML', 
-//                                      Nullable(DateTime.Now)
-//                                     )
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (table:PSMSection) =
+                table.Reliability <- Nullable(reliability)
+                table
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (table:PSMSection) =
+                table.URI <- uri
+                table
 
-//            ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.IdentificationRef.Find(id))
+            ///Replaces spectraRef of existing object with new one.
+            static member addSpectraRef
+                (spectraRef:string) (table:PSMSection) =
+                table.SpectraRef <- spectraRef
+                table 
 
-//            ///Tries to find a identificationRef-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByFKIdentificationFile (dbContext:MzQuantML) (fkIdentificationFile:string) =
-//                query {
-//                       for i in dbContext.IdentificationRef.Local do
-//                           if i.FKIdentificationFile=fkIdentificationFile
-//                              then select (i, i.IdentificationFile)
-//                      }
-//                |> Seq.map (fun (identificationRef, _) -> identificationRef)
-//                |> (fun identificationRef -> 
-//                    if (Seq.exists (fun identificationRef' -> identificationRef' <> null) identificationRef) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.IdentificationRef do
-//                                       if i.FKIdentificationFile=fkIdentificationFile
-//                                          then select (i, i.IdentificationFile)
-//                                  }
-//                            |> Seq.map (fun (identificationRef, _) -> identificationRef)
-//                            |> (fun identificationRef -> if (Seq.exists (fun identificationRef' -> identificationRef' <> null) identificationRef) = false
-//                                                            then None
-//                                                            else Some identificationRef
-//                               )
-//                        else Some identificationRef
-//                   )
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:PSMSectionParam) (table:PSMSection) =
+                table.Details <- addToList table.Details detail
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:IdentificationRef) (item2:IdentificationRef) =
-//               item1.IdentificationFile=item2.IdentificationFile
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<PSMSectionParam>) (table:PSMSection) =
+                table.Details <- addCollectionToList table.Details details
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:IdentificationRef) =
-//                    IdentificationRefHandler.tryFindByFKIdentificationFile dbContext item.FKIdentificationFile
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match IdentificationRefHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Tries to find a psmSection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.PSMSection.Find(id))
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:IdentificationRef) =
-//                IdentificationRefHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByRetentionTime (dbContext:MzTab) (retentionTime:Nullable<float>) =
+                query {
+                       for i in dbContext.PSMSection.Local do
+                           if i.RetentionTime=retentionTime
+                              then select (i, i.Sequence, i.PSMID, i.AccessionParameters, i.SearchEngines, 
+                                           i.Modifications, i.PSMInformation, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (psmSection,_, _, _, _, _, _, _) -> psmSection)
+                |> (fun psmSection -> 
+                    if (Seq.exists (fun psmSection' -> psmSection' <> null) psmSection) = false
+                        then 
+                            query {
+                                   for i in dbContext.PSMSection do
+                                       if i.RetentionTime=retentionTime
+                                          then select (i, i.Sequence, i.PSMID, i.AccessionParameters, i.SearchEngines, 
+                                                       i.Modifications, i.PSMInformation, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (psmSection,_, _, _, _, _, _, _) -> psmSection)
+                            |> (fun psmSection -> if (Seq.exists (fun psmSection' -> psmSection' <> null) psmSection) = false
+                                                        then None
+                                                        else Some psmSection
+                               )
+                        else Some psmSection
+                   )
 
-//        type MethodFileHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    location                     : string,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?externalFormatDocumentation : string,
-//                    ?fileFormat                  : CVParam
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-//                let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:PSMSection) (item2:PSMSection) =
+               item1.Sequence=item2.Sequence && item1.PSMID=item2.PSMID && item1.Accession=item2.Accession && 
+               item1.Unique=item2.Unique && item1.AccessionParameters=item2.AccessionParameters &&
+               item1.SearchEngines=item2.SearchEngines && item1.Reliability=item2.Reliability &&
+               item1.Modifications=item2.Modifications && item1.Charge=item2.Charge 
+               && item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge &&
+               item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && item1.URI=item2.URI && 
+               item1.SpectraRef=item2.SpectraRef && item1.Details=item2.Details &&
+               item1.PSMInformation=item2.PSMInformation
 
-//                new MethodFile(
-//                               id', 
-//                               name', 
-//                               location, 
-//                               externalFormatDocumentation',
-//                               fileFormat',
-//                               //mzIdentML', 
-//                               Nullable(DateTime.Now)
-//                              )
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:PSMSection) =
+                    PSMSectionHandler.tryFindByRetentionTime dbContext item.RetentionTime
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PSMSectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:MethodFile) =
-//                table.Name <- name
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:PSMSection) =
+                PSMSectionHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            ///Replaces externalFormatDocumentation of existing object with new one.
-//            static member addExternalFormatDocumentation
-//                (externalFormatDocumentation:string) (table:MethodFile) =
-//                table.ExternalFormatDocumentation <- externalFormatDocumentation
-//                table
+        type SmallMoleculeSectionHandler =
+            ///Initializes a smallMoleculeSection-object with at least all necessary parameters.
+            static member init
+                (             
+                    identifiers                      : seq<Identifier>, 
+                    chemical                         : Chemical,
+                    description                      : string,
+                    accessionParameters              : seq<AccessionParameter>,
+                    searchEngines                    : seq<SearchEngine>,
+                    modifications                    : seq<Modification>,
+                    retentionTime                    : float,
+                    charge                           : float,
+                    expMassToCharge                  : float,
+                    calcMassToCharge                 : float,
+                    spectraRef                       : string, 
+                    ?id                              : string,
+                    ?reliability                     : int,
+                    ?uri                             : string,
+                    ?smallMoleculeAbundances         : seq<SmallMoleculeAbundance>,
+                    ?details                         : seq<SmallMoleculeSectionParam>
+                ) =
 
-//            ///Replaces fileFormat of existing object with new one.
-//            static member addFileFormat
-//                (fileFormat:CVParam) (table:MethodFile) =
-//                table.FileFormat <- fileFormat
-//                table
+                let id'                      = defaultArg id (System.Guid.NewGuid().ToString())
+                let reliability'             = defaultArg reliability Unchecked.defaultof<int>
+                let uri'                     = defaultArg uri Unchecked.defaultof<string>
+                let smallMoleculeAbundances' = convertOptionToList smallMoleculeAbundances
+                let details'                 = convertOptionToList details
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+                new SmallMoleculeSection(
+                                         id',
+                                         identifiers |> List,
+                                         chemical,
+                                         description,
+                                         accessionParameters |> List,
+                                         searchEngines |> List,
+                                         Nullable(reliability'),
+                                         modifications |> List,
+                                         Nullable(retentionTime),
+                                         Nullable(charge),
+                                         Nullable(expMassToCharge),
+                                         Nullable(calcMassToCharge),
+                                         uri',
+                                         spectraRef,
+                                         smallMoleculeAbundances',
+                                         details',
+                                         Nullable(DateTime.Now)
+                                       )
 
-//            ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.MethodFile.Find(id))
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (table:SmallMoleculeSection) =
+                table.Reliability <- Nullable(reliability)
+                table
 
-//            ///Tries to find a methodFile-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
-//                query {
-//                       for i in dbContext.MethodFile.Local do
-//                           if i.Location=location
-//                              then select (i, i.FileFormat)
-//                      }
-//                |> Seq.map (fun (methodFile, _) -> methodFile)
-//                |> (fun methodFile -> 
-//                    if (Seq.exists (fun methodFile' -> methodFile' <> null) methodFile) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.MethodFile do
-//                                       if i.Location=location
-//                                          then select (i, i.FileFormat)
-//                                  }
-//                            |> Seq.map (fun (methodFile, _) -> methodFile)
-//                            |> (fun methodFile -> if (Seq.exists (fun methodFile' -> methodFile' <> null) methodFile) = false
-//                                                            then None
-//                                                            else Some methodFile
-//                               )
-//                        else Some methodFile
-//                   )
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (table:SmallMoleculeSection) =
+                table.URI <- uri
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:MethodFile) (item2:MethodFile) =
-//               item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
-//               && item1.FileFormat=item2.FileFormat
+            ///Adds a smallMoleculeAbundance to an existing object.
+            static member addSmallMoleculeAbundance (smallMoleculeAbundance:SmallMoleculeAbundance) (table:SmallMoleculeSection) =
+                table.SmallMoleculeAbundances <- addToList table.SmallMoleculeAbundances smallMoleculeAbundance
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:MethodFile) =
-//                    MethodFileHandler.tryFindByLocation dbContext item.Location
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match MethodFileHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Adds a collection of smallMoleculeAbundances to an existing object.
+            static member addSmallMoleculeAbundances (smallMoleculeAbundances:seq<SmallMoleculeAbundance>) (table:SmallMoleculeSection) =
+                table.SmallMoleculeAbundances <- addCollectionToList table.SmallMoleculeAbundances smallMoleculeAbundances
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:MethodFile) =
-//                MethodFileHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:SmallMoleculeSectionParam) (table:SmallMoleculeSection) =
+                table.Details <- addToList table.Details detail
+                table
 
-//        type RawFileHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    location                     : string,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?externalFormatDocumentation : string,
-//                    ?methodFile                  : MethodFile,
-//                    ?fileFormat                  : CVParam, 
-//                    ?details                     : seq<RawFileParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let methodFile'                  = defaultArg methodFile Unchecked.defaultof<MethodFile>
-//                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-//                let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<SmallMoleculeSectionParam>) (table:SmallMoleculeSection) =
+                table.Details <- addCollectionToList table.Details details
+                table
 
-//                new RawFile(
-//                            id', 
-//                            name', 
-//                            location, 
-//                            methodFile',
-//                            externalFormatDocumentation',
-//                            fileFormat',
-//                            details',
-//                            //mzIdentML', 
-//                            Nullable(DateTime.Now)
-//                           )
+            ///Tries to find a smallMoleculeSection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.SmallMoleculeSection.Find(id))
 
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:RawFile) =
-//                table.Name <- name
-//                table
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByDescription (dbContext:MzTab) (description:string) =
+                query {
+                       for i in dbContext.SmallMoleculeSection.Local do
+                           if i.Description=description
+                              then select (i, i.Identifiers, i.Chemical, i.AccessionParameters, i.SearchEngines, 
+                                           i.Modifications, i.SmallMoleculeAbundances, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (smallMoleculeSection,_, _, _, _, _, _, _) -> smallMoleculeSection)
+                |> (fun smallMoleculeSection -> 
+                    if (Seq.exists (fun smallMoleculeSection' -> smallMoleculeSection' <> null) smallMoleculeSection) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeSection do
+                                       if i.Description=description
+                                          then select (i, i.Identifiers, i.Chemical, i.AccessionParameters, i.SearchEngines, 
+                                                       i.Modifications, i.SmallMoleculeAbundances, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (smallMoleculeSection,_, _, _, _, _, _, _) -> smallMoleculeSection)
+                            |> (fun smallMoleculeSection -> if (Seq.exists (fun smallMoleculeSection' -> smallMoleculeSection' <> null) smallMoleculeSection) = false
+                                                            then None
+                                                            else Some smallMoleculeSection
+                               )
+                        else Some smallMoleculeSection
+                   )
 
-//            ///Replaces methodFile of existing object with new one.
-//            static member addMethodFile
-//                (methodFile:MethodFile) (table:RawFile) =
-//                table.MethodFile <- methodFile
-//                table
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:SmallMoleculeSection) (item2:SmallMoleculeSection) =
+               item1.Identifiers=item2.Identifiers && item1.Description=item2.Description && 
+               item1.Chemical=item2.Chemical && item1.AccessionParameters=item2.AccessionParameters &&
+               item1.SearchEngines=item2.SearchEngines && item1.Reliability=item2.Reliability &&
+               item1.Modifications=item2.Modifications && item1.Charge=item2.Charge 
+               && item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge &&
+               item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && item1.URI=item2.URI && 
+               item1.SpectraRef=item2.SpectraRef && item1.Details=item2.Details &&
+               item1.SmallMoleculeAbundances=item2.SmallMoleculeAbundances
 
-//            ///Replaces externalFormatDocumentation of existing object with new one.
-//            static member addExternalFormatDocumentation
-//                (externalFormatDocumentation:string) (table:RawFile) =
-//                table.ExternalFormatDocumentation <- externalFormatDocumentation
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:SmallMoleculeSection) =
+                    SmallMoleculeSectionHandler.tryFindByDescription dbContext item.Description
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SmallMoleculeSectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
 
-//            ///Replaces fileFormat of existing object with new one.
-//            static member addFileFormat
-//                (fileFormat:CVParam) (table:RawFile) =
-//                table.FileFormat <- fileFormat
-//                table
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:SmallMoleculeSection) =
+                SmallMoleculeSectionHandler.addToContext dbContext item
+                dbContext.SaveChanges()
 
-//            ///Adds a identificationFileParam to an existing object.
-//            static member addDetail (detail:RawFileParam) (table:RawFile) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
+        type MetaDataSectionHandler =
+            ///Initializes a smallMoleculeSection-object with at least all necessary parameters.
+            static member init
+                (             
+                    description                      : string,
+                    version                          : string,
+                    mode                             : MzTabMode,
+                    mzType                           : MzType,
+                    searchEngineScores               : seq<SearchEngineScore>,
+                    fixedModifications               : seq<FixedModification>, 
+                    variableModifications            : seq<VariableModification>, 
+                    ?id                              : string,
+                    ?title                           : string,
+                    ?sampleProcessings               : seq<SampleProcessing>,
+                    ?instruments                     : seq<Instrument>,
+                    ?analysisSoftwares               : seq<AnalysisSoftware>,
+                    ?falseDiscoveryRates             : seq<FalseDiscoveryRate>,
+                    ?publications                    : string,
+                    ?persons                         : seq<Person>, 
+                    ?uri                             : string,
+                    ?quantification                  : Quantification,
+                    ?msRuns                          : seq<MSRun>,
+                    ?samples                         : seq<Sample>, 
+                    ?assays                          : seq<Assay>,
+                    ?studyVariables                  : seq<StudyVariable>, 
+                    ?colUnit                         : ColUnit,
+                    ?proteinSections                 : seq<ProteinSection>, 
+                    ?peptideSections                 : seq<PeptideSection>, 
+                    ?psmSections                     : seq<PSMSection>, 
+                    ?smallMoleculeSections           : seq<SmallMoleculeSection>,
+                    ?details                         : seq<MetaDataSectionParam>
+                ) =
 
-//            ///Adds a collection of identificationFileParams to an existing object.
-//            static member addDetails (details:seq<RawFileParam>) (table:RawFile) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
+                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
+                let title'                 = defaultArg title Unchecked.defaultof<string>
+                let sampleProcessings'     = convertOptionToList sampleProcessings
+                let instruments'           = convertOptionToList instruments
+                let analysisSoftwares'     = convertOptionToList analysisSoftwares
+                let falseDiscoveryRates'   = convertOptionToList falseDiscoveryRates
+                let publications'          = defaultArg publications Unchecked.defaultof<string>
+                let persons'               = convertOptionToList persons
+                let uri'                   = defaultArg uri Unchecked.defaultof<string>
+                let quantification'        = defaultArg quantification Unchecked.defaultof<Quantification>
+                let msRuns'                = convertOptionToList msRuns
+                let samples'               = convertOptionToList samples
+                let assays'                = convertOptionToList assays
+                let studyVariables'        = convertOptionToList studyVariables
+                let colUnit'               = defaultArg colUnit Unchecked.defaultof<ColUnit>
+                let proteinSections'       = convertOptionToList proteinSections
+                let peptideSections'       = convertOptionToList peptideSections
+                let psmSections'           = convertOptionToList psmSections
+                let smallMoleculeSections' = convertOptionToList smallMoleculeSections
+                let details'               = convertOptionToList details
 
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
+                new MetaDataSection(
+                                    id',
+                                    title',
+                                    description,
+                                    version,
+                                    Nullable(mode),
+                                    Nullable(mzType),
+                                    sampleProcessings' |> List,
+                                    instruments',
+                                    analysisSoftwares',
+                                    searchEngineScores |> List,
+                                    falseDiscoveryRates',
+                                    publications',
+                                    persons',
+                                    uri',
+                                    fixedModifications |> List,
+                                    variableModifications |> List,
+                                    quantification',
+                                    msRuns',
+                                    samples',
+                                    assays',
+                                    studyVariables',
+                                    colUnit',
+                                    proteinSections',
+                                    peptideSections',
+                                    psmSections',
+                                    smallMoleculeSections',
+                                    details',
+                                    Nullable(DateTime.Now)
+                                   )
 
-//            ///Tries to find a rawFile-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.RawFile.Find(id))
+            ///Replaces title of existing object with new one.
+            static member addTitle
+                (title:string) (table:MetaDataSection) =
+                table.Title <- title
+                table
 
-//            ///Tries to find a rawFile-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (location:string) =
-//                query {
-//                       for i in dbContext.RawFile.Local do
-//                           if i.Location=location
-//                              then select (i, i.FileFormat, i.MethodFile, i.Details)
-//                      }
-//                |> Seq.map (fun (rawFile, _, _, _) -> rawFile)
-//                |> (fun rawFile -> 
-//                    if (Seq.exists (fun rawFile' -> rawFile' <> null) rawFile) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.RawFile do
-//                                       if i.Location=location
-//                                          then select  (i, i.FileFormat, i.MethodFile, i.Details)
-//                                  }
-//                            |> Seq.map (fun (rawFile, _, _, _) -> rawFile)
-//                            |> (fun rawFile -> if (Seq.exists (fun rawFile' -> rawFile' <> null) rawFile) = false
-//                                                            then None
-//                                                            else Some rawFile
-//                               )
-//                        else Some rawFile
-//                   )
+            ///Adds a sampleProcessing to an existing object.
+            static member addSampleProcessing (sampleProcessing:SampleProcessing) (table:MetaDataSection) =
+                table.SampleProcessings <- addToList table.SampleProcessings sampleProcessing
+                table
 
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:RawFile) (item2:RawFile) =
-//               item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
-//               && item1.FileFormat=item2.FileFormat && item1.MethodFile=item2.MethodFile
-//               && item1.Details=item2.Details
+            ///Adds a collection of sampleProcessings to an existing object.
+            static member addSampleProcessings (sampleProcessings:seq<SampleProcessing>) (table:MetaDataSection) =
+                table.SampleProcessings <- addCollectionToList table.SampleProcessings sampleProcessings
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:RawFile) =
-//                    RawFileHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match RawFileHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
+            ///Adds a instrument to an existing object.
+            static member addInstrument (instrument:Instrument) (table:MetaDataSection) =
+                table.Instruments <- addToList table.Instruments instrument
+                table
 
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFile) =
-//                RawFileHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Adds a collection of instruments to an existing object.
+            static member addInstruments (instruments:seq<Instrument>) (table:MetaDataSection) =
+                table.Instruments <- addCollectionToList table.Instruments instruments
+                table
+                
+            ///Adds a analysisSoftware to an existing object.
+            static member addAnalysisSoftware (analysisSoftware:AnalysisSoftware) (table:MetaDataSection) =
+                table.AnalysisSoftwares <- addToList table.AnalysisSoftwares analysisSoftware
+                table
 
-//        type RawFilesGroupHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    rawFiles                     : seq<RawFile>,
-//                    ?id                          : string, 
-//                    ?details                     : seq<RawFilesGroupParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+            ///Adds a collection of analysisSoftwares to an existing object.
+            static member addAnalysisSoftwares (analysisSoftwares:seq<AnalysisSoftware>) (table:MetaDataSection) =
+                table.AnalysisSoftwares <- addCollectionToList table.AnalysisSoftwares analysisSoftwares
+                table
 
-//                new RawFilesGroup(
-//                                  id', 
-//                                  rawFiles |> List, 
-//                                  details',
-//                                  //mzIdentML', 
-//                                  Nullable(DateTime.Now)
-//                                 )
+            ///Adds a falseDiscoveryRate to an existing object.
+            static member addFalseDiscoveryRates (falseDiscoveryRate:FalseDiscoveryRate) (table:MetaDataSection) =
+                table.FalseDiscoveryRates <- addToList table.FalseDiscoveryRates falseDiscoveryRate
+                table
 
-//            ///Adds a rawFile to an existing object.
-//            static member addRawFile (detail:RawFile) (table:RawFilesGroup) =
-//                let result = table.RawFiles <- addToList table.RawFiles detail
-//                table
+            ///Adds a collection of falseDiscoveryRates to an existing object.
+            static member addFalseDiscoveryRate (falseDiscoveryRates:seq<FalseDiscoveryRate>) (table:MetaDataSection) =
+                table.FalseDiscoveryRates <- addCollectionToList table.FalseDiscoveryRates falseDiscoveryRates
+                table
 
-//            ///Adds a collection of rawFile to an existing object.
-//            static member addRawFiles (details:seq<RawFile>) (table:RawFilesGroup) =
-//                let result = table.RawFiles <- addCollectionToList table.RawFiles details
-//                table
+            ///Replaces publication of existing object with new one.
+            static member addPublication
+                (publication:string) (table:MetaDataSection) =
+                table.Publications <- publication
+                table
+
+            ///Adds a person to an existing object.
+            static member addPerson (person:Person) (table:MetaDataSection) =
+                table.Persons <- addToList table.Persons person
+                table
+
+            ///Adds a collection of persons to an existing object.
+            static member addPersons (persons:seq<Person>) (table:MetaDataSection) =
+                table.Persons <- addCollectionToList table.Persons persons
+                table
+
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (table:MetaDataSection) =
+                table.URI <- uri
+                table
+
+            ///Replaces quantification of existing object with new one.
+            static member addQuantification
+                (quantification:Quantification) (table:MetaDataSection) =
+                table.Quantification <- quantification
+                table
+
+            ///Adds a msRun to an existing object.
+            static member addMSRun (msRun:MSRun) (table:MetaDataSection) =
+                table.MSRuns <- addToList table.MSRuns msRun
+                table
+
+            ///Adds a collection of msRuns to an existing object.
+            static member addMSRuns (msRuns:seq<MSRun>) (table:MetaDataSection) =
+                table.MSRuns <- addCollectionToList table.MSRuns msRuns
+                table
+
+            ///Adds a sample to an existing object.
+            static member addSample (sample:Sample) (table:MetaDataSection) =
+                table.Samples <- addToList table.Samples sample
+                table
+
+            ///Adds a collection of samples to an existing object.
+            static member addSamples (samples:seq<Sample>) (table:MetaDataSection) =
+                table.Samples <- addCollectionToList table.Samples samples
+                table
+
+            ///Adds a assay to an existing object.
+            static member addAssay (assay:Assay) (table:MetaDataSection) =
+                table.Assays <- addToList table.Assays assay
+                table
+
+            ///Adds a collection of assays to an existing object.
+            static member addAssays (assays:seq<Assay>) (table:MetaDataSection) =
+                table.Assays <- addCollectionToList table.Assays assays
+                table
+
+            ///Adds a studyVariable to an existing object.
+            static member addStudyVariable (studyVariable:StudyVariable) (table:MetaDataSection) =
+                table.StudyVariables <- addToList table.StudyVariables studyVariable
+                table
+
+            ///Adds a collection of studyVariables to an existing object.
+            static member addStudyVariables (studyVariables:seq<StudyVariable>) (table:MetaDataSection) =
+                table.StudyVariables <- addCollectionToList table.StudyVariables studyVariables
+                table
+
+            ///Replaces colUnit of existing object with new one.
+            static member addColUnit
+                (colUnit:ColUnit) (table:MetaDataSection) =
+                table.ColUnit <- colUnit
+                table
+
+            ///Adds a proteinSection to an existing object.
+            static member addProteinSection (proteinSection:ProteinSection) (table:MetaDataSection) =
+                table.ProteinSections <- addToList table.ProteinSections proteinSection
+                table
+
+            ///Adds a collection of proteinSections to an existing object.
+            static member addProteinSections (proteinSections:seq<ProteinSection>) (table:MetaDataSection) =
+                table.ProteinSections <- addCollectionToList table.ProteinSections proteinSections
+                table
             
-//            ///Adds a rawFilesGroupParam to an existing object.
-//            static member addDetail (detail:RawFilesGroupParam) (table:RawFilesGroup) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of rawFilesGroupParams to an existing object.
-//            static member addDetails (details:seq<RawFilesGroupParam>) (table:RawFilesGroup) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a rawFilesGroup-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.RawFilesGroup.Find(id))
-
-//            ///Tries to find a rawFilesGroup-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByRawFiles (dbContext:MzQuantML) (rawFiles:seq<RawFile>) =
-//                query {
-//                       for i in dbContext.RawFilesGroup.Local do
-//                           if i.RawFiles=(rawFiles |> List)
-//                              then select (i, i.RawFiles, i.Details)
-//                      }
-//                |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
-//                |> (fun rawFilesGroup -> 
-//                    if (Seq.exists (fun rawFilesGroup' -> rawFilesGroup' <> null) rawFilesGroup) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.RawFilesGroup do
-//                                       if i.RawFiles=(rawFiles |> List)
-//                                          then select  (i, i.RawFiles, i.Details)
-//                                  }
-//                            |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
-//                            |> (fun rawFilesGroup -> if (Seq.exists (fun rawFilesGroup' -> rawFilesGroup' <> null) rawFilesGroup) = false
-//                                                            then None
-//                                                            else Some rawFilesGroup
-//                               )
-//                        else Some rawFilesGroup
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:RawFilesGroup) (item2:RawFilesGroup) =
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:RawFilesGroup) =
-//                    RawFilesGroupHandler.tryFindByRawFiles dbContext item.RawFiles
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match RawFilesGroupHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFilesGroup) =
-//                RawFilesGroupHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type InputFilesHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    ?id                          : string,
-//                    ?rawFilesGroups              : seq<RawFilesGroup>,
-//                    ?methodFiles                 : seq<MethodFile>,
-//                    ?identificationFiles         : seq<IdentificationFile>,
-//                    ?searchDatabases             : seq<SearchDatabase>,
-//                    ?sourceFiles                 : seq<SourceFile>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let rawFilesGroups'              = convertOptionToList rawFilesGroups
-//                let methodFiles'                 = convertOptionToList methodFiles
-//                let identificationFiles'         = convertOptionToList identificationFiles
-//                let searchDatabases'             = convertOptionToList searchDatabases
-//                let sourceFiles'                 = convertOptionToList sourceFiles
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new InputFiles(
-//                               id', 
-//                               rawFilesGroups', 
-//                               methodFiles',
-//                               identificationFiles',
-//                               searchDatabases',
-//                               sourceFiles',
-//                               //mzIdentML', 
-//                               Nullable(DateTime.Now)
-//                              )
-
-//            ///Adds a rawFilesGroup to an existing object.
-//            static member addRawFilesGroup (detail:RawFilesGroup) (table:InputFiles) =
-//                let result = table.RawFilesGroups <- addToList table.RawFilesGroups detail
-//                table
-
-//            ///Adds a collection of rawFilesGroups to an existing object.
-//            static member addRawFilesGroups (details:seq<RawFilesGroup>) (table:InputFiles) =
-//                let result = table.RawFilesGroups <- addCollectionToList table.RawFilesGroups details
-//                table
-            
-//            ///Adds a methodFile to an existing object.
-//            static member addMethodFile (detail:MethodFile) (table:InputFiles) =
-//                let result = table.MethodFiles <- addToList table.MethodFiles detail
-//                table
-
-//            ///Adds a collection of methodFiles to an existing object.
-//            static member addMethodFiles (details:seq<MethodFile>) (table:InputFiles) =
-//                let result = table.MethodFiles <- addCollectionToList table.MethodFiles details
-//                table
-            
-//            ///Adds a identificationFile to an existing object.
-//            static member addIdentificationFile (detail:IdentificationFile) (table:InputFiles) =
-//                let result = table.IdentificationFiles <- addToList table.IdentificationFiles detail
-//                table
-
-//            ///Adds a collection of identificationFiles to an existing object.
-//            static member addIdentificationFiles (details:seq<IdentificationFile>) (table:InputFiles) =
-//                let result = table.IdentificationFiles <- addCollectionToList table.IdentificationFiles details
-//                table
-            
-//            ///Adds a searchDatabase to an existing object.
-//            static member addSearchDatabase (detail:SearchDatabase) (table:InputFiles) =
-//                let result = table.SearchDatabases <- addToList table.SearchDatabases detail
-//                table
-
-//            ///Adds a collection of searchDatabases to an existing object.
-//            static member addDetails (details:seq<SearchDatabase>) (table:InputFiles) =
-//                let result = table.SearchDatabases <- addCollectionToList table.SearchDatabases details
-//                table
-            
-//            ///Adds a sourceFile to an existing object.
-//            static member addSourceFile (detail:SourceFile) (table:InputFiles) =
-//                let result = table.SourceFiles <- addToList table.SourceFiles detail
-//                table
-
-//            ///Adds a collection of sourceFiles to an existing object.
-//            static member addSourceFiles (details:seq<SourceFile>) (table:InputFiles) =
-//                let result = table.SourceFiles <- addCollectionToList table.SourceFiles details
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a inputFiles-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.InputFiles.Find(id))
-
-//            ///Tries to find a inputFiles-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByRawFilesGroups (dbContext:MzQuantML) (rawFilesGroups:seq<RawFilesGroup>) =
-//                query {
-//                       for i in dbContext.InputFiles.Local do
-//                           if i.RawFilesGroups=(rawFilesGroups |> List)
-//                              then select (i, i.MethodFiles, i.RawFilesGroups, i.SearchDatabases, i.SourceFiles, i.IdentificationFiles)
-//                      }
-//                |> Seq.map (fun (inputFiles, _, _, _, _, _) -> inputFiles)
-//                |> (fun inputFiles -> 
-//                    if (Seq.exists (fun inputFiles' -> inputFiles' <> null) inputFiles) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.InputFiles do
-//                                       if i.RawFilesGroups=(rawFilesGroups |> List)
-//                                          then select  (i, i.MethodFiles, i.RawFilesGroups, i.SearchDatabases, i.SourceFiles, i.IdentificationFiles)
-//                                  }
-//                            |> Seq.map (fun (inputFiles, _, _, _, _, _) -> inputFiles)
-//                            |> (fun inputFiles -> if (Seq.exists (fun inputFiles' -> inputFiles' <> null) inputFiles) = false
-//                                                            then None
-//                                                            else Some inputFiles
-//                               )
-//                        else Some inputFiles
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:InputFiles) (item2:InputFiles) =
-//               item1.MethodFiles=item2.MethodFiles && item1.SearchDatabases=item2.SearchDatabases
-//               && item1.SourceFiles=item2.SourceFiles && item1.IdentificationFiles=item2.IdentificationFiles
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:InputFiles) =
-//                    InputFilesHandler.tryFindByRawFilesGroups dbContext item.RawFilesGroups
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match InputFilesHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:InputFiles) =
-//                InputFilesHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ModificationHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    detail                     : CVParam,
-//                    ?id                        : string,
-//                    ?massDelta                 : float,
-//                    ?residues                  : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let massDelta'                   = defaultArg massDelta Unchecked.defaultof<float>
-//                let residues'                    = defaultArg residues Unchecked.defaultof<string>
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Modification(
-//                                 id', 
-//                                 Nullable(massDelta'),
-//                                 residues',
-//                                 detail,
-//                                 //mzIdentML', 
-//                                 Nullable(DateTime.Now)
-//                                )
-
-//            ///Replaces name of existing object with new one.
-//            static member addMassDelta
-//                (massDelta:float) (table:Modification) =
-//                table.MassDelta <- Nullable(massDelta)
-//                table
-
-//            ///Replaces name of existing object with new one.
-//            static member addResidues
-//                (residues:string) (table:Modification) =
-//                table.Residues <- residues
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Modification.Find(id))
-
-//            ///Tries to find a modification-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (detail:CVParam) =
-//                query {
-//                       for i in dbContext.Modification.Local do
-//                           if i.Detail=detail
-//                              then select (i, i.Detail)
-//                      }
-//                |> Seq.map (fun (modification, _) -> modification)
-//                |> (fun modification -> 
-//                    if (Seq.exists (fun modification' -> modification' <> null) modification) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Modification do
-//                                       if i.Detail=detail
-//                                          then select (i, i.Detail)
-//                                  }
-//                            |> Seq.map (fun (modification, _) -> modification)
-//                            |> (fun modification -> if (Seq.exists (fun modification' -> modification' <> null) modification) = false
-//                                                            then None
-//                                                            else Some modification
-//                               )
-//                        else Some modification
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
-//                item1.MassDelta=item2.MassDelta && item1.Residues=item2.Residues
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Modification) =
-//                    ModificationHandler.tryFindByName dbContext item.Detail
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ModificationHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Modification) =
-//                ModificationHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type AssayHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?rawFilesGroup               : RawFilesGroup,
-//                    ?label                       : seq<Modification>,
-//                    ?identificationFile          : IdentificationFile,
-//                    ?details                     : seq<AssayParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let rawFilesGroup'               = defaultArg rawFilesGroup Unchecked.defaultof<RawFilesGroup>
-//                let label'                       = convertOptionToList label
-//                let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Assay(
-//                          id', 
-//                          name', 
-//                          rawFilesGroup', 
-//                          label', 
-//                          identificationFile', 
-//                          details',
-//                          Nullable(DateTime.Now)
-//                         )
-
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:Assay) =
-//                table.Name <- name
-//                table
-            
-//            ///Replaces rawFilesGroup of existing object with new one.
-//            static member addRawFilesGroup
-//                (rawFilesGroup:RawFilesGroup) (table:Assay) =
-//                table.RawFilesGroup <- rawFilesGroup
-//                table
-
-//            ///Replaces identificationFile of existing object with new one.
-//            static member addIdentificationFile
-//                (identificationFile:IdentificationFile) (table:Assay) =
-//                table.IdentificationFile <- identificationFile
-//                table
-
-//            ///Adds a modification to an existing object.
-//            static member addLabel (modification:Modification) (table:Assay) =
-//                let result = table.Label <- addToList table.Label modification
-//                table
-
-//            ///Adds a collection of modifications to an existing object.
-//            static member addLabels (modifications:seq<Modification>) (table:Assay) =
-//                let result = table.Label <- addCollectionToList table.Label modifications
-//                table
-
-//            ///Adds a assayParam to an existing object.
-//            static member addDetail (detail:AssayParam) (table:Assay) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of assayParams to an existing object.
-//            static member addDetails (details:seq<AssayParam>) (table:Assay) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Assay.Find(id))
-
-//            ///Tries to find an assay-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.Assay.Local do
-//                           if i.Name=name
-//                              then select (i, i.RawFilesGroup, i.IdentificationFile, i.Label, i.Details)
-//                      }
-//                |> Seq.map (fun (assay, _, _, _, _) -> assay)
-//                |> (fun assay -> 
-//                    if (Seq.exists (fun assay' -> assay' <> null) assay) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Assay do
-//                                       if i.Name=name
-//                                          then select (i, i.RawFilesGroup, i.IdentificationFile, i.Label, i.Details)
-//                                  }
-//                            |> Seq.map (fun (assay, _, _, _, _) -> assay)
-//                            |> (fun assay -> if (Seq.exists (fun assay' -> assay' <> null) assay) = false
-//                                                            then None
-//                                                            else Some assay
-//                               )
-//                        else Some assay
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Assay) (item2:Assay) =
-//                item1.RawFilesGroup=item2.RawFilesGroup && item1.IdentificationFile=item2.IdentificationFile 
-//                && item1.Label=item2.Label && item1.Details=item2.Details 
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Assay) =
-//                    AssayHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match AssayHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Assay) =
-//                AssayHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type StudyVariableHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    assays                       : seq<Assay>,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?details                     : seq<StudyVariableParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new StudyVariable(
-//                                  id', 
-//                                  name',
-//                                  assays |> List,
-//                                  details',
-//                                  Nullable(DateTime.Now)
-//                                 )
-
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:StudyVariable) =
-//                table.Name <- name
-//                table
-
-//            ///Adds a studyVariableParam to an existing object.
-//            static member addDetail (detail:StudyVariableParam) (table:StudyVariable) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of studyVariableParams to an existing object.
-//            static member addDetails (details:seq<StudyVariableParam>) (table:StudyVariable) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a studyVariable-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.StudyVariable.Find(id))
-
-//            ///Tries to find a studyVariable-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.StudyVariable.Local do
-//                           if i.Name=name
-//                              then select (i, i.Assays, i.Details)
-//                      }
-//                |> Seq.map (fun (studyVariable, _, _) -> studyVariable)
-//                |> (fun studyVariable -> 
-//                    if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.StudyVariable do
-//                                       if i.Name=name
-//                                          then select (i, i.Assays, i.Details)
-//                                  }
-//                            |> Seq.map (fun (studyVariable, _, _) -> studyVariable)
-//                            |> (fun studyVariable -> if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
-//                                                            then None
-//                                                            else Some studyVariable
-//                               )
-//                        else Some studyVariable
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:StudyVariable) (item2:StudyVariable) =
-//                item1.Assays=item2.Assays && item1.Details=item2.Details 
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:StudyVariable) =
-//                    StudyVariableHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match StudyVariableHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariable) =
-//                StudyVariableHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type RatioHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    numerator                    : StudyVariable,
-//                    denominator                  : StudyVariable,
-//                    numeratorDatatype            : CVParam,
-//                    denominatorDatatype          : CVParam,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?ratioCalculation            : seq<RatioCalculationParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                        = defaultArg name Unchecked.defaultof<string>
-//                let ratioCalculation'            = convertOptionToList ratioCalculation
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Ratio(
-//                          id', 
-//                          name',
-//                          numerator,
-//                          denominator,
-//                          ratioCalculation',
-//                          numeratorDatatype,
-//                          denominatorDatatype,
-//                          Nullable(DateTime.Now)
-//                         )
-
-//            ///Replaces name of existing object with new one.
-//            static member addName
-//                (name:string) (table:Ratio) =
-//                table.Name <- name
-//                table
-
-//            ///Adds a ratioCalculationParam to an existing object.
-//            static member addRatioCalculationParam (ratioCalculationParam:RatioCalculationParam) (table:Ratio) =
-//                let result = table.RatioCalculation <- addToList table.RatioCalculation ratioCalculationParam
-//                table
-
-//            ///Adds a collection of ratioCalculationParams to an existing object.
-//            static member addRatioCalculationParams (ratioCalculationParams:seq<RatioCalculationParam>) (table:Ratio) =
-//                let result = table.RatioCalculation <- addCollectionToList table.RatioCalculation ratioCalculationParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Ratio.Find(id))
-
-//            ///Tries to find a ratio-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.Ratio.Local do
-//                           if i.Name=name
-//                              then select (i, i.Numerator, i.Denominator, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
-//                      }
-//                |> Seq.map (fun (ratio, _, _ ,_ , _, _) -> ratio)
-//                |> (fun ratio -> 
-//                    if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Ratio do
-//                                       if i.Name=name
-//                                          then select (i, i.Numerator, i.Denominator, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
-//                                  }
-//                            |> Seq.map (fun (ratio, _, _ ,_ , _, _) -> ratio)
-//                            |> (fun ratio -> if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
-//                                                            then None
-//                                                            else Some ratio
-//                               )
-//                        else Some ratio
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Ratio) (item2:Ratio) =
-//                item1.Numerator=item2.Numerator && item1.Denominator=item2.Denominator && 
-//                item1.NumeratorDataType=item2.NumeratorDataType && item1.RatioCalculation=item2.RatioCalculation && 
-//                item1.DenominatorDataType=item2.DenominatorDataType              
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Ratio) =
-//                    RatioHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match RatioHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Ratio) =
-//                RatioHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ColumnHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    index                        : int,
-//                    datatype                     : CVParam,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Column(
-//                           id',
-//                           Nullable(index),
-//                           datatype,
-//                           Nullable(DateTime.Now)
-//                          )
-
-//            ///Tries to find a column-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Column.Find(id))
-
-//            ///Tries to find a column-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByIndex (dbContext:MzQuantML) (index:Nullable<int>) =
-//                query {
-//                       for i in dbContext.Column.Local do
-//                           if i.Index=index
-//                              then select (i, i.DataType)
-//                      }
-//                |> Seq.map (fun (column, _) -> column)
-//                |> (fun column -> 
-//                    if (Seq.exists (fun column' -> column' <> null) column) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Column do
-//                                       if i.Index=index
-//                                          then select (i, i.DataType)
-//                                  }
-//                            |> Seq.map (fun (column, _) -> column)
-//                            |> (fun column -> if (Seq.exists (fun column' -> column' <> null) column) = false
-//                                                            then None
-//                                                            else Some column
-//                               )
-//                        else Some column
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Column) (item2:Column) =
-//                item1.DataType=item2.DataType
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Column) =
-//                    ColumnHandler.tryFindByIndex dbContext item.Index
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ColumnHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Column) =
-//                ColumnHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type DataMatrixHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    row                          : string,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new DataMatrix(
-//                               id',
-//                               row,
-//                               Nullable(DateTime.Now)
-//                              )
-
-//            ///Tries to find a dataMatrix-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.DataMatrix.Find(id))
-
-//            ///Tries to find a dataMatrix-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByRow (dbContext:MzQuantML) (row:string) =
-//                query {
-//                       for i in dbContext.DataMatrix.Local do
-//                           if i.Row=row
-//                              then select i
-//                      }
-//                |> Seq.map (fun (dataMatrix) -> dataMatrix)
-//                |> (fun dataMatrix -> 
-//                    if (Seq.exists (fun dataMatrix' -> dataMatrix' <> null) dataMatrix) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.DataMatrix do
-//                                       if i.Row=row
-//                                          then select i
-//                                  }
-//                            |> Seq.map (fun (dataMatrix) -> dataMatrix)
-//                            |> (fun dataMatrix -> if (Seq.exists (fun dataMatrix' -> dataMatrix' <> null) dataMatrix) = false
-//                                                            then None
-//                                                            else Some dataMatrix
-//                               )
-//                        else Some dataMatrix
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:DataMatrix) (item2:DataMatrix) =
-//                item1.ID=item2.ID
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:DataMatrix) =
-//                    DataMatrixHandler.tryFindByRow dbContext item.Row
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match DataMatrixHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:DataMatrix) =
-//                DataMatrixHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type AssayQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    dataType                     : CVParam,
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new AssayQuantLayer(
-//                                    id',
-//                                    dataType,
-//                                    columnIndex,
-//                                    dataMatrix,
-//                                    Nullable(DateTime.Now)
-//                                   )
-
-//            ///Tries to find a assayQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.AssayQuantLayer.Find(id))
-
-//            ///Tries to find a assayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.AssayQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataType, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
-//                |> (fun assayQuantLayer -> 
-//                    if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.AssayQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataType, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
-//                            |> (fun assayQuantLayer -> if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
-//                                                            then None
-//                                                            else Some assayQuantLayer
-//                               )
-//                        else Some assayQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:AssayQuantLayer) (item2:AssayQuantLayer) =
-//                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:AssayQuantLayer) =
-//                    AssayQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match AssayQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:AssayQuantLayer) =
-//                AssayQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type GlobalQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    columns                      : seq<Column>,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new GlobalQuantLayer(
-//                                     id',
-//                                     columns |> List,
-//                                     dataMatrix,
-//                                     Nullable(DateTime.Now)
-//                                    )
-
-//            ///Tries to find a globalQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.GlobalQuantLayer.Find(id))
-
-//            ///Tries to find a globalQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
-//                query {
-//                       for i in dbContext.GlobalQuantLayer.Local do
-//                           if i.DataMatrix=dataMatrix
-//                              then select (i, i.Columns, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
-//                |> (fun globalQuantLayer -> 
-//                    if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.GlobalQuantLayer do
-//                                       if i.DataMatrix=dataMatrix
-//                                          then select (i, i.Columns, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
-//                            |> (fun globalQuantLayer -> if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
-//                                                            then None
-//                                                            else Some globalQuantLayer
-//                               )
-//                        else Some globalQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:GlobalQuantLayer) (item2:GlobalQuantLayer) =
-//                item1.Columns=item2.Columns
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:GlobalQuantLayer) =
-//                    GlobalQuantLayerHandler.tryFindByDataMatrix dbContext item.DataMatrix
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match GlobalQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:GlobalQuantLayer) =
-//                GlobalQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type MS2AssayQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    dataType                     : CVParam,
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new MS2AssayQuantLayer(
-//                                       id',
-//                                       dataType,
-//                                       columnIndex,
-//                                       dataMatrix,
-//                                       Nullable(DateTime.Now)
-//                                      )
-
-//            ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.MS2AssayQuantLayer.Find(id))
-
-//            ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.MS2AssayQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataType, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
-//                |> (fun ms2AssayQuantLayer -> 
-//                    if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.MS2AssayQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataType, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
-//                            |> (fun ms2AssayQuantLayer -> if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
-//                                                            then None
-//                                                            else Some ms2AssayQuantLayer
-//                               )
-//                        else Some ms2AssayQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:MS2AssayQuantLayer) (item2:MS2AssayQuantLayer) =
-//                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:MS2AssayQuantLayer) =
-//                    MS2AssayQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match MS2AssayQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2AssayQuantLayer) =
-//                MS2AssayQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type StudyVariableQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    dataType                     : CVParam,
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new StudyVariableQuantLayer(
-//                                            id',
-//                                            dataType,
-//                                            columnIndex,
-//                                            dataMatrix,
-//                                            Nullable(DateTime.Now)
-//                                           )
-
-//            ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.StudyVariableQuantLayer.Find(id))
-
-//            ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.StudyVariableQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataType, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
-//                |> (fun studyVariableQuantLayer -> 
-//                    if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.StudyVariableQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataType, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
-//                            |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
-//                                                                    then None
-//                                                                    else Some studyVariableQuantLayer
-//                               )
-//                        else Some studyVariableQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:StudyVariableQuantLayer) (item2:StudyVariableQuantLayer) =
-//                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:StudyVariableQuantLayer) =
-//                    StudyVariableQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match StudyVariableQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariableQuantLayer) =
-//                StudyVariableQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type RatioQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new RatioQuantLayer(
-//                                    id',
-//                                    columnIndex,
-//                                    dataMatrix,
-//                                    Nullable(DateTime.Now)
-//                                   )
-
-//            ///Tries to find a ratioQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.RatioQuantLayer.Find(id))
-
-//            ///Tries to find a ratioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.RatioQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (studyVariableQuantLayer, _) -> studyVariableQuantLayer)
-//                |> (fun studyVariableQuantLayer -> 
-//                    if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.RatioQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (studyVariableQuantLayer, _) -> studyVariableQuantLayer)
-//                            |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
-//                                                                    then None
-//                                                                    else Some studyVariableQuantLayer
-//                               )
-//                        else Some studyVariableQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:RatioQuantLayer) (item2:RatioQuantLayer) =
-//                item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:RatioQuantLayer) =
-//                    RatioQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match RatioQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:RatioQuantLayer) =
-//                RatioQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProcessingMethodHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    order                        : int,
-//                    ?id                          : string,
-//                    ?details                     : seq<ProcessingMethodParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new ProcessingMethod(
-//                                     id', 
-//                                     Nullable(order),
-//                                     details',
-//                                     Nullable(DateTime.Now)
-//                                    )
-
-//            ///Adds a processingMethodParam to an existing object.
-//            static member addDetail (processingMethodParam:ProcessingMethodParam) (table:ProcessingMethod) =
-//                let result = table.Details <- addToList table.Details processingMethodParam
-//                table
-
-//            ///Adds a collection of processingMethodParams to an existing object.
-//            static member addDetails (processingMethodParams:seq<ProcessingMethodParam>) (table:ProcessingMethod) =
-//                let result = table.Details <- addCollectionToList table.Details processingMethodParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a processingMethod-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProcessingMethod.Find(id))
-
-//            ///Tries to find a processingMethod-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
-//                query {
-//                       for i in dbContext.ProcessingMethod.Local do
-//                           if i.Order=order
-//                              then select (i, i.Details)
-//                      }
-//                |> Seq.map (fun (processingMethod, _) -> processingMethod)
-//                |> (fun processingMethod -> 
-//                    if (Seq.exists (fun processingMethod' -> processingMethod' <> null) processingMethod) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProcessingMethod do
-//                                       if i.Order=order
-//                                          then select (i, i.Details)
-//                                  }
-//                            |> Seq.map (fun (processingMethod, _) -> processingMethod)
-//                            |> (fun processingMethod -> if (Seq.exists (fun processingMethod' -> processingMethod' <> null) processingMethod) = false
-//                                                            then None
-//                                                            else Some processingMethod
-//                               )
-//                        else Some processingMethod
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProcessingMethod) (item2:ProcessingMethod) =
-//                item1.Details=item2.Details            
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProcessingMethod) =
-//                    ProcessingMethodHandler.tryFindByOrder dbContext item.Order
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProcessingMethodHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProcessingMethod) =
-//                ProcessingMethodHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type DataProcessingHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    order                        : int,
-//                    analysisSoftware             : AnalysisSoftware,
-//                    processingMethods            : seq<ProcessingMethod>,
-//                    ?id                          : string,
-//                    ?inputObjects                : string,
-//                    ?outputObjects               : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let inputObjects'                = defaultArg inputObjects Unchecked.defaultof<string>
-//                let outputObjects'               = defaultArg outputObjects Unchecked.defaultof<string>
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new DataProcessing(
-//                                   id', 
-//                                   Nullable(order),
-//                                   analysisSoftware,
-//                                   inputObjects',
-//                                   outputObjects',
-//                                   processingMethods |> List,
-//                                   Nullable(DateTime.Now)
-//                                  )
-
-//            ///Replaces inputObjects of existing object with new one.
-//            static member addInputObjects
-//                (inputObjects:string) (table:DataProcessing) =
-//                table.InputObjects <- inputObjects
-//                table
-
-//            ///Replaces outputObjects of existing object with new one.
-//            static member addOutputObjects
-//                (outputObjects:string) (table:DataProcessing) =
-//                table.OutputObjects <- outputObjects
-//                table
-            
-//            /////Adds a identificationFileParam to an existing object.
-//            //static member addDetail (processingMethodParam:ProcessingMethodParam) (table:ProcessingMethod) =
-//            //    let result = table.Details <- addToList table.Details processingMethodParam
-//            //    table
-
-//            /////Adds a collection of identificationFileParams to an existing object.
-//            //static member addDetails (processingMethodParams:seq<ProcessingMethodParam>) (table:ProcessingMethod) =
-//            //    let result = table.Details <- addCollectionToList table.Details processingMethodParams
-//            //    table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.DataProcessing.Find(id))
-
-//            ///Tries to find a dataProcessing-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
-//                query {
-//                       for i in dbContext.DataProcessing.Local do
-//                           if i.Order=order
-//                              then select (i, i.AnalysisSoftware, i.ProcessingMethods)
-//                      }
-//                |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
-//                |> (fun dataProcessing -> 
-//                    if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.DataProcessing do
-//                                       if i.Order=order
-//                                          then select (i, i.AnalysisSoftware, i.ProcessingMethods)
-//                                  }
-//                            |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
-//                            |> (fun dataProcessing -> if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
-//                                                            then None
-//                                                            else Some dataProcessing
-//                               )
-//                        else Some dataProcessing
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:DataProcessing) (item2:DataProcessing) =
-//                item1.AnalysisSoftware=item2.AnalysisSoftware && item1.InputObjects=item2.InputObjects &&
-//                item1.OutputObjects=item2.OutputObjects && item1.ProcessingMethods=item2.ProcessingMethods
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:DataProcessing) =
-//                    DataProcessingHandler.tryFindByOrder dbContext item.Order
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match DataProcessingHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:DataProcessing) =
-//                DataProcessingHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type DBIdentificationRefHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    fkExternalFile               : string,
-//                    searchDatabase               : SearchDatabase,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new DBIdentificationRef(
-//                                        id', 
-//                                        fkExternalFile,
-//                                        searchDatabase,
-//                                        Nullable(DateTime.Now)
-//                                       )
-
-//            ///Tries to find a dbIdentificationRef-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.DBIdentificationRef.Find(id))
-
-//            ///Tries to find a dbIdentificationRef-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByFKExternalFile (dbContext:MzQuantML) (fkExternalFile:string) =
-//                query {
-//                       for i in dbContext.DBIdentificationRef.Local do
-//                           if i.FKExternalFile=fkExternalFile
-//                              then select (i, i.SearchDatabase)
-//                      }
-//                |> Seq.map (fun (dbIdentificationRef, _) -> dbIdentificationRef)
-//                |> (fun dbIdentificationRef -> 
-//                    if (Seq.exists (fun dbIdentificationRef' -> dbIdentificationRef' <> null) dbIdentificationRef) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.DBIdentificationRef do
-//                                       if i.FKExternalFile=fkExternalFile
-//                                          then select (i, i.SearchDatabase)
-//                                  }
-//                            |> Seq.map (fun (dbIdentificationRef, _) -> dbIdentificationRef)
-//                            |> (fun dbIdentificationRef -> if (Seq.exists (fun dbIdentificationRef' -> dbIdentificationRef' <> null) dbIdentificationRef) = false
-//                                                            then None
-//                                                            else Some dbIdentificationRef
-//                               )
-//                        else Some dbIdentificationRef
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:DBIdentificationRef) (item2:DBIdentificationRef) =
-//                item1.SearchDatabase=item2.SearchDatabase
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:DBIdentificationRef) =
-//                    DBIdentificationRefHandler.tryFindByFKExternalFile dbContext item.FKExternalFile
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match DBIdentificationRefHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:DBIdentificationRef) =
-//                DBIdentificationRefHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type FeatureHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    charge                       : int,
-//                    mz                           : float,
-//                    retentionTime                : float,
-//                    ?id                          : string,
-//                    ?fkChromatogram              : string,
-//                    ?rawFile                     : RawFile,
-//                    ?fkSpectrum                  : string,
-//                    ?massTraces                  : seq<MassTraceParam>,
-//                    ?details                     : seq<FeatureParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let fkChromatogram'              = defaultArg fkChromatogram Unchecked.defaultof<string>
-//                let rawFile'                     = defaultArg rawFile Unchecked.defaultof<RawFile>
-//                let fkSpectrum'                  = defaultArg fkSpectrum Unchecked.defaultof<string>
-//                let massTraces'                  = convertOptionToList massTraces
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Feature(
-//                            id', 
-//                            Nullable(charge),
-//                            fkChromatogram',
-//                            Nullable(mz),
-//                            rawFile',
-//                            Nullable(retentionTime),
-//                            fkSpectrum',
-//                            massTraces',
-//                            details',
-//                            Nullable(DateTime.Now)
-//                           )
-
-//            ///Replaces fkChromatogram of existing object with new one.
-//            static member addFKChromatogram
-//                (fkChromatogram:string) (table:Feature) =
-//                table.FKChromatogram <- fkChromatogram
-//                table
-
-//            ///Replaces rawFile of existing object with new one.
-//            static member addRawFile
-//                (rawFile:RawFile) (table:Feature) =
-//                table.RawFile <- rawFile
-//                table
-
-//            ///Replaces fkSpectrum of existing object with new one.
-//            static member addFKSpectrum
-//                (fkSpectrum:string) (table:Feature) =
-//                table.FKSpectrum <- fkSpectrum
-//                table
-            
-//            ///Adds a massTraceParam to an existing object.
-//            static member addMassTrace (massTraceParam:MassTraceParam) (table:Feature) =
-//                let result = table.MassTraces <- addToList table.MassTraces massTraceParam
-//                table
-
-//            ///Adds a collection of massTraceParams to an existing object.
-//            static member addMassTraces (massTraceParams:seq<MassTraceParam>) (table:Feature) =
-//                let result = table.MassTraces <- addCollectionToList table.MassTraces massTraceParams
-//                table
-
-//            ///Adds a processingMethodParam to an existing object.
-//            static member addDetail (processingMethodParam:FeatureParam) (table:Feature) =
-//                let result = table.Details <- addToList table.Details processingMethodParam
-//                table
-
-//            ///Adds a collection of processingMethodParams to an existing object.
-//            static member addDetails (processingMethodParams:seq<FeatureParam>) (table:Feature) =
-//                let result = table.Details <- addCollectionToList table.Details processingMethodParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a feature-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Feature.Find(id))
-
-//            ///Tries to find a feature-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByOrder (dbContext:MzQuantML) (mz:Nullable<float>) =
-//                query {
-//                       for i in dbContext.Feature.Local do
-//                           if i.MZ=mz
-//                              then select (i, i.MassTraces, i.RawFile, i.Details)
-//                      }
-//                |> Seq.map (fun (feature, _, _, _) -> feature)
-//                |> (fun feature -> 
-//                    if (Seq.exists (fun feature' -> feature' <> null) feature) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Feature do
-//                                       if i.MZ=mz
-//                                          then select (i, i.MassTraces, i.RawFile, i.Details)
-//                                  }
-//                            |> Seq.map (fun (feature, _, _, _) -> feature)
-//                            |> (fun feature -> if (Seq.exists (fun feature' -> feature' <> null) feature) = false
-//                                                            then None
-//                                                            else Some feature
-//                               )
-//                        else Some feature
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Feature) (item2:Feature) =
-//                item1.Charge=item2.Charge && item1.RetentionTime=item2.RetentionTime &&
-//                item1.FKChromatogram=item2.FKChromatogram && item1.RawFile=item2.RawFile &&
-//                item1.FKSpectrum=item2.FKSpectrum && item1.MassTraces=item2.MassTraces
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Feature) =
-//                    FeatureHandler.tryFindByOrder dbContext item.MZ
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match FeatureHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Feature) =
-//                FeatureHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type SmallMoleculeHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    ?id                          : string,
-//                    ?modifications               : seq<Modification>,
-//                    ?dbIdentificationRefs        : seq<DBIdentificationRef>,
-//                    ?features                    : seq<Feature>,
-//                    ?details                     : seq<SmallMoleculeParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let modifications'               = convertOptionToList modifications
-//                let dbIdentificationRefs'        = convertOptionToList dbIdentificationRefs
-//                let features'                    = convertOptionToList features
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new SmallMolecule(
-//                                  id', 
-//                                  modifications',
-//                                  dbIdentificationRefs',
-//                                  features',                                  
-//                                  details',
-//                                  Nullable(DateTime.Now)
-//                                 )
-            
-//            ///Adds a modification to an existing object.
-//            static member addModification (modification:Modification) (table:SmallMolecule) =
-//                let result = table.Modifications <- addToList table.Modifications modification
-//                table
-
-//            ///Adds a collection of modifications to an existing object.
-//            static member addModifications (modifications:seq<Modification>) (table:SmallMolecule) =
-//                let result = table.Modifications <- addCollectionToList table.Modifications modifications
-//                table
-
-//            ///Adds a dbIdentificationRef to an existing object.
-//            static member addDBIdentificationRef (dbIdentificationRef:DBIdentificationRef) (table:SmallMolecule) =
-//                let result = table.DBIdentificationRefs <- addToList table.DBIdentificationRefs dbIdentificationRef
-//                table
-
-//            ///Adds a collection of dbIdentificationRefs to an existing object.
-//            static member addDBIdentificationRefs (dbIdentificationRefs:seq<DBIdentificationRef>) (table:SmallMolecule) =
-//                let result = table.DBIdentificationRefs <- addCollectionToList table.DBIdentificationRefs dbIdentificationRefs
-//                table
-
-//            ///Adds a feature to an existing object.
-//            static member addFeature (feature:Feature) (table:SmallMolecule) =
-//                let result = table.Features <- addToList table.Features feature
-//                table
-
-//            ///Adds a collection of features to an existing object.
-//            static member addFeatures (features:seq<Feature>) (table:SmallMolecule) =
-//                let result = table.Features <- addCollectionToList table.Features features
-//                table
-
-//            ///Adds a smallMoleculeParam to an existing object.
-//            static member addDetail (smallMoleculeParam:SmallMoleculeParam) (table:SmallMolecule) =
-//                let result = table.Details <- addToList table.Details smallMoleculeParam
-//                table
-
-//            ///Adds a collection of smallMoleculeParams to an existing object.
-//            static member addDetails (smallMoleculeParam:seq<SmallMoleculeParam>) (table:SmallMolecule) =
-//                let result = table.Details <- addCollectionToList table.Details smallMoleculeParam
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a smallMolecule-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SmallMolecule.Find(id))
-
-//            ///Tries to find a smallMolecule-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByModifications (dbContext:MzQuantML) (modifications:seq<Modification>) =
-//                query {
-//                       for i in dbContext.SmallMolecule.Local do
-//                           if i.Modifications=(modifications |> List)
-//                              then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
-//                      }
-//                |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
-//                |> (fun smallMolecule -> 
-//                    if (Seq.exists (fun smallMolecule' -> smallMolecule' <> null) smallMolecule) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SmallMolecule do
-//                                       if i.Modifications=(modifications |> List)
-//                                          then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
-//                                  }
-//                            |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
-//                            |> (fun smallMolecule -> if (Seq.exists (fun smallMolecule' -> smallMolecule' <> null) smallMolecule) = false
-//                                                            then None
-//                                                            else Some smallMolecule
-//                               )
-//                        else Some smallMolecule
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SmallMolecule) (item2:SmallMolecule) =
-//                item1.DBIdentificationRefs=item2.DBIdentificationRefs && item1.Features=item2.Features && item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SmallMolecule) =
-//                    SmallMoleculeHandler.tryFindByModifications dbContext item.Modifications
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match SmallMoleculeHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMolecule) =
-//                SmallMoleculeHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type SmallMoleculeListHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    smallMolecules               : seq<SmallMolecule>,
-//                    ?id                          : string,
-//                    ?globalQuantLayer            : seq<GlobalQuantLayer>,
-//                    ?assayQuantLayer             : seq<AssayQuantLayer>,
-//                    ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
-//                    ?ratioQuantLayer             : RatioQuantLayer,
-//                    ?details                     : seq<SmallMoleculeListParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let globalQuantLayer'               = convertOptionToList globalQuantLayer
-//                let assayQuantLayer'                = convertOptionToList assayQuantLayer
-//                let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
-//                let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new SmallMoleculeList(
-//                                      id',
-//                                      smallMolecules |> List,
-//                                      globalQuantLayer',
-//                                      assayQuantLayer',
-//                                      studyVariableQuantLayer',
-//                                      ratioQuantLayer',
-//                                      details',
-//                                      Nullable(DateTime.Now)
-//                                     )
-            
-//            ///Adds a globalQuantLayer to an existing object.
-//            static member addGlobalQuantLayer (globalQuantLayer:GlobalQuantLayer) (table:SmallMoleculeList) =
-//                let result = table.GlobalQuantLayers <- addToList table.GlobalQuantLayers globalQuantLayer
-//                table
-
-//            ///Adds a collection of globalQuantLayers to an existing object.
-//            static member addGlobalQuantLayers (globalQuantLayers:seq<GlobalQuantLayer>) (table:SmallMoleculeList) =
-//                let result = table.GlobalQuantLayers <- addCollectionToList table.GlobalQuantLayers globalQuantLayers
-//                table
-
-//            ///Adds a assayQuantLayer to an existing object.
-//            static member addAssayQuantLayer (assayQuantLayer:AssayQuantLayer) (table:SmallMoleculeList) =
-//                let result = table.AssayQuantLayers <- addToList table.AssayQuantLayers assayQuantLayer
-//                table
-
-//            ///Adds a collection of assayQuantLayers to an existing object.
-//            static member addAssayQuantLayers (assayQuantLayers:seq<AssayQuantLayer>) (table:SmallMoleculeList) =
-//                let result = table.AssayQuantLayers <- addCollectionToList table.AssayQuantLayers assayQuantLayers
-//                table
-
-//            ///Adds a studyVariableQuantLayer to an existing object.
-//            static member addStudyVariableQuantLayer (studyVariableQuantLayer:StudyVariableQuantLayer) (table:SmallMoleculeList) =
-//                let result = table.StudyVariableQuantLayers <- addToList table.StudyVariableQuantLayers studyVariableQuantLayer
-//                table
-
-//            ///Adds a collection of studyVariableQuantLayers to an existing object.
-//            static member addStudyVariableQuantLayers (studyVariableQuantLayers:seq<StudyVariableQuantLayer>) (table:SmallMoleculeList) =
-//                let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
-//                table
-
-//            /////Replaces ratioQuantLayer of existing object with new one.
-//            static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:SmallMoleculeList) =
-//                table.RatioQuantLayer <- ratioQuantLayer
-//                table
-
-//            ///Adds a smallMoleculeParam to an existing object.
-//            static member addDetail (smallMoleculeParam:SmallMoleculeListParam) (table:SmallMoleculeList) =
-//                let result = table.Details <- addToList table.Details smallMoleculeParam
-//                table
-
-//            ///Adds a collection of smallMoleculeParams to an existing object.
-//            static member addDetails (smallMoleculeParams:seq<SmallMoleculeListParam>) (table:SmallMoleculeList) =
-//                let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a smallMoleculeList-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.SmallMoleculeList.Find(id))
-
-//            ///Tries to find a smallMoleculeList-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindBySmallMolecules (dbContext:MzQuantML) (smallMolecules:seq<SmallMolecule>) =
-//                query {
-//                       for i in dbContext.SmallMoleculeList.Local do
-//                           if i.SmallMolecules=(smallMolecules |> List)
-//                              then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                      }
-//                |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
-//                |> (fun smallMoleculeList -> 
-//                    if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.SmallMoleculeList do
-//                                       if i.SmallMolecules=(smallMolecules |> List)
-//                                          then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                                  }
-//                            |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
-//                            |> (fun smallMoleculeList -> if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
-//                                                            then None
-//                                                            else Some smallMoleculeList
-//                               )
-//                        else Some smallMoleculeList
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:SmallMoleculeList) (item2:SmallMoleculeList) =
-//                item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-//                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeList) =
-//                    SmallMoleculeListHandler.tryFindBySmallMolecules dbContext item.SmallMolecules
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match SmallMoleculeListHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeList) =
-//                SmallMoleculeListHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type FeatureQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    columns                      : seq<Column>,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new FeatureQuantLayer(
-//                                      id',
-//                                      columns |> List,
-//                                      dataMatrix,
-//                                      Nullable(DateTime.Now)
-//                                     )
-
-//            ///Tries to find a featureQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.FeatureQuantLayer.Find(id))
-
-//            ///Tries to find a featureQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
-//                query {
-//                       for i in dbContext.FeatureQuantLayer.Local do
-//                           if i.DataMatrix=dataMatrix
-//                              then select (i, i.Columns, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
-//                |> (fun featureQuantLayer -> 
-//                    if (Seq.exists (fun featureQuantLayer' -> featureQuantLayer' <> null) featureQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.FeatureQuantLayer do
-//                                       if i.DataMatrix=dataMatrix
-//                                          then select (i, i.Columns, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
-//                            |> (fun featureQuantLayer -> if (Seq.exists (fun featureQuantLayer' -> featureQuantLayer' <> null) featureQuantLayer) = false
-//                                                            then None
-//                                                            else Some featureQuantLayer
-//                               )
-//                        else Some featureQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:FeatureQuantLayer) (item2:FeatureQuantLayer) =
-//                item1.Columns=item2.Columns
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:FeatureQuantLayer) =
-//                    FeatureQuantLayerHandler.tryFindByDataMatrix dbContext item.DataMatrix
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match FeatureQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureQuantLayer) =
-//                FeatureQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type MS2RatioQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    dataType                     : CVParam,
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new MS2RatioQuantLayer(
-//                                       id',
-//                                       dataType,
-//                                       columnIndex,
-//                                       dataMatrix,
-//                                       Nullable(DateTime.Now)
-//                                      )
-
-//            ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.MS2RatioQuantLayer.Find(id))
-
-//            ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.MS2RatioQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataType, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
-//                |> (fun ms2RatioQuantLayer -> 
-//                    if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.MS2RatioQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataType, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
-//                            |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
-//                                                            then None
-//                                                            else Some ms2RatioQuantLayer
-//                               )
-//                        else Some ms2RatioQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:MS2RatioQuantLayer) (item2:MS2RatioQuantLayer) =
-//                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:MS2RatioQuantLayer) =
-//                    MS2RatioQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match MS2RatioQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2RatioQuantLayer) =
-//                MS2RatioQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type MS2StudyVariableQuantLayerHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    dataType                     : CVParam,
-//                    columnIndex                  : string,
-//                    dataMatrix                   : DataMatrix,
-//                    ?id                          : string
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new MS2StudyVariableQuantLayer(
-//                                               id',
-//                                               dataType,
-//                                               columnIndex,
-//                                               dataMatrix,
-//                                               Nullable(DateTime.Now)
-//                                              )
-
-//            ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.MS2StudyVariableQuantLayer.Find(id))
-
-//            ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
-//                query {
-//                       for i in dbContext.MS2StudyVariableQuantLayer.Local do
-//                           if i.ColumnIndex=columnIndex
-//                              then select (i, i.DataType, i.DataMatrix)
-//                      }
-//                |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
-//                |> (fun ms2StudyVariableQuantLayer -> 
-//                    if (Seq.exists (fun ms2StudyVariableQuantLayer' -> ms2StudyVariableQuantLayer' <> null) ms2StudyVariableQuantLayer) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.MS2StudyVariableQuantLayer do
-//                                       if i.ColumnIndex=columnIndex
-//                                          then select (i, i.DataType, i.DataMatrix)
-//                                  }
-//                            |> Seq.map (fun (ms2StudyVariableQuantLayer, _, _) -> ms2StudyVariableQuantLayer)
-//                            |> (fun ms2StudyVariableQuantLayer -> if (Seq.exists (fun ms2StudyVariableQuantLayer' -> ms2StudyVariableQuantLayer' <> null) ms2StudyVariableQuantLayer) = false
-//                                                                    then None
-//                                                                    else Some ms2StudyVariableQuantLayer
-//                               )
-//                        else Some ms2StudyVariableQuantLayer
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:MS2StudyVariableQuantLayer) (item2:MS2StudyVariableQuantLayer) =
-//                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:MS2StudyVariableQuantLayer) =
-//                    MS2StudyVariableQuantLayerHandler.tryFindByColumnIndex dbContext item.ColumnIndex
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match MS2StudyVariableQuantLayerHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2StudyVariableQuantLayer) =
-//                MS2StudyVariableQuantLayerHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type FeatureListHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    rawFilesGroup                : RawFilesGroup,
-//                    features                     : seq<Feature>,
-//                    ?id                          : string,
-//                    ?featureQuantLayers          : seq<FeatureQuantLayer>,
-//                    ?ms2AssayQuantLayers         : seq<MS2AssayQuantLayer>,
-//                    ?ms2StudyVariableQuantLayer  : seq<MS2StudyVariableQuantLayer>,
-//                    ?ms2RatioQuantLayer          : seq<MS2RatioQuantLayer>,
-//                    ?details                     : seq<FeatureListParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let featureQuantLayers'          = convertOptionToList featureQuantLayers
-//                let ms2AssayQuantLayers'         = convertOptionToList ms2AssayQuantLayers
-//                let ms2StudyVariableQuantLayer'  = convertOptionToList ms2StudyVariableQuantLayer
-//                let ms2RatioQuantLayer'          = convertOptionToList ms2RatioQuantLayer
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new FeatureList(
-//                                id', 
-//                                rawFilesGroup,
-//                                features |> List,
-//                                featureQuantLayers', 
-//                                ms2AssayQuantLayers',
-//                                ms2StudyVariableQuantLayer',
-//                                ms2RatioQuantLayer',
-//                                details',
-//                                Nullable(DateTime.Now)
-//                               )
-            
-//            ///Adds a featureQuantLayer to an existing object.
-//            static member addModification (featureQuantLayer:FeatureQuantLayer) (table:FeatureList) =
-//                let result = table.FeatureQuantLayers <- addToList table.FeatureQuantLayers featureQuantLayer
-//                table
-
-//            ///Adds a collection of featureQuantLayers to an existing object.
-//            static member addModifications (featureQuantLayers:seq<FeatureQuantLayer>) (table:FeatureList) =
-//                let result = table.FeatureQuantLayers <- addCollectionToList table.FeatureQuantLayers featureQuantLayers
-//                table
-
-//            ///Adds a ms2AssayQuantLayer to an existing object.
-//            static member addMS2AssayQuantLayer (ms2AssayQuantLayer:MS2AssayQuantLayer) (table:FeatureList) =
-//                let result = table.MS2AssayQuantLayers <- addToList table.MS2AssayQuantLayers ms2AssayQuantLayer
-//                table
-
-//            ///Adds a collection of ms2AssayQuantLayers to an existing object.
-//            static member addMS2AssayQuantLayers (ms2AssayQuantLayers:seq<MS2AssayQuantLayer>) (table:FeatureList) =
-//                let result = table.MS2AssayQuantLayers <- addCollectionToList table.MS2AssayQuantLayers ms2AssayQuantLayers
-//                table
-
-//            ///Adds a ms2StudyVariableQuantLayer to an existing object.
-//            static member addMS2StudyVariableQuantLayer (ms2StudyVariableQuantLayer:MS2StudyVariableQuantLayer) (table:FeatureList) =
-//                let result = table.MS2StudyVariableQuantLayers <- addToList table.MS2StudyVariableQuantLayers ms2StudyVariableQuantLayer
-//                table
-
-//            ///Adds a collection of ms2StudyVariableQuantLayers to an existing object.
-//            static member addMS2StudyVariableQuantLayers (ms2StudyVariableQuantLayers:seq<MS2StudyVariableQuantLayer>) (table:FeatureList) =
-//                let result = table.MS2StudyVariableQuantLayers <- addCollectionToList table.MS2StudyVariableQuantLayers ms2StudyVariableQuantLayers
-//                table
-
-//            ///Adds a ms2RatioQuantLayer to an existing object.
-//            static member addMS2RatioQuantLayer (ms2RatioQuantLayer:MS2RatioQuantLayer) (table:FeatureList) =
-//                let result = table.MS2RatioQuantLayers <- addToList table.MS2RatioQuantLayers ms2RatioQuantLayer
-//                table
-
-//            ///Adds a collection of ms2RatioQuantLayers to an existing object.
-//            static member addMS2RatioQuantLayers (ms2RatioQuantLayers:seq<MS2RatioQuantLayer>) (table:FeatureList) =
-//                let result = table.MS2RatioQuantLayers <- addCollectionToList table.MS2RatioQuantLayers ms2RatioQuantLayers
-//                table
-
-//            ///Adds a featureListParam to an existing object.
-//            static member addDetail (featureListParam:FeatureListParam) (table:FeatureList) =
-//                let result = table.Details <- addToList table.Details featureListParam
-//                table
-
-//            ///Adds a collection of featureListParams to an existing object.
-//            static member addDetails (featureListParams:seq<FeatureListParam>) (table:FeatureList) =
-//                let result = table.Details <- addCollectionToList table.Details featureListParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.FeatureList.Find(id))
-
-//            ///Tries to find a featureList-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByRawFilesGroup (dbContext:MzQuantML) (rawFilesGroup:RawFilesGroup) =
-//                query {
-//                       for i in dbContext.FeatureList.Local do
-//                           if i.RawFilesGroup=rawFilesGroup
-//                              then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
-//                                           i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
-//                                          )
-//                      }
-//                |> Seq.map (fun (featureList, _, _, _, _, _, _, _) -> featureList)
-//                |> (fun featureList -> 
-//                    if (Seq.exists (fun featureList' -> featureList' <> null) featureList) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.FeatureList do
-//                                       if i.RawFilesGroup=rawFilesGroup
-//                                          then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
-//                                                       i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
-//                                                      )
-//                                  }
-//                            |> Seq.map (fun (featureList, _, _, _, _, _, _, _) -> featureList)
-//                            |> (fun featureList -> if (Seq.exists (fun featureList' -> featureList' <> null) featureList) = false
-//                                                            then None
-//                                                            else Some featureList
-//                               )
-//                        else Some featureList
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:FeatureList) (item2:FeatureList) =
-//                item1.MS2AssayQuantLayers=item2.MS2AssayQuantLayers && item1.MS2StudyVariableQuantLayers=item2.MS2StudyVariableQuantLayers && 
-//                item1.MS2RatioQuantLayers=item2.MS2RatioQuantLayers && item1.Features=item2.Features &&
-//                item1.FeatureQuantLayers=item2.FeatureQuantLayers && item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:FeatureList) =
-//                    FeatureListHandler.tryFindByRawFilesGroup dbContext item.RawFilesGroup
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match FeatureListHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureList) =
-//                FeatureListHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type EvidenceRefHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    assays                       : seq<Assay>,
-//                    feature                      : Feature,
-//                    ?id                          : string,
-//                    ?fkExternalFileRef           : string,
-//                    ?identificationFile          : IdentificationFile
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let fkExternalFileRef'           = defaultArg fkExternalFileRef Unchecked.defaultof<string>
-//                let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new EvidenceRef(
-//                                id', 
-//                                assays |> List,
-//                                feature,
-//                                fkExternalFileRef',
-//                                identificationFile',
-//                                Nullable(DateTime.Now)
-//                               )
-
-//            ///Replaces fkExternalFileRef of existing object with new one.
-//            static member addFKExternalFileRef
-//                (fkExternalFileRef:string) (table:EvidenceRef) =
-//                table.FKExternalFileRef <- fkExternalFileRef
-//                table
-
-//            ///Replaces identificationFile of existing object with new one.
-//            static member addOutputObjects
-//                (identificationFile:IdentificationFile) (table:EvidenceRef) =
-//                table.IdentificationFile <- identificationFile
-//                table
-
-//            ///Tries to find a evidenceRef-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.EvidenceRef.Find(id))
-
-//            ///Tries to find a evidenceRef-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByFeature (dbContext:MzQuantML) (feature:Feature) =
-//                query {
-//                       for i in dbContext.EvidenceRef.Local do
-//                           if i.Feature=feature
-//                              then select (i, i.Feature, i.Assays, i.IdentificationFile)
-//                      }
-//                |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
-//                |> (fun evidenceRef -> 
-//                    if (Seq.exists (fun evidenceRef' -> evidenceRef' <> null) evidenceRef) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.EvidenceRef do
-//                                       if i.Feature=feature
-//                                          then select (i, i.Feature, i.Assays, i.IdentificationFile)
-//                                  }
-//                            |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
-//                            |> (fun evidenceRef -> if (Seq.exists (fun evidenceRef' -> evidenceRef' <> null) evidenceRef) = false
-//                                                            then None
-//                                                            else Some evidenceRef
-//                               )
-//                        else Some evidenceRef
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:EvidenceRef) (item2:EvidenceRef) =
-//                item1.Assays=item2.Assays && item1.IdentificationFile=item2.IdentificationFile &&
-//                item1.FKExternalFileRef=item2.FKExternalFileRef && item1.IdentificationFile=item2.IdentificationFile
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:EvidenceRef) =
-//                    EvidenceRefHandler.tryFindByFeature dbContext item.Feature
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match EvidenceRefHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:EvidenceRef) =
-//                EvidenceRefHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type PeptideConsensusHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    charge                       : int,
-//                    evidenceRefs                 : seq<EvidenceRef>,
-//                    ?id                          : string,
-//                    ?searchDatabase              : SearchDatabase,
-//                    ?dataMatrix                  : DataMatrix,
-//                    ?peptideSequence             : string,
-//                    ?modifications               : seq<Modification>,
-//                    ?details                     : seq<PeptideConsensusParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
-//                let dataMatrix'                  = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
-//                let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
-//                let modifications'               = convertOptionToList modifications
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new PeptideConsensus(
-//                                     id',
-//                                     Nullable(charge),
-//                                     searchDatabase',
-//                                     dataMatrix',
-//                                     peptideSequence',
-//                                     modifications',
-//                                     evidenceRefs |> List,
-//                                     details',
-//                                     Nullable(DateTime.Now)
-//                                    )
-
-//            ///Replaces searchDatabase of existing object with new one.
-//            static member addSearchDatabase
-//                (searchDatabase:SearchDatabase) (table:PeptideConsensus) =
-//                table.SearchDatabase <- searchDatabase
-//                table
-
-//            ///Replaces dataMatrix of existing object with new one.
-//            static member addDataMatrix
-//                (dataMatrix:DataMatrix) (table:PeptideConsensus) =
-//                table.DataMatrix <- dataMatrix
-//                table
-
-//            ///Replaces peptideSequence of existing object with new one.
-//            static member addPeptideSequence
-//                (peptideSequence:string) (table:PeptideConsensus) =
-//                table.PeptideSequence <- peptideSequence
-//                table
-
-//            ///Adds a modification to an existing object.
-//            static member addModification (modification:Modification) (table:PeptideConsensus) =
-//                let result = table.Modifications <- addToList table.Modifications modification
-//                table
-
-//            ///Adds a collection of modifications to an existing object.
-//            static member addModifications (modifications:seq<Modification>) (table:PeptideConsensus) =
-//                let result = table.Modifications <- addCollectionToList table.Modifications modifications
-//                table
-
-//            ///Adds a peptideConsensusParam to an existing object.
-//            static member addDetail (detail:PeptideConsensusParam) (table:PeptideConsensus) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of peptideConsensusParams to an existing object.
-//            static member addDetails (details:seq<PeptideConsensusParam>) (table:PeptideConsensus) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            ///Tries to find a peptideConsensus-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.PeptideConsensus.Find(id))
-
-//            ///Tries to find a peptideConsensus-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByCharge (dbContext:MzQuantML) (charge:Nullable<int>) =
-//                query {
-//                       for i in dbContext.PeptideConsensus.Local do
-//                           if i.Charge=charge
-//                              then select (i, i.EvidenceRefs, i.SearchDatabase, i.DataMatrix, i.Modifications, i.Details)
-//                      }
-//                |> Seq.map (fun (peptideConsensus, _, _, _, _, _) -> peptideConsensus)
-//                |> (fun peptideConsensus -> 
-//                    if (Seq.exists (fun peptideConsensus' -> peptideConsensus' <> null) peptideConsensus) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.PeptideConsensus do
-//                                       if i.Charge=charge
-//                                          then select (i, i.EvidenceRefs, i.SearchDatabase, i.DataMatrix, i.Modifications, i.Details)
-//                                  }
-//                            |> Seq.map (fun (peptideConsensus, _, _, _, _, _) -> peptideConsensus)
-//                            |> (fun peptideConsensus -> if (Seq.exists (fun peptideConsensus' -> peptideConsensus' <> null) peptideConsensus) = false
-//                                                            then None
-//                                                            else Some peptideConsensus
-//                               )
-//                        else Some peptideConsensus
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:PeptideConsensus) (item2:PeptideConsensus) =
-//                item1.EvidenceRefs=item2.EvidenceRefs && item1.SearchDatabase=item2.SearchDatabase &&
-//                item1.DataMatrix=item2.DataMatrix && item1.Modifications=item2.Modifications &&
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:PeptideConsensus) =
-//                    PeptideConsensusHandler.tryFindByCharge dbContext item.Charge
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match PeptideConsensusHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensus) =
-//                PeptideConsensusHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProteinHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    accession                    : string,
-//                    searchDatabase               : SearchDatabase,
-//                    ?id                          : string,
-//                    ?identificationRefs          : seq<IdentificationRef>,
-//                    ?peptideConsensi             : seq<PeptideConsensus>,
-//                    ?details                     : seq<ProteinParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-//                let identificationRefs'          = convertOptionToList identificationRefs
-//                let peptideConsensi'             = convertOptionToList peptideConsensi
-//                let details'                     = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new Protein(
-//                            id',
-//                            accession,
-//                            searchDatabase,
-//                            identificationRefs',
-//                            peptideConsensi',
-//                            details',
-//                            Nullable(DateTime.Now)
-//                           )
-
-//            ///Adds a identificationRef to an existing object.
-//            static member addIdentificationRef (identificationRef:IdentificationRef) (table:Protein) =
-//                let result = table.IdentificationRefs <- addToList table.IdentificationRefs identificationRef
-//                table
-
-//            ///Adds a collection of identificationRefs to an existing object.
-//            static member addIdentificationRefs (identificationRefs:seq<IdentificationRef>) (table:Protein) =
-//                let result = table.IdentificationRefs <- addCollectionToList table.IdentificationRefs identificationRefs
-//                table
-
-//            ///Adds a peptideConsensus to an existing object.
-//            static member addPeptideConsensus (peptideConsensus:PeptideConsensus) (table:Protein) =
-//                let result = table.PeptideConsensi <- addToList table.PeptideConsensi peptideConsensus
-//                table
-
-//            ///Adds a collection of peptideConsensi to an existing object.
-//            static member addPeptideConsensi (peptideConsensi:seq<PeptideConsensus>) (table:Protein) =
-//                let result = table.PeptideConsensi <- addCollectionToList table.PeptideConsensi peptideConsensi
-//                table
-
-//            ///Adds a proteinParam to an existing object.
-//            static member addDetail (detail:ProteinParam) (table:Protein) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of proteinParams to an existing object.
-//            static member addDetails (details:seq<ProteinParam>) (table:Protein) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            ///Tries to find a protein-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.Protein.Find(id))
-
-//            ///Tries to find a protein-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByAccession (dbContext:MzQuantML) (accession:string) =
-//                query {
-//                       for i in dbContext.Protein.Local do
-//                           if i.Accession=accession
-//                              then select (i, i.IdentificationRefs, i.SearchDatabase, i.PeptideConsensi, i.Details)
-//                      }
-//                |> Seq.map (fun (protein, _, _, _, _) -> protein)
-//                |> (fun protein -> 
-//                    if (Seq.exists (fun protein' -> protein' <> null) protein) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.Protein do
-//                                       if i.Accession=accession
-//                                          then select (i, i.IdentificationRefs, i.SearchDatabase, i.PeptideConsensi, i.Details)
-//                                  }
-//                            |> Seq.map (fun (protein, _, _, _, _) -> protein)
-//                            |> (fun protein -> if (Seq.exists (fun protein' -> protein' <> null) protein) = false
-//                                                            then None
-//                                                            else Some protein
-//                               )
-//                        else Some protein
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:Protein) (item2:Protein) =
-//                item1.IdentificationRefs=item2.IdentificationRefs && item1.SearchDatabase=item2.SearchDatabase &&
-//                item1.PeptideConsensi=item2.PeptideConsensi && item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:Protein) =
-//                    ProteinHandler.tryFindByAccession dbContext item.Accession
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProteinHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:Protein) =
-//                ProteinHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProteinListHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    proteins                     : seq<Protein>,
-//                    ?id                          : string,
-//                    ?globalQuantLayer            : seq<GlobalQuantLayer>,
-//                    ?assayQuantLayer             : seq<AssayQuantLayer>,
-//                    ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
-//                    ?ratioQuantLayer             : RatioQuantLayer,
-//                    ?details                     : seq<ProteinListParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let globalQuantLayer'               = convertOptionToList globalQuantLayer
-//                let assayQuantLayer'                = convertOptionToList assayQuantLayer
-//                let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
-//                let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new ProteinList(
-//                                id',
-//                                proteins |> List,
-//                                globalQuantLayer',
-//                                assayQuantLayer',
-//                                studyVariableQuantLayer',
-//                                ratioQuantLayer',
-//                                details',
-//                                Nullable(DateTime.Now)
-//                               )
-            
-//            ///Adds a globalQuantLayer to an existing object.
-//            static member addGlobalQuantLayer (globalQuantLayer:GlobalQuantLayer) (table:ProteinList) =
-//                let result = table.GlobalQuantLayers <- addToList table.GlobalQuantLayers globalQuantLayer
-//                table
-
-//            ///Adds a collection of globalQuantLayers to an existing object.
-//            static member addGlobalQuantLayers (globalQuantLayers:seq<GlobalQuantLayer>) (table:ProteinList) =
-//                let result = table.GlobalQuantLayers <- addCollectionToList table.GlobalQuantLayers globalQuantLayers
-//                table
-
-//            ///Adds a assayQuantLayer to an existing object.
-//            static member addAssayQuantLayer (assayQuantLayer:AssayQuantLayer) (table:ProteinList) =
-//                let result = table.AssayQuantLayers <- addToList table.AssayQuantLayers assayQuantLayer
-//                table
-
-//            ///Adds a collection of assayQuantLayers to an existing object.
-//            static member addAssayQuantLayers (assayQuantLayers:seq<AssayQuantLayer>) (table:ProteinList) =
-//                let result = table.AssayQuantLayers <- addCollectionToList table.AssayQuantLayers assayQuantLayers
-//                table
-
-//            ///Adds a studyVariableQuantLayer to an existing object.
-//            static member addStudyVariableQuantLayer (studyVariableQuantLayer:StudyVariableQuantLayer) (table:ProteinList) =
-//                let result = table.StudyVariableQuantLayers <- addToList table.StudyVariableQuantLayers studyVariableQuantLayer
-//                table
-
-//            ///Adds a collection of studyVariableQuantLayers to an existing object.
-//            static member addStudyVariableQuantLayers (studyVariableQuantLayers:seq<StudyVariableQuantLayer>) (table:ProteinList) =
-//                let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
-//                table
-
-//            /////Replaces ratioQuantLayer of existing object with new one.
-//            static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:ProteinList) =
-//                table.RatioQuantLayer <- ratioQuantLayer
-//                table
-
-//            ///Adds a proteinListParam to an existing object.
-//            static member addDetail (detail:ProteinListParam) (table:ProteinList) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of proteinListParams to an existing object.
-//            static member addDetails (details:seq<ProteinListParam>) (table:ProteinList) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinList.Find(id))
-
-//            ///Tries to find a proteinList-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByProteins (dbContext:MzQuantML) (proteins:seq<Protein>) =
-//                query {
-//                       for i in dbContext.ProteinList.Local do
-//                           if i.Proteins=(proteins |> List)
-//                              then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                      }
-//                |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
-//                |> (fun proteinList -> 
-//                    if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinList do
-//                                       if i.Proteins=(proteins |> List)
-//                                          then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                                  }
-//                            |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
-//                            |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
-//                                                            then None
-//                                                            else Some proteinList
-//                               )
-//                        else Some proteinList
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinList) (item2:ProteinList) =
-//                item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-//                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinList) =
-//                    ProteinListHandler.tryFindByProteins dbContext item.Proteins
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProteinListHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinList) =
-//                ProteinListHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProteinRefHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    protein                      : Protein,
-//                    ?id                          : string,
-//                    ?details                     : seq<ProteinRefParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new ProteinRef(
-//                               id',
-//                               protein,
-//                               details',
-//                               Nullable(DateTime.Now)
-//                              )  
-
-//            ///Adds a proteinRefParam to an existing object.
-//            static member addDetail (detail:ProteinRefParam) (table:ProteinRef) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of proteinRefParams to an existing object.
-//            static member addDetails (details:seq<ProteinRefParam>) (table:ProteinRef) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            ///Tries to find a proteinRef-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinRef.Find(id))
-
-//            ///Tries to find a proteinRef-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByProtein (dbContext:MzQuantML) (protein:Protein) =
-//                query {
-//                       for i in dbContext.ProteinRef.Local do
-//                           if i.Protein=protein
-//                              then select (i, i.Protein, i.Details)
-//                      }
-//                |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
-//                |> (fun proteinRef -> 
-//                    if (Seq.exists (fun proteinRef' -> proteinRef' <> null) proteinRef) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinRef do
-//                                       if i.Protein=protein
-//                                          then select (i, i.Protein, i.Details)
-//                                  }
-//                            |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
-//                            |> (fun proteinRef -> if (Seq.exists (fun proteinRef' -> proteinRef' <> null) proteinRef) = false
-//                                                            then None
-//                                                            else Some proteinRef
-//                               )
-//                        else Some proteinRef
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinRef) (item2:ProteinRef) =
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinRef) =
-//                    ProteinRefHandler.tryFindByProtein dbContext item.Protein
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProteinRefHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinRef) =
-//                ProteinRefHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProteinGroupHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    searchDatabase               : SearchDatabase,
-//                    proteinRefs                  : seq<ProteinRef>,
-//                    ?id                          : string,
-//                    ?identificationRefs          : seq<IdentificationRef>,
-//                    ?details                     : seq<ProteinGroupParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let identificationRefs'             = convertOptionToList identificationRefs
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new ProteinGroup(
-//                                 id',
-//                                 searchDatabase,
-//                                 identificationRefs',
-//                                 proteinRefs |> List,
-//                                 details',
-//                                 Nullable(DateTime.Now)
-//                                )  
-
-//            ///Adds a proteinGroupParam to an existing object.
-//            static member addDetail (detail:ProteinGroupParam) (table:ProteinGroup) =
-//                let result = table.Details <- addToList table.Details detail
-//                table
-
-//            ///Adds a collection of proteinGroupParams to an existing object.
-//            static member addDetails (details:seq<ProteinGroupParam>) (table:ProteinGroup) =
-//                let result = table.Details <- addCollectionToList table.Details details
-//                table
-
-//            ///Tries to find a proteinGroup-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinGroup.Find(id))
-
-//            ///Tries to find a proteinGroup-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindBySearchDatabase (dbContext:MzQuantML) (searchDatabase:SearchDatabase) =
-//                query {
-//                       for i in dbContext.ProteinGroup.Local do
-//                           if i.SearchDatabase=searchDatabase
-//                              then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
-//                      }
-//                |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
-//                |> (fun proteinGroup -> 
-//                    if (Seq.exists (fun proteinGroup' -> proteinGroup' <> null) proteinGroup) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinGroup do
-//                                       if i.SearchDatabase=searchDatabase
-//                                          then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
-//                                  }
-//                            |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
-//                            |> (fun proteinGroup -> if (Seq.exists (fun proteinGroup' -> proteinGroup' <> null) proteinGroup) = false
-//                                                            then None
-//                                                            else Some proteinGroup
-//                               )
-//                        else Some proteinGroup
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinGroup) (item2:ProteinGroup) =
-//                item1.ProteinRefs=item2.ProteinRefs && item1.IdentificationRefs=item2.IdentificationRefs && 
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinGroup) =
-//                    ProteinGroupHandler.tryFindBySearchDatabase dbContext item.SearchDatabase
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProteinGroupHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroup) =
-//                ProteinGroupHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type ProteinGroupListHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    proteinGroups                : seq<ProteinGroup>,
-//                    ?id                          : string,
-//                    ?globalQuantLayer            : seq<GlobalQuantLayer>,
-//                    ?assayQuantLayer             : seq<AssayQuantLayer>,
-//                    ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
-//                    ?ratioQuantLayer             : RatioQuantLayer,
-//                    ?details                     : seq<ProteinGroupListParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let globalQuantLayer'               = convertOptionToList globalQuantLayer
-//                let assayQuantLayer'                = convertOptionToList assayQuantLayer
-//                let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
-//                let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new ProteinGroupList(
-//                                     id',
-//                                     proteinGroups |> List,
-//                                     globalQuantLayer',
-//                                     assayQuantLayer',
-//                                     studyVariableQuantLayer',
-//                                     ratioQuantLayer',
-//                                     details',
-//                                     Nullable(DateTime.Now)
-//                                    )
-            
-//            ///Adds a globalQuantLayer to an existing object.
-//            static member addGlobalQuantLayer (globalQuantLayer:GlobalQuantLayer) (table:ProteinGroupList) =
-//                let result = table.GlobalQuantLayers <- addToList table.GlobalQuantLayers globalQuantLayer
-//                table
-
-//            ///Adds a collection of globalQuantLayers to an existing object.
-//            static member addGlobalQuantLayers (globalQuantLayers:seq<GlobalQuantLayer>) (table:ProteinGroupList) =
-//                let result = table.GlobalQuantLayers <- addCollectionToList table.GlobalQuantLayers globalQuantLayers
-//                table
-
-//            ///Adds a assayQuantLayer to an existing object.
-//            static member addAssayQuantLayer (assayQuantLayer:AssayQuantLayer) (table:ProteinGroupList) =
-//                let result = table.AssayQuantLayers <- addToList table.AssayQuantLayers assayQuantLayer
-//                table
-
-//            ///Adds a collection of assayQuantLayers to an existing object.
-//            static member addAssayQuantLayers (assayQuantLayers:seq<AssayQuantLayer>) (table:ProteinGroupList) =
-//                let result = table.AssayQuantLayers <- addCollectionToList table.AssayQuantLayers assayQuantLayers
-//                table
-
-//            ///Adds a studyVariableQuantLayer to an existing object.
-//            static member addStudyVariableQuantLayer (studyVariableQuantLayer:StudyVariableQuantLayer) (table:ProteinGroupList) =
-//                let result = table.StudyVariableQuantLayers <- addToList table.StudyVariableQuantLayers studyVariableQuantLayer
-//                table
-
-//            ///Adds a collection of studyVariableQuantLayers to an existing object.
-//            static member addStudyVariableQuantLayers (studyVariableQuantLayers:seq<StudyVariableQuantLayer>) (table:ProteinGroupList) =
-//                let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
-//                table
-
-//            /////Replaces ratioQuantLayer of existing object with new one.
-//            static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:ProteinGroupList) =
-//                table.RatioQuantLayer <- ratioQuantLayer
-//                table
-
-//            ///Adds a smallMoleculeParam to an existing object.
-//            static member addDetail (smallMoleculeParam:ProteinGroupListParam) (table:ProteinGroupList) =
-//                let result = table.Details <- addToList table.Details smallMoleculeParam
-//                table
-
-//            ///Adds a collection of smallMoleculeParams to an existing object.
-//            static member addDetails (smallMoleculeParams:seq<ProteinGroupListParam>) (table:ProteinGroupList) =
-//                let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a proteinGroupList-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.ProteinGroupList.Find(id))
-
-//            ///Tries to find a proteinGroupList-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindBySmallMolecules (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
-//                query {
-//                       for i in dbContext.ProteinGroupList.Local do
-//                           if i.ProteinGroups=(proteinGroup |> List)
-//                              then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                      }
-//                |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
-//                |> (fun smallMoleculeList -> 
-//                    if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.ProteinGroupList do
-//                                       if i.ProteinGroups=(proteinGroup |> List)
-//                                          then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                                  }
-//                            |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
-//                            |> (fun smallMoleculeList -> if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
-//                                                            then None
-//                                                            else Some smallMoleculeList
-//                               )
-//                        else Some smallMoleculeList
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:ProteinGroupList) (item2:ProteinGroupList) =
-//                item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-//                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-//                item1.Details=item2.Details
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:ProteinGroupList) =
-//                    ProteinGroupListHandler.tryFindBySmallMolecules dbContext item.ProteinGroups
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match ProteinGroupListHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupList) =
-//                ProteinGroupListHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type PeptideConsensusListHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    finalResult                  : bool,
-//                    peptideConsensi              : seq<PeptideConsensus>,
-//                    ?id                          : string,
-//                    ?globalQuantLayer            : seq<GlobalQuantLayer>,
-//                    ?assayQuantLayer             : seq<AssayQuantLayer>,
-//                    ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
-//                    ?ratioQuantLayer             : RatioQuantLayer,
-//                    ?details                     : seq<PeptideConsensusListParam>
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let globalQuantLayer'               = convertOptionToList globalQuantLayer
-//                let assayQuantLayer'                = convertOptionToList assayQuantLayer
-//                let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
-//                let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-//                let details'                        = convertOptionToList details
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new PeptideConsensusList(
-//                                         id',
-//                                         Nullable(finalResult),
-//                                         peptideConsensi |> List,
-//                                         globalQuantLayer',
-//                                         assayQuantLayer',
-//                                         studyVariableQuantLayer',
-//                                         ratioQuantLayer',
-//                                         details',
-//                                         Nullable(DateTime.Now)
-//                                        )
-            
-//            ///Adds a globalQuantLayer to an existing object.
-//            static member addGlobalQuantLayer (globalQuantLayer:GlobalQuantLayer) (table:PeptideConsensusList) =
-//                let result = table.GlobalQuantLayers <- addToList table.GlobalQuantLayers globalQuantLayer
-//                table
-
-//            ///Adds a collection of globalQuantLayers to an existing object.
-//            static member addGlobalQuantLayers (globalQuantLayers:seq<GlobalQuantLayer>) (table:PeptideConsensusList) =
-//                let result = table.GlobalQuantLayers <- addCollectionToList table.GlobalQuantLayers globalQuantLayers
-//                table
-
-//            ///Adds a assayQuantLayer to an existing object.
-//            static member addAssayQuantLayer (assayQuantLayer:AssayQuantLayer) (table:PeptideConsensusList) =
-//                let result = table.AssayQuantLayers <- addToList table.AssayQuantLayers assayQuantLayer
-//                table
-
-//            ///Adds a collection of assayQuantLayers to an existing object.
-//            static member addAssayQuantLayers (assayQuantLayers:seq<AssayQuantLayer>) (table:PeptideConsensusList) =
-//                let result = table.AssayQuantLayers <- addCollectionToList table.AssayQuantLayers assayQuantLayers
-//                table
-
-//            ///Adds a studyVariableQuantLayer to an existing object.
-//            static member addStudyVariableQuantLayer (studyVariableQuantLayer:StudyVariableQuantLayer) (table:PeptideConsensusList) =
-//                let result = table.StudyVariableQuantLayers <- addToList table.StudyVariableQuantLayers studyVariableQuantLayer
-//                table
-
-//            ///Adds a collection of studyVariableQuantLayers to an existing object.
-//            static member addStudyVariableQuantLayers (studyVariableQuantLayers:seq<StudyVariableQuantLayer>) (table:PeptideConsensusList) =
-//                let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
-//                table
-
-//            /////Replaces ratioQuantLayer of existing object with new one.
-//            static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:PeptideConsensusList) =
-//                table.RatioQuantLayer <- ratioQuantLayer
-//                table
-
-//            ///Adds a peptideConsensusListParam to an existing object.
-//            static member addDetail (peptideConsensusListParam:PeptideConsensusListParam) (table:PeptideConsensusList) =
-//                let result = table.Details <- addToList table.Details peptideConsensusListParam
-//                table
-
-//            ///Adds a collection of peptideConsensusListParams to an existing object.
-//            static member addDetails (peptideConsensusListParams:seq<PeptideConsensusListParam>) (table:PeptideConsensusList) =
-//                let result = table.Details <- addCollectionToList table.Details peptideConsensusListParams
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.PeptideConsensusList.Find(id))
-
-//            ///Tries to find a peptideConsensusList-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindBySmallMolecules (dbContext:MzQuantML) (finalResult:Nullable<bool>) =
-//                query {
-//                       for i in dbContext.PeptideConsensusList.Local do
-//                           if i.FinalResult=finalResult
-//                              then select (i, i.PeptideConsensi, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                      }
-//                |> Seq.map (fun (peptideConsensi, _, _, _, _, _, _) -> peptideConsensi)
-//                |> (fun peptideConsensi -> 
-//                    if (Seq.exists (fun peptideConsensi' -> peptideConsensi' <> null) peptideConsensi) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.PeptideConsensusList do
-//                                       if i.FinalResult=finalResult
-//                                          then select (i, i.PeptideConsensi, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
-//                                  }
-//                            |> Seq.map (fun (peptideConsensi, _, _, _, _, _, _) -> peptideConsensi)
-//                            |> (fun peptideConsensi -> if (Seq.exists (fun peptideConsensi' -> peptideConsensi' <> null) peptideConsensi) = false
-//                                                            then None
-//                                                            else Some peptideConsensi
-//                               )
-//                        else Some peptideConsensi
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:PeptideConsensusList) (item2:PeptideConsensusList) =
-//                item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-//                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-//                item1.Details=item2.Details && item1.PeptideConsensi=item2.PeptideConsensi
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusList) =
-//                    PeptideConsensusListHandler.tryFindBySmallMolecules dbContext item.FinalResult
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match PeptideConsensusListHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusList) =
-//                PeptideConsensusListHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type BiblioGraphicReferenceHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?authors                     : string,
-//                    ?doi                         : string,
-//                    ?editor                      : string,
-//                    ?issue                       : string,
-//                    ?pages                       : string,
-//                    ?publication                 : string,
-//                    ?publisher                   : string,
-//                    ?title                       : string,
-//                    ?volume                      : string,
-//                    ?year                        : int
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                           = defaultArg name Unchecked.defaultof<string>
-//                let authors'                        = defaultArg authors Unchecked.defaultof<string>
-//                let doi'                            = defaultArg doi Unchecked.defaultof<string>
-//                let editor'                         = defaultArg editor Unchecked.defaultof<string>
-//                let issue'                          = defaultArg issue Unchecked.defaultof<string>
-//                let pages'                          = defaultArg pages Unchecked.defaultof<string>
-//                let publication'                    = defaultArg publication Unchecked.defaultof<string>
-//                let publisher'                      = defaultArg publisher Unchecked.defaultof<string>
-//                let title'                          = defaultArg title Unchecked.defaultof<string>
-//                let volume'                         = defaultArg volume Unchecked.defaultof<string>
-//                let year'                           = defaultArg year Unchecked.defaultof<int>
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new BiblioGraphicReference(
-//                                           id',
-//                                           name',
-//                                           authors',
-//                                           doi',
-//                                           editor',
-//                                           issue',
-//                                           pages',
-//                                           publication',
-//                                           publisher',
-//                                           title',
-//                                           volume',
-//                                           Nullable(year'),
-//                                           Nullable(DateTime.Now)
-//                                          ) 
-
-//            /////Replaces name of existing object with new one.
-//            static member addName (name:string) (table:BiblioGraphicReference) =
-//                table.Name <- name
-//                table
-
-//            /////Replaces authors of existing object with new one.
-//            static member addAuthors (authors:string) (table:BiblioGraphicReference) =
-//                table.Authors <- authors
-//                table
-
-//            /////Replaces doi of existing object with new one.
-//            static member addDOI (doi:string) (table:BiblioGraphicReference) =
-//                table.DOI <- doi
-//                table
-
-//            /////Replaces editor of existing object with new one.
-//            static member addEditor (editor:string) (table:BiblioGraphicReference) =
-//                table.Editor <- editor
-//                table
-
-//            /////Replaces issue of existing object with new one.
-//            static member addIssue (issue:string) (table:BiblioGraphicReference) =
-//                table.Issue <- issue
-//                table
-
-//            /////Replaces pages of existing object with new one.
-//            static member addPages (pages:string) (table:BiblioGraphicReference) =
-//                table.Pages <- pages
-//                table
-
-//            /////Replaces publication of existing object with new one.
-//            static member addPublication (publication:string) (table:BiblioGraphicReference) =
-//                table.Publication <- publication
-//                table
-
-//            /////Replaces publisher of existing object with new one.
-//            static member addPublisher (publisher:string) (table:BiblioGraphicReference) =
-//                table.Publisher <- publisher
-//                table
-
-//            /////Replaces title of existing object with new one.
-//            static member addTitle (title:string) (table:BiblioGraphicReference) =
-//                table.Title <- title
-//                table
-
-//            /////Replaces volume of existing object with new one.
-//            static member addVolume (volume:string) (table:BiblioGraphicReference) =
-//                table.Volume <- volume
-//                table
-
-//            /////Replaces year of existing object with new one.
-//            static member addYear (year:int) (table:BiblioGraphicReference) =
-//                table.Year <- Nullable(year)
-//                table
-
-//            /////Replaces mzidentml of existing object with new mzidentml.
-//            //static member addMzIdentMLDocument
-//            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-//            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-//            //    provider
-
-//            ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.BiblioGraphicReference.Find(id))
-
-//            ///Tries to find a biblioGraphicReference-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.BiblioGraphicReference.Local do
-//                           if i.Name=name
-//                              then select i
-//                      }
-//                |> Seq.map (fun (biblioGraphicReference) -> biblioGraphicReference)
-//                |> (fun biblioGraphicReference -> 
-//                    if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.BiblioGraphicReference do
-//                                       if i.Name=name
-//                                          then select i
-//                                  }
-//                            |> Seq.map (fun (biblioGraphicReference) -> biblioGraphicReference)
-//                            |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
-//                                                                then None
-//                                                                else Some biblioGraphicReference
-//                               )
-//                        else Some biblioGraphicReference
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
-//                item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
-//                item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && 
-//                item1.Title=item2.Title && item1.Volume=item2.Volume && item1.Year=item2.Year
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:BiblioGraphicReference) =
-//                    BiblioGraphicReferenceHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match BiblioGraphicReferenceHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:BiblioGraphicReference) =
-//                BiblioGraphicReferenceHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
-
-//        type MzQuantMLDocumentHandler =
-//            ///Initializes a provider-object with at least all necessary parameters.
-//            static member init
-//                (             
-//                    analysisSummary              : seq<AnalysisSummaryParam>,
-//                    version                      : string,
-//                    inputFiles                   : seq<InputFiles>,
-//                    analysisSoftwares            : seq<AnalysisSoftware>,
-//                    dataProcessings              : seq<DataProcessing>,
-//                    assays                       : seq<Assay>,
-//                    ?id                          : string,
-//                    ?name                        : string,
-//                    ?creationDate                : DateTime,
-//                    ?provider                    : Provider,
-//                    ?persons                     : seq<Person>,
-//                    ?organizations               : seq<Organization>,
-//                    ?biblioGraphicReferences     : seq<BiblioGraphicReference>,
-//                    ?studyVariables              : seq<StudyVariable>,
-//                    ?ratios                      : seq<Ratio>,
-//                    ?proteinGroupList            : ProteinGroupList,
-//                    ?proteinList                 : ProteinList,
-//                    ?peptideConsensusList        : PeptideConsensusList,
-//                    ?smallMolecule               : SmallMoleculeList,
-//                    ?featureList                 : FeatureList
-//                    //?mzIdentML                   : MzIdentMLDocument
-//                ) =
-//                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-//                let name'                           = defaultArg name Unchecked.defaultof<string>
-//                let creationDate'                   = defaultArg creationDate Unchecked.defaultof<DateTime>
-//                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
-//                let persons'                        = convertOptionToList persons
-//                let organizations'                  = convertOptionToList organizations
-//                let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
-//                let studyVariables'                 = convertOptionToList studyVariables
-//                let ratios'                         = convertOptionToList ratios
-//                let proteinGroupList'               = defaultArg proteinGroupList Unchecked.defaultof<ProteinGroupList>
-//                let proteinList'                    = defaultArg proteinList Unchecked.defaultof<ProteinList>
-//                let peptideConsensusList'           = defaultArg peptideConsensusList Unchecked.defaultof<PeptideConsensusList>
-//                let smallMoleculeList'              = defaultArg smallMolecule Unchecked.defaultof<SmallMoleculeList>
-//                let featureList'                    = defaultArg featureList Unchecked.defaultof<FeatureList>
-//                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
-
-//                new MzQuantMLDocument(id', name', Nullable(creationDate'), 
-//                                      version, provider',persons', organizations', analysisSummary |> List, 
-//                                      inputFiles |> List, analysisSoftwares |> List, dataProcessings |> List, 
-//                                      assays |> List, biblioGraphicReferences', studyVariables', ratios', proteinGroupList',
-//                                      proteinList', peptideConsensusList', smallMoleculeList', featureList', Nullable(DateTime.Now)
-//                                     )
-
-//            ///Replaces name of existing object with new one.
-//            static member addName (name:string) (table:MzQuantMLDocument) =
-//                table.Name <- name
-//                table
-
-//            ///Replaces creationDate of existing object with new one.
-//            static member addCreationDate (creationDate:DateTime) (table:MzQuantMLDocument) =
-//                table.CreationDate <- Nullable(creationDate)
-//                table
-
-//            ///Replaces provider of existing object with new one.
-//            static member addProvider (provider:Provider) (table:MzQuantMLDocument) =
-//                table.Provider <- provider
-//                table
-
-//            ///Replaces proteinGroupList of existing object with new one.
-//            static member addProteinGroupList (proteinGroupList:ProteinGroupList) (table:MzQuantMLDocument) =
-//                table.ProteinGroupList <- proteinGroupList
-//                table
-
-//            ///Replaces proteinList of existing object with new one.
-//            static member addProteinList (proteinList:ProteinList) (table:MzQuantMLDocument) =
-//                table.ProteinList <- proteinList
-//                table
-
-//            ///Replaces peptideConsensusList of existing object with new one.
-//            static member addPeptideConsensusList (peptideConsensusList:PeptideConsensusList) (table:MzQuantMLDocument) =
-//                table.PeptideConsensusList <- peptideConsensusList
-//                table
-
-//            ///Replaces smallMoleculeList of existing object with new one.
-//            static member addSmallMoleculeList (smallMoleculeList:SmallMoleculeList) (table:MzQuantMLDocument) =
-//                table.SmallMoleculeList <- smallMoleculeList
-//                table
-
-//            ///Replaces featureList of existing object with new one.
-//            static member addFeatureList (featureList:FeatureList) (table:MzQuantMLDocument) =
-//                table.FeatureList <- featureList
-//                table
-
-//            ///Adds new person to collection of enzymenames.
-//            static member addPerson
-//                (person:Person) (table:MzQuantMLDocument) =
-//                table.Persons <- addToList table.Persons person
-//                table
-
-//            ///Add new collection of persons to collection of enzymenames.
-//            static member addPersons
-//                (persons:seq<Person>) (table:MzQuantMLDocument) =
-//                table.Persons <- addCollectionToList table.Persons persons
-//                table
-
-//            ///Adds new organization to collection of enzymenames.
-//            static member addOrganization
-//                (organization:Organization) (table:MzQuantMLDocument) =
-//                table.Organizations <- addToList table.Organizations organization
-//                table
-
-//            ///Add new collection of organizations to collection of enzymenames.
-//            static member addOrganizations
-//                (organizations:seq<Organization>) (table:MzQuantMLDocument) =
-//                table.Organizations <- addCollectionToList table.Organizations organizations
-//                table
-
-//            ///Adds new biblioGraphicReference to collection of enzymenames.
-//            static member addBiblioGraphicReference
-//                (biblioGraphicReference:BiblioGraphicReference) (table:MzQuantMLDocument) =
-//                table.BiblioGraphicReferences <- addToList table.BiblioGraphicReferences biblioGraphicReference
-//                table
-
-//            ///Add new collection of biblioGraphicReferences to collection of enzymenames.
-//            static member addBiblioGraphicReferences
-//                (biblioGraphicReferences:seq<BiblioGraphicReference>) (table:MzQuantMLDocument) =
-//                table.BiblioGraphicReferences <- addCollectionToList table.BiblioGraphicReferences biblioGraphicReferences
-//                table
-
-//            ///Adds new studyVariable to collection of enzymenames.
-//            static member addStudyVariable
-//                (studyVariable:StudyVariable) (table:MzQuantMLDocument) =
-//                table.StudyVariables <- addToList table.StudyVariables studyVariable
-//                table
-
-//            ///Add new collection of studyVariables to collection of enzymenames.
-//            static member addStudyVariables
-//                (studyVariables:seq<StudyVariable>) (table:MzQuantMLDocument) =
-//                table.StudyVariables <- addCollectionToList table.StudyVariables studyVariables
-//                table
-
-//            ///Adds new person to collection of enzymenames.
-//            static member addRatio
-//                (ratio:Ratio) (table:MzQuantMLDocument) =
-//                table.Ratios <- addToList table.Ratios ratio
-//                table
-
-//            ///Add new collection of persons to collection of enzymenames.
-//            static member addRatios
-//                (ratios:seq<Ratio>) (table:MzQuantMLDocument) =
-//                table.Ratios <- addCollectionToList table.Ratios ratios
-//                table
-
-//            ///Tries to find a mzQuantMLDocument-object in the context and database, based on its primary-key(ID).
-//            static member tryFindByID
-//                (context:MzQuantML) (id:string) =
-//                tryFind (context.MzQuantMLDocument.Find(id))
-
-//            ///Tries to find a mzQuantMLDocument-object in the context and database, based on its 2nd most unique identifier.
-//            static member tryFindByName (dbContext:MzQuantML) (name:string) =
-//                query {
-//                       for i in dbContext.MzQuantMLDocument.Local do
-//                           if i.Name=name
-//                              then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
-//                                           i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
-//                                           i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
-//                                           i.SmallMoleculeList
-//                                          )
-//                      }
-//                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
-//                |> (fun mzQuantML -> 
-//                    if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
-//                        then 
-//                            query {
-//                                   for i in dbContext.MzQuantMLDocument do
-//                                       if i.Name=name
-//                                          then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
-//                                                       i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
-//                                                       i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
-//                                                       i.SmallMoleculeList
-//                                                      )
-//                                  }
-//                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
-//                            |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
-//                                                                then None
-//                                                                else Some mzQuantML
-//                               )
-//                        else Some mzQuantML
-//                   )
-
-//            ///Checks whether all other fields of the current object and context object have the same values or not.
-//            static member private hasEqualFieldValues (item1:MzQuantMLDocument) (item2:MzQuantMLDocument) =
-//                item1.AnalysisSummary=item2.AnalysisSummary && 
-//                item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-//                item1.InputFiles=item2.InputFiles && 
-//                item1.FeatureList=item2.FeatureList && 
-//                item1.Assays=item2.Assays && 
-//                item1.DataProcessings=item2.DataProcessings && 
-//                item1.Provider=item2.Provider && 
-//                item1.Persons=item2.Persons && 
-//                item1.Organizations=item2.Organizations && 
-//                item1.BiblioGraphicReferences=item2.BiblioGraphicReferences &&
-//                item1.StudyVariables=item2.StudyVariables && 
-//                item1.Ratios=item2.Ratios && 
-//                item1.ProteinList=item2.ProteinList &&
-//                item1.ProteinGroupList=item2.ProteinGroupList && 
-//                item1.PeptideConsensusList=item2.PeptideConsensusList && 
-//                item1.SmallMoleculeList=item2.SmallMoleculeList
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-//            static member addToContext (dbContext:MzQuantML) (item:MzQuantMLDocument) =
-//                    MzQuantMLDocumentHandler.tryFindByName dbContext item.Name
-//                    |> (fun organizationCollection -> match organizationCollection with
-//                                                      |Some x -> x
-//                                                                 |> Seq.map (fun organization -> match MzQuantMLDocumentHandler.hasEqualFieldValues organization item with
-//                                                                                                 |true -> null
-//                                                                                                 |false -> dbContext.Add item
-//                                                                            ) |> ignore
-//                                                      |None -> dbContext.Add item |> ignore
-//                       )
-
-//            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-//            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-//            static member addToContextAndInsert (dbContext:MzQuantML) (item:MzQuantMLDocument) =
-//                MzQuantMLDocumentHandler.addToContext dbContext item
-//                dbContext.SaveChanges()
+            ///Adds a peptideSection to an existing object.
+            static member addPeptideSection (peptideSection:PeptideSection) (table:MetaDataSection) =
+                table.PeptideSections <- addToList table.PeptideSections peptideSection
+                table
+
+            ///Adds a collection of peptideSections to an existing object.
+            static member addPeptideSections (peptideSections:seq<PeptideSection>) (table:MetaDataSection) =
+                table.PeptideSections <- addCollectionToList table.PeptideSections peptideSections
+                table
+
+            ///Adds a psmSection to an existing object.
+            static member addPSMSection (psmSection:PSMSection) (table:MetaDataSection) =
+                table.PSMSections <- addToList table.PSMSections psmSection
+                table
+
+            ///Adds a collection of psmSections to an existing object.
+            static member addPSMSections (psmSections:seq<PSMSection>) (table:MetaDataSection) =
+                table.PSMSections <- addCollectionToList table.PSMSections psmSections
+                table
+
+            ///Adds a smallMoleculeSection to an existing object.
+            static member addSmallMoleculeSection (smallMoleculeSection:SmallMoleculeSection) (table:MetaDataSection) =
+                table.SmallMoleculeSections <- addToList table.SmallMoleculeSections smallMoleculeSection
+                table
+
+            ///Adds a collection of smallMoleculeSections to an existing object.
+            static member addSmallMoleculeSections (smallMoleculeSections:seq<SmallMoleculeSection>) (table:MetaDataSection) =
+                table.SmallMoleculeSections <- addCollectionToList table.SmallMoleculeSections smallMoleculeSections
+                table
+
+            ///Adds a detail to an existing object.
+            static member addDetail (detail:MetaDataSectionParam) (table:MetaDataSection) =
+                table.Details <- addToList table.Details detail
+                table
+
+            ///Adds a collection of details to an existing object.
+            static member addDetails (details:seq<MetaDataSectionParam>) (table:MetaDataSection) =
+                table.Details <- addCollectionToList table.Details details
+                table
+
+            ///Tries to find a metaDataSection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzTab) (id:string) =
+                tryFind (context.MetaDataSection.Find(id))
+
+            ///Tries to find a searchEngineScore-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByDescription (dbContext:MzTab) (description:string) =
+                query {
+                       for i in dbContext.MetaDataSection.Local do
+                           if i.Description=description
+                              then select (i, i.Mode, i.Type, i.SampleProcessings, i.Instruments, 
+                                           i.AnalysisSoftwares, i.SearchEngineScores, i.FalseDiscoveryRates,
+                                           i.Persons, i.FixedModifications, i.VariableModifications, 
+                                           i.Quantification, i.MSRuns, i.Samples, i.Assays, i.Details,
+                                           i.StudyVariables, i.ColUnit, i.ProteinSections, i.PSMSections, 
+                                           i.PeptideSections, i.SmallMoleculeSections
+                                          )
+                      }
+                |> Seq.map (fun (metaDataSection,_, _, _, _, _, _, _, _,_, _, _, _, _, _, _, _, _, _, _, _, _) -> metaDataSection)
+                |> (fun metaDataSection -> 
+                    if (Seq.exists (fun metaDataSection' -> metaDataSection' <> null) metaDataSection) = false
+                        then 
+                            query {
+                                   for i in dbContext.MetaDataSection do
+                                       if i.Description=description
+                                          then select (i, i.Mode, i.Type, i.SampleProcessings, i.Instruments, 
+                                                       i.AnalysisSoftwares, i.SearchEngineScores, i.FalseDiscoveryRates,
+                                                       i.Persons, i.FixedModifications, i.VariableModifications, 
+                                                       i.Quantification, i.MSRuns, i.Samples, i.Assays, i.Details,
+                                                       i.StudyVariables, i.ColUnit, i.ProteinSections, i.PSMSections, 
+                                                       i.PeptideSections, i.SmallMoleculeSections
+                                                      )
+                                  }
+                            |> Seq.map (fun (metaDataSection,_, _, _, _, _, _, _, _,_, _, _, _, _, _, _, _, _, _, _, _, _) -> metaDataSection)
+                            |> (fun metaDataSection -> if (Seq.exists (fun metaDataSection' -> metaDataSection' <> null) metaDataSection) = false
+                                                            then None
+                                                            else Some metaDataSection
+                               )
+                        else Some metaDataSection
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:MetaDataSection) (item2:MetaDataSection) =
+               item1.Title=item2.Title && item1.Version=item2.Version && item1.Mode=item2.Mode && 
+               item1.Type=item2.Type && item1.SampleProcessings=item2.SampleProcessings && 
+               item1.Instruments=item2.Instruments && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
+               item1.SearchEngineScores=item2.SearchEngineScores && item1.Publications=item2.Publications &&
+               item1.FalseDiscoveryRates=item2.FalseDiscoveryRates && item1.Persons=item2.Persons && 
+               item1.URI=item2.URI && item1.FixedModifications=item2.FixedModifications && 
+               item1.VariableModifications=item2.VariableModifications && item1.MSRuns=item2.MSRuns &&
+               item1.Quantification=item2.Quantification && item1.Samples=item2.Samples && 
+               item1.Assays=item2.Assays && item1.StudyVariables=item2.StudyVariables &&
+               item1.ColUnit=item2.ColUnit && item1.ProteinSections=item2.ProteinSections &&
+               item1.PeptideSections=item2.PeptideSections && item1.PSMSections=item2.PSMSections &&
+               item1.SmallMoleculeSections=item2.SmallMoleculeSections && item1.Details=item2.Details
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzTab) (item:MetaDataSection) =
+                    MetaDataSectionHandler.tryFindByDescription dbContext item.Description
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MetaDataSectionHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> null
+                                                                                                 |false -> dbContext.Add item
+                                                                            ) |> ignore
+                                                      |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzTab) (item:MetaDataSection) =
+                MetaDataSectionHandler.addToContext dbContext item
+                dbContext.SaveChanges()

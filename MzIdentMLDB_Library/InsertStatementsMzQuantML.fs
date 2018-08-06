@@ -1769,13 +1769,13 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Adds new enzymename to collection of enzymenames.
+            ///Adds new analysisSoftwareParam to collection of enzymenames.
             static member addDetail
                 (analysisSoftwareParam:AnalysisSoftwareParam) (table:AnalysisSoftware) =
                 let result = table.Details <- addToList table.Details analysisSoftwareParam
                 table
 
-            ///Add new collection of enzymenames to collection of enzymenames.
+            ///Add new collection of analysisSoftwareParams to collection of enzymenames.
             static member addDetails
                 (analysisSoftwareParams:seq<AnalysisSoftwareParam>) (table:AnalysisSoftware) =
                 let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams

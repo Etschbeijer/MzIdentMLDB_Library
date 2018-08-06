@@ -168,14 +168,14 @@ module DataModel =
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("MetaDataParams")>]
-        MetaDataParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+        MetaDataSectionParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
             let mutable unit'       = unit
             let mutable rowVersion' = rowVersion
 
-            new() = MetaDataParam(null, null, null, null, Nullable())
+            new() = MetaDataSectionParam(null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -908,44 +908,7 @@ module DataModel =
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Version with get() = version' and set(value) = version' <- value
-            member this.Details with get() = settings' and set(value) = settings' <- value
-            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-
-    ///A publication associated with this file. Several publications can be given by indicating the number 
-    ///in the square brackets after “publication”. PubMed ids must be prefixed by “pubmed:”, DOIs by “doi:”.
-    type [<AllowNullLiteral>] [<Table("publication[1-n]")>]
-        BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
-                                issue:string, pages:string, publication:string, publisher:string, title:string,
-                                volume:string, year:Nullable<int>, rowVersion:Nullable<DateTime>
-                               ) =
-            let mutable id'          = id
-            let mutable name'        = name
-            let mutable authors'     = authors
-            let mutable doi'         = doi
-            let mutable editor'      = editor
-            let mutable issue'       = issue
-            let mutable pages'       = pages
-            let mutable publication' = publication
-            let mutable publisher'   = publisher
-            let mutable title'       = title
-            let mutable volume'      = volume
-            let mutable year'        = year
-            let mutable rowVersion'  = rowVersion
-
-            new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), (*null,*) Nullable())
-
-            member this.ID with get() = id' and set(value) = id' <- value
-            member this.Name with get() = name' and set(value) = name' <- value
-            member this.Authors with get() = authors' and set(value) = authors' <- value
-            member this.DOI with get() = doi' and set(value) = doi' <- value
-            member this.Editor with get() = editor' and set(value) = editor' <- value
-            member this.Issue with get() = issue' and set(value) = issue' <- value
-            member this.Pages with get() = pages' and set(value) = pages' <- value
-            member this.Publication with get() = publication' and set(value) = publication' <- value
-            member this.Publisher with get() = publisher' and set(value) = publisher' <- value
-            member this.Title with get() = title' and set(value) = title' <- value
-            member this.Volume with get() = volume' and set(value) = volume' <- value
-            member this.Year with get() = year' and set(value) = year' <- value
+            member this.Settings with get() = settings' and set(value) = settings' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Organizations are entities like companies, universities, government agencies.
@@ -1038,14 +1001,14 @@ module DataModel =
         VariableModification (id:string, variableMods:List<VariableMod>, variableModSites:List<VariableModSite>, 
                               variableModPositions:List<VariableModPosition>, rowVersion:Nullable<DateTime>
                              ) =
-            let mutable id'               = id
+            let mutable id'                   = id
             [<Column("variable_mod[1-n]")>]
             let mutable variableMods'         = variableMods
             [<Column("variable_mod[1-n]-sites")>]
             let mutable variableModSites'     = variableModSites
             [<Column("variable_mod[1-n]-position")>]
             let mutable variableModPositions' = variableModPositions
-            let mutable rowVersion'       = rowVersion
+            let mutable rowVersion'           = rowVersion
 
             new() = VariableModification(null, null, null, null, Nullable())
 
@@ -1138,42 +1101,42 @@ module DataModel =
 
     ///A table describing the parameters of a ms_run.
     type [<AllowNullLiteral>]
-        MSRun (id:string, msRunFormat:List<MSRunFormat>, msRunLocation:List<MSRunLocation>, 
-               msRunIDFormat:List<MSRunIDFormat>, msRunFragmentationMethod:List<MSRunFragmentationMethod>, 
-               msRunHash:List<MSRunHash>, msRunHashMethod:List<MSRunHashMethod>,
+        MSRun (id:string, msRunFormats:List<MSRunFormat>, msRunLocations:List<MSRunLocation>, 
+               msRunIDFormats:List<MSRunIDFormat>, msRunFragmentationMethods:List<MSRunFragmentationMethod>, 
+               msRunHashs:List<MSRunHash>, msRunHashMethods:List<MSRunHashMethod>,
                rowVersion:Nullable<DateTime>
               ) =
             let mutable id'                       = id
             [<Column("ms_run[1-n]-format")>]
-            let mutable msRunFormat'              = msRunFormat
+            let mutable msRunFormats'              = msRunFormats
             [<Column("ms_run[1-n]-location")>]
-            let mutable msRunLocation'            = msRunLocation
+            let mutable msRunLocations'            = msRunLocations
             [<Column("ms_run[1-n]-id_format")>]
-            let mutable msRunIDFormat'            = msRunIDFormat
+            let mutable msRunIDFormats'            = msRunIDFormats
             [<Column("ms_run[1-n]-fragmentation_method")>]
-            let mutable msRunFragmentationMethod' = msRunFragmentationMethod
+            let mutable msRunFragmentationMethods' = msRunFragmentationMethods
             [<Column("ms_run[1-n]-hash")>]
-            let mutable msRunHash'                = msRunHash
+            let mutable msRunHashs'                = msRunHashs
             [<Column("ms_run[1-n]-hash_method")>]
-            let mutable msRunHashMethod'          = msRunHashMethod
+            let mutable msRunHashMethods'          = msRunHashMethods
             let mutable rowVersion'               = rowVersion
 
             new() = MSRun(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
-            member this.MSRunFormat with get() = msRunFormat' and set(value) = msRunFormat' <- value
-            member this.MSRunLocation with get() = msRunLocation' and set(value) = msRunLocation' <- value
-            member this.MSRunIDFormat with get() = msRunIDFormat' and set(value) = msRunIDFormat' <- value
-            member this.MSRunFragmentationMethod with get() = msRunFragmentationMethod' and set(value) = msRunFragmentationMethod' <- value
-            member this.MSRunHash with get() = msRunHash' and set(value) = msRunHash' <- value
-            member this.MSRunHashMethod with get() = msRunHashMethod' and set(value) = msRunHashMethod' <- value
+            member this.MSRunFormats with get() = msRunFormats' and set(value) = msRunFormats' <- value
+            member this.MSRunLocations with get() = msRunLocations' and set(value) = msRunLocations' <- value
+            member this.MSRunIDFormats with get() = msRunIDFormats' and set(value) = msRunIDFormats' <- value
+            member this.MSRunFragmentationMethods with get() = msRunFragmentationMethods' and set(value) = msRunFragmentationMethods' <- value
+            member this.MSRunHashs with get() = msRunHashs' and set(value) = msRunHashs' <- value
+            member this.MSRunHashMethods with get() = msRunHashMethods' and set(value) = msRunHashMethods' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A table describing the samples of the experiment.
     type [<AllowNullLiteral>]
         Sample (id:string, description:string, species:List<Species>, tissues:List<Tissue>, 
-                cellTypes:List<CellType>, diseases:List<Disease>, 
-                details:List<SampleParam>, rowVersion:Nullable<DateTime>
+                cellTypes:List<CellType>, diseases:List<Disease>, details:List<SampleParam>, 
+                rowVersion:Nullable<DateTime>
                ) =
             let mutable id'         = id
             [<Column("sample[1-n]-description")>]
@@ -1260,24 +1223,24 @@ module DataModel =
 
     ///A table describing the studyVariables of the experiment.
     type [<AllowNullLiteral>]
-        StudyVariable (id:string, description:string, assays:List<Assay>, 
-                       samples:List<Sample>, rowVersion:Nullable<DateTime>
+        StudyVariable (id:string, description:string, assayRefs:string, 
+                       sampleRefs:string, rowVersion:Nullable<DateTime>
                       ) =
             let mutable id'          = id
             [<Column("study_variable[1-n]-assay_refs")>]
             let mutable description' = description
             [<Column("assay[1-n]-quantification_mod[1-n]-site")>]
-            let mutable assays'      = assays
+            let mutable assayRefs'   = assayRefs
             [<Column("study_variable[1-n]-sample_refs")>]
-            let mutable samples'     = samples
+            let mutable sampleRefs'  = sampleRefs
             let mutable rowVersion'  = rowVersion
 
             new() = StudyVariable(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Description with get() = description' and set(value) = description' <- value
-            member this.Assays with get() = assays' and set(value) = assays' <- value
-            member this.Samples with get() = samples' and set(value) = samples' <- value
+            member this.AssayRefs with get() = assayRefs' and set(value) = assayRefs' <- value
+            member this.SampleRefs with get() = sampleRefs' and set(value) = sampleRefs' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The results included in an mzTab file can be reported in 2 ways: 
@@ -1333,9 +1296,10 @@ module DataModel =
 
     ///A table describing the additional information for the proteins of the experiment.
     type [<AllowNullLiteral>]
-        AccessionParamaeter (id:string, identifiers:List<Identifier>, peptideSequence:PeptideSequence, accession:Accession, taxid:string, species:string,
-                             dataBase:string, dataBaseVersion:string, rowVersion:Nullable<DateTime>
-                            ) =
+        AccessionParameter (id:string, identifiers:List<Identifier>, peptideSequence:PeptideSequence, 
+                            accession:Accession, taxid:string, species:string, dataBase:string, 
+                            dataBaseVersion:string, rowVersion:Nullable<DateTime>
+                           ) =
             let mutable id'              = id
             let mutable identifiers'     = identifiers
             [<Column("sequence")>]
@@ -1348,7 +1312,7 @@ module DataModel =
             let mutable dataBaseVersion' = dataBaseVersion
             let mutable rowVersion'      = rowVersion
 
-            new() = AccessionParamaeter(null, null, null, null, null, null, null, null, Nullable())
+            new() = AccessionParameter(null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Identifiers with get() = identifiers' and set(value) = identifiers' <- value
@@ -1362,14 +1326,14 @@ module DataModel =
 
     ///A delimited list of search engine(s) that identified this protein.
     type [<AllowNullLiteral>] [<Table("search_engine")>]
-        SearchEgnineName (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+        SearchEngineName (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
             let mutable unit'       = unit
             let mutable rowVersion' = rowVersion
 
-            new() = SearchEgnineName(null, null, null, null, Nullable())
+            new() = SearchEngineName(null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1387,7 +1351,7 @@ module DataModel =
     ///A table describing the additional information about the searchengines of the experiment.
     type [<AllowNullLiteral>]
         SearchEngine (id:string, identifiers:List<Identifier>, peptideSequence:PeptideSequence, 
-                      accession:Accession, searchEngineNames:List<SearchEgnineName>, 
+                      accession:Accession, searchEngineNames:List<SearchEngineName>, 
                       bestSearchEngineScore:Nullable<float>, searchEngineScoreMSRun:Nullable<float>, 
                       rowVersion:Nullable<DateTime>
                      ) =
@@ -1418,9 +1382,9 @@ module DataModel =
     ///A table describing the additional information about the peptides of the experiment.
     type [<AllowNullLiteral>]
         PeptideInfo (id:string, accession:Accession, numPeptidesDistinctMSRun:string, 
-                      numPeptidesUniqueMSRun:string, ambigutityMembers:List<Accession>, 
-                      rowVersion:Nullable<DateTime>
-                     ) =
+                     numPeptidesUniqueMSRun:string, ambigutityMembers:List<Accession>, 
+                     rowVersion:Nullable<DateTime>
+                    ) =
             let mutable id'                       = id
             let mutable accession'                = accession
             [<Column("num_peptides_distinct_ms_run[1-n]")>]
@@ -1519,31 +1483,31 @@ module DataModel =
 
     ///The protein section can provide additional information about the reported proteins in the mzTab file.
     type [<AllowNullLiteral>]
-         ProteinSection (id:string, accession:Accession, description:string, accessionParameter:List<AccessionParamaeter>,
-                         searchEngine:List<SearchEngine>, reliability:Nullable<int>, numPSMSMSRun:string,
-                         peptideInfo:PeptideInfo, modifications:List<Modification>, uri:string, goTerms:string, 
-                         proteinCoverage:Nullable<float>, proteinAbundance:List<ProteinAbundance>, 
+         ProteinSection (id:string, accession:Accession, description:string, accessionParameters:List<AccessionParameter>,
+                         searchEngines:List<SearchEngine>, reliability:Nullable<int>, numPSMSMSRun:string,
+                         peptideInfos:List<PeptideInfo>, modifications:List<Modification>, uri:string, 
+                         goTerms:string, proteinCoverage:Nullable<float>, proteinAbundances:List<ProteinAbundance>, 
                          details:List<ProteinSectionParam>, rowVersion:Nullable<DateTime>
                         ) =  
-            let mutable id'                 = id
-            let mutable accession'          = accession
-            let mutable description'        = description
-            let mutable accessionParameter' = accessionParameter
-            let mutable searchEngine'       = searchEngine
-            let mutable reliability'        = reliability
+            let mutable id'                  = id
+            let mutable accession'           = accession
+            let mutable description'         = description
+            let mutable accessionParameters' = accessionParameters
+            let mutable searchEngines'       = searchEngines
+            let mutable reliability'         = reliability
             [<Column("num_psms_ms_run[1-n]")>]
-            let mutable numPSMSMSRun'       = numPSMSMSRun
-            let mutable peptideInfo'        = peptideInfo 
-            let mutable modifications'      = modifications
-            let mutable uri'                = uri
+            let mutable numPSMSMSRun'        = numPSMSMSRun
+            let mutable peptideInfos'        = peptideInfos
+            let mutable modifications'       = modifications
+            let mutable uri'                 = uri
             [<Column("go_terms")>]
-            let mutable goTerms'            = goTerms
+            let mutable goTerms'             = goTerms
             [<Column("protein_coverage")>]
-            let mutable proteinCoverage'    = proteinCoverage
+            let mutable proteinCoverage'     = proteinCoverage
             [<Column("protein_abundance")>]
-            let mutable proteinAbundance'   = proteinAbundance
-            let mutable details'            = details
-            let mutable rowVersion'         = rowVersion
+            let mutable proteinAbundances'   = proteinAbundances
+            let mutable details'             = details
+            let mutable rowVersion'          = rowVersion
 
             new() = ProteinSection(null, null, null, null, null, Nullable(), null, null, null, null, null, 
                                    Nullable(), null, null, Nullable()
@@ -1553,16 +1517,16 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.Description with get() = description' and set(value) = description' <- value
-            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
-            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.AccessionParameters with get() = accessionParameters' and set(value) = accessionParameters' <- value
+            member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
             member this.Reliability with get() = reliability' and set(value) = reliability' <- value
             member this.NumPSMSMSRun with get() = numPSMSMSRun' and set(value) = numPSMSMSRun' <- value
-            member this.PeptideInfo with get() = peptideInfo' and set(value) = peptideInfo' <- value
+            member this.PeptideInfos with get() = peptideInfos' and set(value) = peptideInfos' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.URI with get() = uri' and set(value) = uri' <- value
             member this.GoTerms with get() = goTerms' and set(value) = goTerms' <- value
             member this.ProteinCoverage with get() = proteinCoverage' and set(value) = proteinCoverage' <- value
-            member this.ProteinAbundance with get() = proteinAbundance' and set(value) = proteinAbundance' <- value
+            member this.ProteinAbundances with get() = proteinAbundances' and set(value) = proteinAbundances' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
   
@@ -1669,35 +1633,33 @@ module DataModel =
     ///The protein section can provide additional information about the reported peptides in the mzTab file.
     type [<AllowNullLiteral>]
          PeptideSection (id:string, peptideSequence:PeptideSequence, accession:Accession, unique:Nullable<bool>, 
-                         accessionParameter:List<AccessionParamaeter>, searchEngine:List<SearchEngine>, 
+                         accessionParameters:List<AccessionParameter>, searchEngines:List<SearchEngine>, 
                          reliability:Nullable<int>, modifications:List<Modification>, retentionTime:RetentionTime,
                          charge:Nullable<float>, massToCharge:Nullable<float>, uri:string, 
-                         spectraRef:string, peptideAbundance:List<PeptideAbundance>, 
-                         details:List<PeptideSectionParam>, rowVersion:Nullable<DateTime>
+                         spectraRef:string, details:List<PeptideSectionParam>, 
+                         rowVersion:Nullable<DateTime>
                         ) =  
-            let mutable id'                 = id
+            let mutable id'                  = id
             [<Column("sequence")>]
-            let mutable peptideSequence'    = peptideSequence
-            let mutable accession'          = accession
-            let mutable unique'             = unique
-            let mutable accessionParameter' = accessionParameter
-            let mutable searchEngine'       = searchEngine
-            let mutable reliability'        = reliability
-            let mutable modifications'      = modifications
-            let mutable retentionTime'      = retentionTime
-            let mutable charge'             = charge
+            let mutable peptideSequence'     = peptideSequence
+            let mutable accession'           = accession
+            let mutable unique'              = unique
+            let mutable accessionParameters' = accessionParameters
+            let mutable searchEngines'       = searchEngines
+            let mutable reliability'         = reliability
+            let mutable modifications'       = modifications
+            let mutable retentionTime'       = retentionTime
+            let mutable charge'              = charge
             [<Column("mass_to_charge")>]
-            let mutable massToCharge'       = massToCharge
-            let mutable uri'                = uri
+            let mutable massToCharge'        = massToCharge
+            let mutable uri'                 = uri
             [<Column("spectra_ref")>]
-            let mutable spectraRef'         = spectraRef
-            [<Column("peptide_coverage")>]
-            let mutable peptideAbundance'   = peptideAbundance
-            let mutable details'            = details
-            let mutable rowVersion'         = rowVersion
+            let mutable spectraRef'          = spectraRef
+            let mutable details'             = details
+            let mutable rowVersion'          = rowVersion
 
             new() = PeptideSection(null, null, null, Nullable(), null, null, Nullable(), null, null, Nullable(), 
-                                   Nullable(), null,  null, null, null, Nullable()
+                                   Nullable(), null, null, null, Nullable()
                                   )
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
@@ -1705,8 +1667,8 @@ module DataModel =
             member this.Sequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.Unique with get() = unique' and set(value) = unique' <- value
-            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
-            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.AccessionParameters with get() = accessionParameters' and set(value) = accessionParameters' <- value
+            member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
             member this.Reliability with get() = reliability' and set(value) = reliability' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
@@ -1714,7 +1676,6 @@ module DataModel =
             member this.MassToCharge with get() = massToCharge' and set(value) = massToCharge' <- value
             member this.URI with get() = uri' and set(value) = uri' <- value
             member this.SpectraRef with get() = spectraRef' and set(value) = spectraRef' <- value
-            member this.PeptideAbundance with get() = peptideAbundance' and set(value) = peptideAbundance' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
@@ -1734,7 +1695,7 @@ module DataModel =
     
     ///A table describing the additional information about the peptides and protein based on the psm.
     type [<AllowNullLiteral>]
-        PSMInformation (id:string, peptideSequence:string, pre:string, post:string, 
+        PSMInformation (id:string, peptideSequence:PeptideSequence, pre:string, post:string, 
                         start:Nullable<int>, ende:Nullable<int>, rowVersion:Nullable<DateTime>
                        ) =
             let mutable id'              = id
@@ -1784,8 +1745,8 @@ module DataModel =
     ///The protein section can provide additional information about the reported peptides in the mzTab file.
     type [<AllowNullLiteral>]
          PSMSection (id:string, peptideSequence:PeptideSequence, psmID:PSMID, accession:Accession, 
-                     unique:Nullable<bool>,  accessionParameter:List<AccessionParamaeter>, 
-                     searchEngine:List<SearchEngine>,  reliability:Nullable<int>, 
+                     unique:Nullable<bool>, accessionParameters:List<AccessionParameter>, 
+                     searchEngines:List<SearchEngine>,  reliability:Nullable<int>, 
                      modifications:List<Modification>, retentionTime:Nullable<float>,
                      charge:Nullable<float>, experimentalMassToCharge:Nullable<float>, 
                      calculatedMassToCharge:Nullable<float>, uri:string, 
@@ -1799,8 +1760,8 @@ module DataModel =
             let mutable psmID'                    = psmID
             let mutable accession'                = accession
             let mutable unique'                   = unique
-            let mutable accessionParameter'       = accessionParameter
-            let mutable searchEngine'             = searchEngine
+            let mutable accessionParameters'      = accessionParameters
+            let mutable searchEngines'            = searchEngines
             let mutable reliability'              = reliability
             let mutable modifications'            = modifications
             let mutable retentionTime'            = retentionTime
@@ -1826,8 +1787,8 @@ module DataModel =
             member this.PSMID with get() = psmID' and set(value) = psmID' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.Unique with get() = unique' and set(value) = unique' <- value
-            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
-            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.AccessionParameters with get() = accessionParameters' and set(value) = accessionParameters' <- value
+            member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
             member this.Reliability with get() = reliability' and set(value) = reliability' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
@@ -1845,14 +1806,14 @@ module DataModel =
         Chemical (id:string, identifiers:List<Identifier>, chemicalFormula:string, smiles:string, 
                   inchiKey:string, rowVersion:Nullable<DateTime>
                  ) =
-            let mutable id'              = id
-            let mutable identifiers'      = identifiers
+            let mutable id'                = id
+            let mutable identifiers'       = identifiers
             [<Column("chemical_formula")>]
-            let mutable chemicalFormula'             = chemicalFormula
+            let mutable chemicalFormula'   = chemicalFormula
             let mutable smiles'            = smiles
             [<Column("inchi_key")>]
-            let mutable inchiKey'           = inchiKey
-            let mutable rowVersion'      = rowVersion
+            let mutable inchiKey'          = inchiKey
+            let mutable rowVersion'        = rowVersion
 
             new() = Chemical(null, null, null, null, null, Nullable())
 
@@ -1920,20 +1881,20 @@ module DataModel =
     type [<AllowNullLiteral>]
          SmallMoleculeSection 
                     (id:string, identifiers:List<Identifier>, chemical:Chemical, description:string, 
-                     accessionParameter:List<AccessionParamaeter>, 
-                     searchEngine:List<SearchEngine>,  reliability:Nullable<int>, 
+                     accessionParameters:List<AccessionParameter>, 
+                     searchEngines:List<SearchEngine>,  reliability:Nullable<int>, 
                      modifications:List<Modification>, retentionTime:Nullable<float>,
                      charge:Nullable<float>, experimentalMassToCharge:Nullable<float>, 
                      calculatedMassToCharge:Nullable<float>, uri:string, 
-                     spectraRef:string, smallMoleculeAbundance:List<SmallMoleculeAbundance>,
+                     spectraRef:string, smallMoleculeAbundances:List<SmallMoleculeAbundance>,
                      details:List<SmallMoleculeSectionParam>, rowVersion:Nullable<DateTime>
                     ) =  
             let mutable id'                       = id
             let mutable identifiers'              = identifiers
             let mutable chemical'                 = chemical
             let mutable description'              = description
-            let mutable accessionParameter'       = accessionParameter
-            let mutable searchEngine'             = searchEngine
+            let mutable accessionParameters'      = accessionParameters
+            let mutable searchEngines'            = searchEngines
             let mutable reliability'              = reliability
             let mutable modifications'            = modifications
             let mutable retentionTime'            = retentionTime
@@ -1945,7 +1906,7 @@ module DataModel =
             let mutable uri'                      = uri
             [<Column("spectra_ref")>]
             let mutable spectraRef'               = spectraRef
-            let mutable smallMoleculeAbundance'   = smallMoleculeAbundance
+            let mutable smallMoleculeAbundances'  = smallMoleculeAbundances
             let mutable details'                  = details
             let mutable rowVersion'               = rowVersion
 
@@ -1959,8 +1920,8 @@ module DataModel =
             member this.Identifiers with get() = identifiers' and set(value) = identifiers' <- value
             member this.Chemical with get() = chemical' and set(value) = chemical' <- value
             member this.Description with get() = description' and set(value) = description' <- value
-            member this.AccessionParameter with get() = accessionParameter' and set(value) = accessionParameter' <- value
-            member this.SearchEngine with get() = searchEngine' and set(value) = searchEngine' <- value
+            member this.AccessionParameters with get() = accessionParameters' and set(value) = accessionParameters' <- value
+            member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
             member this.Reliability with get() = reliability' and set(value) = reliability' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
@@ -1969,24 +1930,25 @@ module DataModel =
             member this.CalculatedMassToCharge with get() = calculatedMassToCharge' and set(value) = calculatedMassToCharge' <- value
             member this.URI with get() = uri' and set(value) = uri' <- value
             member this.SpectraRef with get() = spectraRef' and set(value) = spectraRef' <- value
-            member this.SmallMoleculeAbundance with get() = smallMoleculeAbundance' and set(value) = smallMoleculeAbundance' <- value
+            member this.SmallMoleculeAbundances with get() = smallMoleculeAbundances' and set(value) = smallMoleculeAbundances' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
   
     ///The metadata section can provide additional information about the dataset(s) 
     ///reported in the mzTab file.
     type [<AllowNullLiteral>]
-         MetaData (id:string, title:string, description:string, version:string, mode:Nullable<MzTabMode>, 
+         MetaDataSection
+                  (id:string, title:string, description:string, version:string, mode:Nullable<MzTabMode>, 
                    mzType:Nullable<MzType>, sampleProcessings:List<SampleProcessing>, instruments:List<Instrument>,
                    analysisSoftwares:List<AnalysisSoftware>, searchEngineScores:List<SearchEngineScore>,
-                   falseDiscoveryRates:List<FalseDiscoveryRate>, publications:List<BiblioGraphicReference>, 
-                   persons:List<Person>, uri:List<URI>, fixedModifications:List<FixedModification>, 
+                   falseDiscoveryRates:List<FalseDiscoveryRate>, publications:string, 
+                   persons:List<Person>, uri:string, fixedModifications:List<FixedModification>, 
                    variableModifications:List<VariableModification>, quantification:Quantification, 
                    msRuns:List<MSRun>, samples:List<Sample>, assays:List<Assay>, 
                    studyVariables:List<StudyVariable>, colUnit:ColUnit, 
                    proteinSections:List<ProteinSection>, peptideSections:List<PeptideSection>, 
                    psmSections:List<PSMSection>, smallMoleculeSections:List<SmallMoleculeSection>,
-                   details:List<MetaDataParam>, rowVersion:Nullable<DateTime>
+                   details:List<MetaDataSectionParam>, rowVersion:Nullable<DateTime>
                   ) =  
             let mutable id'                    = id
             let mutable title'                 = title
@@ -2021,7 +1983,8 @@ module DataModel =
             let mutable details'               = details
             let mutable rowVersion'            = rowVersion
 
-            new() = MetaData(null, null, null, null,  Nullable(),  Nullable(), null, null, 
+            new() = MetaDataSection
+                            (null, null, null, null,  Nullable(),  Nullable(), null, null, 
                              null, null, null, null, null, null, null, null, null, null, null, null, null,
                              null, null, null, null, null, null, Nullable()
                             )
@@ -2078,9 +2041,294 @@ module DataModel =
                                                     and set value = this.m_cvParam <- value
 
             [<DefaultValue>] 
-            val mutable m_MetaData : DbSet<MetaData>
-            member public this.MetaData with get() = this.m_MetaData
-                                                     and set value = this.m_MetaData <- value
+            val mutable m_FalseDiscoveryRate : DbSet<FalseDiscoveryRate>
+            member public this.FalseDiscoveryRate with get() = this.m_FalseDiscoveryRate
+                                                               and set value = this.m_FalseDiscoveryRate <- value
+
+            [<DefaultValue>] 
+            val mutable m_AnalysisSoftwareParam : DbSet<AnalysisSoftwareParam>
+            member public this.AnalysisSoftwareParam with get() = this.m_AnalysisSoftwareParam
+                                                               and set value = this.m_AnalysisSoftwareParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_PersonParam : DbSet<PersonParam>
+            member public this.PersonParam with get() = this.m_PersonParam
+                                                        and set value = this.m_PersonParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_OrganizationParam : DbSet<OrganizationParam>
+            member public this.OrganizationParam with get() = this.m_OrganizationParam
+                                                              and set value = this.m_OrganizationParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_SampleParam : DbSet<SampleParam>
+            member public this.SampleParam with get() = this.m_SampleParam
+                                                        and set value = this.m_SampleParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_Species : DbSet<Species>
+            member public this.Species with get() = this.m_Species
+                                                    and set value = this.m_Species <- value
+
+            [<DefaultValue>] 
+            val mutable m_Tissue : DbSet<Tissue>
+            member public this.Tissue with get() = this.m_Tissue
+                                                   and set value = this.m_Tissue <- value
+
+            [<DefaultValue>] 
+            val mutable m_CellType : DbSet<CellType>
+            member public this.CellType with get() = this.m_CellType
+                                                     and set value = this.m_CellType <- value
+
+            [<DefaultValue>] 
+            val mutable m_Disease : DbSet<Disease>
+            member public this.Disease with get() = this.m_Disease
+                                                    and set value = this.m_Disease <- value
+
+            [<DefaultValue>] 
+            val mutable m_FixedMod : DbSet<FixedMod>
+            member public this.FixedMod with get() = this.m_FixedMod
+                                                     and set value = this.m_FixedMod <- value
+
+            [<DefaultValue>] 
+            val mutable m_FixedModSite : DbSet<FixedModSite>
+            member public this.FixedModSite with get() = this.m_FixedModSite
+                                                         and set value = this.m_FixedModSite <- value
+
+            [<DefaultValue>] 
+            val mutable m_FixedModPosition : DbSet<FixedModPosition>
+            member public this.FixedModPosition with get() = this.m_FixedModPosition
+                                                             and set value = this.m_FixedModPosition <- value
+
+            [<DefaultValue>] 
+            val mutable m_VariableMod : DbSet<VariableMod>
+            member public this.VariableMod with get() = this.m_VariableMod
+                                                        and set value = this.m_VariableMod <- value
+
+            [<DefaultValue>] 
+            val mutable m_VariableModSite : DbSet<VariableModSite>
+            member public this.VariableModSite with get() = this.m_VariableModSite
+                                                            and set value = this.m_VariableModSite <- value
+
+            [<DefaultValue>] 
+            val mutable m_VariableModPosition : DbSet<VariableModPosition>
+            member public this.VariableModPosition with get() = this.m_VariableModPosition
+                                                                and set value = this.m_VariableModPosition <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinSearchEngineScore : DbSet<ProteinSearchEngineScore>
+            member public this.ProteinSearchEngineScore with get() = this.m_ProteinSearchEngineScore
+                                                                     and set value = this.m_ProteinSearchEngineScore <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideSearchEngineScore : DbSet<PeptideSearchEngineScore>
+            member public this.PeptideSearchEngineScore with get() = this.m_PeptideSearchEngineScore
+                                                                     and set value = this.m_PeptideSearchEngineScore <- value
+
+            [<DefaultValue>] 
+            val mutable m_PSMSearchEngineScore : DbSet<PSMSearchEngineScore>
+            member public this.PSMSearchEngineScore with get() = this.m_PSMSearchEngineScore
+                                                                 and set value = this.m_PSMSearchEngineScore <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeSearchEngineScore : DbSet<SmallMoleculeSearchEngineScore>
+            member public this.SmallMoleculeSearchEngineScore with get() = this.m_SmallMoleculeSearchEngineScore
+                                                                           and set value = this.m_SmallMoleculeSearchEngineScore <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunFormat : DbSet<MSRunFormat>
+            member public this.MSRunFormat with get() = this.m_MSRunFormat
+                                                        and set value = this.m_MSRunFormat <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunLocation : DbSet<MSRunLocation>
+            member public this.MSRunLocation with get() = this.m_MSRunLocation
+                                                          and set value = this.m_MSRunLocation <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunIDFormat : DbSet<MSRunIDFormat>
+            member public this.MSRunIDFormat with get() = this.m_MSRunIDFormat
+                                                          and set value = this.m_MSRunIDFormat <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunFragmentationMethod : DbSet<MSRunFragmentationMethod>
+            member public this.MSRunFragmentationMethod with get() = this.m_MSRunFragmentationMethod
+                                                                     and set value = this.m_MSRunFragmentationMethod <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunHash : DbSet<MSRunHash>
+            member public this.MSRunHash with get() = this.m_MSRunHash
+                                                      and set value = this.m_MSRunHash <- value
+
+            [<DefaultValue>] 
+            val mutable m_MSRunHashMethod : DbSet<MSRunHashMethod>
+            member public this.MSRunHashMethod with get() = this.m_MSRunHashMethod
+                                                            and set value = this.m_MSRunHashMethod <- value
+
+            [<DefaultValue>] 
+            val mutable m_QuantificationReagent : DbSet<QuantificationReagent>
+            member public this.QuantificationReagent with get() = this.m_QuantificationReagent
+                                                                  and set value = this.m_QuantificationReagent <- value
+
+            [<DefaultValue>] 
+            val mutable m_QuantificationModSite : DbSet<QuantificationModSite>
+            member public this.QuantificationModSite with get() = this.m_QuantificationModSite
+                                                                  and set value = this.m_QuantificationModSite <- value
+
+            [<DefaultValue>] 
+            val mutable m_QuantificationModPosition : DbSet<QuantificationModPosition>
+            member public this.QuantificationModPosition with get() = this.m_QuantificationModPosition
+                                                                      and set value = this.m_QuantificationModPosition <- value
+
+            [<DefaultValue>] 
+            val mutable m_InstrumentName : DbSet<InstrumentName>
+            member public this.InstrumentName with get() = this.m_InstrumentName
+                                                           and set value = this.m_InstrumentName <- value
+            
+            [<DefaultValue>] 
+            val mutable m_InstrumentSource : DbSet<InstrumentSource>
+            member public this.InstrumentSource with get() = this.m_InstrumentSource
+                                                             and set value = this.m_InstrumentSource <- value
+            
+            [<DefaultValue>] 
+            val mutable m_InstrumentAnalyzer : DbSet<InstrumentAnalyzer>
+            member public this.InstrumentAnalyzer with get() = this.m_InstrumentAnalyzer
+                                                               and set value = this.m_InstrumentAnalyzer <- value
+            
+            [<DefaultValue>] 
+            val mutable m_InstrumentDetector : DbSet<InstrumentDetector>
+            member public this.InstrumentDetector with get() = this.m_InstrumentDetector
+                                                               and set value = this.m_InstrumentDetector <- value
+            
+            [<DefaultValue>] 
+            val mutable m_SampleProcessing : DbSet<SampleProcessing>
+            member public this.SampleProcessing with get() = this.m_SampleProcessing
+                                                             and set value = this.m_SampleProcessing <- value
+            
+            [<DefaultValue>] 
+            val mutable m_AnalysisSoftware : DbSet<AnalysisSoftware>
+            member public this.AnalysisSoftware with get() = this.m_AnalysisSoftware
+                                                             and set value = this.m_AnalysisSoftware <- value
+            
+            [<DefaultValue>] 
+            val mutable m_Organization : DbSet<Organization>
+            member public this.Organization with get() = this.m_Organization
+                                                         and set value = this.m_Organization <- value
+
+            [<DefaultValue>] 
+            val mutable m_Person : DbSet<Person>
+            member public this.Person with get() = this.m_Person
+                                                   and set value = this.m_Person <- value
+            
+            [<DefaultValue>] 
+            val mutable m_FixedModification : DbSet<FixedModification>
+            member public this.FixedModification with get() = this.m_FixedModification
+                                                              and set value = this.m_FixedModification <- value
+
+            [<DefaultValue>] 
+            val mutable m_VariableModification : DbSet<VariableModification>
+            member public this.VariableModification with get() = this.m_VariableModification
+                                                                 and set value = this.m_VariableModification <- value
+
+            [<DefaultValue>] 
+            val mutable m_Instrument : DbSet<Instrument>
+            member public this.Instrument with get() = this.m_Instrument
+                                                       and set value = this.m_Instrument <- value
+            
+            [<DefaultValue>] 
+            val mutable m_SearchEngineScore : DbSet<SearchEngineScore>
+            member public this.SearchEngineScore with get() = this.m_SearchEngineScore
+                                                              and set value = this.m_SearchEngineScore <- value
+
+            [<DefaultValue>] 
+            val mutable m_Quantification : DbSet<Quantification>
+            member public this.Quantification with get() = this.m_Quantification
+                                                           and set value = this.m_Quantification <- value
+            
+            [<DefaultValue>] 
+            val mutable m_MSRun : DbSet<MSRun>
+            member public this.MSRun with get() = this.m_MSRun
+                                                  and set value = this.m_MSRun <- value
+            
+            [<DefaultValue>] 
+            val mutable m_Sample : DbSet<Sample>
+            member public this.Sample with get() = this.m_Sample
+                                                   and set value = this.m_Sample <- value
+
+            [<DefaultValue>] 
+            val mutable m_Assay : DbSet<Assay>
+            member public this.Assay with get() = this.m_Assay
+                                                  and set value = this.m_Assay <- value
+           
+            [<DefaultValue>] 
+            val mutable m_ColUnit : DbSet<ColUnit>
+            member public this.ColUnit with get() = this.m_ColUnit
+                                                    and set value = this.m_ColUnit <- value
+
+            [<DefaultValue>] 
+            val mutable m_StudyVariable : DbSet<StudyVariable>
+            member public this.StudyVariable with get() = this.m_StudyVariable
+                                                          and set value = this.m_StudyVariable <- value
+
+            [<DefaultValue>] 
+            val mutable m_Identifier : DbSet<Identifier>
+            member public this.Identifier with get() = this.m_Identifier
+                                                       and set value = this.m_Identifier <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideSequence : DbSet<PeptideSequence>
+            member public this.PeptideSequence with get() = this.m_PeptideSequence
+                                                            and set value = this.m_PeptideSequence <- value
+
+            [<DefaultValue>] 
+            val mutable m_Accession : DbSet<Accession>
+            member public this.Accession with get() = this.m_Accession
+                                                      and set value = this.m_Accession <- value
+
+            [<DefaultValue>] 
+            val mutable m_MetaDataSectionParam : DbSet<MetaDataSectionParam>
+            member public this.MetaDataSectionParam with get() = this.m_MetaDataSectionParam
+                                                                 and set value = this.m_MetaDataSectionParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_MetaDataSection : DbSet<MetaDataSection>
+            member public this.MetaDataSection with get() = this.m_MetaDataSection
+                                                            and set value = this.m_MetaDataSection <- value
+
+            [<DefaultValue>] 
+            val mutable m_AccessionParameter : DbSet<AccessionParameter>
+            member public this.AccessionParameter with get() = this.m_AccessionParameter
+                                                               and set value = this.m_AccessionParameter <- value
+
+            [<DefaultValue>] 
+            val mutable m_SearchEngineName : DbSet<SearchEngineName>
+            member public this.SearchEngineName with get() = this.m_SearchEngineName
+                                                             and set value = this.m_SearchEngineName <- value
+
+            [<DefaultValue>] 
+            val mutable m_SearchEngine : DbSet<SearchEngine>
+            member public this.SearchEngine with get() = this.m_SearchEngine
+                                                         and set value = this.m_SearchEngine <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideInfo : DbSet<PeptideInfo>
+            member public this.PeptideInfo with get() = this.m_PeptideInfo
+                                                        and set value = this.m_PeptideInfo <- value
+
+            [<DefaultValue>] 
+            val mutable m_Modification : DbSet<Modification>
+            member public this.Modification with get() = this.m_Modification
+                                                         and set value = this.m_Modification <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinAbundance : DbSet<ProteinAbundance>
+            member public this.ProteinAbundance with get() = this.m_ProteinAbundance
+                                                             and set value = this.m_ProteinAbundance <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinSectionParam : DbSet<ProteinSectionParam>
+            member public this.ProteinSectionParam with get() = this.m_ProteinSectionParam
+                                                                and set value = this.m_ProteinSectionParam <- value
 
             [<DefaultValue>] 
             val mutable m_ProteinSection : DbSet<ProteinSection>
@@ -2088,9 +2336,44 @@ module DataModel =
                                                            and set value = this.m_ProteinSection <- value
 
             [<DefaultValue>] 
+            val mutable m_RetentionTimeWindow : DbSet<RetentionTimeWindow>
+            member public this.RetentionTimeWindow with get() = this.m_RetentionTimeWindow
+                                                                and set value = this.m_RetentionTimeWindow <- value
+
+            [<DefaultValue>] 
+            val mutable m_RetentionTime : DbSet<RetentionTime>
+            member public this.RetentionTime with get() = this.m_RetentionTime
+                                                          and set value = this.m_RetentionTime <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideAbundance : DbSet<PeptideAbundance>
+            member public this.PeptideAbundance with get() = this.m_PeptideAbundance
+                                                             and set value = this.m_PeptideAbundance <- value
+
+            [<DefaultValue>] 
+            val mutable m_PeptideSectionParam : DbSet<PeptideSectionParam>
+            member public this.PeptideSectionParam with get() = this.m_PeptideSectionParam
+                                                                and set value = this.m_PeptideSectionParam <- value
+
+            [<DefaultValue>] 
             val mutable m_PeptideSection : DbSet<PeptideSection>
             member public this.PeptideSection with get() = this.m_PeptideSection
                                                            and set value = this.m_PeptideSection <- value
+
+            [<DefaultValue>] 
+            val mutable m_PSMID : DbSet<PSMID>
+            member public this.PSMID with get() = this.m_PSMID
+                                                  and set value = this.m_PSMID <- value
+
+            [<DefaultValue>] 
+            val mutable m_PSMInformation : DbSet<PSMInformation>
+            member public this.PSMInformation with get() = this.m_PSMInformation
+                                                           and set value = this.m_PSMInformation <- value
+
+            [<DefaultValue>] 
+            val mutable m_PSMSectionParam : DbSet<PSMSectionParam>
+            member public this.PSMSectionParam with get() = this.m_PSMSectionParam
+                                                            and set value = this.m_PSMSectionParam <- value
 
             [<DefaultValue>] 
             val mutable m_PSMSection : DbSet<PSMSection>
@@ -2098,6 +2381,22 @@ module DataModel =
                                                            and set value = this.m_PSMSection <- value
 
             [<DefaultValue>] 
+            val mutable m_Chemical : DbSet<Chemical>
+            member public this.Chemical with get() = this.m_Chemical
+                                                     and set value = this.m_Chemical <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeAbundance : DbSet<SmallMoleculeAbundance>
+            member public this.SmallMoleculeAbundance with get() = this.m_SmallMoleculeAbundance
+                                                                   and set value = this.m_SmallMoleculeAbundance <- value
+
+            [<DefaultValue>] 
+            val mutable m_SmallMoleculeSectionParam : DbSet<SmallMoleculeSectionParam>
+            member public this.SmallMoleculeSectionParam with get() = this.m_SmallMoleculeSectionParam
+                                                                      and set value = this.m_SmallMoleculeSectionParam <- value
+
+            [<DefaultValue>] 
             val mutable m_SmallMoleculeSection : DbSet<SmallMoleculeSection>
             member public this.SmallMoleculeSection with get() = this.m_SmallMoleculeSection
                                                            and set value = this.m_SmallMoleculeSection <- value
+ 
