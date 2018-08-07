@@ -5226,7 +5226,7 @@ module InsertStatements =
                     peptideSequence                  : PeptideSequence,
                     accession                        : Accession,
                     taxid                            : string,
-                    species                          : string,
+                    species                          : Species,
                     dataBase                         : string,
                     dataBaseVersion                  : string,
                     ?id                              : string
