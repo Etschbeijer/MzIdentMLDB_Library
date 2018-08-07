@@ -852,37 +852,44 @@ module DataModel =
 
     ///Organizations are entities like companies, universities, government agencies.
     and [<AllowNullLiteral>]
-        Organization (id:string, name:string, details:List<OrganizationParam>, parent:string, rowVersion:Nullable<DateTime>) =
-            let mutable id'         = id
-            let mutable name'       = name
-            let mutable details'    = details
-            let mutable parent'     = parent
-            let mutable rowVersion' = rowVersion
+        Organization (id:string, name:string, parent:string,
+                      details:List<OrganizationParam>, mzIdentMLDocument:MzIdentMLDocument,  
+                      rowVersion:Nullable<DateTime>
+                     ) =
+            let mutable id'                = id
+            let mutable name'              = name 
+            let mutable parent'            = parent
+            let mutable details'           = details
+            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable rowVersion'        = rowVersion
 
-            new() = Organization(null, null, null, null, Nullable())
+            new() = Organization(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Parent with get() = parent' and set(value) = parent' <- value
             member this.Details with get() = details' and set(value) = details' <- value
+            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A person's name and contact details.
     and [<AllowNullLiteral>]
         Person (id:string, name:string, firstName:string, midInitials:string, 
                 lastName:string, organizations:List<Organization>, 
-                details:List<PersonParam>, rowVersion:Nullable<DateTime>
+                 details:List<PersonParam>, mzIdentMLDocument:MzIdentMLDocument,
+                rowVersion:Nullable<DateTime>
                 ) =
-            let mutable id'            = id
-            let mutable name'          = name
-            let mutable firstName'     = firstName
-            let mutable midInitials'   = midInitials
-            let mutable lastName'      = lastName
-            let mutable organizations' = organizations
-            let mutable details'       = details
-            let mutable rowVersion'    = rowVersion
+            let mutable id'                = id
+            let mutable name'              = name
+            let mutable firstName'         = firstName
+            let mutable midInitials'       = midInitials
+            let mutable lastName'          = lastName
+            let mutable organizations'     = organizations
+            let mutable details'           = details
+            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable rowVersion'        = rowVersion
 
-            new() = Person(null, null, null, null, null, null, null, Nullable())
+            new() = Person(null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -891,6 +898,7 @@ module DataModel =
             member this.LastName with get() = lastName' and set(value) = lastName' <- value
             member this.Organizations with get() = organizations' and set(value) = organizations' <- value
             member this.Details with get() = details' and set(value) = details' <- value
+            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The software used for performing the analyses.

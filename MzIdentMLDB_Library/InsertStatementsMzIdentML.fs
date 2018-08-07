@@ -2936,21 +2936,24 @@ module InsertStatements =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : string,
-                    ?name    : string,
-                    ?details : seq<OrganizationParam>,
-                    ?parent  : string
+                    ?id                : string,
+                    ?name              : string,
+                    ?parent            : string,
+                    ?details           : seq<OrganizationParam>,
+                    ?mzIdentMLDocument : MzIdentMLDocument
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'    = defaultArg name Unchecked.defaultof<string>
-                let details' = convertOptionToList details
-                let parent'  = defaultArg parent Unchecked.defaultof<string>
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let parent'            = defaultArg parent Unchecked.defaultof<string>
+                let details'           = convertOptionToList details
+                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Organization(
                                  id', 
                                  name', 
-                                 details',  
-                                 parent', 
+                                 parent',
+                                 details',
+                                 mzIdentMLDocument',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -2977,6 +2980,12 @@ module InsertStatements =
                 (details:seq<OrganizationParam>) (organization:Organization) =
                 let result = organization.Details <- addCollectionToList organization.Details details
                 organization
+
+            ///Replaces mzIdentML of existing object with new one.
+            static member addMzIdentMLDocument
+                (mzIdentMLDocument:MzIdentMLDocument) (table:Organization)=
+                let result = table.MzIdentMLDocument <- mzIdentMLDocument
+                table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3009,7 +3018,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
-                item1.Details=item2.Details && item1.Parent=item2.Parent
+                item1.Details=item2.Details && item1.Parent=item2.Parent &&
+                item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3034,19 +3044,24 @@ module InsertStatements =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id             : string,
-                    ?name           : string,
-                    ?firstName      : string,
-                    ?midInitials    : string,
-                    ?lastName       : string,
-                    ?contactDetails : seq<PersonParam>,
-                    ?organizations  : seq<Organization> 
+                    ?id                : string,
+                    ?name              : string,
+                    ?firstName         : string,
+                    ?midInitials       : string,
+                    ?lastName          : string,
+                    ?organizations     : seq<Organization>,
+                    ?contactDetails    : seq<PersonParam>,
+                    ?mzIdentMLDocument : MzIdentMLDocument
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'        = defaultArg name Unchecked.defaultof<string>
-                let firstName'   = defaultArg firstName Unchecked.defaultof<string>
-                let midInitials' = defaultArg midInitials Unchecked.defaultof<string>
-                let lastName'    = defaultArg lastName Unchecked.defaultof<string>
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let firstName'         = defaultArg firstName Unchecked.defaultof<string>
+                let midInitials'       = defaultArg midInitials Unchecked.defaultof<string>
+                let lastName'          = defaultArg lastName Unchecked.defaultof<string>    
+                let organizations'     = convertOptionToList organizations
+                let contactDetails'    = convertOptionToList contactDetails
+                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
+
                     
                 new Person(
                            id', 
@@ -3054,7 +3069,9 @@ module InsertStatements =
                            firstName',  
                            midInitials', 
                            lastName', 
-                           convertOptionToList organizations,convertOptionToList contactDetails, 
+                           organizations',
+                           contactDetails',
+                           mzIdentMLDocument',
                            Nullable(DateTime.Now)
                           )
 
@@ -3105,6 +3122,12 @@ module InsertStatements =
                 let result = person.Organizations <- addCollectionToList person.Organizations organizations
                 person
 
+            ///Replaces mzIdentML of existing object with new one.
+            static member addMzIdentMLDocument
+                (mzIdentMLDocument:MzIdentMLDocument) (table:Person)=
+                let result = table.MzIdentMLDocument <- mzIdentMLDocument
+                table
+
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzIdentML) (personID:string) =
@@ -3115,18 +3138,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.Person.Local do
                            if i.Name = name
-                              then select (i, i.Details, i.Organizations)
+                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
                       }
-                |> Seq.map (fun (person, _, _) -> person)
+                |> Seq.map (fun (person, _, _, _) -> person)
                 |> (fun person -> 
                     if (Seq.exists (fun person' -> person' <> null) person) = false
                         then 
                             query {
                                    for i in dbContext.Person do
                                        if i.Name = name
-                                          then select (i, i.Details, i.Organizations)
+                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
                                   }
-                            |> Seq.map (fun (person, _, _) -> person)
+                            |> Seq.map (fun (person, _, _, _) -> person)
                             |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
                                                 then None
                                                 else Some person
@@ -3138,7 +3161,8 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:Person) (item2:Person) =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
-                item1.Organizations=item2.Organizations && item1.Details=item2.Details
+                item1.Organizations=item2.Organizations && item1.Organizations=item2.Organizations &&
+                item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3291,7 +3315,7 @@ module InsertStatements =
                 analysisSoftware.ContactRole <- analysisSoftwareDeveloper
                 analysisSoftware
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (analysisSoftware:AnalysisSoftware)=
                 let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
@@ -3495,7 +3519,7 @@ module InsertStatements =
                 let result = sample.Details <- addCollectionToList sample.Details details
                 sample
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (sample:Sample) =
                 let result = sample.MzIdentMLDocument <- mzIdentMLDocument
@@ -3824,7 +3848,7 @@ module InsertStatements =
                 let result = peptide.Details <- addCollectionToList peptide.Details details
                 peptide
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (peptide:Peptide) =
                 let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
@@ -5327,7 +5351,7 @@ module InsertStatements =
                 let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
                 spectrumIdentificationProtocol
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
                 let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
@@ -5602,7 +5626,7 @@ module InsertStatements =
                 let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                 dbSequence
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (dbSequence:DBSequence) =
                 let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
@@ -5769,7 +5793,7 @@ module InsertStatements =
                 let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
                 peptideEvidence
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (peptideEvidence:PeptideEvidence) =
                 let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
@@ -6266,7 +6290,7 @@ module InsertStatements =
                 spectrumIdentification.ActivityDate <- Nullable(activityDate)
                 spectrumIdentification
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentification:SpectrumIdentification) =
                 let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
@@ -6375,7 +6399,7 @@ module InsertStatements =
                 let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
                 proteinDetectionProtocol
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionProtocol:ProteinDetectionProtocol) =
                 let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
@@ -6589,7 +6613,7 @@ module InsertStatements =
                 let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
                 inputs
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (inputs:Inputs) =
                 let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
@@ -6763,7 +6787,7 @@ module InsertStatements =
                 let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
                 proteinDetectionHypothesis
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
                 let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
@@ -7038,13 +7062,13 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces proteindetectionlist of existing object with new mzidentml.
+            ///Replaces proteindetectionlist of existing object with new mzIdentML.
             static member addProteinDetectionList
                 (proteinDetectionList:ProteinDetectionList) (analysisData:AnalysisData) =
                 analysisData.ProteinDetectionList <- proteinDetectionList
                 analysisData
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (analysisData:AnalysisData) =
                 let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
@@ -7316,7 +7340,7 @@ module InsertStatements =
                 biblioGraphicReference.Year <- Nullable(year)
                 biblioGraphicReference
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (biblioGraphicReference:BiblioGraphicReference) =
                 let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
@@ -7419,7 +7443,7 @@ module InsertStatements =
                 provider.ContactRole <- contactRole
                 provider
 
-            ///Replaces mzidentml of existing object with new mzidentml.
+            ///Replaces mzIdentML of existing object with new mzIdentML.
             static member addMzIdentMLDocument
                 (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
                 let result = provider.MzIdentMLDocument <- mzIdentMLDocument
@@ -7714,24 +7738,24 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.Name=name
-                              then select (i, (*i.Inputs,*) i.AnalysisSoftwares, (*i.Provider,*) i.Persons, i.Organizations, i.Samples,
-                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, (*i.ProteinDetection,*)
-                                           i.SpectrumIdentificationProtocol, (*i.ProteinDetectionProtocol, i.AnalysisData,*) i.BiblioGraphicReferences
+                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
                             query {
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.Name=name
-                                          then select (i, (*i.Inputs,*) i.AnalysisSoftwares, (*i.Provider,*) i.Persons, i.Organizations, i.Samples,
-                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, (*i.ProteinDetection,*)
-                                                       i.SpectrumIdentificationProtocol, (*i.ProteinDetectionProtocol, i.AnalysisData,*) i.BiblioGraphicReferences
+                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                              then None
                                                              else Some mzIdentMLDocument
@@ -7742,13 +7766,11 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-               (*item1.Provider=item2.Provider &&*) 
-               item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+               item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
-               (*item1.ProteinDetection=item2.ProteinDetection &&*) 
-               item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
-               (*item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&*)
+               item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&
                item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 

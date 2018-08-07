@@ -2001,6 +2001,33 @@ let spectradata =
     |> SpectraDataHandler.addName "20170518 TM FSconc3002";
     ]
 
+let organizations =
+    [
+    OrganizationHandler.init(name="TuKL")
+    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    OrganizationHandler.init(name="BioTech")
+    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    OrganizationHandler.init(name="CSB")
+    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    ]
+
+let person =
+    PersonHandler.init()
+    |> PersonHandler.addFirstName "Patrick"
+    |> PersonHandler.addLastName "Blume"
+    |> PersonHandler.addOrganizations organizations
+    |> PersonHandler.addMzIdentMLDocument mzIdentMLDocument
+
+let role =
+    CVParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext "MS:1001267").Value
+                       )
+
+let contactRole =
+    ContactRoleHandler.init(
+        person, role
+                           )
+
 let softwareName =
     CVParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxQuant)).Value
@@ -2008,6 +2035,7 @@ let softwareName =
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init(softwareName)
+    |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper contactRole
 
 let searchType =
     CVParamHandler.init(
@@ -2272,15 +2300,9 @@ let provider =
     |> ProviderHandler.addAnalysisSoftware analysisSoftware
     |> ProviderHandler.addMzIdentMLDocument mzIdentMLDocument
 
-let organizations =
-    [
-    OrganizationHandler.init(name="TuKL");
-    OrganizationHandler.init(name="BioTech");
-    OrganizationHandler.init(name="CSB")
-    ]
-
 let finalFunction =
     mzIdentMLDocument
+    |> MzIdentMLDocumentHandler.addName "Test MzIdentMLDatabase"
     |> MzIdentMLDocumentHandler.addAnalysisSoftware analysisSoftware
     |> MzIdentMLDocumentHandler.addDBSequence dbSequence
     |> MzIdentMLDocumentHandler.addPeptides [peptideUnmodified; peptideMOxidized]
@@ -2293,6 +2315,7 @@ let finalFunction =
     |> MzIdentMLDocumentHandler.addInputs inputs
     |> MzIdentMLDocumentHandler.addProvider provider
     |> MzIdentMLDocumentHandler.addOrganizations organizations
+    |> MzIdentMLDocumentHandler.addPerson person
     |> MzIdentMLDocumentHandler.addToContext sqliteMzIdentMLContext
 
 sqliteMzIdentMLContext.SaveChanges()
