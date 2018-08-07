@@ -401,7 +401,7 @@ let createDBEntry (dbContext:MzIdentML) =
                                                         dbContext
                                                         "Measure_MZ"
                                                     ).Value,
-                                                    [ValueHandler.init(335.2040405)]
+                                                    335.2040405
                                                     )
                         )
                     )
@@ -927,7 +927,7 @@ let createDBEntry2 (dbContext:MzIdentML) =
                     |> IonTypeHandler.addFragmentArray
                         (FragmentArrayHandler.init(
                             fragmentationTable,
-                            [ValueHandler.init(335.2040405)]
+                            335.2040405
                                                   )
                         )
                     )

@@ -1845,7 +1845,7 @@ module DataModel =
                           name:string, 
                           version:string,
                           analysisSoftwares:List<AnalysisSoftware>,
-                          //provider:Provider,
+                          provider:List<Provider>,
                           persons:List<Person>, 
                           organizations:List<Organization>, 
                           samples:List<Sample>, 
@@ -1853,11 +1853,11 @@ module DataModel =
                           peptides:List<Peptide>,
                           peptideEvidences:List<PeptideEvidence>, 
                           spectrumIdentification:List<SpectrumIdentification>, 
-                          //proteinDetection:ProteinDetection, 
+                          proteinDetection:List<ProteinDetection>, 
                           spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
-                          //proteinDetectionProtocol:ProteinDetectionProtocol,
-                          //inputs:Inputs,
-                          //analysisData:AnalysisData,
+                          proteinDetectionProtocol:List<ProteinDetectionProtocol>,
+                          inputs:List<Inputs>,
+                          analysisData:List<AnalysisData>,
                           biblioGraphicReferences:List<BiblioGraphicReference>,
                           rowVersion:Nullable<DateTime>
                          ) =
@@ -1865,7 +1865,7 @@ module DataModel =
             let mutable name'                           = name
             let mutable version'                        = version
             let mutable analysisSoftwares'              = analysisSoftwares
-            //let mutable provider'                       = provider
+            let mutable provider'                       = provider
             let mutable persons'                        = persons
             let mutable organizations'                  = organizations
             let mutable samples'                        = samples
@@ -1873,15 +1873,15 @@ module DataModel =
             let mutable peptides'                       = peptides
             let mutable peptideEvidences'               = peptideEvidences
             let mutable spectrumIdentification'         = spectrumIdentification
-            //let mutable proteinDetection'               = proteinDetection
+            let mutable proteinDetection'               = proteinDetection
             let mutable spectrumIdentificationProtocol' = spectrumIdentificationProtocol
-            //let mutable proteinDetectionProtocol'       = proteinDetectionProtocol
-            //let mutable inputs'                         = inputs
-            //let mutable analysisData'                   = analysisData
+            let mutable proteinDetectionProtocol'       = proteinDetectionProtocol
+            let mutable inputs'                         = inputs
+            let mutable analysisData'                   = analysisData
             let mutable biblioGraphicReferences'        = biblioGraphicReferences
             let mutable rowVersion'                     = rowVersion
 
-            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
+            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null,null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1890,7 +1890,7 @@ module DataModel =
             //Formerly AnalysisSoftwareList
             member this. AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
             //
-            //member this.Provider with get() = provider' and set(value) = provider' <- value
+            member this.Provider with get() = provider' and set(value) = provider' <- value
             //Formerly AuditCollection
             member this. Persons with get() = persons and set(value) = persons' <- value
             member this. Organizations with get() = organizations' and set(value) = organizations' <- value
@@ -1905,15 +1905,15 @@ module DataModel =
             //
             //AnalysisCollection
             member this.SpectrumIdentification with get() = spectrumIdentification' and set(value) = spectrumIdentification' <- value
-            //member this.ProteinDetection with get() = proteinDetection' and set(value) = proteinDetection' <- value
+            member this.ProteinDetection with get() = proteinDetection' and set(value) = proteinDetection' <- value
             //
             //AnalysisProtocolCollection
             member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
-            //member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
+            member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
             //
             //DataCollection
-            //member this.Inputs with get() = inputs' and set(value) = inputs' <- value
-            //member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
+            member this.Inputs with get() = inputs' and set(value) = inputs' <- value
+            member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
             //
             member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value

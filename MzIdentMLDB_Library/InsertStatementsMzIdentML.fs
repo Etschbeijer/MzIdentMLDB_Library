@@ -7479,33 +7479,33 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MzIdentMLDocumentHandler =
-            ///Initializes a mzidentml-object with at least all necessary parameters.
+            ///Initializes a mzIdentML-object with at least all necessary parameters.
             static member init
                 (             
-                    //?inputs                         : Inputs,
+                    ?inputs                         : seq<Inputs>,
                     ?version                        : string,
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
-                    //?analysisData                   : AnalysisData,
+                    ?analysisData                   : seq<AnalysisData>,
                     ?id                             : string,
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
-                    //?provider                       : Provider,
+                    ?provider                       : seq<Provider>,
                     ?persons                        : seq<Person>,
                     ?organizations                  : seq<Organization>,
                     ?samples                        : seq<Sample>,
                     ?dbSequences                    : seq<DBSequence>,
                     ?peptides                       : seq<Peptide>,
                     ?peptideEvidences               : seq<PeptideEvidence>,
-                    //?proteinDetection               : ProteinDetection,
-                    //?proteinDetectionProtocol       : ProteinDetectionProtocol,
+                    ?proteinDetection               : seq<ProteinDetection>,
+                    ?proteinDetectionProtocol       : seq<ProteinDetectionProtocol>,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
-                //let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
+                let provider'                       = convertOptionToList provider
                 let persons'                        = convertOptionToList persons
                 let organizations'                  = convertOptionToList organizations
                 let samples'                        = convertOptionToList samples
@@ -7513,18 +7513,18 @@ module InsertStatements =
                 let peptides'                       = convertOptionToList peptides
                 let peptideEvidences'               = convertOptionToList peptideEvidences
                 let spectrumIdentification'         = convertOptionToList spectrumIdentification
-                //let proteinDetection'               = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
+                let proteinDetection'               = convertOptionToList proteinDetection
                 let spectrumIdentificationProtocol' = convertOptionToList spectrumIdentificationProtocol
-                //let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
-                //let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
-                //let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
+                let proteinDetectionProtocol'       = convertOptionToList proteinDetectionProtocol
+                let inputs'                         = convertOptionToList inputs
+                let analysisData'                   = convertOptionToList analysisData
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
                                       id', 
                                       name',
                                       version',
                                       analysisSoftwares', 
-                                      //provider', 
+                                      provider', 
                                       persons', 
                                       organizations', 
                                       samples', 
@@ -7532,11 +7532,11 @@ module InsertStatements =
                                       peptides', 
                                       peptideEvidences', 
                                       spectrumIdentification',
-                                      //proteinDetection',
+                                      proteinDetection',
                                       spectrumIdentificationProtocol',
-                                      //proteinDetectionProtocol', 
-                                      //inputs', 
-                                      //analysisData',
+                                      proteinDetectionProtocol', 
+                                      inputs', 
+                                      analysisData',
                                       biblioGraphicReferences',
                                       Nullable(DateTime.Now)
                                      )
@@ -7565,11 +7565,11 @@ module InsertStatements =
                 let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
                 mzIdentML
 
-            /////Replaces provider of existing object with new provider.
-            //static member addProvider
-            //    (provider:Provider) (mzIdentML:MzIdentMLDocument) =
-            //    mzIdentML.Provider <- provider
-            //    mzIdentML
+            ///Adds a provider to an existing mzidentmldocument-object.
+            static member addProvider
+                (provider:Provider) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.Provider <- addToList mzIdentML.Provider provider
+                mzIdentML
 
             ///Adds a person to an existing mzidentmldocument-object.
             static member addPerson
@@ -7656,11 +7656,11 @@ module InsertStatements =
                 let result = mzIdentML.SpectrumIdentification <- addCollectionToList mzIdentML.SpectrumIdentification spectrumIdentification
                 mzIdentML
 
-            /////Replaces proteindetection of existing object with new proteindetection.
-            //static member addProteinDetection
-            //    (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
-            //    mzIdentML.ProteinDetection <- proteinDetection
-            //    mzIdentML
+            ///Adds a proteinDetection to an existing mzidentmldocument-object.
+            static member addProteinDetection
+                (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.ProteinDetection <- addToList mzIdentML.ProteinDetection proteinDetection
+                mzIdentML
 
             ///Adds a spectrumidentificationprotocol to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocol
@@ -7674,23 +7674,23 @@ module InsertStatements =
                 let result = mzIdentML.SpectrumIdentificationProtocol <- addCollectionToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
                 mzIdentML
 
-            /////Replaces proteindetectionprotocol of existing object with new proteindetectionprotocol.
-            //static member addProteinDetectionProtocol
-            //    (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
-            //    mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
-            //    mzIdentML
+            ///Adds a proteinDetectionProtocol to an existing mzidentmldocument-object.
+            static member addProteinDetectionProtocol
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.ProteinDetectionProtocol <- addToList mzIdentML.ProteinDetectionProtocol proteinDetectionProtocol
+                mzIdentML
 
-            /////Replaces inputs of existing object with new inputs.
-            //static member addInputs
-            //    (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
-            //    mzIdentML.Inputs <- inputs
-            //    mzIdentML
+            ///Adds a inputs to an existing mzidentmldocument-object.
+            static member addInputs
+                (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.Inputs <- addToList mzIdentML.Inputs inputs
+                mzIdentML
 
-            /////Replaces analysisdata of existing object with new analysisdata.
-            //static member addAnalysisData
-            //    (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
-            //    mzIdentML.AnalysisData <- analysisData
-            //    mzIdentML
+            ///Adds a analysisData to an existing mzidentmldocument-object.
+            static member addAnalysisData
+                (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.AnalysisData <- addToList mzIdentML.AnalysisData analysisData
+                mzIdentML
 
             ///Adds a bibliographicreference to an existing mzidentmldocument-object.
             static member addBiblioGraphicReference
