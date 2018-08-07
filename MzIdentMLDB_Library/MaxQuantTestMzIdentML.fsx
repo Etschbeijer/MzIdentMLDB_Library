@@ -22,7 +22,6 @@ open FSharp.Data
 open Microsoft.EntityFrameworkCore
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
-open BioFSharp
 
 //open MzIdentMLDataBase.XMLParsing
 
@@ -33,9 +32,10 @@ let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
 
 
-//Using peptide ID = 119 for test, line 121 in peptides; Modification-specific peptides IDs=125 & 126; 
-//Oxidation (M)Sites for Modification-specific peptides ID=125 -> 97; ProteinGroups ID=173, Line 175;
-//AllPeptides Line 227574 (MOxidized) & line 616423 (unmodified); MS/MS scans
+//Using peptideID = 119; Modification-specific peptides IDs=125 & 126; 
+//Oxidation (M)Sites for Modification-specific peptides ID=97; ProteinGroups ID=173;
+//AllPeptides line 227574 (MOxidized) & line 616423 (unmodified); MS/MS scans MOxLine=10847, UnModID=41328,
+//Ms/MS MOxID=568, UnModID=576
 
 let user0 =
     TermHandler.init("User:0000000")
