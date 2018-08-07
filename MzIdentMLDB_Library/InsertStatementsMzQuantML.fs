@@ -473,7 +473,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AnalysisSoftwareParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a analysisSoftwareParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -557,8 +557,8 @@ module InsertStatements =
                 AnalysisSoftwareParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
-        type SearchDatabaeParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+        type SearchDatabaseParamHandler =
+            ///Initializes a searchDataBaseParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -626,10 +626,10 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-                    SearchDatabaeParamHandler.tryFindByTermName dbContext item.Term.ID
+                    SearchDatabaseParamHandler.tryFindByTermName dbContext item.Term.ID
                     |> (fun cvParamCollection -> match cvParamCollection with
                                                  |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SearchDatabaeParamHandler.hasEqualFieldValues cvParam item with
+                                                            |> Seq.map (fun cvParam -> match SearchDatabaseParamHandler.hasEqualFieldValues cvParam item with
                                                                                        |true -> null
                                                                                        |false -> dbContext.Add item
                                                                        ) |> ignore
@@ -639,11 +639,11 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-                SearchDatabaeParamHandler.addToContext dbContext item |> ignore
+                SearchDatabaseParamHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type RawFileParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a rawFilePAram-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -728,7 +728,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AssayParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a assayParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -813,7 +813,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type StudyVariableParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a studyVariableParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -898,7 +898,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RatioCalculationParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a ratioCalculationParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -983,7 +983,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FeatureParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a featureParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1068,7 +1068,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1153,7 +1153,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeListParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeListParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1238,7 +1238,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideConsensusParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a peptideConsensusParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1323,7 +1323,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1408,7 +1408,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinListParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinListParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1493,7 +1493,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinGroupParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinGroupParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1578,7 +1578,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinGroupListParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a proteinGroupListParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1663,7 +1663,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideConsensusListParamHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a peptideConsensusListParam-object with at least all necessary parameters.
             static member init
                 (
                     term      : Term,
@@ -1752,7 +1752,7 @@ module InsertStatements =
 //////////////////////////////////////////
 
         type AnalysisSoftwareHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a analysisSoftware-object with at least all necessary parameters.
             static member init
                 (
                     id        : string,
@@ -1834,7 +1834,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SourceFileHandler =
-            ///Initializes a personparam-object with at least all necessary parameters.
+            ///Initializes a sourceFile-object with at least all necessary parameters.
             static member init
                 (
                     id                           : string,
@@ -1875,12 +1875,12 @@ module InsertStatements =
                 table.FileFormat <- fileFormat
                 table
 
-            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
+            ///Tries to find a sourceFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
                 tryFind (context.SourceFile.Find(id))
 
-            ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
+            ///Tries to find a sourceFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByVersion (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.SourceFile.Local do
@@ -2329,7 +2329,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SearchDatabaseHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a searrchDatabase-object with at least all necessary parameters.
             static member init
                 (             
                     location                     : string,
@@ -2485,7 +2485,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type IdentificationFileHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a identificationFile-object with at least all necessary parameters.
             static member init
                 (             
                     location                     : string,
@@ -2613,7 +2613,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type IdentificationRefHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a identificationRef-object with at least all necessary parameters.
             static member init
                 (             
                     fkIdentificationFile : string,
@@ -2691,7 +2691,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MethodFileHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a methodFile-object with at least all necessary parameters.
             static member init
                 (             
                     location                     : string,
@@ -2795,7 +2795,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RawFileHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a rawFile-object with at least all necessary parameters.
             static member init
                 (             
                     location                     : string,
@@ -2922,7 +2922,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RawFilesGroupHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a rawFilesGroup-object with at least all necessary parameters.
             static member init
                 (             
                     rawFiles                     : seq<RawFile>,
@@ -3021,7 +3021,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type InputFilesHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a inputFiles-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                          : string,
@@ -3161,7 +3161,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ModificationHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a modification-object with at least all necessary parameters.
             static member init
                 (             
                     detail                     : CVParam,
@@ -3255,7 +3255,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AssayHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes an assay-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                          : string,
@@ -3382,7 +3382,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type StudyVariableHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a studyVariable-object with at least all necessary parameters.
             static member init
                 (             
                     assays                       : seq<Assay>,
@@ -3479,7 +3479,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RatioHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a ratio-object with at least all necessary parameters.
             static member init
                 (             
                     numerator                    : StudyVariable,
@@ -3584,7 +3584,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ColumnHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a column-object with at least all necessary parameters.
             static member init
                 (             
                     index                        : int,
@@ -3655,7 +3655,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type DataMatrixHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a dataMatrix-object with at least all necessary parameters.
             static member init
                 (             
                     row                          : string,
@@ -3724,7 +3724,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type AssayQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a assayQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     dataType                     : CVParam,
@@ -3797,7 +3797,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type GlobalQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a globalQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     columns                      : seq<Column>,
@@ -3868,7 +3868,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MS2AssayQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a ms2AssayQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     dataType                     : CVParam,
@@ -3941,7 +3941,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type StudyVariableQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a studyVariableQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     dataType                     : CVParam,
@@ -4014,7 +4014,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type RatioQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a ratioQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     columnIndex                  : string,
@@ -4085,7 +4085,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProcessingMethodHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a processingMethod-object with at least all necessary parameters.
             static member init
                 (             
                     order                        : int,
@@ -4173,7 +4173,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type DataProcessingHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a dataProcessing-object with at least all necessary parameters.
             static member init
                 (             
                     order                        : int,
@@ -4210,16 +4210,6 @@ module InsertStatements =
                 (outputObjects:string) (table:DataProcessing) =
                 table.OutputObjects <- outputObjects
                 table
-            
-            /////Adds a identificationFileParam to an existing object.
-            //static member addDetail (processingMethodParam:ProcessingMethodParam) (table:ProcessingMethod) =
-            //    let result = table.Details <- addToList table.Details processingMethodParam
-            //    table
-
-            /////Adds a collection of identificationFileParams to an existing object.
-            //static member addDetails (processingMethodParams:seq<ProcessingMethodParam>) (table:ProcessingMethod) =
-            //    let result = table.Details <- addCollectionToList table.Details processingMethodParams
-            //    table
 
             /////Replaces mzidentml of existing object with new mzidentml.
             //static member addMzIdentMLDocument
@@ -4281,7 +4271,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type DBIdentificationRefHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a dbIdentificationRef-object with at least all necessary parameters.
             static member init
                 (             
                     fkExternalFile               : string,
@@ -4352,7 +4342,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FeatureHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a feature-object with at least all necessary parameters.
             static member init
                 (             
                     charge                       : int,
@@ -4437,7 +4427,7 @@ module InsertStatements =
                 tryFind (context.Feature.Find(id))
 
             ///Tries to find a feature-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByOrder (dbContext:MzQuantML) (mz:Nullable<float>) =
+            static member tryFindByMz (dbContext:MzQuantML) (mz:Nullable<float>) =
                 query {
                        for i in dbContext.Feature.Local do
                            if i.MZ=mz
@@ -4469,7 +4459,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:Feature) =
-                    FeatureHandler.tryFindByOrder dbContext item.MZ
+                    FeatureHandler.tryFindByMz dbContext item.MZ
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FeatureHandler.hasEqualFieldValues organization item with
@@ -4486,7 +4476,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a smallMolecule-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                          : string,
@@ -4611,7 +4601,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type SmallMoleculeListHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a smallMoleculeList-object with at least all necessary parameters.
             static member init
                 (             
                     smallMolecules               : seq<SmallMolecule>,
@@ -4677,14 +4667,14 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
-            ///Adds a smallMoleculeParam to an existing object.
-            static member addDetail (smallMoleculeParam:SmallMoleculeListParam) (table:SmallMoleculeList) =
-                let result = table.Details <- addToList table.Details smallMoleculeParam
+            ///Adds a smallMoleculeListParam to an existing object.
+            static member addDetail (smallMoleculeListParam:SmallMoleculeListParam) (table:SmallMoleculeList) =
+                let result = table.Details <- addToList table.Details smallMoleculeListParam
                 table
 
-            ///Adds a collection of smallMoleculeParams to an existing object.
-            static member addDetails (smallMoleculeParams:seq<SmallMoleculeListParam>) (table:SmallMoleculeList) =
-                let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
+            ///Adds a collection of smallMoleculeListParams to an existing object.
+            static member addDetails (smallMoleculeListParams:seq<SmallMoleculeListParam>) (table:SmallMoleculeList) =
+                let result = table.Details <- addCollectionToList table.Details smallMoleculeListParams
                 table
 
             /////Replaces mzidentml of existing object with new mzidentml.
@@ -4748,7 +4738,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FeatureQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a featureQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     columns                      : seq<Column>,
@@ -4819,7 +4809,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MS2RatioQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a ms2ratioQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     dataType                     : CVParam,
@@ -4892,7 +4882,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MS2StudyVariableQuantLayerHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a ms2StudyVariableQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
                     dataType                     : CVParam,
@@ -4965,7 +4955,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type FeatureListHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a featureList-object with at least all necessary parameters.
             static member init
                 (             
                     rawFilesGroup                : RawFilesGroup,
@@ -5113,7 +5103,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type EvidenceRefHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a evidenceRef-object with at least all necessary parameters.
             static member init
                 (             
                     assays                       : seq<Assay>,
@@ -5203,7 +5193,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideConsensusHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a peptideConsensus-object with at least all necessary parameters.
             static member init
                 (             
                     charge                       : int,
@@ -5329,7 +5319,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a protein-object with at least all necessary parameters.
             static member init
                 (             
                     accession                    : string,
@@ -5440,7 +5430,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinListHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinList-object with at least all necessary parameters.
             static member init
                 (             
                     proteins                     : seq<Protein>,
@@ -5577,7 +5567,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinRefHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinRef-object with at least all necessary parameters.
             static member init
                 (             
                     protein                      : Protein,
@@ -5659,7 +5649,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinGroupHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinGroup-object with at least all necessary parameters.
             static member init
                 (             
                     searchDatabase               : SearchDatabase,
@@ -5747,7 +5737,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type ProteinGroupListHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a proteinGroupList-object with at least all necessary parameters.
             static member init
                 (             
                     proteinGroups                : seq<ProteinGroup>,
@@ -5835,7 +5825,7 @@ module InsertStatements =
                 tryFind (context.ProteinGroupList.Find(id))
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySmallMolecules (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
+            static member tryFindByProteinGroup (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
                 query {
                        for i in dbContext.ProteinGroupList.Local do
                            if i.ProteinGroups=(proteinGroup |> List)
@@ -5867,7 +5857,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinGroupList) =
-                    ProteinGroupListHandler.tryFindBySmallMolecules dbContext item.ProteinGroups
+                    ProteinGroupListHandler.tryFindByProteinGroup dbContext item.ProteinGroups
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinGroupListHandler.hasEqualFieldValues organization item with
@@ -5884,7 +5874,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type PeptideConsensusListHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a peptideConsensusList-object with at least all necessary parameters.
             static member init
                 (             
                     finalResult                  : bool,
@@ -5974,7 +5964,7 @@ module InsertStatements =
                 tryFind (context.PeptideConsensusList.Find(id))
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySmallMolecules (dbContext:MzQuantML) (finalResult:Nullable<bool>) =
+            static member tryFindByFinalResult (dbContext:MzQuantML) (finalResult:Nullable<bool>) =
                 query {
                        for i in dbContext.PeptideConsensusList.Local do
                            if i.FinalResult=finalResult
@@ -6006,7 +5996,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusList) =
-                    PeptideConsensusListHandler.tryFindBySmallMolecules dbContext item.FinalResult
+                    PeptideConsensusListHandler.tryFindByFinalResult dbContext item.FinalResult
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideConsensusListHandler.hasEqualFieldValues organization item with
@@ -6023,7 +6013,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a biblioGraphicReference-object with at least all necessary parameters.
             static member init
                 (             
                     ?id                          : string,
@@ -6186,7 +6176,7 @@ module InsertStatements =
                 dbContext.SaveChanges()
 
         type MzQuantMLDocumentHandler =
-            ///Initializes a provider-object with at least all necessary parameters.
+            ///Initializes a mzQuantMLDocument-object with at least all necessary parameters.
             static member init
                 (             
                     analysisSummary              : seq<AnalysisSummaryParam>,
