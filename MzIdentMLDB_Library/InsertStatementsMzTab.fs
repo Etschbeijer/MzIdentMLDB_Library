@@ -5226,7 +5226,7 @@ module InsertStatements =
                     peptideSequence                  : PeptideSequence,
                     accession                        : Accession,
                     taxid                            : string,
-                    species                          : Species,
+                    species                          : seq<Species>,
                     dataBase                         : string,
                     dataBaseVersion                  : string,
                     ?id                              : string
@@ -5240,7 +5240,7 @@ module InsertStatements =
                                        peptideSequence,
                                        accession,
                                        taxid,
-                                       species,
+                                       species |> List,
                                        dataBase,
                                        dataBaseVersion,
                                        Nullable(DateTime.Now)

@@ -1297,7 +1297,7 @@ module DataModel =
     ///A table describing the additional information for the proteins of the experiment.
     type [<AllowNullLiteral>]
         AccessionParameter (id:string, identifiers:List<Identifier>, peptideSequence:PeptideSequence, 
-                            accession:Accession, taxid:string, species:Species, dataBase:string, 
+                            accession:Accession, taxid:string, species:List<Species>, dataBase:string, 
                             dataBaseVersion:string, rowVersion:Nullable<DateTime>
                            ) =
             let mutable id'              = id
