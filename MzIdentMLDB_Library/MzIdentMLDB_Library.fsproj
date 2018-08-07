@@ -85,6 +85,7 @@
     <Compile Include="DataContextMzTab.fs" />
     <Compile Include="InsertStatementsMzTab.fs" />
     <None Include="InitDBMzTab.fsx" />
+    <None Include="MaxQuantTestMzQuantML.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
