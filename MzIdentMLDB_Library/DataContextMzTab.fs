@@ -1356,7 +1356,7 @@ module DataModel =
                       rowVersion:Nullable<DateTime>
                      ) =
             let mutable id'                     = id
-            let mutable identifiers'        = identifiers
+            let mutable identifiers'            = identifiers
             [<Column("sequence")>]
             let mutable peptideSequence'        = peptideSequence
             let mutable accession'              = accession
@@ -1406,7 +1406,7 @@ module DataModel =
 
     ///In contrast to the PSM section, fixed modifications or modifications caused by the 
     ///quantification reagent (i.e. the SILAC/iTRAQ label) SHOULD NOT be reported in this column.
-    type [<AllowNullLiteral>] [<Table("search_engine")>]
+    type [<AllowNullLiteral>]
         Modification (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
             let mutable id'         = id
             let mutable value'      = value
