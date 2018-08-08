@@ -954,14 +954,23 @@ type TermIDByName =
             | MassDeviation -> "User:0000046"
 
 let mzQuantMLDocument =
-    MzQuantMLDocumentHandler.init(
+    MzQuantMLDocumentHandler.init()
+
+let analysisSoftwareParam =
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext "MS:1001583").Value
+                                     )
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init("1.0")
-    |> AnalysisSoftwareHandler.addMzQuantMLDocument
+    |> AnalysisSoftwareHandler.addDetail analysisSoftwareParam
+    |> AnalysisSoftwareHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let provider =
     ProviderHandler.init()
     |> ProviderHandler.addAnalysisSoftware analysisSoftware
-    |> ProviderHandler mzIdentMLDocument
+    |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let analysisSummary =
+    AnalysisSummaryHandler.
     
