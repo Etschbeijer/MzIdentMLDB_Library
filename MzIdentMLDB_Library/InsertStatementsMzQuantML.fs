@@ -3173,7 +3173,7 @@ module InsertStatements =
                 table
 
             ///Adds a collection of searchDatabases to an existing object.
-            static member addDetails (details:seq<SearchDatabase>) (table:InputFiles) =
+            static member addSearchDatabases (details:seq<SearchDatabase>) (table:InputFiles) =
                 let result = table.SearchDatabases <- addCollectionToList table.SearchDatabases details
                 table
             

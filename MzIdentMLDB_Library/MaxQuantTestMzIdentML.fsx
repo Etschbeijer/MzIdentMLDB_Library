@@ -2205,7 +2205,7 @@ let analysisProcolparams =
     AnalysisParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UseDeltaScores)).Value
                                                     )
-    |> AnalysisParamHandler.addValue "TRUE";
+    |> AnalysisParamHandler.addValue "FALSE";
     ]
 
 let proteinDetectionProtocol =
