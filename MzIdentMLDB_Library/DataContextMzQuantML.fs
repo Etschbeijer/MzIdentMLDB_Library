@@ -7,7 +7,6 @@ open System.Collections.Generic
 
 
 module DataModel =
-    open MzIdentMLDataBase.DataModel
 
     type [<AllowNullLiteral>]
         Term (id:string, name:string, ontology:Ontology, rowVersion:Nullable<DateTime>) =
@@ -24,7 +23,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
         
     ///Standarized vocabulary for MS-Database.
-    type [<AllowNullLiteral>]
+    and [<AllowNullLiteral>]
         Ontology (id:string, terms:List<Term>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable terms'      = terms
@@ -981,8 +980,8 @@ module DataModel =
     ///which could constitute multiple raw files e.g. if pre-separation steps have occurred. 
     and [<AllowNullLiteral>]
         Assay (id:string, name:string, rawFilesGroup:RawFilesGroup, label:List<Modification>,
-               identificationFile:IdentificationFile, mzQuantML:MzQuantMLDocument, 
-               details:List<AssayParam>, rowVersion:Nullable<DateTime>
+               identificationFile:IdentificationFile, details:List<AssayParam>, 
+               mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
               ) =
             let mutable id'                 = id
             let mutable name'               = name

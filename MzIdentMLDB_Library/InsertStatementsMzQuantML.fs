@@ -11,7 +11,7 @@ module InsertStatements =
     open System.Collections.Generic
     open FSharp.Care.IO
     open BioFSharp.IO
-
+    open MzQuantMLDataBase
 
     module ObjectHandlers =
         
@@ -107,7 +107,7 @@ module InsertStatements =
                 (
                     id        : string,
                     ?name     : string,
-                    ?ontology : Ontology  
+                    ?ontology : MzQuantMLDataBase.DataModel.Ontology  
                 ) =
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
@@ -1755,17 +1755,21 @@ module InsertStatements =
             ///Initializes a analysisSoftware-object with at least all necessary parameters.
             static member init
                 (
-                    id        : string,
-                    version   : string,
-                    ?details  : seq<AnalysisSoftwareParam>
-                ) =
-
-                let details'  = convertOptionToList details
                     
+                    version            : string,
+                    ?id                : string,
+                    ?details           : seq<AnalysisSoftwareParam>,
+                    ?mzQuantMLDocument : MzQuantMLDocument
+                ) =
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let details'           = convertOptionToList details
+                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+
                 new AnalysisSoftware(
-                                     id, 
+                                     id', 
                                      version, 
-                                     details', 
+                                     details',
+                                     mzQuantMLDocument',
                                      Nullable(DateTime.Now)
                                     )
 
@@ -1779,6 +1783,12 @@ module InsertStatements =
             static member addDetails
                 (analysisSoftwareParams:seq<AnalysisSoftwareParam>) (table:AnalysisSoftware) =
                 let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams
+                table
+
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:AnalysisSoftware) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
@@ -1931,21 +1941,24 @@ module InsertStatements =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : string,
-                    ?name    : string,
-                    ?details : seq<OrganizationParam>,
-                    ?parent  : string
+                    ?id                : string,
+                    ?name              : string,
+                    ?details           : seq<OrganizationParam>,
+                    ?parent            : string,
+                    ?mzQuantMLDocument : MzQuantMLDocument
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'    = defaultArg name Unchecked.defaultof<string>
-                let details' = convertOptionToList details
-                let parent'  = defaultArg parent Unchecked.defaultof<string>
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let details'           = convertOptionToList details
+                let parent'            = defaultArg parent Unchecked.defaultof<string>
+                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
                     
                 new Organization(
                                  id', 
                                  name', 
                                  details',  
-                                 parent', 
+                                 parent',
+                                 mzQuantMLDocument',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1971,6 +1984,12 @@ module InsertStatements =
             static member addDetails
                 (details:seq<OrganizationParam>) (table:Organization) =
                 let result = table.Details <- addCollectionToList table.Details details
+                table
+
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:Organization) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -2029,21 +2048,23 @@ module InsertStatements =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id             : string,
-                    ?name           : string,
-                    ?firstName      : string,
-                    ?midInitials    : string,
-                    ?lastName       : string,
-                    ?contactDetails : seq<PersonParam>,
-                    ?organizations  : seq<Organization> 
+                    ?id                : string,
+                    ?name              : string,
+                    ?firstName         : string,
+                    ?midInitials       : string,
+                    ?lastName          : string,
+                    ?contactDetails    : seq<PersonParam>,
+                    ?organizations     : seq<Organization>,
+                    ?mzQuantMLDocument : MzQuantMLDocument
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'           = defaultArg name Unchecked.defaultof<string>
-                let firstName'      = defaultArg firstName Unchecked.defaultof<string>
-                let midInitials'    = defaultArg midInitials Unchecked.defaultof<string>
-                let lastName'       = defaultArg lastName Unchecked.defaultof<string>
-                let contactDetails' = convertOptionToList contactDetails
-                let organizations'  = convertOptionToList organizations
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let firstName'         = defaultArg firstName Unchecked.defaultof<string>
+                let midInitials'       = defaultArg midInitials Unchecked.defaultof<string>
+                let lastName'          = defaultArg lastName Unchecked.defaultof<string>
+                let contactDetails'    = convertOptionToList contactDetails
+                let organizations'     = convertOptionToList organizations
+                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
                     
                 new Person(
                            id', 
@@ -2053,6 +2074,7 @@ module InsertStatements =
                            lastName', 
                            organizations',
                            contactDetails', 
+                           mzQuantMLDocument',
                            Nullable(DateTime.Now)
                           )
 
@@ -2101,6 +2123,12 @@ module InsertStatements =
             static member addOrganizations
                 (organizations:seq<Organization>) (table:Person) =
                 let result = table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:Person) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -2230,24 +2258,24 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id               : string,
-                    ?name             : string,
-                    ?analysisSoftware : AnalysisSoftware,
-                    ?contactRole      : ContactRole
-                    //?mzIdentML        : MzIdentMLDocument
+                    ?id                : string,
+                    ?name              : string,
+                    ?analysisSoftware  : AnalysisSoftware,
+                    ?contactRole       : ContactRole,
+                    ?mzQuantMLDocument : MzQuantMLDocument
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'             = defaultArg name Unchecked.defaultof<string>
-                let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
-                let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'              = defaultArg name Unchecked.defaultof<string>
+                let analysisSoftware'  = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
+                let contactRole'       = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new Provider(
                              id', 
                              name', 
                              analysisSoftware', 
                              contactRole', 
-                             //mzIdentML', 
+                             mzQuantMLDocument',
                              Nullable(DateTime.Now)
                             )
 
@@ -2269,11 +2297,11 @@ module InsertStatements =
                 table.ContactRole <- contactRole
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:Provider) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -2352,7 +2380,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new SearchDatabase(
                                    id', 
@@ -2422,12 +2450,6 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
-
             ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
                 (context:MzQuantML) (id:string) =
@@ -2495,7 +2517,7 @@ module InsertStatements =
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam,
                     ?details                     : seq<IdentificationFileParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -2503,7 +2525,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new IdentificationFile(
                                        id', 
@@ -2551,12 +2573,6 @@ module InsertStatements =
                 (details:seq<IdentificationFileParam>) (table:IdentificationFile) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a identificationFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -2619,10 +2635,10 @@ module InsertStatements =
                     fkIdentificationFile : string,
                     identificationFile   : IdentificationFile,
                     ?id                  : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new IdentificationRef(
                                       id', 
@@ -2631,12 +2647,6 @@ module InsertStatements =
                                       //mzIdentML', 
                                       Nullable(DateTime.Now)
                                      )
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -2699,13 +2709,13 @@ module InsertStatements =
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new MethodFile(
                                id', 
@@ -2734,12 +2744,6 @@ module InsertStatements =
                 (fileFormat:CVParam) (table:MethodFile) =
                 table.FileFormat <- fileFormat
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -2805,7 +2809,7 @@ module InsertStatements =
                     ?methodFile                  : MethodFile,
                     ?fileFormat                  : CVParam, 
                     ?details                     : seq<RawFileParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -2813,7 +2817,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new RawFile(
                             id', 
@@ -2860,12 +2864,6 @@ module InsertStatements =
             static member addDetails (details:seq<RawFileParam>) (table:RawFile) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a rawFile-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -2928,11 +2926,11 @@ module InsertStatements =
                     rawFiles                     : seq<RawFile>,
                     ?id                          : string, 
                     ?details                     : seq<RawFilesGroupParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new RawFilesGroup(
                                   id', 
@@ -2961,12 +2959,6 @@ module InsertStatements =
             static member addDetails (details:seq<RawFilesGroupParam>) (table:RawFilesGroup) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a rawFilesGroup-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3029,8 +3021,8 @@ module InsertStatements =
                     ?methodFiles                 : seq<MethodFile>,
                     ?identificationFiles         : seq<IdentificationFile>,
                     ?searchDatabases             : seq<SearchDatabase>,
-                    ?sourceFiles                 : seq<SourceFile>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?sourceFiles                 : seq<SourceFile>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let rawFilesGroups'              = convertOptionToList rawFilesGroups
@@ -3038,7 +3030,7 @@ module InsertStatements =
                 let identificationFiles'         = convertOptionToList identificationFiles
                 let searchDatabases'             = convertOptionToList searchDatabases
                 let sourceFiles'                 = convertOptionToList sourceFiles
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new InputFiles(
                                id', 
@@ -3047,7 +3039,7 @@ module InsertStatements =
                                identificationFiles',
                                searchDatabases',
                                sourceFiles',
-                               //mzIdentML', 
+                               mzQuantMLDocument',
                                Nullable(DateTime.Now)
                               )
 
@@ -3101,11 +3093,11 @@ module InsertStatements =
                 let result = table.SourceFiles <- addCollectionToList table.SourceFiles details
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:InputFiles) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a inputFiles-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3168,12 +3160,12 @@ module InsertStatements =
                     ?id                        : string,
                     ?massDelta                 : float,
                     ?residues                  : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let massDelta'                   = defaultArg massDelta Unchecked.defaultof<float>
                 let residues'                    = defaultArg residues Unchecked.defaultof<string>
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new Modification(
                                  id', 
@@ -3195,12 +3187,6 @@ module InsertStatements =
                 (residues:string) (table:Modification) =
                 table.Residues <- residues
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3263,8 +3249,8 @@ module InsertStatements =
                     ?rawFilesGroup               : RawFilesGroup,
                     ?label                       : seq<Modification>,
                     ?identificationFile          : IdentificationFile,
-                    ?details                     : seq<AssayParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<AssayParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -3272,7 +3258,7 @@ module InsertStatements =
                 let label'                       = convertOptionToList label
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new Assay(
                           id', 
@@ -3281,6 +3267,7 @@ module InsertStatements =
                           label', 
                           identificationFile', 
                           details',
+                          mzQuantMLDocument',
                           Nullable(DateTime.Now)
                          )
 
@@ -3322,11 +3309,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:Assay) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3389,12 +3376,12 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?details                     : seq<StudyVariableParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new StudyVariable(
                                   id', 
@@ -3419,12 +3406,6 @@ module InsertStatements =
             static member addDetails (details:seq<StudyVariableParam>) (table:StudyVariable) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a studyVariable-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3488,13 +3469,13 @@ module InsertStatements =
                     denominatorDatatype          : CVParam,
                     ?id                          : string,
                     ?name                        : string,
-                    ?ratioCalculation            : seq<RatioCalculationParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?ratioCalculation            : seq<RatioCalculationParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let ratioCalculation'            = convertOptionToList ratioCalculation
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new Ratio(
                           id', 
@@ -3504,6 +3485,7 @@ module InsertStatements =
                           ratioCalculation',
                           numeratorDatatype,
                           denominatorDatatype,
+                          mzQuantMLDocument',
                           Nullable(DateTime.Now)
                          )
 
@@ -3523,11 +3505,11 @@ module InsertStatements =
                 let result = table.RatioCalculation <- addCollectionToList table.RatioCalculation ratioCalculationParams
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:Ratio) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -3590,10 +3572,10 @@ module InsertStatements =
                     index                        : int,
                     datatype                     : CVParam,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new Column(
                            id',
@@ -3660,10 +3642,10 @@ module InsertStatements =
                 (             
                     row                          : string,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new DataMatrix(
                                id',
@@ -3731,10 +3713,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new AssayQuantLayer(
                                     id',
@@ -3803,10 +3785,10 @@ module InsertStatements =
                     columns                      : seq<Column>,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new GlobalQuantLayer(
                                      id',
@@ -3875,10 +3857,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new MS2AssayQuantLayer(
                                        id',
@@ -3948,10 +3930,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new StudyVariableQuantLayer(
                                             id',
@@ -4020,10 +4002,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new RatioQuantLayer(
                                     id',
@@ -4091,11 +4073,11 @@ module InsertStatements =
                     order                        : int,
                     ?id                          : string,
                     ?details                     : seq<ProcessingMethodParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let details'                     = convertOptionToList details
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new ProcessingMethod(
                                      id', 
@@ -4113,12 +4095,6 @@ module InsertStatements =
             static member addDetails (processingMethodParams:seq<ProcessingMethodParam>) (table:ProcessingMethod) =
                 let result = table.Details <- addCollectionToList table.Details processingMethodParams
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a processingMethod-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -4181,13 +4157,13 @@ module InsertStatements =
                     processingMethods            : seq<ProcessingMethod>,
                     ?id                          : string,
                     ?inputObjects                : string,
-                    ?outputObjects               : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?outputObjects               : string,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let inputObjects'                = defaultArg inputObjects Unchecked.defaultof<string>
                 let outputObjects'               = defaultArg outputObjects Unchecked.defaultof<string>
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new DataProcessing(
                                    id', 
@@ -4196,6 +4172,7 @@ module InsertStatements =
                                    inputObjects',
                                    outputObjects',
                                    processingMethods |> List,
+                                   mzQuantMLDocument',
                                    Nullable(DateTime.Now)
                                   )
 
@@ -4211,11 +4188,11 @@ module InsertStatements =
                 table.OutputObjects <- outputObjects
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:DataProcessing) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -4277,10 +4254,10 @@ module InsertStatements =
                     fkExternalFile               : string,
                     searchDatabase               : SearchDatabase,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new DBIdentificationRef(
                                         id', 
@@ -4354,7 +4331,7 @@ module InsertStatements =
                     ?fkSpectrum                  : string,
                     ?massTraces                  : seq<MassTraceParam>,
                     ?details                     : seq<FeatureParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let fkChromatogram'              = defaultArg fkChromatogram Unchecked.defaultof<string>
@@ -4362,7 +4339,7 @@ module InsertStatements =
                 let fkSpectrum'                  = defaultArg fkSpectrum Unchecked.defaultof<string>
                 let massTraces'                  = convertOptionToList massTraces
                 let details'                     = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new Feature(
                             id', 
@@ -4414,12 +4391,6 @@ module InsertStatements =
             static member addDetails (processingMethodParams:seq<FeatureParam>) (table:Feature) =
                 let result = table.Details <- addCollectionToList table.Details processingMethodParams
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a feature-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -4484,14 +4455,14 @@ module InsertStatements =
                     ?dbIdentificationRefs        : seq<DBIdentificationRef>,
                     ?features                    : seq<Feature>,
                     ?details                     : seq<SmallMoleculeParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let modifications'               = convertOptionToList modifications
                 let dbIdentificationRefs'        = convertOptionToList dbIdentificationRefs
                 let features'                    = convertOptionToList features
                 let details'                     = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new SmallMolecule(
                                   id', 
@@ -4541,12 +4512,6 @@ module InsertStatements =
             static member addDetails (smallMoleculeParam:seq<SmallMoleculeParam>) (table:SmallMolecule) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParam
                 table
-
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
 
             ///Tries to find a smallMolecule-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -4610,8 +4575,8 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<SmallMoleculeListParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<SmallMoleculeListParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -4619,7 +4584,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new SmallMoleculeList(
                                       id',
@@ -4629,6 +4594,7 @@ module InsertStatements =
                                       studyVariableQuantLayer',
                                       ratioQuantLayer',
                                       details',
+                                      mzQuantMLDocument',
                                       Nullable(DateTime.Now)
                                      )
             
@@ -4677,11 +4643,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeListParams
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:SmallMoleculeList) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a smallMoleculeList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -4744,10 +4710,10 @@ module InsertStatements =
                     columns                      : seq<Column>,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new FeatureQuantLayer(
                                       id',
@@ -4816,10 +4782,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new MS2RatioQuantLayer(
                                        id',
@@ -4889,10 +4855,10 @@ module InsertStatements =
                     columnIndex                  : string,
                     dataMatrix                   : DataMatrix,
                     ?id                          : string
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                //let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                        
 
                 new MS2StudyVariableQuantLayer(
                                                id',
@@ -4965,8 +4931,8 @@ module InsertStatements =
                     ?ms2AssayQuantLayers         : seq<MS2AssayQuantLayer>,
                     ?ms2StudyVariableQuantLayer  : seq<MS2StudyVariableQuantLayer>,
                     ?ms2RatioQuantLayer          : seq<MS2RatioQuantLayer>,
-                    ?details                     : seq<FeatureListParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<FeatureListParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let featureQuantLayers'          = convertOptionToList featureQuantLayers
@@ -4974,7 +4940,7 @@ module InsertStatements =
                 let ms2StudyVariableQuantLayer'  = convertOptionToList ms2StudyVariableQuantLayer
                 let ms2RatioQuantLayer'          = convertOptionToList ms2RatioQuantLayer
                 let details'                     = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new FeatureList(
                                 id', 
@@ -4985,6 +4951,7 @@ module InsertStatements =
                                 ms2StudyVariableQuantLayer',
                                 ms2RatioQuantLayer',
                                 details',
+                                mzQuantMLDocument',
                                 Nullable(DateTime.Now)
                                )
             
@@ -5038,11 +5005,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details featureListParams
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:FeatureList) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -5111,12 +5078,12 @@ module InsertStatements =
                     ?id                          : string,
                     ?fkExternalFileRef           : string,
                     ?identificationFile          : IdentificationFile
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let fkExternalFileRef'           = defaultArg fkExternalFileRef Unchecked.defaultof<string>
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new EvidenceRef(
                                 id', 
@@ -5204,7 +5171,7 @@ module InsertStatements =
                     ?peptideSequence             : string,
                     ?modifications               : seq<Modification>,
                     ?details                     : seq<PeptideConsensusParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
@@ -5212,7 +5179,7 @@ module InsertStatements =
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
                 let details'                     = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new PeptideConsensus(
                                      id',
@@ -5328,13 +5295,13 @@ module InsertStatements =
                     ?identificationRefs          : seq<IdentificationRef>,
                     ?peptideConsensi             : seq<PeptideConsensus>,
                     ?details                     : seq<ProteinParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let identificationRefs'          = convertOptionToList identificationRefs
                 let peptideConsensi'             = convertOptionToList peptideConsensi
                 let details'                     = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new Protein(
                             id',
@@ -5439,8 +5406,8 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<ProteinListParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<ProteinListParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -5448,7 +5415,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new ProteinList(
                                 id',
@@ -5458,6 +5425,7 @@ module InsertStatements =
                                 studyVariableQuantLayer',
                                 ratioQuantLayer',
                                 details',
+                                mzQuantMLDocument',
                                 Nullable(DateTime.Now)
                                )
             
@@ -5506,11 +5474,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinList) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -5573,11 +5541,11 @@ module InsertStatements =
                     protein                      : Protein,
                     ?id                          : string,
                     ?details                     : seq<ProteinRefParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new ProteinRef(
                                id',
@@ -5657,12 +5625,12 @@ module InsertStatements =
                     ?id                          : string,
                     ?identificationRefs          : seq<IdentificationRef>,
                     ?details                     : seq<ProteinGroupParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let identificationRefs'             = convertOptionToList identificationRefs
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                
 
                 new ProteinGroup(
                                  id',
@@ -5746,8 +5714,8 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<ProteinGroupListParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<ProteinGroupListParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -5755,7 +5723,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new ProteinGroupList(
                                      id',
@@ -5765,6 +5733,7 @@ module InsertStatements =
                                      studyVariableQuantLayer',
                                      ratioQuantLayer',
                                      details',
+                                     mzQuantMLDocument',
                                      Nullable(DateTime.Now)
                                     )
             
@@ -5813,11 +5782,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinGroupList) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -5884,8 +5853,8 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<PeptideConsensusListParam>
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?details                     : seq<PeptideConsensusListParam>,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -5893,7 +5862,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new PeptideConsensusList(
                                          id',
@@ -5904,6 +5873,7 @@ module InsertStatements =
                                          studyVariableQuantLayer',
                                          ratioQuantLayer',
                                          details',
+                                         mzQuantMLDocument',
                                          Nullable(DateTime.Now)
                                         )
             
@@ -5952,11 +5922,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details peptideConsensusListParams
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:PeptideConsensusList) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -6027,8 +5997,8 @@ module InsertStatements =
                     ?publisher                   : string,
                     ?title                       : string,
                     ?volume                      : string,
-                    ?year                        : int
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?year                        : int,
+                    ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
@@ -6042,7 +6012,7 @@ module InsertStatements =
                 let title'                          = defaultArg title Unchecked.defaultof<string>
                 let volume'                         = defaultArg volume Unchecked.defaultof<string>
                 let year'                           = defaultArg year Unchecked.defaultof<int>
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new BiblioGraphicReference(
                                            id',
@@ -6057,6 +6027,7 @@ module InsertStatements =
                                            title',
                                            volume',
                                            Nullable(year'),
+                                           mzQuantMLDocument',
                                            Nullable(DateTime.Now)
                                           ) 
 
@@ -6115,11 +6086,11 @@ module InsertStatements =
                 table.Year <- Nullable(year)
                 table
 
-            /////Replaces mzidentml of existing object with new mzidentml.
-            //static member addMzIdentMLDocument
-            //    (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-            //    let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-            //    provider
+            ///Replaces mzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocument
+                (mzQuantMLDocument:MzQuantMLDocument) (table:BiblioGraphicReference) =
+                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+                table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
             static member tryFindByID
@@ -6179,49 +6150,72 @@ module InsertStatements =
             ///Initializes a mzQuantMLDocument-object with at least all necessary parameters.
             static member init
                 (             
-                    analysisSummary              : seq<AnalysisSummaryParam>,
-                    version                      : string,
-                    inputFiles                   : seq<InputFiles>,
-                    analysisSoftwares            : seq<AnalysisSoftware>,
-                    dataProcessings              : seq<DataProcessing>,
-                    assays                       : seq<Assay>,
+                    
                     ?id                          : string,
                     ?name                        : string,
                     ?creationDate                : DateTime,
-                    ?provider                    : Provider,
+                    ?version                     : string,
+                    ?provider                    : seq<Provider>,
                     ?persons                     : seq<Person>,
                     ?organizations               : seq<Organization>,
+                    ?analysisSummary             : seq<AnalysisSummary>,
+                    ?inputFiles                  : seq<InputFiles>,
+                    ?analysisSoftwares           : seq<AnalysisSoftware>,
+                    ?dataProcessings             : seq<DataProcessing>,
+                    ?assays                      : seq<Assay>,
                     ?biblioGraphicReferences     : seq<BiblioGraphicReference>,
                     ?studyVariables              : seq<StudyVariable>,
                     ?ratios                      : seq<Ratio>,
-                    ?proteinGroupList            : ProteinGroupList,
-                    ?proteinList                 : ProteinList,
-                    ?peptideConsensusList        : PeptideConsensusList,
-                    ?smallMolecule               : SmallMoleculeList,
-                    ?featureList                 : FeatureList
-                    //?mzIdentML                   : MzIdentMLDocument
+                    ?proteinGroupList            : seq<ProteinGroupList>,
+                    ?proteinList                 : seq<ProteinList>,
+                    ?peptideConsensusList        : seq<PeptideConsensusList>,
+                    ?smallMolecule               : seq<SmallMoleculeList>,
+                    ?featureList                 : seq<FeatureList>
+                    
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let creationDate'                   = defaultArg creationDate Unchecked.defaultof<DateTime>
-                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
+                let version'                        = defaultArg version Unchecked.defaultof<string>
+                let provider'                       = convertOptionToList provider
+                let provider'                       = convertOptionToList provider
                 let persons'                        = convertOptionToList persons
                 let organizations'                  = convertOptionToList organizations
+                let analysisSummary'                = convertOptionToList analysisSummary
+                let inputFiles'                     = convertOptionToList inputFiles
+                let analysisSoftwares'              = convertOptionToList analysisSoftwares
+                let dataProcessings'                = convertOptionToList dataProcessings
+                let assays'                         = convertOptionToList assays
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 let studyVariables'                 = convertOptionToList studyVariables
                 let ratios'                         = convertOptionToList ratios
-                let proteinGroupList'               = defaultArg proteinGroupList Unchecked.defaultof<ProteinGroupList>
-                let proteinList'                    = defaultArg proteinList Unchecked.defaultof<ProteinList>
-                let peptideConsensusList'           = defaultArg peptideConsensusList Unchecked.defaultof<PeptideConsensusList>
-                let smallMoleculeList'              = defaultArg smallMolecule Unchecked.defaultof<SmallMoleculeList>
-                let featureList'                    = defaultArg featureList Unchecked.defaultof<FeatureList>
-                //let mzIdentML'                    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let proteinGroupList'               = convertOptionToList proteinGroupList
+                let proteinList'                    = convertOptionToList proteinList
+                let peptideConsensusList'           = convertOptionToList peptideConsensusList
+                let smallMoleculeList'              = convertOptionToList smallMolecule
+                let featureList'                    = convertOptionToList featureList
 
-                new MzQuantMLDocument(id', name', Nullable(creationDate'), 
-                                      version, provider',persons', organizations', analysisSummary |> List, 
-                                      inputFiles |> List, analysisSoftwares |> List, dataProcessings |> List, 
-                                      assays |> List, biblioGraphicReferences', studyVariables', ratios', proteinGroupList',
-                                      proteinList', peptideConsensusList', smallMoleculeList', featureList', Nullable(DateTime.Now)
+                new MzQuantMLDocument(id', 
+                                      name', 
+                                      Nullable(creationDate'), 
+                                      version', 
+                                      provider',
+                                      persons', 
+                                      organizations', 
+                                      analysisSummary', 
+                                      inputFiles', 
+                                      analysisSoftwares', 
+                                      dataProcessings', 
+                                      assays', 
+                                      biblioGraphicReferences', 
+                                      studyVariables', 
+                                      ratios', 
+                                      proteinGroupList',
+                                      proteinList', 
+                                      peptideConsensusList', 
+                                      smallMoleculeList', 
+                                      featureList', 
+                                      Nullable(DateTime.Now)
                                      )
 
             ///Replaces name of existing object with new one.
@@ -6234,34 +6228,45 @@ module InsertStatements =
                 table.CreationDate <- Nullable(creationDate)
                 table
 
-            ///Replaces provider of existing object with new one.
-            static member addProvider (provider:Provider) (table:MzQuantMLDocument) =
-                table.Provider <- provider
+            ///Replaces version of existing object with new one.
+            static member addVersion (version:string) (table:MzQuantMLDocument) =
+                table.Version <- version
                 table
 
-            ///Replaces proteinGroupList of existing object with new one.
-            static member addProteinGroupList (proteinGroupList:ProteinGroupList) (table:MzQuantMLDocument) =
-                table.ProteinGroupList <- proteinGroupList
+            ///Adds new provider to collection of enzymenames.
+            static member addProvider
+                (provider:Provider) (table:MzQuantMLDocument) =
+                table.Provider <- addToList table.Provider provider
                 table
 
-            ///Replaces proteinList of existing object with new one.
-            static member addProteinList (proteinList:ProteinList) (table:MzQuantMLDocument) =
-                table.ProteinList <- proteinList
+             ///Adds new proteinGroupList to collection of enzymenames.
+            static member addProteinGroupList
+                (proteinGroupList:ProteinGroupList) (table:MzQuantMLDocument) =
+                table.ProteinGroupList <- addToList table.ProteinGroupList proteinGroupList
                 table
 
-            ///Replaces peptideConsensusList of existing object with new one.
-            static member addPeptideConsensusList (peptideConsensusList:PeptideConsensusList) (table:MzQuantMLDocument) =
-                table.PeptideConsensusList <- peptideConsensusList
+            ///Adds new proteinList to collection of enzymenames.
+            static member addProteinList
+                (proteinList:ProteinList) (table:MzQuantMLDocument) =
+                table.ProteinList <- addToList table.ProteinList proteinList
+                table 
+
+            ///Adds new peptideConsensusList to collection of enzymenames.
+            static member addPeptideConsensusList
+                (peptideConsensusList:PeptideConsensusList) (table:MzQuantMLDocument) =
+                table.PeptideConsensusList <- addToList table.PeptideConsensusList peptideConsensusList
                 table
 
-            ///Replaces smallMoleculeList of existing object with new one.
-            static member addSmallMoleculeList (smallMoleculeList:SmallMoleculeList) (table:MzQuantMLDocument) =
-                table.SmallMoleculeList <- smallMoleculeList
+            ///Adds new smallMoleculeList to collection of enzymenames.
+            static member addSmallMoleculeList
+                (smallMoleculeList:SmallMoleculeList) (table:MzQuantMLDocument) =
+                table.SmallMoleculeList <- addToList table.SmallMoleculeList smallMoleculeList
                 table
 
-            ///Replaces featureList of existing object with new one.
-            static member addFeatureList (featureList:FeatureList) (table:MzQuantMLDocument) =
-                table.FeatureList <- featureList
+            ///Adds new featureList to collection of enzymenames.
+            static member addFeatureList
+                (featureList:FeatureList) (table:MzQuantMLDocument) =
+                table.FeatureList <- addToList table.FeatureList featureList
                 table
 
             ///Adds new person to collection of enzymenames.
@@ -6286,6 +6291,12 @@ module InsertStatements =
             static member addOrganizations
                 (organizations:seq<Organization>) (table:MzQuantMLDocument) =
                 table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+
+            ///Adds new analysisSummary to collection of enzymenames.
+            static member addAnalysisSummary
+                (analysisSummary:AnalysisSummary) (table:MzQuantMLDocument) =
+                table.AnalysisSummary <- addToList table.AnalysisSummary analysisSummary
                 table
 
             ///Adds new biblioGraphicReference to collection of enzymenames.
