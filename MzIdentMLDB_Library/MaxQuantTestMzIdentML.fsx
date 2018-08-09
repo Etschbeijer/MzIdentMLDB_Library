@@ -717,7 +717,7 @@ type TermIDByName =
         ///A value of 0 corresponds to the monoisotopic peak.
         | MSMSIsotopIndices
         ///Multiple peak list nativeID format.
-        | MULTI
+        | MultipleIDs
         ///The ion inject time for the MS/MS scan.
         | IonInjectionTime
         ///The total ion current of the MS/MS scan.
@@ -795,7 +795,7 @@ type TermIDByName =
         | DecoyMode
         ///The error window on experimental MS/MS fragment ion mass values.
         | MSMSTolerance
-        ///
+        ///Number of peaks after the 'top X per 100 Da' filtering.
         | TopPeakPer100Da
         ///
         | MSMSDeisotoping
@@ -812,13 +812,15 @@ type TermIDByName =
         ///mass of the identified peptide sequence in dalton.
         | MassErrorDa
         ///Upper limit of the search tolerance.
-        | MassDeviationUpperLimit
+        | SearchToleranceUpperLimit
         ///Lower limit of the search tolerance.
-        | MassDeviationLowerLimit
+        | SearchToleranceLowerLimit
         ///
         | ProductIonMZ
         ///
         | ProductIonErrorMZ
+        ///How many neutral losses were applied to each fragment in the Andromeda scoring.
+        | NeutralFragmentLoss
 
         //Ion fragment types
         ///Kind of ion after fragmentation of peptide.
@@ -947,7 +949,7 @@ type TermIDByName =
             | Intensities -> "MS:1001846"
             | MSMSScanNumbers -> "User:0000030"
             | MSMSIsotopIndices -> "User:0000031"
-            | MULTI -> "MS:1000774"
+            | MultipleIDs -> "MS:1000774"
             | IonInjectionTime -> "MS:1000927"
             | TotalIonCurrent -> "MS:1000285"
             | MaxQuant -> "MS:1001583"
@@ -1005,8 +1007,8 @@ type TermIDByName =
             | MassErrorPercent -> "PRIDE:0000085"
             | MassErrorDa -> "PRIDE:0000086"
             | NumberOfDetections -> "MS:1000131"
-            | MassDeviationUpperLimit -> "MS:1001412"
-            | MassDeviationLowerLimit -> "MS:1001413"
+            | SearchToleranceUpperLimit -> "MS:1001412"
+            | SearchToleranceLowerLimit -> "MS:1001413"
             | ProductIonMZ -> "MS:1001225"
             | ProductIonErrorMZ -> "MS:1001227"
             | MZ -> "MS:1000040"
@@ -1040,6 +1042,7 @@ type TermIDByName =
             | Oxidation -> "UNIMOD:35"
             | DistinctPeptideSequences -> "MS:1001097"
             | PeptideSharedWithinMultipleProteins -> "MS:1001175"
+            | NeutralFragmentLoss -> "MS:1001524"
 
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
@@ -1065,25 +1068,25 @@ let measureErrors =
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationUpperLimit)).Value,
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
             "Mass Deviations [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationLowerLimit)).Value,
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
             "Mass Deviations [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationUpperLimit)).Value,
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
             "Mass Deviations [Da]"
                             )
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
-        MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationLowerLimit)).Value,
+    MeasureParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
             "Mass Deviations [Da]"
                             )
     |> MeasureParamHandler.addUnit 
@@ -1311,113 +1314,6 @@ let spectrumidentificationItemParamPeptideUnmodified =
     |> SpectrumIdentificationItemParamHandler.addValue "11.349"
     |> SpectrumIdentificationItemParamHandler.addUnit
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15077";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15329";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "105.0287018";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "25278";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0;3563;15589;27011;28600;27211;19809;14169;10127;6641;1399;1375;0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "1";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15159";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15159";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "92047";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "135";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.8484042";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.001671316";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.07051102";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15140";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "10131";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.905362";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "-2";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.06315041";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "19";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "NaN";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "26";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.5504808";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.1851852";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
-                                               )
     ]
 
 
@@ -1709,117 +1605,6 @@ let spectrumidentificationItemParamPeptideMOxidized =
     |> SpectrumIdentificationItemParamHandler.addValue "7.509"
     |> SpectrumIdentificationItemParamHandler.addUnit
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12116";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12347";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "69.04515839";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "25120";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0;3731;6755;24524;24360;18177;11825;4543;4102.5;3066;2497;0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "1";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12193";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12193";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "71250";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "157";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.8028493";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.002043774";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.04564729";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12179";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "10056";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "1";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "0";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "14";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "69.045";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "27";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.4059861";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "0.1719745";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NeutralIonLoss)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "None";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
-                            )
-    |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
-                                               )
     ]
 
 let valueIntensitiesMOxized =
@@ -1952,26 +1737,6 @@ let spectrumidentificationItemPeptideMOxidized =
                                             )
     |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsMOxidized
     |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideMOxidized
-
-let peptideEvidenceParams =
-    [
-    PeptideEvidenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DetectionType)).Value
-                                    )
-    |> PeptideEvidenceParamHandler.addValue "MULTI";
-    PeptideEvidenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProtein)).Value
-                                               )
-    |> PeptideEvidenceParamHandler.addValue "Cre02.g096150.t1.2";
-    PeptideEvidenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
-                                               )
-    |> PeptideEvidenceParamHandler.addValue "Cre02.g096150.t1.2";
-    PeptideEvidenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinScore)).Value
-                                            )
-    |> PeptideEvidenceParamHandler.addValue "105.09";
-    ]
     
 let peptideEvidences =
     [
@@ -1980,14 +1745,12 @@ let peptideEvidences =
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addDetails peptideEvidenceParams
     |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument;
     PeptideEvidenceHandler.init(
         dbSequence, peptideMOxidized
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addDetails peptideEvidenceParams
     |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument
     ]
 
@@ -2102,7 +1865,30 @@ let proteinAmbiguousGroupsParams =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "1335100";
-    
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinScore)).Value
+                                          )
+    |> ProteinAmbiguityGroupParamHandler.addValue "105.09";
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProtein)).Value
+                                               )
+    |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2";
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
+                                               )
+    |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2"
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PSMFDR)).Value
+                                        )
+    |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinFDR)).Value
+                                        )
+    |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
+    ProteinAmbiguityGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SideFDR)).Value
+                                        )
+    |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
     ]
 
 let proteinAmbiguousGroups =
@@ -2113,7 +1899,7 @@ let proteinAmbiguousGroups =
 
 let spectrumIDFormat =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MULTI)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MultipleIDs)).Value
                         )
 
 let spectradata =
@@ -2169,24 +1955,72 @@ let searchType =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSSearch)).Value
                         )
 
-//let thresholdParam =
-//    ThresholdParamHandler.init(
-//        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxQuant)).Value
-
 let searchModificationParam =
     [
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID CollisionEnergy)).Value
-                                        )
-    |> SearchModificationParamHandler.addValue "0";
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NeutralFragmentLoss)).Value
+                            )
+    |> SearchModificationParamHandler.addValue "None";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FragmentationType)).Value
-                                        )
-    |> SearchModificationParamHandler.addValue "CID";
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Oxidation)).Value
+                            )
+    |> SearchModificationParamHandler.addValue "Methionine";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassAnalyzerType)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
                                         )
-    |> SearchModificationParamHandler.addValue "TOF";
+    |> SearchModificationParamHandler.addValue "20 for FTMS"
+    |> SearchModificationParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "12 for FTMS";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "TRUE for FTMS";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "0.5 for ITMS"
+    |> SearchModificationParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "8 for ITMS";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "FALSE for ITMS";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "40 for TOF"
+    |> SearchModificationParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "10 for TOF";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "TRUE for TOF";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "0.5 for Unknown"
+    |> SearchModificationParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "8 for Unknown";
+    SearchModificationParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+                                        )
+    |> SearchModificationParamHandler.addValue "False for Unknown";
     ]
 
 let searchModificationParams =
@@ -2242,77 +2076,29 @@ let additionalSearchParams =
 let fragmentTolerance =
     [
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "20 for FTMS"
-    |> FragmentToleranceParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+            "Mass Deviations [ppm]"
+                            )
+    |> FragmentToleranceParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "12 for FTMS";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "TRUE for FTMS";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "0.5 for ITMS"
-    |> FragmentToleranceParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "8 for ITMS";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "FALSE for ITMS";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "40 for TOF"
-    |> FragmentToleranceParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+            "Mass Deviations [ppm]"
+                            )
+    |> FragmentToleranceParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "10 for TOF";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "TRUE for TOF";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "0.5 for Unknown"
-    |> FragmentToleranceParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+            "Mass Deviations [Da]"
+                            )
+    |> FragmentToleranceParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "8 for Unknown";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "False for Unknown";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PSMFDR)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "0.01";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinFDR)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "0.01";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SideFDR)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "0.01";
-    FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UseNormRatios)).Value
-                                        )
-    |> FragmentToleranceParamHandler.addValue "TRUE";
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+            "Mass Deviations [Da]"
+                            )
+    |> FragmentToleranceParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     ]
 
 let analysisProcolparams =
@@ -2352,18 +2138,6 @@ let spectrumIdentificationProtocol =
     |> SpectrumIdentificationProtocolHandler.addFragmentTolerances fragmentTolerance
     |> SpectrumIdentificationProtocolHandler.addMzIdentMLDocument mzIdentMLDocument
 
-let spectrumIdentificationResultParamMOxidized =
-    [
-    SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakIntension)).Value
-                                                    )
-    |> SpectrumIdentificationResultParamHandler.addValue "0";
-    SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ElapsedTime)).Value
-                                                    )
-    |> SpectrumIdentificationResultParamHandler.addValue "1";
-    ]
-
 let spectrumIdentificationResultParamUnModified =
     [
     SpectrumIdentificationResultParamHandler.init(
@@ -2374,6 +2148,232 @@ let spectrumIdentificationResultParamUnModified =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ElapsedTime)).Value
                                                     )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "15077";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "15329";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "105.0287018";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "25278";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0;3563;15589;27011;28600;27211;19809;14169;10127;6641;1399;1375;0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "1";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "15159";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "15159";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "92047";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "135";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.8484042";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.001671316";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.07051102";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "15140";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "10131";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.905362";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "-2";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.06315041";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "19";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "NaN";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "26";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.5504808";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.1851852";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "Unknown";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
+    ]
+
+let spectrumIdentificationResultParamMOxidized =
+    [
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakIntension)).Value
+                                                    )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ElapsedTime)).Value
+                                                    )
+    |> SpectrumIdentificationResultParamHandler.addValue "1";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "12116";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "12347";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "69.04515839";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "25120";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0;3731;6755;24524;24360;18177;11825;4543;4102.5;3066;2497;0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "1";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "12193";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "12193";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "71250";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "157";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.8028493";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.002043774";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.04564729";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "12179";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "10056";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "1";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "0";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "14";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
+                                                )
+    |> SpectrumIdentificationResultParamHandler.addValue "69.045";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "27";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.4059861";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "0.1719745";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
+                            )
+    |> SpectrumIdentificationResultParamHandler.addValue "Unknown";
+    SpectrumIdentificationResultParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
     ]
 
 let spectrumIdentificationResult =
