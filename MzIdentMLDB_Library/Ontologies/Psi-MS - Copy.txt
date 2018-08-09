@@ -7758,7 +7758,7 @@ is_a: MS:1001143 ! PSM-level search engine specific statistic
 
 [Term]
 id: MS:1001220
-name: y ion
+name: frag: y ion
 def: "Fragmentation information, type of product: y ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -7770,19 +7770,19 @@ is_a: MS:1002694 ! single identification result attribute
 
 [Term]
 id: MS:1001222
-name: b ion - H2O
+name: frag: b ion - H2O
 def: "Fragmentation information, type of product: b ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001223
-name: y ion - H2O
+name: frag: y ion - H2O
 def: "Fragmentation information, type of product: y ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001224
-name: b ion
+name: frag: b ion
 def: "Fragmentation information, type of product: b ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -7815,73 +7815,73 @@ relationship: has_units UO:0000166 ! parts per notation unit
 
 [Term]
 id: MS:1001228
-name: x ion
+name: frag: x ion
 def: "Fragmentation information, type of product: x ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001229
-name: a ion
+name: frag: a ion
 def: "Fragmentation information, type of product: a ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001230
-name: z ion
+name: frag: z ion
 def: "Fragmentation information, type of product: z ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001231
-name: c ion
+name: frag: c ion
 def: "Fragmentation information, type of product: c ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001232
-name: b ion - NH3
+name: frag: b ion - NH3
 def: "Ion b-NH3 fragmentation information, type of product: b ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001233
-name: y ion - NH3
+name: frag: y ion - NH3
 def: "Ion y-NH3 fragmentation information, type of product: y ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001234
-name: a ion - H2O
+name: frag: a ion - H2O
 def: "Fragmentation information, type of product: a ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001235
-name: a ion - NH3
+name: frag: a ion - NH3
 def: "Ion a-NH3 fragmentation information, type of product: a ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001236
-name: d ion
+name: frag: d ion
 def: "Fragmentation information, type of product: d ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001237
-name: v ion
+name: frag: v ion
 def: "Fragmentation information, type of product: v ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001238
-name: w ion
+name: frag: w ion
 def: "Fragmentation information, type of product: w ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001239
-name: immonium ion
+name: frag: immonium ion
 def: "Fragmentation information, type of product: immonium ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -8629,25 +8629,25 @@ relationship: has_domain MS:1002305 ! value between 0 type 1 inclusive
 
 [Term]
 id: MS:1001365
-name: internal yb ion
+name: frag: internal yb ion
 def: "Fragmentation information, type of product: internal yb ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001366
-name: internal ya ion
+name: frag: internal ya ion
 def: "Fragmentation information, type of product: internal ya ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001367
-name: z+1 ion
+name: frag: z+1 ion
 def: "Fragmentation information, type of product: z+1 ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001368
-name: z+2 ion
+name: frag: z+2 ion
 def: "Fragmentation information, type of product: z+2 ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -9297,28 +9297,28 @@ is_a: MS:1000560 ! mass spectrometer file format
 
 [Term]
 id: MS:1001467
-name: NCBI TaxID
+name: taxonomy: NCBI TaxID
 def: "This term is used if a NCBI TaxID is specified, e.g. 9606 for Homo sapiens." [PSI:PI]
 xref: value-type:xsd\:positiveInteger "The allowed value-type for this CV term."
 is_a: MS:1001089 ! molecule taxonomy
 
 [Term]
 id: MS:1001468
-name: common name
+name: taxonomy: common name
 def: "This term is used if a common name is specified, e.g. human. Recommend using MS:1001467 (taxonomy: NCBI TaxID) where possible." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001089 ! molecule taxonomy
 
 [Term]
 id: MS:1001469
-name: scientific name
+name: taxonomy: scientific name
 def: "This term is used if a scientific name is specified, e.g. Homo sapiens. Recommend using MS:1001467 (taxonomy: NCBI TaxID) where possible." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001089 ! molecule taxonomy
 
 [Term]
 id: MS:1001470
-name: Swiss-Prot ID
+name: taxonomy: Swiss-Prot ID
 def: "This term is used if a swiss prot taxonomy id is specified, e.g. Human. Recommend using MS:1001467 (taxonomy: NCBI TaxID) where possible." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1001089 ! molecule taxonomy
@@ -9620,55 +9620,55 @@ is_a: MS:1001512 ! Sequence database filters
 
 [Term]
 id: MS:1001515
-name: c ion - H2O
+name: frag: c ion - H2O
 def: "Fragmentation information, type of product: c ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001516
-name: c ion - NH3
+name: frag: c ion - NH3
 def: "Fragmentation information, type of product: c ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001517
-name: z ion - H2O
+name: frag: z ion - H2O
 def: "Fragmentation information, type of product: z ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001518
-name: z ion - NH3
+name: frag: z ion - NH3
 def: "Fragmentation information, type of product: z ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001519
-name: x ion - H2O
+name: frag: x ion - H2O
 def: "Fragmentation information, type of product: x ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001520
-name: x ion - NH3
+name: frag: x ion - NH3
 def: "Fragmentation information, type of product: x ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001521
-name: precursor ion - H2O
+name: frag: precursor ion - H2O
 def: "Fragmentation information, type of product: precursor ion without water." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001522
-name: precursor ion - NH3
+name: frag: precursor ion - NH3
 def: "Fragmentation information, type of product: precursor ion without ammonia." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1001523
-name: precursor ion
+name: frag: precursor ion
 def: "Fragmentation information, type of product: precursor ion." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 
@@ -17397,28 +17397,28 @@ is_a: MS:1001536 ! Bruker Daltonics micrOTOF series
 
 [Term]
 id: MS:1002668
-name: iTRAQ 4plex reporter ion
+name: frag: iTRAQ 4plex reporter ion
 def: "Standard reporter ion for iTRAQ 4Plex. The value slot holds the integer mass of the iTRAQ 4Plex reporter ion, e.g. 114." [PSI:PI]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1002669
-name: iTRAQ 8plex reporter ion
+name: frag: iTRAQ 8plex reporter ion
 def: "Standard reporter ion for iTRAQ 8Plex. The value slot holds the integer mass of the iTRAQ 8Plex reporter ion, e.g. 113." [PSI:PI]
 xref: value-type:xsd\:int "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1002670
-name: TMT reporter ion
+name: frag: TMT reporter ion
 def: "Standard reporter ion for TMT. The value slot holds the integer mass of the TMT reporter ion type can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127N." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
 
 [Term]
 id: MS:1002671
-name: TMT ETD reporter ion
+name: frag: TMT ETD reporter ion
 def: "Standard reporter ion for TMT with ETD fragmentation. The value slot holds the integer mass of the TMT ETD reporter ion type can be suffixed with either N or C, indicating whether the mass difference is encoded at a Nitrogen or Carbon atom, e.g. 127C." [PSI:PI]
 xref: value-type:xsd\:string "The allowed value-type for this CV term."
 is_a: MS:1002307 ! fragmentation ion type
@@ -17592,7 +17592,7 @@ is_a: MS:1002693 ! identification attribute
 
 [Term]
 id: MS:1002695
-name: isobaric label ion
+name: frag: isobaric label ion
 def: "Fragment ion corresponding to an isobaric label artifact." [PSI:PI]
 is_a: MS:1002307 ! fragmentation ion type
 

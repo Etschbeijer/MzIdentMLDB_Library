@@ -60,14 +60,14 @@ let user2 =
 
 let user3 =
     TermHandler.init("User:0000003")
-    |> TermHandler.addName "MaxQuant: Unique Groups"
+    |> TermHandler.addName "MaxQuant: Unique Protein Group"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user4 =
     TermHandler.init("User:0000004")
-    |> TermHandler.addName "MaxQuant: Unique Proteins"
+    |> TermHandler.addName "MaxQuant: Unique Protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
@@ -116,7 +116,7 @@ let user10 =
 
 let user11 =
     TermHandler.init("User:0000011")
-    |> TermHandler.addName "ppm"
+    |> TermHandler.addName "TSV"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
@@ -177,12 +177,12 @@ let user19 =
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
-let user20 =
-    TermHandler.init("User:0000020")
-    |> TermHandler.addName "Tab seperated"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzIdentMLContext
+//let user20 =
+//    TermHandler.init("User:0000020")
+//    |> TermHandler.addName "Tab seperated"
+//    |> TermHandler.addOntology 
+//        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+//    |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user21 =
     TermHandler.init("User:0000021")
@@ -359,12 +359,12 @@ let user45 =
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
-let user46 =
-    TermHandler.init("User:0000046")
-    |> TermHandler.addName "MaxQuant: Mass Deviation"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzIdentMLContext
+//let user46 =
+//    TermHandler.init("User:0000046")
+//    |> TermHandler.addName "MaxQuant: Mass Deviation"
+//    |> TermHandler.addOntology 
+//        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+//    |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user47 =
     TermHandler.init("User:0000047")
@@ -478,12 +478,12 @@ let user62 =
         (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
-let user63 =
-    TermHandler.init("User:0000063")
-    |> TermHandler.addName "MaxQuant: PSM FDR"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzIdentMLContext
+//let user63 =
+//    TermHandler.init("User:0000063")
+//    |> TermHandler.addName "MaxQuant: PSM FDR"
+//    |> TermHandler.addOntology 
+//        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+//    |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user64 =
     TermHandler.init("User:0000064")
@@ -585,7 +585,7 @@ type TermIDByName =
         | LeadingRazorProtein
         ///The identifiers of the proteins in the proteinGroups file, with this
         ///Protein as best match, this particular peptide is associated with.
-        | LeadingProteins
+        | LeadingProtein
         ///Description of the protein.
         | ProteinDescription
         ///Number of proteins contained within the group.
@@ -601,7 +601,7 @@ type TermIDByName =
         ///Peptide is unique to a single protein group in the proteinGroups file.
         | UniqueToGroups
         ///Peptide is unique to a single protein sequence in the fasta file(s).
-        | UniqueToProteins
+        | UniqueToProtein
         ///Sequence window from -8 to 8 around the N-terminal cleavagesite of this peptide.
         | NTermCleavageWindow
         ///Sequence window from -8 to 8 around the C-terminal cleavagesite of this peptide.
@@ -633,6 +633,12 @@ type TermIDByName =
         | DiscardUnmodifiedPeptide
         ///
         | MinRatioCount
+        ///
+        | NumberPeptideSeqsMatchedEachSpec
+        ///
+        | DistinctPeptideSequences
+        ///Peptide can be found in several proteinsequences
+        | PeptideSharedWithinMultipleProteins
 
         //Nucleic Acids
         ///Seuqence of nucleic acids.
@@ -760,10 +766,8 @@ type TermIDByName =
         | ScoreDifference
         ///The species of the peaks in the fragmentation spectrum after TopN filtering
         | Matches
-        ///Kind of ion after fragmentation of peptide.
-        | Fragment
         ///The species of the peaks in the fragmentation spectrum after TopN filtering.
-        | IntensitiesOfFragments
+        | ProductIonIntensity
         ///The number of peaks matching to the predicted fragmentation spectrum.
         | NumberOfMatches
         ///How many neutral losses were applied to each fragment in the Andromeda scoring.
@@ -807,11 +811,37 @@ type TermIDByName =
         ///precursor ion in comparison to the predicted monoisotopic
         ///mass of the identified peptide sequence in dalton.
         | MassErrorDa
+        ///Upper limit of the search tolerance.
+        | MassDeviationUpperLimit
+        ///Lower limit of the search tolerance.
+        | MassDeviationLowerLimit
         ///
-        | MassDeviation
+        | ProductIonMZ
+        ///
+        | ProductIonErrorMZ
 
         //Ion fragment types
-
+        ///Kind of ion after fragmentation of peptide.
+        | Fragment
+        | ProductIonSeriesOrdinal
+        | ProductIonMZDelta
+        | ProductInterpretationRank
+        | ATypeIon
+        | YIon
+        | YIonWithoutWater
+        | YIonWithoutAmmoniumGroup
+        | YIonWihtout3H3PO4
+        | YIonWihtout2H3PO4
+        | YIonWihtoutH3PO4
+        | BIon
+        | BIonWithoutWater
+        | BIonWithoutAmmoniumGroup
+        | BIonWihtout3H3PO4
+        | BIonWihtout2H3PO4
+        | BIonWihtoutH3PO4
+        | XIon
+        | XIonWithoutWater
+        | XIonWithoutAmmoniumGroup
 
         //Units
         | Minute
@@ -821,10 +851,34 @@ type TermIDByName =
         | Dalton
         | KiloDalton
         | NumberOfDetections
+        | MZ
 
         //File
-        /// Values are seperated by tab(s).
-        | FileFormat
+        ///Information coded in FASTA format.
+        | FASTAFormat
+        ///Values are seperated by tab(s).
+        | TSV
+        ///Unspecific kind of database.
+        | DataStoredInDataBase
+        ///Uknown file type.
+        | UnknownFileType
+        
+        //DataBases
+        ///UniProt.
+        | UniProt
+
+        //Taxonomie
+        ///ScientificName of the species.
+        | ScientificName
+
+        //EnzymeNames
+        ///A serineProtease which cuts digests after K, R and modified C.
+        | Trypsin
+        ///No enzyme was used.
+        | NoEnzyme
+
+        //Type of modification of NA or AA
+        | Oxidation
 
         static member toID (item:TermIDByName) =
             match item with
@@ -837,7 +891,7 @@ type TermIDByName =
             | MonoIsotopicMass -> "MS:1000225"
             | LeadingRazorProtein -> "User:0000002"
             | UniqueToGroups -> "User:0000003"
-            | UniqueToProteins -> "User:0000004"
+            | UniqueToProtein -> "MS:1001363"
             | PosteriorErrorProbability -> "User:0000005"
             | AndromedaScore -> "MS:1002338"
             | IdentificationType -> "User:0000006"
@@ -854,10 +908,10 @@ type TermIDByName =
             | CalibratedRetentionTime -> "User:0000009"
             | MSMSScanNumber -> "MS:1001115"
             | DeltaScore -> "MS:1002834"
-            | LeadingProteins -> "MS:1002401"
+            | LeadingProtein -> "MS:1002401"
             | ProteinDescription -> "MS:1001088"
             | MassError -> "User:0000010"
-            | Ppm -> "User:0000011"
+            | Ppm -> "UO:0000169"
             | MajorProteinIDs -> "User:0000012"
             | PeptideCountsAll -> "MS:1001898"
             | PeptideCountsRazorAndUnique -> "MS:1001899"
@@ -874,7 +928,7 @@ type TermIDByName =
             | SequenceLengths -> "User:0000019"
             | QValue -> "MS:1001491"
             | ProteinScore -> "MS:1002394"
-            | FileFormat -> "User:0000020"
+            | FASTAFormat -> "MS:1001348"
             | DetectionType -> "User:0000021"
             | Mass -> "MS:1000224"
             | UncalibratedMZ -> "User:0000022"
@@ -917,7 +971,7 @@ type TermIDByName =
             | Combinatorics -> "User:0000044"
             | Matches -> "User:0000045"
             | Fragment -> "MS:1002695"
-            | IntensitiesOfFragments -> "MS:1001226"
+            | ProductIonIntensity -> "MS:1001226"
             | Dalton -> "MS:1000212"
             | KiloDalton -> "UO:0000222"
             | NumberOfMatches -> "User:0000047"
@@ -939,7 +993,7 @@ type TermIDByName =
             | MSMSTolerance -> "MS:1001655"
             | TopPeakPer100Da -> "User:0000062"
             | MSMSDeisotoping -> "MS:1000033"
-            | PSMFDR -> "User:0000063"
+            | PSMFDR -> "MS:1002351"
             | ProteinFDR -> "User:0000064"
             | SideFDR -> "User:0000065"
             | UseNormRatios -> "User:0000066"
@@ -951,14 +1005,49 @@ type TermIDByName =
             | MassErrorPercent -> "PRIDE:0000085"
             | MassErrorDa -> "PRIDE:0000086"
             | NumberOfDetections -> "MS:1000131"
-            | MassDeviation -> "User:0000046"
+            | MassDeviationUpperLimit -> "MS:1001412"
+            | MassDeviationLowerLimit -> "MS:1001413"
+            | ProductIonMZ -> "MS:1001225"
+            | ProductIonErrorMZ -> "MS:1001227"
+            | MZ -> "MS:1000040"
+            | TSV -> "User:0000011"
+            | DataStoredInDataBase -> "MS:1001107"
+            | UnknownFileType -> "PRIDE:0000059"
+            | UniProt -> "MS:1001254"
+            | ScientificName -> "MS:1001469"
+            | Trypsin -> "MS:1001251"
+            | NoEnzyme -> "MS:1001091"
+            | ATypeIon -> "UNIMOD:140"
+            | BIonWihtoutH3PO4 -> "PRIDE:0000419"
+            | BIonWihtout2H3PO4 -> "PRIDE:0000420"
+            | BIonWihtout3H3PO4 -> "PRIDE:0000421"
+            | YIonWihtoutH3PO4 -> "PRIDE:0000422"
+            | YIonWihtout2H3PO4 -> "PRIDE:0000423"
+            | YIonWihtout3H3PO4 -> "PRIDE:0000424"
+            | ProductIonSeriesOrdinal -> "MS:1000903"
+            | ProductIonMZDelta -> "MS:1000904"
+            | ProductInterpretationRank -> "MS:1000926"
+            | YIon -> "MS:1001220"
+            | YIonWithoutWater -> "MS:1001223"
+            | YIonWithoutAmmoniumGroup -> "MS:1001233"
+            | BIon -> "MS:1001224"
+            | BIonWithoutWater -> "MS:1001222"
+            | BIonWithoutAmmoniumGroup -> "MS:1001232"
+            | XIon ->"MS:1001228"
+            | XIonWithoutWater -> "MS:1001519"
+            | XIonWithoutAmmoniumGroup -> "MS:1001520"
+            | NumberPeptideSeqsMatchedEachSpec -> "MS:1001030"
+            | Oxidation -> "UNIMOD:35"
+            | DistinctPeptideSequences -> "MS:1001097"
+            | PeptideSharedWithinMultipleProteins -> "MS:1001175"
+
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
 let mzIdentMLDocument =
     MzIdentMLDocumentHandler.init(version="1.0", id="Peptides ID=119")
 
-let measureParam =
+let measureErrors =
     [
     MeasureParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorPpm)).Value
@@ -976,72 +1065,102 @@ let measureParam =
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviation)).Value,
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationUpperLimit)).Value,
             "Mass Deviations [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviation)).Value,
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationLowerLimit)).Value,
+            "Mass Deviations [ppm]"
+                            )
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+    MeasureParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationUpperLimit)).Value,
+            "Mass Deviations [Da]"
+                            )
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        MeasureParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviationLowerLimit)).Value,
             "Mass Deviations [Da]"
                             )
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Mass)).Value,
-            "Mass"
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonErrorMZ)).Value,
+            "Mass Deviations [Da]"
                             )
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value;
+    
+    ]
+
+let measureTypes =
+    [
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensitiesOfFragments)).Value,
-            "Intensities"
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonMZ)).Value,
+            "ProductIonMZ"
                             )
-    |> MeasureParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value;                       
+    MeasureParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonIntensity)).Value
+                            )
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value;
+    MeasureParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonIntensity)).Value
+                            )
+    |> MeasureParamHandler.addUnit 
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value;
     ]
 
 let fragmentationTable =
-    MeasureHandler.init(measureParam, "fragmentationTable 1")
-    |> MeasureHandler.addToContext sqliteMzIdentMLContext
+    [
+    MeasureHandler.init(measureErrors, "Errors of measures")
+    |> MeasureHandler.addToContext sqliteMzIdentMLContext;
+    MeasureHandler.init(measureTypes, "Types of measures")
+    |> MeasureHandler.addToContext sqliteMzIdentMLContext;
+    ]
 
 let fileFormat1 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FileFormat)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DataStoredInDataBase)).Value
                         )
-    |> CVParamHandler.addValue "Tab seperated"
 
 let fileFormat2 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FileFormat)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UnknownFileType)).Value
                         )
-    |> CVParamHandler.addValue "FASTA"
 
-let databaseName1 =
+let fileFormat3 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RawFile)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FASTAFormat)).Value
                         )
-    |> CVParamHandler.addValue "20170518 TM FSconc3009"
 
-let databaseName2 =
+let databaseName =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RawFile)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniProt)).Value
                         )
-    |> CVParamHandler.addValue "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
 
+let searchDatabase =
+    SearchDatabaseHandler.init(
+        "https://www.uniprot.org/", fileFormat1, databaseName
+                                )
 
-let searchDatabases =
-    [
-    SearchDatabaseHandler.init(
-        "local", fileFormat1, databaseName1, "20170518 TM FSconc3009"
-                                );
-    SearchDatabaseHandler.init(
-        "local", fileFormat2, databaseName2, "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
-                                );
-    ]
+let dbSequenceParam =
+    DBSequenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScientificName)).Value
+                               )
+    |> DBSequenceParamHandler.addValue "C. reinhardtii"
 
 let dbSequence =
-    DBSequenceHandler.init("AAIEASFGSVDEMK", searchDatabases.[0])
+    DBSequenceHandler.init("AAIEASFGSVDEMK", searchDatabase)
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
+    |> DBSequenceHandler.addDetail dbSequenceParam
     |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let peptideParamUnmodified =
@@ -1071,74 +1190,57 @@ let peptideParamUnmodified =
                             )
     |> PeptideParamHandler.addValue "yes";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProteins)).Value
-                            )
-    |> PeptideParamHandler.addValue "Cre02.g096150.t1.2";
-    PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
-                            )
-    |> PeptideParamHandler.addValue "Cre02.g096150.t1.2";
-    PeptideParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Mass)).Value
                             )
-    |> PeptideParamHandler.addValue "1453.6797";
+    |> PeptideParamHandler.addValue "1453.6797"
+    |> PeptideParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID KiloDalton)).Value;
+    PeptideParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+                            )
+    |> PeptideParamHandler.addValue "1453.6759";
     ]
-
-let modificationParamsUnModified =
-    [
-    ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Combinatorics)).Value
-                                    )
-    |> ModificationParamHandler.addValue "0";
-    ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NeutralIonLoss)).Value
-                                    )
-    |> ModificationParamHandler.addValue "None";
-    ]
-
-let modificationUnmodified =
-    ModificationHandler.init(modificationParamsUnModified, "124")
 
 let peptideUnmodified =
     PeptideHandler.init("AAIEASFGSVDEMK", "119")
-    |> PeptideHandler.addModification modificationUnmodified
     |> PeptideHandler.addDetails peptideParamUnmodified
     |> PeptideHandler.addMzIdentMLDocument mzIdentMLDocument
 
+let enzymeName =
+    EnzymeNameParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Trypsin)).Value;
+                               )
 let enzyme =
     EnzymeHandler.init()
-    |> EnzymeHandler.addMissedCleavages 0
+    |> EnzymeHandler.addSiteRegexc "KRC"
+    |> EnzymeHandler.addEnzymeName enzymeName
 
 let spectrumidentificationItemParamPeptideUnmodified =
     [
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "1453.6759";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "2.95E-39";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "122.97";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "290760";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "14";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "15279";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "2.95E-39";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "122.97";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "290760";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "14";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "15279";
     SpectrumIdentificationItemParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTime)).Value
                                                 )
@@ -1313,6 +1415,9 @@ let spectrumidentificationItemParamPeptideUnmodified =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
                             )
     |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
+    SpectrumIdentificationItemParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
     ]
 
 
@@ -1368,7 +1473,7 @@ let fragmentArrayUnModified1 =
                                 );
     FragmentArrayHandler.init(
         MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass").Value]
+            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "ProductIonMZ").Value]
                             ),
                             522.219250635495
                                 );
@@ -1378,6 +1483,9 @@ let ionTypeParamUnModified1 =
     [
     IonTypeParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+                            );
+    IonTypeParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
                             )
     |> IonTypeParamHandler.addValue "y4";
     ]
@@ -1404,16 +1512,19 @@ let fragmentArrayUnModified2 =
                                 );
     FragmentArrayHandler.init(
         MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass").Value]
+            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "ProductIonMZ").Value]
                             ),
                             621.287305940905
-                                );
+                             );
     ]
   
 let ionTypeParamUnModified2 =
     [
     IonTypeParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+                            );
+    IonTypeParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
                             )
     |> IonTypeParamHandler.addValue "y5";
     ]
@@ -1423,18 +1534,18 @@ let fragmentationsUnModified =
     IonTypeHandler.init(
         ionTypeParamUnModified1
                         )
-    |> IonTypeHandler.addIndex (IndexHandler.init 0)
+    |> IonTypeHandler.addIndex (IndexHandler.init 1)
     |> IonTypeHandler.addFragmentArrays fragmentArrayUnModified1;
     IonTypeHandler.init(
         ionTypeParamUnModified2
-                        )
-    |> IonTypeHandler.addIndex (IndexHandler.init 0)
+                       )
+    |> IonTypeHandler.addIndex (IndexHandler.init 2)
     |> IonTypeHandler.addFragmentArrays fragmentArrayUnModified2
     ]
 
 let spectrumidentificationItemPeptideUnmodified =
     SpectrumIdentificationItemHandler.init(
-        peptideUnmodified, 2, 727.84714, true, -1
+        peptideUnmodified, 2, 727.84714, true, 0
                                             )
     |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsUnModified
     |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideUnmodified
@@ -1442,9 +1553,9 @@ let spectrumidentificationItemPeptideUnmodified =
 let modificationParamsMOxidized =
     [
     ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProteins)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Oxidation)).Value
                                     )
-    |> ModificationParamHandler.addValue "Oxidation";
+    |> ModificationParamHandler.addValue "Methionin";
     ModificationParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Combinatorics)).Value
                                     )
@@ -1485,18 +1596,14 @@ let peptideParamMOxidized =
     PeptideParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AmnoAcidModification)).Value
                             )
-    |> PeptideParamHandler.addValue "yes";
-    PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProteins)).Value
-                            )
-    |> PeptideParamHandler.addValue "Cre02.g096150.t1.2";
-    PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
-                            )
-    |> PeptideParamHandler.addValue "Cre02.g096150.t1.2";
+    |> PeptideParamHandler.addValue "yes"; 
     PeptideParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Mass)).Value
                             )
+    |> PeptideParamHandler.addValue "1469.6761";
+    PeptideParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+                                                )
     |> PeptideParamHandler.addValue "1469.6761";
     ]
 
@@ -1508,34 +1615,30 @@ let peptideMOxidized =
 
 let spectrumidentificationItemParamPeptideMOxidized =
     [
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "1453.6759";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "6,36E-25";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "111.12";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "167790";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "14";
-    SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
-                                                )
-    |> SpectrumIdentificationItemParamHandler.addValue "12427";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "6,36E-25";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "111.12";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "167790";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "14";
+    //SpectrumIdentificationItemParamHandler.init(
+    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
+    //                                            )
+    //|> SpectrumIdentificationItemParamHandler.addValue "12427";
     SpectrumIdentificationItemParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTime)).Value
                                                 )
@@ -1714,6 +1817,9 @@ let spectrumidentificationItemParamPeptideMOxidized =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
                             )
     |> SpectrumIdentificationItemParamHandler.addValue "Unknown";
+    SpectrumIdentificationItemParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
     ]
 
 let valueIntensitiesMOxized =
@@ -1770,7 +1876,7 @@ let fragmentArrayMOXidized1 =
                                 );
     FragmentArrayHandler.init(
         MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass").Value]
+            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "ProductIonMZ").Value]
                             ),
                             423.185298151502
                                 );
@@ -1780,6 +1886,9 @@ let ionTypeParamMOxidized1 =
     [
     IonTypeParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+                            );
+    IonTypeParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
                             )
     |> IonTypeParamHandler.addValue "y3";
     ]
@@ -1806,7 +1915,7 @@ let fragmentArrayMOXidized2 =
                                 );
     FragmentArrayHandler.init(
         MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass").Value]
+            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "ProductIonMZ").Value]
                             ),
                             423.185298151502
                                 );
@@ -1816,6 +1925,9 @@ let ionTypeParamMOxidized2 =
     [
     IonTypeParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+                            );
+    IonTypeParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
                             )
     |> IonTypeParamHandler.addValue "y4";
     ]
@@ -1842,10 +1954,24 @@ let spectrumidentificationItemPeptideMOxidized =
     |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideMOxidized
 
 let peptideEvidenceParams =
+    [
     PeptideEvidenceParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DetectionType)).Value
                                     )
-    |> PeptideEvidenceParamHandler.addValue "MULTI"
+    |> PeptideEvidenceParamHandler.addValue "MULTI";
+    PeptideEvidenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProtein)).Value
+                                               )
+    |> PeptideEvidenceParamHandler.addValue "Cre02.g096150.t1.2";
+    PeptideEvidenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
+                                               )
+    |> PeptideEvidenceParamHandler.addValue "Cre02.g096150.t1.2";
+    PeptideEvidenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinScore)).Value
+                                            )
+    |> PeptideEvidenceParamHandler.addValue "105.09";
+    ]
     
 let peptideEvidences =
     [
@@ -1854,14 +1980,14 @@ let peptideEvidences =
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addDetail peptideEvidenceParams
+    |> PeptideEvidenceHandler.addDetails peptideEvidenceParams
     |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument;
     PeptideEvidenceHandler.init(
         dbSequence, peptideMOxidized
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addDetail peptideEvidenceParams
+    |> PeptideEvidenceHandler.addDetails peptideEvidenceParams
     |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument
     ]
 
@@ -1885,6 +2011,10 @@ let proteinDetectionHypothesisParams =
     |> ProteinDetectionHypothesisParamHandler.addValue 
         ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 
         OS=Chlamydomonas reinhardtii SV=2 TOU=Cre"
+    ProteinDetectionHypothesisParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
+                                                )
+    |> ProteinDetectionHypothesisParamHandler.addValue "TRUE";
     ]
     
 let proteinDetectionHypothesis =
@@ -1969,13 +2099,10 @@ let proteinAmbiguousGroupsParams =
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "0";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinScore)).Value
-                                            )
-    |> ProteinAmbiguityGroupParamHandler.addValue "105.09";
-    ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "1335100";
+    
     ]
 
 let proteinAmbiguousGroups =
@@ -2268,7 +2395,7 @@ let spectrumIdentificationList =
 
 let spectrumIdentification = 
     SpectrumIdentificationHandler.init(
-        spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, searchDatabases
+        spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, [searchDatabase]
                                         )
     |>SpectrumIdentificationHandler.addMzIdentMLDocument mzIdentMLDocument
 
@@ -2288,12 +2415,12 @@ let analysisData =
     |> AnalysisDataHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let sourceFiles =
-    [SourceFileHandler.init("local", fileFormat1); SourceFileHandler.init("local", fileFormat2)]
+    [SourceFileHandler.init("local", fileFormat2, name="20170518 TM FSconc3009"); SourceFileHandler.init("local", fileFormat3, name="D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta")]
 
 let inputs =
     InputsHandler.init(spectradata)
     |> InputsHandler.addSourceFiles sourceFiles 
-    |> InputsHandler.addSearchDatabases searchDatabases
+    |> InputsHandler.addSearchDatabase searchDatabase
 
 let provider =
     ProviderHandler.init()
