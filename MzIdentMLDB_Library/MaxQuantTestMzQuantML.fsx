@@ -24,8 +24,6 @@ open MzQuantMLDataBase.DataModel
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open BioFSharp
 
-//open MzIdentMLDataBase.XMLParsing
-
 
 let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
@@ -61,14 +59,14 @@ let user2 =
 
 let user3 =
     TermHandler.init("User:0000003")
-    |> TermHandler.addName "MaxQuant: Unique Groups"
+    |> TermHandler.addName "MaxQuant: Unique Protein Group"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user4 =
     TermHandler.init("User:0000004")
-    |> TermHandler.addName "MaxQuant: Unique Proteins"
+    |> TermHandler.addName "MaxQuant: Unique Protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
@@ -117,7 +115,7 @@ let user10 =
 
 let user11 =
     TermHandler.init("User:0000011")
-    |> TermHandler.addName "ppm"
+    |> TermHandler.addName "The intensity values of the isotopes."
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
@@ -180,7 +178,7 @@ let user19 =
 
 let user20 =
     TermHandler.init("User:0000020")
-    |> TermHandler.addName "Tab seperated"
+    |> TermHandler.addName "Metabolic labeling N14/N15"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
@@ -362,7 +360,7 @@ let user45 =
 
 let user46 =
     TermHandler.init("User:0000046")
-    |> TermHandler.addName "MaxQuant: Mass Deviation"
+    |> TermHandler.addName "MaxQuant: Match between runs"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
@@ -465,12 +463,12 @@ let user60 =
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
-//let user61 =
-//    TermHandler.init("User:0000061")
-//    |> TermHandler.addName "MaxQuant: MS/MS tolerance"
-//    |> TermHandler.addOntology 
-//        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-//    |> TermHandler.addToContext sqliteMzQuantMLContext
+let user61 =
+    TermHandler.init("User:0000061")
+    |> TermHandler.addName "MaxQuant: iBAQ"
+    |> TermHandler.addOntology 
+        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
+    |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user62 =
     TermHandler.init("User:0000062")
@@ -481,7 +479,7 @@ let user62 =
 
 let user63 =
     TermHandler.init("User:0000063")
-    |> TermHandler.addName "MaxQuant: PSM FDR"
+    |> TermHandler.addName "MaxQuant: IBAQ log fit"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
@@ -537,94 +535,53 @@ let user70 =
 
 let user71 =
     TermHandler.init("User:0000071")
-    |> TermHandler.addName "MaxQuant: Peptides used for protein quantification"
+    |> TermHandler.addName "Data-dependt acquisition"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user72 =
     TermHandler.init("User:0000072")
-    |> TermHandler.addName "MaxQuant: Match between runs"
+    |> TermHandler.addName "razor-protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user73 =
     TermHandler.init("User:0000073")
-    |> TermHandler.addName "MaxQuant: iBAQ"
+    |> TermHandler.addName "razor-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user74 =
     TermHandler.init("User:0000074")
-    |> TermHandler.addName "MaxQuant: iBAQ log fit"
+    |> TermHandler.addName "Mass-deviation"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user75 =
     TermHandler.init("User:0000075")
-    |> TermHandler.addName "MaxQuant: Matching time window"
+    |> TermHandler.addName "leading-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user76 =
     TermHandler.init("User:0000076")
-    |> TermHandler.addName "MaxQuant: Alignment time window"
+    |> TermHandler.addName "unique-protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
 let user77 =
     TermHandler.init("User:0000077")
-    |> TermHandler.addName "MaxQuant: Find dependent peptides"
+    |> TermHandler.addName "unique-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContext sqliteMzQuantMLContext
 
-let user78 =
-    TermHandler.init("User:0000078")
-    |> TermHandler.addName "MaxQuant: FASTA file"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
-
-let user79 =
-    TermHandler.init("User:0000079")
-    |> TermHandler.addName "MaxQuant: Labeled amino acid filtering"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
-
-let user80 =
-    TermHandler.init("User:0000080")
-    |> TermHandler.addName "MaxQuant: Site tables"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
-
-let user81 =
-    TermHandler.init("User:0000081")
-    |> TermHandler.addName "MaxQuant: RT shift"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
-
-let user82 =
-    TermHandler.init("User:0000082")
-    |> TermHandler.addName "MaxQuant: Advanced ratios"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
-
-let user83 =
-    TermHandler.init("User:0000083")
-    |> TermHandler.addName "MaxQuant: Data-dependent acquisition"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
 
 type TermIDByName =
         //Else
@@ -662,20 +619,24 @@ type TermIDByName =
         | UseNormRatios
         ///
         |UseDeltaScores
-        //Popular MS1 methods, where a protein's total intensity is divided by the number of tryptic peptides between 6 and 30 amino acids in length.
-        |IBAQ
+        ///Popular MS1 method, where a protein's total intensity is divided by the number of tryptic peptides 
+        ///between 6 and 30 amino acids in length
+        | IBAQ
         ///
-        |IBAQLogFit
+        | IBAQLogFit
+        ///Heavy N15 is induced to the growth media of one culture in order to distinguish 
+        ///between heavy and light labeled peptides/proteins.
+        | MetabolicLabelingN14N15
+        ///The weight difference between light and heavy labeled peptides is used for quantification.
+        | MetabolicLabelingN14N15Quantification
         ///
-        | FindDependentPeptides
+        | DataDependentAcquisition
         ///
-        | LabeledAminoAcidFiltering
+        | DataIndependentAcquisition
         ///
-        | SiteTables
+        | PeptideRatio
         ///
-        |DataIndependentAcquisition
-        ///
-        | DataDependendAcquisition
+        | MassDeviation
 
         //AminoAcids
         ///Sequence of amino acids.
@@ -691,25 +652,27 @@ type TermIDByName =
         | LeadingRazorProtein
         ///The identifiers of the proteins in the proteinGroups file, with this
         ///Protein as best match, this particular peptide is associated with.
-        | LeadingProteins
+        | LeadingProtein
         ///Description of the protein.
         | ProteinDescription
         ///Number of proteins contained within the group.
         | NumberOfProteins
         ///This is the ratio of reverse to forward protein groups.
         | QValue
-        ///True or False of contaminants are included or not
-        | IncludeContaminants
+        ///True or FALSe of contaminants are included or not
+        | Contaminants
         ///Determines which kind of peptide is used to identify the protein.
         | PeptidesForProteinQuantification
-        //Describes which kind of peptide is used to quantify the proteins.
-        | ProteinQuantifiedByPeptide
+        ///
+        | RazorProtein
+        ///
+        | UniqueProtein
 
         //Peptides
         ///Peptide is unique to a single protein group in the proteinGroups file.
         | UniqueToGroups
         ///Peptide is unique to a single protein sequence in the fasta file(s).
-        | UniqueToProteins
+        | UniqueToProtein
         ///Sequence window from -8 to 8 around the N-terminal cleavagesite of this peptide.
         | NTermCleavageWindow
         ///Sequence window from -8 to 8 around the C-terminal cleavagesite of this peptide.
@@ -742,7 +705,17 @@ type TermIDByName =
         ///
         | MinRatioCount
         ///
-        | AdvancedRatios
+        | NumberPeptideSeqsMatchedEachSpec
+        ///
+        | DistinctPeptideSequences
+        ///Peptide can be found in several proteinsequences
+        | PeptideSharedWithinMultipleProteins
+        ///
+        | RazorPeptide
+        ///
+        | UniquePeptide
+        ///
+        | LeadingPeptide
 
         //Nucleic Acids
         ///Seuqence of nucleic acids.
@@ -763,6 +736,8 @@ type TermIDByName =
         | XICArea
         ///Normalized area under curve  for one XIC.
         | NormalizedXICArea
+        ///Intensity values of the isotopes.
+        | XICAreas
         ///Total sum of XIC areas associated with the AA-sequence.
         | TotalXIC
         ///The number of MS/MS spectra recorded for the peptide.
@@ -821,7 +796,7 @@ type TermIDByName =
         ///A value of 0 corresponds to the monoisotopic peak.
         | MSMSIsotopIndices
         ///Multiple peak list nativeID format.
-        | MULTI
+        | MultipleIDs
         ///The ion inject time for the MS/MS scan.
         | IonInjectionTime
         ///The total ion current of the MS/MS scan.
@@ -870,10 +845,8 @@ type TermIDByName =
         | ScoreDifference
         ///The species of the peaks in the fragmentation spectrum after TopN filtering
         | Matches
-        ///Kind of ion after fragmentation of peptide.
-        | Fragment
         ///The species of the peaks in the fragmentation spectrum after TopN filtering.
-        | IntensitiesOfFragments
+        | ProductIonIntensity
         ///The number of peaks matching to the predicted fragmentation spectrum.
         | NumberOfMatches
         ///How many neutral losses were applied to each fragment in the Andromeda scoring.
@@ -901,7 +874,7 @@ type TermIDByName =
         | DecoyMode
         ///The error window on experimental MS/MS fragment ion mass values.
         | MSMSTolerance
-        ///
+        ///Number of peaks after the 'top X per 100 Da' filtering.
         | TopPeakPer100Da
         ///
         | MSMSDeisotoping
@@ -917,21 +890,51 @@ type TermIDByName =
         ///precursor ion in comparison to the predicted monoisotopic
         ///mass of the identified peptide sequence in dalton.
         | MassErrorDa
+        ///Upper limit of the search tolerance.
+        | SearchToleranceUpperLimit
+        ///Lower limit of the search tolerance.
+        | SearchToleranceLowerLimit
         ///
-        | MassDeviation
+        | ProductIonMZ
         ///
-        | MatchedBetweenRuns
+        | ProductIonErrorMZ
+        ///How many neutral losses were applied to each fragment in the Andromeda scoring.
+        | NeutralFragmentLoss
         ///
-        | MatchingTimeWindow
+        | MatchBetweenRuns
         ///
-        | AlignmentTimeWindow
+        | MS1LabelBasedAnalysis
         ///
-        | RetentionTimeShift
-        ///MS2 scan with isotop labeled peptides/fragments.
-        | MS2IsotopeLabeling
+        | MS1LabelBasedPeptideAnalysis
+        ///
+        | MS1LabelBasedProteinAnalysis
+        ///
+        | SpectralCountQuantification
+        ///
+        | MzDeltaScore
 
         //Ion fragment types
-
+        ///Kind of ion after fragmentation of peptide.
+        | Fragment
+        | ProductIonSeriesOrdinal
+        | ProductIonMZDelta
+        | ProductInterpretationRank
+        | ATypeIon
+        | YIon
+        | YIonWithoutWater
+        | YIonWithoutAmmoniumGroup
+        | YIonWihtout3H3PO4
+        | YIonWihtout2H3PO4
+        | YIonWihtoutH3PO4
+        | BIon
+        | BIonWithoutWater
+        | BIonWithoutAmmoniumGroup
+        | BIonWihtout3H3PO4
+        | BIonWihtout2H3PO4
+        | BIonWihtoutH3PO4
+        | XIon
+        | XIonWithoutWater
+        | XIonWithoutAmmoniumGroup
 
         //Units
         | Minute
@@ -941,12 +944,34 @@ type TermIDByName =
         | Dalton
         | KiloDalton
         | NumberOfDetections
+        | MZ
 
         //File
-        /// Values are seperated by tab(s).
-        | FileFormat
-        ///
-        | FASTAFile
+        ///Information coded in FASTA format.
+        | FASTAFormat
+        ///Values are seperated by tab(s).
+        | TSV
+        ///Unspecific kind of database.
+        | DataStoredInDataBase
+        ///Uknown file type.
+        | UnknownFileType
+        
+        //DataBases
+        ///UniProt.
+        | UniProt
+
+        //Taxonomie
+        ///ScientificName of the species.
+        | ScientificName
+
+        //EnzymeNames
+        ///A serineProtease which cuts digests after K, R and modified C.
+        | Trypsin
+        ///No enzyme was used.
+        | NoEnzyme
+
+        //Type of modification of NA or AA
+        | Oxidation
 
         static member toID (item:TermIDByName) =
             match item with
@@ -959,7 +984,7 @@ type TermIDByName =
             | MonoIsotopicMass -> "MS:1000225"
             | LeadingRazorProtein -> "User:0000002"
             | UniqueToGroups -> "User:0000003"
-            | UniqueToProteins -> "User:0000004"
+            | UniqueToProtein -> "MS:1001363"
             | PosteriorErrorProbability -> "User:0000005"
             | AndromedaScore -> "MS:1002338"
             | IdentificationType -> "User:0000006"
@@ -976,10 +1001,10 @@ type TermIDByName =
             | CalibratedRetentionTime -> "User:0000009"
             | MSMSScanNumber -> "MS:1001115"
             | DeltaScore -> "MS:1002834"
-            | LeadingProteins -> "MS:1002401"
+            | LeadingProtein -> "MS:1002401"
             | ProteinDescription -> "MS:1001088"
             | MassError -> "User:0000010"
-            | Ppm -> "User:0000011"
+            | Ppm -> "UO:0000169"
             | MajorProteinIDs -> "User:0000012"
             | PeptideCountsAll -> "MS:1001898"
             | PeptideCountsRazorAndUnique -> "MS:1001899"
@@ -996,7 +1021,7 @@ type TermIDByName =
             | SequenceLengths -> "User:0000019"
             | QValue -> "MS:1001491"
             | ProteinScore -> "MS:1002394"
-            | FileFormat -> "User:0000020"
+            | FASTAFormat -> "MS:1001348"
             | DetectionType -> "User:0000021"
             | Mass -> "MS:1000224"
             | UncalibratedMZ -> "User:0000022"
@@ -1015,7 +1040,7 @@ type TermIDByName =
             | Intensities -> "MS:1001846"
             | MSMSScanNumbers -> "User:0000030"
             | MSMSIsotopIndices -> "User:0000031"
-            | MULTI -> "MS:1000774"
+            | MultipleIDs -> "MS:1000774"
             | IonInjectionTime -> "MS:1000927"
             | TotalIonCurrent -> "MS:1000285"
             | MaxQuant -> "MS:1001583"
@@ -1039,7 +1064,7 @@ type TermIDByName =
             | Combinatorics -> "User:0000044"
             | Matches -> "User:0000045"
             | Fragment -> "MS:1002695"
-            | IntensitiesOfFragments -> "MS:1001226"
+            | ProductIonIntensity -> "MS:1001226"
             | Dalton -> "MS:1000212"
             | KiloDalton -> "UO:0000222"
             | NumberOfMatches -> "User:0000047"
@@ -1057,11 +1082,11 @@ type TermIDByName =
             | MinPep -> "User:0000057"
             | DecoyMode -> "User:0000058"
             | SpecialAAs -> "User:0000059"
-            | IncludeContaminants -> "User:0000060"
+            | Contaminants -> "User:0000060"
             | MSMSTolerance -> "MS:1001655"
             | TopPeakPer100Da -> "User:0000062"
             | MSMSDeisotoping -> "MS:1000033"
-            | PSMFDR -> "User:0000063"
+            | PSMFDR -> "MS:1002351"
             | ProteinFDR -> "User:0000064"
             | SideFDR -> "User:0000065"
             | UseNormRatios -> "User:0000066"
@@ -1073,197 +1098,308 @@ type TermIDByName =
             | MassErrorPercent -> "PRIDE:0000085"
             | MassErrorDa -> "PRIDE:0000086"
             | NumberOfDetections -> "MS:1000131"
-            | MassDeviation -> "User:0000046"
-            | ProteinQuantifiedByPeptide -> "User:0000071"
-            | MatchedBetweenRuns -> "User:0000072"
-            | IBAQ -> "User:0000073"
-            | IBAQLogFit -> "User:0000074"
-            | MatchingTimeWindow -> "User:0000075"
-            | AlignmentTimeWindow -> "User:0000076"
-            | FindDependentPeptides -> "User:0000077"
-            | FASTAFile -> "User:0000078"
-            | LabeledAminoAcidFiltering -> "User:0000079"
-            | SiteTables -> "User:0000080"
-            | RetentionTimeShift -> "User:0000081"
-            | AdvancedRatios -> "User:0000082" 
-            | MS2IsotopeLabeling -> "PRIDE:0000317"
+            | SearchToleranceUpperLimit -> "MS:1001412"
+            | SearchToleranceLowerLimit -> "MS:1001413"
+            | ProductIonMZ -> "MS:1001225"
+            | ProductIonErrorMZ -> "MS:1001227"
+            | MZ -> "MS:1000040"
+            | TSV -> "MS:1000914"
+            | DataStoredInDataBase -> "MS:1001107"
+            | UnknownFileType -> "PRIDE:0000059"
+            | UniProt -> "MS:1001254"
+            | ScientificName -> "MS:1001469"
+            | Trypsin -> "MS:1001251"
+            | NoEnzyme -> "MS:1001091"
+            | ATypeIon -> "UNIMOD:140"
+            | BIonWihtoutH3PO4 -> "PRIDE:0000419"
+            | BIonWihtout2H3PO4 -> "PRIDE:0000420"
+            | BIonWihtout3H3PO4 -> "PRIDE:0000421"
+            | YIonWihtoutH3PO4 -> "PRIDE:0000422"
+            | YIonWihtout2H3PO4 -> "PRIDE:0000423"
+            | YIonWihtout3H3PO4 -> "PRIDE:0000424"
+            | ProductIonSeriesOrdinal -> "MS:1000903"
+            | ProductIonMZDelta -> "MS:1000904"
+            | ProductInterpretationRank -> "MS:1000926"
+            | YIon -> "MS:1001220"
+            | YIonWithoutWater -> "MS:1001223"
+            | YIonWithoutAmmoniumGroup -> "MS:1001233"
+            | BIon -> "MS:1001224"
+            | BIonWithoutWater -> "MS:1001222"
+            | BIonWithoutAmmoniumGroup -> "MS:1001232"
+            | XIon ->"MS:1001228"
+            | XIonWithoutWater -> "MS:1001519"
+            | XIonWithoutAmmoniumGroup -> "MS:1001520"
+            | NumberPeptideSeqsMatchedEachSpec -> "MS:1001030"
+            | Oxidation -> "UNIMOD:35"
+            | DistinctPeptideSequences -> "MS:1001097"
+            | PeptideSharedWithinMultipleProteins -> "MS:1001175"
+            | NeutralFragmentLoss -> "MS:1001524"
+            | MatchBetweenRuns -> "User:0000046"
+            | IBAQ ->"User:0000061"
+            | IBAQLogFit -> "User:0000063"
+            | MS1LabelBasedAnalysis -> "MS:1002018"
+            | MS1LabelBasedPeptideAnalysis -> "MS:1002002"
+            | MS1LabelBasedProteinAnalysis -> "MS:1002003"
+            | SpectralCountQuantification -> "MS:1001836"
+            | MetabolicLabelingN14N15Quantification -> "MS:1001839"
+            | MetabolicLabelingN14N15 -> "User:0000020"
+            | DataDependentAcquisition -> "User:0000071"
             | DataIndependentAcquisition -> "PRIDE:0000450"
-            | DataDependendAcquisition -> "User:0000083"
+            | XICAreas -> "User:0000011"
+            | RazorProtein -> "User:0000072"
+            | UniqueProtein -> "User:0000076"
+            | RazorPeptide -> "User:0000073"
+            | UniquePeptide -> "User:0000077"
+            | LeadingPeptide -> "User:0000075"
+            | PeptideRatio -> "MS:1001132"
+            | MzDeltaScore -> "MS:1001975"
+            | MassDeviation -> "User:0000074"
+
 
 let mzQuantMLDocument =
     MzQuantMLDocumentHandler.init()
 
-let analysisSoftwareParam =
+let analysisSoftwareParams =
+    [
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext "MS:1001583").Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MaxQuant)).Value;
                                      )
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQ)).Value;
+                                     )
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQLogFit)).Value;
+                                     )
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MatchBetweenRuns)).Value;
+                                     )
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
+                                                    )
+    |> AnalysisSoftwareParamHandler.addValue "Razor";
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+                                                    )
+    |> AnalysisSoftwareParamHandler.addValue "TRUE";
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinRatioCount)).Value
+                                                    )
+    |> AnalysisSoftwareParamHandler.addValue "2";
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value                                             )
+    |> AnalysisSoftwareParamHandler.addValue "FALSE";
+    AnalysisSoftwareParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value
+                                                    )
+    |> AnalysisSoftwareParamHandler.addValue "TRUE";
+    ]
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init("1.0")
-    |> AnalysisSoftwareHandler.addDetail analysisSoftwareParam
+    |> AnalysisSoftwareHandler.addDetails analysisSoftwareParams
     |> AnalysisSoftwareHandler.addMzQuantMLDocument mzQuantMLDocument
 
-let provider =
-    ProviderHandler.init()
-    |> ProviderHandler.addAnalysisSoftware analysisSoftware
-    |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
-
-let analysisSummary =
+let analysisSummaries =
     [
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15Quantification)).Value
                                                     )
     |> AnalysisSummaryHandler.addValue "Razor"
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedAnalysis)).Value
                                                     )
-    |> AnalysisSummaryHandler.addValue "TRUE"
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinRatioCount)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedPeptideAnalysis)).Value
                                                     )
-    |> AnalysisSummaryHandler.addValue "2"
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value                                             )
-    |> AnalysisSummaryHandler.addValue "FALSE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SpectralCountQuantification)).Value
                                                     )
-    |> AnalysisSummaryHandler.addValue "TRUE"
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinQuantifiedByPeptide)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "Razor"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MatchedBetweenRuns)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQ)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQLogFit)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MatchingTimeWindow)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "0.7"
-    |> AnalysisSummaryHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Minute)).Value
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AlignmentTimeWindow)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "20"
-    |> AnalysisSummaryHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Minute)).Value
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FindDependentPeptides)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "FALSE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FASTAFile)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LabeledAminoAcidFiltering)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SiteTables)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "Oxidation (M)Sites.txt"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DecoyMode)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "revert"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SpecialAAs)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "K; R"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IncludeContaminants)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID RetentionTimeShift)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "FALSE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AdvancedRatios)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
-    AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS2IsotopeLabeling)).Value
-                                                    )
-    |> AnalysisSummaryHandler.addValue "TRUE"
-    |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
+    
     ]
 
 let fileFormat1 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FileFormat)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID TSV)).Value
                         )
-    |> CVParamHandler.addValue "Tab seperated"
 
 let fileFormat2 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FileFormat)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FASTAFormat)).Value
                         )
-    |> CVParamHandler.addValue "FASTA"
 
-let databaseName1 =
+let fileFormat3 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID RawFile)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataStoredInDataBase)).Value
                         )
-    |> CVParamHandler.addValue "20170518 TM FSconc3009"
 
-let databaseName2 =
+let databaseName =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID RawFile)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniProt)).Value
                         )
-    |> CVParamHandler.addValue "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
 
-
-let searchDatabases =
-    [
+let searchDatabase =
     SearchDatabaseHandler.init(
-        "local", databaseName1, fileFormat=fileFormat1, name="20170518 TM FSconc3009"
-                                );
-    SearchDatabaseHandler.init(
-        "local", databaseName2, fileFormat=fileFormat2, name="D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
-                                );
-    ]
+        "https://www.uniprot.org/", databaseName
+                                )
+    |> SearchDatabaseHandler.addFileFormat fileFormat3
 
-let methodFiles =
+let methodFile =
     MethodFileHandler.init("local")
     |> MethodFileHandler.addFileFormat
         (CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataDependendAcquisition)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataDependentAcquisition)).Value
                             )
         )
-                            
+  
+let sourceFiles =
+    [
+    SourceFileHandler.init("local")
+    |> SourceFileHandler.addName "peptides.txt"
+    |> SourceFileHandler.addFileFormat fileFormat1;
+    SourceFileHandler.init("local")
+    |> SourceFileHandler.addName "proteinGroups.txt"
+    |> SourceFileHandler.addFileFormat fileFormat1;
+    SourceFileHandler.init("local")
+    |> SourceFileHandler.addName "msmsScans.txt"
+    |> SourceFileHandler.addFileFormat fileFormat1;
+    ]
 
 let inputFiles =
     InputFilesHandler.init()
-    |> InputFilesHandler.addSearchDatabases searchDatabases
-    |> InputFilesHandler.addMethodFile methodFiles
+    |> InputFilesHandler.addSearchDatabase searchDatabase
+    |> InputFilesHandler.addSourceFiles sourceFiles
+    |> InputFilesHandler.addMethodFile methodFile
+    |> InputFilesHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let modifications =
+    [
+    ModificationHandler.init(
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
+                            )         
+                             )
+    |> ModificationHandler.addResidues "M"
+    |> ModificationHandler.addMassDelta 16000.;
+    ModificationHandler.init(
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NeutralIonLoss)).Value
+                           )
+                            );
+    ]
+
+let label =
+    ModificationHandler.init(
+        CVParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+                            )         
+                             )
+    |> ModificationHandler.addMassDelta 1.01;
+
+let assay =
+    AssayHandler.init()
+    |> AssayHandler.addLabel label
+    |> AssayHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let featureUnmodified =
+    FeatureHandler.init(2, 727.84714, 25.752)
+    |> FeatureHandler.addFKSpectrum "576"
+
+let evidenceRefUnmodified =
+    EvidenceRefHandler.init([assay], featureUnmodified)
+
+let peptideConsensusUnmodified =
+    PeptideConsensusHandler.init(2, [evidenceRefUnmodified])
+    |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
+
+let featureMOxidized =
+    FeatureHandler.init(2, 735.84531, 21.489)
+    |> FeatureHandler.addFKSpectrum "576"
+
+let evidenceRefMOxidized =
+    EvidenceRefHandler.init([assay], featureMOxidized)
+
+let peptideConsensusMOxidized =
+    PeptideConsensusHandler.init(2, [evidenceRefMOxidized])
+    |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
+    |> PeptideConsensusHandler.addModifications modifications
+
+let peptideConsensusList =
+    PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized])
+    |> PeptideConsensusListHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let protein =
+    ProteinHandler.init(
+        "Cre02.g096150.t1.2", searchDatabase, "Cre02.g096150.t1.2"
+                       )
+    |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
+
+let proteinRefParam =
+    ProteinRefParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingRazorProtein)).Value
+                               )
+
+let proteinRef =
+    ProteinRefHandler.init(protein)
+    |> ProteinRefHandler.addDetail proteinRefParam
+
+let proteinGroup =
+    ProteinGroupHandler.init(
+        searchDatabase, [proteinRef]
+                            )
+
+let proteinGroupList =
+    ProteinGroupListHandler.init([proteinGroup])
+    |> ProteinGroupListHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let organizations =
+    [
+    OrganizationHandler.init(name="TuKL")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    OrganizationHandler.init(name="BioTech")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    OrganizationHandler.init(name="CSB")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    ]
+
+let person =
+    PersonHandler.init()
+    |> PersonHandler.addFirstName "Patrick"
+    |> PersonHandler.addLastName "Blume"
+    |> PersonHandler.addOrganizations organizations
+    |> PersonHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let role =
+    CVParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext "MS:1001267").Value
+                       )
+
+let contactRole =
+    ContactRoleHandler.init(
+        person, role
+                           )
+
+let provider =
+    ProviderHandler.init()
+    |> ProviderHandler.addContactRole contactRole
+    |> ProviderHandler.addAnalysisSoftware analysisSoftware
+    |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let finalMzQuantMLDocument = 
+    MzQuantMLDocumentHandler.init()
+    |> MzQuantMLDocumentHandler.addProteinGroupList proteinGroupList
+    |> MzQuantMLDocumentHandler.addOrganizations organizations
+    |> MzQuantMLDocumentHandler.addPerson person
+    |> MzQuantMLDocumentHandler.addProvider provider
+    |> MzQuantMLDocumentHandler.addPeptideConsensusList peptideConsensusList
+    |> MzQuantMLDocumentHandler.addInputFiles inputFiles
+    |> MzQuantMLDocumentHandler.addAnalysisSummaries analysisSummaries
+    |> MzQuantMLDocumentHandler.addCreationDate DateTime.Today
+    |> MzQuantMLDocumentHandler.addVersion "1.0"
+    |> MzQuantMLDocumentHandler.addName "TestForMaxQuantData"
+    |> MzQuantMLDocumentHandler.addToContext sqliteMzQuantMLContext
+
+sqliteMzQuantMLContext.SaveChanges()

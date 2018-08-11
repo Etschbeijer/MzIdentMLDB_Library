@@ -876,7 +876,7 @@ module DataModel =
     and [<AllowNullLiteral>]
         Person (id:string, name:string, firstName:string, midInitials:string, 
                 lastName:string, organizations:List<Organization>, 
-                 details:List<PersonParam>, mzIdentMLDocument:MzIdentMLDocument,
+                details:List<PersonParam>, mzIdentMLDocument:MzIdentMLDocument,
                 rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'                = id

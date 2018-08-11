@@ -1025,26 +1025,31 @@ module DataModel =
     ///However, StudyVariables MAY contain 1 to many Assays, thus allowing more complex ratios to be constructed 
     ///if needed via use of StudyVariables with unbalanced numbers of Assays.
     and [<AllowNullLiteral>]
-        Ratio (id:string, name:string, denominator:StudyVariable, numerator:StudyVariable, 
+        Ratio (id:string, name:string, denominatorSV:StudyVariable, numeratorSV:StudyVariable, 
+               denominatorAS:Assay, numeratorAS:Assay, 
                ratioCalculation:List<RatioCalculationParam>, numeratorDataType:CVParam, 
                denominatorDataType:CVParam, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
               ) =
             let mutable id'                  = id
             let mutable name'                = name
-            let mutable numerator'           = numerator
-            let mutable denominator'         = denominator
+            let mutable numeratorSV'         = numeratorSV
+            let mutable denominatorSV'       = denominatorSV
+            let mutable numeratorAS'         = numeratorAS
+            let mutable denominatorAS'       = denominatorAS
             let mutable ratioCalculation'    = ratioCalculation
             let mutable numeratorDataType'   = numeratorDataType
             let mutable denominatorDataType' = denominatorDataType
             let mutable mzQuantML'           = mzQuantML
             let mutable rowVersion'          = rowVersion
 
-            new() = Ratio(null, null, null, null, null, null, null, null, Nullable())
+            new() = Ratio(null, null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
-            member this.Numerator with get() = numerator' and set(value) = numerator' <- value
-            member this.Denominator with get() = denominator' and set(value) = denominator' <- value
+            member this.NumeratorSV with get() = numeratorSV' and set(value) = numeratorSV' <- value
+            member this.DenominatorSV with get() = denominatorSV' and set(value) = denominatorSV' <- value
+            member this.NumeratorAS with get() = numeratorAS' and set(value) = numeratorAS' <- value
+            member this.DenominatorAS with get() = denominatorAS' and set(value) = denominatorAS' <- value
             member this.RatioCalculation with get() = ratioCalculation' and set(value) = ratioCalculation' <- value
             member this.NumeratorDataType with get() = numeratorDataType' and set(value) = numeratorDataType' <- value
             member this.DenominatorDataType with get() = denominatorDataType' and set(value) = denominatorDataType' <- value
@@ -1710,7 +1715,7 @@ module DataModel =
     and [<AllowNullLiteral>]
         MzQuantMLDocument (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
                            provider:List<Provider>, persons:List<Person>, organizations:List<Organization>, 
-                           analysisSummary:List<AnalysisSummary>, inputFiles:List<InputFiles>, 
+                           analysisSummaries:List<AnalysisSummary>, inputFiles:List<InputFiles>, 
                            analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, 
                            assays:List<Assay>, biblioGraphicReferences:List<BiblioGraphicReference>, 
                            studyVariables:List<StudyVariable>, ratios:List<Ratio>, proteinGroupList:List<ProteinGroupList>, 
@@ -1727,7 +1732,7 @@ module DataModel =
             let mutable persons'                 = persons
             let mutable organizations'           = organizations
             //
-            let mutable analysisSummary'         = analysisSummary
+            let mutable analysisSummaries'       = analysisSummaries
             //Formerly SoftwareList
             let mutable analysisSoftwares'       = analysisSoftwares
             //
@@ -1773,7 +1778,7 @@ module DataModel =
             member this.Provider with get() = provider' and set(value) = provider' <- value
             member this.Persons with get() = persons' and set(value) = persons' <- value
             member this.Organizations with get() = organizations' and set(value) = organizations' <- value
-            member this.AnalysisSummary with get() = analysisSummary' and set(value) = analysisSummary' <- value
+            member this.AnalysisSummaries with get() = analysisSummaries' and set(value) = analysisSummaries' <- value
             member this.AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
@@ -2004,6 +2009,11 @@ module DataModel =
             val mutable m_ProteinRef : DbSet<ProteinRef>
             member public this.ProteinRef with get() = this.m_ProteinRef
                                                        and set value = this.m_ProteinRef <- value
+
+            [<DefaultValue>] 
+            val mutable m_ProteinRefParam : DbSet<ProteinRefParam>
+            member public this.ProteinRefParam with get() = this.m_ProteinRefParam
+                                                            and set value = this.m_ProteinRefParam <- value
 
             [<DefaultValue>] 
             val mutable m_ProteinGroup : DbSet<ProteinGroup>

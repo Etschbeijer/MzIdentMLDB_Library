@@ -1841,6 +1841,91 @@ module InsertStatements =
                 AnalysisSummaryHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
+        type ProteinRefParamHandler =
+            ///Initializes a peptideConsensusListParam-object with at least all necessary parameters.
+            static member init
+                (
+                    term               : Term,
+                    ?id                : string,
+                    ?value             : string,
+                    ?unit              : Term
+                ) =
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'             = defaultArg value Unchecked.defaultof<string>
+                let unit'              = defaultArg unit Unchecked.defaultof<Term> 
+                    
+                new ProteinRefParam(
+                                    id', 
+                                    value', 
+                                    term, 
+                                    unit',
+                                    Nullable(DateTime.Now)
+                                   )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (param:ProteinRefParam) =
+                param.Value <- value
+                param
+
+            ///Replaces unit of existing object with new one.
+            static member addUnit
+                (unit:Term) (table:ProteinRefParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID
+                (context:MzQuantML) (id:string) =
+                tryFind (context.ProteinRefParam.Find(id))
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
+                query {
+                       for i in dbContext.ProteinRefParam.Local do
+                           if i.Term.Name=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param,_ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinRefParam do
+                                       if i.Term.Name=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:ProteinRefParam) (item2:ProteinRefParam) =
+                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:ProteinRefParam) =
+                    ProteinRefParamHandler.tryFindByTermName dbContext item.Term.ID
+                    |> (fun cvParamCollection -> match cvParamCollection with
+                                                 |Some x -> x
+                                                            |> Seq.map (fun cvParam -> match ProteinRefParamHandler.hasEqualFieldValues cvParam item with
+                                                                                       |true -> null
+                                                                                       |false -> dbContext.Add item
+                                                                       ) |> ignore
+                                                 |None -> dbContext.Add item |> ignore
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinRefParam) =
+                ProteinRefParamHandler.addToContext dbContext item |> ignore
+                dbContext.SaveChanges()
+
 //////////////////////////////////////////
 //End of paramHandlers//////////////////////////////////////////////
 //////////////////////////////////////////
@@ -1940,20 +2025,20 @@ module InsertStatements =
         type SourceFileHandler =
             ///Initializes a sourceFile-object with at least all necessary parameters.
             static member init
-                (
-                    id                           : string,
+                (   
                     location                     : string,
+                    ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam
                 ) =
-
+                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                         = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation'  = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                   = defaultArg fileFormat Unchecked.defaultof<CVParam>
                     
                 new SourceFile(
-                               id,
+                               id',
                                name',
                                location, 
                                externalFormatDocumentation',
@@ -3557,25 +3642,34 @@ module InsertStatements =
             ///Initializes a ratio-object with at least all necessary parameters.
             static member init
                 (             
-                    numerator                    : StudyVariable,
-                    denominator                  : StudyVariable,
+                    
                     numeratorDatatype            : CVParam,
                     denominatorDatatype          : CVParam,
                     ?id                          : string,
                     ?name                        : string,
+                    ?numeratorSV                 : StudyVariable,
+                    ?denominatorSV               : StudyVariable,
+                    ?numeratorAS                 : Assay,
+                    ?denominatorAS               : Assay,
                     ?ratioCalculation            : seq<RatioCalculationParam>,
                     ?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
+                let numeratorSV'                 = defaultArg numeratorSV Unchecked.defaultof<StudyVariable>
+                let denominatorSV'               = defaultArg denominatorSV Unchecked.defaultof<StudyVariable>
+                let numeratorAS'                 = defaultArg numeratorAS Unchecked.defaultof<Assay>
+                let denominatorAS'               = defaultArg denominatorAS Unchecked.defaultof<Assay>
                 let ratioCalculation'            = convertOptionToList ratioCalculation
                 let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new Ratio(
                           id', 
                           name',
-                          numerator,
-                          denominator,
+                          numeratorSV',
+                          denominatorSV',
+                          numeratorAS',
+                          denominatorAS',
                           ratioCalculation',
                           numeratorDatatype,
                           denominatorDatatype,
@@ -3587,6 +3681,30 @@ module InsertStatements =
             static member addName
                 (name:string) (table:Ratio) =
                 table.Name <- name
+                table
+
+            ///Replaces numerator of existing object with new one.
+            static member addNumeratorSV
+                (numerator:StudyVariable) (table:Ratio) =
+                table.NumeratorSV <- numerator
+                table
+
+            ///Replaces denominator of existing object with new one.
+            static member addDenomiantorSV
+                (denominator:StudyVariable) (table:Ratio) =
+                table.DenominatorSV <- denominator
+                table
+
+            ///Replaces numerator of existing object with new one.
+            static member addNumeratorAS
+                (numerator:Assay) (table:Ratio) =
+                table.NumeratorAS <- numerator
+                table
+
+            ///Replaces denominator of existing object with new one.
+            static member addDenomiantorAS
+                (denominator:Assay) (table:Ratio) =
+                table.DenominatorAS <- denominator
                 table
 
             ///Adds a ratioCalculationParam to an existing object.
@@ -3615,18 +3733,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.Ratio.Local do
                            if i.Name=name
-                              then select (i, i.Numerator, i.Denominator, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
+                              then select (i, i.NumeratorAS, i.DenominatorAS, i.NumeratorSV, i.DenominatorSV, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
                       }
-                |> Seq.map (fun (ratio, _, _ ,_ , _, _) -> ratio)
+                |> Seq.map (fun (ratio, _, _ ,_ , _, _,_ ,_) -> ratio)
                 |> (fun ratio -> 
                     if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
                         then 
                             query {
                                    for i in dbContext.Ratio do
                                        if i.Name=name
-                                          then select (i, i.Numerator, i.Denominator, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
+                                          then select (i, i.NumeratorAS, i.DenominatorAS, i.NumeratorSV, i.DenominatorSV, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
                                   }
-                            |> Seq.map (fun (ratio, _, _ ,_ , _, _) -> ratio)
+                            |> Seq.map (fun (ratio, _, _ ,_ , _, _, _, _) -> ratio)
                             |> (fun ratio -> if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
                                                             then None
                                                             else Some ratio
@@ -3636,7 +3754,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Ratio) (item2:Ratio) =
-                item1.Numerator=item2.Numerator && item1.Denominator=item2.Denominator && 
+                item1.NumeratorAS=item2.NumeratorAS && item1.DenominatorAS=item2.DenominatorAS && 
+                item1.NumeratorSV=item2.NumeratorSV && item1.DenominatorSV=item2.DenominatorSV && 
                 item1.NumeratorDataType=item2.NumeratorDataType && item1.RatioCalculation=item2.RatioCalculation && 
                 item1.DenominatorDataType=item2.DenominatorDataType              
 
@@ -6390,7 +6509,19 @@ module InsertStatements =
             ///Adds new analysisSummary to collection of enzymenames.
             static member addAnalysisSummary
                 (analysisSummary:AnalysisSummary) (table:MzQuantMLDocument) =
-                table.AnalysisSummary <- addToList table.AnalysisSummary analysisSummary
+                table.AnalysisSummaries <- addToList table.AnalysisSummaries analysisSummary
+                table
+
+            ///Add new collection of persons to collection of enzymenames.
+            static member addAnalysisSummaries
+                (analysisSummaries:seq<AnalysisSummary>) (table:MzQuantMLDocument) =
+                table.AnalysisSummaries <- addCollectionToList table.AnalysisSummaries analysisSummaries
+                table
+
+            ///Adds new inputFiles to collection of enzymenames.
+            static member addInputFiles
+                (inputFiles:InputFiles) (table:MzQuantMLDocument) =
+                table.InputFiles <- addToList table.InputFiles inputFiles
                 table
 
             ///Adds new biblioGraphicReference to collection of enzymenames.
@@ -6439,7 +6570,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                              then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
                                            i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
@@ -6452,7 +6583,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSummary, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                          then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
                                                        i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
@@ -6468,7 +6599,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzQuantMLDocument) (item2:MzQuantMLDocument) =
-                item1.AnalysisSummary=item2.AnalysisSummary && 
+                item1.AnalysisSummaries=item2.AnalysisSummaries && 
                 item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
                 item1.InputFiles=item2.InputFiles && 
                 item1.FeatureList=item2.FeatureList && 
