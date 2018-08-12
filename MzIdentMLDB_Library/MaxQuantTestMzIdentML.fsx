@@ -1231,11 +1231,6 @@ let measureTypes =
     |> MeasureParamHandler.addUnit 
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value;                       
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonIntensity)).Value
-                            )
-    |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value;
-    MeasureParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonIntensity)).Value,
             "Intensity"
                             )
@@ -1243,9 +1238,14 @@ let measureTypes =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value;
     ]
 
-let fragmentationTable =
-    MeasureHandler.init(List.append measureErrors measureTypes, "FragmentationTable1")
-    |> MeasureHandler.addToContext sqliteMzIdentMLContext
+MeasureHandler.init(measureTypes, "FragmentationTable measure-type")
+|> MeasureHandler.addToContext sqliteMzIdentMLContext
+
+MeasureHandler.init(measureErrors, "FragmentationTable measure-error")
+|> MeasureHandler.addToContext sqliteMzIdentMLContext
+
+MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-type"
+MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-error"
 
 let fileFormat1 =
     CVParamHandler.init(
@@ -2511,8 +2511,11 @@ let spectrumIdentificationResult =
         
 let spectrumIdentificationList =
     SpectrumIdentificationListHandler.init(spectrumIdentificationResult)
-    |> SpectrumIdentificationListHandler.addFragmentationTable 
-        (MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable1").Value
+    |> SpectrumIdentificationListHandler.addFragmentationTables
+        [
+        (MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-type").Value;
+        (MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-error").Value;
+        ]
 
 let spectrumIdentification = 
     SpectrumIdentificationHandler.init(

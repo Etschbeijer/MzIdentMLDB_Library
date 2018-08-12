@@ -5115,8 +5115,7 @@ module InsertStatements =
                 new Identifier(id, Nullable(DateTime.Now))
 
             ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzTab) (id:string) =
+            static member tryFindByID (context:MzTab) (id:string) =
                 tryFind (context.Identifier.Find(id))
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 

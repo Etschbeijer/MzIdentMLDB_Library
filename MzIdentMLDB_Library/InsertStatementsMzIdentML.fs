@@ -57,6 +57,24 @@ module InsertStatements =
                 |null -> None
                 |_ -> Some item
 
+            let matchCVParamBases (collection1:List<CVParamBase>) (collection2:List<CVParamBase>) =
+                let rec loop i n =
+                    let item1=collection1.[i]
+                    let item2=collection2.[n]
+                    if i=(collection1.Count)-1
+                        then
+                            if n=(collection2.Count)-1
+                                then 
+                                    false
+                                else
+                                    loop 0 (n+1)
+                        else
+                            if item1.Term=item2.Term && item2.Unit=item2.Unit && item1.Value=item2.Value
+                                then true
+                                else loop (i+1) n
+                loop 0 0
+                
+
         // Defining the objectHandlers of the entities of the dbContext.
 
         open HelperFunctions
@@ -4037,7 +4055,7 @@ module InsertStatements =
                     if (Seq.exists (fun measure' -> measure' <> null) measure) = false
                         then 
                             query {
-                                   for i in dbContext.Measure do
+                                   for i in dbContext.Measure.Local do
                                        if i.Name=name
                                           then select (i, i.Details)
                                   }
@@ -4050,8 +4068,8 @@ module InsertStatements =
                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
-            static member private hasEqualFieldValues (item1:Measure) (item2:Measure) =
-                item1.Details=item2.Details
+            static member hasEqualFieldValues (item1:Measure) (item2:Measure) =
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4060,10 +4078,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match MeasureHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
