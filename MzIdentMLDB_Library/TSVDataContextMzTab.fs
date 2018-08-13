@@ -38,6 +38,7 @@ module TabSeperatedValueScheme =
         | Identification = 0 
         | Quantification = 1
 
+    ///The metadata section can provide additional information about the dataset(s) reported in the mzTab file. 
     type MetaData =
 
             {
