@@ -1236,6 +1236,11 @@ let fileFormat3 =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataStoredInDataBase)).Value
                         )
 
+let fileFormat4 =
+    CVParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UnknownFileType)).Value
+                        )
+
 let databaseName =
     CVParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniProt)).Value
@@ -1268,11 +1273,34 @@ let sourceFiles =
     |> SourceFileHandler.addFileFormat fileFormat1;
     ]
 
+let rawFiles =
+    [
+    RawFileHandler.init("local")
+    |> RawFileHandler.addName "20170518 TM FSconc3001"
+    |> RawFileHandler.addFileFormat fileFormat4;
+    RawFileHandler.init("local")
+    |> RawFileHandler.addName "20170518 TM FSconc3002"
+    |> RawFileHandler.addFileFormat fileFormat4;
+    RawFileHandler.init("local")
+    |> RawFileHandler.addName "D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta"
+    |> RawFileHandler.addFileFormat fileFormat2;
+    ]
+
+let identificationFile =
+    IdentificationFileHandler.init("local")
+    |> IdentificationFileHandler.addName "20170518 TM FSconc3009"
+    |> IdentificationFileHandler.addNumSearchDatabase searchDatabase
+
+let rawFilesGroup =
+    RawFilesGroupHandler.init(rawFiles)
+
 let inputFiles =
     InputFilesHandler.init()
     |> InputFilesHandler.addSearchDatabase searchDatabase
     |> InputFilesHandler.addSourceFiles sourceFiles
     |> InputFilesHandler.addMethodFile methodFile
+    |> InputFilesHandler.addRawFilesGroup rawFilesGroup
+    |> InputFilesHandler.addIdentificationFile identificationFile
     |> InputFilesHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let modifications =
@@ -1302,6 +1330,8 @@ let label =
 let assay =
     AssayHandler.init()
     |> AssayHandler.addLabel label
+    |> AssayHandler.addRawFilesGroup rawFilesGroup
+    |> AssayHandler.addIdentificationFile identificationFile
     |> AssayHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let featureUnmodified =
@@ -1310,6 +1340,7 @@ let featureUnmodified =
 
 let evidenceRefUnmodified =
     EvidenceRefHandler.init([assay], featureUnmodified)
+    |> EvidenceRefHandler.addIdentificationFile identificationFile
 
 let peptideConsensusUnmodifiedParams =
     [
@@ -1334,6 +1365,7 @@ let featureMOxidized =
 
 let evidenceRefMOxidized =
     EvidenceRefHandler.init([assay], featureMOxidized)
+    |> EvidenceRefHandler.addIdentificationFile identificationFile
 
 let peptideConsensusMOxidizedParams =
     [

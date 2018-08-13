@@ -5605,7 +5605,7 @@ module InsertStatements =
                 table
 
             ///Replaces identificationFile of existing object with new one.
-            static member addOutputObjects
+            static member addIdentificationFile
                 (identificationFile:IdentificationFile) (table:EvidenceRef) =
                 table.IdentificationFile <- identificationFile
                 table
