@@ -41,131 +41,131 @@ module TabSeperatedValueScheme =
     type MetaData =
 
             {
-            [<FieldAttribute(1)>]
+            [<FieldAttribute("mzTab-version")>]
             mzTabVersion                     : string
-            [<FieldAttribute(2)>]
+            [<FieldAttribute("mzTab-mode")>]
             mzTabMode                        : MzTabMode
-            [<FieldAttribute(3)>]
+            [<FieldAttribute("mzTab-type")>]
             mzType                           : MzType
-            [<FieldAttribute(4)>]
+            [<FieldAttribute("mzTab-ID")>]
             mzID                             : string
-            [<FieldAttribute(5)>]
+            [<FieldAttribute("title")>]
             title                            : string
-            [<FieldAttribute(6)>]
+            [<FieldAttribute("description")>]
             description                      : string
-            [<FieldAttribute(7)>]
-            sampleProcessings                : array<array<string>>
-            [<FieldAttribute(8)>]
-            instrumentNames                  : array<string>
-            [<FieldAttribute(9)>]
-            instrumentSources                : array<string>
-            [<FieldAttribute(10)>]
-            instrumentAnalyzers              : array<string>
-            [<FieldAttribute(11)>]
-            instrumentDetectors              : array<string>
-            [<FieldAttribute(12)>]
-            softwares                        : array<string>
-            [<FieldAttribute(13)>]
-            softwaresSettings                : array<string>
-            [<FieldAttribute(14)>]
-            proteinSearchEngineScores        : array<string>
-            [<FieldAttribute(15)>]
-            peptideSearchEngineScores        : array<string>
-            [<FieldAttribute(16)>]
-            psmSearchEngineScores            : array<string>
-            [<FieldAttribute(17)>]
-            smallMoleculeSearchEngineScores  : array<string>
-            [<FieldAttribute(18)>]
-            falseDiscoveryRates              : array<string>
-            [<FieldAttribute(19)>]
+            [<FieldAttribute("sample_processing[1-n]")>]
+            sampleProcessings                : array<(string*string*string*string)>
+            [<FieldAttribute("instrument[1-n]-name")>]
+            instrumentNames                  : array<string*string*string*string>
+            [<FieldAttribute("instrument[1-n]-source")>]
+            instrumentSources                : array<string*string*string*string>
+            [<FieldAttribute("instrument[1-n]-analyzer[1-n]")>]
+            instrumentAnalyzers              : array<string*string*string*string>
+            [<FieldAttribute("instrument[1-n]-detector")>]
+            instrumentDetectors              : array<string*string*string*string>
+            [<FieldAttribute("software[1-n]")>]
+            softwares                        : array<string*string*string*string>
+            [<FieldAttribute("software[1-n]-setting[1-n]")>]
+            softwaresSettings                : array<string*string*string*string>
+            [<FieldAttribute("protein_search_engine_score[1-n]")>]
+            proteinSearchEngineScores        : array<string*string*string*string>
+            [<FieldAttribute("peptide_search_engine_score[1-n]")>]
+            peptideSearchEngineScores        : array<string*string*string*string>
+            [<FieldAttribute("psm_search_engine_score[1-n]")>]
+            psmSearchEngineScores            : array<string*string*string*string>
+            [<FieldAttribute("smallmolecule_search_engine_score[1-n]")>]
+            smallMoleculeSearchEngineScores  : array<string*string*string*string>
+            [<FieldAttribute("false_discovery_rate")>]
+            falseDiscoveryRates              : array<string*string*string*string>
+            [<FieldAttribute("publication[1-n]")>]
             publications                     : array<string>
-            [<FieldAttribute(20)>]
+            [<FieldAttribute("contact[1-n]-name")>]
             contactNames                     : array<string>
-            [<FieldAttribute(21)>]
+            [<FieldAttribute("contact[1-n]-affiliation")>]
             contactAffiliations              : array<string>
-            [<FieldAttribute(22)>]
+            [<FieldAttribute("contact[1-n]-email")>]
             contactEMails                    : array<string>
-            [<FieldAttribute(23)>]
+            [<FieldAttribute("uri[1-n]")>]
             uris                             : array<string>
-            [<FieldAttribute(24)>]
-            fixedMods                        : array<string>
-            [<FieldAttribute(25)>]
-            fixedModSites                    : array<string>
-            [<FieldAttribute(26)>]
-            fixedModPositions                : array<string>
-            [<FieldAttribute(27)>]
-            variableMods                     : array<string>
-            [<FieldAttribute(28)>]
-            variableModSites                 : array<string>
-            [<FieldAttribute(29)>]
-            variableModPositions             : array<string>
-            [<FieldAttribute(30)>]
-            quantificationMethod             : array<string>
-            [<FieldAttribute(31)>]
-            proteinQuantificationUnit        : array<string>
-            [<FieldAttribute(32)>]
-            peptideQuantificationUnit        : array<string>
-            [<FieldAttribute(33)>]
-            smallMoleculeQuantificationUnit  : array<string>
-            [<FieldAttribute(34)>]
-            msRunsFormats                    : array<string>
-            [<FieldAttribute(35)>]
-            msRunLocation                    : array<string>
-            [<FieldAttribute(36)>]
-            msRunsIDForamts                  : array<string>
-            [<FieldAttribute(37)>]
-            msRunsFragmentationMethod        : array<string>
-            [<FieldAttribute(38)>]
-            msRunsHash                       : array<string>
-            [<FieldAttribute(39)>]
-            msRunsHashMethods                : array<string>
-            [<FieldAttribute(40)>]
-            customs                          : array<string>
-            [<FieldAttribute(41)>]
-            samplesSpecies                   : array<string>
-            [<FieldAttribute(42)>]
-            sampleTissues                    : array<string>
-            [<FieldAttribute(43)>]
-            samplesCellTypes                 : array<string>
-            [<FieldAttribute(44)>]
-            samplesDiseases                  : array<string>
-            [<FieldAttribute(45)>]
-            sampleDescriptions               : array<string>
-            [<FieldAttribute(46)>]
+            [<FieldAttribute("fixed_mod[1-n]")>]
+            fixedMods                        : array<string*string*string*string>
+            [<FieldAttribute("fixed_mod[1-n]-site")>]
+            fixedModSites                    : array<string*string*string*string>
+            [<FieldAttribute("fixed_mod[1-n]-position")>]
+            fixedModPositions                : array<string*string*string*string>
+            [<FieldAttribute("variable_mod[1-n]")>]
+            variableMods                     : array<string*string*string*string>
+            [<FieldAttribute("variable_mod[1-n]-site")>]
+            variableModSites                 : array<string*string*string*string>
+            [<FieldAttribute("variable_mod[1-n]-position")>]
+            variableModPositions             : array<string*string*string*string>
+            [<FieldAttribute("quantification_method")>]
+            quantificationMethod             : string*string*string*string
+            [<FieldAttribute("protein-quantification_unit")>]
+            proteinQuantificationUnit        : string*string*string*string
+            [<FieldAttribute("peptide-quantification_unit")>]
+            peptideQuantificationUnit        : string*string*string*string
+            [<FieldAttribute("small_molecule-quantification_unit")>]
+            smallMoleculeQuantificationUnit  : string*string*string*string
+            [<FieldAttribute("ms_run[1-n]-format")>]
+            msRunsFormat                     : string*string*string*string
+            [<FieldAttribute("ms_run[1-n]-location")>]
+            msRunLocation                    : string
+            [<FieldAttribute("ms_run[1-n]-id_format")>]
+            msRunsIDForamts                  : string*string*string*string
+            [<FieldAttribute("ms_run[1-n]-fragmentation_method")>]
+            msRunsFragmentationMethod        : array<string*string*string*string>
+            [<FieldAttribute("ms_run[1-n]-hash")>]
+            msRunsHash                       : string
+            [<FieldAttribute("ms_run[1-n]-hash_method")>]
+            msRunsHashMethods                : string
+            [<FieldAttribute("custom[1-n]")>]
+            customs                          : array<string*string*string*string>
+            [<FieldAttribute("sample[1-n]-species[1-n]")>]
+            samplesSpecies                   : array<string*string*string*string>
+            [<FieldAttribute("sample[1-n]-tissue[1-n]")>]
+            sampleTissues                    : array<string*string*string*string>
+            [<FieldAttribute("sample[1-n]-cell_type[1-n]")>]
+            samplesCellTypes                 : array<string*string*string*string>
+            [<FieldAttribute("sample[1-n]-disease[1-n]")>]
+            samplesDiseases                  : array<string*string*string*string>
+            [<FieldAttribute("sample[1-n]-description")>]
+            sampleDescriptions               : string
+            [<FieldAttribute("sample[1-n]-custom[1-n]")>]
             samplesCustoms                   : array<string>
-            [<FieldAttribute(47)>]
-            assaysQuantificationReagent      : array<string>
-            [<FieldAttribute(48)>]
-            assaysQuantificationMods         : array<string>
-            [<FieldAttribute(49)>]
+            [<FieldAttribute("assay[1-n]-quantification_reagent")>]
+            assaysQuantificationReagent      : array<string*string*string*string>
+            [<FieldAttribute("assay[1-n]-quantification_mod[1-n]")>]
+            assaysQuantificationMods         : array<string*string*string*string>
+            [<FieldAttribute("assay[1-n]-quantification_mod[1-n]-site")>]
             assaysQuantificationModsSite     : array<string>
-            [<FieldAttribute(50)>]
+            [<FieldAttribute("assay[1-n]-quantification_mod[1-n]-position")>]
             assaysQuantificationModsPosition : array<string>
-            [<FieldAttribute(51)>]
+            [<FieldAttribute("assay[1-n]-sample_ref ")>]
             assaysSampleRef                  : array<string>
-            [<FieldAttribute(52)>]
+            [<FieldAttribute("assay[1-n]-ms_run_ref")>]
             assaysMSRunRef                   : array<string>
-            [<FieldAttribute(53)>]
+            [<FieldAttribute("study_variable[1-n]-assay_refs")>]
             studyVariablesAssayRefs          : array<string>
-            [<FieldAttribute(54)>]
+            [<FieldAttribute("study_variable[1-n]-sample_refs")>]
             studyVariablesSampleRefs         : array<string>
-            [<FieldAttribute(55)>]
+            [<FieldAttribute("study_variable[1-n]-description")>]
             studyVariablesDescription        : array<string>
-            [<FieldAttribute(56)>]
+            [<FieldAttribute("cv[1-n]-label")>]
             cvsLabel                         : array<string>
-            [<FieldAttribute(57)>]
+            [<FieldAttribute("cv[1-n]-full_name")>]
             cvsVersion                       : array<string>
-            [<FieldAttribute(58)>]
+            [<FieldAttribute("cv[1-n]-version")>]
             cvsURI                           : array<string>
-            [<FieldAttribute(59)>]
+            [<FieldAttribute("cv[1-n]-url")>]
             colUnitProtein                   : array<string>
-            [<FieldAttribute(60)>]
+            [<FieldAttribute("colunit-protein")>]
             colUnitPeptide                   : array<string>
-            [<FieldAttribute(61)>]
+            [<FieldAttribute("colunit-peptide")>]
             colUnitPSM                       : array<string>
-            [<FieldAttribute(62)>]
+            [<FieldAttribute("colunit-psm")>]
             colUnitSmallMolecule             : array<string>
-            [<FieldAttribute(63)>]
+            [<FieldAttribute("colunit-small_molecule")>]
             rowVersion                       : DateTime
             }
 
