@@ -1343,10 +1343,10 @@ let spectrumidentificationItemParamPeptideUnmodified =
     //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "2.95E-39";
-    //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
-    //                                            )
-    //|> SpectrumIdentificationItemParamHandler.addValue "122.97";
+    SpectrumIdentificationItemParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+                                                )
+    |> SpectrumIdentificationItemParamHandler.addValue "122.97";
     //SpectrumIdentificationItemParamHandler.init(
     //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
     //                                            )
@@ -1634,10 +1634,10 @@ let spectrumidentificationItemParamPeptideMOxidized =
     //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "6,36E-25";
-    //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
-    //                                            )
-    //|> SpectrumIdentificationItemParamHandler.addValue "111.12";
+    SpectrumIdentificationItemParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+                                                )
+    |> SpectrumIdentificationItemParamHandler.addValue "111.12";
     //SpectrumIdentificationItemParamHandler.init(
     //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
     //                                            )

@@ -186,13 +186,18 @@ module InsertStatements =
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Term) =
                     TermHandler.tryFindByName dbContext item.Name
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match TermHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match TermHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             
@@ -273,10 +278,10 @@ module InsertStatements =
                 tryFind (context.CVParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.CVParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -285,7 +290,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.CVParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -298,19 +303,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:CVParam) =
-                    CVParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match CVParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    CVParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match CVParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -358,10 +368,10 @@ module InsertStatements =
                 tryFind (context.OrganizationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.OrganizationParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -370,7 +380,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.OrganizationParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -383,20 +393,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:OrganizationParam) =
-                    OrganizationParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> 
-                                                                match OrganizationParamHandler.hasEqualFieldValues cvParam item with
-                                                                |true -> null
-                                                                |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    OrganizationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match OrganizationParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -444,10 +458,10 @@ module InsertStatements =
                 tryFind (context.PersonParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PersonParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -456,7 +470,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PersonParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -469,19 +483,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PersonParam) =
-                    PersonParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match PersonParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    PersonParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PersonParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -529,10 +548,10 @@ module InsertStatements =
                 tryFind (context.SampleParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SampleParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -541,7 +560,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SampleParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -554,19 +573,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SampleParam) (item2:SampleParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SampleParam) =
-                    SampleParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SampleParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SampleParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SampleParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -614,10 +638,10 @@ module InsertStatements =
                 tryFind (context.ModificationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ModificationParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -626,7 +650,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ModificationParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -639,19 +663,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ModificationParam) (item2:ModificationParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ModificationParam) =
-                    ModificationParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ModificationParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ModificationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ModificationParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -699,10 +728,10 @@ module InsertStatements =
                 tryFind (context.PeptideParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -711,7 +740,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -724,19 +753,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideParam) (item2:PeptideParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideParam) =
-                    PeptideParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match PeptideParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    PeptideParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -784,10 +818,10 @@ module InsertStatements =
                 tryFind (context.TranslationTableParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.TranslationTableParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -796,7 +830,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.TranslationTableParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -809,19 +843,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTableParam) (item2:TranslationTableParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
-                    TranslationTableParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match TranslationTableParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    TranslationTableParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match TranslationTableParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -869,10 +908,10 @@ module InsertStatements =
                 tryFind (context.MeasureParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MeasureParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -881,7 +920,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MeasureParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -894,19 +933,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MeasureParam) (item2:MeasureParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MeasureParam) =
-                    MeasureParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match MeasureParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    MeasureParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MeasureParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -954,10 +998,10 @@ module InsertStatements =
                 tryFind (context.AmbiguousResidueParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AmbiguousResidueParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -966,7 +1010,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AmbiguousResidueParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -979,19 +1023,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidueParam) (item2:AmbiguousResidueParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
-                    AmbiguousResidueParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match AmbiguousResidueParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    AmbiguousResidueParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AmbiguousResidueParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1039,10 +1088,10 @@ module InsertStatements =
                 tryFind (context.MassTableParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.MassTableParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1051,7 +1100,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MassTableParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1064,19 +1113,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTableParam) (item2:MassTableParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MassTableParam) =
-                    MassTableParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match MassTableParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    MassTableParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match MassTableParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1124,10 +1178,10 @@ module InsertStatements =
                 tryFind (context.IonTypeParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.IonTypeParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1136,7 +1190,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IonTypeParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1149,19 +1203,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IonTypeParam) (item2:IonTypeParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IonTypeParam) =
-                    IonTypeParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match IonTypeParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    IonTypeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match IonTypeParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1209,10 +1268,10 @@ module InsertStatements =
                 tryFind (context.SpecificityRuleParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpecificityRuleParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1221,7 +1280,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpecificityRuleParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1234,19 +1293,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpecificityRuleParam) (item2:SpecificityRuleParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
-                    SpecificityRuleParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SpecificityRuleParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SpecificityRuleParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpecificityRuleParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1294,10 +1358,10 @@ module InsertStatements =
                 tryFind (context.SearchModificationParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchModificationParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1306,7 +1370,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchModificationParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1319,19 +1383,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModificationParam) (item2:SearchModificationParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
-                    SearchModificationParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SearchModificationParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SearchModificationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchModificationParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1379,10 +1448,10 @@ module InsertStatements =
                 tryFind (context.EnzymeNameParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.EnzymeNameParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1391,7 +1460,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.EnzymeNameParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1404,19 +1473,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:EnzymeNameParam) (item2:EnzymeNameParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
-                    EnzymeNameParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match EnzymeNameParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    EnzymeNameParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match EnzymeNameParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1459,10 +1533,10 @@ module InsertStatements =
                 param
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.IncludeParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1471,7 +1545,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IncludeParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1484,19 +1558,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IncludeParam) (item2:IncludeParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IncludeParam) =
-                    IncludeParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match IncludeParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    IncludeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match IncludeParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1544,10 +1623,10 @@ module InsertStatements =
                 tryFind (context.ExcludeParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ExcludeParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1556,7 +1635,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ExcludeParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1569,19 +1648,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ExcludeParam) (item2:ExcludeParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ExcludeParam) =
-                    ExcludeParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ExcludeParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ExcludeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ExcludeParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1629,10 +1713,10 @@ module InsertStatements =
                 tryFind (context.AdditionalSearchParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AdditionalSearchParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1641,7 +1725,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AdditionalSearchParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1654,19 +1738,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AdditionalSearchParam) (item2:AdditionalSearchParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
-                    AdditionalSearchParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match AdditionalSearchParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    AdditionalSearchParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AdditionalSearchParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1714,10 +1803,10 @@ module InsertStatements =
                 tryFind (context.FragmentToleranceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.FragmentToleranceParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1726,7 +1815,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FragmentToleranceParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1739,19 +1828,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentToleranceParam) (item2:FragmentToleranceParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
-                    FragmentToleranceParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match FragmentToleranceParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    FragmentToleranceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match FragmentToleranceParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1799,10 +1893,10 @@ module InsertStatements =
                 tryFind (context.ParentToleranceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ParentToleranceParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1811,7 +1905,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ParentToleranceParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1824,19 +1918,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ParentToleranceParam) (item2:ParentToleranceParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
-                    ParentToleranceParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ParentToleranceParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ParentToleranceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ParentToleranceParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1884,10 +1983,10 @@ module InsertStatements =
                 tryFind (context.ThresholdParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ThresholdParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1896,7 +1995,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ThresholdParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1909,19 +2008,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ThresholdParam) (item2:ThresholdParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ThresholdParam) =
-                    ThresholdParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ThresholdParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ThresholdParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ThresholdParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -1969,10 +2073,10 @@ module InsertStatements =
                 tryFind (context.SearchDatabaseParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SearchDatabaseParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1981,7 +2085,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchDatabaseParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1994,19 +2098,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
-                    SearchDatabaseParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SearchDatabaseParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SearchDatabaseParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SearchDatabaseParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2054,10 +2163,10 @@ module InsertStatements =
                 tryFind (context.DBSequenceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.DBSequenceParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2066,7 +2175,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.DBSequenceParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2079,19 +2188,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequenceParam) (item2:DBSequenceParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
-                    DBSequenceParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match DBSequenceParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    DBSequenceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match DBSequenceParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2139,10 +2253,10 @@ module InsertStatements =
                 tryFind (context.PeptideEvidenceParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.PeptideEvidenceParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2151,7 +2265,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideEvidenceParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2164,19 +2278,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidenceParam) (item2:PeptideEvidenceParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
-                    PeptideEvidenceParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match PeptideEvidenceParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    PeptideEvidenceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match PeptideEvidenceParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2224,10 +2343,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItemParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2236,7 +2355,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationItemParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2249,19 +2368,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItemParam) (item2:SpectrumIdentificationItemParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
-                    SpectrumIdentificationItemParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SpectrumIdentificationItemParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SpectrumIdentificationItemParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationItemParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2309,10 +2433,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResultParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2321,7 +2445,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationResultParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2334,19 +2458,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResultParam) (item2:SpectrumIdentificationResultParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
-                    SpectrumIdentificationResultParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SpectrumIdentificationResultParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SpectrumIdentificationResultParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationResultParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2394,10 +2523,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationListParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationListParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2406,7 +2535,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationListParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2419,19 +2548,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationListParam) (item2:SpectrumIdentificationListParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
-                    SpectrumIdentificationListParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SpectrumIdentificationListParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SpectrumIdentificationListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SpectrumIdentificationListParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2479,10 +2613,10 @@ module InsertStatements =
         //        tryFind (context.SpectrumIdentificationProtocolParam.Find(paramID))
 
         //    ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-        //    static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+        //    static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
         //        query {
         //               for i in dbContext.SpectrumIdentificationProtocolParam.Local do
-        //                   if i.Value=name
+        //                   if i.Term.Name=name
         //                      then select (i, i.Term, i.Unit)
         //              }
         //        |> Seq.map (fun (param,_ ,_) -> param)
@@ -2491,7 +2625,7 @@ module InsertStatements =
         //                then 
         //                    query {
         //                           for i in dbContext.SpectrumIdentificationProtocolParam do
-        //                               if i.Value=name
+        //                               if i.Term.Name=name
         //                                  then select (i, i.Term, i.Unit)
         //                          }
         //                    |> Seq.map (fun (param,_ ,_) -> param)
@@ -2504,12 +2638,12 @@ module InsertStatements =
 
         //    ///Checks whether all other fields of the current object and context object have the same values or not.
         //    static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocolParam) (item2:SpectrumIdentificationProtocolParam) =
-        //         item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+        //         item1.Value=item2.Value && item1.Unit=item2.Unit
 
         //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
         //    ///If no entry exists, a new object is added to the context and otherwise does nothing.
         //    static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocolParam) =
-        //            SpectrumIdentificationProtocolParamHandler.tryFindByValue dbContext item.Value
+        //            SpectrumIdentificationProtocolParamHandler.tryFindByTermName dbContext item.Term.Name
         //            |> (fun cvParamCollection -> match cvParamCollection with
         //                                         |Some x -> x
         //                                                    |> Seq.map (fun cvParam -> match SpectrumIdentificationProtocolParamHandler.hasEqualFieldValues cvParam item with
@@ -2564,10 +2698,10 @@ module InsertStatements =
                 tryFind (context.AnalysisParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.AnalysisParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2576,7 +2710,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2589,19 +2723,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisParam) (item2:AnalysisParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisParam) =
-                    AnalysisParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match AnalysisParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    AnalysisParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match AnalysisParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2649,10 +2788,10 @@ module InsertStatements =
                 tryFind (context.SourceFileParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SourceFileParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2661,7 +2800,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SourceFileParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2674,19 +2813,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFileParam) (item2:SourceFileParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SourceFileParam) =
-                    SourceFileParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match SourceFileParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    SourceFileParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match SourceFileParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2734,10 +2878,10 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesisParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2746,7 +2890,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesisParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2759,19 +2903,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesisParam) (item2:ProteinDetectionHypothesisParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
-                    ProteinDetectionHypothesisParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ProteinDetectionHypothesisParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ProteinDetectionHypothesisParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionHypothesisParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2819,10 +2968,10 @@ module InsertStatements =
                 tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroupParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2831,7 +2980,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinAmbiguityGroupParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2844,19 +2993,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroupParam) (item2:ProteinAmbiguityGroupParam) =
-                 item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
-                    ProteinAmbiguityGroupParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ProteinAmbiguityGroupParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ProteinAmbiguityGroupParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinAmbiguityGroupParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -2904,10 +3058,10 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionListParam.Find(paramID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.ProteinDetectionListParam.Local do
-                           if i.Value=name
+                           if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2916,7 +3070,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionListParam do
-                                       if i.Value=name
+                                       if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2929,19 +3083,24 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionListParam) (item2:ProteinDetectionListParam) =
-                item1.Value=item2.Value && item1.Term=item2.Term && item1.Unit=item2.Unit
+                item1.Value=item2.Value && item1.Unit=item2.Unit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
-                    ProteinDetectionListParamHandler.tryFindByValue dbContext item.Value
-                    |> (fun cvParamCollection -> match cvParamCollection with
-                                                 |Some x -> x
-                                                            |> Seq.map (fun cvParam -> match ProteinDetectionListParamHandler.hasEqualFieldValues cvParam item with
-                                                                                       |true -> null
-                                                                                       |false -> dbContext.Add item
-                                                                       ) |> ignore
-                                                 |None -> dbContext.Add item |> ignore
+                    ProteinDetectionListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match ProteinDetectionListParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3036,7 +3195,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
-                item1.Details=item2.Details && item1.Parent=item2.Parent &&
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent &&
                 item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3046,10 +3205,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match OrganizationHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3189,10 +3353,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PersonHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3258,10 +3427,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ContactRoleHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3381,10 +3555,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3455,10 +3634,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SubSampleHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3549,7 +3733,7 @@ module InsertStatements =
                 tryFind (context.Sample.Find(contactRolesID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySampleName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Sample.Local do
                            if i.Name=name
@@ -3575,19 +3759,24 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Sample) (item2:Sample) =
                 item1.ContactRoles=item2.ContactRoles && item1.SubSamples=item2.SubSamples &&
-                item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Sample) =
-                    SampleHandler.tryFindBySampleName dbContext item.Name
+                    SampleHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SampleHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3678,7 +3867,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
                 item1.Residues=item2.Residues && item1.Location=item2.Location &&
-                item1.AvgMassDelta=item2.AvgMassDelta && item1.Details=item2.Details
+                item1.AvgMassDelta=item2.AvgMassDelta && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3687,10 +3876,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ModificationHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3782,10 +3976,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SubstitutionModificationHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3904,7 +4103,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Peptide) (item2:Peptide) =
                 item1.Name=item2.Name && item1.Modifications=item2.Modifications &&
-                item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Details=item2.Details &&
+                item1.MzIdentMLDocument=item2.MzIdentMLDocument && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
                 item1.SubstitutionModifications=item2.SubstitutionModifications
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3914,10 +4113,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -3994,7 +4198,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTable) (item2:TranslationTable) =
-                item1.Details=item2.Details
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4003,10 +4207,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match TranslationTableHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4150,10 +4359,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ResidueHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4209,7 +4423,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
-                item1.Details=item2.Details
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4218,10 +4432,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AmbiguousResidueHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4330,7 +4549,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
-                item1.Details=item2.Details
+                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4339,10 +4558,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match MassTableHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4405,10 +4629,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ValueHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4422,7 +4651,7 @@ module InsertStatements =
             static member init
                 (
                     measure : Measure,
-                    values  : float,
+                    value   : float,
                     ?id     : string
                 ) =
                 let id' = defaultArg id (System.Guid.NewGuid().ToString())
@@ -4430,7 +4659,7 @@ module InsertStatements =
                 new FragmentArray(
                                   id', 
                                   measure, 
-                                  Nullable(values), 
+                                  Nullable(value), 
                                   Nullable(DateTime.Now)
                                  )
 
@@ -4440,10 +4669,10 @@ module InsertStatements =
                 tryFind (context.FragmentArray.Find(fragmentArrayID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByMeasureName (dbContext:MzIdentML) (name:Measure) =
+            static member tryFindByMeasureName (dbContext:MzIdentML) (value:Nullable<float>) =
                 query {
                        for i in dbContext.FragmentArray.Local do
-                           if i.Measure=name
+                           if i.Values=value
                               then select (i, i.Values)
                       }
                 |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
@@ -4452,7 +4681,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FragmentArray do
-                                       if i.Measure=name
+                                       if i.Values=value
                                           then select (i, i.Values)
                                   }
                             |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
@@ -4470,14 +4699,19 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentArray) =
-                    FragmentArrayHandler.tryFindByMeasureName dbContext item.Measure
+                    FragmentArrayHandler.tryFindByMeasureName dbContext item.Values
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FragmentArrayHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4540,10 +4774,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IndexHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4636,10 +4875,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IonTypeHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4724,10 +4968,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectraDataHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4870,7 +5119,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
                 item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
-                item1.SpecificityRules=item2.SpecificityRules && item1.Details=item2.Details
+                item1.SpecificityRules=item2.SpecificityRules && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4879,10 +5128,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchModificationHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5024,10 +5278,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match EnzymeHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5087,10 +5346,10 @@ module InsertStatements =
                 tryFind (context.Filter.Find(filterID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.Filter.Local do
-                           if i.FilterType.Value=name
+                           if i.FilterType.Term.Name=name
                               then select (i, i.FilterType, i.Includes, i.Excludes)
                       }
                 |> Seq.map (fun (filter, _, _, _) -> filter)
@@ -5099,7 +5358,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Filter do
-                                       if i.FilterType.Value=name
+                                       if i.FilterType.Term.Name=name
                                           then select (i, i.FilterType, i.Includes, i.Excludes)
                                   }
                             |> Seq.map (fun (filter, _, _, _) -> filter)
@@ -5117,14 +5376,19 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Filter) =
-                    FilterHandler.tryFindByValue dbContext item.FilterType.Value
+                    FilterHandler.tryFindByTermName dbContext item.FilterType.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FilterHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5187,10 +5451,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FrameHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5386,7 +5655,7 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationProtocol.Local do
                            if i.Name=name
@@ -5428,14 +5697,19 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                    SpectrumIdentificationProtocolHandler.tryFindName dbContext item.Name
+                    SpectrumIdentificationProtocolHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationProtocolHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5566,7 +5840,7 @@ module InsertStatements =
                item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
                item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
                item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
-               item1.Details=item2.Details && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
+               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5575,10 +5849,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchDatabaseHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5687,7 +5966,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
                item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
-               item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
+               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
                item1.SearchDatabase=item2.SearchDatabase
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5697,10 +5976,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match DBSequenceHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5856,7 +6140,7 @@ module InsertStatements =
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
                item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
                item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
-               item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
+               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
                item1.DBSequence=item2.DBSequence
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5866,10 +6150,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideEvidenceHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6001,10 +6290,10 @@ module InsertStatements =
                 tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByPeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
+            static member tryFindByExperimentalMassToCharge (dbContext:MzIdentML) (experimentalMassToCharge:Nullable<float>) =
                 query {
                        for i in dbContext.SpectrumIdentificationItem.Local do
-                           if i.Peptide.PeptideSequence=peptideSequence
+                           if i.ExperimentalMassToCharge=experimentalMassToCharge
                               then select (i, i.Peptide, i.Sample, i.MassTable, 
                                            i.PeptideEvidences, i.Fragmentations, i.Details
                                           )
@@ -6015,7 +6304,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationItem do
-                                       if i.Peptide.PeptideSequence=peptideSequence
+                                       if i.ExperimentalMassToCharge=experimentalMassToCharge
                                           then select (i, i.Peptide, i.Sample, i.MassTable, 
                                                        i.PeptideEvidences, i.Fragmentations, i.Details
                                                       )
@@ -6033,20 +6322,25 @@ module InsertStatements =
                item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
                item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
                item1.Fragmentations=item2.Fragmentations && item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && 
-               item1.CalculatedPI=item2.CalculatedPI && item1.Details=item2.Details && item1.ChargeState=item2.ChargeState && 
-               item1.ExperimentalMassToCharge=item2.ExperimentalMassToCharge && item1.Peptide=item2.Peptide
+               item1.CalculatedPI=item2.CalculatedPI && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.ChargeState=item2.ChargeState && 
+               item1.Peptide.PeptideSequence=item2.Peptide.PeptideSequence
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
-                    SpectrumIdentificationItemHandler.tryFindByPeptideSequence dbContext item.Peptide.PeptideSequence
+                    SpectrumIdentificationItemHandler.tryFindByExperimentalMassToCharge dbContext item.ExperimentalMassToCharge
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationItemHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6133,7 +6427,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
-               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && item1.Details=item2.Details && 
+               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
                item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6143,10 +6437,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationResultHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6250,7 +6549,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
                item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
-               item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && item1.Details=item2.Details
+               item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6259,10 +6558,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationListHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6366,10 +6670,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6469,10 +6778,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionProtocolHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6566,20 +6880,25 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
-               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && item1.Details=item2.Details &&
+               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SourceFile) =
-                    SourceFileHandler.tryFindByLocation dbContext item.Name
+                    SourceFileHandler.tryFindByLocation dbContext item.Location
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SourceFileHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6648,10 +6967,10 @@ module InsertStatements =
                 tryFind (context.Inputs.Find(inputsID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySpectraData (dbContext:MzIdentML) (mzIdentMlDocument:MzIdentMLDocument) =
+            static member tryFindBySpectraData (dbContext:MzIdentML) (spectraData:seq<SpectraData>) =
                 query {
                        for i in dbContext.Inputs.Local do
-                           if i.MzIdentMLDocument=mzIdentMlDocument
+                           if i.SpectraData=(spectraData |> List)
                               then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                       }
                 |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
@@ -6660,7 +6979,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Inputs do
-                                       if i.MzIdentMLDocument=mzIdentMlDocument
+                                       if i.SpectraData=(spectraData |> List)
                                           then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
@@ -6674,19 +6993,24 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
                item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
-               item1.SpectraData=item2.SpectraData
+               item1.MzIdentMLDocument.Name=item2.MzIdentMLDocument.Name
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Inputs) =
-                    InputsHandler.tryFindBySpectraData dbContext item.MzIdentMLDocument
+                    InputsHandler.tryFindBySpectraData dbContext item.SpectraData
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match InputsHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6718,10 +7042,10 @@ module InsertStatements =
                 tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByPeptideEvidenceName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByPeptideEvidencePeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
                 query {
                        for i in dbContext.PeptideHypothesis.Local do
-                           if i.PeptideEvidence.Name=name
+                           if i.PeptideEvidence.Peptide.PeptideSequence=peptideSequence
                               then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                       }
                 |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
@@ -6730,7 +7054,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideHypothesis do
-                                       if i.PeptideEvidence.Name=name
+                                       if i.PeptideEvidence.Peptide.PeptideSequence=peptideSequence
                                           then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                                   }
                             |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
@@ -6748,14 +7072,19 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideHypothesis) =
-                    PeptideHypothesisHandler.tryFindByPeptideEvidenceName dbContext item.PeptideEvidence.Name
+                    PeptideHypothesisHandler.tryFindByPeptideEvidencePeptideSequence dbContext item.PeptideEvidence.Peptide.PeptideSequence
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideHypothesisHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6822,10 +7151,10 @@ module InsertStatements =
                 tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDBSequenceName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByPassThreshold (dbContext:MzIdentML) (passThreshold:Nullable<bool>) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesis.Local do
-                           if i.DBSequence.Name=name
+                           if i.PassThreshold=passThreshold
                               then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
@@ -6834,7 +7163,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesis do
-                                       if i.DBSequence.Name=name
+                                       if i.PassThreshold=passThreshold
                                           then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
                                   }
                             |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
@@ -6848,19 +7177,24 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
                item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
-               item1.Name=item2.Name && item1.Details=item2.Details && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.Name=item2.Name && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
-                    ProteinDetectionHypothesisHandler.tryFindByDBSequenceName dbContext item.DBSequence.Name
+                    ProteinDetectionHypothesisHandler.tryFindByPassThreshold dbContext item.PassThreshold
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionHypothesisHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6939,7 +7273,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
-               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && item1.Details=item2.Details
+               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6948,10 +7282,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinAmbiguityGroupHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7043,7 +7382,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
-               item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && item1.Details=item2.Details
+               item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7052,10 +7391,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionListHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7138,10 +7482,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisDataHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7237,10 +7586,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7411,10 +7765,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match BiblioGraphicReferenceHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7513,10 +7872,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProviderHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7803,10 +8167,15 @@ module InsertStatements =
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match MzIdentMLDocumentHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> null
-                                                                                                 |false -> dbContext.Add item
-                                                                            ) |> ignore
-                                                      |None -> dbContext.Add item |> ignore
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
                        )
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 

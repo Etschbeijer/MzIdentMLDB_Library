@@ -1311,8 +1311,21 @@ let featureUnmodified =
 let evidenceRefUnmodified =
     EvidenceRefHandler.init([assay], featureUnmodified)
 
+let peptideConsensusUnmodifiedParams =
+    [
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+                            )
+    |> PeptideConsensusParamHandler.addValue "1453.6759";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AndromedaScore)).Value
+                                                )
+    |> PeptideConsensusParamHandler.addValue "122.97";
+    ]
+
 let peptideConsensusUnmodified =
     PeptideConsensusHandler.init(2, [evidenceRefUnmodified])
+    |> PeptideConsensusHandler.addDetails peptideConsensusUnmodifiedParams
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
 
 let featureMOxidized =
@@ -1322,9 +1335,22 @@ let featureMOxidized =
 let evidenceRefMOxidized =
     EvidenceRefHandler.init([assay], featureMOxidized)
 
+let peptideConsensusMOxidizedParams =
+    [
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+                                                )
+    |> PeptideConsensusParamHandler.addValue "1469.6761";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AndromedaScore)).Value
+                                                )
+    |> PeptideConsensusParamHandler.addValue "111.12";
+    ]
+
 let peptideConsensusMOxidized =
     PeptideConsensusHandler.init(2, [evidenceRefMOxidized])
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
+    |> PeptideConsensusHandler.addDetails peptideConsensusMOxidizedParams
     |> PeptideConsensusHandler.addModifications modifications
 
 let peptideConsensusList =
@@ -1337,14 +1363,20 @@ let protein =
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
 
-let proteinRefParam =
+let proteinRefParams =
+    [
     ProteinRefParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingRazorProtein)).Value
-                               )
+                               );
+    ProteinRefParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+                                          )
+    |> ProteinRefParamHandler.addValue "105.09";
+    ]
 
 let proteinRef =
     ProteinRefHandler.init(protein)
-    |> ProteinRefHandler.addDetail proteinRefParam
+    |> ProteinRefHandler.addDetails proteinRefParams
 
 let proteinGroup =
     ProteinGroupHandler.init(
