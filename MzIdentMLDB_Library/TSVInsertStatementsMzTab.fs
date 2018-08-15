@@ -75,72 +75,73 @@ module InsertStatements =
         
 
         type MetaDataSectionHandler =
-            ///Initializes a sample-object with at least all necessary parameters.
-            static member init
+            ///Initializes a metaDataSection-object with at least all necessary parameters for the section, 
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            static member initBaseObject
                 (             
-                    mzTabVersion                      : string,
-                    mzTabMode                         : int,
-                    mzType                            : int,     
-                    description                       : string,
-                    proteinSearchEngineScores         : seq<string*string*string*string>,
-                    peptideSearchEngineScores         : seq<string*string*string*string>,
-                    psmSearchEngineScores             : seq<string*string*string*string>,
-                    smallMoleculeSearchEngineScores   : seq<string*string*string*string>,
-                    fixedMods                         : seq<string*string*string*string>,
-                    variableMods                      : seq<string*string*string*string>,
-                    msRunLocation                     : string,
-                    ?mzID                             : string,
-                    ?title                            : string,
-                    ?sampleProcessings                : seq<string*string*string*string>,
-                    ?instrumentNames                  : seq<string*string*string*string>,
-                    ?instrumentSources                : seq<string*string*string*string>,
-                    ?instrumentAnalyzers              : seq<string*string*string*string>,
-                    ?instrumentDetectors              : seq<string*string*string*string>,
-                    ?softwares                        : seq<string*string*string*string>,
-                    ?softwaresSettings                : seq<string*string*string*string>,
-                    ?falseDiscoveryRates              : seq<string*string*string*string>,
-                    ?publications                     : seq<string>,
-                    ?contactNames                     : seq<string>,
-                    ?contactAffiliations              : seq<string>,
-                    ?contactEMails                    : seq<string>,
-                    ?uris                             : seq<string>,
-                    ?fixedModSites                    : seq<string>,
-                    ?fixedModPositions                : seq<string>,
-                    ?variableModSites                 : seq<string>,
-                    ?variableModPositions             : seq<string>,
-                    ?quantificationMethod             : string*string*string*string,
-                    ?proteinQuantificationUnit        : string*string*string*string,
-                    ?peptideQuantificationUnit        : string*string*string*string,
-                    ?smallMoleculeQuantificationUnit  : string*string*string*string,
-                    ?msRunsFormat                     : string*string*string*string,
-                    ?msRunsIDFormats                  : string*string*string*string,
-                    ?msRunsFragmentationMethods       : seq<string*string*string*string>,
-                    ?msRunsHash                       : string,
-                    ?msRunsHashMethod                 : string*string*string*string,
-                    ?customs                          : seq<string*string*string*string>,
-                    ?samplesSpecies                   : seq<string*string*string*string>,
-                    ?sampleTissues                    : seq<string*string*string*string>,
-                    ?samplesCellTypes                 : seq<string*string*string*string>,
-                    ?samplesDiseases                  : seq<string*string*string*string>,
-                    ?sampleDescriptions               : seq<string>,
-                    ?samplesCustoms                   : seq<string>,
-                    ?assaysQuantificationReagent      : string*string*string*string,
-                    ?assaysQuantificationMods         : seq<string*string*string*string>,
-                    ?assaysQuantificationModsSite     : string,
-                    ?assaysQuantificationModsPosition : string,
-                    ?assaysSampleRef                  : string,
-                    ?assaysMSRunRef                   : string,
-                    ?studyVariablesAssayRefs          : seq<string>,
-                    ?studyVariablesSampleRefs         : seq<string>,
-                    ?studyVariablesDescription        : seq<string>,
-                    ?cvsLabel                         : string,
-                    ?cvsFullName                      : string,
-                    ?cvsVersion                       : string,
-                    ?cvsURI                           : string,
-                    ?colUnitProtein                   : string*string*string*string,
-                    ?colUnitPeptide                   : string*string*string*string,
-                    ?colUnitPSM                       : string*string*string*string,
-                    ?colUnitSmallMolecule             : string*string*string*string
+                    mzTabVersion                        : string,
+                    mzTabMode                           : int,
+                    mzType                              : int,     
+                    description                         : string,
+                    proteinSearchEngineScores           : seq<string*string*string*string>,
+                    peptideSearchEngineScores           : seq<string*string*string*string>,
+                    psmSearchEngineScores               : seq<string*string*string*string>,
+                    smallMoleculeSearchEngineScores     : seq<string*string*string*string>,
+                    fixedMods                           : seq<string*string*string*string>,
+                    variableMods                        : seq<string*string*string*string>,
+                    msRunLocation                       : string,
+                    ?mzID                               : string,
+                    ?title                              : string,
+                    ?sampleProcessings                  : seq<string*string*string*string>,
+                    ?instrumentNames                    : seq<string*string*string*string>,
+                    ?instrumentSources                  : seq<string*string*string*string>,
+                    ?instrumentAnalyzers                : seq<string*string*string*string>,
+                    ?instrumentDetectors                : seq<string*string*string*string>,
+                    ?softwares                          : seq<string*string*string*string>,
+                    ?softwaresSettings                  : seq<string*string*string*string>,
+                    ?falseDiscoveryRates                : seq<string*string*string*string>,
+                    ?publications                       : seq<string>,
+                    ?contactNames                       : seq<string>,
+                    ?contactAffiliations                : seq<string>,
+                    ?contactEMails                      : seq<string>,
+                    ?uri                                : string,
+                    ?fixedModSites                      : seq<string>,
+                    ?fixedModPositions                  : seq<string>,
+                    ?variableModSites                   : seq<string>,
+                    ?variableModPositions               : seq<string>,
+                    ?quantificationMethod               : string*string*string*string,
+                    ?proteinQuantificationUnit          : string*string*string*string,
+                    ?peptideQuantificationUnit          : string*string*string*string,
+                    ?smallMoleculeQuantificationUnit    : string*string*string*string,
+                    ?msRunsFormat                       : string*string*string*string,
+                    ?msRunsIDFormats                    : string*string*string*string,
+                    ?msRunsFragmentationMethods         : seq<string*string*string*string>,
+                    ?msRunsHash                         : string,
+                    ?msRunsHashMethod                   : string*string*string*string,
+                    ?customs                            : seq<string*string*string*string>,
+                    ?samplesSpecies                     : seq<string*string*string*string>,
+                    ?sampleTissues                      : seq<string*string*string*string>,
+                    ?samplesCellTypes                   : seq<string*string*string*string>,
+                    ?samplesDiseases                    : seq<string*string*string*string>,
+                    ?sampleDescriptions                 : seq<string>,
+                    ?samplesCustoms                     : seq<string>,
+                    ?assaysQuantificationReagent        : string*string*string*string,
+                    ?assaysQuantificationMods           : seq<string*string*string*string>,
+                    ?assaysQuantificationModsSite       : string,
+                    ?assaysQuantificationModsPosition   : string,
+                    ?assaysSampleRef                    : string,
+                    ?assaysMSRunRef                     : string,
+                    ?studyVariablesAssayRefs            : seq<string>,
+                    ?studyVariablesSampleRefs           : seq<string>,
+                    ?studyVariablesDescription          : seq<string>,
+                    ?cvsLabel                           : seq<string>,
+                    ?cvsFullName                        : seq<string>,
+                    ?cvsVersion                         : seq<string>,
+                    ?cvsURI                             : seq<string>,
+                    ?colUnitProtein                     : string*string*string*string,
+                    ?colUnitPeptide                     : string*string*string*string,
+                    ?colUnitPSM                         : string*string*string*string,
+                    ?colUnitSmallMolecule               : string*string*string*string
                     
                 ) =
 
@@ -158,7 +159,7 @@ module InsertStatements =
                 let contactNames'                     = convertOptionToArray contactNames
                 let contactAffiliations'              = convertOptionToArray contactAffiliations
                 let contactEMails'                    = convertOptionToArray contactEMails
-                let uris'                             = convertOptionToArray uris
+                let uri'                              = defaultArg uri Unchecked.defaultof<string>
                 let fixedModSites'                    = convertOptionToArray fixedModSites
                 let fixedModPositions'                = convertOptionToArray fixedModPositions
                 let variableModSites'                 = convertOptionToArray variableModSites
@@ -188,10 +189,10 @@ module InsertStatements =
                 let studyVariablesAssayRefs'          = convertOptionToArray studyVariablesAssayRefs
                 let studyVariablesSampleRefs'         = convertOptionToArray studyVariablesSampleRefs
                 let studyVariablesDescription'        = convertOptionToArray studyVariablesDescription
-                let cvsLabel'                         = defaultArg cvsLabel Unchecked.defaultof<string>
-                let cvsFullName'                      = defaultArg cvsFullName Unchecked.defaultof<string>
-                let cvsVersion'                       = defaultArg cvsVersion Unchecked.defaultof<string>
-                let cvsURI'                           = defaultArg cvsURI Unchecked.defaultof<string>
+                let cvsLabel'                         = convertOptionToArray cvsLabel
+                let cvsFullName'                      = convertOptionToArray cvsFullName
+                let cvsVersion'                       = convertOptionToArray cvsVersion 
+                let cvsURI'                           = convertOptionToArray cvsURI 
                 let colUnitProtein'                   = defaultArg colUnitProtein Unchecked.defaultof<string*string*string*string>
                 let colUnitPeptide'                   = defaultArg colUnitPeptide Unchecked.defaultof<string*string*string*string>
                 let colUnitPSM'                       = defaultArg colUnitPSM Unchecked.defaultof<string*string*string*string>
@@ -200,7 +201,7 @@ module InsertStatements =
                 let createMetadatasection 
                         mzTabVersion mzTabMode mzType mzID title description sampleProcessings instrumentNames instrumentSources instrumentAnalyzers
                         instrumentDetectors softwares softwaresSettings proteinSearchEngineScores peptideSearchEngineScores psmSearchEngineScores smallMoleculeSearchEngineScores
-                        falseDiscoveryRates publications contactNames contactAffiliations contactEMails uris fixedMods fixedModSites fixedModPositions variableMods
+                        falseDiscoveryRates publications contactNames contactAffiliations contactEMails uri fixedMods fixedModSites fixedModPositions variableMods
                         variableModSites variableModPositions quantificationMethod proteinQuantificationUnit peptideQuantificationUnit smallMoleculeQuantificationUnit
                         msRunsFormat msRunLocation msRunsIDFormats msRunsFragmentationMethods msRunsHash msRunsHashMethod customs samplesSpecies sampleTissues samplesCellTypes
                         samplesDiseases sampleDescriptions samplesCustoms assaysQuantificationReagent assaysQuantificationMods assaysQuantificationModsSite 
@@ -230,7 +231,7 @@ module InsertStatements =
                      MetaDataSection.ContactNames                     = contactNames
                      MetaDataSection.ContactAffiliations              = contactAffiliations
                      MetaDataSection.ContactEMails                    = contactEMails
-                     MetaDataSection.URIs                             = uris
+                     MetaDataSection.URI                              = uri
                      MetaDataSection.FixedMods                        = fixedMods
                      MetaDataSection.FixedModSites                    = fixedModSites
                      MetaDataSection.FixedModPositions                = fixedModPositions
@@ -272,10 +273,11 @@ module InsertStatements =
                      MetaDataSection.ColUnitPSM                       = colUnitPSM
                      MetaDataSection.ColUnitSmallMolecule             = colUnitSmallMolecule
                     }
+
                 createMetadatasection
                         mzTabVersion mzTabMode mzType mzID' title' description sampleProcessings' instrumentNames' instrumentSources' instrumentAnalyzers' instrumentDetectors' 
                         softwares' softwaresSettings' (proteinSearchEngineScores.ToArray()) (peptideSearchEngineScores.ToArray()) (psmSearchEngineScores.ToArray()) 
-                        (smallMoleculeSearchEngineScores.ToArray()) falseDiscoveryRates' publications' contactNames' contactAffiliations' contactEMails' uris' (fixedMods.ToArray()) 
+                        (smallMoleculeSearchEngineScores.ToArray()) falseDiscoveryRates' publications' contactNames' contactAffiliations' contactEMails' uri' (fixedMods.ToArray()) 
                         fixedModSites' fixedModPositions' (variableMods.ToArray()) variableModSites' variableModPositions' quantificationMethod' proteinQuantificationUnit' 
                         peptideQuantificationUnit' smallMoleculeQuantificationUnit' msRunsFormat' msRunLocation msRunsIDFormats' msRunsFragmentationMethods' msRunsHash' 
                         msRunsHashMethod' customs' samplesSpecies' sampleTissues' samplesCellTypes' samplesDiseases' sampleDescriptions' samplesCustoms' assaysQuantificationReagent' 
@@ -415,14 +417,10 @@ module InsertStatements =
                 section.ContactEMails <- addCollectionToList section.ContactEMails contactEMails
                 section
 
-            ///Adds a uri to an existing object.
-            static member addURI (uri:string) (section:MetaDataSection) =
-                section.URIs <- addToList section.URIs uri
-                section
-
-            ///Adds a collection of uris to an existing object.
-            static member addURIs (uris:seq<string>) (section:MetaDataSection) =
-                section.URIs <- addCollectionToList section.URIs uris
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (section:MetaDataSection) =
+                section.URI <- uri
                 section
 
             ///Adds a fixedModSite to an existing object.
@@ -663,28 +661,44 @@ module InsertStatements =
                 section.StudyVariablesDescription <- addCollectionToList section.StudyVariablesDescription studyVariablesDescriptions
                 section
 
-            ///Replaces cvsLabel of existing object with new one.
-            static member addCvsLabel
-                (cvsLabel:string) (section:MetaDataSection) =
-                section.CvsLabel <- cvsLabel
+            ///Adds a cvsLabel to an existing object.
+            static member addCvsLabel (cvsLabel:string) (section:MetaDataSection) =
+                section.CvsLabel <- addToList section.CvsLabel cvsLabel
                 section
 
-            ///Replaces cvsFullName of existing object with new one.
-            static member addCvsFullName
-                (cvsFullName:string) (section:MetaDataSection) =
-                section.CvsFullName <- cvsFullName
+            ///Adds a collection of cvsLabels to an existing object.
+            static member addCvsLabels (cvsLabels:seq<string>) (section:MetaDataSection) =
+                section.CvsLabel <- addCollectionToList section.CvsLabel cvsLabels
                 section
 
-            ///Replaces cvsVersion of existing object with new one.
-            static member addCvsVersion
-                (cvsVersion:string) (section:MetaDataSection) =
-                section.CvsVersion <- cvsVersion
+            ///Adds a cvsFullName to an existing object.
+            static member addCvsFullName (cvsFullName:string) (section:MetaDataSection) =
+                section.CvsFullName <- addToList section.CvsFullName cvsFullName
                 section
 
-            ///Replaces cvsURI of existing object with new one.
-            static member addCvsURI
-                (cvsURI:string) (section:MetaDataSection) =
-                section.CvsURI <- cvsURI
+            ///Adds a collection of cvsFullNames to an existing object.
+            static member addCvsFullNames (cvsFullNames:seq<string>) (section:MetaDataSection) =
+                section.CvsFullName <- addCollectionToList section.CvsFullName cvsFullNames
+                section
+
+            ///Adds a cvsVersion to an existing object.
+            static member addCvsVersion (cvsVersion:string) (section:MetaDataSection) =
+                section.CvsVersion <- addToList section.CvsVersion cvsVersion
+                section
+
+            ///Adds a collection of cvsVersions to an existing object.
+            static member addCvsVersions (cvsVersions:seq<string>) (section:MetaDataSection) =
+                section.CvsVersion <- addCollectionToList section.CvsVersion cvsVersions
+                section
+
+            ///Adds a cvsURI to an existing object.
+            static member addCvsURI (cvsURI:string) (section:MetaDataSection) =
+                section.CvsURI <- addToList section.CvsVersion cvsURI
+                section
+
+            ///Adds a collection of cvsURIs to an existing object.
+            static member addCvsURIs (cvsURIs:seq<string>) (section:MetaDataSection) =
+                section.CvsURI <- addCollectionToList section.CvsVersion cvsURIs
                 section
 
             ///Replaces colUnitProtein of existing object with new one.
@@ -711,41 +725,238 @@ module InsertStatements =
                 section.ColUnitSmallMolecule <- colUnitSmallMolecule
                 section
 
-        type ProteinSectionHandler =
-            ///Initializes a sample-object with at least all necessary parameters.
-            static member init
+            static member initMetaDataSectionWithSummaryModeAndIdentificationType
                 (             
-                    accession                                        : string,
-                    description                                      : string,
-                    taxid                                            : int,
-                    species                                          : string,
-                    database                                         : string,
-                    databaseVersion                                  : string,
-                    searchEngines                                    : seq<string*string*string*string>,
-                    bestSearchEngineScore                            : float,
-                    ambiguityMembers                                 : seq<string>,
-                    modifications                                    : seq<string>,
-                    ?searchEngineScoresMSRuns                        : float,
-                    ?reliability                                     : int,
-                    ?numPSMsMSRuns                                   : int,
-                    ?numPeptidesDistinctMSRuns                       : int,
-                    ?numPeptidesUniqueMSRuns                         : int,
-                    ?uri                                             : string,
-                    ?goTerms                                         : seq<string>, 
-                    ?proteinCoverage                                 : float,
-                    ?proteinAbundanceAssays                          : seq<float>,
-                    ?proteinAbundanceStudyVariables                  : seq<float>,
-                    ?proteinAbundanceStandardDeviationStudyVariables : seq<float>,
-                    ?proteinAbundanceStandardErrorStudyVariables     : seq<float>,
-                    ?optionalInformation                             : seq<string>
+                    mzTabVersion                        : string,    
+                    description                         : string,
+                    proteinSearchEngineScores           : seq<string*string*string*string>,
+                    peptideSearchEngineScores           : seq<string*string*string*string>,
+                    psmSearchEngineScores               : seq<string*string*string*string>,
+                    smallMoleculeSearchEngineScores     : seq<string*string*string*string>,
+                    fixedMods                           : seq<string*string*string*string>,
+                    variableMods                        : seq<string*string*string*string>,
+                    msRunLocation                       : string,
+                    ?mzID                               : string,
+                    ?title                              : string,
+                    ?sampleProcessings                  : seq<string*string*string*string>,
+                    ?instrumentNames                    : seq<string*string*string*string>,
+                    ?instrumentSources                  : seq<string*string*string*string>,
+                    ?instrumentAnalyzers                : seq<string*string*string*string>,
+                    ?instrumentDetectors                : seq<string*string*string*string>,
+                    ?softwares                          : seq<string*string*string*string>,
+                    ?softwaresSettings                  : seq<string*string*string*string>,
+                    ?falseDiscoveryRates                : seq<string*string*string*string>,
+                    ?publications                       : seq<string>,
+                    ?contactNames                       : seq<string>,
+                    ?contactAffiliations                : seq<string>,
+                    ?contactEMails                      : seq<string>,
+                    ?uri                                : string,
+                    ?fixedModSites                      : seq<string>,
+                    ?fixedModPositions                  : seq<string>,
+                    ?variableModSites                   : seq<string>,
+                    ?variableModPositions               : seq<string>,
+                    ?quantificationMethod               : string*string*string*string,
+                    ?proteinQuantificationUnit          : string*string*string*string,
+                    ?peptideQuantificationUnit          : string*string*string*string,
+                    ?smallMoleculeQuantificationUnit    : string*string*string*string,
+                    ?msRunsFormat                       : string*string*string*string,
+                    ?msRunsIDFormats                    : string*string*string*string,
+                    ?msRunsFragmentationMethods         : seq<string*string*string*string>,
+                    ?msRunsHash                         : string,
+                    ?msRunsHashMethod                   : string*string*string*string,
+                    ?customs                            : seq<string*string*string*string>,
+                    ?samplesSpecies                     : seq<string*string*string*string>,
+                    ?sampleTissues                      : seq<string*string*string*string>,
+                    ?samplesCellTypes                   : seq<string*string*string*string>,
+                    ?samplesDiseases                    : seq<string*string*string*string>,
+                    ?sampleDescriptions                 : seq<string>,
+                    ?samplesCustoms                     : seq<string>,
+                    ?assaysSampleRef                    : string,
+                    ?assaysMSRunRef                     : string,
+                    ?studyVariablesAssayRefs            : seq<string>,
+                    ?studyVariablesSampleRefs           : seq<string>,
+                    ?studyVariablesDescription          : seq<string>,
+                    ?cvsLabel                           : seq<string>,
+                    ?cvsFullName                        : seq<string>,
+                    ?cvsVersion                         : seq<string>,
+                    ?cvsURI                             : seq<string>,
+                    ?colUnitProtein                     : string*string*string*string,
+                    ?colUnitPeptide                     : string*string*string*string,
+                    ?colUnitPSM                         : string*string*string*string,
+                    ?colUnitSmallMolecule               : string*string*string*string
                     
                 ) =
 
-                let searchEngineScoresMSRuns'                        = defaultArg searchEngineScoresMSRuns Unchecked.defaultof<float>
+                let mzID'                             = defaultArg mzID Unchecked.defaultof<string>
+                let title'                            = defaultArg title Unchecked.defaultof<string>
+                let sampleProcessings'                = convertOptionToArray sampleProcessings 
+                let instrumentNames'                  = convertOptionToArray instrumentNames 
+                let instrumentSources'                = convertOptionToArray instrumentSources
+                let instrumentAnalyzers'              = convertOptionToArray instrumentAnalyzers 
+                let instrumentDetectors'              = convertOptionToArray instrumentDetectors
+                let softwares'                        = convertOptionToArray softwares
+                let softwaresSettings'                = convertOptionToArray softwaresSettings
+                let falseDiscoveryRates'              = convertOptionToArray falseDiscoveryRates
+                let publications'                     = convertOptionToArray publications 
+                let contactNames'                     = convertOptionToArray contactNames
+                let contactAffiliations'              = convertOptionToArray contactAffiliations
+                let contactEMails'                    = convertOptionToArray contactEMails
+                let uri'                              = defaultArg uri Unchecked.defaultof<string>
+                let fixedModSites'                    = convertOptionToArray fixedModSites
+                let fixedModPositions'                = convertOptionToArray fixedModPositions
+                let variableModSites'                 = convertOptionToArray variableModSites
+                let variableModPositions'             = convertOptionToArray variableModPositions
+                let quantificationMethod'             = defaultArg quantificationMethod Unchecked.defaultof<string*string*string*string>
+                let proteinQuantificationUnit'        = defaultArg proteinQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let peptideQuantificationUnit'        = defaultArg peptideQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let smallMoleculeQuantificationUnit'  = defaultArg smallMoleculeQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let msRunsFormat'                     = defaultArg msRunsFormat Unchecked.defaultof<string*string*string*string>
+                let msRunsIDFormats'                  = defaultArg msRunsIDFormats Unchecked.defaultof<string*string*string*string>
+                let msRunsFragmentationMethods'       = convertOptionToArray msRunsFragmentationMethods
+                let msRunsHash'                       = defaultArg msRunsHash Unchecked.defaultof<string>
+                let msRunsHashMethod'                 = defaultArg msRunsHashMethod Unchecked.defaultof<string*string*string*string>
+                let customs'                          = convertOptionToArray customs
+                let samplesSpecies'                   = convertOptionToArray samplesSpecies
+                let sampleTissues'                    = convertOptionToArray sampleTissues
+                let samplesCellTypes'                 = convertOptionToArray samplesCellTypes
+                let samplesDiseases'                  = convertOptionToArray samplesDiseases
+                let sampleDescriptions'               = convertOptionToArray sampleDescriptions
+                let samplesCustoms'                   = convertOptionToArray samplesCustoms
+                let assaysSampleRef'                  = defaultArg assaysSampleRef Unchecked.defaultof<string>
+                let assaysMSRunRef'                   = defaultArg assaysMSRunRef Unchecked.defaultof<string>
+                let studyVariablesAssayRefs'          = convertOptionToArray studyVariablesAssayRefs
+                let studyVariablesSampleRefs'         = convertOptionToArray studyVariablesSampleRefs
+                let studyVariablesDescription'        = convertOptionToArray studyVariablesDescription
+                let cvsLabel'                         = convertOptionToArray cvsLabel
+                let cvsFullName'                      = convertOptionToArray cvsFullName
+                let cvsVersion'                       = convertOptionToArray cvsVersion 
+                let cvsURI'                           = convertOptionToArray cvsURI 
+                let colUnitProtein'                   = defaultArg colUnitProtein Unchecked.defaultof<string*string*string*string>
+                let colUnitPeptide'                   = defaultArg colUnitPeptide Unchecked.defaultof<string*string*string*string>
+                let colUnitPSM'                       = defaultArg colUnitPSM Unchecked.defaultof<string*string*string*string>
+                let colUnitSmallMolecule'             = defaultArg colUnitSmallMolecule Unchecked.defaultof<string*string*string*string>
+
+                let createMetadatasectionWithSummaryModeAndIdentificationType
+                        mzTabVersion mzID title description sampleProcessings instrumentNames instrumentSources instrumentAnalyzers
+                        instrumentDetectors softwares softwaresSettings proteinSearchEngineScores peptideSearchEngineScores psmSearchEngineScores smallMoleculeSearchEngineScores
+                        falseDiscoveryRates publications contactNames contactAffiliations contactEMails uri fixedMods fixedModSites fixedModPositions variableMods
+                        variableModSites variableModPositions quantificationMethod proteinQuantificationUnit peptideQuantificationUnit smallMoleculeQuantificationUnit
+                        msRunsFormat msRunLocation msRunsIDFormats msRunsFragmentationMethods msRunsHash msRunsHashMethod customs samplesSpecies sampleTissues samplesCellTypes
+                        samplesDiseases sampleDescriptions samplesCustoms assaysSampleRef assaysMSRunRef studyVariablesAssayRefs studyVariablesSampleRefs studyVariablesDescription cvsLabel 
+                        cvsFullName cvsVersion cvsURI colUnitProtein colUnitPeptide colUnitPSM colUnitSmallMolecule
+                        =
+                    {
+                     MetaDataSection.MzTabVersion                     = mzTabVersion
+                     MetaDataSection.MzTabMode                        = MzTabMode.Summary
+                     MetaDataSection.MzType                           = MzTabType.Identification
+                     MetaDataSection.MzID                             = mzID
+                     MetaDataSection.Title                            = title
+                     MetaDataSection.Description                      = description
+                     MetaDataSection.SampleProcessings                = sampleProcessings
+                     MetaDataSection.InstrumentNames                  = instrumentNames
+                     MetaDataSection.InstrumentSources                = instrumentSources
+                     MetaDataSection.InstrumentAnalyzers              = instrumentAnalyzers
+                     MetaDataSection.InstrumentDetectors              = instrumentDetectors
+                     MetaDataSection.Softwares                        = softwares
+                     MetaDataSection.SoftwaresSettings                = softwaresSettings
+                     MetaDataSection.ProteinSearchEngineScores        = proteinSearchEngineScores
+                     MetaDataSection.PeptideSearchEngineScores        = peptideSearchEngineScores
+                     MetaDataSection.PSMSearchEngineScores            = psmSearchEngineScores
+                     MetaDataSection.SmallMoleculeSearchEngineScores  = smallMoleculeSearchEngineScores
+                     MetaDataSection.FalseDiscoveryRates              = falseDiscoveryRates
+                     MetaDataSection.Publications                     = publications
+                     MetaDataSection.ContactNames                     = contactNames
+                     MetaDataSection.ContactAffiliations              = contactAffiliations
+                     MetaDataSection.ContactEMails                    = contactEMails
+                     MetaDataSection.URI                              = uri
+                     MetaDataSection.FixedMods                        = fixedMods
+                     MetaDataSection.FixedModSites                    = fixedModSites
+                     MetaDataSection.FixedModPositions                = fixedModPositions
+                     MetaDataSection.VariableMods                     = variableMods
+                     MetaDataSection.VariableModSites                 = variableModSites
+                     MetaDataSection.VariableModPositions             = variableModPositions
+                     MetaDataSection.QuantificationMethod             = quantificationMethod
+                     MetaDataSection.ProteinQuantificationUnit        = proteinQuantificationUnit
+                     MetaDataSection.PeptideQuantificationUnit        = peptideQuantificationUnit
+                     MetaDataSection.SmallMoleculeQuantificationUnit  = smallMoleculeQuantificationUnit
+                     MetaDataSection.MSRunsFormat                     = msRunsFormat
+                     MetaDataSection.MSRunLocation                    = msRunLocation
+                     MetaDataSection.MSRunsIDFormat                   = msRunsIDFormats
+                     MetaDataSection.MSRunsFragmentationMethods       = msRunsFragmentationMethods
+                     MetaDataSection.MSRunsHash                       = msRunsHash
+                     MetaDataSection.MSRunsHashMethod                 = msRunsHashMethod
+                     MetaDataSection.Customs                          = customs
+                     MetaDataSection.SamplesSpecies                   = samplesSpecies
+                     MetaDataSection.SampleTissues                    = sampleTissues
+                     MetaDataSection.SamplesCellTypes                 = samplesCellTypes
+                     MetaDataSection.SamplesDiseases                  = samplesDiseases
+                     MetaDataSection.SampleDescriptions               = sampleDescriptions
+                     MetaDataSection.SamplesCustoms                   = samplesCustoms
+                     MetaDataSection.AssaysQuantificationReagent      = Unchecked.defaultof<string*string*string*string>
+                     MetaDataSection.AssaysQuantificationMods         = Unchecked.defaultof<array<string*string*string*string>>
+                     MetaDataSection.AssaysQuantificationModsSite     = null
+                     MetaDataSection.AssaysQuantificationModsPosition = null
+                     MetaDataSection.AssaysSampleRef                  = assaysSampleRef
+                     MetaDataSection.AssaysMSRunRef                   = assaysMSRunRef
+                     MetaDataSection.StudyVariablesAssayRefs          = studyVariablesAssayRefs
+                     MetaDataSection.StudyVariablesSampleRefs         = studyVariablesSampleRefs
+                     MetaDataSection.StudyVariablesDescription        = studyVariablesDescription
+                     MetaDataSection.CvsLabel                         = cvsLabel
+                     MetaDataSection.CvsFullName                      = cvsFullName
+                     MetaDataSection.CvsVersion                       = cvsVersion
+                     MetaDataSection.CvsURI                           = cvsURI
+                     MetaDataSection.ColUnitProtein                   = colUnitProtein
+                     MetaDataSection.ColUnitPeptide                   = colUnitPeptide
+                     MetaDataSection.ColUnitPSM                       = colUnitPSM
+                     MetaDataSection.ColUnitSmallMolecule             = colUnitSmallMolecule
+                    }
+
+                createMetadatasectionWithSummaryModeAndIdentificationType
+                        mzTabVersion mzID' title' description sampleProcessings' instrumentNames' instrumentSources' instrumentAnalyzers' instrumentDetectors' 
+                        softwares' softwaresSettings' (proteinSearchEngineScores.ToArray()) (peptideSearchEngineScores.ToArray()) (psmSearchEngineScores.ToArray()) 
+                        (smallMoleculeSearchEngineScores.ToArray()) falseDiscoveryRates' publications' contactNames' contactAffiliations' contactEMails' uri' (fixedMods.ToArray()) 
+                        fixedModSites' fixedModPositions' (variableMods.ToArray()) variableModSites' variableModPositions' quantificationMethod' proteinQuantificationUnit' 
+                        peptideQuantificationUnit' smallMoleculeQuantificationUnit' msRunsFormat' msRunLocation msRunsIDFormats' msRunsFragmentationMethods' msRunsHash' 
+                        msRunsHashMethod' customs' samplesSpecies' sampleTissues' samplesCellTypes' samplesDiseases' sampleDescriptions' samplesCustoms'
+                        assaysSampleRef' assaysMSRunRef' studyVariablesAssayRefs' studyVariablesSampleRefs' studyVariablesDescription' cvsLabel' 
+                        cvsFullName' cvsVersion' cvsURI' colUnitProtein' colUnitPeptide'  colUnitPSM' colUnitSmallMolecule'
+
+        type ProteinSectionHandler =
+            ///Initializes a proteinSection-object with at least all necessary parameters for the section, 
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            static member initBaseObject
+                (             
+                    accession                                           : string,
+                    description                                         : string,
+                    taxid                                               : int,
+                    species                                             : string,
+                    database                                            : string,
+                    databaseVersion                                     : string,
+                    searchEngines                                       : seq<string*string*string*string>,
+                    bestSearchEngineScore                               : seq<float>,
+                    ambiguityMembers                                    : seq<string>,
+                    modifications                                       : seq<string>,
+                    ?searchEngineScoresMSRuns                           : seq<float>,
+                    ?reliability                                        : int,
+                    ?numPSMsMSRuns                                      : seq<int>,
+                    ?numPeptidesDistinctMSRuns                          : seq<int>,
+                    ?numPeptidesUniqueMSRuns                            : seq<int>,
+                    ?uri                                                : string,
+                    ?goTerms                                            : seq<string>, 
+                    ?proteinCoverage                                    : float,
+                    ?proteinAbundanceAssays                             : seq<float>,
+                    ?proteinAbundanceStudyVariables                     : seq<float>,
+                    ?proteinAbundanceStandardDeviationStudyVariables    : seq<float>,
+                    ?proteinAbundanceStandardErrorStudyVariables        : seq<float>,
+                    ?optionalInformation                                : seq<string>
+                    
+                ) =
+
+                let searchEngineScoresMSRuns'                        = convertOptionToArray searchEngineScoresMSRuns
                 let reliability'                                     = defaultArg reliability Unchecked.defaultof<int>
-                let numPSMsMSRuns'                                   = defaultArg numPSMsMSRuns Unchecked.defaultof<int>
-                let numPeptidesDistinctMSRuns'                       = defaultArg numPeptidesDistinctMSRuns Unchecked.defaultof<int>
-                let numPeptidesUniqueMSRuns'                         = defaultArg numPeptidesUniqueMSRuns Unchecked.defaultof<int>
+                let numPSMsMSRuns'                                   = convertOptionToArray numPSMsMSRuns
+                let numPeptidesDistinctMSRuns'                       = convertOptionToArray numPeptidesDistinctMSRuns
+                let numPeptidesUniqueMSRuns'                         = convertOptionToArray numPeptidesUniqueMSRuns
                 let uri'                                             = defaultArg uri Unchecked.defaultof<string>
                 let goTerms'                                         = convertOptionToArray goTerms
                 let proteinCoverage'                                 = defaultArg proteinCoverage Unchecked.defaultof<float>
@@ -755,36 +966,53 @@ module InsertStatements =
                 let proteinAbundanceStandardErrorStudyVariables'     = convertOptionToArray proteinAbundanceStandardErrorStudyVariables
                 let optionalInformation'                             = convertOptionToArray optionalInformation
 
-                new ProteinSection(
-                                   accession,
-                                   description,
-                                   taxid,
-                                   species,
-                                   database,
-                                   databaseVersion,
-                                   searchEngines.ToArray(),  
-                                   bestSearchEngineScore,
-                                   searchEngineScoresMSRuns',
-                                   reliability',
-                                   numPSMsMSRuns',
-                                   numPeptidesDistinctMSRuns',
-                                   numPeptidesUniqueMSRuns',
-                                   ambiguityMembers.ToArray(), 
-                                   modifications.ToArray(),
-                                   uri',
-                                   goTerms',
-                                   proteinCoverage',
-                                   proteinAbundanceAssays',
-                                   proteinAbundanceStudyVariables',
-                                   proteinAbundanceStandardDeviationStudyVariables', 
-                                   proteinAbundanceStandardErrorStudyVariables',
-                                   optionalInformation'
-                                  )
+                let createProteinSection
+                        accession description taxid species database databaseVersion searchEngines bestSearchEngineScore
+                        searchEngineScoresMSRuns reliability numPSMsMSRuns numPeptidesDistinctMSRuns numPeptidesUniqueMSRuns
+                        ambiguityMembers modifications uri goTerms proteinCoverage proteinAbundanceAssays proteinAbundanceStudyVariables
+                        proteinAbundanceStandardDeviationStudyVariables proteinAbundanceStandardErrorStudyVariables 
+                        optionalInformation
+                        =
+                    {
+                     ProteinSection.Accession                                       = accession 
+                     ProteinSection.Description                                     = description 
+                     ProteinSection.Taxid                                           = taxid 
+                     ProteinSection.Species                                         = species 
+                     ProteinSection.Database                                        = database 
+                     ProteinSection.DatabaseVersion                                 = databaseVersion 
+                     ProteinSection.SearchEngines                                   = searchEngines 
+                     ProteinSection.BestSearchEngineScore                           = bestSearchEngineScore
+                     ProteinSection.SearchEngineScoresMSRuns                        = searchEngineScoresMSRuns 
+                     ProteinSection.Reliability                                     = reliability 
+                     ProteinSection.NumPSMsMSRuns                                   = numPSMsMSRuns 
+                     ProteinSection.NumPeptidesDistinctMSRuns                       = numPeptidesDistinctMSRuns 
+                     ProteinSection.NumPeptidesUniqueMSRuns                         = numPeptidesUniqueMSRuns
+                     ProteinSection.AmbiguityMembers                                = ambiguityMembers 
+                     ProteinSection.Modifications                                   = modifications 
+                     ProteinSection.URI                                             = uri 
+                     ProteinSection.GoTerms                                         = goTerms 
+                     ProteinSection.ProteinCoverage                                 = proteinCoverage 
+                     ProteinSection.ProteinAbundanceAssays                          = proteinAbundanceAssays 
+                     ProteinSection.ProteinAbundanceStudyVariables                  = proteinAbundanceStudyVariables
+                     ProteinSection.ProteinAbundanceStandardDeviationStudyVariables = proteinAbundanceStandardDeviationStudyVariables 
+                     ProteinSection.ProteinAbundanceStandardErrorStudyVariables     = proteinAbundanceStandardErrorStudyVariables 
+                     ProteinSection.OptionalInformations                            = optionalInformation
+                    }
+                createProteinSection 
+                    accession description taxid species database databaseVersion (searchEngines.ToArray()) (bestSearchEngineScore.ToArray())
+                    searchEngineScoresMSRuns' reliability' numPSMsMSRuns' numPeptidesDistinctMSRuns' numPeptidesUniqueMSRuns'
+                    (ambiguityMembers.ToArray()) (modifications.ToArray()) uri' goTerms' proteinCoverage' proteinAbundanceAssays'
+                    proteinAbundanceStudyVariables' proteinAbundanceStandardDeviationStudyVariables' proteinAbundanceStandardErrorStudyVariables'
+                    optionalInformation'
 
-            ///Replaces searchEngineScoresMSRuns of existing object with new one.
-            static member addSearchEngineScoresMSRuns
-                (searchEngineScoresMSRuns:float) (section:ProteinSection) =
-                section.SearchEngineScoresMSRuns <- searchEngineScoresMSRuns
+            ///Adds a searchEngineScoresMSRun to an existing object.
+            static member addSearchEngineScoresMSRun (searchEngineScoresMSRun:float) (section:ProteinSection) =
+                section.SearchEngineScoresMSRuns <- addToList section.SearchEngineScoresMSRuns searchEngineScoresMSRun
+                section
+
+            ///Adds a collection of searchEngineScoresMSRuns to an existing object.
+            static member addSearchEngineScoresMSRuns (searchEngineScoresMSRuns:seq<float>) (section:ProteinSection) =
+                section.SearchEngineScoresMSRuns <- addCollectionToList section.SearchEngineScoresMSRuns searchEngineScoresMSRuns
                 section
 
             ///Replaces reliability of existing object with new one.
@@ -793,22 +1021,34 @@ module InsertStatements =
                 section.Reliability <- reliability
                 section
 
-            ///Replaces numPSMsMSRuns of existing object with new one.
-            static member addNumPSMsMSRuns
-                (numPSMsMSRuns:int) (section:ProteinSection) =
-                section.NumPSMsMSRuns <- numPSMsMSRuns
+            ///Adds a numPSMsMSRun to an existing object.
+            static member addNumPSMsMSRun (numPSMsMSRun:int) (section:ProteinSection) =
+                section.NumPSMsMSRuns <- addToList section.NumPSMsMSRuns numPSMsMSRun
                 section
 
-            ///Replaces numPeptidesDistinctMSRuns of existing object with new one.
-            static member addNumPeptidesDistinctMSRuns
-                (numPeptidesDistinctMSRuns:int) (section:ProteinSection) =
-                section.NumPeptidesDistinctMSRuns <- numPeptidesDistinctMSRuns
+            ///Adds a collection of numPSMsMSRuns to an existing object.
+            static member addNumPSMsMSRuns (numPSMsMSRuns:seq<int>) (section:ProteinSection) =
+                section.NumPSMsMSRuns <- addCollectionToList section.NumPSMsMSRuns numPSMsMSRuns
                 section
 
-            ///Replaces numPeptidesUniqueMSRuns of existing object with new one.
-            static member addNumPeptidesUniqueMSRuns
-                (numPeptidesUniqueMSRuns:int) (section:ProteinSection) =
-                section.NumPeptidesUniqueMSRuns <- numPeptidesUniqueMSRuns
+            ///Adds a numPeptidesDistinctMSRun to an existing object.
+            static member addNumPeptidesDistinctMSRun (numPeptidesDistinctMSRun:int) (section:ProteinSection) =
+                section.NumPeptidesDistinctMSRuns <- addToList section.NumPeptidesDistinctMSRuns numPeptidesDistinctMSRun
+                section
+
+            ///Adds a collection of numPeptidesDistinctMSRuns to an existing object.
+            static member addNumPeptidesDistinctMSRuns (numPeptidesDistinctMSRuns:seq<int>) (section:ProteinSection) =
+                section.NumPeptidesDistinctMSRuns <- addCollectionToList section.NumPeptidesDistinctMSRuns numPeptidesDistinctMSRuns
+                section
+
+            ///Adds a numPeptidesUniqueMSRun to an existing object.
+            static member numPeptidesUniqueMSRun (numPeptidesUniqueMSRun:int) (section:ProteinSection) =
+                section.NumPeptidesUniqueMSRuns <- addToList section.NumPeptidesUniqueMSRuns numPeptidesUniqueMSRun
+                section
+
+            ///Adds a collection of numPeptidesUniqueMSRuns to an existing object.
+            static member numPeptidesUniqueMSRuns (numPeptidesUniqueMSRuns:seq<int>) (section:ProteinSection) =
+                section.NumPeptidesUniqueMSRuns <- addCollectionToList section.NumPeptidesUniqueMSRuns numPeptidesUniqueMSRuns
                 section
 
             ///Replaces uri of existing object with new one.
@@ -884,75 +1124,564 @@ module InsertStatements =
                 section
 
         type PeptideSectionHandler =
-            ///Initializes a sample-object with at least all necessary parameters.
-            static member init
+            ///Initializes a peptideSection-object with at least all necessary parameters for the section, 
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            static member initBaseObject
                 (             
-                    ?peptideSequence                                 : string,
-                    ?accession                                       : string,
-                    ?unique                                          : bool,
-                    ?database                                        : string,
-                    ?databaseVersion                                 : string,
-                    ?searchEngines                                   : seq<string*string*string*string>,
-                    ?bestSearchEngineScores                          : float,
-                    ?searchEngineScoresMSRuns                        : float,
-                    ?reliability                                     : int,
-                    ?modifications                                   : seq<string>,
-                    ?retentionTime                                   : seq<float>,
-                    ?retentionTimeWindow                             : seq<float>,
-                    ?charge                                          : int,
-                    ?massToCharge                                    : float,
-                    ?uri                                             : string,
-                    ?spectraRefs                                     : seq<string>,
-                    ?peptideAbundanceAssay                           : seq<float>,
-                    ?peptideAbundanceStudyVariable                   : seq<float>,
-                    ?peptideAbundanceStandardDeviationStudyVariable  : seq<float>,
-                    ?peptideAbundanceStandardErrorStudyVariables     : seq<float>,
-                    ?optionalInformation                             : seq<string>
+                    ?peptideSequence                                    : string,
+                    ?accession                                          : string,
+                    ?unique                                             : bool,
+                    ?database                                           : string,
+                    ?databaseVersion                                    : string,
+                    ?searchEngines                                      : seq<string*string*string*string>,
+                    ?bestSearchEngineScores                             : seq<float>,
+                    ?searchEngineScoresMSRuns                           : seq<float>,
+                    ?reliability                                        : int,
+                    ?modifications                                      : seq<string>,
+                    ?retentionTime                                      : seq<float>,
+                    ?retentionTimeWindow                                : seq<float>,
+                    ?charge                                             : int,
+                    ?massToCharge                                       : float,
+                    ?uri                                                : string,
+                    ?spectraRefs                                        : seq<string>,
+                    ?peptideAbundanceAssays                             : seq<float>,
+                    ?peptideAbundanceStudyVariables                     : seq<float>,
+                    ?peptideAbundanceStandardDeviationStudyVariables    : seq<float>,
+                    ?peptideAbundanceStandardErrorStudyVariables        : seq<float>,
+                    ?optionalInformation                                : seq<string>
                     
                 ) =
 
-                let searchEngineScoresMSRuns'                        = defaultArg searchEngineScoresMSRuns Unchecked.defaultof<float>
+                let peptideSequence'                                 = defaultArg peptideSequence Unchecked.defaultof<string>
+                let accession'                                       = defaultArg accession Unchecked.defaultof<string>
+                let unique'                                          = defaultArg unique Unchecked.defaultof<bool>
+                let database'                                        = defaultArg database Unchecked.defaultof<string>
+                let databaseVersion'                                 = defaultArg databaseVersion Unchecked.defaultof<string>
+                let searchEngines'                                   = convertOptionToArray searchEngines
+                let bestSearchEngineScores'                          = convertOptionToArray bestSearchEngineScores
+                let searchEngineScoresMSRuns'                        = convertOptionToArray searchEngineScoresMSRuns
                 let reliability'                                     = defaultArg reliability Unchecked.defaultof<int>
-                let numPSMsMSRuns'                                   = defaultArg numPSMsMSRuns Unchecked.defaultof<int>
-                let numPeptidesDistinctMSRuns'                       = defaultArg numPeptidesDistinctMSRuns Unchecked.defaultof<int>
-                let numPeptidesUniqueMSRuns'                         = defaultArg numPeptidesUniqueMSRuns Unchecked.defaultof<int>
+                let modifications'                                   = convertOptionToArray modifications
+                let retentionTime'                                   = convertOptionToArray retentionTime
+                let retentionTimeWindow'                             = convertOptionToArray retentionTimeWindow
+                let charge'                                          = defaultArg charge Unchecked.defaultof<int>
+                let massToCharge'                                    = defaultArg massToCharge Unchecked.defaultof<float>
                 let uri'                                             = defaultArg uri Unchecked.defaultof<string>
-                let goTerms'                                         = convertOptionToArray goTerms
-                let proteinCoverage'                                 = defaultArg proteinCoverage Unchecked.defaultof<float>
-                let proteinAbundanceAssays'                          = convertOptionToArray proteinAbundanceAssays
-                let proteinAbundanceStudyVariables'                  = convertOptionToArray proteinAbundanceStudyVariables
-                let proteinAbundanceStandardDeviationStudyVariables' = convertOptionToArray proteinAbundanceStandardDeviationStudyVariables
-                let proteinAbundanceStandardErrorStudyVariables'     = convertOptionToArray proteinAbundanceStandardErrorStudyVariables
+                let spectraRefs'                                     = convertOptionToArray spectraRefs 
+                let peptideAbundanceAssays'                          = convertOptionToArray peptideAbundanceAssays
+                let peptideAbundanceStudyVariables'                  = convertOptionToArray peptideAbundanceStudyVariables
+                let peptideAbundanceStandardDeviationStudyVariables' = convertOptionToArray peptideAbundanceStandardDeviationStudyVariables 
+                let peptideAbundanceStandardErrorStudyVariables'     = convertOptionToArray peptideAbundanceStandardErrorStudyVariables
                 let optionalInformation'                             = convertOptionToArray optionalInformation
 
-                new PeptideSection(
-                                   accession,
-                                   description,
-                                   taxid,
-                                   species,
-                                   database,
-                                   databaseVersion,
-                                   searchEngines.ToArray(),  
-                                   bestSearchEngineScore,
-                                   searchEngineScoresMSRuns',
-                                   reliability',
-                                   numPSMsMSRuns',
-                                   numPeptidesDistinctMSRuns',
-                                   numPeptidesUniqueMSRuns',
-                                   ambiguityMembers.ToArray(), 
-                                   modifications.ToArray(),
-                                   uri',
-                                   goTerms',
-                                   proteinCoverage',
-                                   proteinAbundanceAssays',
-                                   proteinAbundanceStudyVariables',
-                                   proteinAbundanceStandardDeviationStudyVariables', 
-                                   proteinAbundanceStandardErrorStudyVariables',
-                                   optionalInformation'
-                                  )
+                let createPeptideSection
+                        peptideSequence accession unique database databaseVersion searchEngines bestSearchEngineScores 
+                        searchEngineScoresMSRuns reliability  modifications retentionTime retentionTimeWindow charge massToCharge 
+                        uri spectraRefs peptideAbundanceAssays peptideAbundanceStudyVariables peptideAbundanceStandardDeviationStudyVariables
+                        peptideAbundanceStandardErrorStudyVariables optionalInformation
+                        =
 
-            ///Replaces searchEngineScoresMSRuns of existing object with new one.
-            static member addSearchEngineScoresMSRuns
-                (searchEngineScoresMSRuns:float) (section:ProteinSection) =
-                section.SearchEngineScoresMSRuns <- searchEngineScoresMSRuns
+                    { 
+                     PeptideSection.PeptideSequence                                 = peptideSequence
+                     PeptideSection.Accession                                       = accession
+                     PeptideSection.Unique                                          = unique
+                     PeptideSection.Database                                        = database
+                     PeptideSection.DatabaseVersion                                 = databaseVersion
+                     PeptideSection.SearchEngines                                   = searchEngines
+                     PeptideSection.BestSearchEngineScores                          = bestSearchEngineScores
+                     PeptideSection.SearchEngineScoresMSRuns                        = searchEngineScoresMSRuns
+                     PeptideSection.Reliability                                     = reliability
+                     PeptideSection.Modifications                                   = modifications
+                     PeptideSection.RetentionTime                                   = retentionTime
+                     PeptideSection.RetentionTimeWindow                             = retentionTimeWindow
+                     PeptideSection.Charge                                          = charge
+                     PeptideSection.MassToCharge                                    = massToCharge
+                     PeptideSection.URI                                             = uri
+                     PeptideSection.SpectraRefs                                     = spectraRefs
+                     PeptideSection.PeptideAbundanceAssays                          = peptideAbundanceAssays
+                     PeptideSection.PeptideAbundanceStudyVariables                  = peptideAbundanceStudyVariables
+                     PeptideSection.PeptideAbundanceStandardDeviationStudyVariables = peptideAbundanceStandardDeviationStudyVariables
+                     PeptideSection.PeptideAbundanceStandardErrorStudyVariables     = peptideAbundanceStandardErrorStudyVariables
+                     PeptideSection.OptionalInformations                            = optionalInformation
+                    }
+
+                createPeptideSection
+                    peptideSequence' accession' unique' database' databaseVersion' searchEngines' bestSearchEngineScores' 
+                    searchEngineScoresMSRuns' reliability'  modifications' retentionTime' retentionTimeWindow' charge' massToCharge' 
+                    uri' spectraRefs' peptideAbundanceAssays' peptideAbundanceStudyVariables' peptideAbundanceStandardDeviationStudyVariables'
+                    peptideAbundanceStandardErrorStudyVariables' optionalInformation'
+
+            ///Replaces peptideSequence of existing object with new one.
+            static member addPeptideSequence
+                (peptideSequence:string) (section:PeptideSection) =
+                section.PeptideSequence <- peptideSequence
                 section
+
+            ///Replaces accession of existing object with new one.
+            static member addAccession
+                (accession:string) (section:PeptideSection) =
+                section.Accession <- accession
+                section
+            
+            ///Replaces unique of existing object with new one.
+            static member addUnique
+                (unique:bool) (section:PeptideSection) =
+                section.Unique <- unique
+                section
+
+            ///Replaces database of existing object with new one.
+            static member addDatabase
+                (database:string) (section:PeptideSection) =
+                section.Database <- database
+                section
+
+            ///Replaces databaseVersion of existing object with new one.
+            static member addDatabaseVersion
+                (databaseVersion:string) (section:PeptideSection) =
+                section.DatabaseVersion <- databaseVersion
+                section
+
+            ///Adds a searchEngine to an existing object.
+            static member addSearchEngine (searchEngine:string*string*string*string) (section:PeptideSection) =
+                section.SearchEngines <- addToList section.SearchEngines searchEngine
+                section
+
+            ///Adds a collection of searchEngines to an existing object.
+            static member addSearchEngines (searchEngines:seq<string*string*string*string>) (section:PeptideSection) =
+                section.SearchEngines <- addCollectionToList section.SearchEngines searchEngines
+                section
+            
+            ///Adds a bestSearchEngineScore to an existing object.
+            static member addBestSearchEngineScore (bestSearchEngineScore:float) (section:PeptideSection) =
+                section.BestSearchEngineScores <- addToList section.BestSearchEngineScores bestSearchEngineScore
+                section
+
+            ///Adds a collection of bestSearchEngineScores to an existing object.
+            static member addBestSearchEngineScores (bestSearchEngineScores:seq<float>) (section:PeptideSection) =
+                section.BestSearchEngineScores <- addCollectionToList section.BestSearchEngineScores bestSearchEngineScores
+                section
+            
+            ///Adds a searchEngineScoresMSRun to an existing object.
+            static member addSearchEngineScoresMSRun (searchEngineScoresMSRun:float) (section:PeptideSection) =
+                section.SearchEngineScoresMSRuns <- addToList section.SearchEngineScoresMSRuns searchEngineScoresMSRun
+                section
+
+            ///Adds a collection of searchEngineScoresMSRuns to an existing object.
+            static member addSearchEngineScoresMSRuns (searchEngineScoresMSRuns:seq<float>) (section:PeptideSection) =
+                section.SearchEngineScoresMSRuns <- addCollectionToList section.SearchEngineScoresMSRuns searchEngineScoresMSRuns
+                section
+
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (section:PeptideSection) =
+                section.Reliability <- reliability
+
+            ///Adds a modification to an existing object.
+            static member addModification (modification:string) (section:PeptideSection) =
+                section.Modifications <- addToList section.Modifications modification
+                section
+
+            ///Adds a collection of modifications to an existing object.
+            static member addModifications (modifications:seq<string>) (section:PeptideSection) =
+                section.Modifications <- addCollectionToList section.Modifications modifications
+                section
+
+            ///Adds a retentionTime to an existing object.
+            static member addRetentionTime (retentionTime:float) (section:PeptideSection) =
+                section.RetentionTime <- addToList section.RetentionTime retentionTime
+                section
+
+            ///Adds a collection of retentionTimes to an existing object.
+            static member addRetentionTimes (retentionTimes:seq<float>) (section:PeptideSection) =
+                section.RetentionTime <- addCollectionToList section.RetentionTime retentionTimes
+                section
+
+            ///Adds a retentionTimeWindow to an existing object.
+            static member addRetentionTimeWindow (retentionTimeWindow:seq<float>) (section:PeptideSection) =
+                section.RetentionTimeWindow <- addCollectionToList section.RetentionTimeWindow retentionTimeWindow
+                section
+
+            ///Replaces charge of existing object with new one.
+            static member addCharge
+                (charge:int) (section:PeptideSection) =
+                section.Charge <- charge
+            
+            ///Replaces massToCharge of existing object with new one.
+            static member addMassToCharge
+                (massToCharge:float) (section:PeptideSection) =
+                section.MassToCharge <- massToCharge
+
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (section:PeptideSection) =
+                section.URI <- uri
+
+            ///Adds a spectraRef to an existing object.
+            static member addSpectraRef (spectraRef:string) (section:PeptideSection) =
+                section.SpectraRefs <- addToList section.SpectraRefs spectraRef
+                section
+
+            ///Adds a collection of spectraRefs to an existing object.
+            static member addSpectraRefs (spectraRefs:seq<string>) (section:PeptideSection) =
+                section.SpectraRefs <- addCollectionToList section.SpectraRefs spectraRefs
+                section
+
+            ///Adds a peptideAbundanceAssay to an existing object.
+            static member addPeptideAbundanceAssay (peptideAbundanceAssay:float) (section:PeptideSection) =
+                section.PeptideAbundanceAssays <- addToList section.PeptideAbundanceAssays peptideAbundanceAssay
+                section
+
+            ///Adds a collection of peptideAbundanceAssays to an existing object.
+            static member addPeptideAbundanceAssays (peptideAbundanceAssays:seq<float>) (section:PeptideSection) =
+                section.PeptideAbundanceAssays <- addCollectionToList section.PeptideAbundanceAssays peptideAbundanceAssays
+                section
+
+            ///Adds a peptideAbundanceStudyVariable to an existing object.
+            static member addPeptideAbundanceStudyVariable (peptideAbundanceStudyVariable:float) (section:PeptideSection) =
+                section.PeptideAbundanceStudyVariables <- addToList section.PeptideAbundanceStudyVariables peptideAbundanceStudyVariable
+                section
+
+            ///Adds a collection of peptideAbundanceStudyVariables to an existing object.
+            static member addPeptideAbundanceStudyVariables (peptideAbundanceStudyVariables:seq<float>) (section:PeptideSection) =
+                section.PeptideAbundanceStudyVariables <- addCollectionToList section.PeptideAbundanceStudyVariables peptideAbundanceStudyVariables
+                section
+
+            ///Adds a peptideAbundanceStandardDeviationStudyVariable to an existing object.
+            static member addPeptideAbundanceStandardDeviationStudyVariable (peptideAbundanceStandardDeviationStudyVariable:float) (section:PeptideSection) =
+                section.PeptideAbundanceStandardDeviationStudyVariables <- addToList section.PeptideAbundanceStandardDeviationStudyVariables peptideAbundanceStandardDeviationStudyVariable
+                section
+
+            ///Adds a collection of peptideAbundanceStandardDeviationStudyVariables to an existing object.
+            static member addPeptideAbundanceStandardDeviationStudyVariables (peptideAbundanceStandardDeviationStudyVariables:seq<float>) (section:PeptideSection) =
+                section.PeptideAbundanceStandardDeviationStudyVariables <- addCollectionToList section.PeptideAbundanceStandardDeviationStudyVariables peptideAbundanceStandardDeviationStudyVariables
+                section
+
+            ///Adds a peptideAbundanceStandardErrorStudyVariable to an existing object.
+            static member addPeptideAbundanceStandardErrorStudyVariable (peptideAbundanceStandardErrorStudyVariable:float) (section:PeptideSection) =
+                section.PeptideAbundanceStandardErrorStudyVariables <- addToList section.PeptideAbundanceStandardErrorStudyVariables peptideAbundanceStandardErrorStudyVariable
+                section
+
+            ///Adds a collection of peptideAbundanceStandardErrorStudyVariables to an existing object.
+            static member addPeptideAbundanceStandardErrorStudyVariables (peptideAbundanceStandardErrorStudyVariables:seq<float>) (section:PeptideSection) =
+                section.PeptideAbundanceStandardErrorStudyVariables <- addCollectionToList section.PeptideAbundanceStandardErrorStudyVariables peptideAbundanceStandardErrorStudyVariables
+                section
+
+            ///Adds a optionalInformation to an existing object.
+            static member addOptionalInformation (optionalInformation:string) (section:PeptideSection) =
+                section.OptionalInformations <- addToList section.OptionalInformations optionalInformation
+                section
+
+            ///Adds a collection of optionalInformations to an existing object.
+            static member addOptionalInformations (optionalInformations:seq<string>) (section:PeptideSection) =
+                section.OptionalInformations <- addCollectionToList section.OptionalInformations optionalInformations
+                section
+
+        type PSMSectionHandler =
+            ///Initializes a psmSection-object with at least all necessary parameters for the section, 
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            static member initBaseObject
+                (             
+                    peptideSequence         : string,
+                    psmID                   : string,
+                    accession               : string,
+                    unique                  : bool,
+                    database                : string,
+                    databaseVersion         : string,
+                    searchEngines           : seq<string*string*string*string>,
+                    searchEngineScores      : seq<float>,
+                    modifications           : seq<string>,
+                    retentionTimes          : seq<float>,
+                    charge                  : int,
+                    expMassToCharge         : float,
+                    calcMassToCharge        : float,
+                    spectraRefs             : seq<string>,
+                    pre                     : string,
+                    post                    : string,
+                    start                   : int,
+                    ende                    : int,
+                    ?reliability            : int,
+                    ?uri                    : string,
+                    ?optionalInformation    : seq<string>
+                    
+                ) =
+
+                let reliability'         = defaultArg reliability Unchecked.defaultof<int>
+                let uri'                 = defaultArg uri Unchecked.defaultof<string>
+                let optionalInformation' = convertOptionToArray optionalInformation
+
+                let createPSMSection
+                        peptideSequence  psmID accession  unique database databaseVersion searchEngines searchEngineScores
+                        reliability modifications retentionTimes charge expMassToCharge calcMassToCharge uri spectraRefs
+                        pre post start ende optionalInformation
+                        =
+                    {
+                     PSMSection.PeptideSequence      = peptideSequence
+                     PSMSection.PSMID                = psmID
+                     PSMSection.Accession            = accession
+                     PSMSection.Unique               = unique
+                     PSMSection.Database             = database
+                     PSMSection.DatabaseVersion      = databaseVersion
+                     PSMSection.SearchEngines        = searchEngines
+                     PSMSection.SearchEngineScores   = searchEngineScores
+                     PSMSection.Reliability          = reliability
+                     PSMSection.Modifications        = modifications
+                     PSMSection.RetentionTimes       = retentionTimes
+                     PSMSection.Charge               = charge
+                     PSMSection.ExpMassToCharge      = expMassToCharge
+                     PSMSection.CalcMassToCharge     = calcMassToCharge
+                     PSMSection.URI                  = uri
+                     PSMSection.SpectraRefs          = spectraRefs
+                     PSMSection.Pre                  = pre
+                     PSMSection.Post                 = post
+                     PSMSection.Start                = start
+                     PSMSection.End                  = ende
+                     PSMSection.OptionalInformations = optionalInformation
+                    }
+                        
+                createPSMSection     
+                    peptideSequence psmID accession unique database databaseVersion (searchEngines.ToArray()) 
+                    (searchEngineScores.ToArray()) reliability' (modifications.ToArray()) (retentionTimes.ToArray()) charge 
+                    expMassToCharge calcMassToCharge uri' (spectraRefs.ToArray()) pre post start ende optionalInformation'
+
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (section:PSMSection) =
+                section.Reliability <- reliability
+
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (section:PSMSection) =
+                section.URI <- uri
+           
+            ///Adds a optionalInformation to an existing object.
+            static member addOptionalInformation (optionalInformation:string) (section:PSMSection) =
+                    section.OptionalInformations <- addToList section.OptionalInformations optionalInformation
+                    section
+
+            ///Adds a collection of optionalInformations to an existing object.
+            static member addOptionalInformations (optionalInformations:seq<string>) (section:PSMSection) =
+                    section.OptionalInformations <- addCollectionToList section.OptionalInformations optionalInformations
+                    section
+
+        type SmallMoleculeSectionHandler =
+            ///Initializes a smallMoleculeSection-object with at least all necessary parameters for the section, 
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            static member initBaseObject
+                (             
+                    identifiers                                             : seq<string>,
+                    chemicalFormula                                         : string,
+                    smiles                                                  : seq<string>,
+                    inchiKey                                                : seq<string>,
+                    description                                             : seq<string>,
+                    expMassToCharge                                         : float,
+                    calcMassToCharge                                        : float,
+                    charge                                                  : int,
+                    retentionTimes                                          : seq<float>,
+                    taxid                                                   : int,
+                    species                                                 : string,
+                    database                                                : string,
+                    databaseVersion                                         : string,                             
+                    spectraRefs                                             : seq<string>,
+                    searchEngines                                           : seq<string*string*string*string>,
+                    bestSearchEngineScores                                  : seq<float>,                    
+                    modifications                                           : array<string>,                   
+                    ?reliability                                            : int,
+                    ?uri                                                    : string,
+                    ?searchEngineScoresMSRuns                               : seq<float>,
+                    ?smallMoleculeAbundanceAssays                           : seq<float>,
+                    ?smallMoleculeAbundanceStudyVariables                   : seq<float>,
+                    ?smallMoleculeAbundanceStandardDeviationStudyVariables  : seq<float>,
+                    ?smallMoleculeAbundanceStandardErrorStudyVariables      : seq<float>,
+                    ?optionalInformations                                   : seq<string>
+                ) =
+
+                let reliability'                                           = defaultArg reliability Unchecked.defaultof<int>
+                let uri'                                                   = defaultArg uri Unchecked.defaultof<string>
+                let searchEngineScoresMSRuns'                              = convertOptionToArray searchEngineScoresMSRuns
+                let smallMoleculeAbundanceAssays'                          = convertOptionToArray smallMoleculeAbundanceAssays
+                let smallMoleculeAbundanceStudyVariables'                  = convertOptionToArray smallMoleculeAbundanceStudyVariables
+                let smallMoleculeAbundanceStandardDeviationStudyVariables' = convertOptionToArray smallMoleculeAbundanceStandardDeviationStudyVariables
+                let smallMoleculeAbundanceStandardErrorStudyVariables'     = convertOptionToArray smallMoleculeAbundanceStandardErrorStudyVariables
+                let optionalInformations'                                  = convertOptionToArray optionalInformations
+
+                let createSmallMoleculeSection
+                        identifiers chemicalFormula smiles inchiKey description expMassToCharge calcMassToCharge charge
+                        retentionTimes taxid species database databaseVersion reliability uri spectraRefs searchEngines
+                        bestSearchEngineScores searchEngineScoresMSRuns modifications smallMoleculeAbundanceAssays
+                        smallMoleculeAbundanceStudyVariables smallMoleculeAbundanceStandardDeviationStudyVariables
+                        smallMoleculeAbundanceStandardErrorStudyVariables optionalInformations
+                        =
+                    {
+                     SmallMoleculeSection.Identifiers                                           = identifiers 
+                     SmallMoleculeSection.ChemicalFormula                                       = chemicalFormula 
+                     SmallMoleculeSection.Smiles                                                = smiles 
+                     SmallMoleculeSection.InchiKey                                              = inchiKey 
+                     SmallMoleculeSection.Description                                           = description 
+                     SmallMoleculeSection.ExpMassToCharge                                       = expMassToCharge 
+                     SmallMoleculeSection.CalcMassToCharge                                      = calcMassToCharge
+                     SmallMoleculeSection.Charge                                                = charge
+                     SmallMoleculeSection.RetentionTimes                                        = retentionTimes 
+                     SmallMoleculeSection.Taxid                                                 = taxid 
+                     SmallMoleculeSection.Species                                               = species 
+                     SmallMoleculeSection.Database                                              = database 
+                     SmallMoleculeSection.DatabaseVersion                                       = databaseVersion 
+                     SmallMoleculeSection.Reliability                                           = reliability 
+                     SmallMoleculeSection.URI                                                   = uri 
+                     SmallMoleculeSection.SpectraRefs                                           = spectraRefs 
+                     SmallMoleculeSection.SearchEngines                                         = searchEngines
+                     SmallMoleculeSection.BestSearchEngineScores                                = bestSearchEngineScores 
+                     SmallMoleculeSection.SearchEngineScoresMSRuns                              = searchEngineScoresMSRuns 
+                     SmallMoleculeSection.Modifications                                         = modifications 
+                     SmallMoleculeSection.SmallMoleculeAbundanceAssays                          = smallMoleculeAbundanceAssays
+                     SmallMoleculeSection.SmallMoleculeAbundanceStudyVariables                  = smallMoleculeAbundanceStudyVariables 
+                     SmallMoleculeSection.SmallMoleculeAbundanceStandardDeviationStudyVariables = smallMoleculeAbundanceStandardDeviationStudyVariables
+                     SmallMoleculeSection.SmallMoleculeAbundanceStandardErrorStudyVariables     = smallMoleculeAbundanceStandardErrorStudyVariables 
+                     SmallMoleculeSection.OptionalInformations                                  = optionalInformations
+                    }
+
+                createSmallMoleculeSection
+                    (identifiers.ToArray()) chemicalFormula (smiles.ToArray()) (inchiKey.ToArray()) (description.ToArray()) 
+                    expMassToCharge calcMassToCharge charge (retentionTimes.ToArray()) taxid species database databaseVersion
+                    reliability' uri' (spectraRefs.ToArray()) (searchEngines.ToArray()) (bestSearchEngineScores.ToArray()) 
+                    searchEngineScoresMSRuns' modifications smallMoleculeAbundanceAssays' smallMoleculeAbundanceStudyVariables' 
+                    smallMoleculeAbundanceStandardDeviationStudyVariables' smallMoleculeAbundanceStandardErrorStudyVariables' 
+                    optionalInformations'
+
+            ///Replaces reliability of existing object with new one.
+            static member addReliability
+                (reliability:int) (section:SmallMoleculeSection) =
+                section.Reliability <- reliability
+                section
+
+            ///Replaces uri of existing object with new one.
+            static member addURI
+                (uri:string) (section:SmallMoleculeSection) =
+                section.URI <- uri
+                section
+
+            ///Adds a searchEngineScoresMSRun to an existing object.
+            static member addSearchEngineScoresMSRun (searchEngineScoresMSRun:float) (section:SmallMoleculeSection) =
+                section.SearchEngineScoresMSRuns <- addToList section.SearchEngineScoresMSRuns searchEngineScoresMSRun
+                section
+
+            ///Adds a collection of searchEngineScoresMSRuns to an existing object.
+            static member addSearchEngineScoresMSRuns (searchEngineScoresMSRuns:seq<float>) (section:SmallMoleculeSection) =
+                section.SearchEngineScoresMSRuns <- addCollectionToList section.SearchEngineScoresMSRuns searchEngineScoresMSRuns
+                section
+
+            ///Adds a smallMoleculeAbundanceAssay to an existing object.
+            static member addSmallMoleculeAbundanceAssay (smallMoleculeAbundanceAssay:float) (section:SmallMoleculeSection) =
+                section.SearchEngineScoresMSRuns <- addToList section.SearchEngineScoresMSRuns smallMoleculeAbundanceAssay
+                section
+
+            ///Adds a collection of smallMoleculeAbundanceAssays to an existing object.
+            static member addSmallMoleculeAbundanceAssays (smallMoleculeAbundanceAssays:seq<float>) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceAssays <- addCollectionToList section.SearchEngineScoresMSRuns smallMoleculeAbundanceAssays
+                section
+
+            ///Adds a smallMoleculeAbundanceStudyVariable to an existing object.
+            static member addSmallMoleculeAbundanceStudyVariable (smallMoleculeAbundanceStudyVariable:float) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStudyVariables <- addToList section.SmallMoleculeAbundanceStudyVariables smallMoleculeAbundanceStudyVariable
+                section
+
+            ///Adds a collection of smallMoleculeAbundanceStudyVariables to an existing object.
+            static member addSmallMoleculeAbundanceStudyVariables (smallMoleculeAbundanceStudyVariables:seq<float>) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStudyVariables <- addCollectionToList section.SmallMoleculeAbundanceStudyVariables smallMoleculeAbundanceStudyVariables
+                section
+
+            ///Adds a smallMoleculeAbundanceStandardDeviationStudyVariable to an existing object.
+            static member addSmallMoleculeAbundanceStandardDeviationStudyVariable (smallMoleculeAbundanceStandardDeviationStudyVariable:float) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStandardDeviationStudyVariables <- addToList section.SmallMoleculeAbundanceStandardDeviationStudyVariables smallMoleculeAbundanceStandardDeviationStudyVariable
+                section
+
+            ///Adds a collection of smallMoleculeAbundanceStandardDeviationStudyVariables to an existing object.
+            static member addSmallMoleculeAbundanceStandardDeviationStudyVariables (smallMoleculeAbundanceStandardDeviationStudyVariables:seq<float>) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStandardDeviationStudyVariables <- addCollectionToList section.SmallMoleculeAbundanceStandardDeviationStudyVariables smallMoleculeAbundanceStandardDeviationStudyVariables
+                section
+
+            ///Adds a smallMoleculeAbundanceStandardErrorStudyVariable to an existing object.
+            static member addSmallMoleculeAbundanceStandardErrorStudyVariable (smallMoleculeAbundanceStandardErrorStudyVariable:float) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStandardErrorStudyVariables <- addToList section.SmallMoleculeAbundanceStandardErrorStudyVariables smallMoleculeAbundanceStandardErrorStudyVariable
+                section
+
+            ///Adds a collection of smallMoleculeAbundanceStandardErrorStudyVariables to an existing object.
+            static member addSmallMoleculeAbundanceStandardErrorStudyVariables (smallMoleculeAbundanceStandardErrorStudyVariables:seq<float>) (section:SmallMoleculeSection) =
+                section.SmallMoleculeAbundanceStandardErrorStudyVariables <- addCollectionToList section.SmallMoleculeAbundanceStandardErrorStudyVariables smallMoleculeAbundanceStandardErrorStudyVariables
+                section
+
+            ///Adds a optionalInformation to an existing object.
+            static member addOptionalInformation (optionalInformation:string) (section:SmallMoleculeSection) =
+                section.OptionalInformations <- addToList section.OptionalInformations optionalInformation
+                section
+
+            ///Adds a collection of optionalInformations to an existing object.
+            static member addOptionalInformations (optionalInformations:seq<string>) (section:SmallMoleculeSection) =
+                section.OptionalInformations <- addCollectionToList section.OptionalInformations optionalInformations
+                section
+
+        type TSVFileHandler =
+            ///Initializes a tsvFile-object with at least all necessary parameters for the file.
+            static member init
+                (             
+                    metaDataSections          : MetaDataSection,
+                    ?proteinSections          : seq<ProteinSection>,
+                    ?peptideSections          : seq<PeptideSection>,
+                    ?psmSections              : seq<PSMSection>,
+                    ?smallMoleculeSections    : seq<SmallMoleculeSection>
+                ) =
+
+                let proteinSections'       = convertOptionToArray proteinSections
+                let peptideSections'       = convertOptionToArray peptideSections
+                let psmSections'           = convertOptionToArray psmSections
+                let smallMoleculeSections' = convertOptionToArray smallMoleculeSections
+
+                let createTSVFile metaDataSections proteinSections peptideSections psmSections smallMoleculeSections =
+                    {
+                     TSVFile.MetaDataSection       = metaDataSections
+                     TSVFile.ProteinSections       = proteinSections
+                     TSVFile.PeptideSections       = peptideSections
+                     TSVFile.PSMSections           = psmSections
+                     TSVFile.SmallMoleculeSections = smallMoleculeSections
+                    }
+
+                createTSVFile metaDataSections proteinSections' peptideSections' psmSections' smallMoleculeSections'
+
+            ///Writes a tsv-file, based on the TSVFile-Object given.
+            static member saveTSVFile (path:string) (tsvFileObject:TSVFile) =
+
+                let metaData =
+                    [tsvFileObject.MetaDataSection]
+                    |> Seq.ofList 
+                    |> Seq.toCSV ";" true
+
+                let proteinSections =
+                    match tsvFileObject.ProteinSections with
+                    |null -> Seq.ofArray [|""|]
+                    |_ -> tsvFileObject.ProteinSections
+                            |> Seq.ofArray
+                            |> Seq.toCSV ";" true
+
+                let peptideSections =
+                    match tsvFileObject.PeptideSections with
+                    |null -> Seq.ofArray [|""|]
+                    |_ -> tsvFileObject.PeptideSections
+                            |> Seq.ofArray
+                            |> Seq.toCSV ";" true
+
+                let psmSections =
+                    match tsvFileObject.PSMSections with
+                    |null -> Seq.ofArray [|""|]
+                    |_ -> tsvFileObject.PSMSections
+                            |> Seq.ofArray
+                            |> Seq.toCSV ";" true
+
+                let smallMoleculeSections =
+                    match tsvFileObject.SmallMoleculeSections with
+                    |null -> Seq.ofArray [|""|]
+                    |_ -> tsvFileObject.SmallMoleculeSections
+                            |> Seq.ofArray
+                            |> Seq.toCSV ";" true
+
+                let tmp = Seq.concat [metaData; proteinSections; peptideSections; psmSections; smallMoleculeSections]
+                tmp
+                |> Seq.write path

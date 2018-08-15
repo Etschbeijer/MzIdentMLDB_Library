@@ -40,8 +40,7 @@ module DataModel =
 
     ///The metadata section can provide additional information about the dataset(s) reported in the mzTab file. 
     type MetaDataSection =
-
-            {
+           {
             [<FieldAttribute("mzTab-version")>]
             MzTabVersion                             : string
             [<FieldAttribute("mzTab-mode")>]
@@ -87,7 +86,7 @@ module DataModel =
             [<FieldAttribute("contact[1-n]-email")>]
             mutable ContactEMails                    : array<string>
             [<FieldAttribute("uri[1-n]")>]
-            mutable URIs                             : array<string>
+            mutable URI                              : string
             [<FieldAttribute("fixed_mod[1-n]")>]
             FixedMods                                : array<string*string*string*string>
             [<FieldAttribute("fixed_mod[1-n]-site")>]
@@ -153,13 +152,13 @@ module DataModel =
             [<FieldAttribute("study_variable[1-n]-description")>]
             mutable StudyVariablesDescription        : array<string>
             [<FieldAttribute("cv[1-n]-label")>]
-            mutable CvsLabel                         : string
+            mutable CvsLabel                         : array<string>
             [<FieldAttribute("cv[1-n]-full_name")>]
-            mutable CvsFullName                      : string
+            mutable CvsFullName                      : array<string>
             [<FieldAttribute("cv[1-n]-version")>]
-            mutable CvsVersion                       : string
+            mutable CvsVersion                       : array<string>
             [<FieldAttribute("cv[1-n]-url")>]
-            mutable CvsURI                           : string
+            mutable CvsURI                           : array<string>
             [<FieldAttribute("colunit-protein")>]
             mutable ColUnitProtein                   : string*string*string*string
             [<FieldAttribute("colunit-peptide")>]
@@ -168,162 +167,213 @@ module DataModel =
             mutable ColUnitPSM                       : string*string*string*string
             [<FieldAttribute("colunit-small_molecule")>]
             mutable ColUnitSmallMolecule             : string*string*string*string
+           }
+
+    ///The protein section can provide additional information about the reported proteins in the mzTab file.
+    type ProteinSection =
+           {
+            [<FieldAttribute("accession")>]
+            Accession:string
+            [<FieldAttribute("description")>]
+            Description:string
+            [<FieldAttribute("taxid")>]
+            Taxid:int
+            [<FieldAttribute("species")>]
+            Species:string
+            [<FieldAttribute("database")>]
+            Database:string
+            [<FieldAttribute("database_version")>]
+            DatabaseVersion:string
+            [<FieldAttribute("search_engine")>]
+            SearchEngines:array<string*string*string*string>
+            [<FieldAttribute("best_search_engine_score[1-n]")>]
+            BestSearchEngineScore:array<float>
+            [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
+            mutable SearchEngineScoresMSRuns:array<float>
+            [<FieldAttribute("reliability")>]
+            mutable Reliability:int
+            [<FieldAttribute("num_psms_ms_run[1-n]")>]
+            mutable NumPSMsMSRuns:array<int>
+            [<FieldAttribute("num_peptides_distinct_ms_run[1-n]")>]
+            mutable NumPeptidesDistinctMSRuns:array<int>
+            [<FieldAttribute("num_peptides_unique_ms_run[1-n]")>]
+            mutable NumPeptidesUniqueMSRuns:array<int>
+            [<FieldAttribute("ambiguity_members")>]
+            AmbiguityMembers:array<string>
+            [<FieldAttribute("modifications")>]
+            Modifications:array<string>
+            [<FieldAttribute("uri")>]
+            mutable URI:string
+            [<FieldAttribute("go_terms")>]
+            mutable GoTerms:array<string>
+            [<FieldAttribute("protein_coverage")>]
+            mutable ProteinCoverage:float
+            [<FieldAttribute("protein_abundance_assay[1-n]")>]
+            mutable ProteinAbundanceAssays:array<float>
+            [<FieldAttribute("protein_abundance_study_variable[1-n]")>]
+            mutable ProteinAbundanceStudyVariables:array<float>
+            [<FieldAttribute("protein_abundance_stdev_study_variable[1-n]")>]
+            mutable ProteinAbundanceStandardDeviationStudyVariables:array<float>
+            [<FieldAttribute("protein_abundance_std_error_study_variable[1-n]")>]
+            mutable ProteinAbundanceStandardErrorStudyVariables:array<float>
+            [<FieldAttribute("opt_{identifier}_*")>]
+            mutable OptionalInformations:array<string>
+           }
+
+    ///The peptide section can provide additional information about the reported peptides in the mzTab file.
+    type PeptideSection =
+            {
+             [<FieldAttribute("sequence")>]
+             mutable PeptideSequence:string
+             [<FieldAttribute("accession")>]
+             mutable Accession:string
+             [<FieldAttribute("unique")>]
+             mutable Unique:bool
+             [<FieldAttribute("database")>]
+             mutable Database:string
+             [<FieldAttribute("database_version")>]
+             mutable DatabaseVersion:string
+             [<FieldAttribute("search_engine")>]
+             mutable SearchEngines:array<string*string*string*string>
+             [<FieldAttribute("best_search_engine_score[1-n]")>]
+             mutable BestSearchEngineScores:array<float>
+             [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
+             mutable SearchEngineScoresMSRuns:array<float>
+             [<FieldAttribute("reliability")>]
+             mutable Reliability:int
+             [<FieldAttribute("modifications")>]
+             mutable Modifications:array<string>
+             [<FieldAttribute("retention_time")>]
+             mutable RetentionTime:array<float>
+             [<FieldAttribute("retention_time_window")>]
+             mutable RetentionTimeWindow:array<float>
+             [<FieldAttribute("charge")>]
+             mutable Charge:int
+             [<FieldAttribute("mass_to_charge")>]
+             mutable MassToCharge:float
+             [<FieldAttribute("uri")>]
+             mutable URI:string
+             [<FieldAttribute("spectra_ref")>]
+             mutable SpectraRefs:array<string>
+             [<FieldAttribute("peptide_abundance_assay[1-n]")>]
+             mutable PeptideAbundanceAssays:array<float>
+             [<FieldAttribute("peptide_abundance_study_variable[1-n]")>]
+             mutable PeptideAbundanceStudyVariables:array<float>
+             [<FieldAttribute("peptide_abundance_stdev_study_variable[1-n]")>]
+             mutable PeptideAbundanceStandardDeviationStudyVariables:array<float>
+             [<FieldAttribute("peptide_abundance_std_error_study_variable[1-n]")>]
+             mutable PeptideAbundanceStandardErrorStudyVariables:array<float>
+             [<FieldAttribute("opt_{identifier}_*")>]
+             mutable OptionalInformations:array<string>
+            } 
+
+    ///The psm section can provide additional information about the reported psms in the mzTab file.
+    type PSMSection =
+            {
+             [<FieldAttribute("sequence")>]
+             PeptideSequence:string
+             [<FieldAttribute("PSM_ID")>]
+             PSMID:string
+             [<FieldAttribute("accession")>]
+             Accession:string
+             [<FieldAttribute("unique")>]
+             Unique:bool
+             [<FieldAttribute("database")>]
+             Database:string
+             [<FieldAttribute("database_version")>]
+             DatabaseVersion:string
+             [<FieldAttribute("search_engine")>]
+             SearchEngines:array<string*string*string*string>
+             [<FieldAttribute("search_engine_score[1-n]")>]
+             SearchEngineScores:array<float>
+             [<FieldAttribute("reliability")>]
+             mutable Reliability:int
+             [<FieldAttribute("modifications")>]
+             Modifications:array<string>
+             [<FieldAttribute("retention_time")>]
+             RetentionTimes:array<float>
+             [<FieldAttribute("charge")>]
+             Charge:int
+             [<FieldAttribute("exp_mass_to_charge")>]
+             ExpMassToCharge:float
+             [<FieldAttribute("calc_mass_to_charge")>]
+             CalcMassToCharge:float
+             [<FieldAttribute("uri")>]
+             mutable URI:string
+             [<FieldAttribute("spectra_ref")>]
+             SpectraRefs:array<string>
+             [<FieldAttribute("pre")>]
+             Pre:string
+             [<FieldAttribute("post")>]
+             Post:string
+             [<FieldAttribute("start")>]
+             Start:int
+             [<FieldAttribute("end")>]
+             End:int
+             [<FieldAttribute("opt_{identifier}_*")>]
+             mutable OptionalInformations:array<string>
             }
 
-    //The protein section can provide additional information about the reported proteins in the mzTab file.
-    type [<AllowNullLiteral>]
-         ProteinSection (
-                         accession:string, description:string, taxid:int, species:string, database:string, databaseVersion:string, 
-                         searchEngines:array<string*string*string*string>, bestSearchEngineScore:float, 
-                         searchEngineScoresMSRuns:float, reliability:int, numPSMsMSRuns:int, numPeptidesDistinctMSRuns:int,
-                         numPeptidesUniqueMSRuns:int, ambiguityMembers:array<string>, modifications:array<string>, uri:string, goTerms:array<string>, 
-                         proteinCoverage:float, proteinAbundanceAssays:array<float>, proteinAbundanceStudyVariables:array<float>, 
-                         proteinAbundanceStandardDeviationStudyVariables:array<float>, proteinAbundanceStandardErrorStudyVariables:array<float>, 
-                         optionalInformation:array<string>
-                        ) =
+    ///The psm section can provide additional information about the reported psms in the mzTab file.
+    type SmallMoleculeSection =
+            {
+             [<FieldAttribute("identifier")>]
+             Identifiers:array<string>
+             [<FieldAttribute("chemical_formula")>]
+             ChemicalFormula:string
+             [<FieldAttribute("smiles")>]
+             Smiles:array<string>
+             [<FieldAttribute("inchi_key")>]
+             InchiKey:array<string>
+             [<FieldAttribute("description")>]
+             Description:array<string>
+             [<FieldAttribute("exp_mass_to_charge")>]
+             ExpMassToCharge:float
+             [<FieldAttribute("calc_mass_to_charge")>]
+             CalcMassToCharge:float
+             [<FieldAttribute("charge")>]
+             Charge:int
+             [<FieldAttribute("retention_time")>]
+             RetentionTimes:array<float>
+             [<FieldAttribute("taxid")>]
+             Taxid:int
+             [<FieldAttribute("species")>]
+             Species:string
+             [<FieldAttribute("database")>]
+             Database:string
+             [<FieldAttribute("database_version")>]
+             DatabaseVersion:string
+             [<FieldAttribute("reliability")>]
+             mutable Reliability:int
+             [<FieldAttribute("uri")>]
+             mutable URI:string
+             [<FieldAttribute("spectra_ref")>]
+             SpectraRefs:array<string>
+             [<FieldAttribute("search_engine")>]
+             SearchEngines:array<string*string*string*string>
+             [<FieldAttribute("best_search_engine_score[1-n]")>]
+             BestSearchEngineScores:array<float>
+             [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
+             mutable SearchEngineScoresMSRuns:array<float>
+             [<FieldAttribute("modifications")>]
+             Modifications:array<string>
+             [<FieldAttribute("smallmolecule_abundance_assay[1-n]")>]
+             mutable SmallMoleculeAbundanceAssays:array<float>
+             [<FieldAttribute("smallmolecule_abundance_study_variable[1-n]")>]
+             mutable SmallMoleculeAbundanceStudyVariables:array<float>
+             [<FieldAttribute("smallmolecule_abundance_stdev_study_variable [1-n]")>]
+             mutable SmallMoleculeAbundanceStandardDeviationStudyVariables:array<float>
+             [<FieldAttribute("smallmolecule_abundance_std_error_study_variable[1-n]")>]
+             mutable SmallMoleculeAbundanceStandardErrorStudyVariables:array<float>
+             [<FieldAttribute("opt_{identifier}_*")>]
+             mutable OptionalInformations:array<string>
+            }
 
-                        [<FieldAttribute("accession")>]
-                        let mutable accession'                                       = accession
-                        [<FieldAttribute("description")>]
-                        let mutable description'                                     = description
-                        [<FieldAttribute("taxid")>]
-                        let mutable taxid'                                           = taxid
-                        [<FieldAttribute("species")>]
-                        let mutable species'                                         = species
-                        [<FieldAttribute("database")>]
-                        let mutable database'                                        = database
-                        [<FieldAttribute("database_version")>]
-                        let mutable databaseVersion'                                 = databaseVersion
-                        [<FieldAttribute("search_engine")>]
-                        let mutable searchEngines'                                   = searchEngines
-                        [<FieldAttribute("best_search_engine_score[1-n]")>]
-                        let mutable bestSearchEngineScores'                          = bestSearchEngineScore
-                        [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
-                        let mutable searchEngineScoresMSRuns'                        = searchEngineScoresMSRuns
-                        [<FieldAttribute("reliability")>]
-                        let mutable reliability'                                     = reliability
-                        [<FieldAttribute("num_psms_ms_run[1-n]")>]
-                        let mutable numPSMsMSRuns'                                   = numPSMsMSRuns
-                        [<FieldAttribute("num_peptides_distinct_ms_run[1-n]")>]
-                        let mutable numPeptidesDistinctMSRuns'                       = numPeptidesDistinctMSRuns
-                        [<FieldAttribute("num_peptides_unique_ms_run[1-n]")>]
-                        let mutable numPeptidesUniqueMSRuns'                         = numPeptidesUniqueMSRuns
-                        [<FieldAttribute("ambiguity_members")>]
-                        let mutable ambiguityMembers'                                = ambiguityMembers
-                        [<FieldAttribute("modifications")>]
-                        let mutable modifications'                                   = modifications
-                        [<FieldAttribute("uri")>]
-                        let mutable uri'                                             = uri
-                        [<FieldAttribute("go_terms")>]
-                        let mutable goTerms'                                         = goTerms
-                        [<FieldAttribute("protein_coverage")>]
-                        let mutable proteinCoverage'                                 = proteinCoverage
-                        [<FieldAttribute("protein_abundance_assay[1-n]")>]
-                        let mutable proteinAbundanceAssays'                          = proteinAbundanceAssays
-                        [<FieldAttribute("protein_abundance_study_variable[1-n]")>]
-                        let mutable proteinAbundanceStudyVariables'                  = proteinAbundanceStudyVariables
-                        [<FieldAttribute("protein_abundance_stdev_study_variable[1-n]")>]
-                        let mutable proteinAbundanceStandardDeviationStudyVariables' = proteinAbundanceStandardDeviationStudyVariables
-                        [<FieldAttribute("protein_abundance_std_error_study_variable[1-n]")>]
-                        let mutable proteinAbundanceStandardErrorStudyVariables'      = proteinAbundanceStandardErrorStudyVariables
-                        [<FieldAttribute("opt_{identifier}_*")>]
-                        let mutable optionalInformation'                             = optionalInformation
-
-                        member this.Accession with get() = accession' and set(value) = accession' <- value
-                        member this.Description with get() = description' and set(value) = description' <- value
-                        member this.Taxid with get() = taxid' and set(value) = taxid' <- value
-                        member this.Species with get() = species' and set(value) = species' <- value
-                        member this.Database with get() = database' and set(value) = database' <- value
-                        member this.DatabaseVersion with get() = databaseVersion' and set(value) = databaseVersion' <- value
-                        member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
-                        member this.BestSearchEngineScore with get() = bestSearchEngineScores' and set(value) = bestSearchEngineScores' <- value
-                        member this.SearchEngineScoresMSRuns with get() = searchEngineScoresMSRuns' and set(value) = searchEngineScoresMSRuns' <- value
-                        member this.Reliability with get() = reliability' and set(value) = reliability' <- value
-                        member this.NumPSMsMSRuns with get() = numPSMsMSRuns' and set(value) = numPSMsMSRuns' <- value
-                        member this.NumPeptidesDistinctMSRuns with get() = numPeptidesDistinctMSRuns' and set(value) = numPeptidesDistinctMSRuns' <- value
-                        member this.NumPeptidesUniqueMSRuns with get() = numPeptidesUniqueMSRuns' and set(value) = numPeptidesUniqueMSRuns' <- value
-                        member this.AmbiguityMembers with get() = ambiguityMembers' and set(value) = ambiguityMembers' <- value
-                        member this.Modifications with get() = modifications' and set(value) = modifications' <- value
-                        member this.URI with get() = uri' and set(value) = uri' <- value
-                        member this.GoTerms with get() = goTerms' and set(value) = goTerms' <- value
-                        member this.ProteinCoverage with get() = proteinCoverage' and set(value) = proteinCoverage' <- value
-                        member this.ProteinAbundanceAssays with get() = proteinAbundanceAssays' and set(value) = proteinAbundanceAssays' <- value
-                        member this.ProteinAbundanceStudyVariables with get() = proteinAbundanceStudyVariables' and set(value) = proteinAbundanceStudyVariables' <- value
-                        member this.ProteinAbundanceStandardDeviationStudyVariables with get() = proteinAbundanceStandardDeviationStudyVariables' and set(value) = proteinAbundanceStandardDeviationStudyVariables' <- value
-                        member this.ProteinAbundanceStandardErrorStudyVariables with get() = proteinAbundanceStandardErrorStudyVariables' and set(value) = proteinAbundanceStandardErrorStudyVariables' <- value
-                        member this.OptionalInformations with get() = optionalInformation' and set(value) = optionalInformation' <- value
-
-        //The protein section can provide additional information about the reported proteins in the mzTab file.
-    type [<AllowNullLiteral>]
-         PeptideSection (
-                         peptideSequence:string, accession:string, unique:bool, database:string, databaseVersion:string, searchEngines:array<string*string*string*string>,
-                         bestSearchEngineScore:float, searchEngineScoresMSRuns:float, reliability:int, modifications:array<string>, retentionTime:array<float>, 
-                         retentionTimeWindow:array<float>, charge:int, massToCharge:float, uri:string, spectraRefs:array<string>, peptideAbundanceAssay:array<float>, 
-                         peptideAbundanceStudyVariable:array<float>, peptideAbundanceStandardDeviationStudyVariable:array<float>, peptideAbundanceStandardErrorStudyVariables:array<float>, 
-                         optionalInformation:array<string>
-                        ) =
-
-                        [<FieldAttribute("sequence")>]
-                        let mutable peptideSequence'                                 = peptideSequence
-                        [<FieldAttribute("accession")>]
-                        let mutable accession'                                       = accession
-                        [<FieldAttribute("unique")>]
-                        let mutable unique'                                          = unique
-                        [<FieldAttribute("database")>]
-                        let mutable database'                                        = database
-                        [<FieldAttribute("database_version")>]
-                        let mutable databaseVersion'                                 = databaseVersion
-                        [<FieldAttribute("search_engine")>]
-                        let mutable searchEngines'                                   = searchEngines
-                        [<FieldAttribute("best_search_engine_score[1-n]")>]
-                        let mutable bestSearchEngineScores'                          = bestSearchEngineScore
-                        [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
-                        let mutable searchEngineScoresMSRuns'                        = searchEngineScoresMSRuns
-                        [<FieldAttribute("reliability")>]
-                        let mutable reliability'                                     = reliability
-                        [<FieldAttribute("modifications")>]
-                        let mutable modifications'                                   = modifications
-                        [<FieldAttribute("retention_time")>]
-                        let mutable retentionTime'                                   = retentionTime
-                        [<FieldAttribute("retention_time_window")>]
-                        let mutable retentionTimeWindow'                             = retentionTimeWindow
-                        [<FieldAttribute("charge")>]
-                        let mutable charge'                                          = charge
-                        [<FieldAttribute("mass_to_charge")>]
-                        let mutable massToCharge'                                    = massToCharge
-                        [<FieldAttribute("uri")>]
-                        let mutable uri'                                             = uri
-                        [<FieldAttribute("spectra_ref")>]
-                        let mutable spectraRefs'                                     = spectraRefs
-                        [<FieldAttribute("peptide_abundance_assay[1-n]")>]
-                        let mutable peptideAbundanceAssay'                           = peptideAbundanceAssay
-                        [<FieldAttribute("peptide_abundance_study_variable[1-n]")>]
-                        let mutable peptideAbundanceStudyVariable'                   = peptideAbundanceStudyVariable
-                        [<FieldAttribute("peptide_abundance_stdev_study_variable[1-n]")>]
-                        let mutable peptideAbundanceStandardDeviationStudyVariable'  = peptideAbundanceStandardDeviationStudyVariable
-                        [<FieldAttribute("peptide_abundance_std_error_study_variable[1-n]")>]
-                        let mutable peptideAbundanceStandardErrorStudyVariables'     = peptideAbundanceStandardErrorStudyVariables
-                        [<FieldAttribute("opt_{identifier}_*")>]
-                        let mutable optionalInformation'                             = optionalInformation
-
-                        member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
-                        member this.Accession with get() = accession' and set(value) = accession' <- value
-                        member this.Unique with get() = unique' and set(value) = unique' <- value
-                        member this.Database with get() = database' and set(value) = database' <- value
-                        member this.DatabaseVersion with get() = databaseVersion' and set(value) = databaseVersion' <- value
-                        member this.SearchEngines with get() = searchEngines' and set(value) = searchEngines' <- value
-                        member this.BestSearchEngineScore with get() = bestSearchEngineScores' and set(value) = bestSearchEngineScores' <- value
-                        member this.SearchEngineScoresMSRuns with get() = searchEngineScoresMSRuns' and set(value) = searchEngineScoresMSRuns' <- value
-                        member this.Reliability with get() = reliability' and set(value) = reliability' <- value
-                        member this.Modifications with get() = modifications' and set(value) = modifications' <- value
-                        member this.RetentionTime with get() = retentionTime' and set(value) = retentionTime' <- value
-                        member this.RetentionTimeWindow with get() = retentionTimeWindow' and set(value) = retentionTimeWindow' <- value
-                        member this.charge with get() = charge' and set(value) = charge' <- value
-                        member this.MassToCharge with get() = massToCharge' and set(value) = massToCharge' <- value
-                        member this.URI with get() = uri' and set(value) = uri' <- value
-                        member this.SpectraRefs with get() = spectraRefs' and set(value) = spectraRefs' <- value
-                        member this.PeptideAbundanceAssay with get() = peptideAbundanceAssay' and set(value) = peptideAbundanceAssay' <- value
-                        member this.PeptideAbundanceStudyVariable with get() = peptideAbundanceStudyVariable' and set(value) = peptideAbundanceStudyVariable' <- value
-                        member this.PeptideAbundanceStandardDeviationStudyVariable with get() = peptideAbundanceStandardDeviationStudyVariable' and set(value) = peptideAbundanceStandardDeviationStudyVariable' <- value
-                        member this.PeptideAbundanceStandardErrorStudyVariables with get() = peptideAbundanceStandardErrorStudyVariables' and set(value) = peptideAbundanceStandardErrorStudyVariables' <- value
-                        member this.OptionalInformations with get() = optionalInformation' and set(value) = optionalInformation' <- value
+    type TSVFile =
+        {
+         MetaDataSection       : MetaDataSection
+         ProteinSections       : array<ProteinSection>
+         PeptideSections       : array<PeptideSection>
+         PSMSections           : array<PSMSection>
+         SmallMoleculeSections : array<SmallMoleculeSection>
+        }

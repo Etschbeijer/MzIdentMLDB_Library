@@ -31,7 +31,7 @@ open TSVMzTabDataBase.InsertStatements.ObjectHandlers
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
+let standardTSVPath = fileDir + "\Databases"
 
 
 let testString = "Test"
@@ -40,24 +40,32 @@ let testStringCollection = [testString]
 let testStringTimes4Collection = [testStringTimes4]
 
 let metaDataSectionMinimum =
-    MetaDataSectionHandler.init(
+    MetaDataSectionHandler.initBaseObject(
         testString, 0, 0, testString, testStringTimes4Collection, testStringTimes4Collection, testStringTimes4Collection, testStringTimes4Collection, testStringTimes4Collection, 
         testStringTimes4Collection, testString, testString
-                               )
+                                        )
 
 let proteinSectionFull =
-    ProteinSectionHandler.init(
-        testString, testString, -1, testString, testString, testString, testStringTimes4Collection, -1., testStringCollection, testStringCollection, 
-        testStringTimes4Collection, -1, -1, -1, -1, testString, testStringCollection, -1., [-1.], [-1.], [-1.], [-1.], testStringCollection
-                              )
+    ProteinSectionHandler.initBaseObject(
+        testString, testString, -1, testString, testString, testString, testStringTimes4Collection, [-2.], testStringCollection, testStringCollection, 
+        [-2.], -2, [-2], [-2], [-2], testString, testStringCollection, -1., [-1.], [-1.], [-1.], [-1.], testStringCollection
+                                        )
 
 let proteinSectionMinimum =
-    ProteinSectionHandler.init(
+    ProteinSectionHandler.initBaseObject(
         testString, testString, -1, testString, testString, testString, 
-        testStringTimes4Collection, -1., testStringCollection, testStringCollection
-                              )
-    |> ProteinSectionHandler.addSearchEngineScoresMSRun testStringTimes4
-    |> ProteinSectionHandler.addSearchEngineScoresMSRuns testStringTimes4Collection
-    |> ProteinSectionHandler.addSearchEngineScoresMSRun testStringTimes4
+        testStringTimes4Collection, [-2.], testStringCollection, testStringCollection
+                                        )
+    |> ProteinSectionHandler.addSearchEngineScoresMSRun -1.
+    |> ProteinSectionHandler.addSearchEngineScoresMSRuns [-2.; -2.]
+    |> ProteinSectionHandler.addSearchEngineScoresMSRun -1.
 
+let testCSVFile =
+    [proteinSectionMinimum]
+    |> Seq.ofList 
+    |> Seq.toCSV ";" true
+    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 
+let testCSVCompleteSections =
+    TSVFileHandler.init(metaDataSectionMinimum, [proteinSectionFull])
+    |> TSVFileHandler.saveTSVFile (standardTSVPath + "\TSV_TestFile_1.csv")
