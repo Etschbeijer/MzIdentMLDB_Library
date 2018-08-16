@@ -36,47 +36,15 @@ module InsertStatements =
                 | _ -> 
                     Array.append typeCollection (optionOfType.ToArray())
 
-        // Defining the objectHandlers of the entities of the dbContext.
-
-        //open HelperFunctions
-
-        //type ContextHandler =
-
-        //    ///Creates connection for SQLite-context and database.
-        //    static member sqliteConnection (path:string) =
-        //        let optionsBuilder = 
-        //            new DbContextOptionsBuilder<MzTab>()
-        //        optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
-        //        new MzTab(optionsBuilder.Options)       
-
-        //    ///Creats connection for SQL-context and database.
-        //    static member sqlConnection() =
-        //        let optionsBuilder = 
-        //            new DbContextOptionsBuilder<MzTab>()
-        //        optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
-        //        new MzTab(optionsBuilder.Options) 
-
-        //    ///Reads obo-file and creates sequence of Obo.Terms.
-        //    static member fromFileObo (filePath:string) =
-        //        FileIO.readFile filePath
-        //        |> Obo.parseOboTerms
-
-        //    ///Tries to add the object to the database-context.
-        //    static member tryAddToContext (context:MzTab) (item:'b) =
-        //        context.Add(item)
-
-        //    ///Tries to add the object to the database-context and insert it in the database.
-        //    static member tryAddToContextAndInsert (context:MzTab) (item:'b) =
-        //        context.Add(item) |> ignore
-        //        context.SaveChanges()
 
         open HelperFunctions
 
         
-
         type MetaDataSectionHandler =
             ///Initializes a metaDataSection-object with at least all necessary parameters for the section, 
-            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode.
+            ///in order to be used as a basis for all combinations of mzTabType and mzTabMode. 
+            ///In order to choose the mzTabMode "Summary" put 1 in and 2 for "Complete".
+            ///In order to choose the mzTabType "Identification" put 1 in and 2 for "Quantification". If both was done use "Quantification".
             static member initBaseObject
                 (             
                     mzTabVersion                        : string,
@@ -787,54 +755,54 @@ module InsertStatements =
                     
                 ) =
 
-                let mzID'                             = defaultArg mzID Unchecked.defaultof<string>
-                let title'                            = defaultArg title Unchecked.defaultof<string>
-                let sampleProcessings'                = convertOptionToArray sampleProcessings 
-                let instrumentNames'                  = convertOptionToArray instrumentNames 
-                let instrumentSources'                = convertOptionToArray instrumentSources
-                let instrumentAnalyzers'              = convertOptionToArray instrumentAnalyzers 
-                let instrumentDetectors'              = convertOptionToArray instrumentDetectors
-                let softwares'                        = convertOptionToArray softwares
-                let softwaresSettings'                = convertOptionToArray softwaresSettings
-                let falseDiscoveryRates'              = convertOptionToArray falseDiscoveryRates
-                let publications'                     = convertOptionToArray publications 
-                let contactNames'                     = convertOptionToArray contactNames
-                let contactAffiliations'              = convertOptionToArray contactAffiliations
-                let contactEMails'                    = convertOptionToArray contactEMails
-                let uri'                              = defaultArg uri Unchecked.defaultof<string>
-                let fixedModSites'                    = convertOptionToArray fixedModSites
-                let fixedModPositions'                = convertOptionToArray fixedModPositions
-                let variableModSites'                 = convertOptionToArray variableModSites
-                let variableModPositions'             = convertOptionToArray variableModPositions
-                let quantificationMethod'             = defaultArg quantificationMethod Unchecked.defaultof<string*string*string*string>
-                let proteinQuantificationUnit'        = defaultArg proteinQuantificationUnit Unchecked.defaultof<string*string*string*string>
-                let peptideQuantificationUnit'        = defaultArg peptideQuantificationUnit Unchecked.defaultof<string*string*string*string>
-                let smallMoleculeQuantificationUnit'  = defaultArg smallMoleculeQuantificationUnit Unchecked.defaultof<string*string*string*string>
-                let msRunsFormat'                     = defaultArg msRunsFormat Unchecked.defaultof<string*string*string*string>
-                let msRunsIDFormats'                  = defaultArg msRunsIDFormats Unchecked.defaultof<string*string*string*string>
-                let msRunsFragmentationMethods'       = convertOptionToArray msRunsFragmentationMethods
-                let msRunsHash'                       = defaultArg msRunsHash Unchecked.defaultof<string>
-                let msRunsHashMethod'                 = defaultArg msRunsHashMethod Unchecked.defaultof<string*string*string*string>
-                let customs'                          = convertOptionToArray customs
-                let samplesSpecies'                   = convertOptionToArray samplesSpecies
-                let sampleTissues'                    = convertOptionToArray sampleTissues
-                let samplesCellTypes'                 = convertOptionToArray samplesCellTypes
-                let samplesDiseases'                  = convertOptionToArray samplesDiseases
-                let sampleDescriptions'               = convertOptionToArray sampleDescriptions
-                let samplesCustoms'                   = convertOptionToArray samplesCustoms
-                let assaysSampleRef'                  = defaultArg assaysSampleRef Unchecked.defaultof<string>
-                let assaysMSRunRef'                   = defaultArg assaysMSRunRef Unchecked.defaultof<string>
-                let studyVariablesAssayRefs'          = convertOptionToArray studyVariablesAssayRefs
-                let studyVariablesSampleRefs'         = convertOptionToArray studyVariablesSampleRefs
-                let studyVariablesDescription'        = convertOptionToArray studyVariablesDescription
-                let cvsLabel'                         = convertOptionToArray cvsLabel
-                let cvsFullName'                      = convertOptionToArray cvsFullName
-                let cvsVersion'                       = convertOptionToArray cvsVersion 
-                let cvsURI'                           = convertOptionToArray cvsURI 
-                let colUnitProtein'                   = defaultArg colUnitProtein Unchecked.defaultof<string*string*string*string>
-                let colUnitPeptide'                   = defaultArg colUnitPeptide Unchecked.defaultof<string*string*string*string>
-                let colUnitPSM'                       = defaultArg colUnitPSM Unchecked.defaultof<string*string*string*string>
-                let colUnitSmallMolecule'             = defaultArg colUnitSmallMolecule Unchecked.defaultof<string*string*string*string>
+                let mzID'                            = defaultArg mzID Unchecked.defaultof<string>
+                let title'                           = defaultArg title Unchecked.defaultof<string>
+                let sampleProcessings'               = convertOptionToArray sampleProcessings 
+                let instrumentNames'                 = convertOptionToArray instrumentNames 
+                let instrumentSources'               = convertOptionToArray instrumentSources
+                let instrumentAnalyzers'             = convertOptionToArray instrumentAnalyzers 
+                let instrumentDetectors'             = convertOptionToArray instrumentDetectors
+                let softwares'                       = convertOptionToArray softwares
+                let softwaresSettings'               = convertOptionToArray softwaresSettings
+                let falseDiscoveryRates'             = convertOptionToArray falseDiscoveryRates
+                let publications'                    = convertOptionToArray publications 
+                let contactNames'                    = convertOptionToArray contactNames
+                let contactAffiliations'             = convertOptionToArray contactAffiliations
+                let contactEMails'                   = convertOptionToArray contactEMails
+                let uri'                             = defaultArg uri Unchecked.defaultof<string>
+                let fixedModSites'                   = convertOptionToArray fixedModSites
+                let fixedModPositions'               = convertOptionToArray fixedModPositions
+                let variableModSites'                = convertOptionToArray variableModSites
+                let variableModPositions'            = convertOptionToArray variableModPositions
+                let quantificationMethod'            = defaultArg quantificationMethod Unchecked.defaultof<string*string*string*string>
+                let proteinQuantificationUnit'       = defaultArg proteinQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let peptideQuantificationUnit'       = defaultArg peptideQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let smallMoleculeQuantificationUnit' = defaultArg smallMoleculeQuantificationUnit Unchecked.defaultof<string*string*string*string>
+                let msRunsFormat'                    = defaultArg msRunsFormat Unchecked.defaultof<string*string*string*string>
+                let msRunsIDFormats'                 = defaultArg msRunsIDFormats Unchecked.defaultof<string*string*string*string>
+                let msRunsFragmentationMethods'      = convertOptionToArray msRunsFragmentationMethods
+                let msRunsHash'                      = defaultArg msRunsHash Unchecked.defaultof<string>
+                let msRunsHashMethod'                = defaultArg msRunsHashMethod Unchecked.defaultof<string*string*string*string>
+                let customs'                         = convertOptionToArray customs
+                let samplesSpecies'                  = convertOptionToArray samplesSpecies
+                let sampleTissues'                   = convertOptionToArray sampleTissues
+                let samplesCellTypes'                = convertOptionToArray samplesCellTypes
+                let samplesDiseases'                 = convertOptionToArray samplesDiseases
+                let sampleDescriptions'              = convertOptionToArray sampleDescriptions
+                let samplesCustoms'                  = convertOptionToArray samplesCustoms
+                let assaysSampleRef'                 = defaultArg assaysSampleRef Unchecked.defaultof<string>
+                let assaysMSRunRef'                  = defaultArg assaysMSRunRef Unchecked.defaultof<string>
+                let studyVariablesAssayRefs'         = convertOptionToArray studyVariablesAssayRefs
+                let studyVariablesSampleRefs'        = convertOptionToArray studyVariablesSampleRefs
+                let studyVariablesDescription'       = convertOptionToArray studyVariablesDescription
+                let cvsLabel'                        = convertOptionToArray cvsLabel
+                let cvsFullName'                     = convertOptionToArray cvsFullName
+                let cvsVersion'                      = convertOptionToArray cvsVersion 
+                let cvsURI'                          = convertOptionToArray cvsURI 
+                let colUnitProtein'                  = defaultArg colUnitProtein Unchecked.defaultof<string*string*string*string>
+                let colUnitPeptide'                  = defaultArg colUnitPeptide Unchecked.defaultof<string*string*string*string>
+                let colUnitPSM'                      = defaultArg colUnitPSM Unchecked.defaultof<string*string*string*string>
+                let colUnitSmallMolecule'            = defaultArg colUnitSmallMolecule Unchecked.defaultof<string*string*string*string>
 
                 let createMetadatasectionWithSummaryModeAndIdentificationType
                         mzTabVersion mzID title description sampleProcessings instrumentNames instrumentSources instrumentAnalyzers
@@ -1652,21 +1620,21 @@ module InsertStatements =
                 let metaData =
                     [tsvFileObject.MetaDataSection]
                     |> Seq.ofList 
-                    |> Seq.toCSV ";" true
+                    |> Seq.toCSV "," true
 
                 let proteinSections =
                     match tsvFileObject.ProteinSections with
                     |null -> Seq.ofArray [|""|]
                     |_ -> tsvFileObject.ProteinSections
                             |> Seq.ofArray
-                            |> Seq.toCSV ";" true
+                            |> Seq.toCSV "," true
 
                 let peptideSections =
                     match tsvFileObject.PeptideSections with
                     |null -> Seq.ofArray [|""|]
                     |_ -> tsvFileObject.PeptideSections
                             |> Seq.ofArray
-                            |> Seq.toCSV ";" true
+                            |> Seq.toCSV "," true
 
                 let psmSections =
                     match tsvFileObject.PSMSections with
@@ -1680,7 +1648,7 @@ module InsertStatements =
                     |null -> Seq.ofArray [|""|]
                     |_ -> tsvFileObject.SmallMoleculeSections
                             |> Seq.ofArray
-                            |> Seq.toCSV ";" true
+                            |> Seq.toCSV "," true
 
                 let tmp = Seq.concat [metaData; proteinSections; peptideSections; psmSections; smallMoleculeSections]
                 tmp

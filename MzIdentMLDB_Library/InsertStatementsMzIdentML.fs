@@ -8130,7 +8130,7 @@ module InsertStatements =
                                            i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
@@ -8142,7 +8142,7 @@ module InsertStatements =
                                                        i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, __, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                              then None
                                                              else Some mzIdentMLDocument

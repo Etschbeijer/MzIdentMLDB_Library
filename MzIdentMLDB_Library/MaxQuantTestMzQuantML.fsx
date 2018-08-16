@@ -940,7 +940,7 @@ type TermIDByName =
         | Minute
         | Second
         | Ppm
-        | Percent
+        | Percentage
         | Dalton
         | KiloDalton
         | NumberOfDetections
@@ -1014,7 +1014,7 @@ type TermIDByName =
             | RazorAndUniquePeptides -> "User:0000015"
             | UniquePeptides -> "User:0000016"
             | SequenceCoverage -> "MS:1001093"
-            | Percent -> "UO:0000187"
+            | Percentage -> "UO:0000187"
             | UniqueAndRazorSequenceCoverage -> "User:0000017"
             | UniqueSequenceCoverage -> "User:0000018"
             | MolecularWeight -> "PRIDE:0000057"
@@ -1410,10 +1410,19 @@ let proteinRef =
     ProteinRefHandler.init(protein)
     |> ProteinRefHandler.addDetails proteinRefParams
 
+let proteinGroupParam =
+    ProteinGroupParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+                                 )
+    |> ProteinGroupParamHandler.addValue "31.7"
+    |> ProteinGroupParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
+
 let proteinGroup =
     ProteinGroupHandler.init(
         searchDatabase, [proteinRef]
                             )
+    |> ProteinGroupHandler.addDetail proteinGroupParam
 
 let proteinGroupList =
     ProteinGroupListHandler.init([proteinGroup])
@@ -1453,7 +1462,7 @@ let provider =
     |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let finalMzQuantMLDocument = 
-    MzQuantMLDocumentHandler.init()
+    mzQuantMLDocument
     |> MzQuantMLDocumentHandler.addProteinGroupList proteinGroupList
     |> MzQuantMLDocumentHandler.addOrganizations organizations
     |> MzQuantMLDocumentHandler.addPerson person
@@ -1464,6 +1473,11 @@ let finalMzQuantMLDocument =
     |> MzQuantMLDocumentHandler.addCreationDate DateTime.Today
     |> MzQuantMLDocumentHandler.addVersion "1.0"
     |> MzQuantMLDocumentHandler.addName "TestForMaxQuantData"
-    |> MzQuantMLDocumentHandler.addToContext sqliteMzQuantMLContext
+    |> MzQuantMLDocumentHandler.addToContext sqliteMzQuantMLContext    
 
-sqliteMzQuantMLContext.SaveChanges()
+//sqliteMzQuantMLContext.SaveChanges()
+
+let findMzIdentMLDocument =
+    MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
+
+(Seq.item 0 findMzIdentMLDocument.Value).ProteinGroupList.[0]

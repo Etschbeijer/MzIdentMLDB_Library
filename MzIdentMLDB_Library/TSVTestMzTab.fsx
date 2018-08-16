@@ -48,7 +48,7 @@ let metaDataSectionMinimum =
 let proteinSectionFull =
     ProteinSectionHandler.initBaseObject(
         testString, testString, -1, testString, testString, testString, testStringTimes4Collection, [-2.], testStringCollection, testStringCollection, 
-        [-2.], -2, [-2], [-2], [-2], testString, testStringCollection, -1., [-1.], [-1.], [-1.], [-1.], testStringCollection
+        [-2.], -2, [-2], [-2], [-2], testString, testStringCollection, -1., [-1.; -2.], [-1.], [-1.], [-1.], testStringCollection
                                         )
 
 let proteinSectionMinimum =
@@ -63,9 +63,32 @@ let proteinSectionMinimum =
 let testCSVFile =
     [proteinSectionMinimum]
     |> Seq.ofList 
-    |> Seq.toCSV ";" true
+    |> Seq.toCSV "," true
     |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 
 let testCSVCompleteSections =
     TSVFileHandler.init(metaDataSectionMinimum, [proteinSectionFull])
     |> TSVFileHandler.saveTSVFile (standardTSVPath + "\TSV_TestFile_1.csv")
+
+type TestUnionCase =
+        |Test1
+        |Test2
+        static member toFunction (item:TestUnionCase) =
+            match item with
+            |Test1 -> Test2
+            |Test2 -> TestUnionCase.toFunction Test1
+            
+type Test =
+    {
+     ID         : TestUnionCase
+     ToFunction : TestUnionCase
+    }
+
+let createTest id =
+    {
+     Test.ID         = id
+     Test.ToFunction = TestUnionCase.toFunction id
+    }
+
+createTest Test1
+createTest Test2
