@@ -638,6 +638,8 @@ type TermIDByName =
         | PeptideRatio
         ///
         | MassDeviation
+        ///The NCBI taxonomy id for the species.
+        | TaxidNCBI
 
         //AminoAcids
         ///Sequence of amino acids.
@@ -1155,11 +1157,12 @@ type TermIDByName =
             | PeptideRatio -> "MS:1001132"
             | MzDeltaScore -> "MS:1001975"
             | MassDeviation -> "User:0000074"
+            | TaxidNCBI -> "MS:1001467"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
 let mzIdentMLDocument =
-    MzIdentMLDocumentHandler.init(version="1.0", id="Peptides ID=119")
+    MzIdentMLDocumentHandler.init(version="1.0", id="Test1")
 
 let measureErrors =
     [
@@ -1272,17 +1275,23 @@ let searchDatabase =
         "https://www.uniprot.org/", fileFormat1, databaseName
                                 )
 
-let dbSequenceParam =
+let dbSequenceParams =
+    [
+    DBSequenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TaxidNCBI)).Value
+                               )
+    |> DBSequenceParamHandler.addValue "906914";
     DBSequenceParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScientificName)).Value
                                )
-    |> DBSequenceParamHandler.addValue "C. reinhardtii"
+    |> DBSequenceParamHandler.addValue "C. reinhardtii";
+    ]
 
 let dbSequence =
-    DBSequenceHandler.init("AAIEASFGSVDEMK", searchDatabase)
+    DBSequenceHandler.init("Cre02.g096150.t1.2", searchDatabase)
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
-    |> DBSequenceHandler.addDetail dbSequenceParam
+    |> DBSequenceHandler.addDetails dbSequenceParams
     |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let peptideParamUnmodified =

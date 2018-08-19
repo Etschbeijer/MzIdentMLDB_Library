@@ -26,8 +26,15 @@ open BioFSharp
 open BioFSharp.IO
 open FSharp.Care.IO
 open FSharp.Data
+
+open MzIdentMLDataBase.DataModel
+open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzQuantMLDataBase.DataModel
+open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open TSVMzTabDataBase.DataModel
 open TSVMzTabDataBase.InsertStatements.ObjectHandlers
+open MzQuantMLDataBase.InsertStatements.ObjectHandlers
+
 
 
 let fileDir = __SOURCE_DIRECTORY__
@@ -92,3 +99,67 @@ let createTest id =
 
 createTest Test1
 createTest Test2
+
+////////////////////////////////////////////////////
+//New Test//////////
+////////////////////////////////////////////////////
+
+let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+
+let sqliteMzIdentMLContext = 
+    MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
+
+let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
+
+let sqliteMzQuantMLContext = 
+    ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
+
+
+let findProteinsofProfteinList (dbContext:MzQuantML) (id:string) =
+    query {
+            for i in dbContext.ProteinList.Local do
+                if i.ID=id
+                    then select i.Proteins
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.ProteinList do
+                            if i.ID=id
+                                then select i.Proteins
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  x |> Seq.collect (fun item1 -> item1)
+        | None ->  [] |> seq
+       )
+
+let createProteinSection (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
+    
+    let mzIdentML = MzIdentMLDocumentHandler.tryFindByID mzIdentMLContext mzIdentMLDocumentID
+    let mzQuantML = MzQuantMLDocumentHandler.tryFindByID mzQuantMLContext mzQuantMLDocumentID
+
+    let proteins = 
+        match mzQuantML with
+        | Some x -> x.ProteinList
+                    |> Seq.collect (fun proteinListItem -> findProteinsofProfteinList mzQuantMLContext proteinListItem.ID)  
+        | None -> [] |> seq
+
+    let accessions =
+        proteins 
+        |> Seq.map (fun protein -> protein.Accession)
+    accessions
+
+    let dbSequence =
+        
+
+let test = 
+    createProteinSection "Lalala" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+

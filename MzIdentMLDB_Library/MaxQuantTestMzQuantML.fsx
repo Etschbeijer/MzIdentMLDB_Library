@@ -1157,7 +1157,7 @@ type TermIDByName =
 
 
 let mzQuantMLDocument =
-    MzQuantMLDocumentHandler.init()
+    MzQuantMLDocumentHandler.init("Test1")
 
 let analysisSoftwareParams =
     [
@@ -1389,11 +1389,20 @@ let peptideConsensusList =
     PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized])
     |> PeptideConsensusListHandler.addMzQuantMLDocument mzQuantMLDocument
 
+let proteinParam =
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+                            )
+    |> ProteinParamHandler.addValue "31.7"
+    |> ProteinParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
+
 let protein =
     ProteinHandler.init(
         "Cre02.g096150.t1.2", searchDatabase, "Cre02.g096150.t1.2"
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
+    |> ProteinHandler.addDetail proteinParam
 
 let proteinRefParams =
     [
@@ -1417,6 +1426,10 @@ let proteinGroupParam =
     |> ProteinGroupParamHandler.addValue "31.7"
     |> ProteinGroupParamHandler.addUnit
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
+
+let proteinList =
+    ProteinListHandler.init([protein])
+    |> ProteinListHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let proteinGroup =
     ProteinGroupHandler.init(
@@ -1473,9 +1486,10 @@ let finalMzQuantMLDocument =
     |> MzQuantMLDocumentHandler.addCreationDate DateTime.Today
     |> MzQuantMLDocumentHandler.addVersion "1.0"
     |> MzQuantMLDocumentHandler.addName "TestForMaxQuantData"
+    |> MzQuantMLDocumentHandler.addProteinList proteinList
     |> MzQuantMLDocumentHandler.addToContext sqliteMzQuantMLContext    
 
-//sqliteMzQuantMLContext.SaveChanges()
+sqliteMzQuantMLContext.SaveChanges()
 
 let findMzIdentMLDocument =
     MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
