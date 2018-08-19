@@ -149,9 +149,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Term.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Term.Local do
+                           if i.ID=id
+                              then select (i, i.Ontology)
+                      }
+                |> Seq.map (fun (term,_) -> term)
+                |> (fun term -> 
+                    if (Seq.exists (fun term' -> term' <> null) term) = false
+                        then 
+                            query {
+                                   for i in dbContext.Term do
+                                       if i.ID=id
+                                          then select (i, i.Ontology)
+                                  }
+                            |> Seq.map (fun (term,_) -> term)
+                            |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
+                                                then None
+                                                else Some (term.Single())
+                               )
+                        else Some (term.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -160,7 +179,7 @@ module InsertStatements =
                            if i.Name=name
                               then select (i, i.Ontology)
                       }
-                |> Seq.map (fun (term, _) -> term)
+                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
@@ -169,7 +188,7 @@ module InsertStatements =
                                        if i.Name=name
                                           then select (i, i.Ontology)
                                   }
-                            |> Seq.map (fun (term, _) -> term)
+                            |> Seq.map (fun (term,_) -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some term
@@ -234,9 +253,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Ontology.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Ontology.Local do
+                           if i.ID=id
+                              then select (i, i.Terms)
+                      }
+                |> Seq.map (fun (ontology, _) -> ontology)
+                |> (fun ontology -> 
+                    if (Seq.exists (fun ontology' -> ontology' <> null) ontology) = false
+                        then 
+                            query {
+                                   for i in dbContext.Ontology do
+                                       if i.ID=id
+                                          then select (i, i.Terms)
+                                  }
+                            |> Seq.map (fun (ontology, _) -> ontology)
+                            |> (fun ontology -> if (Seq.exists (fun ontology' -> ontology' <> null) ontology) = false
+                                                then None
+                                                else Some (ontology.Single())
+                               )
+                        else Some (ontology.Single())
+                   )
 
         type CVParamHandler =
             ///Initializes a cvparam-object with at least all necessary parameters.
@@ -272,9 +310,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.CVParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.CVParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.CVParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -283,7 +340,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -292,7 +349,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -362,9 +419,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.OrganizationParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.OrganizationParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.OrganizationParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -373,7 +449,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -382,7 +458,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -452,9 +528,28 @@ module InsertStatements =
                 param
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.PersonParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.PersonParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PersonParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -463,7 +558,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -472,7 +567,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -542,9 +637,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.AnalysisSoftwareParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisSoftwareParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftwareParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -553,7 +667,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -562,7 +676,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -632,9 +746,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SearchDatabaseParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SearchDatabaseParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchDatabaseParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -643,7 +776,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -652,7 +785,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -722,9 +855,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.RawFileParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RawFileParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.RawFileParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -733,7 +885,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -742,7 +894,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -812,9 +964,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.AssayParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.AssayParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AssayParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -823,7 +994,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -832,7 +1003,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -902,9 +1073,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.StudyVariableParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.StudyVariableParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.StudyVariableParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -913,7 +1103,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -922,7 +1112,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -992,9 +1182,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.RatioCalculationParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RatioCalculationParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.RatioCalculationParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1003,7 +1212,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1012,7 +1221,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1082,9 +1291,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.FeatureParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.FeatureParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FeatureParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1093,7 +1321,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1102,7 +1330,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1172,9 +1400,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SmallMoleculeParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SmallMoleculeParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1183,7 +1430,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1192,7 +1439,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1262,9 +1509,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SmallMoleculeListParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SmallMoleculeListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1273,7 +1539,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1282,7 +1548,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1352,9 +1618,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.PeptideConsensusParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.PeptideConsensusParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideConsensusParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1363,7 +1648,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1372,7 +1657,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1442,9 +1727,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1453,7 +1757,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1462,7 +1766,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1532,9 +1836,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinListParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1543,7 +1866,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1552,7 +1875,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1622,9 +1945,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinGroupParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinGroupParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinGroupParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1633,7 +1975,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1642,7 +1984,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1712,9 +2054,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinGroupListParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinGroupListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinGroupListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1723,7 +2084,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1732,7 +2093,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1802,9 +2163,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.PeptideConsensusListParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.PeptideConsensusListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideConsensusListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -1813,7 +2193,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -1822,7 +2202,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1901,27 +2281,46 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.AnalysisSummary.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisSummary.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                      }
+                |> Seq.map (fun (analysisSummary, _, _, _) -> analysisSummary)
+                |> (fun analysisSummary -> 
+                    if (Seq.exists (fun analysisSummary' -> analysisSummary' <> null) analysisSummary) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSummary do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                                  }
+                            |> Seq.map (fun (analysisSummary, _, _, _) -> analysisSummary)
+                            |> (fun analysisSummary -> if (Seq.exists (fun analysisSummary' -> analysisSummary' <> null) analysisSummary) = false
+                                                        then None
+                                                        else Some (analysisSummary.Single())
+                               )
+                        else Some (analysisSummary.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.AnalysisSummary.Local do
                            if i.Term.Name=name
-                              then select (i, i.Term, i.Unit)
+                              then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (term, _, _, _) -> term)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisSummary do
                                        if i.Term.Name=name
-                                          then select (i, i.Term, i.Unit)
+                                          then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (term, _, _, _) -> term)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -1991,9 +2390,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinRefParam.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinRefParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinRefParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
@@ -2002,7 +2420,7 @@ module InsertStatements =
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (param,_ ,_) -> param)
+                |> Seq.map (fun (param, _ ,_) -> param)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
@@ -2011,7 +2429,7 @@ module InsertStatements =
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (param,_ ,_) -> param)
+                            |> Seq.map (fun (param, _ ,_) -> param)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -2092,9 +2510,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.AnalysisSoftware.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisSoftware.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                |> (fun analysisSoftware -> 
+                    if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftware do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (analysisSoftware, _) -> analysisSoftware)
+                            |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                                                        then None
+                                                        else Some (analysisSoftware.Single())
+                               )
+                        else Some (analysisSoftware.Single())
+                   )
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByVersion (dbContext:MzQuantML) (version:string) =
@@ -2191,9 +2628,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a sourceFile-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SourceFile.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SourceFile.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat)
+                      }
+                |> Seq.map (fun (sourceFile, _) -> sourceFile)
+                |> (fun sourceFile -> 
+                    if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.SourceFile do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat)
+                                  }
+                            |> Seq.map (fun (sourceFile, _) -> sourceFile)
+                            |> (fun sourceFile -> if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                                                    then None
+                                                    else Some (sourceFile.Single())
+                               )
+                        else Some (sourceFile.Single())
+                   )
 
             ///Tries to find a sourceFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
@@ -2303,9 +2759,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Organization.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Organization.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (organization, _) -> organization)
+                |> (fun organization -> 
+                    if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                        then 
+                            query {
+                                   for i in dbContext.Organization do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (organization, _) -> organization)
+                            |> (fun organization -> if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                                                    then None
+                                                    else Some (organization.Single())
+                               )
+                        else Some (organization.Single())
+                   )
 
             ///Tries to find an organization-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -2314,7 +2789,7 @@ module InsertStatements =
                            if i.Name = name
                               then select (i, i.Details)
                       }
-                |> Seq.map (fun (organization, _ ) -> organization)
+                |> Seq.map (fun (organization, _) -> organization)
                 |> (fun organization -> 
                     if (Seq.exists (fun organization' -> organization' <> null) organization) = false
                         then 
@@ -2323,7 +2798,7 @@ module InsertStatements =
                                        if i.Name = name
                                           then select (i, i.Details)
                                   }
-                            |> Seq.map (fun (organization, _ ) -> organization)
+                            |> Seq.map (fun (organization, _) -> organization)
                             |> (fun param -> if (Seq.exists (fun organization' -> organization' <> null) organization) = false
                                                 then None
                                                 else Some param
@@ -2447,9 +2922,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Person.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Person.Local do
+                           if i.ID=id
+                              then select (i, i.Details, i.Organizations)
+                      }
+                |> Seq.map (fun (person, _, _) -> person)
+                |> (fun person -> 
+                    if (Seq.exists (fun person' -> person' <> null) person) = false
+                        then 
+                            query {
+                                   for i in dbContext.Person do
+                                       if i.ID=id
+                                          then select (i, i.Details, i.Organizations)
+                                  }
+                            |> Seq.map (fun (person, _, _) -> person)
+                            |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
+                                                then None
+                                                else Some (person.Single())
+                               )
+                        else Some (person.Single())
+                   )
 
             ///Tries to find a person-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -2523,9 +3017,28 @@ module InsertStatements =
                                )
 
             ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ContactRole.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ContactRole.Local do
+                           if i.ID=id
+                              then select (i, i.Role)
+                      }
+                |> Seq.map (fun (contactRole, _) -> contactRole)
+                |> (fun contactRole -> 
+                    if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
+                        then 
+                            query {
+                                   for i in dbContext.ContactRole do
+                                       if i.ID=id
+                                          then select (i, i.Role)
+                                  }
+                            |> Seq.map (fun (contactRole, _) -> contactRole)
+                            |> (fun contactRole -> if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
+                                                    then None
+                                                    else Some (contactRole.Single())
+                               )
+                        else Some (contactRole.Single())
+                   )
 
             ///Tries to find a contactRole-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPersonName (dbContext:MzQuantML) (name:string) =
@@ -2629,27 +3142,46 @@ module InsertStatements =
                 table
 
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Provider.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Provider.Local do
+                           if i.ID=id
+                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                      }
+                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> (fun provider -> 
+                    if (Seq.exists (fun provider' -> provider' <> null) provider) = false
+                        then 
+                            query {
+                                   for i in dbContext.Provider do
+                                       if i.ID=id
+                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                                  }
+                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
+                                                then None
+                                                else Some (provider.Single())
+                               )
+                        else Some (provider.Single())
+                   )
 
             ///Tries to find a provider-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.Provider.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSoftware, i.ContactRole(*, i.MzIdentMLDocument*))
+                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
                       }
-                |> Seq.map (fun (provider, _, _) -> provider)
+                |> Seq.map (fun (provider, _, _, _) -> provider)
                 |> (fun provider -> 
                     if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSoftware, i.ContactRole(*, i.MzIdentMLDocument*))
+                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
                                   }
-                            |> Seq.map (fun (provider, _, _) -> provider)
+                            |> Seq.map (fun (provider, _, _, _) -> provider)
                             |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                                                     then None
                                                     else Some provider
@@ -2659,8 +3191,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole 
-               //&& item1.MzIdentMLDocument=item2.MzIdentMLDocument 
+               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole && 
+               item1.MzQuantMLDocument=item2.MzQuantMLDocument 
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2781,9 +3313,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SearchDatabase.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SearchDatabase.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat, i.DatabaseName, i.ReleaseDate, i.Details)
+                      }
+                |> Seq.map (fun (searchDatabase, _, _, _, _) -> searchDatabase)
+                |> (fun searchDatabase -> 
+                    if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchDatabase do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat, i.DatabaseName, i.ReleaseDate, i.Details)
+                                  }
+                            |> Seq.map (fun (searchDatabase, _, _, _, _) -> searchDatabase)
+                            |> (fun searchDatabase -> if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
+                                                        then None
+                                                        else Some (searchDatabase.Single())
+                               )
+                        else Some (searchDatabase.Single())
+                   )
 
             ///Tries to find a searchDatabase-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
@@ -2910,9 +3461,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a identificationFile-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.IdentificationFile.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.IdentificationFile.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat, i.SearchDatabase, i.Details)
+                      }
+                |> Seq.map (fun (identificationFile, _, _, _) -> identificationFile)
+                |> (fun identificationFile -> 
+                    if (Seq.exists (fun identificationFile' -> identificationFile' <> null) identificationFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.IdentificationFile do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat, i.SearchDatabase, i.Details)
+                                  }
+                            |> Seq.map (fun (identificationFile, _, _, _) -> identificationFile)
+                            |> (fun identificationFile -> if (Seq.exists (fun identificationFile' -> identificationFile' <> null) identificationFile) = false
+                                                            then None
+                                                            else Some (identificationFile.Single())
+                               )
+                        else Some (identificationFile.Single())
+                   )
 
             ///Tries to find a identificationFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
@@ -2989,9 +3559,28 @@ module InsertStatements =
                                      )
 
             ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.IdentificationRef.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.IdentificationRef.Local do
+                           if i.ID=id
+                              then select (i, i.IdentificationFile)
+                      }
+                |> Seq.map (fun (identificationRef, _) -> identificationRef)
+                |> (fun identificationRef -> 
+                    if (Seq.exists (fun identificationRef' -> identificationRef' <> null) identificationRef) = false
+                        then 
+                            query {
+                                   for i in dbContext.IdentificationRef do
+                                       if i.ID=id
+                                          then select (i, i.IdentificationFile)
+                                  }
+                            |> Seq.map (fun (identificationRef, _) -> identificationRef)
+                            |> (fun identificationRef -> if (Seq.exists (fun identificationRef' -> identificationRef' <> null) identificationRef) = false
+                                                            then None
+                                                            else Some (identificationRef.Single())
+                               )
+                        else Some (identificationRef.Single())
+                   )
 
             ///Tries to find a identificationRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFKIdentificationFile (dbContext:MzQuantML) (fkIdentificationFile:string) =
@@ -3091,9 +3680,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.MethodFile.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.MethodFile.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat)
+                      }
+                |> Seq.map (fun (methodFile, _) -> methodFile)
+                |> (fun methodFile -> 
+                    if (Seq.exists (fun methodFile' -> methodFile' <> null) methodFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.MethodFile do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat)
+                                  }
+                            |> Seq.map (fun (methodFile, _) -> methodFile)
+                            |> (fun methodFile -> if (Seq.exists (fun methodFile' -> methodFile' <> null) methodFile) = false
+                                                    then None
+                                                    else Some (methodFile.Single())
+                               )
+                        else Some (methodFile.Single())
+                   )
 
             ///Tries to find a methodFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
@@ -3216,9 +3824,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a rawFile-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.RawFile.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RawFile.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat, i.MethodFile, i.Details)
+                      }
+                |> Seq.map (fun (rawFile, _, _, _) -> rawFile)
+                |> (fun rawFile -> 
+                    if (Seq.exists (fun rawFile' -> rawFile' <> null) rawFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.RawFile do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat, i.MethodFile, i.Details)
+                                  }
+                            |> Seq.map (fun (rawFile, _, _, _) -> rawFile)
+                            |> (fun rawFile -> if (Seq.exists (fun rawFile' -> rawFile' <> null) rawFile) = false
+                                                then None
+                                                else Some (rawFile.Single())
+                               )
+                        else Some (rawFile.Single())
+                   )
 
             ///Tries to find a rawFile-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzQuantML) (location:string) =
@@ -3316,9 +3943,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a rawFilesGroup-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.RawFilesGroup.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RawFilesGroup.Local do
+                           if i.ID=id
+                              then select (i, i.RawFiles, i.Details)
+                      }
+                |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
+                |> (fun rawFilesGroup -> 
+                    if (Seq.exists (fun rawFilesGroup' -> rawFilesGroup' <> null) rawFilesGroup) = false
+                        then 
+                            query {
+                                   for i in dbContext.RawFilesGroup do
+                                       if i.ID=id
+                                          then select (i, i.RawFiles, i.Details)
+                                  }
+                            |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
+                            |> (fun rawFilesGroup -> if (Seq.exists (fun rawFilesGroup' -> rawFilesGroup' <> null) rawFilesGroup) = false
+                                                        then None
+                                                        else Some (rawFilesGroup.Single())
+                               )
+                        else Some (rawFilesGroup.Single())
+                   )
 
             ///Tries to find a rawFilesGroup-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFiles (dbContext:MzQuantML) (rawFiles:seq<RawFile>) =
@@ -3460,9 +4106,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a inputFiles-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.InputFiles.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.InputFiles.Local do
+                           if i.ID=id
+                              then select (i, i.MethodFiles, i.RawFilesGroups, i.SearchDatabases, i.SourceFiles, i.IdentificationFiles)
+                      }
+                |> Seq.map (fun (inputFiles, _, _, _, _, _) -> inputFiles)
+                |> (fun inputFiles -> 
+                    if (Seq.exists (fun inputFiles' -> inputFiles' <> null) inputFiles) = false
+                        then 
+                            query {
+                                   for i in dbContext.InputFiles do
+                                       if i.ID=id
+                                          then select (i, i.MethodFiles, i.RawFilesGroups, i.SearchDatabases, i.SourceFiles, i.IdentificationFiles)
+                                  }
+                            |> Seq.map (fun (inputFiles, _, _, _, _, _) -> inputFiles)
+                            |> (fun inputFiles -> if (Seq.exists (fun inputFiles' -> inputFiles' <> null) inputFiles) = false
+                                                    then None
+                                                    else Some (inputFiles.Single())
+                               )
+                        else Some (inputFiles.Single())
+                   )
 
             ///Tries to find a inputFiles-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFilesGroups (dbContext:MzQuantML) (rawFilesGroups:seq<RawFilesGroup>) =
@@ -3554,9 +4219,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Modification.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Modification.Local do
+                           if i.ID=id
+                              then select (i, i.Detail)
+                      }
+                |> Seq.map (fun (modification, _) -> modification)
+                |> (fun modification -> 
+                    if (Seq.exists (fun modification' -> modification' <> null) modification) = false
+                        then 
+                            query {
+                                   for i in dbContext.Modification do
+                                       if i.ID=id
+                                          then select (i, i.Detail)
+                                  }
+                            |> Seq.map (fun (modification, _) -> modification)
+                            |> (fun modification -> if (Seq.exists (fun modification' -> modification' <> null) modification) = false
+                                                        then None
+                                                        else Some (modification.Single())
+                               )
+                        else Some (modification.Single())
+                   )
 
             ///Tries to find a modification-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (termName:string) =
@@ -3686,9 +4370,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Assay.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Assay.Local do
+                           if i.ID=id
+                              then select (i, i.RawFilesGroup, i.IdentificationFile, i.Label, i.Details)
+                      }
+                |> Seq.map (fun (assay, _, _, _, _) -> assay)
+                |> (fun assay -> 
+                    if (Seq.exists (fun assay' -> assay' <> null) assay) = false
+                        then 
+                            query {
+                                   for i in dbContext.Assay do
+                                       if i.ID=id
+                                          then select (i, i.RawFilesGroup, i.IdentificationFile, i.Label, i.Details)
+                                  }
+                            |> Seq.map (fun (assay, _, _, _, _) -> assay)
+                            |> (fun assay -> if (Seq.exists (fun assay' -> assay' <> null) assay) = false
+                                                then None
+                                                else Some (assay.Single())
+                               )
+                        else Some (assay.Single())
+                   )
 
             ///Tries to find an assay-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -3783,9 +4486,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a studyVariable-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.StudyVariable.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.StudyVariable.Local do
+                           if i.ID=id
+                              then select (i, i.Assays, i.Details)
+                      }
+                |> Seq.map (fun (studyVariable, _, _) -> studyVariable)
+                |> (fun studyVariable -> 
+                    if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
+                        then 
+                            query {
+                                   for i in dbContext.StudyVariable do
+                                       if i.ID=id
+                                          then select (i, i.Assays, i.Details)
+                                  }
+                            |> Seq.map (fun (studyVariable, _, _) -> studyVariable)
+                            |> (fun studyVariable -> if (Seq.exists (fun studyVariable' -> studyVariable' <> null) studyVariable) = false
+                                                        then None
+                                                        else Some (studyVariable.Single())
+                               )
+                        else Some (studyVariable.Single())
+                   )
 
             ///Tries to find a studyVariable-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -3925,9 +4647,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Ratio.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Ratio.Local do
+                           if i.ID=id
+                              then select (i, i.NumeratorAS, i.DenominatorAS, i.NumeratorSV, i.DenominatorSV, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
+                      }
+                |> Seq.map (fun (ratio, _, _ ,_ , _, _,_ ,_) -> ratio)
+                |> (fun ratio -> 
+                    if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
+                        then 
+                            query {
+                                   for i in dbContext.Ratio do
+                                       if i.ID=id
+                                          then select (i, i.NumeratorAS, i.DenominatorAS, i.NumeratorSV, i.DenominatorSV, i.NumeratorDataType, i.DenominatorDataType, i.RatioCalculation)
+                                  }
+                            |> Seq.map (fun (ratio, _, _ ,_ , _, _,_ ,_) -> ratio)
+                            |> (fun ratio -> if (Seq.exists (fun ratio' -> ratio' <> null) ratio) = false
+                                                then None
+                                                else Some (ratio.Single())
+                               )
+                        else Some (ratio.Single())
+                   )
 
             ///Tries to find a ratio-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -3988,12 +4729,12 @@ module InsertStatements =
             ///Initializes a column-object with at least all necessary parameters.
             static member init
                 (             
-                    index                        : int,
-                    datatype                     : CVParam,
-                    ?id                          : string
+                    index       : int,
+                    datatype    : CVParam,
+                    ?id         : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                         
 
                 new Column(
@@ -4004,9 +4745,28 @@ module InsertStatements =
                           )
 
             ///Tries to find a column-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Column.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Column.Local do
+                           if i.ID=id
+                              then select (i, i.DataType)
+                      }
+                |> Seq.map (fun (column, _) -> column)
+                |> (fun column -> 
+                    if (Seq.exists (fun column' -> column' <> null) column) = false
+                        then 
+                            query {
+                                   for i in dbContext.Column do
+                                       if i.ID=id
+                                          then select (i, i.DataType)
+                                  }
+                            |> Seq.map (fun (column, _) -> column)
+                            |> (fun column -> if (Seq.exists (fun column' -> column' <> null) column) = false
+                                                then None
+                                                else Some (column.Single())
+                               )
+                        else Some (column.Single())
+                   )
 
             ///Tries to find a column-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByIndex (dbContext:MzQuantML) (index:Nullable<int>) =
@@ -4064,11 +4824,11 @@ module InsertStatements =
             ///Initializes a dataMatrix-object with at least all necessary parameters.
             static member init
                 (             
-                    row                          : string,
-                    ?id                          : string
+                    row     : string,
+                    ?id     : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id' = defaultArg id (System.Guid.NewGuid().ToString())
                         
 
                 new DataMatrix(
@@ -4078,9 +4838,28 @@ module InsertStatements =
                               )
 
             ///Tries to find a dataMatrix-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.DataMatrix.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.DataMatrix.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> Seq.map (fun (dataMatrix) -> dataMatrix)
+                |> (fun dataMatrix -> 
+                    if (Seq.exists (fun dataMatrix' -> dataMatrix' <> null) dataMatrix) = false
+                        then 
+                            query {
+                                   for i in dbContext.DataMatrix do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> Seq.map (fun (dataMatrix) -> dataMatrix)
+                            |> (fun dataMatrix -> if (Seq.exists (fun dataMatrix' -> dataMatrix' <> null) dataMatrix) = false
+                                                    then None
+                                                    else Some (dataMatrix.Single())
+                               )
+                        else Some (dataMatrix.Single())
+                   )
 
             ///Tries to find a dataMatrix-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRow (dbContext:MzQuantML) (row:string) =
@@ -4156,9 +4935,28 @@ module InsertStatements =
                                    )
 
             ///Tries to find a assayQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.AssayQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.AssayQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataType, i.DataMatrix)
+                      }
+                |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                |> (fun assayQuantLayer -> 
+                    if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.AssayQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataType, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                            |> (fun assayQuantLayer -> if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
+                                                        then None
+                                                        else Some (assayQuantLayer.Single())
+                               )
+                        else Some (assayQuantLayer.Single())
+                   )
 
             ///Tries to find a assayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -4232,9 +5030,28 @@ module InsertStatements =
                                     )
 
             ///Tries to find a globalQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.GlobalQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.GlobalQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.Columns, i.DataMatrix)
+                      }
+                |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                |> (fun globalQuantLayer -> 
+                    if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.GlobalQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.Columns, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                            |> (fun globalQuantLayer -> if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
+                                                        then None
+                                                        else Some (globalQuantLayer.Single())
+                               )
+                        else Some (globalQuantLayer.Single())
+                   )
 
             ///Tries to find a globalQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
@@ -4310,9 +5127,28 @@ module InsertStatements =
                                       )
 
             ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.MS2AssayQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.MS2AssayQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataType, i.DataMatrix)
+                      }
+                |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                |> (fun ms2AssayQuantLayer -> 
+                    if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.MS2AssayQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataType, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                            |> (fun ms2AssayQuantLayer -> if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
+                                                            then None
+                                                            else Some (ms2AssayQuantLayer.Single())
+                               )
+                        else Some (ms2AssayQuantLayer.Single())
+                   )
 
             ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -4388,9 +5224,28 @@ module InsertStatements =
                                            )
 
             ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.StudyVariableQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.StudyVariableQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataType, i.DataMatrix)
+                      }
+                |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                |> (fun studyVariableQuantLayer -> 
+                    if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.StudyVariableQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataType, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                            |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
+                                                                then None
+                                                                else Some (studyVariableQuantLayer.Single())
+                               )
+                        else Some (studyVariableQuantLayer.Single())
+                   )
 
             ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -4464,9 +5319,28 @@ module InsertStatements =
                                    )
 
             ///Tries to find a ratioQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.RatioQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RatioQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataMatrix)
+                      }
+                |> Seq.map (fun (studyVariableQuantLayer, _) -> studyVariableQuantLayer)
+                |> (fun studyVariableQuantLayer -> 
+                    if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.RatioQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (studyVariableQuantLayer, _) -> studyVariableQuantLayer)
+                            |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
+                                                                then None
+                                                                else Some (studyVariableQuantLayer.Single())
+                               )
+                        else Some (studyVariableQuantLayer.Single())
+                   )
 
             ///Tries to find a ratioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -4551,9 +5425,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a processingMethod-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProcessingMethod.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProcessingMethod.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (processingMethod, _) -> processingMethod)
+                |> (fun processingMethod -> 
+                    if (Seq.exists (fun processingMethod' -> processingMethod' <> null) processingMethod) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProcessingMethod do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (processingMethod, _) -> processingMethod)
+                            |> (fun processingMethod -> if (Seq.exists (fun processingMethod' -> processingMethod' <> null) processingMethod) = false
+                                                        then None
+                                                        else Some (processingMethod.Single())
+                               )
+                        else Some (processingMethod.Single())
+                   )
 
             ///Tries to find a processingMethod-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
@@ -4654,9 +5547,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.DataProcessing.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.DataProcessing.Local do
+                           if i.ID=id
+                              then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                      }
+                |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
+                |> (fun dataProcessing -> 
+                    if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
+                        then 
+                            query {
+                                   for i in dbContext.DataProcessing do
+                                       if i.ID=id
+                                          then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                                  }
+                            |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
+                            |> (fun dataProcessing -> if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
+                                                        then None
+                                                        else Some (dataProcessing.Single())
+                               )
+                        else Some (dataProcessing.Single())
+                   )
 
             ///Tries to find a dataProcessing-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByOrder (dbContext:MzQuantML) (order:Nullable<int>) =
@@ -4731,9 +5643,28 @@ module InsertStatements =
                                        )
 
             ///Tries to find a dbIdentificationRef-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.DBIdentificationRef.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.DBIdentificationRef.Local do
+                           if i.ID=id
+                              then select (i, i.SearchDatabase)
+                      }
+                |> Seq.map (fun (dbIdentificationRef, _) -> dbIdentificationRef)
+                |> (fun dbIdentificationRef -> 
+                    if (Seq.exists (fun dbIdentificationRef' -> dbIdentificationRef' <> null) dbIdentificationRef) = false
+                        then 
+                            query {
+                                   for i in dbContext.DBIdentificationRef do
+                                       if i.ID=id
+                                          then select (i, i.SearchDatabase)
+                                  }
+                            |> Seq.map (fun (dbIdentificationRef, _) -> dbIdentificationRef)
+                            |> (fun dbIdentificationRef -> if (Seq.exists (fun dbIdentificationRef' -> dbIdentificationRef' <> null) dbIdentificationRef) = false
+                                                            then None
+                                                            else Some (dbIdentificationRef.Single())
+                               )
+                        else Some (dbIdentificationRef.Single())
+                   )
 
             ///Tries to find a dbIdentificationRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFKExternalFile (dbContext:MzQuantML) (fkExternalFile:string) =
@@ -4862,9 +5793,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a feature-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Feature.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Feature.Local do
+                           if i.ID=id
+                              then select (i, i.MassTraces, i.RawFile, i.Details)
+                      }
+                |> Seq.map (fun (feature, _, _, _) -> feature)
+                |> (fun feature -> 
+                    if (Seq.exists (fun feature' -> feature' <> null) feature) = false
+                        then 
+                            query {
+                                   for i in dbContext.Feature do
+                                       if i.ID=id
+                                          then select (i, i.MassTraces, i.RawFile, i.Details)
+                                  }
+                            |> Seq.map (fun (feature, _, _, _) -> feature)
+                            |> (fun feature -> if (Seq.exists (fun feature' -> feature' <> null) feature) = false
+                                                then None
+                                                else Some (feature.Single())
+                               )
+                        else Some (feature.Single())
+                   )
 
             ///Tries to find a feature-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMz (dbContext:MzQuantML) (mz:Nullable<float>) =
@@ -4988,9 +5938,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a smallMolecule-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SmallMolecule.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SmallMolecule.Local do
+                           if i.ID=id
+                              then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
+                      }
+                |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
+                |> (fun smallMolecule -> 
+                    if (Seq.exists (fun smallMolecule' -> smallMolecule' <> null) smallMolecule) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMolecule do
+                                       if i.ID=id
+                                          then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
+                                  }
+                            |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
+                            |> (fun smallMolecule -> if (Seq.exists (fun smallMolecule' -> smallMolecule' <> null) smallMolecule) = false
+                                                        then None
+                                                        else Some (smallMolecule.Single())
+                               )
+                        else Some (smallMolecule.Single())
+                   )
 
             ///Tries to find a smallMolecule-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByModifications (dbContext:MzQuantML) (modifications:seq<Modification>) =
@@ -5129,9 +6098,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a smallMoleculeList-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.SmallMoleculeList.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.SmallMoleculeList.Local do
+                           if i.ID=id
+                              then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                      }
+                |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
+                |> (fun smallMoleculeList -> 
+                    if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
+                        then 
+                            query {
+                                   for i in dbContext.SmallMoleculeList do
+                                       if i.ID=id
+                                          then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                                  }
+                            |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
+                            |> (fun smallMoleculeList -> if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
+                                                            then None
+                                                            else Some (smallMoleculeList.Single())
+                               )
+                        else Some (smallMoleculeList.Single())
+                   )
 
             ///Tries to find a smallMoleculeList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySmallMolecules (dbContext:MzQuantML) (smallMolecules:seq<SmallMolecule>) =
@@ -5191,12 +6179,12 @@ module InsertStatements =
             ///Initializes a featureQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    columns                      : seq<Column>,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    columns     : seq<Column>,
+                    dataMatrix  : DataMatrix,
+                    ?id         : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'     = defaultArg id (System.Guid.NewGuid().ToString())
                         
 
                 new FeatureQuantLayer(
@@ -5207,9 +6195,28 @@ module InsertStatements =
                                      )
 
             ///Tries to find a featureQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.FeatureQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.FeatureQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.Columns, i.DataMatrix)
+                      }
+                |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
+                |> (fun featureQuantLayer -> 
+                    if (Seq.exists (fun featureQuantLayer' -> featureQuantLayer' <> null) featureQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.FeatureQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.Columns, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
+                            |> (fun featureQuantLayer -> if (Seq.exists (fun featureQuantLayer' -> featureQuantLayer' <> null) featureQuantLayer) = false
+                                                            then None
+                                                            else Some (featureQuantLayer.Single())
+                               )
+                        else Some (featureQuantLayer.Single())
+                   )
 
             ///Tries to find a featureQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
@@ -5285,9 +6292,28 @@ module InsertStatements =
                                       )
 
             ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.MS2RatioQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.MS2RatioQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataType, i.DataMatrix)
+                      }
+                |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
+                |> (fun ms2RatioQuantLayer -> 
+                    if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.MS2RatioQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataType, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
+                            |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
+                                                            then None
+                                                            else Some (ms2RatioQuantLayer.Single())
+                               )
+                        else Some (ms2RatioQuantLayer.Single())
+                   )
 
             ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -5363,9 +6389,28 @@ module InsertStatements =
                                               )
 
             ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.MS2StudyVariableQuantLayer.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.MS2StudyVariableQuantLayer.Local do
+                           if i.ID=id
+                              then select (i, i.DataType, i.DataMatrix)
+                      }
+                |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
+                |> (fun ms2RatioQuantLayer -> 
+                    if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
+                        then 
+                            query {
+                                   for i in dbContext.MS2StudyVariableQuantLayer do
+                                       if i.ID=id
+                                          then select (i, i.DataType, i.DataMatrix)
+                                  }
+                            |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
+                            |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
+                                                            then None
+                                                            else Some (ms2RatioQuantLayer.Single())
+                               )
+                        else Some (ms2RatioQuantLayer.Single())
+                   )
 
             ///Tries to find a ms2StudyVariableQuantLayer-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByColumnIndex (dbContext:MzQuantML) (columnIndex:string) =
@@ -5511,9 +6556,32 @@ module InsertStatements =
                 table
 
             ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.FeatureList.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.FeatureList.Local do
+                           if i.ID=id
+                              then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
+                                           i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (featureList, _, _, _, _, _, _, _) -> featureList)
+                |> (fun featureList -> 
+                    if (Seq.exists (fun featureList' -> featureList' <> null) featureList) = false
+                        then 
+                            query {
+                                   for i in dbContext.FeatureList do
+                                       if i.ID=id
+                                          then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
+                                                       i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (featureList, _, _, _, _, _, _, _) -> featureList)
+                            |> (fun featureList -> if (Seq.exists (fun featureList' -> featureList' <> null) featureList) = false
+                                                    then None
+                                                    else Some (featureList.Single())
+                               )
+                        else Some (featureList.Single())
+                   )
 
             ///Tries to find a featureList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByRawFilesGroup (dbContext:MzQuantML) (rawFilesGroup:RawFilesGroup) =
@@ -5611,9 +6679,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a evidenceRef-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.EvidenceRef.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.EvidenceRef.Local do
+                           if i.ID=id
+                              then select (i, i.Feature, i.Assays, i.IdentificationFile)
+                      }
+                |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
+                |> (fun evidenceRef -> 
+                    if (Seq.exists (fun evidenceRef' -> evidenceRef' <> null) evidenceRef) = false
+                        then 
+                            query {
+                                   for i in dbContext.EvidenceRef do
+                                       if i.ID=id
+                                          then select (i, i.Feature, i.Assays, i.IdentificationFile)
+                                  }
+                            |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
+                            |> (fun evidenceRef -> if (Seq.exists (fun evidenceRef' -> evidenceRef' <> null) evidenceRef) = false
+                                                    then None
+                                                    else Some (evidenceRef.Single())
+                               )
+                        else Some (evidenceRef.Single())
+                   )
 
             ///Tries to find a evidenceRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFeature (dbContext:MzQuantML) (feature:Feature) =
@@ -5741,9 +6828,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a peptideConsensus-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.PeptideConsensus.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.PeptideConsensus.Local do
+                           if i.ID=id
+                              then select (i, i.EvidenceRefs, i.SearchDatabase, i.DataMatrix, i.Modifications, i.Details)
+                      }
+                |> Seq.map (fun (peptideConsensus, _, _, _, _, _) -> peptideConsensus)
+                |> (fun peptideConsensus -> 
+                    if (Seq.exists (fun peptideConsensus' -> peptideConsensus' <> null) peptideConsensus) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideConsensus do
+                                       if i.ID=id
+                                          then select (i, i.EvidenceRefs, i.SearchDatabase, i.DataMatrix, i.Modifications, i.Details)
+                                  }
+                            |> Seq.map (fun (peptideConsensus, _, _, _, _, _) -> peptideConsensus)
+                            |> (fun peptideConsensus -> if (Seq.exists (fun peptideConsensus' -> peptideConsensus' <> null) peptideConsensus) = false
+                                                        then None
+                                                        else Some (peptideConsensus.Single())
+                               )
+                        else Some (peptideConsensus.Single())
+                   )
 
             ///Tries to find a peptideConsensus-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCharge (dbContext:MzQuantML) (charge:Nullable<int>) =
@@ -5858,9 +6964,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a protein-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.Protein.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.Protein.Local do
+                           if i.ID=id
+                              then select (i, i.IdentificationRefs, i.SearchDatabase, i.PeptideConsensi, i.Details)
+                      }
+                |> Seq.map (fun (protein, _, _, _, _) -> protein)
+                |> (fun protein -> 
+                    if (Seq.exists (fun protein' -> protein' <> null) protein) = false
+                        then 
+                            query {
+                                   for i in dbContext.Protein do
+                                       if i.ID=id
+                                          then select (i, i.IdentificationRefs, i.SearchDatabase, i.PeptideConsensi, i.Details)
+                                  }
+                            |> Seq.map (fun (protein, _, _, _, _) -> protein)
+                            |> (fun protein -> if (Seq.exists (fun protein' -> protein' <> null) protein) = false
+                                                then None
+                                                else Some (protein.Single())
+                               )
+                        else Some (protein.Single())
+                   )
 
             ///Tries to find a protein-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByAccession (dbContext:MzQuantML) (accession:string) =
@@ -6000,9 +7125,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinList.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinList.Local do
+                           if i.ID=id
+                              then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                      }
+                |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
+                |> (fun proteinList -> 
+                    if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinList do
+                                       if i.ID=id
+                                          then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                                  }
+                            |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
+                            |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                                    then None
+                                                    else Some (proteinList.Single())
+                               )
+                        else Some (proteinList.Single())
+                   )
 
             ///Tries to find a proteinList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteins (dbContext:MzQuantML) (proteins:seq<Protein>) =
@@ -6089,9 +7233,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a proteinRef-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinRef.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinRef.Local do
+                           if i.ID=id
+                              then select (i, i.Protein, i.Details)
+                      }
+                |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
+                |> (fun proteinRef -> 
+                    if (Seq.exists (fun proteinRef' -> proteinRef' <> null) proteinRef) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinRef do
+                                       if i.ID=id
+                                          then select (i, i.Protein, i.Details)
+                                  }
+                            |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
+                            |> (fun proteinRef -> if (Seq.exists (fun proteinRef' -> proteinRef' <> null) proteinRef) = false
+                                                    then None
+                                                    else Some (proteinRef.Single())
+                               )
+                        else Some (proteinRef.Single())
+                   )
 
             ///Tries to find a proteinRef-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteinAccession (dbContext:MzQuantML) (accession:string) =
@@ -6181,9 +7344,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a proteinGroup-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinGroup.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinGroup.Local do
+                           if i.ID=id
+                              then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
+                      }
+                |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
+                |> (fun proteinGroup -> 
+                    if (Seq.exists (fun proteinGroup' -> proteinGroup' <> null) proteinGroup) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinGroup do
+                                       if i.ID=id
+                                          then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
+                                  }
+                            |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
+                            |> (fun proteinGroup -> if (Seq.exists (fun proteinGroup' -> proteinGroup' <> null) proteinGroup) = false
+                                                    then None
+                                                    else Some (proteinGroup.Single())
+                               )
+                        else Some (proteinGroup.Single())
+                   )
 
             ///Tries to find a proteinGroup-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySearchDatabaseLocation (dbContext:MzQuantML) (location:string) =
@@ -6323,9 +7505,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.ProteinGroupList.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.ProteinGroupList.Local do
+                           if i.ID=id
+                              then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                      }
+                |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
+                |> (fun smallMoleculeList -> 
+                    if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinGroupList do
+                                       if i.ID=id
+                                          then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                                  }
+                            |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
+                            |> (fun smallMoleculeList -> if (Seq.exists (fun smallMoleculeList' -> smallMoleculeList' <> null) smallMoleculeList) = false
+                                                            then None
+                                                            else Some (smallMoleculeList.Single())
+                               )
+                        else Some (smallMoleculeList.Single())
+                   )
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByProteinGroup (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
@@ -6468,9 +7669,28 @@ module InsertStatements =
                 table
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.PeptideConsensusList.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.PeptideConsensusList.Local do
+                           if i.ID=id
+                              then select (i, i.PeptideConsensi, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                      }
+                |> Seq.map (fun (peptideConsensi, _, _, _, _, _, _) -> peptideConsensi)
+                |> (fun peptideConsensi -> 
+                    if (Seq.exists (fun peptideConsensi' -> peptideConsensi' <> null) peptideConsensi) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideConsensusList do
+                                       if i.ID=id
+                                          then select (i, i.PeptideConsensi, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
+                                  }
+                            |> Seq.map (fun (peptideConsensi, _, _, _, _, _, _) -> peptideConsensi)
+                            |> (fun peptideConsensi -> if (Seq.exists (fun peptideConsensi' -> peptideConsensi' <> null) peptideConsensi) = false
+                                                        then None
+                                                        else Some (peptideConsensi.Single())
+                               )
+                        else Some (peptideConsensi.Single())
+                   )
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFinalResult (dbContext:MzQuantML) (finalResult:Nullable<bool>) =
@@ -6637,9 +7857,27 @@ module InsertStatements =
                 table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.BiblioGraphicReference.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.BiblioGraphicReference.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> (fun biblioGraphicReference -> 
+                    if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                        then 
+                            query {
+                                   for i in dbContext.BiblioGraphicReference do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> Seq.map (fun (biblioGraphicReference) -> biblioGraphicReference)
+                            |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                                                                then None
+                                                                else Some (biblioGraphicReference.Single())
+                               )
+                        else Some (biblioGraphicReference.Single())
+                   )
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
@@ -6897,9 +8135,36 @@ module InsertStatements =
                 table
 
             ///Tries to find a mzQuantMLDocument-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzQuantML) (id:string) =
-                tryFind (context.MzQuantMLDocument.Find(id))
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.MzQuantMLDocument.Local do
+                           if i.ID=id
+                              then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                           i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
+                                           i.SmallMoleculeList
+                                          )
+                      }
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> (fun mzQuantML -> 
+                    if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
+                        then 
+                            query {
+                                   for i in dbContext.MzQuantMLDocument do
+                                       if i.ID=id
+                                          then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                                       i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
+                                                       i.SmallMoleculeList
+                                                      )
+                                  }
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
+                                                    then None
+                                                    else Some (mzQuantML.Single())
+                               )
+                        else Some (mzQuantML.Single())
+                   )
 
             ///Tries to find a mzQuantMLDocument-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =

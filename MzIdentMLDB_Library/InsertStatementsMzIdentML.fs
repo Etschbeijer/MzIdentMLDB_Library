@@ -150,9 +150,28 @@ module InsertStatements =
                 term
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (termID:string) =
-                tryFind (context.Term.Find(termID))
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Term.Local do
+                           if i.ID=id
+                              then select (i, i.Ontology)
+                      }
+                |> Seq.map (fun (term, _) -> term)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.Term do
+                                       if i.ID=id
+                                          then select (i, i.Ontology)
+                                  }
+                            |> Seq.map (fun (term, _) -> term)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -235,9 +254,28 @@ module InsertStatements =
                 ontology
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (ontologyID:string) =
-                tryFind (context.Ontology.Find(ontologyID))
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Ontology.Local do
+                           if i.ID=id
+                              then select (i, i.Terms)
+                      }
+                |> Seq.map (fun (ontology, _) -> ontology)
+                |> (fun ontology -> 
+                    if (Seq.exists (fun ontology' -> ontology' <> null) ontology) = false
+                        then 
+                            query {
+                                   for i in dbContext.Ontology do
+                                       if i.ID=id
+                                          then select (i, i.Terms)
+                                  }
+                            |> Seq.map (fun (ontology, _) -> ontology)
+                            |> (fun ontology -> if (Seq.exists (fun ontology' -> ontology' <> null) ontology) = false
+                                                then None
+                                                else Some (ontology.Single())
+                               )
+                        else Some (ontology.Single())
+                   )
 
         type CVParamHandler =
             ///Initializes a cvparam-object with at least all necessary parameters.
@@ -260,22 +298,41 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one.
             static member addValue
-                (value:string) (cvParam:CVParam) =
-                cvParam.Value <- value
-                cvParam
+                (value:string) (table:CVParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (cvParam:CVParam) =
-                cvParam.Unit <- unit
-                cvParam
+                (unit:Term) (table:CVParam) =
+                table.Unit <- unit
+                table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.CVParam.Find(paramID))
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.CVParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.CVParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -350,22 +407,41 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:OrganizationParam) =
-                param.Value <- value
-                param
+                (value:string) (table:OrganizationParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:OrganizationParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:OrganizationParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.OrganizationParam.Find(paramID))
+            ///Tries to find a organizationParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.OrganizationParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.OrganizationParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -440,22 +516,41 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:PersonParam) =
-                param.Value <- value
-                param
+                (value:string) (table:PersonParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:PersonParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:PersonParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.PersonParam.Find(paramID))
+            ///Tries to find a personParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.PersonParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PersonParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -530,22 +625,41 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SampleParam)  =
-                param.Value <- value
-                param
+                (value:string) (table:SampleParam)  =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SampleParam)  =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SampleParam)  =
+                table.Unit <- unit
+                table
 
-            ///Tries to find an ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SampleParam.Find(paramID))
+            ///Tries to find an sampleParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SampleParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SampleParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -620,22 +734,41 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ModificationParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ModificationParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ModificationParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ModificationParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ModificationParam.Find(paramID))
+            ///Tries to find a modificationParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ModificationParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ModificationParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -710,22 +843,41 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:PeptideParam) =
-                param.Value <- value
-                param
+                (value:string) (table:PeptideParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:PeptideParam)  =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:PeptideParam)  =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.PeptideParam.Find(paramID))
+            ///Tries to find a peptideParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.PeptideParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -800,22 +952,41 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:TranslationTableParam) =
-                param.Value <- value
-                param
+                (value:string) (table:TranslationTableParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:TranslationTableParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:TranslationTableParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.TranslationTableParam.Find(paramID))
+            ///Tries to find a translationTableParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.TranslationTableParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.TranslationTableParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -890,22 +1061,41 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:MeasureParam) =
-                param.Value <- value
-                param
+                (value:string) (table:MeasureParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:MeasureParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:MeasureParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.MeasureParam.Find(paramID))
+            ///Tries to find a measureParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.MeasureParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MeasureParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -980,22 +1170,41 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:AmbiguousResidueParam)  =
-                param.Value <- value
-                param
+                (value:string) (table:AmbiguousResidueParam)  =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:AmbiguousResidueParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:AmbiguousResidueParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.AmbiguousResidueParam.Find(paramID))
+            ///Tries to find a ambiguousResidueParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AmbiguousResidueParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AmbiguousResidueParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1070,22 +1279,41 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:MassTableParam) =
-                param.Value <- value
-                param
+                (value:string) (table:MassTableParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:MassTableParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:MassTableParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.MassTableParam.Find(paramID))
+            ///Tries to find a massTableParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.MassTableParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.MassTableParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1160,22 +1388,41 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:IonTypeParam) =
-                param.Value <- value
-                param
+                (value:string) (table:IonTypeParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:IonTypeParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:IonTypeParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.IonTypeParam.Find(paramID))
+            ///Tries to find a ionTypeParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.IonTypeParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.IonTypeParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1250,22 +1497,41 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SpecificityRuleParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SpecificityRuleParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SpecificityRuleParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SpecificityRuleParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SpecificityRuleParam.Find(paramID))
+            ///Tries to find a specificityRuleParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpecificityRuleParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpecificityRuleParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1340,22 +1606,41 @@ module InsertStatements =
                                             Nullable(DateTime.Now)
                                            )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SearchModificationParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SearchModificationParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SearchModificationParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SearchModificationParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SearchModificationParam.Find(paramID))
+            ///Tries to find a searchModificationParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SearchModificationParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchModificationParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1430,22 +1715,41 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:EnzymeNameParam) =
-                param.Value <- value
-                param
+                (value:string) (table:EnzymeNameParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:EnzymeNameParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:EnzymeNameParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.EnzymeNameParam.Find(paramID))
+            ///Tries to find a enzymeNameParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.EnzymeNameParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.EnzymeNameParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1520,17 +1824,41 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:IncludeParam) =
-                param.Value <- value
-                param
+                (value:string) (table:IncludeParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:IncludeParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:IncludeParam) =
+                table.Unit <- unit
+                table
+
+            ///Tries to find a includeParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.IncludeParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.IncludeParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1605,22 +1933,41 @@ module InsertStatements =
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ExcludeParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ExcludeParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ExcludeParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ExcludeParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ExcludeParam.Find(paramID))
+            ///Tries to find a excludeParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ExcludeParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ExcludeParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1695,22 +2042,41 @@ module InsertStatements =
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:AdditionalSearchParam) =
-                param.Value <- value
-                param
+                (value:string) (table:AdditionalSearchParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:AdditionalSearchParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:AdditionalSearchParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.AdditionalSearchParam.Find(paramID))
+            ///Tries to find a additionalSearchParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AdditionalSearchParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AdditionalSearchParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1785,22 +2151,41 @@ module InsertStatements =
                                            Nullable(DateTime.Now)
                                           )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:FragmentToleranceParam)  =
-                param.Value <- value
-                param
+                (value:string) (table:FragmentToleranceParam)  =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:FragmentToleranceParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:FragmentToleranceParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.FragmentToleranceParam.Find(paramID))
+            ///Tries to find a fragmentToleranceParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.FragmentToleranceParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.FragmentToleranceParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1875,22 +2260,41 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ParentToleranceParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ParentToleranceParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ParentToleranceParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ParentToleranceParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ParentToleranceParam.Find(paramID))
+            ///Tries to find a parentToleranceParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ParentToleranceParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ParentToleranceParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -1965,22 +2369,41 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ThresholdParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ThresholdParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ThresholdParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ThresholdParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ThresholdParam.Find(paramID))
+            ///Tries to find a thresholdParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ThresholdParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ThresholdParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2055,22 +2478,41 @@ module InsertStatements =
                                         Nullable(DateTime.Now)
                                        )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SearchDatabaseParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SearchDatabaseParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SearchDatabaseParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SearchDatabaseParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SearchDatabaseParam.Find(paramID))
+            ///Tries to find a searchDatabaseParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SearchDatabaseParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchDatabaseParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2145,22 +2587,41 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:DBSequenceParam) =
-                param.Value <- value
-                param
+                (value:string) (table:DBSequenceParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:DBSequenceParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:DBSequenceParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.DBSequenceParam.Find(paramID))
+            ///Tries to find a dbSequenceParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.DBSequenceParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.DBSequenceParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2235,22 +2696,41 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:PeptideEvidenceParam)  =
-                param.Value <- value
-                param
+                (value:string) (table:PeptideEvidenceParam)  =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:PeptideEvidenceParam)  =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:PeptideEvidenceParam)  =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.PeptideEvidenceParam.Find(paramID))
+            ///Tries to find a peptideEvidenceParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.PeptideEvidenceParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideEvidenceParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2325,22 +2805,41 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SpectrumIdentificationItemParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SpectrumIdentificationItemParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SpectrumIdentificationItemParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SpectrumIdentificationItemParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SpectrumIdentificationItemParam.Find(paramID))
+            ///Tries to find a spectrumIdentificationItemParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationItemParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationItemParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2415,22 +2914,41 @@ module InsertStatements =
                                                       Nullable(DateTime.Now)
                                                      )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SpectrumIdentificationResultParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SpectrumIdentificationResultParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SpectrumIdentificationResultParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SpectrumIdentificationResultParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SpectrumIdentificationResultParam.Find(paramID))
+            ///Tries to find a spectrumIdentificationResultParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationResultParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationResultParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2505,22 +3023,41 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SpectrumIdentificationListParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SpectrumIdentificationListParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SpectrumIdentificationListParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SpectrumIdentificationListParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SpectrumIdentificationListParam.Find(paramID))
+            ///Tries to find a spectrumIdentificationListParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2595,16 +3132,16 @@ module InsertStatements =
         //                                   Nullable(DateTime.Now)
         //                                  )
 
-        //    ///Replaces value of existing object with new value.
+        //    ///Replaces value of existing object with new one..
         //    static member addValue
-        //        (value:string) (param:SpectrumIdentificationProtocolParam)  =
-        //        param.Value <- value
+        //        (value:string) (table:SpectrumIdentificationProtocolParam)  =
+        //        table.Value <- value
         //        param
 
-        //    ///Replaces unit of existing object with new unit.
+        //    ///Replaces unit of existing object with new one.
         //    static member addUnit
-        //        (unit:Term) (param:SpectrumIdentificationProtocolParam) =
-        //        param.Unit <- unit
+        //        (unit:Term) (table:SpectrumIdentificationProtocolParam) =
+        //        table.Unit <- unit
         //        param
 
         //    ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2680,22 +3217,41 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:AnalysisParam) =
-                param.Value <- value
-                param
+                (value:string) (table:AnalysisParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:AnalysisParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:AnalysisParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.AnalysisParam.Find(paramID))
+            ///Tries to find a analysisParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2770,22 +3326,41 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:SourceFileParam) =
-                param.Value <- value
-                param
+                (value:string) (table:SourceFileParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:SourceFileParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:SourceFileParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.SourceFileParam.Find(paramID))
+            ///Tries to find a sourceFileParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SourceFileParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.SourceFileParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2860,22 +3435,41 @@ module InsertStatements =
                                                     Nullable(DateTime.Now)
                                                    )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ProteinDetectionHypothesisParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ProteinDetectionHypothesisParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ProteinDetectionHypothesisParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ProteinDetectionHypothesisParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ProteinDetectionHypothesisParam.Find(paramID))
+            ///Tries to find a proteinDetectionHypothesisParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetectionHypothesisParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetectionHypothesisParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -2950,22 +3544,41 @@ module InsertStatements =
                                                 Nullable(DateTime.Now)
                                                )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ProteinAmbiguityGroupParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ProteinAmbiguityGroupParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ProteinAmbiguityGroupParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ProteinAmbiguityGroupParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ProteinAmbiguityGroupParam.Find(paramID))
+            ///Tries to find a proteinAmbiguityGroupParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinAmbiguityGroupParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinAmbiguityGroupParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -3040,22 +3653,41 @@ module InsertStatements =
                                               Nullable(DateTime.Now)
                                              )
 
-            ///Replaces value of existing object with new value.
+            ///Replaces value of existing object with new one..
             static member addValue
-                (value:string) (param:ProteinDetectionListParam) =
-                param.Value <- value
-                param
+                (value:string) (table:ProteinDetectionListParam) =
+                table.Value <- value
+                table
 
-            ///Replaces unit of existing object with new unit.
+            ///Replaces unit of existing object with new one.
             static member addUnit
-                (unit:Term) (param:ProteinDetectionListParam) =
-                param.Unit <- unit
-                param
+                (unit:Term) (table:ProteinDetectionListParam) =
+                table.Unit <- unit
+                table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (paramID:string) =
-                tryFind (context.ProteinDetectionListParam.Find(paramID))
+            ///Tries to find a proteinDetectionListParam-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetectionListParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetectionListParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -3164,10 +3796,29 @@ module InsertStatements =
                 let result = table.MzIdentMLDocument <- mzIdentMLDocument
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (organizationID:string) =
-                tryFind (context.Organization.Find(organizationID))
+            ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Organization.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (organization, _ ) -> organization)
+                |> (fun organization -> 
+                    if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                        then 
+                            query {
+                                   for i in dbContext.Organization do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (organization, _ ) -> organization)
+                            |> (fun organization -> if (Seq.exists (fun organization' -> organization' <> null) organization) = false
+                                                    then None
+                                                    else Some (organization.Single())
+                               )
+                        else Some (organization.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -3310,10 +3961,29 @@ module InsertStatements =
                 let result = table.MzIdentMLDocument <- mzIdentMLDocument
                 table
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (personID:string) =
-                tryFind (context.Person.Find(personID))
+            ///Tries to find a person-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Person.Local do
+                           if i.ID=id
+                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (person, _, _, _) -> person)
+                |> (fun person -> 
+                    if (Seq.exists (fun person' -> person' <> null) person) = false
+                        then 
+                            query {
+                                   for i in dbContext.Person do
+                                       if i.ID=id
+                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (person, _, _, _) -> person)
+                            |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
+                                                then None
+                                                else Some (person.Single())
+                               )
+                        else Some (person.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -3387,10 +4057,29 @@ module InsertStatements =
                                 Nullable(DateTime.Now)
                                )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (contactRoleID:string) =
-                tryFind (context.ContactRole.Find(contactRoleID))
+            ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ContactRole.Local do
+                           if i.ID=id
+                              then select (i, i.Role)
+                      }
+                |> Seq.map (fun (contactRole, _) -> contactRole)
+                |> (fun contactRole -> 
+                    if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
+                        then 
+                            query {
+                                   for i in dbContext.ContactRole do
+                                       if i.ID=id
+                                          then select (i, i.Role)
+                                  }
+                            |> Seq.map (fun (contactRole, _) -> contactRole)
+                            |> (fun contactRole -> if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
+                                                    then None
+                                                    else Some (contactRole.Single())
+                               )
+                        else Some (contactRole.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPersonName (dbContext:MzIdentML) (name:string) =
@@ -3513,10 +4202,29 @@ module InsertStatements =
                 let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
                 analysisSoftware
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (analysisSoftwareID:string) =
-                tryFind (context.AnalysisSoftware.Find(analysisSoftwareID))
+            ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisSoftware.Local do
+                           if i.ID=id
+                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
+                |> (fun analysisSoftware -> 
+                    if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisSoftware do
+                                       if i.ID=id
+                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
+                            |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
+                                                        then None
+                                                        else Some (analysisSoftware.Single())
+                               )
+                        else Some (analysisSoftware.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySoftwareNameValue (dbContext:MzIdentML) (name:string) =
@@ -3594,10 +4302,29 @@ module InsertStatements =
                 subSample.Sample <- sampleID
                 subSample
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (subSampleID:string) =
-                tryFind (context.SubSample.Find(subSampleID))
+            ///Tries to find a subSample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SubSample.Local do
+                           if i.ID=id
+                              then select (i, i.Sample)
+                      }
+                |> Seq.map (fun (subSample, _) -> subSample)
+                |> (fun subSample -> 
+                    if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
+                        then 
+                            query {
+                                   for i in dbContext.SubSample do
+                                       if i.ID=id
+                                          then select (i, i.Sample)
+                                  }
+                            |> Seq.map (fun (subSample, _) -> subSample)
+                            |> (fun subSample -> if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
+                                                    then None
+                                                    else Some (subSample.Single())
+                               )
+                        else Some (subSample.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySampleName (dbContext:MzIdentML) (name:string) =
@@ -3727,10 +4454,29 @@ module InsertStatements =
                 let result = sample.MzIdentMLDocument <- mzIdentMLDocument
                 sample
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (contactRolesID:string) =
-                tryFind (context.Sample.Find(contactRolesID))
+            ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Sample.Local do
+                           if i.ID=id
+                              then select (i, i.ContactRoles, i.SubSamples, i.Details)
+                      }
+                |> Seq.map (fun (sample, _, _, _) -> sample)
+                |> (fun sample -> 
+                    if (Seq.exists (fun sample' -> sample' <> null) sample) = false
+                        then 
+                            query {
+                                   for i in dbContext.Sample do
+                                       if i.ID=id
+                                          then select (i, i.ContactRoles, i.SubSamples, i.Details)
+                                  }
+                            |> Seq.map (fun (sample, _, _, _) -> sample)
+                            |> (fun sample -> if (Seq.exists (fun sample' -> sample' <> null) sample) = false
+                                                then None
+                                                else Some (sample.Single())
+                               )
+                        else Some (sample.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -3835,10 +4581,29 @@ module InsertStatements =
                 modification.AvgMassDelta <- Nullable(avgMassDelta)
                 modification
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (modificationID:string) =
-                tryFind (context.Modification.Find(modificationID))
+            ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Modification.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (modification, _) -> modification)
+                |> (fun modification -> 
+                    if (Seq.exists (fun modification' -> modification' <> null) modification) = false
+                        then 
+                            query {
+                                   for i in dbContext.Modification do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (modification, _) -> modification)
+                            |> (fun modification -> if (Seq.exists (fun modification' -> modification' <> null) modification) = false
+                                                    then None
+                                                    else Some (modification.Single())
+                               )
+                        else Some (modification.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMonoIsotopicMassDelta (dbContext:MzIdentML) (monoIsotopicMassDelta:Nullable<float>) =
@@ -3937,10 +4702,27 @@ module InsertStatements =
                 substitutionModification.AvgMassDelta <- Nullable(avgMassDelta)
                 substitutionModification
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (substitutionModificationID:string) =
-                tryFind (context.SubstitutionModification.Find(substitutionModificationID))
+            ///Tries to find a substitutionModification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SubstitutionModification.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> (fun substitutionModification -> 
+                    if (Seq.exists (fun substitutionModification' -> substitutionModification' <> null) substitutionModification) = false
+                        then 
+                            query {
+                                   for i in dbContext.SubstitutionModification do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> (fun substitutionModification -> if (Seq.exists (fun substitutionModification' -> substitutionModification' <> null) substitutionModification) = false
+                                                                then None
+                                                                else Some (substitutionModification.Single())
+                               )
+                        else Some (substitutionModification.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMonoIsotopicMassDelta (dbContext:MzIdentML) (monoIsotopicMassDelta:Nullable<float>) =
@@ -4071,10 +4853,29 @@ module InsertStatements =
                 let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
                 peptide
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (peptideID:string) =
-                tryFind (context.Peptide.Find(peptideID))
+            ///Tries to find a peptide-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Peptide.Local do
+                           if i.ID=id
+                              then select (i, i.Modifications, i.SubstitutionModifications, i.Details)
+                      }
+                |> Seq.map (fun (peptide, _, _, _) -> peptide)
+                |> (fun peptide -> 
+                    if (Seq.exists (fun peptide' -> peptide' <> null) peptide) = false
+                        then 
+                            query {
+                                   for i in dbContext.Peptide do
+                                       if i.ID=id
+                                          then select (i, i.Modifications, i.SubstitutionModifications, i.Details)
+                                  }
+                            |> Seq.map (fun (peptide, _, _, _) -> peptide)
+                            |> (fun peptide -> if (Seq.exists (fun peptide' -> peptide' <> null) peptide) = false
+                                                then None
+                                                else Some (peptide.Single())
+                               )
+                        else Some (peptide.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPeptideSequence (dbContext:MzIdentML) (peptideSeq:string) =
@@ -4167,10 +4968,29 @@ module InsertStatements =
                 let result = translationTable.Details <- addCollectionToList translationTable.Details details
                 translationTable
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (translationTableID:string) =
-                tryFind (context.TranslationTable.Find(translationTableID))
+            ///Tries to find a translationTable-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.TranslationTable.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (translationTable, _) -> translationTable)
+                |> (fun translationTable -> 
+                    if (Seq.exists (fun translationTable' -> translationTable' <> null) translationTable) = false
+                        then 
+                            query {
+                                   for i in dbContext.TranslationTable do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (translationTable, _) -> translationTable)
+                            |> (fun translationTable -> if (Seq.exists (fun translationTable' -> translationTable' <> null) translationTable) = false
+                                                        then None
+                                                        else Some (translationTable.Single())
+                               )
+                        else Some (translationTable.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -4247,10 +5067,29 @@ module InsertStatements =
                 measure.Name <- name
                 measure
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (measureID:string) =
-                tryFind (context.Measure.Find(measureID))
+            ///Tries to find a measure-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Measure.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (measure, _) -> measure)
+                |> (fun measure -> 
+                    if (Seq.exists (fun measure' -> measure' <> null) measure) = false
+                        then 
+                            query {
+                                   for i in dbContext.Measure do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (measure, _) -> measure)
+                            |> (fun measure -> if (Seq.exists (fun measure' -> measure' <> null) measure) = false
+                                                then None
+                                                else Some (measure.Single())
+                               )
+                        else Some (measure.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -4320,10 +5159,27 @@ module InsertStatements =
                             Nullable(DateTime.Now)
                            )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (residueID:string) =
-                tryFind (context.Residue.Find(residueID))
+            ///Tries to find a residue-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Residue.Local do
+                           if i.ID=id
+                              then select i
+                      }        
+                |> (fun residue -> 
+                    if (Seq.exists (fun residue' -> residue' <> null) residue) = false
+                        then 
+                            query {
+                                   for i in dbContext.Residue do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> (fun residue -> if (Seq.exists (fun residue' -> residue' <> null) residue) = false
+                                                then None
+                                                else Some (residue.Single())
+                               )
+                        else Some (residue.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCode (dbContext:MzIdentML) (code:string) =
@@ -4392,10 +5248,29 @@ module InsertStatements =
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (ambiguousResidueID:string) =
-                tryFind (context.AmbiguousResidue.Find(ambiguousResidueID))
+            ///Tries to find a ambiguousResidue-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AmbiguousResidue.Local do
+                           if i.ID=id
+                              then select (i, i.Details)
+                      }
+                |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
+                |> (fun ambiguousResidue -> 
+                    if (Seq.exists (fun ambiguousResidue' -> ambiguousResidue' <> null) ambiguousResidue) = false
+                        then 
+                            query {
+                                   for i in dbContext.AmbiguousResidue do
+                                       if i.ID=id
+                                          then select (i, i.Details)
+                                  }
+                            |> Seq.map (fun (ambiguousResidue, _) -> ambiguousResidue)
+                            |> (fun ambiguousResidue -> if (Seq.exists (fun ambiguousResidue' -> ambiguousResidue' <> null) ambiguousResidue) = false
+                                                        then None
+                                                        else Some (ambiguousResidue.Single())
+                               )
+                        else Some (ambiguousResidue.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByCode (dbContext:MzIdentML) (code:string) =
@@ -4518,10 +5393,29 @@ module InsertStatements =
                 let result = massTable.Details <- addCollectionToList massTable.Details details
                 massTable
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (massTableID:string) =
-                tryFind (context.MassTable.Find(massTableID))
+            ///Tries to find a massTable-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.MassTable.Local do
+                           if i.ID=id
+                              then select (i, i.Residues, i.AmbiguousResidues, i.Details)
+                      }
+                |> Seq.map (fun (massTable, _, _, _) -> massTable)
+                |> (fun massTable -> 
+                    if (Seq.exists (fun massTable' -> massTable' <> null) massTable) = false
+                        then 
+                            query {
+                                   for i in dbContext.MassTable do
+                                       if i.ID=id
+                                          then select (i, i.Residues, i.AmbiguousResidues, i.Details)
+                                  }
+                            |> Seq.map (fun (massTable, _, _, _) -> massTable)
+                            |> (fun massTable -> if (Seq.exists (fun massTable' -> massTable' <> null) massTable) = false
+                                                    then None
+                                                    else Some (massTable.Single())
+                               )
+                        else Some (massTable.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -4590,10 +5484,27 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            //Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (valueID:string) =
-                tryFind (context.Value.Find(valueID))
+            //Tries to find a value-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Value.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> (fun value -> 
+                    if (Seq.exists (fun value' -> value' <> null) value) = false
+                        then 
+                            query {
+                                   for i in dbContext.Value do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
+                                                then None
+                                                else Some (value.Single())
+                               )
+                        else Some (value.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByValue (dbContext:MzIdentML) (item:Nullable<float>) =
@@ -4663,17 +5574,36 @@ module InsertStatements =
                                   Nullable(DateTime.Now)
                                  )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (fragmentArrayID:string) =
-                tryFind (context.FragmentArray.Find(fragmentArrayID))
+            ///Tries to find a fragmentArray-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.FragmentArray.Local do
+                           if i.ID=id
+                              then select (i, i.Measure)
+                      }
+                |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
+                |> (fun fragmentArray -> 
+                    if (Seq.exists (fun fragmentArray' -> fragmentArray' <> null) fragmentArray) = false
+                        then 
+                            query {
+                                   for i in dbContext.FragmentArray do
+                                       if i.ID=id
+                                          then select (i, i.Measure)
+                                  }
+                            |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
+                            |> (fun fragmentArray -> if (Seq.exists (fun fragmentArray' -> fragmentArray' <> null) fragmentArray) = false
+                                                        then None
+                                                        else Some (fragmentArray.Single())
+                               )
+                        else Some (fragmentArray.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMeasureName (dbContext:MzIdentML) (value:Nullable<float>) =
                 query {
                        for i in dbContext.FragmentArray.Local do
                            if i.Values=value
-                              then select (i, i.Values)
+                              then select (i, i.Measure)
                       }
                 |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
                 |> (fun fragmentArray -> 
@@ -4682,7 +5612,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.FragmentArray do
                                        if i.Values=value
-                                          then select (i, i.Values)
+                                          then select (i, i.Measure)
                                   }
                             |> Seq.map (fun (fragmentArray, _) -> fragmentArray)
                             |> (fun fragmentArray -> if (Seq.exists (fun fragmentArray' -> fragmentArray' <> null) fragmentArray) = false
@@ -4694,7 +5624,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentArray) (item2:FragmentArray) =
-                item1.Values=item2.Values
+                item1.Measure=item2.Measure
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4735,10 +5665,27 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (indexID:string) =
-                tryFind (context.Index.Find(indexID))
+            ///Tries to find a index-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Index.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> (fun index -> 
+                    if (Seq.exists (fun index' -> index' <> null) index) = false
+                        then 
+                            query {
+                                   for i in dbContext.Index do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> (fun index -> if (Seq.exists (fun index' -> index' <> null) index) = false
+                                                then None
+                                                else Some (index.Single())
+                               )
+                        else Some (index.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByIndexItem (dbContext:MzIdentML) (item:Nullable<int>) =
@@ -4835,10 +5782,29 @@ module InsertStatements =
                 let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
                 ionType
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (ionTypeID:string) =
-                tryFind (context.IonType.Find(ionTypeID))
+            ///Tries to find a ionType-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.IonType.Local do
+                           if i.ID=id
+                              then select (i, i.FragmentArrays, i.Details)
+                      }
+                |> Seq.map (fun (ionType, _, _) -> ionType)
+                |> (fun ionType -> 
+                    if (Seq.exists (fun ionType' -> ionType' <> null) ionType) = false
+                        then 
+                            query {
+                                   for i in dbContext.IonType do
+                                       if i.ID=id
+                                          then select (i, i.FragmentArrays, i.Details)
+                                  }
+                            |> Seq.map (fun (ionType, _, _) -> ionType)
+                            |> (fun ionType -> if (Seq.exists (fun ionType' -> ionType' <> null) ionType) = false
+                                                then None
+                                                else Some (ionType.Single())
+                               )
+                        else Some (ionType.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByDetails (dbContext:MzIdentML) (details:seq<IonTypeParam>) =
@@ -4928,10 +5894,29 @@ module InsertStatements =
                 spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
                 spectraData
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectraDataID:string) =
-                tryFind (context.SpectraData.Find(spectraDataID))
+            ///Tries to find a spectraData-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectraData.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat, i.SpectrumIDFormat)
+                      }
+                |> Seq.map (fun (spectraData, _, _) -> spectraData)
+                |> (fun spectraData -> 
+                    if (Seq.exists (fun spectraData' -> spectraData' <> null) spectraData) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectraData do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat, i.SpectrumIDFormat)
+                                  }
+                            |> Seq.map (fun (spectraData, _, _) -> spectraData)
+                            |> (fun spectraData -> if (Seq.exists (fun spectraData' -> spectraData' <> null) spectraData) = false
+                                                    then None
+                                                    else Some (spectraData.Single())
+                               )
+                        else Some (spectraData.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
@@ -5087,10 +6072,29 @@ module InsertStatements =
                 let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
                 searchModification
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (searchModificationID:string) =
-                tryFind (context.SearchModification.Find(searchModificationID))
+            ///Tries to find a searchModification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SearchModification.Local do
+                           if i.ID=id
+                              then select (i, i.SpecificityRules, i.Details)
+                      }
+                |> Seq.map (fun (searchModification, _, _) -> searchModification)
+                |> (fun searchModification -> 
+                    if (Seq.exists (fun searchModification' -> searchModification' <> null) searchModification) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchModification do
+                                       if i.ID=id
+                                          then select (i, i.SpecificityRules, i.Details)
+                                  }
+                            |> Seq.map (fun (searchModification, _, _) -> searchModification)
+                            |> (fun searchModification -> if (Seq.exists (fun searchModification' -> searchModification' <> null) searchModification) = false
+                                                            then None
+                                                            else Some (searchModification.Single())
+                               )
+                        else Some (searchModification.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMassDelta (dbContext:MzIdentML) (massDelta:Nullable<float>) =
@@ -5236,10 +6240,29 @@ module InsertStatements =
                 let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
                 enzyme
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (enzymeID:string) =
-                tryFind (context.Enzyme.Find(enzymeID))
+            ///Tries to find a enzyme-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Enzyme.Local do
+                           if i.ID=id
+                              then select (i, i.EnzymeName)
+                      }
+                |> Seq.map (fun (enzyme, _) -> enzyme)
+                |> (fun enzyme -> 
+                    if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
+                        then 
+                            query {
+                                   for i in dbContext.Enzyme do
+                                       if i.ID=id
+                                          then select (i, i.EnzymeName)
+                                  }
+                            |> Seq.map (fun (enzyme, _) -> enzyme)
+                            |> (fun enzyme -> if (Seq.exists (fun enzyme' -> enzyme' <> null) enzyme) = false
+                                                then None
+                                                else Some (enzyme.Single())
+                               )
+                        else Some (enzyme.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -5340,10 +6363,29 @@ module InsertStatements =
                 let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
                 filter
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (filterID:string) =
-                tryFind (context.Filter.Find(filterID))
+            ///Tries to find a filter-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Filter.Local do
+                           if i.ID=id
+                              then select (i, i.FilterType, i.Includes, i.Excludes)
+                      }
+                |> Seq.map (fun (filter, _, _, _) -> filter)
+                |> (fun filter -> 
+                    if (Seq.exists (fun filter' -> filter' <> null) filter) = false
+                        then 
+                            query {
+                                   for i in dbContext.Filter do
+                                       if i.ID=id
+                                          then select (i, i.FilterType, i.Includes, i.Excludes)
+                                  }
+                            |> Seq.map (fun (filter, _, _, _) -> filter)
+                            |> (fun filter -> if (Seq.exists (fun filter' -> filter' <> null) filter) = false
+                                                then None
+                                                else Some (filter.Single())
+                               )
+                        else Some (filter.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
@@ -5412,10 +6454,27 @@ module InsertStatements =
                           Nullable(DateTime.Now)
                          )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (frameID:string) =
-                tryFind (context.Frame.Find(frameID))
+            ///Tries to find a frame-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Frame.Local do
+                           if i.ID=id
+                              then select i
+                      }
+                |> (fun frame -> 
+                    if (Seq.exists (fun frame' -> frame' <> null) frame) = false
+                        then 
+                            query {
+                                   for i in dbContext.Frame do
+                                       if i.ID=id
+                                          then select i
+                                  }
+                            |> (fun frame -> if (Seq.exists (fun frame' -> frame' <> null) frame) = false
+                                                then None
+                                                else Some (frame.Single())
+                               )
+                        else Some (frame.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByFrameItem (dbContext:MzIdentML) (item:Nullable<int>) =
@@ -5649,10 +6708,37 @@ module InsertStatements =
                 let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentificationProtocol
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectrumIdentificationProtocolID:string) =
-                tryFind (context.SpectrumIdentificationProtocol.Find(spectrumIdentificationProtocolID))
+            ///Tries to find a spectrumIdentificationProtocol-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationProtocol.Local do
+                           if i.ID=id
+                              then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
+                                           i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
+                                           i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
+                                           i.MzIdentMLDocument
+                                          )
+                      }
+                |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
+                |> (fun spectrumIdentificationProtocol -> 
+                    if (Seq.exists (fun spectrumIdentificationProtocol' -> spectrumIdentificationProtocol' <> null) spectrumIdentificationProtocol) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationProtocol do
+                                       if i.ID=id
+                                          then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
+                                                       i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
+                                                       i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
+                                                       i.MzIdentMLDocument
+                                                      )
+                                  }
+                            |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
+                            |> (fun spectrumIdentificationProtocol -> if (Seq.exists (fun spectrumIdentificationProtocol' -> spectrumIdentificationProtocol' <> null) spectrumIdentificationProtocol) = false
+                                                                        then None
+                                                                        else Some (spectrumIdentificationProtocol.Single())
+                               )
+                        else Some (spectrumIdentificationProtocol.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -5806,10 +6892,29 @@ module InsertStatements =
                 let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
                 searchDatabase
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (searchDatabaseID:string) =
-                tryFind (context.SearchDatabase.Find(searchDatabaseID))
+            ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SearchDatabase.Local do
+                           if i.ID=id
+                              then select (i, i.DatabaseName, i.FileFormat, i.Details)
+                      }
+                |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
+                |> (fun searchDatabase -> 
+                    if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
+                        then 
+                            query {
+                                   for i in dbContext.SearchDatabase do
+                                       if i.ID=id
+                                          then select (i, i.DatabaseName, i.FileFormat, i.Details)
+                                  }
+                            |> Seq.map (fun (searchDatabase, _, _, _) -> searchDatabase)
+                            |> (fun searchDatabase -> if (Seq.exists (fun searchDatabase' -> searchDatabase' <> null) searchDatabase) = false
+                                                        then None
+                                                        else Some (searchDatabase.Single())
+                               )
+                        else Some (searchDatabase.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
@@ -5934,10 +7039,29 @@ module InsertStatements =
                 let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
                 dbSequence
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (dbSequenceID:string) =
-                tryFind (context.DBSequence.Find(dbSequenceID))
+            ///Tries to find a dbSequence-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.DBSequence.Local do
+                           if i.ID=id
+                              then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                      }
+                |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
+                |> (fun dbSequence -> 
+                    if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+                        then 
+                            query {
+                                   for i in dbContext.DBSequence do
+                                       if i.ID=id
+                                          then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                                  }
+                            |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
+                            |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+                                                    then None
+                                                    else Some (dbSequence.Single())
+                               )
+                        else Some (dbSequence.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByAccession (dbContext:MzIdentML) (accession:string) =
@@ -6106,10 +7230,29 @@ module InsertStatements =
                 let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
                 peptideEvidence
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (peptideEvidenceID:string) =
-                tryFind (context.PeptideEvidence.Find(peptideEvidenceID))
+            ///Tries to find a peptideEvidence-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.PeptideEvidence.Local do
+                           if i.ID=id
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                      }
+                |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
+                |> (fun peptideEvidence -> 
+                    if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideEvidence do
+                                       if i.ID=id
+                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                                  }
+                            |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
+                            |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
+                                                        then None
+                                                        else Some (peptideEvidence.Single())
+                               )
+                        else Some (peptideEvidence.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -6284,10 +7427,33 @@ module InsertStatements =
             //     (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
             //     spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectrumIdentificationItemID:string) =
-                tryFind (context.SpectrumIdentificationItem.Find(spectrumIdentificationItemID))
+            ///Tries to find a spectrumIdentificationItem-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationItem.Local do
+                           if i.ID=id
+                              then select (i, i.Peptide, i.Sample, i.MassTable, 
+                                           i.PeptideEvidences, i.Fragmentations, i.Details
+                                          )
+                      }
+                |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
+                |> (fun spectrumIdentificationItem -> 
+                    if (Seq.exists (fun spectrumIdentificationItem' -> spectrumIdentificationItem' <> null) spectrumIdentificationItem) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationItem do
+                                       if i.ID=id
+                                          then select (i, i.Peptide, i.Sample, i.MassTable, 
+                                                       i.PeptideEvidences, i.Fragmentations, i.Details
+                                                      )
+                                  }
+                            |> Seq.map (fun (spectrumIdentificationItem, _, _, _, _, _, _) -> spectrumIdentificationItem)
+                            |> (fun spectrumIdentificationItem -> if (Seq.exists (fun spectrumIdentificationItem' -> spectrumIdentificationItem' <> null) spectrumIdentificationItem) = false
+                                                                    then None
+                                                                    else Some (spectrumIdentificationItem.Single())
+                               )
+                        else Some (spectrumIdentificationItem.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByExperimentalMassToCharge (dbContext:MzIdentML) (experimentalMassToCharge:Nullable<float>) =
@@ -6396,10 +7562,29 @@ module InsertStatements =
             //     (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
             //     spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectrumIdentificationResultID:string) =
-                tryFind (context.SpectrumIdentificationResult.Find(spectrumIdentificationResultID))
+            ///Tries to find a spectrumIdentificationResult-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationResult.Local do
+                           if i.ID=id
+                              then select (i, i.SpectraData, i.SpectrumIdentificationItem, i.Details)
+                      }
+                |> Seq.map (fun (spectrumIdentificationResult, _, _, _) -> spectrumIdentificationResult)
+                |> (fun spectrumIdentificationResult -> 
+                    if (Seq.exists (fun spectrumIdentificationResult' -> spectrumIdentificationResult' <> null) spectrumIdentificationResult) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationResult do
+                                       if i.ID=id
+                                          then select (i, i.SpectraData, i.SpectrumIdentificationItem, i.Details)
+                                  }
+                            |> Seq.map (fun (spectrumIdentificationResult, _, _, _) -> spectrumIdentificationResult)
+                            |> (fun spectrumIdentificationResult -> if (Seq.exists (fun spectrumIdentificationResult' -> spectrumIdentificationResult' <> null) spectrumIdentificationResult) = false
+                                                                    then None
+                                                                    else Some (spectrumIdentificationResult.Single())
+                               )
+                        else Some (spectrumIdentificationResult.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySpectrumID (dbContext:MzIdentML) (spectrumID:string) =
@@ -6517,10 +7702,29 @@ module InsertStatements =
                 let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
                 spectrumIdentificationList
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectrumIdentificationListID:string) =
-                tryFind (context.SpectrumIdentificationList.Find(spectrumIdentificationListID))
+            ///Tries to find a spectrumIdentificationList-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentificationList.Local do
+                           if i.ID=id
+                              then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
+                      }
+                |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
+                |> (fun spectrumIdentificationList -> 
+                    if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentificationList do
+                                       if i.ID=id
+                                          then select (i, i.FragmentationTables, i.SpectrumIdentificationResult, i.Details)
+                                  }
+                            |> Seq.map (fun (spectrumIdentificationList, _, _, _) -> spectrumIdentificationList)
+                            |> (fun spectrumIdentificationList -> if (Seq.exists (fun spectrumIdentificationList' -> spectrumIdentificationList' <> null) spectrumIdentificationList) = false
+                                                                    then None
+                                                                    else Some (spectrumIdentificationList.Single())
+                               )
+                        else Some (spectrumIdentificationList.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -6623,10 +7827,33 @@ module InsertStatements =
                 let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
                 spectrumIdentification
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (spectrumIdentificationID:string) =
-                tryFind (context.SpectrumIdentification.Find(spectrumIdentificationID))
+            ///Tries to find a spectrumIdentification-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SpectrumIdentification.Local do
+                           if i.ID=id
+                              then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
+                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                          )
+                      }
+                |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
+                |> (fun spectrumIdentification -> 
+                    if (Seq.exists (fun spectrumIdentification' -> spectrumIdentification' <> null) spectrumIdentification) = false
+                        then 
+                            query {
+                                   for i in dbContext.SpectrumIdentification do
+                                       if i.ID=id
+                                          then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
+                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                                      )
+                                  }
+                            |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
+                            |> (fun spectrumIdentification -> if (Seq.exists (fun spectrumIdentification' -> spectrumIdentification' <> null) spectrumIdentification) = false
+                                                                then None
+                                                                else Some (spectrumIdentification.Single())
+                               )
+                        else Some (spectrumIdentification.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -6737,10 +7964,29 @@ module InsertStatements =
                 let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionProtocol
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (proteinDetectionProtocolID:string) =
-                tryFind (context.ProteinDetectionProtocol.Find(proteinDetectionProtocolID))
+            ///Tries to find a proteinDetectionProtocol-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetectionProtocol.Local do
+                           if i.ID=id
+                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
+                |> (fun proteinDetectionProtocol -> 
+                    if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetectionProtocol do
+                                       if i.ID=id
+                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
+                            |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
+                                                                then None
+                                                                else Some (proteinDetectionProtocol.Single())
+                               )
+                        else Some (proteinDetectionProtocol.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -6849,10 +8095,29 @@ module InsertStatements =
             //     (sourceFile:SourceFile) (inputs:Inputs) =
             //     sourceFile.Inputs <- inputs
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (sourceFileID:string) =
-                tryFind (context.SourceFile.Find(sourceFileID))
+            ///Tries to find a sourceFile-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.SourceFile.Local do
+                           if i.ID=id
+                              then select (i, i.FileFormat, i.Details)
+                      }
+                |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
+                |> (fun sourceFile -> 
+                    if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                        then 
+                            query {
+                                   for i in dbContext.SourceFile do
+                                       if i.ID=id
+                                          then select (i, i.FileFormat, i.Details)
+                                  }
+                            |> Seq.map (fun (sourceFile, _, _) -> sourceFile)
+                            |> (fun sourceFile -> if (Seq.exists (fun sourceFile' -> sourceFile' <> null) sourceFile) = false
+                                                    then None
+                                                    else Some (sourceFile.Single())
+                               )
+                        else Some (sourceFile.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByLocation (dbContext:MzIdentML) (location:string) =
@@ -6961,10 +8226,29 @@ module InsertStatements =
                 let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
                 inputs
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (inputsID:string) =
-                tryFind (context.Inputs.Find(inputsID))
+            ///Tries to find a inputs-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Inputs.Local do
+                           if i.ID=id
+                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                |> (fun inputs -> 
+                    if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
+                        then 
+                            query {
+                                   for i in dbContext.Inputs do
+                                       if i.ID=id
+                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                            |> (fun inputs -> if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
+                                                then None
+                                                else Some (inputs.Single())
+                               )
+                        else Some (inputs.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindBySpectraData (dbContext:MzIdentML) (spectraData:seq<SpectraData>) =
@@ -7036,10 +8320,29 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (peptideHypothesisID:string) =
-                tryFind (context.PeptideHypothesis.Find(peptideHypothesisID))
+            ///Tries to find a peptideHypothesis-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.PeptideHypothesis.Local do
+                           if i.ID=id
+                              then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
+                      }
+                |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
+                |> (fun peptideHypothesis -> 
+                    if (Seq.exists (fun peptideHypothesis' -> peptideHypothesis' <> null) peptideHypothesis) = false
+                        then 
+                            query {
+                                   for i in dbContext.PeptideHypothesis do
+                                       if i.ID=id
+                                          then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
+                                  }
+                            |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
+                            |> (fun peptideHypothesis -> if (Seq.exists (fun peptideHypothesis' -> peptideHypothesis' <> null) peptideHypothesis) = false
+                                                            then None
+                                                            else Some (peptideHypothesis.Single())
+                               )
+                        else Some (peptideHypothesis.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPeptideEvidencePeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
@@ -7145,10 +8448,29 @@ module InsertStatements =
                 let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
                 proteinDetectionHypothesis
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (proteinDetectionHypothesisID:string) =
-                tryFind (context.ProteinDetectionHypothesis.Find(proteinDetectionHypothesisID))
+            ///Tries to find a proteinDetectionHypothesis-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetectionHypothesis.Local do
+                           if i.ID=id
+                              then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                |> (fun proteinDetectionHypothesis -> 
+                    if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetectionHypothesis do
+                                       if i.ID=id
+                                          then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                            |> (fun proteinDetectionHypothesis -> if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
+                                                                    then None
+                                                                    else Some (proteinDetectionHypothesis.Single())
+                               )
+                        else Some (proteinDetectionHypothesis.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByPassThreshold (dbContext:MzIdentML) (passThreshold:Nullable<bool>) =
@@ -7242,10 +8564,29 @@ module InsertStatements =
                 let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
                 proteinAmbiguityGroup
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (proteinAmbiguityGroupID:string) =
-                tryFind (context.ProteinAmbiguityGroup.Find(proteinAmbiguityGroupID))
+            ///Tries to find a proteinAmbiguityGroup-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinAmbiguityGroup.Local do
+                           if i.ID=id
+                              then select (i, i.ProteinDetectionHypothesis, i.Details)
+                      }
+                |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
+                |> (fun proteinAmbiguityGroup -> 
+                    if (Seq.exists (fun proteinAmbiguityGroup' -> proteinAmbiguityGroup' <> null) proteinAmbiguityGroup) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinAmbiguityGroup do
+                                       if i.ID=id
+                                          then select (i, i.ProteinDetectionHypothesis, i.Details)
+                                  }
+                            |> Seq.map (fun (proteinAmbiguityGroup, _, _) -> proteinAmbiguityGroup)
+                            |> (fun proteinAmbiguityGroup -> if (Seq.exists (fun proteinAmbiguityGroup' -> proteinAmbiguityGroup' <> null) proteinAmbiguityGroup) = false
+                                                                then None
+                                                                else Some (proteinAmbiguityGroup.Single())
+                               )
+                        else Some (proteinAmbiguityGroup.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -7351,10 +8692,29 @@ module InsertStatements =
                 let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
                 proteinDetectionList
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (proteinDetectionListID:string) =
-                tryFind (context.ProteinDetectionList.Find(proteinDetectionListID))
+            ///Tries to find a proteinDetectionList-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetectionList.Local do
+                           if i.ID=id
+                              then select (i, i.ProteinAmbiguityGroups, i.Details)
+                      }
+                |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
+                |> (fun proteinDetectionList -> 
+                    if (Seq.exists (fun proteinDetectionList' -> proteinDetectionList' <> null) proteinDetectionList) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetectionList do
+                                       if i.ID=id
+                                          then select (i, i.ProteinAmbiguityGroups, i.Details)
+                                  }
+                            |> Seq.map (fun (proteinDetectionList, _, _) -> proteinDetectionList)
+                            |> (fun proteinDetectionList -> if (Seq.exists (fun proteinDetectionList' -> proteinDetectionList' <> null) proteinDetectionList) = false
+                                                            then None
+                                                            else Some (proteinDetectionList.Single())
+                               )
+                        else Some (proteinDetectionList.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -7441,10 +8801,29 @@ module InsertStatements =
                 let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                 analysisData
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (analysisDataID:string) =
-                tryFind (context.AnalysisData.Find(analysisDataID))
+            ///Tries to find a analysisData-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.AnalysisData.Local do
+                           if i.ID=id
+                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                |> (fun analysisData -> 
+                    if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
+                        then 
+                            query {
+                                   for i in dbContext.AnalysisData do
+                                       if i.ID=id
+                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                            |> (fun analysisData -> if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
+                                                    then None
+                                                    else Some (analysisData.Single())
+                               )
+                        else Some (analysisData.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByMzIdentMLDocument (dbContext:MzIdentML) (mzIdentMLDocument:MzIdentMLDocument) =
@@ -7545,10 +8924,29 @@ module InsertStatements =
                 proteinDetection.MzIdentMLDocument <- mzIdentML
                 proteinDetection
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (proteinDetectionID:string) =
-                tryFind (context.ProteinDetection.Find(proteinDetectionID))
+            ///Tries to find a proteinDetection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.ProteinDetection.Local do
+                           if i.ID=id
+                              then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
+                      }
+                |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
+                |> (fun proteinDetection -> 
+                    if (Seq.exists (fun proteinDetection' -> proteinDetection' <> null) proteinDetection) = false
+                        then 
+                            query {
+                                   for i in dbContext.ProteinDetection do
+                                       if i.ID=id
+                                          then select (i, i.ProteinDetectionProtocol, i.ProteinDetectionList, i.SpectrumIdentificationLists)
+                                  }
+                            |> Seq.map (fun (proteinDetection, _, _, _) -> proteinDetection)
+                            |> (fun proteinDetection -> if (Seq.exists (fun proteinDetection' -> proteinDetection' <> null) proteinDetection) = false
+                                                        then None
+                                                        else Some (proteinDetection.Single())
+                               )
+                        else Some (proteinDetection.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -7723,10 +9121,29 @@ module InsertStatements =
                 let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
                 biblioGraphicReference
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (biblioGraphicReferenceID:string) =
-                tryFind (context.BiblioGraphicReference.Find(biblioGraphicReferenceID))
+            ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.BiblioGraphicReference.Local do
+                           if i.ID=id
+                              then select (i, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
+                |> (fun biblioGraphicReference -> 
+                    if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                        then 
+                            query {
+                                   for i in dbContext.BiblioGraphicReference do
+                                       if i.ID=id
+                                          then select (i, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
+                            |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
+                                                                then None
+                                                                else Some (biblioGraphicReference.Single())
+                               )
+                        else Some (biblioGraphicReference.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -7831,10 +9248,29 @@ module InsertStatements =
                 let result = provider.MzIdentMLDocument <- mzIdentMLDocument
                 provider
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (providerID:string) =
-                tryFind (context.Provider.Find(providerID))
+            ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.Provider.Local do
+                           if i.ID=id
+                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                      }
+                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> (fun provider -> 
+                    if (Seq.exists (fun provider' -> provider' <> null) provider) = false
+                        then 
+                            query {
+                                   for i in dbContext.Provider do
+                                       if i.ID=id
+                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                                  }
+                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
+                                                then None
+                                                else Some (provider.Single())
+                               )
+                        else Some (provider.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
@@ -8115,10 +9551,35 @@ module InsertStatements =
                 let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
                 mzIdentML
 
-            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID
-                (context:MzIdentML) (mzIdentMLID:string) =
-                tryFind (context.MzIdentMLDocument.Find(mzIdentMLID))
+            ///Tries to find a mzIdentMLDocument-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                       for i in dbContext.MzIdentMLDocument.Local do
+                           if i.ID=id
+                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                          )
+                      }
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> (fun mzIdentMLDocument -> 
+                    if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
+                        then 
+                            query {
+                                   for i in dbContext.MzIdentMLDocument do
+                                       if i.ID=id
+                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
+                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                      )
+                                  }
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
+                                                            then None
+                                                            else Some (mzIdentMLDocument.Single())
+                               )
+                        else Some (mzIdentMLDocument.Single())
+                   )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzIdentML) (name:string) =
