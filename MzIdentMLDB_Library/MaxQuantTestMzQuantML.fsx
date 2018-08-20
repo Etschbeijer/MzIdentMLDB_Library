@@ -637,6 +637,10 @@ type TermIDByName =
         | PeptideRatio
         ///
         | MassDeviation
+        ///The NCBI taxonomy id for the species.
+        | TaxidNCBI
+        ///Describes the version of the database.
+        | DatabaseVersion
 
         //AminoAcids
         ///Sequence of amino acids.
@@ -970,8 +974,13 @@ type TermIDByName =
         ///No enzyme was used.
         | NoEnzyme
 
-        //Type of modification of NA or AA
+        //Type of modification of NA or AA.
+        ///An oxidaton.
         | Oxidation
+
+        //SearchEngines
+        ///
+        | TOF
 
         static member toID (item:TermIDByName) =
             match item with
@@ -1154,6 +1163,9 @@ type TermIDByName =
             | PeptideRatio -> "MS:1001132"
             | MzDeltaScore -> "MS:1001975"
             | MassDeviation -> "User:0000074"
+            | TaxidNCBI -> "MS:1001467"
+            | DatabaseVersion -> "MS:1001016"
+            | TOF -> "MS:1002793"
 
 
 let mzQuantMLDocument =
@@ -1397,12 +1409,19 @@ let proteinParam =
     |> ProteinParamHandler.addUnit
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
 
-let protein =
+let proteins =
+    [
     ProteinHandler.init(
-        "Cre02.g096150.t1.2", searchDatabase, "Cre02.g096150.t1.2"
+        "Cre02.g096150.t1.2", searchDatabase
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
-    |> ProteinHandler.addDetail proteinParam
+    |> ProteinHandler.addDetail proteinParam;
+    ProteinHandler.init(
+        "Cre02.g096150.t1.2", searchDatabase
+                       )
+    |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
+    |> ProteinHandler.addDetail proteinParam;
+    ]
 
 let proteinRefParams =
     [
@@ -1415,8 +1434,12 @@ let proteinRefParams =
     |> ProteinRefParamHandler.addValue "105.09";
     ]
 
-let proteinRef =
-    ProteinRefHandler.init(protein)
+let proteinRef1 =
+    ProteinRefHandler.init(List.item 0 proteins)
+    |> ProteinRefHandler.addDetails proteinRefParams
+
+let proteinRef2 =
+    ProteinRefHandler.init(List.item 1 proteins)
     |> ProteinRefHandler.addDetails proteinRefParams
 
 let proteinGroupParam =
@@ -1428,12 +1451,12 @@ let proteinGroupParam =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
 
 let proteinList =
-    ProteinListHandler.init([protein])
+    ProteinListHandler.init(proteins)
     |> ProteinListHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let proteinGroup =
     ProteinGroupHandler.init(
-        searchDatabase, [proteinRef]
+        searchDatabase, [proteinRef1; proteinRef2]
                             )
     |> ProteinGroupHandler.addDetail proteinGroupParam
 

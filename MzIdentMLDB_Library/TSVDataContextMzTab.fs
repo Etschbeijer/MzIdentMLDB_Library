@@ -54,29 +54,29 @@ module DataModel =
             [<FieldAttribute("description")>]
             Description                              : string
             [<FieldAttribute("sample_processing[1-n]")>]
-            mutable SampleProcessings                : array<(string*string*string*string)>
+            mutable SampleProcessings                : array<(string)>
             [<FieldAttribute("instrument[1-n]-name")>]
-            mutable InstrumentNames                  : array<string*string*string*string>
+            mutable InstrumentNames                  : array<string>
             [<FieldAttribute("instrument[1-n]-source")>]
-            mutable InstrumentSources                : array<string*string*string*string>
+            mutable InstrumentSources                : array<string>
             [<FieldAttribute("instrument[1-n]-analyzer[1-n]")>]
-            mutable InstrumentAnalyzers              : array<string*string*string*string>
+            mutable InstrumentAnalyzers              : array<string>
             [<FieldAttribute("instrument[1-n]-detector")>]
-            mutable InstrumentDetectors              : array<string*string*string*string>
+            mutable InstrumentDetectors              : array<string>
             [<FieldAttribute("software[1-n]")>]
-            mutable Softwares                        : array<string*string*string*string>
+            mutable Softwares                        : array<string>
             [<FieldAttribute("software[1-n]-setting[1-n]")>]
-            mutable SoftwaresSettings                : array<string*string*string*string>
+            mutable SoftwaresSettings                : array<string>
             [<FieldAttribute("protein_search_engine_score[1-n]")>]
-            ProteinSearchEngineScores                : array<string*string*string*string>
+            ProteinSearchEngineScores                : array<string>
             [<FieldAttribute("peptide_search_engine_score[1-n]")>]
-            PeptideSearchEngineScores                : array<string*string*string*string>
+            PeptideSearchEngineScores                : array<string>
             [<FieldAttribute("psm_search_engine_score[1-n]")>]
-            PSMSearchEngineScores                    : array<string*string*string*string>
+            PSMSearchEngineScores                    : array<string>
             [<FieldAttribute("smallmolecule_search_engine_score[1-n]")>]
-            SmallMoleculeSearchEngineScores          : array<string*string*string*string>
+            SmallMoleculeSearchEngineScores          : array<string>
             [<FieldAttribute("false_discovery_rate")>]
-            mutable FalseDiscoveryRates              : array<string*string*string*string>
+            mutable FalseDiscoveryRates              : array<string>
             [<FieldAttribute("publication[1-n]")>]
             mutable Publications                     : array<string>
             [<FieldAttribute("contact[1-n]-name")>]
@@ -88,55 +88,55 @@ module DataModel =
             [<FieldAttribute("uri[1-n]")>]
             mutable URI                              : string
             [<FieldAttribute("fixed_mod[1-n]")>]
-            FixedMods                                : array<string*string*string*string>
+            FixedMods                                : array<string>
             [<FieldAttribute("fixed_mod[1-n]-site")>]
             mutable FixedModSites                    : array<string>
             [<FieldAttribute("fixed_mod[1-n]-position")>]
             mutable FixedModPositions                : array<string>
             [<FieldAttribute("variable_mod[1-n]")>]
-            VariableMods                             : array<string*string*string*string>
+            VariableMods                             : array<string>
             [<FieldAttribute("variable_mod[1-n]-site")>]
             mutable VariableModSites                 : array<string>
             [<FieldAttribute("variable_mod[1-n]-position")>]
             mutable VariableModPositions             : array<string>
             [<FieldAttribute("quantification_method")>]
-            mutable QuantificationMethod             : string*string*string*string
+            mutable QuantificationMethod             : string
             [<FieldAttribute("protein-quantification_unit")>]
-            mutable ProteinQuantificationUnit        : string*string*string*string
+            mutable ProteinQuantificationUnit        : string
             [<FieldAttribute("peptide-quantification_unit")>]
-            mutable PeptideQuantificationUnit        : string*string*string*string
+            mutable PeptideQuantificationUnit        : string
             [<FieldAttribute("small_molecule-quantification_unit")>]
-            mutable SmallMoleculeQuantificationUnit  : string*string*string*string
+            mutable SmallMoleculeQuantificationUnit  : string
             [<FieldAttribute("ms_run[1-n]-format")>]
-            mutable MSRunsFormat                     : string*string*string*string
+            mutable MSRunsFormat                     : string
             [<FieldAttribute("ms_run[1-n]-location")>]
             MSRunLocation                            : string
             [<FieldAttribute("ms_run[1-n]-id_format")>]
-            mutable MSRunsIDFormat                   : string*string*string*string
+            mutable MSRunsIDFormat                   : string
             [<FieldAttribute("ms_run[1-n]-fragmentation_method")>]
-            mutable MSRunsFragmentationMethods       : array<string*string*string*string>
+            mutable MSRunsFragmentationMethods       : array<string>
             [<FieldAttribute("ms_run[1-n]-hash")>]
             mutable MSRunsHash                       : string
             [<FieldAttribute("ms_run[1-n]-hash_method")>]
-            mutable MSRunsHashMethod                 : string*string*string*string
+            mutable MSRunsHashMethod                 : string
             [<FieldAttribute("custom[1-n]")>]
-            mutable Customs                          : array<string*string*string*string>
+            mutable Customs                          : array<string>
             [<FieldAttribute("sample[1-n]-species[1-n]")>]
-            mutable SamplesSpecies                   : array<string*string*string*string>
+            mutable SamplesSpecies                   : array<string>
             [<FieldAttribute("sample[1-n]-tissue[1-n]")>]
-            mutable SampleTissues                    : array<string*string*string*string>
+            mutable SampleTissues                    : array<string>
             [<FieldAttribute("sample[1-n]-cell_type[1-n]")>]
-            mutable SamplesCellTypes                 : array<string*string*string*string>
+            mutable SamplesCellTypes                 : array<string>
             [<FieldAttribute("sample[1-n]-disease[1-n]")>]
-            mutable SamplesDiseases                  : array<string*string*string*string>
+            mutable SamplesDiseases                  : array<string>
             [<FieldAttribute("sample[1-n]-description")>]
             mutable SampleDescriptions               : array<string>
             [<FieldAttribute("sample[1-n]-custom[1-n]")>]
             mutable SamplesCustoms                   : array<string>
             [<FieldAttribute("assay[1-n]-quantification_reagent")>]
-            mutable AssaysQuantificationReagent      : string*string*string*string
+            mutable AssaysQuantificationReagent      : string
             [<FieldAttribute("assay[1-n]-quantification_mod[1-n]")>]
-            mutable AssaysQuantificationMods         : array<string*string*string*string>
+            mutable AssaysQuantificationMods         : array<string>
             [<FieldAttribute("assay[1-n]-quantification_mod[1-n]-site")>]
             mutable AssaysQuantificationModsSite     : string
             [<FieldAttribute("assay[1-n]-quantification_mod[1-n]-position")>]
@@ -160,13 +160,13 @@ module DataModel =
             [<FieldAttribute("cv[1-n]-url")>]
             mutable CvsURI                           : array<string>
             [<FieldAttribute("colunit-protein")>]
-            mutable ColUnitProtein                   : string*string*string*string
+            mutable ColUnitProtein                   : string
             [<FieldAttribute("colunit-peptide")>]
-            mutable ColUnitPeptide                   : string*string*string*string
+            mutable ColUnitPeptide                   : string
             [<FieldAttribute("colunit-psm")>]
-            mutable ColUnitPSM                       : string*string*string*string
+            mutable ColUnitPSM                       : string
             [<FieldAttribute("colunit-small_molecule")>]
-            mutable ColUnitSmallMolecule             : string*string*string*string
+            mutable ColUnitSmallMolecule             : string
            }
 
     ///The protein section can provide additional information about the reported proteins in the mzTab file.
@@ -185,7 +185,7 @@ module DataModel =
             [<FieldAttribute("database_version")>]
             DatabaseVersion:string
             [<FieldAttribute("search_engine")>]
-            SearchEngines:array<string*string*string*string>
+            SearchEngines:array<string>
             [<FieldAttribute("best_search_engine_score[1-n]")>]
             BestSearchEngineScore:array<float>
             [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
@@ -234,7 +234,7 @@ module DataModel =
              [<FieldAttribute("database_version")>]
              mutable DatabaseVersion:string
              [<FieldAttribute("search_engine")>]
-             mutable SearchEngines:array<string*string*string*string>
+             mutable SearchEngines:array<string>
              [<FieldAttribute("best_search_engine_score[1-n]")>]
              mutable BestSearchEngineScores:array<float>
              [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]
@@ -283,7 +283,7 @@ module DataModel =
              [<FieldAttribute("database_version")>]
              DatabaseVersion:string
              [<FieldAttribute("search_engine")>]
-             SearchEngines:array<string*string*string*string>
+             SearchEngines:array<string>
              [<FieldAttribute("search_engine_score[1-n]")>]
              SearchEngineScores:array<float>
              [<FieldAttribute("reliability")>]
@@ -350,7 +350,7 @@ module DataModel =
              [<FieldAttribute("spectra_ref")>]
              SpectraRefs:array<string>
              [<FieldAttribute("search_engine")>]
-             SearchEngines:array<string*string*string*string>
+             SearchEngines:array<string>
              [<FieldAttribute("best_search_engine_score[1-n]")>]
              BestSearchEngineScores:array<float>
              [<FieldAttribute("search_engine_score[1-n]_ms_run[1-n]")>]

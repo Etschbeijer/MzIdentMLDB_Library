@@ -640,6 +640,8 @@ type TermIDByName =
         | MassDeviation
         ///The NCBI taxonomy id for the species.
         | TaxidNCBI
+        ///Describes the version of the database.
+        | DatabaseVersion
 
         //AminoAcids
         ///Sequence of amino acids.
@@ -943,7 +945,7 @@ type TermIDByName =
         | Minute
         | Second
         | Ppm
-        | Percent
+        | Percentage
         | Dalton
         | KiloDalton
         | NumberOfDetections
@@ -973,8 +975,13 @@ type TermIDByName =
         ///No enzyme was used.
         | NoEnzyme
 
-        //Type of modification of NA or AA
+        //Type of modification of NA or AA.
+        ///An oxidaton.
         | Oxidation
+
+        //SearchEngines
+        ///
+        | TOF
 
         static member toID (item:TermIDByName) =
             match item with
@@ -1017,7 +1024,7 @@ type TermIDByName =
             | RazorAndUniquePeptides -> "User:0000015"
             | UniquePeptides -> "User:0000016"
             | SequenceCoverage -> "MS:1001093"
-            | Percent -> "UO:0000187"
+            | Percentage -> "UO:0000187"
             | UniqueAndRazorSequenceCoverage -> "User:0000017"
             | UniqueSequenceCoverage -> "User:0000018"
             | MolecularWeight -> "PRIDE:0000057"
@@ -1158,6 +1165,8 @@ type TermIDByName =
             | MzDeltaScore -> "MS:1001975"
             | MassDeviation -> "User:0000074"
             | TaxidNCBI -> "MS:1001467"
+            | DatabaseVersion -> "MS:1001016"
+            | TOF -> "MS:1002793"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
@@ -1175,7 +1184,7 @@ let measureErrors =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorPercent)).Value
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percent)).Value;
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
     MeasureParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorDa)).Value
                             )
@@ -1270,10 +1279,17 @@ let databaseName =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniProt)).Value
                         )
 
+let searchDataBaseParam =
+    SearchDatabaseParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DatabaseVersion)).Value
+                                   )
+    |> SearchDatabaseParamHandler.addValue "1.0"
+
 let searchDatabase =
     SearchDatabaseHandler.init(
         "https://www.uniprot.org/", fileFormat1, databaseName
-                                )
+                              )
+    |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
 let dbSequenceParams =
     [
@@ -1960,28 +1976,28 @@ let proteinAmbiguousGroupsParams =
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percent)).Value;
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueAndRazorSequenceCoverage)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percent)).Value;
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueSequenceCoverage)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percent)).Value;
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MolecularWeight)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "23.9"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percent)).Value;
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLength)).Value
-                                            )
+                                          )
     |> ProteinAmbiguityGroupParamHandler.addValue "218";
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLengths)).Value
@@ -2231,7 +2247,7 @@ let fragmentTolerance =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
     ]
 
-let analysisProcolparams =
+let analysisParams =
     [
     AnalysisParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
@@ -2249,13 +2265,16 @@ let analysisProcolparams =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UseDeltaScores)).Value
                                                     )
     |> AnalysisParamHandler.addValue "FALSE";
+    AnalysisParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TOF)).Value
+                                                    );
     ]
 
 let proteinDetectionProtocol =
     ProteinDetectionProtocolHandler.init(
         analysisSoftware, threshold
                                         )
-    |> ProteinDetectionProtocolHandler.addAnalysisParams analysisProcolparams
+    |> ProteinDetectionProtocolHandler.addAnalysisParams analysisParams
     |> ProteinDetectionProtocolHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let spectrumIdentificationProtocol =
