@@ -481,7 +481,7 @@ let findSearchEgnines (analysisParams:seq<AnalysisParam>) =
     analysisParams
     |> Seq.map (fun analysisParam ->
         match analysisParam.Term.ID with
-        | "MS:1002793" -> analysisParam.Term.Name
+        | "MS:1001583" -> ("PSM", analysisParam.Term.ID, analysisParam.Term.Name, analysisParam.Value) |> (fun item -> convert4timesStringToSingleString item)
         | _ -> null
                )
 let createTSVProteinSection (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =

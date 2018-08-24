@@ -29,7 +29,7 @@ let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 
 let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
-
+let sqlMzIdentMLContext = ContextHandler.sqlConnection()
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
@@ -78,6 +78,8 @@ let initStandardDB (dbContext : MzIdentML) =
     dbContext.SaveChanges()
 
 
-let sqliteMzIdentMLDB =
-    initStandardDB sqliteMzIdentMLContext
+//let sqliteMzIdentMLDB =
+//    initStandardDB sqliteMzIdentMLContext
 
+let sqlServerMzIDenMLDB =   
+    initStandardDB sqlMzIdentMLContext

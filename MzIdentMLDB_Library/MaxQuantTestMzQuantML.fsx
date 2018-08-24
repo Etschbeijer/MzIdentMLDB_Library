@@ -978,10 +978,6 @@ type TermIDByName =
         ///An oxidaton.
         | Oxidation
 
-        //SearchEngines
-        ///
-        | TOF
-
         static member toID (item:TermIDByName) =
             match item with
             | RawFile -> "MS:1000577"
@@ -1165,7 +1161,6 @@ type TermIDByName =
             | MassDeviation -> "User:0000074"
             | TaxidNCBI -> "MS:1001467"
             | DatabaseVersion -> "MS:1001016"
-            | TOF -> "MS:1002793"
 
 
 let mzQuantMLDocument =
@@ -1258,11 +1253,18 @@ let databaseName =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniProt)).Value
                         )
 
+let searchDatabaseParam =
+    SearchDatabaseParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DatabaseVersion)).Value
+                                   )
+    |> SearchDatabaseParamHandler.addValue "1.0"
+
 let searchDatabase =
     SearchDatabaseHandler.init(
-        "https://www.uniprot.org/", databaseName
+        "local", databaseName
                                 )
-    |> SearchDatabaseHandler.addFileFormat fileFormat3
+    |> SearchDatabaseHandler.addFileFormat fileFormat2
+    |> SearchDatabaseHandler.addDetail searchDatabaseParam
 
 let methodFile =
     MethodFileHandler.init("local")
@@ -1364,11 +1366,19 @@ let peptideConsensusUnmodifiedParams =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AndromedaScore)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "122.97";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+                                                )
+    |> PeptideConsensusParamHandler.addValue "0.001671316";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
     ]
 
 let peptideConsensusUnmodified =
     PeptideConsensusHandler.init(2, [evidenceRefUnmodified])
     |> PeptideConsensusHandler.addDetails peptideConsensusUnmodifiedParams
+    |> PeptideConsensusHandler.addSearchDatabase searchDatabase
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
 
 let featureMOxidized =
@@ -1389,25 +1399,62 @@ let peptideConsensusMOxidizedParams =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID AndromedaScore)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "111.12";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+                                                )
+    |> PeptideConsensusParamHandler.addValue "0.002043774";
+    PeptideConsensusParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniqueToProtein)).Value
+                                               )
     ]
 
 let peptideConsensusMOxidized =
     PeptideConsensusHandler.init(2, [evidenceRefMOxidized])
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
     |> PeptideConsensusHandler.addDetails peptideConsensusMOxidizedParams
+    |> PeptideConsensusHandler.addSearchDatabase searchDatabase
     |> PeptideConsensusHandler.addModifications modifications
 
 let peptideConsensusList =
     PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized])
     |> PeptideConsensusListHandler.addMzQuantMLDocument mzQuantMLDocument
 
-let proteinParam =
+let proteinParams =
+    [
     ProteinParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
                             )
     |> ProteinParamHandler.addValue "31.7"
     |> ProteinParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value;
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+                                          )
+    |> ProteinParamHandler.addValue "105.09";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsAll)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinDescription)).Value
+                                            )
+    |> ProteinParamHandler.addValue ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 OS=Chlamydomonas reinhardtii SV=2 TOU=Cre";
+    ProteinParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+                            );
+    ProteinParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
+                            )
+    |> ProteinParamHandler.addValue "M";
+    ]
 
 let proteins =
     [
@@ -1415,12 +1462,12 @@ let proteins =
         "Cre02.g096150.t1.2", searchDatabase
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
-    |> ProteinHandler.addDetail proteinParam;
+    |> ProteinHandler.addDetails proteinParams;
     ProteinHandler.init(
         "Cre02.g096150.t1.2", searchDatabase
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
-    |> ProteinHandler.addDetail proteinParam;
+    |> ProteinHandler.addDetails proteinParams;
     ]
 
 let proteinRefParams =
@@ -1428,10 +1475,6 @@ let proteinRefParams =
     ProteinRefParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingRazorProtein)).Value
                                );
-    ProteinRefParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
-                                          )
-    |> ProteinRefParamHandler.addValue "105.09";
     ]
 
 let proteinRef1 =
@@ -1514,7 +1557,192 @@ let finalMzQuantMLDocument =
 
 sqliteMzQuantMLContext.SaveChanges()
 
-let findMzIdentMLDocument =
-    MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
+//let findMzIdentMLDocument =
+//    MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
 
-(Seq.item 0 findMzIdentMLDocument.Value).ProteinGroupList.[0]
+//(Seq.item 0 findMzIdentMLDocument.Value).ProteinGroupList.[0]
+
+
+//Test to fill database
+
+let terms =
+    [|
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Dalton)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID KiloDalton)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Ppm)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID XICArea)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NormalizedXICArea)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID TotalXIC)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID XICAreas)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPep)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPepRazor)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NumberPeptideSeqsMatchedEachSpec)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinScoreModifiedPeptides)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPeptideLength)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPepUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedPeptideAnalysis)).Value
+    |]
+
+let createTestProteinParams  (dbContext:MzQuantML)=
+    [
+    ProteinParamHandler.init(
+        terms.[0]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[1]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[2]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[3]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[4]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[5]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[6]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[7]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[8]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[9]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+     ProteinParamHandler.init(
+        terms.[10]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[11]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[12]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[13]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[14]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[15]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[16]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[17]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[18]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ProteinParamHandler.init(
+        terms.[19]
+                            )
+    |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ]
+
+let testSearchDatabase =
+    SearchDatabaseHandler.init("local", null)
+
+let testProtein n =
+    ProteinHandler.init("Test", testSearchDatabase, n)
+    |> ProteinHandler.addDetails (createTestProteinParams sqliteMzQuantMLContext)
+    |> ProteinHandler.addToContext sqliteMzQuantMLContext
+
+#time
+let rec loppAddtoContext n =
+        if n < 5000
+            then testProtein (string n)
+                 loppAddtoContext (n+1)
+            else n
+loppAddtoContext
+
+let fiveThousandEntries = loppAddtoContext 0
+
+sqliteMzQuantMLContext.SaveChanges()
+
+let findProteinParams (dbContext:MzQuantML) (id:string) =
+    query {
+            for i in dbContext.Protein.Local do
+                if i.ID=id then
+                    select i.Details
+            }
+    |> Seq.toList
+    |> (fun organization -> 
+        if (List.exists (fun organization' -> organization' <> null) organization) = false
+            then 
+                query {
+                        for i in dbContext.Protein do
+                            if i.ID=id then
+                                select i.Details
+                        }
+                |> Seq.toList
+                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+                                        then None
+                                        else Some (organization)
+                    )
+            else Some (organization)
+        )
+
+let findProteinParamTerms (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.ProteinParam.Local do
+                select i.Term
+            }
+    |> Seq.toList
+    |> (fun organization -> 
+        if (List.exists (fun organization' -> organization' <> null) organization) = false then 
+            query {
+                    for i in dbContext.ProteinParam do
+                        select i.Term
+                    }
+            |> Seq.toList
+            |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+                                    then None
+                                    else Some organization
+                )
+        else Some organization
+        )
+        
+let testTerms =
+    findProteinParamTerms sqliteMzQuantMLContext |> ignore
+    [0..4999]
+    |> List.collect (fun item -> (findProteinParams sqliteMzQuantMLContext (item.ToString())).Value)
+    //|> List.map (fun item -> item |> Seq.map (fun item1 -> item1.Term))
+    |> List.toArray
+
+let y = testTerms.[0].[0].Term.ID
+
+let z = findProteinParamTerms sqliteMzQuantMLContext |> ignore

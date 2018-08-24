@@ -979,10 +979,6 @@ type TermIDByName =
         ///An oxidaton.
         | Oxidation
 
-        //SearchEngines
-        ///
-        | TOF
-
         static member toID (item:TermIDByName) =
             match item with
             | RawFile -> "MS:1000577"
@@ -1166,7 +1162,6 @@ type TermIDByName =
             | MassDeviation -> "User:0000074"
             | TaxidNCBI -> "MS:1001467"
             | DatabaseVersion -> "MS:1001016"
-            | TOF -> "MS:1002793"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
@@ -1287,7 +1282,7 @@ let searchDataBaseParam =
 
 let searchDatabase =
     SearchDatabaseHandler.init(
-        "https://www.uniprot.org/", fileFormat1, databaseName
+        "local", fileFormat3, databaseName
                               )
     |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
@@ -1938,23 +1933,7 @@ let proteinAmbiguousGroupsParams =
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MajorProteinIDs)).Value
                                             )
-    |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2";
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideCountsAll)).Value
-                                            )
-    |> ProteinAmbiguityGroupParamHandler.addValue "6";
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
-                                            )
-    |> ProteinAmbiguityGroupParamHandler.addValue "6";
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
-                                            )
-    |> ProteinAmbiguityGroupParamHandler.addValue "6";
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinDescription)).Value
-                                            )
-    |> ProteinAmbiguityGroupParamHandler.addValue ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 OS=Chlamydomonas reinhardtii SV=2 TOU=Cre";
+    |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2";  
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfProteins)).Value
                                             )
@@ -2011,10 +1990,6 @@ let proteinAmbiguousGroupsParams =
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "1335100";
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinScore)).Value
-                                          )
-    |> ProteinAmbiguityGroupParamHandler.addValue "105.09";
     ProteinAmbiguityGroupParamHandler.init(
         (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProtein)).Value
                                                )
@@ -2266,7 +2241,7 @@ let analysisParams =
                                                     )
     |> AnalysisParamHandler.addValue "FALSE";
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TOF)).Value
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxQuant)).Value
                                                     );
     ]
 

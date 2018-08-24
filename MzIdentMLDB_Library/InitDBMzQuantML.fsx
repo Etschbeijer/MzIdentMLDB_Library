@@ -28,8 +28,8 @@ open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
-let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
-
+let sqliteMzQuantMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
+let sqlMzQuantMLContext = ContextHandler.sqlConnection()
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
@@ -79,5 +79,7 @@ let initStandardDB (dbContext : MzQuantML) =
 
 
 let sqliteMzQuantMLDB =
-    initStandardDB sqliteMzIdentMLContext
+    initStandardDB sqliteMzQuantMLContext
 
+//let sqlServerMzQuantMLDB =   
+//    initStandardDB sqlMzQuantMLContext
