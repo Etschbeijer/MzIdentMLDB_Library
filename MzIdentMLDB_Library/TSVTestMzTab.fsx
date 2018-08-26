@@ -198,19 +198,366 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
                     (fun (a,b,c,d) -> a + ", " + b + ", "+ c + ", " + d + ", ") item
                 tmp
 
-let findProteinsOfProteinList (dbContext:MzQuantML) (id:string) =
+//let findProteinsOfProteinList (dbContext:MzQuantML) (id:string) =
+//    query {
+//            for i in dbContext.ProteinList.Local do
+//                if i.ID=id
+//                    then select i.Proteins
+//            }
+//    |> (fun proteinList -> 
+//        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+//            then 
+//                query {
+//                        for i in dbContext.ProteinList do
+//                            if i.ID=id
+//                                then select i.Proteins
+//                        }
+//                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+//                                        then None
+//                                        else Some (proteinList |> seq)
+//                    )
+//            else Some (proteinList |> seq)
+//        )
+//    |> (fun item -> 
+//        match item with
+//        | Some x ->  x |> Seq.collect (fun item1 -> item1)
+//        | None ->  [] |> seq
+//       )
+
+//let findDBSequenceTerms (dbContext:MzIdentML) =
+//    query {
+//            for i in dbContext.DBSequenceParam.Local do
+//                select i.Term
+//            }
+//    |> Seq.toList
+//    |> (fun organization -> 
+//        if (List.exists (fun organization' -> organization' <> null) organization) = false
+//            then 
+//                query {
+//                        for i in dbContext.DBSequenceParam do
+//                            select i.Term
+//                        }
+//                |> Seq.toList
+//                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+//                                        then None
+//                                        else Some (organization |> seq)
+//                    )
+//            else Some (organization |> seq)
+//        )
+
+//let findDetailsOfDBSequenceByAccession (dbContext:MzIdentML) (accession:string) =
+//    findDBSequenceTerms dbContext |> ignore
+//    query {
+//            for i in dbContext.DBSequence.Local do
+//                if i.Accession=accession
+//                    then select i.Details
+//            }
+//    |> (fun dbSequence -> 
+//        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//            then 
+//                query {
+//                        for i in dbContext.DBSequence do
+//                            if i.Accession=accession
+//                                then select i.Details
+//                        }
+//                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//                                        then None
+//                                        else Some (dbSequence |> seq)
+//                    )
+//            else Some (dbSequence |> seq)
+//        )
+//    |> (fun item -> 
+//        match item with
+//        | Some x ->  x |> Seq.collect (fun item1 -> item1)
+//        | None ->  [] |> seq
+//       )
+
+//let findTaxid (dbSequenceParam:DBSequenceParam) =
+//    match dbSequenceParam.Term.ID with
+//    | "MS:1001467" -> dbSequenceParam.Value
+//    | _ -> null
+
+//let findSpeciesName (dbSequenceParam:DBSequenceParam) =
+//    match dbSequenceParam.Term.ID with
+//    | "MS:1001467" -> dbSequenceParam.Value
+//    | _ -> null
+
+//let findSearchDatabaseNames (dbContext:MzIdentML) =
+//    findDBSequenceTerms dbContext |> ignore
+//    query {
+//            for i in dbContext.SearchDatabase.Local do
+//                select i.DatabaseName
+//            }
+//    |> (fun dbSequence -> 
+//        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//            then 
+//                query {
+//                        for i in dbContext.SearchDatabase do
+//                            select i.DatabaseName
+//                        }
+//                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//                                        then None
+//                                        else Some (dbSequence.Single())
+//                    )
+//            else Some (dbSequence.Single())
+//        )
+
+//let findCVParamsTerms (dbContext:MzIdentML) =
+//    query {
+//            for i in dbContext.CVParam.Local do
+//                select i.Term
+//            }
+//    |> Seq.toList
+//    |> (fun organization -> 
+//        if (List.exists (fun organization' -> organization' <> null) organization) = false
+//            then 
+//                query {
+//                        for i in dbContext.CVParam do
+//                            select i.Term
+//                        }
+//                |> Seq.toList
+//                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+//                                        then None
+//                                        else Some (organization |> seq)
+//                    )
+//            else Some (organization |> seq)
+//        )
+
+//let findDataBaseNameByAccession (dbContext:MzIdentML) (accession:string) =
+//    findSearchDatabaseNames dbContext |> ignore
+//    findCVParamsTerms dbContext |> ignore
+    
+//    query {
+//            for i in dbContext.DBSequence.Local do
+//                if i.Accession=accession
+//                    then select i.SearchDatabase
+//            }
+//    |> (fun dbSequence -> 
+//        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//            then 
+//                query {
+//                        for i in dbContext.DBSequence do
+//                            if i.Accession=accession
+//                                then select i.SearchDatabase
+//                        }
+//                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//                                                then None
+//                                                else Some (dbSequence.Single())
+//                    )
+//            else Some (dbSequence.Single())
+//        )
+//    |> (fun item ->
+//        match item with
+//        | Some x -> x.DatabaseName.Term.Name
+//        | None -> null
+//       )
+
+//let findSearchDatabaseParams (dbContext:MzIdentML) =
+//    query {
+//            for i in dbContext.SearchDatabase.Local do
+//                select i.Details
+//            }
+//    |> (fun dbSequence -> 
+//        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//            then 
+//                query {
+//                        for i in dbContext.SearchDatabase do
+//                            select i.Details
+//                        }
+//                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//                                        then None
+//                                        else Some (dbSequence |> seq)
+//                    )
+//            else Some (dbSequence |> seq)
+//        )
+
+//let findSearchDatabaseParamsTerms (dbContext:MzIdentML) =
+//    query {
+//            for i in dbContext.SearchDatabaseParam.Local do
+//                select i.Term
+//            }
+//    |> Seq.toList
+//    |> (fun organization -> 
+//        if (List.exists (fun organization' -> organization' <> null) organization) = false
+//            then 
+//                query {
+//                        for i in dbContext.SearchDatabaseParam do
+//                            select i.Term
+//                        }
+//                |> Seq.toList
+//                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+//                                        then None
+//                                        else Some (organization |> seq)
+//                    )
+//            else Some (organization |> seq)
+//        )
+
+//let findDataBaseVersionByAccession (dbContext:MzIdentML) (accession:string) =
+//    findSearchDatabaseParams dbContext |> ignore
+//    findSearchDatabaseParamsTerms dbContext |> ignore
+    
+//    query {
+//            for i in dbContext.DBSequence.Local do
+//                if i.Accession=accession
+//                    then select i.SearchDatabase
+//          }
+//    |> (fun dbSequence -> 
+//        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//            then 
+//                query {
+//                        for i in dbContext.DBSequence do
+//                            if i.Accession=accession
+//                                then select i.SearchDatabase
+//                        }
+//                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
+//                                                then None
+//                                                else Some (dbSequence.Single())
+//                    )
+//            else Some (dbSequence.Single())
+//        )
+//    |> (fun item -> 
+//        match item with
+//        | Some x ->  x.Details |> Seq.map (fun detail -> detail, detail.Term.ID)
+//        | None ->  null
+//       )
+
+//let findDatabaseVersion (searchDatabaseAndTermID:MzIdentMLDataBase.DataModel.SearchDatabaseParam*string) =
+//    searchDatabaseAndTermID
+//    |> (fun (detail, termID) ->
+//        match termID with
+//        | "MS:1001016" -> detail.Value
+//        | _ -> null
+//       )
+
+//let findAnalysisParamsTerms (dbContext:MzIdentML) =
+//    query {
+//            for i in dbContext.AnalysisParam.Local do
+//                select i.Term
+//            }
+//    |> Seq.toList
+//    |> (fun organization -> 
+//        if (List.exists (fun organization' -> organization' <> null) organization) = false
+//            then 
+//                query {
+//                        for i in dbContext.AnalysisParam do
+//                            select i.Term
+//                        }
+//                |> Seq.toList
+//                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+//                                        then None
+//                                        else Some (organization |> seq)
+//                    )
+//            else Some (organization |> seq)
+//        )
+
+//let findAnalysisParamsOfProfteinList (dbContext:MzIdentML) (id:string) =
+//    findAnalysisParamsTerms dbContext |> ignore
+//    query {
+//            for i in dbContext.ProteinDetectionProtocol.Local do
+//                if i.ID=id
+//                    then select i.AnalysisParams
+//            }
+//    |> (fun proteinList -> 
+//        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+//            then 
+//                query {
+//                        for i in dbContext.ProteinDetectionProtocol do
+//                            if i.ID=id
+//                                then select i.AnalysisParams
+//                        }
+//                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+//                                        then None
+//                                        else Some (proteinList |> seq)
+//                    )
+//            else Some (proteinList |> seq)
+//        )
+//    |> (fun item -> 
+//        match item with
+//        | Some x ->  x |> Seq.collect (fun item1 -> item1)
+//        | None ->  [] |> seq
+//       )
+
+//let findSearchEgnines (analysisParams:seq<AnalysisParam>) =
+//    analysisParams
+//    |> Seq.map (fun analysisParam ->
+//        match analysisParam.Term.ID with
+//        | "MS:1001583" -> ("PSM", analysisParam.Term.ID, analysisParam.Term.Name, analysisParam.Value) |> (fun item -> convert4timesStringToSingleString item)
+//        | _ -> null
+//               )
+//let createTSVProteinSection (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
+    
+//    let mzIdentML = MzIdentMLDocumentHandler.tryFindByID mzIdentMLContext mzIdentMLDocumentID
+//    let mzQuantML = MzQuantMLDocumentHandler.tryFindByID mzQuantMLContext mzQuantMLDocumentID
+
+//    let proteins = 
+//        match mzQuantML with
+//        | Some x -> x.ProteinList
+//                    |> Seq.collect (fun proteinListItem -> findProteinsOfProteinList mzQuantMLContext proteinListItem.ID)  
+//        | None -> [] |> seq
+
+//    let accessions =
+//        proteins 
+//        |> Seq.map (fun protein -> protein.Accession)
+
+//    let dbSequenceDetails =
+//        accessions
+//        |> Seq.collect 
+//            (fun accession -> findDetailsOfDBSequenceByAccession mzIdentMLContext accession)
+
+//    let taxids =
+//        dbSequenceDetails
+//        |> Seq.map (fun dbSequenceDetail -> findTaxid dbSequenceDetail)
+//        |> Seq.filter (fun species -> species<>null)
+
+//    let speciesNames =
+//        dbSequenceDetails
+//        |> Seq.map (fun dbSequenceDetail -> findSpeciesName dbSequenceDetail)
+//        |> Seq.filter (fun species -> species<>null)
+    
+//    let searchDatabaseNames =
+//        accessions
+//        |> Seq.map
+//            (fun accession -> findDataBaseNameByAccession mzIdentMLContext accession)
+
+//    let searchDatabaseDetails =
+//        accessions
+//        |> Seq.collect
+//            (fun accession -> findDataBaseVersionByAccession mzIdentMLContext accession)
+
+//    let databaseVersions =
+//        searchDatabaseDetails
+//        |> Seq.map (fun databaseVersion -> findDatabaseVersion databaseVersion)
+//        |> Seq.filter (fun databaseVersion -> databaseVersion<>null)
+
+//    let searchEgnines =
+//        match mzIdentML with
+//        | Some x -> x.ProteinDetectionProtocol
+//                    |> Seq.map (fun item -> findAnalysisParamsOfProfteinList mzIdentMLContext item.ID)
+//        | None -> null
+//        |> Seq.map (fun item -> findSearchEgnines item)
+//        |> Seq.map (fun searchEngine1 -> searchEngine1 |> Seq.filter (fun searchEngine -> searchEngine<>null))
+//    searchEgnines
+    
+
+//let test = 
+//    createTSVProteinSection "Unknown" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let findProteinParamTerms (dbContext:MzQuantML) =
     query {
-            for i in dbContext.ProteinList.Local do
-                if i.ID=id
-                    then select i.Proteins
+            for i in dbContext.ProteinParam.Local do
+                select i.Term
             }
     |> (fun proteinList -> 
         if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
-                        for i in dbContext.ProteinList do
-                            if i.ID=id
-                                then select i.Proteins
+                        for i in dbContext.ProteinParam do
+                            select i.Term
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
@@ -220,250 +567,289 @@ let findProteinsOfProteinList (dbContext:MzQuantML) (id:string) =
         )
     |> (fun item -> 
         match item with
-        | Some x ->  x |> Seq.collect (fun item1 -> item1)
-        | None ->  [] |> seq
+        | Some x ->  Some (x.ToList())
+        | None ->  None
        )
 
-let findDBSequenceTerms (dbContext:MzIdentML) =
+let findProteinParams (dbContext:MzQuantML) =
     query {
-            for i in dbContext.DBSequenceParam.Local do
-                select i.Term
+            for i in dbContext.ProteinParam.Local do
+                select i
             }
-    |> Seq.toList
-    |> (fun organization -> 
-        if (List.exists (fun organization' -> organization' <> null) organization) = false
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
-                        for i in dbContext.DBSequenceParam do
-                            select i.Term
+                        for i in dbContext.ProteinParam do
+                            select i
                         }
-                |> Seq.toList
-                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (organization |> seq)
+                                        else Some (proteinList |> seq)
                     )
-            else Some (organization |> seq)
-        )
-
-let findDetailsOfDBSequenceByAccession (dbContext:MzIdentML) (accession:string) =
-    findDBSequenceTerms dbContext |> ignore
-    query {
-            for i in dbContext.DBSequence.Local do
-                if i.Accession=accession
-                    then select i.Details
-            }
-    |> (fun dbSequence -> 
-        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-            then 
-                query {
-                        for i in dbContext.DBSequence do
-                            if i.Accession=accession
-                                then select i.Details
-                        }
-                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-                                        then None
-                                        else Some (dbSequence |> seq)
-                    )
-            else Some (dbSequence |> seq)
+            else Some (proteinList |> seq)
         )
     |> (fun item -> 
         match item with
-        | Some x ->  x |> Seq.collect (fun item1 -> item1)
-        | None ->  [] |> seq
+        | Some x ->  Some (x.ToList())
+        | None ->  None
        )
 
-let findTaxid (dbSequenceParam:DBSequenceParam) =
-    match dbSequenceParam.Term.ID with
-    | "MS:1001467" -> dbSequenceParam.Value
-    | _ -> null
-
-let findSpeciesName (dbSequenceParam:DBSequenceParam) =
-    match dbSequenceParam.Term.ID with
-    | "MS:1001467" -> dbSequenceParam.Value
-    | _ -> null
-
-let findSearchDatabaseNames (dbContext:MzIdentML) =
-    findDBSequenceTerms dbContext |> ignore
-    query {
-            for i in dbContext.SearchDatabase.Local do
-                select i.DatabaseName
-            }
-    |> (fun dbSequence -> 
-        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-            then 
-                query {
-                        for i in dbContext.SearchDatabase do
-                            select i.DatabaseName
-                        }
-                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-                                        then None
-                                        else Some (dbSequence.Single())
-                    )
-            else Some (dbSequence.Single())
-        )
-
-let findCVParamsTerms (dbContext:MzIdentML) =
-    query {
-            for i in dbContext.CVParam.Local do
-                select i.Term
-            }
-    |> Seq.toList
-    |> (fun organization -> 
-        if (List.exists (fun organization' -> organization' <> null) organization) = false
-            then 
-                query {
-                        for i in dbContext.CVParam do
-                            select i.Term
-                        }
-                |> Seq.toList
-                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
-                                        then None
-                                        else Some (organization |> seq)
-                    )
-            else Some (organization |> seq)
-        )
-
-let findDataBaseNameByAccession (dbContext:MzIdentML) (accession:string) =
-    findSearchDatabaseNames dbContext |> ignore
-    findCVParamsTerms dbContext |> ignore
-    
-    query {
-            for i in dbContext.DBSequence.Local do
-                if i.Accession=accession
-                    then select i.SearchDatabase
-            }
-    |> (fun dbSequence -> 
-        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-            then 
-                query {
-                        for i in dbContext.DBSequence do
-                            if i.Accession=accession
-                                then select i.SearchDatabase
-                        }
-                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-                                                then None
-                                                else Some (dbSequence.Single())
-                    )
-            else Some (dbSequence.Single())
-        )
-    |> (fun item ->
-        match item with
-        | Some x -> x.DatabaseName.Term.Name
-        | None -> null
-       )
-
-let findSearchDatabaseParams (dbContext:MzIdentML) =
-    query {
-            for i in dbContext.SearchDatabase.Local do
-                select i.Details
-            }
-    |> (fun dbSequence -> 
-        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-            then 
-                query {
-                        for i in dbContext.SearchDatabase do
-                            select i.Details
-                        }
-                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-                                        then None
-                                        else Some (dbSequence |> seq)
-                    )
-            else Some (dbSequence |> seq)
-        )
-
-let findSearchDatabaseParamsTerms (dbContext:MzIdentML) =
+let findSearchDataBaseParamTerms (dbContext:MzQuantML) =
     query {
             for i in dbContext.SearchDatabaseParam.Local do
                 select i.Term
             }
-    |> Seq.toList
-    |> (fun organization -> 
-        if (List.exists (fun organization' -> organization' <> null) organization) = false
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
                         for i in dbContext.SearchDatabaseParam do
                             select i.Term
                         }
-                |> Seq.toList
-                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (organization |> seq)
+                                        else Some (proteinList |> seq)
                     )
-            else Some (organization |> seq)
-        )
-
-let findDataBaseVersionByAccession (dbContext:MzIdentML) (accession:string) =
-    findSearchDatabaseParams dbContext |> ignore
-    findSearchDatabaseParamsTerms dbContext |> ignore
-    
-    query {
-            for i in dbContext.DBSequence.Local do
-                if i.Accession=accession
-                    then select i.SearchDatabase
-          }
-    |> (fun dbSequence -> 
-        if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-            then 
-                query {
-                        for i in dbContext.DBSequence do
-                            if i.Accession=accession
-                                then select i.SearchDatabase
-                        }
-                |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
-                                                then None
-                                                else Some (dbSequence.Single())
-                    )
-            else Some (dbSequence.Single())
+            else Some (proteinList |> seq)
         )
     |> (fun item -> 
         match item with
-        | Some x ->  x.Details |> Seq.map (fun detail -> detail, detail.Term.ID)
-        | None ->  null
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
        )
 
-let findDatabaseVersion (searchDatabaseAndTermID:MzIdentMLDataBase.DataModel.SearchDatabaseParam*string) =
-    searchDatabaseAndTermID
-    |> (fun (detail, termID) ->
-        match termID with
-        | "MS:1001016" -> detail.Value
-        | _ -> null
-       )
-
-let findAnalysisParamsTerms (dbContext:MzIdentML) =
+let findSearchDataBaseParams (dbContext:MzQuantML) =
     query {
-            for i in dbContext.AnalysisParam.Local do
-                select i.Term
-            }
-    |> Seq.toList
-    |> (fun organization -> 
-        if (List.exists (fun organization' -> organization' <> null) organization) = false
-            then 
-                query {
-                        for i in dbContext.AnalysisParam do
-                            select i.Term
-                        }
-                |> Seq.toList
-                |> (fun organization -> if (List.exists (fun organization' -> organization' <> null) organization) = false
-                                        then None
-                                        else Some (organization |> seq)
-                    )
-            else Some (organization |> seq)
-        )
-
-let findAnalysisParamsOfProfteinList (dbContext:MzIdentML) (id:string) =
-    findAnalysisParamsTerms dbContext |> ignore
-    query {
-            for i in dbContext.ProteinDetectionProtocol.Local do
-                if i.ID=id
-                    then select i.AnalysisParams
+            for i in dbContext.SearchDatabaseParam.Local do
+                select i
             }
     |> (fun proteinList -> 
         if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
-                        for i in dbContext.ProteinDetectionProtocol do
+                        for i in dbContext.SearchDatabaseParam do
+                            select i
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+
+let findCVParamTerms (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.CVParam.Local do
+                select i.Term
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.CVParam do
+                            select i.Term
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+
+let findCVParams (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.CVParam.Local do
+                select i
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.CVParam do
+                            select i
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+
+let findDatabaseName (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.SearchDatabase.Local do
+                select i.DatabaseName
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.SearchDatabase do
+                            select i.DatabaseName
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList.Single())
+                    )
+            else Some (proteinList.Single())
+        )
+    
+let findSearchDataBase (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.SearchDatabase.Local do
+                select i
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.SearchDatabase do
+                            select i
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList.Single())
+                    )
+            else Some (proteinList.Single())
+        )
+
+let findProteins (dbContext:MzQuantML) =
+    query {
+            for i in dbContext.Protein.Local do
+                select i
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.Protein do
+                            select i
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToArray())
+        | None ->  None
+       )
+
+let findProteinList (dbContext:MzQuantML) (id:string) =
+    query {
+            for i in dbContext.MzQuantMLDocument.Local do
+                if i.ID=id
+                    then select i.ProteinList
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.MzQuantMLDocument do
                             if i.ID=id
-                                then select i.AnalysisParams
+                                then select i.ProteinList
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList.Single())
+                    )
+            else Some (proteinList.Single())
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+
+let findCompleteProteins (dbContext:MzQuantML) (id:string) =
+    query {
+            for i in dbContext.Protein.Local do
+                if i.ID=id
+                    then select i
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.Protein do
+                            if i.ID=id
+                                then select i
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  x
+        | None ->  [] |> seq
+       )
+    |> Seq.map (fun item -> item, item.Details, item.SearchDatabase, item.SearchDatabase.DatabaseName, item.SearchDatabase.Details)
+
+let findDBSequenceParamTerms (dbContext:MzIdentML) (id:string) =
+    query {
+            for i in dbContext.DBSequenceParam.Local do
+                if i.ID=id
+                    then select i.Term
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.DBSequenceParam do
+                            if i.ID=id
+                                then select i.Term
+                        }
+                |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+                                        then None
+                                        else Some (proteinList |> seq)
+                    )
+            else Some (proteinList |> seq)
+        )
+    |> (fun item -> 
+        match item with
+        | Some x ->  Some (x.ToList())
+        | None ->  None
+       )
+
+let findDBSequenceParams (dbContext:MzIdentML) (id:string) =
+    query {
+            for i in dbContext.DBSequence.Local do
+                if i.ID=id
+                    then select i.Details
+            }
+    |> (fun proteinList -> 
+        if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
+            then 
+                query {
+                        for i in dbContext.DBSequence do
+                            if i.ID=id
+                                then select i.Details
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
@@ -477,67 +863,172 @@ let findAnalysisParamsOfProfteinList (dbContext:MzIdentML) (id:string) =
         | None ->  [] |> seq
        )
 
-let findSearchEgnines (analysisParams:seq<AnalysisParam>) =
-    analysisParams
-    |> Seq.map (fun analysisParam ->
-        match analysisParam.Term.ID with
-        | "MS:1001583" -> ("PSM", analysisParam.Term.ID, analysisParam.Term.Name, analysisParam.Value) |> (fun item -> convert4timesStringToSingleString item)
-        | _ -> null
+let findMatchingTermIDProteinParams (id:string) (paramCollection:seq<ProteinParam>) =
+    paramCollection
+    |> Seq.map (fun param -> 
+        if id=param.ID then
+            param
+        else null
                )
-let createTSVProteinSection (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
+    |> Seq.filter (fun param -> param <> null)
+
+let checkForNullOfProteinParams (paramCollection:seq<ProteinParam>) =
+    if Seq.length paramCollection <> 1 then
+        ProteinParamHandler.init(null, value="XYZ")
+    else
+        Seq.item 0 paramCollection
+
+let findMatchingTermIDDBSequenceParams (id:string) (paramCollection:seq<DBSequenceParam>) =
+    paramCollection
+    |> Seq.map (fun param -> 
+        if id=param.ID then
+            param
+        else null
+               )
+    |> Seq.filter (fun param -> param <> null)
+
+let checkForNullOfDBSequenceParams (paramCollection:seq<DBSequenceParam>) =
+    if Seq.length paramCollection <> 1 then
+        DBSequenceParamHandler.init(null, value="Null")
+    else
+        Seq.item 0 paramCollection
+
+let findMatchingTermIDSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
+    paramCollection
+    |> Seq.map (fun param -> 
+        if id=param.ID then
+            param
+        else null
+               )
+    |> Seq.filter (fun param -> param <> null)
+
+let checkForNullOfSearchDatabaseParams (paramCollection:seq<SearchDatabaseParam>) =
+    if Seq.length paramCollection <> 1 then
+        SearchDatabaseParamHandler.init(null, value="Null")
+    else
+        Seq.item 0 paramCollection
+
+let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
+
+    findProteinParamTerms mzQuantMLContext
+    findProteinParams mzQuantMLContext
+    findSearchDataBaseParamTerms mzQuantMLContext
+    findSearchDataBaseParams mzQuantMLContext
+    findCVParamTerms mzQuantMLContext
+    findCVParams mzQuantMLContext
+    findDatabaseName mzQuantMLContext
+    findSearchDataBase mzQuantMLContext
+    findProteins mzQuantMLContext
+
+    let proteinIDList =
+        findProteinList mzQuantMLContext mzIdentMLDocumentID
+        |> (fun item -> 
+            match item with
+            | Some x -> x
+                        |> Seq.collect (fun item1 -> item1.Proteins)
+                        |> Seq.map (fun protein -> protein.ID)
+            | None -> null
+        )
+        |> List.ofSeq
     
-    let mzIdentML = MzIdentMLDocumentHandler.tryFindByID mzIdentMLContext mzIdentMLDocumentID
-    let mzQuantML = MzQuantMLDocumentHandler.tryFindByID mzQuantMLContext mzQuantMLDocumentID
+    let proteinsOfMzIentMlAndMzQuantML =
+        proteinIDList
+        |> List.map (fun id -> findCompleteProteins mzQuantMLContext id)
+    proteinsOfMzIentMlAndMzQuantML
 
-    let proteins = 
-        match mzQuantML with
-        | Some x -> x.ProteinList
-                    |> Seq.collect (fun proteinListItem -> findProteinsOfProteinList mzQuantMLContext proteinListItem.ID)  
-        | None -> [] |> seq
 
-    let accessions =
-        proteins 
-        |> Seq.map (fun protein -> protein.Accession)
+    //let testPhase (collection:option<Protein>*option<seq<ProteinParam>>*option<SearchDatabase>*option<seq<SearchDatabaseParam>>*option<seq<DBSequenceParam>>) =
 
-    let dbSequenceDetails =
-        accessions
-        |> Seq.collect 
-            (fun accession -> findDetailsOfDBSequenceByAccession mzIdentMLContext accession)
+    //    let proteinParams =
+    //        collection
+    //        |> (fun (_, proteinParams, _, _, _) -> proteinParams)
+    //        |> fun proteinParams ->
+    //            match proteinParams with
+    //            | Some x -> Some (x.ToArray())
+    //            | None -> None
 
-    let taxids =
-        dbSequenceDetails
-        |> Seq.map (fun dbSequenceDetail -> findTaxid dbSequenceDetail)
-        |> Seq.filter (fun species -> species<>null)
+    //    let dbSequenceParams =
+    //        collection
+    //        |> (fun (_, _, _, _, dbSequenceParams) -> dbSequenceParams)
+    //        |> fun dbSequenceParams ->
+    //            match dbSequenceParams with
+    //            | Some x -> Some (x.ToArray())
+    //            | None -> None
 
-    let speciesNames =
-        dbSequenceDetails
-        |> Seq.map (fun dbSequenceDetail -> findSpeciesName dbSequenceDetail)
-        |> Seq.filter (fun species -> species<>null)
-    
-    let searchDatabaseNames =
-        accessions
-        |> Seq.map
-            (fun accession -> findDataBaseNameByAccession mzIdentMLContext accession)
+    //let createProteinSectionDictionary 
+    //    (protein:Protein) (proteinParams:seq<ProteinParam>) (searchDatabase:SearchDatabase) (searchEngine:string)
+    //    (searchDatabaseParams:seq<SearchDatabaseParam>) (dbSequenceParams:seq<DBSequenceParam>) (proteinAmbiguityGroup:string)
+    //    (modifications:string) (terms:Term[]) =
 
-    let searchDatabaseDetails =
-        accessions
-        |> Seq.collect
-            (fun accession -> findDataBaseVersionByAccession mzIdentMLContext accession)
+    //    let getProteinParam (id:string) (paramCollection:seq<ProteinParam>) =
+    //        (checkForNullOfProteinParams (findMatchingTermIDProteinParams id paramCollection))
 
-    let databaseVersions =
-        searchDatabaseDetails
-        |> Seq.map (fun databaseVersion -> findDatabaseVersion databaseVersion)
-        |> Seq.filter (fun databaseVersion -> databaseVersion<>null)
+    //    let getDBSequenceParam (id:string) (paramCollection:seq<DBSequenceParam>) =
+    //        (checkForNullOfDBSequenceParams (findMatchingTermIDDBSequenceParams id paramCollection))
 
-    let searchEgnines =
-        match mzIdentML with
-        | Some x -> x.ProteinDetectionProtocol
-                    |> Seq.map (fun item -> findAnalysisParamsOfProfteinList mzIdentMLContext item.ID)
-        | None -> null
-        |> Seq.map (fun item -> findSearchEgnines item)
-        |> Seq.map (fun searchEngine1 -> searchEngine1 |> Seq.filter (fun searchEngine -> searchEngine<>null))
-    searchEgnines
-    
+    //    let getSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
+    //        (checkForNullOfSearchDatabaseParams (findMatchingTermIDSearchDatabaseParam id paramCollection))
 
-let test = 
-    createTSVProteinSection "Unknown" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+    //    let startDictionary =
+    //        [
+    //            1, createConverter "accession" protein.Accession false; 
+    //            5, createConverter "database" searchDatabase.DatabaseName.Value false;
+    //            7, createConverter "search_engine" searchEngine false;
+    //            14, createConverter "ambiguity_members" proteinAmbiguityGroup false;
+    //            15, createConverter "modifications" modifications false;
+    //            16, createConverter "uri" searchDatabase.Location true;
+    //        ]
+    //    let rec loop collection (n:int) (i:int) =
+
+    //        if n = terms.Length then 
+    //            let tmp = List.sortBy (fun (key, _) -> -key) collection
+    //            let tmpDictionary = dict tmp
+    //            tmpDictionary.Values
+
+    //        else
+    //            match terms.[n].ID with
+    //            | "MS:1001088" -> loop (List.append collection [2, createConverter "description" (getProteinParam terms.[n].ID proteinParams).Value false]) (n+1) i
+    //            | "MS:1001467" -> loop (List.append collection [3, createConverter "taxid" (getDBSequenceParam terms.[n].ID dbSequenceParams).Value false]) (n+1) i
+    //            | "MS:1001469" -> loop (List.append collection [4, createConverter "species" (getDBSequenceParam terms.[n].ID dbSequenceParams).Value false]) (n+1) i
+    //            | "MS:1001016" -> loop (List.append collection [6, createConverter "database_version" (getSearchDatabaseParam terms.[n].ID searchDatabaseParams).Value false]) (n+1) i
+    //            | "MS:1002394" -> loop (List.append collection [8, createConverter "best_search_engine_score[1-n]" (getProteinParam terms.[n].ID proteinParams).Value false]) (n+1) i
+    //            //search_engine_score[1-n]_ms_run[1-n]
+    //            //reliability
+    //            //num_psms_ms_run[1-n]
+    //            //num_psms_ms_run[1-n]
+    //            | "MS:1001898" -> loop (List.append collection [12, createConverter "num_peptides_distinct_ms_run[1-n]" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
+    //            | "MS:1001897" -> loop (List.append collection [13, createConverter "num_peptides_unique_ms_run[1-n]" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
+    //            //go_terms
+    //            | "MS:1001093" -> loop (List.append collection [18, createConverter "protein_coverage" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
+    //            //protein_abundance_assay[1-n]
+    //            //protein_abundance_study_variable[1-n]
+    //            //protein_abundance_stdev_study_variable[1-n]
+    //            //protein_abundance_std_error_study_variable [1-n]
+    //            | _ ->loop (List.append collection  [n+1000, createConverter
+    //                                                            ("option" + ([i].ToString()))
+    //                                                            (convert4timesStringToSingleString
+    //                                                                (
+    //                                                                "",
+    //                                                                (getProteinParam terms.[n].ID proteinParams).Term.ID,
+    //                                                                (getProteinParam terms.[n].ID proteinParams).Term.Name,
+    //                                                                (getProteinParam terms.[n].ID proteinParams).Value
+    //                                                                )
+    //                                                            )
+    //                                                            true
+    //                                                ]
+    //                        )
+    //                                                        (n+1) (i+1)
+                       
+    //    loop startDictionary 0 1
+    //createProteinSectionDictionary
+
+
+let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+
+let y =
+    x
+    |> Seq.map (fun item -> item |> Seq.map (fun (i, _, _, _, _) -> i))
+    |> Seq.item 0
+
+let z = findProteins sqliteMzQuantMLContext
+z.Value.[1].Details

@@ -78,8 +78,8 @@ let initStandardDB (dbContext : MzIdentML) =
     dbContext.SaveChanges()
 
 
-//let sqliteMzIdentMLDB =
-//    initStandardDB sqliteMzIdentMLContext
+let sqliteMzIdentMLDB =
+    initStandardDB sqliteMzIdentMLContext
 
-let sqlServerMzIDenMLDB =   
-    initStandardDB sqlMzIdentMLContext
+//let sqlServerMzIDenMLDB =   
+//    initStandardDB sqlMzIdentMLContext
