@@ -1443,7 +1443,48 @@ let peptideConsensusList =
     PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized])
     |> PeptideConsensusListHandler.addMzQuantMLDocument mzQuantMLDocument
 
-let proteinParams =
+let proteinParams1 =
+    [
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+                            )
+    |> ProteinParamHandler.addValue "31.7"
+    |> ProteinParamHandler.addUnit
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value;
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+                                          )
+    |> ProteinParamHandler.addValue "105.09";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsAll)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountUnique)).Value
+                                            )
+    |> ProteinParamHandler.addValue "6";
+    ProteinParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinDescription)).Value
+                                            )
+    |> ProteinParamHandler.addValue ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 OS=Chlamydomonas reinhardtii SV=2 TOU=Cre";
+    ProteinParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+                            );
+    ProteinParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
+                            )
+    |> ProteinParamHandler.addValue "M";
+    ]
+
+let proteinParams2 =
     [
     ProteinParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
@@ -1490,12 +1531,12 @@ let proteins =
         "Cre02.g096150.t1.2", searchDatabase
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
-    |> ProteinHandler.addDetails proteinParams;
+    |> ProteinHandler.addDetails proteinParams1;
     ProteinHandler.init(
         "Cre02.g096150.t1.2", searchDatabase
                        )
     |> ProteinHandler.addPeptideConsensi [peptideConsensusUnmodified; peptideConsensusMOxidized]
-    |> ProteinHandler.addDetails proteinParams;
+    |> ProteinHandler.addDetails proteinParams2;
     ]
 
 let proteinRefParams =

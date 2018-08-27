@@ -31,3 +31,12 @@ module Basetypes =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Terms with get() = terms' and set(value) = terms' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+    ///Abstract member for params, in order to enable working without additional functions.
+    type [<AllowNullLiteral>]
+        CVParamBase =
+        abstract member ID         : string
+        abstract member Value      : string
+        abstract member Term       : Term
+        abstract member Unit       : Term
+        abstract member RowVersion : Nullable<DateTime>

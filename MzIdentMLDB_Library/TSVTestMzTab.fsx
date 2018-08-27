@@ -547,7 +547,7 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-let findMatchingTermIDProteinParams (id:string) (paramCollection:seq<ProteinParam>) =
+let findMatchingTermIDCVParamBase (id:string) (paramCollection:seq<CVParamBase>) =
     paramCollection
     |> Seq.map (fun param -> 
         if id=param.Term.ID then
@@ -556,41 +556,56 @@ let findMatchingTermIDProteinParams (id:string) (paramCollection:seq<ProteinPara
                )
     |> Seq.filter (fun param -> param <> null)
 
-let checkForNullOfProteinParams (paramCollection:seq<ProteinParam>) =
+let checkForNullOfCVParamBase (paramCollection:seq<CVParamBase>) =
     if Seq.length paramCollection < 1 then
-        ProteinParamHandler.init(TermHandler.init(""), value="Null")
+        CVParamHandler.init(TermHandler.init(""), value="Null") :> CVParamBase
     else
         Seq.item 0 paramCollection
 
-let findMatchingTermIDDBSequenceParams (id:string) (paramCollection:seq<DBSequenceParam>) =
-    paramCollection
-    |> Seq.map (fun param -> 
-        if id=param.Term.ID then
-            param
-        else null
-               )
-    |> Seq.filter (fun param -> param <> null)
+//let findMatchingTermIDProteinParams (id:string) (paramCollection:seq<ProteinParam>) =
+//    paramCollection
+//    |> Seq.map (fun param -> 
+//        if id=param.Term.ID then
+//            param
+//        else null
+//               )
+//    |> Seq.filter (fun param -> param <> null)
 
-let checkForNullOfDBSequenceParams (paramCollection:seq<DBSequenceParam>) =
-    if Seq.length paramCollection < 1 then
-        DBSequenceParamHandler.init(MzIdentMLDataBase.InsertStatements.ObjectHandlers.TermHandler.init(""), value="Null")
-    else
-        Seq.item 0 paramCollection
+//let checkForNullOfProteinParams (paramCollection:seq<ProteinParam>) =
+//    if Seq.length paramCollection < 1 then
+//        ProteinParamHandler.init(TermHandler.init(""), value="Null")
+//    else
+//        Seq.item 0 paramCollection
 
-let findMatchingTermIDSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
-    paramCollection
-    |> Seq.map (fun param -> 
-        if id=param.Term.ID then
-            param
-        else null
-               )
-    |> Seq.filter (fun param -> param <> null)
+//let findMatchingTermIDDBSequenceParams (id:string) (paramCollection:seq<DBSequenceParam>) =
+//    paramCollection
+//    |> Seq.map (fun param -> 
+//        if id=param.Term.ID then
+//            param
+//        else null
+//               )
+//    |> Seq.filter (fun param -> param <> null)
 
-let checkForNullOfSearchDatabaseParams (paramCollection:seq<SearchDatabaseParam>) =
-    if Seq.length paramCollection < 1 then
-        SearchDatabaseParamHandler.init(TermHandler.init(""), value="Null")
-    else
-        Seq.item 0 paramCollection
+//let checkForNullOfDBSequenceParams (paramCollection:seq<DBSequenceParam>) =
+//    if Seq.length paramCollection < 1 then
+//        DBSequenceParamHandler.init(MzIdentMLDataBase.InsertStatements.ObjectHandlers.TermHandler.init(""), value="Null")
+//    else
+//        Seq.item 0 paramCollection
+
+//let findMatchingTermIDSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
+//    paramCollection
+//    |> Seq.map (fun param -> 
+//        if id=param.Term.ID then
+//            param
+//        else null
+//               )
+//    |> Seq.filter (fun param -> param <> null)
+
+//let checkForNullOfSearchDatabaseParams (paramCollection:seq<SearchDatabaseParam>) =
+//    if Seq.length paramCollection < 1 then
+//        SearchDatabaseParamHandler.init(TermHandler.init(""), value="Null")
+//    else
+//        Seq.item 0 paramCollection
 
 let findProteinParamTerms (dbContext:MzQuantML) =
     query {
@@ -693,17 +708,19 @@ let findSearchDataBaseParams (dbContext:MzQuantML) =
         | None ->  None
        )
 
-let findCVParamTerms (dbContext:MzQuantML) =
+let findCVParamTerms (dbContext:MzQuantML) (id:string) =
     query {
             for i in dbContext.CVParam.Local do
-                select i.Term
+                if i.ID = id then
+                    select i.Term
             }
     |> (fun proteinList -> 
         if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
                         for i in dbContext.CVParam do
-                            select i.Term
+                            if i.ID = id then
+                                select i.Term
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
@@ -717,29 +734,26 @@ let findCVParamTerms (dbContext:MzQuantML) =
         | None ->  None
        )
 
-let findCVParams (dbContext:MzQuantML) =
+let findCVParam (dbContext:MzQuantML) (id:string)=
     query {
-            for i in dbContext.CVParam.Local do
-                select i
+            for i in dbContext.SearchDatabase.Local do
+                if i.ID = id then
+                    select i.DatabaseName
             }
     |> (fun proteinList -> 
         if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
             then 
                 query {
-                        for i in dbContext.CVParam do
-                            select i
+                        for i in dbContext.SearchDatabase do
+                            if i.ID = id then
+                                select i.DatabaseName
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (proteinList |> seq)
+                                        else Some (proteinList.Single())
                     )
-            else Some (proteinList |> seq)
+            else Some (proteinList.Single())
         )
-    |> (fun item -> 
-        match item with
-        | Some x ->  Some (x.ToList())
-        | None ->  None
-       )
 
 let findDatabaseName (dbContext:MzQuantML) =
     query {
@@ -939,32 +953,50 @@ let matchDBSequenceAccessionWithProteinAccesion (dbSequence:DBSequence) (protein
 
     let rec loop collection (n:int) =
         if n = proteinComplete.Length then
-            collection
+               (List.tail collection).ToArray()
         else
             if dbSequence.Accession <> proteins.[n].Accession then
                loop collection (n+1)
             else
-                loop (proteinComplete.[n], dbSequence.Details) (n+1)
-    loop ((null,null,null,null), [] |> List) 0
+                loop (List.append collection [(proteinComplete.[n], dbSequence.Details)]) (n+1)
+    loop [((null, null, null, null), [] |> List)] 0
 
 
 let createProteinSectionDictionary 
         (protein:Protein) (proteinParams:seq<ProteinParam>) (searchDatabase:SearchDatabase) (searchDatabaseParams:seq<SearchDatabaseParam>) (dbSequenceParams:seq<DBSequenceParam>)
         (searchEngine:string) (proteinAmbiguityGroup:string) (modifications:string) (terms:Term[]) =
 
-        let getProteinParam (id:string) (paramCollection:seq<ProteinParam>) =
-            (checkForNullOfProteinParams (findMatchingTermIDProteinParams id paramCollection))
+        let cvParamBases =
+            let proteinParams =
+                proteinParams
+                |> Seq.map (fun item -> item :> CVParamBase)
+            let searchDatabaseParams =
+                searchDatabaseParams
+                |> Seq.map (fun item -> item :> CVParamBase)
+            let dbSequenceParams =
+                dbSequenceParams
+                |> Seq.map (fun item -> item :> CVParamBase)
+            let cvParams =
+                searchDatabase.DatabaseName
 
-        let getDBSequenceParam (id:string) (paramCollection:seq<DBSequenceParam>) =
-            (checkForNullOfDBSequenceParams (findMatchingTermIDDBSequenceParams id paramCollection))
+            Seq.append (Seq.append (Seq.append proteinParams searchDatabaseParams) dbSequenceParams) [cvParams]
 
-        let getSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
-            (checkForNullOfSearchDatabaseParams (findMatchingTermIDSearchDatabaseParam id paramCollection))
+        let getCVParamBase (id:string) (paramCollection:seq<CVParamBase>) =
+            (checkForNullOfCVParamBase (findMatchingTermIDCVParamBase id paramCollection))
+        
+        //let getProteinParam (id:string) (paramCollection:seq<ProteinParam>) =
+        //    (checkForNullOfProteinParams (findMatchingTermIDProteinParams id paramCollection))
+
+        //let getDBSequenceParam (id:string) (paramCollection:seq<DBSequenceParam>) =
+        //    (checkForNullOfDBSequenceParams (findMatchingTermIDDBSequenceParams id paramCollection))
+
+        //let getSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
+        //    (checkForNullOfSearchDatabaseParams (findMatchingTermIDSearchDatabaseParam id paramCollection))
 
         let startDictionary =
             [
                 1, createConverter "accession" protein.Accession false; 
-                5, createConverter "database" searchDatabase.DatabaseName.Value false;
+                //5, createConverter "database" searchDatabase.DatabaseName.Value false;
                 7, createConverter "search_engine" searchEngine false;
                 14, createConverter "ambiguity_members" proteinAmbiguityGroup false;
                 15, createConverter "modifications" modifications false;
@@ -979,19 +1011,20 @@ let createProteinSectionDictionary
 
             else
                 match terms.[n].ID with
-                | "MS:1001088" -> loop (List.append collection [2, createConverter "description" (getProteinParam terms.[n].ID proteinParams).Value false]) (n+1) i
-                | "MS:1001467" -> loop (List.append collection [3, createConverter "taxid" (getDBSequenceParam terms.[n].ID dbSequenceParams).Value false]) (n+1) i
-                | "MS:1001469" -> loop (List.append collection [4, createConverter "species" (getDBSequenceParam terms.[n].ID dbSequenceParams).Value false]) (n+1) i
-                | "MS:1001016" -> loop (List.append collection [6, createConverter "database_version" (getSearchDatabaseParam terms.[n].ID searchDatabaseParams).Value false]) (n+1) i
-                | "MS:1002394" -> loop (List.append collection [8, createConverter "best_search_engine_score[1-n]" (getProteinParam terms.[n].ID proteinParams).Value false]) (n+1) i
+                | "MS:1001088" -> loop (List.append collection [2, createConverter "description" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1001467" -> loop (List.append collection [3, createConverter "taxid" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1001469" -> loop (List.append collection [4, createConverter "species" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1001013" -> loop (List.append collection [5, createConverter "database" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1001016" -> loop (List.append collection [6, createConverter "database_version" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1002394" -> loop (List.append collection [8, createConverter "best_search_engine_score[1-n]" (getCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
                 //search_engine_score[1-n]_ms_run[1-n]
                 //reliability
                 //num_psms_ms_run[1-n]
                 //num_psms_ms_run[1-n]
-                | "MS:1001898" -> loop (List.append collection [12, createConverter "num_peptides_distinct_ms_run[1-n]" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
-                | "MS:1001897" -> loop (List.append collection [13, createConverter "num_peptides_unique_ms_run[1-n]" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
+                | "MS:1001898" -> loop (List.append collection [12, createConverter "num_peptides_distinct_ms_run[1-n]" (getCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
+                | "MS:1001897" -> loop (List.append collection [13, createConverter "num_peptides_unique_ms_run[1-n]" (getCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
                 //go_terms
-                | "MS:1001093" -> loop (List.append collection [18, createConverter "protein_coverage" (getProteinParam terms.[n].ID proteinParams).Value true]) (n+1) i
+                | "MS:1001093" -> loop (List.append collection [18, createConverter "protein_coverage" (getCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
                 //protein_abundance_assay[1-n]
                 //protein_abundance_study_variable[1-n]
                 //protein_abundance_stdev_study_variable[1-n]
@@ -1001,9 +1034,9 @@ let createProteinSectionDictionary
                                                                 (convert4timesStringToSingleString
                                                                     (
                                                                     "",
-                                                                    (getProteinParam terms.[n].ID proteinParams).Term.ID,
-                                                                    (getProteinParam terms.[n].ID proteinParams).Term.Name,
-                                                                    (getProteinParam terms.[n].ID proteinParams).Value
+                                                                    (getCVParamBase terms.[n].ID cvParamBases).Term.ID,
+                                                                    (getCVParamBase terms.[n].ID cvParamBases).Term.Name,
+                                                                    (getCVParamBase terms.[n].ID cvParamBases).Value
                                                                     )
                                                                 )
                                                                 true
@@ -1016,15 +1049,29 @@ createProteinSectionDictionary
 
 let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
 
+    let cvParam =
+        match findSearchDataBase mzQuantMLContext with
+        | Some x -> (findCVParam mzQuantMLContext x.ID)
+        | None -> None
+
+    let cvParamTerm =
+        match cvParam with
+        | Some x -> findCVParamTerms mzQuantMLContext x.ID
+                    |> (fun item -> match item with
+                                    | Some x -> x
+                                    | None -> null
+                       )
+        | None -> null
+
     let terms =
         let proteinParamTerms = 
             match (findProteinParamTerms mzQuantMLContext) with
             | Some x -> x.ToArray()
             | None -> [||]
-        let cvParamTerms = 
-            match findCVParamTerms mzQuantMLContext with
-            | Some x -> x.ToArray()
-            | None -> [||]
+        //let cvParamTerms = 
+        //    match findCVParamTerms mzQuantMLContext with
+        //    | Some x -> x.ToArray()
+        //    | None -> [||]
         let searchDatabaseParamTerms = 
             match (findSearchDataBaseParamTerms mzQuantMLContext) with
             | Some x -> x.ToArray()
@@ -1034,13 +1081,12 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
             | Some x -> x.ToArray()
             | None -> [||]
         
-        Array.append (Array.append (Array.append proteinParamTerms cvParamTerms) searchDatabaseParamTerms) dbSequenceParamTerms
+        Array.append (Array.append (Array.append proteinParamTerms (cvParamTerm.ToArray())) searchDatabaseParamTerms) dbSequenceParamTerms
+        |> Array.distinct
 
     findProteinParams mzQuantMLContext          |> ignore
     findSearchDataBaseParams mzQuantMLContext   |> ignore
-    findCVParams mzQuantMLContext               |> ignore
     findDatabaseName mzQuantMLContext           |> ignore
-    findSearchDataBase mzQuantMLContext         |> ignore
     findProteins mzQuantMLContext               |> ignore
     findDBSequenceParams mzIdentMLContext       |> ignore
 
@@ -1068,56 +1114,22 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
         dbSequences
         |> Array.map (fun item -> matchDBSequenceAccessionWithProteinAccesion item proteinComplete)
 
-    rightDBSequenceParams, terms
-
-    //let testPhase (collection:option<Protein>*option<seq<ProteinParam>>*option<SearchDatabase>*option<seq<SearchDatabaseParam>>*option<seq<DBSequenceParam>>) =
-
-    //    let proteinParams =
-    //        collection
-    //        |> (fun (_, proteinParams, _, _, _) -> proteinParams)
-    //        |> fun proteinParams ->
-    //            match proteinParams with
-    //            | Some x -> Some (x.ToArray())
-    //            | None -> None
-
-    //    let dbSequenceParams =
-    //        collection
-    //        |> (fun (_, _, _, _, dbSequenceParams) -> dbSequenceParams)
-    //        |> fun dbSequenceParams ->
-    //            match dbSequenceParams with
-    //            | Some x -> Some (x.ToArray())
-    //            | None -> None
-
-
+    let tmp =
+        rightDBSequenceParams
+        |> Array.collect (fun item -> item)
+    tmp, terms
 
 let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+x
 
-
-//let y =
-//    x
-//    |> (fun (i, ii) -> i)
-
-//let z = 
-//    y.[0]
-//    |> (fun (i, ii) -> i
-//                       |> (fun (_, item, _, _) -> ii)
-//       )
-
-//let getDBSequenceParam (id:string) (paramCollection:seq<DBSequenceParam>) =
-//            (checkForNullOfDBSequenceParams (findMatchingTermIDDBSequenceParams id paramCollection))
-
-//let testi = getDBSequenceParam "MS:1001467" z
-//Seq.item 0 z
 
 let y =
     x
     |> (fun (item1, item2) -> item1
-                              |> Array.map (fun (proteinComplete, dbSequenceParams) -> proteinComplete
-                                                                                       |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
+                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
 
-y.[0]
-
-
+y
 
 let testCSVFile =
     y
@@ -1126,3 +1138,40 @@ let testCSVFile =
     |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 testCSVFile
     
+let terms =
+        let proteinParamTerms = 
+            match (findProteinParamTerms sqliteMzQuantMLContext) with
+            | Some x -> x.ToArray()
+            | None -> [||]
+        //let cvParamTerms = 
+        //    match findCVParamTerms mzQuantMLContext with
+        //    | Some x -> x.ToArray()
+        //    | None -> [||]
+        let searchDatabaseParamTerms = 
+            match (findSearchDataBaseParamTerms sqliteMzQuantMLContext) with
+            | Some x -> x.ToArray()
+            | None -> [||]
+        let dbSequenceParamTerms =
+            match (findDBSequenceParamTerms sqliteMzIdentMLContext) with
+            | Some x -> x.ToArray()
+            | None -> [||]
+        
+        Array.append (Array.append proteinParamTerms searchDatabaseParamTerms) dbSequenceParamTerms
+        |> Array.distinct
+
+terms.Length
+
+let cvParam =
+        match findSearchDataBase sqliteMzQuantMLContext with
+        | Some x -> (findCVParam sqliteMzQuantMLContext x.ID)
+        | None -> None
+
+let cvParamTerm =
+    match cvParam with
+    | Some x -> findCVParamTerms sqliteMzQuantMLContext x.ID
+                |> (fun item -> match item with
+                                | Some x -> x
+                                | None -> null
+                    )
+    | None -> null
+cvParamTerm

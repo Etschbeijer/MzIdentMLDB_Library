@@ -8,15 +8,6 @@ open MzBasis.Basetypes
 
 module DataModel =
 
-    ///Abstract member for params, in order to enable working without additional functions.
-    type [<AllowNullLiteral>]
-        CVParamBase =
-        abstract member ID         : string
-        abstract member Value      : string
-        abstract member Term       : Term
-        abstract member Unit       : Term
-        abstract member RowVersion : Nullable<DateTime>
-
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("CVParams")>]
         CVParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
