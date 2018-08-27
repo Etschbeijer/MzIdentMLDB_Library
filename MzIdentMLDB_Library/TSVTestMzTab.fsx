@@ -750,9 +750,9 @@ let findCVParam (dbContext:MzQuantML) (id:string)=
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (proteinList.Single())
+                                        else Some (proteinList |> seq)
                     )
-            else Some (proteinList.Single())
+            else Some proteinList
         )
 
 let findDatabaseName (dbContext:MzQuantML) =
@@ -769,9 +769,9 @@ let findDatabaseName (dbContext:MzQuantML) =
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (proteinList.Single())
+                                        else Some (proteinList |> seq)
                     )
-            else Some (proteinList.Single())
+            else Some proteinList
         )
     
 let findSearchDataBase (dbContext:MzQuantML) =
@@ -788,9 +788,9 @@ let findSearchDataBase (dbContext:MzQuantML) =
                         }
                 |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                                         then None
-                                        else Some (proteinList.Single())
+                                        else Some (proteinList |> seq)
                     )
-            else Some (proteinList.Single())
+            else Some proteinList
         )
 
 let findProteins (dbContext:MzQuantML) =
@@ -1049,19 +1049,23 @@ createProteinSectionDictionary
 
 let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
 
-    let cvParam =
+    let cvParams =
         match findSearchDataBase mzQuantMLContext with
-        | Some x -> (findCVParam mzQuantMLContext x.ID)
-        | None -> None
+        | Some x -> (x |> Seq.map (fun item -> findCVParam mzQuantMLContext item.ID)
+                    )
+        | None -> [None] |> seq
 
     let cvParamTerm =
-        match cvParam with
-        | Some x -> findCVParamTerms mzQuantMLContext x.ID
-                    |> (fun item -> match item with
-                                    | Some x -> x
+        cvParams
+        |> Seq.collect (fun item -> match item with
+                                | Some x -> x |> Seq.map (fun item1 -> findCVParamTerms mzQuantMLContext item1.ID)
+                                | None -> null
+                       )
+        |> Seq.collect (fun item -> match item with
+                                    | Some x -> x |> seq
                                     | None -> null
                        )
-        | None -> null
+        |> (fun item -> item.ToArray())
 
     let terms =
         let proteinParamTerms = 
@@ -1122,19 +1126,19 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
 let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
 x
 
-//#time
-//let y =
-//    x
-//    |> (fun (item1, item2) -> item1
-//                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
-//                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+#time
+let y =
+    x
+    |> (fun (item1, item2) -> item1
+                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
+                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
 
 //y
 
-//let testCSVFile =
-//    y
-//    |> Seq.ofArray
-//    |> Seq.collect (fun item -> Seq.toCSV "," true item)
-//    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
-//testCSVFile
+let testCSVFile =
+    y
+    |> Seq.ofArray
+    |> Seq.collect (fun item -> Seq.toCSV "," true item)
+    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
+testCSVFile
 
