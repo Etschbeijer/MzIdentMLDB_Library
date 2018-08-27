@@ -961,6 +961,12 @@ let matchDBSequenceAccessionWithProteinAccesion (dbSequence:DBSequence) (protein
                 loop (List.append collection [(proteinComplete.[n], dbSequence.Details)]) (n+1)
     loop [((null, null, null, null), [] |> List)] 0
 
+let createDictionaryOfConverterList (collection:(int*Converter)list) =
+    let tmp = 
+        List.sortBy (fun (key, _) -> key) collection
+        |> List.map (fun (_, value) -> value)
+        |> List.map (fun value -> value.ColumnName, value.ColumnValue)
+    dict tmp
 
 let createProteinSectionDictionary 
         (protein:Protein) (proteinParams:seq<ProteinParam>) (searchDatabase:SearchDatabase) (searchDatabaseParams:seq<SearchDatabaseParam>) (dbSequenceParams:seq<DBSequenceParam>)
@@ -1003,11 +1009,11 @@ let createProteinSectionDictionary
                 16, createConverter "uri" searchDatabase.Location true;
             ]
         let rec loop collection (n:int) (i:int) =
-
             if n = terms.Length then 
-                let tmp = List.sortBy (fun (key, _) -> key) collection
-                let tmpDictionary = dict tmp
-                tmpDictionary.Values
+                //let tmp = List.sortBy (fun (key, _) -> key) collection
+                //let tmpDictionary = dict tmp
+                //tmpDictionary.Values
+                collection |> (fun item -> createDictionaryOfConverterList item)
 
             else
                 match terms.[n].ID with
@@ -1135,10 +1141,10 @@ let y =
 
 //y
 
-let testCSVFile =
-    y
-    |> Seq.ofArray
-    |> Seq.collect (fun item -> Seq.toCSV "," true item)
-    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
-testCSVFile
+//let testCSVFile =
+//    y
+//    |> Seq.ofArray
+//    |> Seq.collect (fun item -> Seq.toCSV "," true item)
+//    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
+//testCSVFile
 
