@@ -89,6 +89,7 @@
     <Compile Include="TSVDataContextMzTab.fs" />
     <Compile Include="TSVInsertStatementsMzTab.fs" />
     <None Include="TSVTestMzTab.fsx" />
+    <Compile Include="MzBasis.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">

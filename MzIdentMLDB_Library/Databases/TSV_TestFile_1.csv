@@ -1,7 +1,26 @@
-MzTabVersion,MzTabMode,MzType,MzID,Title,Description,SampleProcessings,InstrumentNames,InstrumentSources,InstrumentAnalyzers,InstrumentDetectors,Softwares,SoftwaresSettings,ProteinSearchEngineScores1,PeptideSearchEngineScores1,PSMSearchEngineScores1,SmallMoleculeSearchEngineScores1,FalseDiscoveryRates,Publications,ContactNames,ContactAffiliations,ContactEMails,URI,FixedMods1,FixedModSites,FixedModPositions,VariableMods1,VariableModSites,VariableModPositions,QuantificationMethod,ProteinQuantificationUnit,PeptideQuantificationUnit,SmallMoleculeQuantificationUnit,MSRunsFormat,MSRunLocation,MSRunsIDFormat,MSRunsFragmentationMethods,MSRunsHash,MSRunsHashMethod,Customs,SamplesSpecies,SampleTissues,SamplesCellTypes,SamplesDiseases,SampleDescriptions,SamplesCustoms,AssaysQuantificationReagent,AssaysQuantificationMods,AssaysQuantificationModsSite,AssaysQuantificationModsPosition,AssaysSampleRef,AssaysMSRunRef,StudyVariablesAssayRefs,StudyVariablesSampleRefs,StudyVariablesDescription,CvsLabel,CvsFullName,CvsVersion,CvsURI,ColUnitProtein,ColUnitPeptide,ColUnitPSM,ColUnitSmallMolecule
-Test,Summary,Identification,Test,<null>,Test,<null>,<null>,<null>,<null>,<null>,<null>,<null>,("Test", "Test", "Test", "Test"),("Test", "Test", "Test", "Test"),("Test", "Test", "Test", "Test"),("Test", "Test", "Test", "Test"),<null>,<null>,<null>,<null>,<null>,<null>,("Test", "Test", "Test", "Test"),<null>,<null>,("Test", "Test", "Test", "Test"),<null>,<null>,<null>,<null>,<null>,<null>,<null>,Test,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>
-Accession,Description,Taxid,Species,Database,DatabaseVersion,SearchEngines1,BestSearchEngineScore1,SearchEngineScoresMSRuns1,Reliability,NumPSMsMSRuns1,NumPeptidesDistinctMSRuns1,NumPeptidesUniqueMSRuns1,AmbiguityMembers1,Modifications1,URI,GoTerms1,ProteinCoverage,ProteinAbundanceAssays1,ProteinAbundanceAssays2,ProteinAbundanceStudyVariables1,ProteinAbundanceStandardDeviationStudyVariables1,ProteinAbundanceStandardErrorStudyVariables1,OptionalInformations1
-Test,Test,-1,Test,Test,Test,("Test", "Test", "Test", "Test"),-2.0,-2.0,-2,-2,-2,-2,"Test","Test",Test,"Test",-1.0,-1.0,-2.0,-1.0,-1.0,-1.0,"Test"
-
-
-
+ColumnName,ColumnValue,Optional
+accession,Cre02.g096150.t1.2,false
+description,Null,false
+database,Unknown to me at the moment,false
+database_version,Null,false
+search_engine,MaxQuant,false
+best_search_engine_score[1-n],Null,false
+num_peptides_distinct_ms_run[1-n],Null,true
+num_peptides_unique_ms_run[1-n],Null,true
+ambiguity_members,1 | 2 | 3,false
+modifications,Heavy labeling,false
+uri,local,true
+protein_coverage,Null,true
+option[1],| | | Null| ,true
+option[2],| | | Null| ,true
+option[3],| | | Null| ,true
+option[4],| | | Null| ,true
+option[5],| | | Null| ,true
+option[6],| | | Null| ,true
+option[7],| | | Null| ,true
+option[8],| | | Null| ,true
+option[9],| | | Null| ,true
+option[10],| | | Null| ,true
+option[11],| | | Null| ,true
+option[12],| | | Null| ,true
+option[13],| | | Null| ,true
