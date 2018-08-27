@@ -34,7 +34,7 @@ open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open TSVMzTabDataBase.DataModel
 open TSVMzTabDataBase.InsertStatements.ObjectHandlers
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
-
+open MzBasis.Basetypes
 
 let fileDir = __SOURCE_DIRECTORY__
 let standardTSVPath = fileDir + "\Databases"
@@ -550,14 +550,14 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 let findMatchingTermIDProteinParams (id:string) (paramCollection:seq<ProteinParam>) =
     paramCollection
     |> Seq.map (fun param -> 
-        if id=param.ID then
+        if id=param.Term.ID then
             param
         else null
                )
     |> Seq.filter (fun param -> param <> null)
 
 let checkForNullOfProteinParams (paramCollection:seq<ProteinParam>) =
-    if Seq.length paramCollection <> 1 then
+    if Seq.length paramCollection < 1 then
         ProteinParamHandler.init(TermHandler.init(""), value="Null")
     else
         Seq.item 0 paramCollection
@@ -565,14 +565,14 @@ let checkForNullOfProteinParams (paramCollection:seq<ProteinParam>) =
 let findMatchingTermIDDBSequenceParams (id:string) (paramCollection:seq<DBSequenceParam>) =
     paramCollection
     |> Seq.map (fun param -> 
-        if id=param.ID then
+        if id=param.Term.ID then
             param
         else null
                )
     |> Seq.filter (fun param -> param <> null)
 
 let checkForNullOfDBSequenceParams (paramCollection:seq<DBSequenceParam>) =
-    if Seq.length paramCollection <> 1 then
+    if Seq.length paramCollection < 1 then
         DBSequenceParamHandler.init(MzIdentMLDataBase.InsertStatements.ObjectHandlers.TermHandler.init(""), value="Null")
     else
         Seq.item 0 paramCollection
@@ -580,14 +580,14 @@ let checkForNullOfDBSequenceParams (paramCollection:seq<DBSequenceParam>) =
 let findMatchingTermIDSearchDatabaseParam (id:string) (paramCollection:seq<SearchDatabaseParam>) =
     paramCollection
     |> Seq.map (fun param -> 
-        if id=param.ID then
+        if id=param.Term.ID then
             param
         else null
                )
     |> Seq.filter (fun param -> param <> null)
 
 let checkForNullOfSearchDatabaseParams (paramCollection:seq<SearchDatabaseParam>) =
-    if Seq.length paramCollection <> 1 then
+    if Seq.length paramCollection < 1 then
         SearchDatabaseParamHandler.init(TermHandler.init(""), value="Null")
     else
         Seq.item 0 paramCollection
@@ -1034,7 +1034,7 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
             | Some x -> x.ToArray()
             | None -> [||]
         
-        (Array.append (Array.append proteinParamTerms cvParamTerms) searchDatabaseParamTerms)
+        Array.append (Array.append (Array.append proteinParamTerms cvParamTerms) searchDatabaseParamTerms) dbSequenceParamTerms
 
     findProteinParams mzQuantMLContext          |> ignore
     findSearchDataBaseParams mzQuantMLContext   |> ignore
@@ -1100,9 +1100,14 @@ let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "
 //let z = 
 //    y.[0]
 //    |> (fun (i, ii) -> i
-//                       |> (fun (protein, _, _, _) -> protein.Details)
+//                       |> (fun (_, item, _, _) -> ii)
 //       )
-//z.[0].Term
+
+//let getDBSequenceParam (id:string) (paramCollection:seq<DBSequenceParam>) =
+//            (checkForNullOfDBSequenceParams (findMatchingTermIDDBSequenceParams id paramCollection))
+
+//let testi = getDBSequenceParam "MS:1001467" z
+//Seq.item 0 z
 
 let y =
     x
@@ -1114,10 +1119,10 @@ y.[0]
 
 
 
-//let testCSVFile =
-//    y
-//    |> Seq.ofArray
-//    |> Seq.collect (fun item -> Seq.toCSV "," true item)
-//    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
-//testCSVFile
+let testCSVFile =
+    y
+    |> Seq.ofArray
+    |> Seq.collect (fun item -> Seq.toCSV "," true item)
+    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
+testCSVFile
     

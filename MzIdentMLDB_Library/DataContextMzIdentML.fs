@@ -4,7 +4,7 @@ open System
 open System.ComponentModel.DataAnnotations.Schema
 open Microsoft.EntityFrameworkCore
 open System.Collections.Generic
-open MzBasis
+open MzBasis.Basetypes
 
 module DataModel =
 

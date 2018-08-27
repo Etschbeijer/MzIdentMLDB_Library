@@ -11,6 +11,7 @@ module InsertStatements =
     open System.Collections.Generic
     open FSharp.Care.IO
     open BioFSharp.IO
+    open MzBasis.Basetypes
 
 
     module ObjectHandlers =

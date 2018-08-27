@@ -12,6 +12,7 @@ module InsertStatements =
     open FSharp.Care.IO
     open BioFSharp.IO
     open MzQuantMLDataBase
+    open MzBasis.Basetypes
 
     module ObjectHandlers =
         
@@ -124,7 +125,7 @@ module InsertStatements =
                 (
                     id        : string,
                     ?name     : string,
-                    ?ontology : MzQuantMLDataBase.DataModel.Ontology  
+                    ?ontology : Ontology  
                 ) =
                 let name'      = defaultArg name Unchecked.defaultof<string>
                 let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>

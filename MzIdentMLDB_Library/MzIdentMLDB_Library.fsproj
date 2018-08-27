@@ -55,6 +55,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="MzBasis.fs" />
     <Compile Include="DataContextMzIdentML.fs" />
     <Compile Include="InsertStatementsMzIdentML.fs" />
     <Compile Include="MzIdentML_XML_ParserMzIdentML.fs" />
@@ -89,7 +90,6 @@
     <Compile Include="TSVDataContextMzTab.fs" />
     <Compile Include="TSVInsertStatementsMzTab.fs" />
     <None Include="TSVTestMzTab.fsx" />
-    <Compile Include="MzBasis.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">
