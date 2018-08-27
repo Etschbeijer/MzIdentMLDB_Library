@@ -1497,19 +1497,11 @@ let proteinParams2 =
                                           )
     |> ProteinParamHandler.addValue "105.09";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsAll)).Value
-                                            )
-    |> ProteinParamHandler.addValue "6";
-    ProteinParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
-                                            )
-    |> ProteinParamHandler.addValue "6";
-    ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
@@ -1519,10 +1511,6 @@ let proteinParams2 =
     ProteinParamHandler.init(
             (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
                             );
-    ProteinParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
-                            )
-    |> ProteinParamHandler.addValue "M";
     ]
 
 let proteins =

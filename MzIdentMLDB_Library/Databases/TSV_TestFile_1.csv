@@ -25,12 +25,12 @@ database,Unknown to me at the moment,false
 database_version,1.0,false
 search_engine,MaxQuant,false
 best_search_engine_score[1-n],105.09,false
-num_peptides_distinct_ms_run[1-n],6,true
-num_peptides_unique_ms_run[1-n],6,true
+num_peptides_distinct_ms_run[1-n],Null,true
+num_peptides_unique_ms_run[1-n],Null,true
 ambiguity_members,1 | 2 | 3,false
 modifications,Heavy labeling,false
 uri,local,true
 protein_coverage,31.7,true
 option[1],| MS:1001899| MaxQuant:peptide counts (razor+unique)| 6| ,true
-option[2],| UNIMOD:35| Oxidation| M| ,true
+option[2],| | | Null| ,true
 option[3],| User:0000020| Metabolic labeling N14/N15| | ,true

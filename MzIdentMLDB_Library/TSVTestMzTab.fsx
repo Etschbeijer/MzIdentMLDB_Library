@@ -1137,41 +1137,4 @@ let testCSVFile =
     |> Seq.collect (fun item -> Seq.toCSV "," true item)
     |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 testCSVFile
-    
-let terms =
-        let proteinParamTerms = 
-            match (findProteinParamTerms sqliteMzQuantMLContext) with
-            | Some x -> x.ToArray()
-            | None -> [||]
-        //let cvParamTerms = 
-        //    match findCVParamTerms mzQuantMLContext with
-        //    | Some x -> x.ToArray()
-        //    | None -> [||]
-        let searchDatabaseParamTerms = 
-            match (findSearchDataBaseParamTerms sqliteMzQuantMLContext) with
-            | Some x -> x.ToArray()
-            | None -> [||]
-        let dbSequenceParamTerms =
-            match (findDBSequenceParamTerms sqliteMzIdentMLContext) with
-            | Some x -> x.ToArray()
-            | None -> [||]
-        
-        Array.append (Array.append proteinParamTerms searchDatabaseParamTerms) dbSequenceParamTerms
-        |> Array.distinct
 
-terms.Length
-
-let cvParam =
-        match findSearchDataBase sqliteMzQuantMLContext with
-        | Some x -> (findCVParam sqliteMzQuantMLContext x.ID)
-        | None -> None
-
-let cvParamTerm =
-    match cvParam with
-    | Some x -> findCVParamTerms sqliteMzQuantMLContext x.ID
-                |> (fun item -> match item with
-                                | Some x -> x
-                                | None -> null
-                    )
-    | None -> null
-cvParamTerm
