@@ -1323,10 +1323,35 @@ let dbSequenceParams =
     ]
 
 let dbSequence =
-    DBSequenceHandler.init("Cre02.g096150.t1.2", searchDatabase)
+    DBSequenceHandler.init("Test", searchDatabase)
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams
+    |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
+
+let searchDatabase1 =
+    SearchDatabaseHandler.init(
+        "local", fileFormat3, databaseName
+                              )
+    |> SearchDatabaseHandler.addDetail searchDataBaseParam
+
+let dbSequenceParams1 =
+    [
+    DBSequenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TaxidNCBI)).Value
+                               )
+    |> DBSequenceParamHandler.addValue "906914";
+    DBSequenceParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScientificName)).Value
+                               )
+    |> DBSequenceParamHandler.addValue "C. reinhardtii";
+    ]
+
+let dbSequence1 =
+    DBSequenceHandler.init("Cre02.g096150.t1.2", searchDatabase1)
+    |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
+    |> DBSequenceHandler.addLength 14
+    |> DBSequenceHandler.addDetails dbSequenceParams1
     |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let peptideParamUnmodified =
@@ -2583,7 +2608,7 @@ let finalMzIdentMLDocument =
     mzIdentMLDocument
     |> MzIdentMLDocumentHandler.addName "Test MzIdentMLDatabase"
     |> MzIdentMLDocumentHandler.addAnalysisSoftware analysisSoftware
-    |> MzIdentMLDocumentHandler.addDBSequence dbSequence
+    |> MzIdentMLDocumentHandler.addDBSequences [dbSequence; dbSequence1]
     |> MzIdentMLDocumentHandler.addPeptides [peptideUnmodified; peptideMOxidized]
     |> MzIdentMLDocumentHandler.addPeptideEvidences peptideEvidences
     |> MzIdentMLDocumentHandler.addProteinDetectionProtocol proteinDetectionProtocol

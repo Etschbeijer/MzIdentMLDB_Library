@@ -1122,19 +1122,19 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
 let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
 x
 
+//#time
+//let y =
+//    x
+//    |> (fun (item1, item2) -> item1
+//                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
+//                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
 
-let y =
-    x
-    |> (fun (item1, item2) -> item1
-                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
-                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+//y
 
-y
-
-let testCSVFile =
-    y
-    |> Seq.ofArray
-    |> Seq.collect (fun item -> Seq.toCSV "," true item)
-    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
-testCSVFile
+//let testCSVFile =
+//    y
+//    |> Seq.ofArray
+//    |> Seq.collect (fun item -> Seq.toCSV "," true item)
+//    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
+//testCSVFile
 
