@@ -29,7 +29,7 @@ let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
 let sqliteMzQuantMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
-
+sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 
 //Using peptideID = 119; Modification-specific peptides IDs=125 & 126; 
 //Oxidation (M)Sites for Modification-specific peptides ID=97; ProteinGroups ID=173;
@@ -41,560 +41,560 @@ let user0 =
     |> TermHandler.addName "N-term cleavage window"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user1 =
     TermHandler.init("User:0000001")
     |> TermHandler.addName "C-term cleavage window"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user2 =
     TermHandler.init("User:0000002")
     |> TermHandler.addName "Leading razor protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user3 =
     TermHandler.init("User:0000003")
     |> TermHandler.addName "MaxQuant: Unique Protein Group"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user4 =
     TermHandler.init("User:0000004")
     |> TermHandler.addName "MaxQuant: Unique Protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user5 =
     TermHandler.init("User:0000005")
     |> TermHandler.addName "MaxQuant: PEP"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user6 =
     TermHandler.init("User:0000006")
     |> TermHandler.addName "IdentificationType"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user7 =
     TermHandler.init("User:0000007")
     |> TermHandler.addName "AminoAcid modification"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user8 =
     TermHandler.init("User:0000008")
     |> TermHandler.addName "Charge corrected mass of the precursor ion"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user9 =
     TermHandler.init("User:0000009")
     |> TermHandler.addName "Calibrated retention time"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user10 =
     TermHandler.init("User:0000010")
     |> TermHandler.addName "Mass error"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user11 =
     TermHandler.init("User:0000011")
     |> TermHandler.addName "The intensity values of the isotopes."
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user12 =
     TermHandler.init("User:0000012")
     |> TermHandler.addName "MaxQuant: Major protein IDs"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user13 =
     TermHandler.init("User:0000013")
     |> TermHandler.addName "MaxQuant: Number of proteins"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user14 =
     TermHandler.init("User:0000014")
     |> TermHandler.addName "MaxQuant: Peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user15 =
     TermHandler.init("User:0000015")
     |> TermHandler.addName "MaxQuant: Razor + unique peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user16 =
     TermHandler.init("User:0000016")
     |> TermHandler.addName "MaxQuant: Unique peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user17 =
     TermHandler.init("User:0000017")
     |> TermHandler.addName "MaxQuant: Unique + razor sequence coverage"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user18 =
     TermHandler.init("User:0000018")
     |> TermHandler.addName "MaxQuant: Unique sequence coverage"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user19 =
     TermHandler.init("User:0000019")
     |> TermHandler.addName "MaxQuant: SequenceLength(s)"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user20 =
     TermHandler.init("User:0000020")
     |> TermHandler.addName "Metabolic labeling N14/N15"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user21 =
     TermHandler.init("User:0000021")
     |> TermHandler.addName "DetectionType"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user22 =
     TermHandler.init("User:0000022")
     |> TermHandler.addName "MaxQuant: Uncalibrated m/z"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user23 =
     TermHandler.init("User:0000023")
     |> TermHandler.addName "MaxQuant: Number of data points"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user24 =
     TermHandler.init("User:0000024")
     |> TermHandler.addName "MaxQuant: Number of isotopic peaks"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user25 =
     TermHandler.init("User:0000025")
     |> TermHandler.addName "MaxQuant: Parent ion fraction"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user26 =
     TermHandler.init("User:0000026")
     |> TermHandler.addName "MaxQuant: Mass precision"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user27 =
     TermHandler.init("User:0000027")
     |> TermHandler.addName "Retention length (FWHM)"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user28 =
     TermHandler.init("User:0000028")
     |> TermHandler.addName "MaxQuant: Min scan number"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user29 =
     TermHandler.init("User:0000029")
     |> TermHandler.addName "MaxQuant: Max scan number"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user30 =
     TermHandler.init("User:0000030")
     |> TermHandler.addName "MaxQuant: MSMS scan numbers"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user31 =
     TermHandler.init("User:0000031")
     |> TermHandler.addName "MaxQuant: MSMS isotope indices"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user32 =
     TermHandler.init("User:0000032")
     |> TermHandler.addName "MaxQuant: Filtered peaks"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user33 =
     TermHandler.init("User:0000033")
     |> TermHandler.addName "FragmentationType"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user34 =
     TermHandler.init("User:0000034")
     |> TermHandler.addName "Parent intensity fraction"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user35 =
     TermHandler.init("User:0000035")
     |> TermHandler.addName "Fraction of total spectrum"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user36 =
     TermHandler.init("User:0000036")
     |> TermHandler.addName "Base peak fraction"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user37 =
     TermHandler.init("User:0000037")
     |> TermHandler.addName "Precursor full scan number"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user38 =
     TermHandler.init("User:0000038")
     |> TermHandler.addName "Precursor intensity"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user39 =
     TermHandler.init("User:0000039")
     |> TermHandler.addName "Precursor apex fraction"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user40 =
     TermHandler.init("User:0000040")
     |> TermHandler.addName "Precursor apex offset"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user41 =
     TermHandler.init("User:0000041")
     |> TermHandler.addName "Precursor apex offset time"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user42 =
     TermHandler.init("User:0000042")
     |> TermHandler.addName "Scan event number"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user43 =
     TermHandler.init("User:0000043")
     |> TermHandler.addName "MaxQuant: Score difference"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user44 =
     TermHandler.init("User:0000044")
     |> TermHandler.addName "MaxQuant: Combinatorics"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user45 =
     TermHandler.init("User:0000045")
     |> TermHandler.addName "MaxQuant: Matches"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user46 =
     TermHandler.init("User:0000046")
     |> TermHandler.addName "MaxQuant: Match between runs"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user47 =
     TermHandler.init("User:0000047")
     |> TermHandler.addName "MaxQuant: Number of matches"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user48 =
     TermHandler.init("User:0000048")
     |> TermHandler.addName "MaxQuant: Intensity coverage"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user49 =
     TermHandler.init("User:0000049")
     |> TermHandler.addName "MaxQuant: Peak coverage"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user50 =
     TermHandler.init("User:0000050")
     |> TermHandler.addName "MaxQuant: ETD identification type"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user51 =
     TermHandler.init("User:0000051")
     |> TermHandler.addName "Min. score unmodified peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
   
 let user52 =
     TermHandler.init("User:0000052")
     |> TermHandler.addName "Min. score modified peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user53 =
     TermHandler.init("User:0000053")
     |> TermHandler.addName "Min. delta score of unmodified peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext 
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext 
 
 let user54 =
     TermHandler.init("User:0000054")
     |> TermHandler.addName "Min. delta score of modified peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user55 =
     TermHandler.init("User:0000055")
     |> TermHandler.addName "Min. amount unique peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user56 =
     TermHandler.init("User:0000056")
     |> TermHandler.addName "Min. amount razor peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user57 =
     TermHandler.init("User:0000057")
     |> TermHandler.addName "Min. amount peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user58 =
     TermHandler.init("User:0000058")
     |> TermHandler.addName "MaxQuant: Decoy mode"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user59 =
     TermHandler.init("User:0000059")
     |> TermHandler.addName "MaxQuant: Special AAs"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user60 =
     TermHandler.init("User:0000060")
     |> TermHandler.addName "MaxQuant: Include contaminants"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user61 =
     TermHandler.init("User:0000061")
     |> TermHandler.addName "MaxQuant: iBAQ"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user62 =
     TermHandler.init("User:0000062")
     |> TermHandler.addName "MaxQuant: Top MS/MS peaks per 100 Dalton"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user63 =
     TermHandler.init("User:0000063")
     |> TermHandler.addName "MaxQuant: IBAQ log fit"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user64 =
     TermHandler.init("User:0000064")
     |> TermHandler.addName "MaxQuant: Protein FDR"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user65 =
     TermHandler.init("User:0000065")
     |> TermHandler.addName "MaxQuant: SiteFDR"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user66 =
     TermHandler.init("User:0000066")
     |> TermHandler.addName "MaxQuant: Use Normalized Ratios For Occupancy"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user67 =
     TermHandler.init("User:0000067")
     |> TermHandler.addName "MaxQuant: Peptides used for protein quantification"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user68 =
     TermHandler.init("User:0000068")
     |> TermHandler.addName "MaxQuant: Discard unmodified counterpart peptides"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user69 =
     TermHandler.init("User:0000069")
     |> TermHandler.addName "MaxQuant: Min. ratio count"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user70 =
     TermHandler.init("User:0000070")
     |> TermHandler.addName "MaxQuant: Use delta score"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user71 =
     TermHandler.init("User:0000071")
     |> TermHandler.addName "Data-dependt acquisition"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user72 =
     TermHandler.init("User:0000072")
     |> TermHandler.addName "razor-protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user73 =
     TermHandler.init("User:0000073")
     |> TermHandler.addName "razor-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user74 =
     TermHandler.init("User:0000074")
     |> TermHandler.addName "Mass-deviation"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user75 =
     TermHandler.init("User:0000075")
     |> TermHandler.addName "leading-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user76 =
     TermHandler.init("User:0000076")
     |> TermHandler.addName "unique-protein"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user77 =
     TermHandler.init("User:0000077")
     |> TermHandler.addName "unique-peptide"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user78 =
     TermHandler.init("User:0000078")
     |> TermHandler.addName "MaxQuant: Delta score"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 let user79 =
     TermHandler.init("User:0000079")
     |> TermHandler.addName "MaxQuant: Best andromeda score"
     |> TermHandler.addOntology 
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
-    |> TermHandler.addToContext sqliteMzQuantMLContext
+    |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
 type TermIDByName =
     //Else
@@ -684,6 +684,8 @@ type TermIDByName =
     | RazorProtein
     ///
     | UniqueProtein
+    ///Modifications of the Protein.
+    | ProteinModifications
 
     //Peptides
     ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -1184,6 +1186,7 @@ type TermIDByName =
         | DeltaScore -> "User:0000078"
         | BestAndromedaScore -> "User:0000079"
         | DataBaseName -> "MS:1001013"
+        | ProteinModifications -> "MS:1000933"
 
 
 let mzQuantMLDocument =
@@ -1550,70 +1553,6 @@ let proteinGroupParam =
     |> ProteinGroupParamHandler.addUnit
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
 
-let proteinList =
-    ProteinListHandler.init(proteins)
-    |> ProteinListHandler.addMzQuantMLDocument mzQuantMLDocument
-
-let proteinGroup =
-    ProteinGroupHandler.init(
-        searchDatabase, [proteinRef1; proteinRef2]
-                            )
-    |> ProteinGroupHandler.addDetail proteinGroupParam
-
-let proteinGroupList =
-    ProteinGroupListHandler.init([proteinGroup])
-    |> ProteinGroupListHandler.addMzQuantMLDocument mzQuantMLDocument
-
-let organizations =
-    [
-    OrganizationHandler.init(name="TuKL")
-    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
-    OrganizationHandler.init(name="BioTech")
-    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
-    OrganizationHandler.init(name="CSB")
-    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
-    ]
-
-let person =
-    PersonHandler.init()
-    |> PersonHandler.addFirstName "Patrick"
-    |> PersonHandler.addLastName "Blume"
-    |> PersonHandler.addOrganizations organizations
-    |> PersonHandler.addMzQuantMLDocument mzQuantMLDocument
-
-let role =
-    CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext "MS:1001267").Value
-                       )
-
-let contactRole =
-    ContactRoleHandler.init(
-        person, role
-                           )
-
-let provider =
-    ProviderHandler.init()
-    |> ProviderHandler.addContactRole contactRole
-    |> ProviderHandler.addAnalysisSoftware analysisSoftware
-    |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
-
-let finalMzQuantMLDocument = 
-    mzQuantMLDocument
-    |> MzQuantMLDocumentHandler.addProteinGroupList proteinGroupList
-    |> MzQuantMLDocumentHandler.addOrganizations organizations
-    |> MzQuantMLDocumentHandler.addPerson person
-    |> MzQuantMLDocumentHandler.addProvider provider
-    |> MzQuantMLDocumentHandler.addPeptideConsensusList peptideConsensusList
-    |> MzQuantMLDocumentHandler.addInputFiles inputFiles
-    |> MzQuantMLDocumentHandler.addAnalysisSummaries analysisSummaries
-    |> MzQuantMLDocumentHandler.addCreationDate DateTime.Today
-    |> MzQuantMLDocumentHandler.addVersion "1.0"
-    |> MzQuantMLDocumentHandler.addName "TestForMaxQuantData"
-    |> MzQuantMLDocumentHandler.addProteinList proteinList
-    |> MzQuantMLDocumentHandler.addToContext sqliteMzQuantMLContext    
-
-sqliteMzQuantMLContext.SaveChanges()
-
 //let findMzIdentMLDocument =
 //    MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
 
@@ -1730,22 +1669,91 @@ let createTestProteinParams  (dbContext:MzQuantML)=
     |> ProteinParamHandler.addValue (System.Guid.NewGuid().ToString());
     ]
 
+let testSearchDatabaseParam =
+    SearchDatabaseParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DatabaseVersion)).Value
+                                   )
+    |> SearchDatabaseParamHandler.addValue "1.0"
+
 let testSearchDatabase =
-    SearchDatabaseHandler.init("local", null)
+    SearchDatabaseHandler.init("local", databaseName)
+    |> SearchDatabaseHandler.addDetail testSearchDatabaseParam
 
 let testProtein n =
     ProteinHandler.init("Test", testSearchDatabase, n)
     |> ProteinHandler.addDetails (createTestProteinParams sqliteMzQuantMLContext)
-    |> ProteinHandler.addToContext sqliteMzQuantMLContext
 
 #time
-let rec loppAddtoContext n =
-        if n < 1000
-            then testProtein (string n)
-                 loppAddtoContext (n+1)
-            else n
-loppAddtoContext
+let rec loppaddToContextAndInsert collection n =
+    if n < 10000  then 
+        loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
+    else collection
+loppaddToContextAndInsert
 
-let fiveThousandEntries = loppAddtoContext 0
+let fiveThousandEntries = 
+    loppaddToContextAndInsert [] 0
+
+let proteinList =
+    ProteinListHandler.init(List.append proteins fiveThousandEntries)
+    |> ProteinListHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let proteinGroup =
+    ProteinGroupHandler.init(
+        searchDatabase, [proteinRef1; proteinRef2]
+                            )
+    |> ProteinGroupHandler.addDetail proteinGroupParam
+
+let proteinGroupList =
+    ProteinGroupListHandler.init([proteinGroup])
+    |> ProteinGroupListHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let organizations =
+    [
+    OrganizationHandler.init(name="TuKL")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    OrganizationHandler.init(name="BioTech")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    OrganizationHandler.init(name="CSB")
+    |> OrganizationHandler.addMzQuantMLDocument mzQuantMLDocument;
+    ]
+
+let person =
+    PersonHandler.init()
+    |> PersonHandler.addFirstName "Patrick"
+    |> PersonHandler.addLastName "Blume"
+    |> PersonHandler.addOrganizations organizations
+    |> PersonHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let role =
+    CVParamHandler.init(
+        (TermHandler.tryFindByID sqliteMzQuantMLContext "MS:1001267").Value
+                       )
+
+let contactRole =
+    ContactRoleHandler.init(
+        person, role
+                           )
+
+let provider =
+    ProviderHandler.init()
+    |> ProviderHandler.addContactRole contactRole
+    |> ProviderHandler.addAnalysisSoftware analysisSoftware
+    |> ProviderHandler.addMzQuantMLDocument mzQuantMLDocument
+
+let finalMzQuantMLDocument = 
+    mzQuantMLDocument
+    |> MzQuantMLDocumentHandler.addProteinGroupList proteinGroupList
+    |> MzQuantMLDocumentHandler.addOrganizations organizations
+    |> MzQuantMLDocumentHandler.addPerson person
+    |> MzQuantMLDocumentHandler.addProvider provider
+    |> MzQuantMLDocumentHandler.addPeptideConsensusList peptideConsensusList
+    |> MzQuantMLDocumentHandler.addInputFiles inputFiles
+    |> MzQuantMLDocumentHandler.addAnalysisSummaries analysisSummaries
+    |> MzQuantMLDocumentHandler.addCreationDate DateTime.Today
+    |> MzQuantMLDocumentHandler.addVersion "1.0"
+    |> MzQuantMLDocumentHandler.addName "TestForMaxQuantData"
+    |> MzQuantMLDocumentHandler.addProteinList proteinList
+    |> MzQuantMLDocumentHandler.addToContextAndInsert sqliteMzQuantMLContext    
 
 sqliteMzQuantMLContext.SaveChanges()
+

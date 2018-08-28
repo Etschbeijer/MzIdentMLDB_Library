@@ -30,7 +30,7 @@ let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 
 let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
-
+sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 
 //Using peptideID = 119; Modification-specific peptides IDs=125 & 126; 
 //Oxidation (M)Sites for Modification-specific peptides ID=97; ProteinGroups ID=173;
@@ -685,6 +685,8 @@ type TermIDByName =
     | RazorProtein
     ///
     | UniqueProtein
+    ///Modifications of the Protein.
+    | ProteinModification
 
     //Peptides
     ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -1185,6 +1187,7 @@ type TermIDByName =
         | DeltaScore -> "User:0000078"
         | BestAndromedaScore -> "User:0000079"
         | DataBaseName -> "MS:1001013"
+        | ProteinModification -> "MS:1000933"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 

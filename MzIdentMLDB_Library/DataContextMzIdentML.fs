@@ -1901,7 +1901,7 @@ module DataModel =
             [<DefaultValue>] 
             val mutable m_term : DbSet<Term>
             member public this.Term with get() = this.m_term
-                                                    and set value = this.m_term <- value
+                                                 and set value = this.m_term <- value
   
             [<DefaultValue>] 
             val mutable m_Ontology : DbSet<Ontology>
@@ -1926,7 +1926,7 @@ module DataModel =
             [<DefaultValue>] 
             val mutable m_Person : DbSet<Person>
             member public this.Person with get() = this.m_Person
-                                                    and set value = this.m_Person <- value
+                                                   and set value = this.m_Person <- value
 
             [<DefaultValue>] 
             val mutable m_Organization : DbSet<Organization>
