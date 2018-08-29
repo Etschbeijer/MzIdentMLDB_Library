@@ -587,7 +587,6 @@ let testCSVFile =
     |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 testCSVFile
 
-2+2
 
 //let findProtein (dbContext:MzQuantML) (id:string) =
 //    query {
