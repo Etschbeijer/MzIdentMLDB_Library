@@ -1482,9 +1482,9 @@ let proteinParams1 =
             (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
                             );
     ProteinParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinModifications)).Value
                             )
-    |> ProteinParamHandler.addValue "M";
+    |> ProteinParamHandler.addValue "Methionine oxidation";
     ]
 
 let proteinParams2 =
@@ -1685,7 +1685,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 10000  then 
+    if n < 1000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert

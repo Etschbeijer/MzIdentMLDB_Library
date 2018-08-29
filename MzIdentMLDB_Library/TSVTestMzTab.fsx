@@ -431,7 +431,7 @@ let createDictionaryOfConverterList (collection:(int*Converter)list) =
 
 let createProteinSectionDictionary 
         (protein:Protein) (proteinParams:seq<ProteinParam>) (searchDatabase:SearchDatabase) (searchDatabaseParams:seq<SearchDatabaseParam>) (dbSequenceParams:seq<DBSequenceParam>)
-        (searchEngine:string) (proteinAmbiguityGroup:string) (modifications:string) (terms:Term[]) =
+        (searchEngine:string) (proteinAmbiguityGroup:string) (terms:Term[]) =
 
         let cvParamBases =
             let proteinParams =
@@ -466,7 +466,6 @@ let createProteinSectionDictionary
                 //5, createConverter "database" searchDatabase.DatabaseName.Value false;
                 7, createConverter "search_engine" searchEngine false;
                 14, createConverter "ambiguity_members" proteinAmbiguityGroup false;
-                15, createConverter "modifications" modifications false;
                 16, createConverter "uri" searchDatabase.Location true;
             ]
         let rec loop collection (n:int) (i:int) =
@@ -575,7 +574,7 @@ let y =
     x
     |> (fun (item1, item2) -> item1
                               |> Seq.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
-                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" item2)))
     |> Seq.collect (fun item -> item)
     |> Array.ofSeq
 
