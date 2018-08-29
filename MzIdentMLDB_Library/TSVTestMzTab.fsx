@@ -576,15 +576,16 @@ let y =
     |> (fun (item1, item2) -> item1
                               |> Seq.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
                                                                                       |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
-    //|> Seq.toArray
+    |> Seq.collect (fun item -> item)
+    |> Array.ofSeq
 
 
 
-//let testCSVFile =
-//    y
-//    |> Seq.collect (fun i -> Seq.toCSV ";" true i)
-//    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
-//testCSVFile
+let testCSVFile =
+    y
+    |> (fun i -> Seq.toCSV ";" true i)
+    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
+testCSVFile
 
 2+2
 
