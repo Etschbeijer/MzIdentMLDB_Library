@@ -216,7 +216,7 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 //            }
 //    |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
 //                            then None
-//                            else Some (proteinList |> seq)
+//                            else Some proteinList
 //        )
 //    |> (fun item -> 
 //        match item with
@@ -231,7 +231,7 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 //            }
 //    |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
 //                            then None
-//                            else Some (proteinList |> seq)
+//                            else Some proteinList
 //        )
 //    |> (fun item -> 
 //        match item with
@@ -247,7 +247,7 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 //    |> Seq.map (fun (i, _) -> i)
 //    |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
 //                            then None
-//                            else Some (proteinList |> seq)
+//                            else Some proteinList
 //        )
     
 //let findSearchDataBase (dbContext:MzQuantML) =
@@ -257,7 +257,7 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 //            }
 //    |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
 //                            then None
-//                            else Some (proteinList |> seq)
+//                            else Some proteinList
 //        )
 
 let findMatchingTermIDCVParamBase (id:string) (paramCollection:seq<CVParamBase>) =
@@ -282,7 +282,7 @@ let findProteinParamTerms (dbContext:MzQuantML) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -297,7 +297,7 @@ let findSearchDataBaseParamTerms (dbContext:MzQuantML) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -312,7 +312,7 @@ let findProteins (dbContext:MzQuantML) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -333,7 +333,7 @@ let findProteinList (dbContext:MzQuantML) (id:string) =
         )
     |> (fun item -> 
         match item with
-        | Some x ->  Some (x.ToList())
+        | Some x ->  Some (x.ToArray())
         | None ->  None
        )
 
@@ -357,7 +357,7 @@ let findDBSequenceParamTerms (dbContext:MzIdentML) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -372,7 +372,7 @@ let findDBSequenceParams (dbContext:MzIdentML) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -388,7 +388,7 @@ let findDBSequences (dbContext:MzIdentML) (id:string) =
             }
     |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
                             then None
-                            else Some (proteinList |> seq)
+                            else Some proteinList
         )
     |> (fun item -> 
         match item with
@@ -398,20 +398,29 @@ let findDBSequences (dbContext:MzIdentML) (id:string) =
     |> (fun item -> item.ToArray())
 
 
-let matchDBSequenceAccessionWithProteinAccesion (dbSequence:DBSequence) (proteinComplete:(Protein*List<ProteinParam>*SearchDatabase*List<SearchDatabaseParam>)[]) =
-    let proteins =
+let matchDBSequenceAccessionWithProteinAccesion (dbSequences:seq<DBSequence>) (proteinComplete:(Protein*List<ProteinParam>*SearchDatabase*List<SearchDatabaseParam>)) =
+    let protein =
         proteinComplete
-        |> Array.map (fun (protein, _, _, _) -> protein)
+        |> (fun (protein, _, _, _) -> protein)
 
-    let rec loop collection (n:int) =
-        if n = proteinComplete.Length then
-               (List.tail collection).ToArray()
-        else
-            if dbSequence.Accession <> proteins.[n].Accession then
-               loop collection (n+1)
-            else
-                loop (List.append collection [(proteinComplete.[n], dbSequence.Details)]) (n+1)
-    loop [((null, null, null, null), [] |> List)] 0
+    let tmp =
+        dbSequences
+        |> Seq.map (fun dbSequence ->
+            match dbSequence.Accession=protein.Accession with
+            | true -> proteinComplete, dbSequence.Details
+            | false -> proteinComplete, null
+                    )
+    Seq.filter (fun (_, i) -> i <> null) tmp
+
+    //let rec loop collection (n:int) =
+    //    if n = proteinComplete.Length then
+    //           (List.tail collection).ToArray()
+    //    else
+    //        if dbSequence.Accession <> proteins.[n].Accession then
+    //           loop collection (n+1)
+    //        else
+    //            loop (List.append collection [(proteinComplete.[n], dbSequence.Details)]) (n+1)
+    //loop [((null, null, null, null), [] |> List)] 0
 
 let createDictionaryOfConverterList (collection:(int*Converter)list) =
     let tmp = 
@@ -539,7 +548,7 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
         )
         |> List.ofSeq
     
-    let proteinComplete =
+    let proteinsComplete =
         proteinIDList
         |> Seq.map (fun id -> findCompleteProteins mzQuantMLContext id)
         |> Seq.collect (fun item -> item)
@@ -552,29 +561,32 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
         findDBSequences mzIdentMLContext mzIdentMLDocumentID
 
     let rightDBSequenceParams =
-        dbSequences
-        |> Array.map (fun item -> matchDBSequenceAccessionWithProteinAccesion item (proteinComplete.ToArray()))
-        |> Array.collect (fun item -> item)        
+        proteinsComplete
+        |> Seq.collect (fun proteinComplete -> matchDBSequenceAccessionWithProteinAccesion dbSequences proteinComplete)
+     
         
     rightDBSequenceParams, terms
     
 #time
 let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
-x
+        //|> (fun (i, ii) -> i.ToArray(), ii)
 
-//let y =
-//    x
-//    |> (fun (item1, item2) -> item1
-//                              |> Array.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
-//                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+let y =
+    x
+    |> (fun (item1, item2) -> item1
+                              |> Seq.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
+                                                                                      |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" "Heavy labeling" item2)))
+    //|> Seq.toArray
 
 
 
 //let testCSVFile =
 //    y
-//    |> Seq.toCSV ";" true
+//    |> Seq.collect (fun i -> Seq.toCSV ";" true i)
 //    |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 //testCSVFile
+
+2+2
 
 //let findProtein (dbContext:MzQuantML) (id:string) =
 //    query {
@@ -584,7 +596,7 @@ x
 //          }
 //    |> (fun proteinList -> if (Seq.exists (fun proteinList' -> proteinList' <> null) proteinList) = false
 //                            then None
-//                            else Some (proteinList |> seq)
+//                            else Some proteinList
 //        )
 
 //let createAndAddProtein =
