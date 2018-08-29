@@ -725,7 +725,7 @@ type TermIDByName =
     | MinRatioCount
     ///
     | NumberPeptideSeqsMatchedEachSpec
-    ///
+    ///Number of different peptide-sequences.
     | DistinctPeptideSequences
     ///Peptide can be found in several proteinsequences
     | PeptideSharedWithinMultipleProteins
@@ -1500,11 +1500,11 @@ let proteinParams2 =
                                           )
     |> ProteinParamHandler.addValue "105.09";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(

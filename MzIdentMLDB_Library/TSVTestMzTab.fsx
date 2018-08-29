@@ -423,11 +423,13 @@ let matchDBSequenceAccessionWithProteinAccesion (dbSequences:seq<DBSequence>) (p
     //loop [((null, null, null, null), [] |> List)] 0
 
 let createDictionaryOfConverterList (collection:(int*Converter)list) =
-    let tmp = 
+    let collection = 
         List.sortBy (fun (key, _) -> key) collection
         |> List.map (fun (_, value) -> value)
-        |> List.map (fun value -> value.ColumnName, value.ColumnValue)
-    dict tmp
+        //|> List.map (fun value -> value.ColumnName, value.ColumnValue)
+    collection
+    //dict collection
+
 
 let createProteinSectionDictionary 
         (protein:Protein) (proteinParams:seq<ProteinParam>) (searchDatabase:SearchDatabase) (searchDatabaseParams:seq<SearchDatabaseParam>) (dbSequenceParams:seq<DBSequenceParam>)
@@ -468,7 +470,7 @@ let createProteinSectionDictionary
                 14, createConverter "ambiguity_members" proteinAmbiguityGroup false;
                 16, createConverter "uri" searchDatabase.Location true;
             ]
-        let rec loop collection (n:int) (i:int) =
+        let rec loop collection (n:int) (i:int) (x:int) (y:int)=
             if n = terms.Length then 
                 //let tmp = List.sortBy (fun (key, _) -> key) collection
                 //let tmpDictionary = dict tmp
@@ -477,22 +479,21 @@ let createProteinSectionDictionary
 
             else
                 match terms.[n].ID with
-                | "MS:1001088" -> loop (List.append collection [2, createConverter "description" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
-                | "MS:1001467" -> loop (List.append collection [3, createConverter "taxid" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
-                | "MS:1001469" -> loop (List.append collection [4, createConverter "species" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
-                | "MS:1001013" -> loop (List.append collection [5, createConverter "database" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
-                | "MS:1001016" -> loop (List.append collection [6, createConverter "database_version" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
-                | "MS:1002394" -> loop (List.append collection [8, createConverter "best_search_engine_score[1-n]" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i
+                | "MS:1001088" -> loop (List.append collection [2, createConverter "description" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
+                | "MS:1001467" -> loop (List.append collection [3, createConverter "taxid" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
+                | "MS:1001469" -> loop (List.append collection [4, createConverter "species" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
+                | "MS:1001013" -> loop (List.append collection [5, createConverter "database" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
+                | "MS:1001016" -> loop (List.append collection [6, createConverter "database_version" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
+                | "MS:1002394" -> loop (List.append collection [8, createConverter "best_search_engine_score[1-n]" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value false]) (n+1) i x y
                 //search_engine_score[1-n]_ms_run[1-n]
                 //reliability
                 //num_psms_ms_run[1-n]
-                //num_psms_ms_run[1-n]
-                | "MS:1001898" -> loop (List.append collection [12, createConverter "num_peptides_distinct_ms_run[1-n]" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
-                | "MS:1001897" -> loop (List.append collection [13, createConverter "num_peptides_unique_ms_run[1-n]" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
+                | "MS:1001097" -> loop (List.append collection [12, createConverter ("num_peptides_distinct_ms_run" + ([x].ToString())) (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i (x+1) y
+                | "MS:1001897" -> loop (List.append collection [13, createConverter ("num_peptides_unique_ms_run" + ([y].ToString())) (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i x (y+1)
                 //ambiguity_members
-                | "MS:1000933" -> loop (List.append collection [15, createConverter "modifications" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
-                | "MS:1000934" -> loop (List.append collection [17, createConverter "go_terms" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
-                | "MS:1001093" -> loop (List.append collection [18, createConverter "protein_coverage" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i
+                | "MS:1000933" -> loop (List.append collection [15, createConverter "modifications" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i x y
+                | "MS:1000934" -> loop (List.append collection [17, createConverter "go_terms" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i x y
+                | "MS:1001093" -> loop (List.append collection [18, createConverter "protein_coverage" (getMatchingCVParamBase terms.[n].ID cvParamBases).Value true]) (n+1) i x y
                 //protein_abundance_assay[1-n]
                 //protein_abundance_study_variable[1-n]
                 //protein_abundance_stdev_study_variable[1-n]
@@ -510,9 +511,9 @@ let createProteinSectionDictionary
                                                                 true
                                                     ]
                             )
-                                                            (n+1) (i+1)
+                                                            (n+1) (i+1) x y
                        
-        loop startDictionary 0 1
+        loop startDictionary 0 1 0 0
 createProteinSectionDictionary
 
 let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLContext:MzQuantML) (mzIdentMLDocumentID:string) (mzQuantMLDocumentID:string) =
@@ -576,13 +577,12 @@ let y =
                               |> Seq.map(fun (proteinComplete, dbSequenceParams) -> proteinComplete
                                                                                       |> (fun (protein, proteinParams, searchDatabase, searchdatabaseparam) -> createProteinSectionDictionary protein proteinParams searchDatabase searchdatabaseparam dbSequenceParams "MaxQuant" "1 | 2 | 3" item2)))
     |> Seq.collect (fun item -> item)
-    |> Array.ofSeq
-
-
+    |> List.ofSeq
 
 let testCSVFile =
     y
-    |> (fun i -> Seq.toCSV ";" true i)
+    //|> List.ofSeq
+    |> Seq.toCSV ";" true
     |> Seq.write (standardTSVPath + "\TSV_TestFile_1.csv")
 testCSVFile
 
