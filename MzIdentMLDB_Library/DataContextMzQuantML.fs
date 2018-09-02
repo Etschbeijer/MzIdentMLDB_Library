@@ -2119,5 +2119,17 @@ module DataModel =
             member public this.PersonParam with get() = this.m_PersonParam
                                                         and set value = this.m_PersonParam <- value
 
-
+            override this.OnModelCreating (modelBuilder:ModelBuilder) =
+                     modelBuilder.Entity<Term>()
+                        .HasIndex("ID")
+                        .IsUnique()|> ignore
+                     modelBuilder.Entity<Protein>()
+                        .HasIndex("ID")
+                        .IsUnique()|> ignore
+                     modelBuilder.Entity<ProteinParam>()
+                        .HasIndex("ProteinID")
+                        .IsUnique()|> ignore
+                     modelBuilder.Entity<SearchDatabase>()
+                        .HasIndex("ProteinID")
+                        .IsUnique()|> ignore
 

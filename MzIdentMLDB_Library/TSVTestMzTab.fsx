@@ -339,22 +339,11 @@ let findProteinList (dbContext:MzQuantML) (id:string) =
 
 let compiledFindProteinList (dbContext:MzQuantML) (id:string) =
     findProteins dbContext |> ignore
-    query {
-            for i in dbContext.MzQuantMLDocument.Include(fun item -> item.ProteinList).Where(fun item -> item.ID=id).FirstOrDefault(fun item ->  item<>null) do
-                //where (i.ID=id)
-                select i
-          }
-          //|> (fun item -> item.FirstOrDefault(fun item ->  item<>null))
+    dbContext.MzQuantMLDocument.Include(fun item -> item.ProteinList).Where(fun item -> item.ID=id).FirstOrDefault(fun item ->  item<>null)
+    //|> (fun item -> item.ProteinList)
 
 let compiledQueryFindProteinList =
     EF.CompileQuery(fun (db:MzQuantML) (id:string) -> (compiledFindProteinList db id))
-//let compiledQuery (dbContext:MzQuantML) (id:string) =
-//    EF.CompileQuery(fun (db:MzQuantML, id:string) -> query{
-//                                                           for i in db.Protein do
-//                                                               where (i.ID=id)
-//                                                               select i
-//                                                          }
-//                   )
                    
 let findCompleteProteins (dbContext:MzQuantML) (id:string) =
     query {
@@ -570,7 +559,8 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
     let rightDBSequenceParams =
         proteinsComplete
         |> Seq.collect (fun proteinComplete -> matchDBSequenceAccessionWithProteinAccesion dbSequences proteinComplete)
-     
+        |> Array.ofSeq
+
     let terms =
         let proteinParamTerms = 
             match (findProteinParamTerms mzQuantMLContext) with
@@ -584,23 +574,24 @@ let createProteinSection2 (path:string) (mzIdentMLContext:MzIdentML) (mzQuantMLC
             rightDBSequenceParams
             |> Seq.collect (fun (_, i) -> i)
             |> Seq.map (fun i -> i.Term)
-            //|> Array.ofSeq
+            |> Array.ofSeq
         
-        Seq.append (Array.append proteinParamTerms searchDatabaseParamTerms) dbSequenceParamTerms
-        |> Seq.distinct
+        Array.append (Array.append proteinParamTerms searchDatabaseParamTerms) dbSequenceParamTerms
+        |> Array.distinct
         
-    rightDBSequenceParams, terms.ToArray()
+    rightDBSequenceParams, terms
     
 #time
 
-let test = compiledQueryFindProteinList.Invoke(sqliteMzQuantMLContext, "Test1")
+//let test = compiledQueryFindProteinList.Invoke(sqliteMzQuantMLContext, "Test1")
 
-let testii = findProteinList sqliteMzQuantMLContext "Test1"
+//let testi = compiledFindProteinList sqliteMzQuantMLContext "Test1"
+
+//let testii = findProteinList sqliteMzQuantMLContext "Test1"
 
 
-//let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
-//        |> (fun (i, ii) -> i, ii)
-
+let x = createProteinSection2 "" sqliteMzIdentMLContext sqliteMzQuantMLContext "Test1" "Test1"
+1+1
 //let y =
 //    x
 //    |> (fun (item1, item2) -> item1
@@ -648,3 +639,152 @@ let testii = findProteinList sqliteMzQuantMLContext "Test1"
 //    |> List.ofSeq
 
 //let testi = findProteinList sqliteMzQuantMLContext "Test1"
+
+
+/////A single entry from an ontology or a controlled vocabulary.
+//type [<AllowNullLiteral>]
+
+//    A (id:string, description:string, rowVersion:Nullable<DateTime>) =  
+//        let mutable id'             = id
+//        let mutable description'    = description
+//        let mutable rowVersion'     = rowVersion
+
+//        new() = A(null, null, Nullable())
+
+//        [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
+//        member this.ID with get() = id' and set(value) = id' <- value
+//        member this.Description with get() = description' and set(value) = description' <- value
+//        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+
+//type [<CLIMutable>] 
+//    B =
+//    {
+//     ID            : string
+//     Description   : string
+//     CID           : string
+//     RowVersion    : DateTime
+//    }
+
+//type [<CLIMutable>] 
+//    C =
+//    {
+//     ID            : string
+//     Description   : string
+//     A             : A
+//     AID           : string
+//     CollectionOfB : List<B>
+//     RowVersion    : DateTime
+//    }
+
+//type TypeAHandler =
+//    ///Initializes a term-object with at least all necessary parameters.
+//    static member init
+//        (
+//            id          : string,
+//            description : string
+//            //bID         : int
+//        ) =
+
+//        new A(
+//              id,
+//              description,
+//              Nullable(DateTime.Now)
+//             )
+
+//type TypeBHandler =
+//    ///Initializes a term-object with at least all necessary parameters.
+//    static member init
+//        (
+//            id            : string,
+//            description   : string,
+//            cID           : string
+//        ) =
+
+//        let createTypeB id description cID=
+//            {
+//             B.ID               = id
+//             B.Description      = description
+//             B.CID              = cID
+//             B.RowVersion       = DateTime.Now
+//            }
+        
+//        createTypeB id description cID
+
+//type TypeCHandler =
+//    ///Initializes a term-object with at least all necessary parameters.
+//    static member init
+//        (
+//            id            : string,
+//            description   : string,
+//            a             : A,
+//            aID           : string,
+//            collectionOfB : seq<B>
+//        ) =
+
+//        let createTypeC id description a aID (collectionOfB:seq<B>) =
+//            {
+//             C.ID               = id
+//             C.Description      = description
+//             C.A                = a
+//             C.AID              = aID
+//             C.CollectionOfB    = collectionOfB |> List
+//             C.RowVersion       = DateTime.Now
+//            }
+        
+//        createTypeC id description a aID collectionOfB
+
+//type TestContext =
+     
+//    inherit DbContext
+
+//    new(options : DbContextOptions<TestContext>) = {inherit DbContext(options)}
+
+//    [<DefaultValue>] 
+//    val mutable m_a : DbSet<A>
+//    member public this.A with get() = this.m_a
+//                                      and set value = this.m_a <- value
+
+//    [<DefaultValue>] 
+//    val mutable m_b : DbSet<B>
+//    member public this.B with get() = this.m_b
+//                                      and set value = this.m_b <- value
+
+//    [<DefaultValue>] 
+//    val mutable m_c : DbSet<C>
+//    member public this.C with get() = this.m_c
+//                                      and set value = this.m_c <- value
+
+//type ContextTestHandler =
+
+//    ///Creates connection for SQLite-context and database.
+//    static member sqliteConnection (path:string) =
+//        let optionsBuilder = 
+//            new DbContextOptionsBuilder<TestContext>()
+//        optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
+//        new TestContext(optionsBuilder.Options)  
+
+//let standardDBPathSQLiteTest = fileDir + "\Databases\TestDB1.db"
+//let testDBContext = ContextTestHandler.sqliteConnection standardDBPathSQLiteTest
+
+//let testA =
+//    TypeAHandler.init(string 1, "Test")
+//    |> testDBContext.Add
+
+//let testAI =
+//    TypeAHandler.init(string 2, "TestIIIIII")
+//    |> testDBContext.Add
+
+//let testB =
+//    TypeBHandler.init(string 1, "Test", null)
+   
+
+//let testBII =
+//    TypeBHandler.init(string 2, "Test", null)
+    
+
+//let testC =
+//    TypeCHandler.init(string 1, "Test", null, string 2, [testB; testBII])
+//    |> testDBContext.Add
+
+//testDBContext.Database.EnsureCreated()
+//testDBContext.SaveChanges()

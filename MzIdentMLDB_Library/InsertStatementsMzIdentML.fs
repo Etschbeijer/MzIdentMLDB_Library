@@ -100,10 +100,10 @@ module InsertStatements =
                 new MzIdentML(optionsBuilder.Options)       
 
             ///Creats connection for SQL-context and database.
-            static member sqlConnection() =
+            static member sqlConnection() (dbName:string)=
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzIdentML>()
-                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
+                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=" + dbName + ";Trusted_Connection=True;") |> ignore
                 new MzIdentML(optionsBuilder.Options) 
 
             ///Reads obo-file and creates sequence of Obo.Terms.
