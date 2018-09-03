@@ -598,6 +598,7 @@ let user79 =
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 type TermIDByName =
+    | Accession of string
     //Else
     | RawFile
     ///Length of sequence (MaxQuant).
@@ -686,7 +687,7 @@ type TermIDByName =
     ///
     | UniqueProtein
     ///Modifications of the Protein.
-    | ProteinModification
+    | ProteinModifications
 
     //Peptides
     ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -726,7 +727,7 @@ type TermIDByName =
     | MinRatioCount
     ///
     | NumberPeptideSeqsMatchedEachSpec
-    ///
+    ///Number of different peptide-sequences.
     | DistinctPeptideSequences
     ///Peptide can be found in several proteinsequences
     | PeptideSharedWithinMultipleProteins
@@ -1003,6 +1004,7 @@ type TermIDByName =
 
     static member toID (item:TermIDByName) =
         match item with
+        | Accession s -> s
         | RawFile -> "MS:1000577"
         | AminoAcidSequence -> "MS:1001344"
         | NucleicAcidSequence -> "MS:1001343"
@@ -1187,7 +1189,7 @@ type TermIDByName =
         | DeltaScore -> "User:0000078"
         | BestAndromedaScore -> "User:0000079"
         | DataBaseName -> "MS:1001013"
-        | ProteinModification -> "MS:1000933"
+        | ProteinModifications -> "MS:1000933"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 

@@ -596,7 +596,8 @@ let user79 =
         (OntologyHandler.tryFindByID sqliteMzQuantMLContext "UserParam").Value
     |> TermHandler.addToContextAndInsert sqliteMzQuantMLContext
 
-type TermIDByName =
+type TermSymbol =
+    | Accession of string
     //Else
     | RawFile
     ///Length of sequence (MaxQuant).
@@ -1000,8 +1001,9 @@ type TermIDByName =
     ///Score difference to the second best identified peptide.
     | DeltaScore
 
-    static member toID (item:TermIDByName) =
+    static member toID (item:TermSymbol) =
         match item with
+        | Accession s -> s
         | RawFile -> "MS:1000577"
         | AminoAcidSequence -> "MS:1001344"
         | NucleicAcidSequence -> "MS:1001343"
@@ -1195,34 +1197,34 @@ let mzQuantMLDocument =
 let analysisSoftwareParams =
     [
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MaxQuant)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MaxQuant)).Value;
                                      )
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQ)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID IBAQ)).Value;
                                      )
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID IBAQLogFit)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID IBAQLogFit)).Value;
                                      )
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MatchBetweenRuns)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MatchBetweenRuns)).Value;
                                      )
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptidesForProteinQuantification)).Value
                                                     )
     |> AnalysisSoftwareParamHandler.addValue "Razor";
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DiscardUnmodifiedPeptide)).Value
                                                     )
     |> AnalysisSoftwareParamHandler.addValue "TRUE";
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinRatioCount)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinRatioCount)).Value
                                                     )
     |> AnalysisSoftwareParamHandler.addValue "2";
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value                                             )
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID UseDeltaScores)).Value                                             )
     |> AnalysisSoftwareParamHandler.addValue "FALSE";
     AnalysisSoftwareParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UseDeltaScores)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID UseDeltaScores)).Value
                                                     )
     |> AnalysisSoftwareParamHandler.addValue "TRUE";
     ]
@@ -1235,20 +1237,20 @@ let analysisSoftware =
 let analysisSummaries =
     [
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15Quantification)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MetabolicLabelingN14N15Quantification)).Value
                                                     )
     |> AnalysisSummaryHandler.addValue "Razor"
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedAnalysis)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MS1LabelBasedAnalysis)).Value
                                                     )
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedPeptideAnalysis)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MS1LabelBasedPeptideAnalysis)).Value
                                                     )
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     AnalysisSummaryHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SpectralCountQuantification)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID SpectralCountQuantification)).Value
                                                     )
     |> AnalysisSummaryHandler.addMzQuantMLDocument mzQuantMLDocument;
     
@@ -1256,33 +1258,33 @@ let analysisSummaries =
 
 let fileFormat1 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID TSV)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID TSV)).Value
                         )
 
 let fileFormat2 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FASTAFormat)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID FASTAFormat)).Value
                         )
 
 let fileFormat3 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataStoredInDataBase)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DataStoredInDataBase)).Value
                         )
 
 let fileFormat4 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UnknownFileType)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID UnknownFileType)).Value
                         )
 
 let databaseName =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataBaseName)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DataBaseName)).Value
                         )
     |> CVParamHandler.addValue "Unknown to me at the moment"
 
 let searchDatabaseParam =
     SearchDatabaseParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DatabaseVersion)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DatabaseVersion)).Value
                                    )
     |> SearchDatabaseParamHandler.addValue "1.0"
 
@@ -1297,7 +1299,7 @@ let methodFile =
     MethodFileHandler.init("local")
     |> MethodFileHandler.addFileFormat
         (CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DataDependentAcquisition)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DataDependentAcquisition)).Value
                             )
         )
   
@@ -1348,14 +1350,14 @@ let modifications =
     [
     ModificationHandler.init(
         CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Oxidation)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Oxidation)).Value
                             )         
                              )
     |> ModificationHandler.addResidues "M"
     |> ModificationHandler.addMassDelta 16000.;
     ModificationHandler.init(
         CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NeutralIonLoss)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID NeutralIonLoss)).Value
                            )
                             );
     ]
@@ -1363,7 +1365,7 @@ let modifications =
 let label =
     ModificationHandler.init(
         CVParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MetabolicLabelingN14N15)).Value
                             )         
                              )
     |> ModificationHandler.addMassDelta 1.01;
@@ -1386,19 +1388,19 @@ let evidenceRefUnmodified =
 let peptideConsensusUnmodifiedParams =
     [
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MonoIsotopicMass)).Value
                             )
     |> PeptideConsensusParamHandler.addValue "1453.6759";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID BestAndromedaScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID BestAndromedaScore)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "122.97";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID FractionOfTotalSpectrum)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "0.001671316";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniqueToProtein)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID UniqueToProtein)).Value
                                                )
     ]
 
@@ -1419,19 +1421,19 @@ let evidenceRefMOxidized =
 let peptideConsensusMOxidizedParams =
     [
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MonoIsotopicMass)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "1469.6761";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID BestAndromedaScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID BestAndromedaScore)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "111.12";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID FractionOfTotalSpectrum)).Value
                                                 )
     |> PeptideConsensusParamHandler.addValue "0.002043774";
     PeptideConsensusParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID UniqueToProtein)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID UniqueToProtein)).Value
                                                )
     ]
 
@@ -1449,40 +1451,40 @@ let peptideConsensusList =
 let proteinParams1 =
     [
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID SequenceCoverage)).Value
                             )
     |> ProteinParamHandler.addValue "31.7"
     |> ProteinParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Percentage)).Value;
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
                                           )
     |> ProteinParamHandler.addValue "105.09";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsAll)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptideCountsAll)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptideCountsRazorAndUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountsRazorAndUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptideCountsRazorAndUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptideCountUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinDescription)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinDescription)).Value
                                             )
     |> ProteinParamHandler.addValue ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 OS=Chlamydomonas reinhardtii SV=2 TOU=Cre";
     ProteinParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MetabolicLabelingN14N15)).Value
                             );
     ProteinParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinModifications)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinModifications)).Value
                             )
     |> ProteinParamHandler.addValue "Methionine oxidation";
     ]
@@ -1490,29 +1492,29 @@ let proteinParams1 =
 let proteinParams2 =
     [
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID SequenceCoverage)).Value
                             )
     |> ProteinParamHandler.addValue "31.7"
     |> ProteinParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value;
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Percentage)).Value;
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
                                           )
     |> ProteinParamHandler.addValue "105.09";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DistinctPeptideSequences)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID PeptideCountUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID PeptideCountUnique)).Value
                                             )
     |> ProteinParamHandler.addValue "6";
     ProteinParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinDescription)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinDescription)).Value
                                             )
     |> ProteinParamHandler.addValue ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 OS=Chlamydomonas reinhardtii SV=2 TOU=Cre";
     ProteinParamHandler.init(
-            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MetabolicLabelingN14N15)).Value
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MetabolicLabelingN14N15)).Value
                             );
     ]
 
@@ -1533,7 +1535,7 @@ let proteins =
 let proteinRefParams =
     [
     ProteinRefParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingRazorProtein)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID LeadingRazorProtein)).Value
                                );
     ]
 
@@ -1547,11 +1549,11 @@ let proteinRef2 =
 
 let proteinGroupParam =
     ProteinGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID SequenceCoverage)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID SequenceCoverage)).Value
                                  )
     |> ProteinGroupParamHandler.addValue "31.7"
     |> ProteinGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Percentage)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Percentage)).Value
 
 //let findMzIdentMLDocument =
 //    MzQuantMLDocumentHandler.tryFindByName sqliteMzQuantMLContext "TestForMaxQuantData"
@@ -1563,26 +1565,26 @@ let proteinGroupParam =
 
 let terms =
     [|
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Dalton)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID KiloDalton)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID Ppm)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID ProteinScore)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID XICArea)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NormalizedXICArea)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID TotalXIC)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID XICAreas)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPep)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPepRazor)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID NumberPeptideSeqsMatchedEachSpec)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinScoreModifiedPeptides)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPeptideLength)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID LeadingPeptide)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MinPepUnique)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID MS1LabelBasedPeptideAnalysis)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Dalton)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID KiloDalton)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Ppm)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID XICArea)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID NormalizedXICArea)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID TotalXIC)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID XICAreas)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinPep)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinPepRazor)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID NumberPeptideSeqsMatchedEachSpec)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinScoreModifiedPeptides)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinPeptideLength)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID LeadingPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DistinctPeptideSequences)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DiscardUnmodifiedPeptide)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinPepUnique)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MS1LabelBasedPeptideAnalysis)).Value
     |]
 
 let createTestProteinParams  (dbContext:MzQuantML)=
@@ -1671,7 +1673,7 @@ let createTestProteinParams  (dbContext:MzQuantML)=
 
 let testSearchDatabaseParam =
     SearchDatabaseParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermIDByName.toID DatabaseVersion)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DatabaseVersion)).Value
                                    )
     |> SearchDatabaseParamHandler.addValue "1.0"
 
@@ -1685,7 +1687,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 10000 then 
+    if n < 1000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert
@@ -1695,7 +1697,6 @@ let fiveThousandEntries =
 
 let proteinList =
     ProteinListHandler.init(List.append proteins fiveThousandEntries)
-    |> ProteinListHandler.addMzQuantMLDocument mzQuantMLDocument
 
 let proteinGroup =
     ProteinGroupHandler.init(

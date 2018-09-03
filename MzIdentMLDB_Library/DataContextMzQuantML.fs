@@ -1512,7 +1512,7 @@ module DataModel =
     and [<AllowNullLiteral>]
         ProteinList (id:string, proteins:List<Protein>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
                      studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
-                     details:List<ProteinListParam>, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
+                     details:List<ProteinListParam>, (*mzQuantML:MzQuantMLDocument,*) rowVersion:Nullable<DateTime>
                     ) =
             let mutable id'                       = id
             let mutable proteins'                 = proteins
@@ -1521,10 +1521,10 @@ module DataModel =
             let mutable studyVariableQuantLayers' = studyVariableQuantLayers
             let mutable ratioQuantLayer'          = ratioQuantLayer
             let mutable details'                  = details
-            let mutable mzQuantML'                = mzQuantML
+            //let mutable mzQuantML'                = mzQuantML
             let mutable rowVersion'               = rowVersion
 
-            new() = ProteinList(null, null, null, null, null, null, null, null, Nullable())
+            new() = ProteinList(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Proteins with get() = proteins' and set(value) = proteins' <- value
@@ -1533,7 +1533,7 @@ module DataModel =
             member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzQuantMLDocument with get() = mzQuantML' and set(value) = mzQuantML' <- value
+            //member this.MzQuantMLDocument with get() = mzQuantML' and set(value) = mzQuantML' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A reference to one of the Proteins contained within this group, 
@@ -1683,7 +1683,7 @@ module DataModel =
                            analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, 
                            assays:List<Assay>, biblioGraphicReferences:List<BiblioGraphicReference>, 
                            studyVariables:List<StudyVariable>, ratios:List<Ratio>, proteinGroupList:List<ProteinGroupList>, 
-                           proteinList:List<ProteinList>, peptideConsensusList:List<PeptideConsensusList>, 
+                           proteinList:ProteinList, peptideConsensusList:List<PeptideConsensusList>, 
                            smallMoleculeList:List<SmallMoleculeList>, featureList:List<FeatureList>, 
                            rowVersion:Nullable<DateTime>
                           ) =
@@ -2120,16 +2120,16 @@ module DataModel =
                                                         and set value = this.m_PersonParam <- value
 
             override this.OnModelCreating (modelBuilder:ModelBuilder) =
-                     modelBuilder.Entity<Term>()
+                    modelBuilder.Entity<MzQuantMLDocument>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
-                     modelBuilder.Entity<Protein>()
+                    modelBuilder.Entity<Term>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
-                     modelBuilder.Entity<ProteinParam>()
-                        .HasIndex("ProteinID")
+                    modelBuilder.Entity<Protein>()
+                        .HasIndex("ID")
                         .IsUnique()|> ignore
-                     modelBuilder.Entity<SearchDatabase>()
-                        .HasIndex("ProteinID")
-                        .IsUnique()|> ignore
-
+                     //modelBuilder.Entity<ProteinParam>()
+                     //   .HasIndex("ProteinID")
+                     //   .IsUnique()|> ignore
+                    

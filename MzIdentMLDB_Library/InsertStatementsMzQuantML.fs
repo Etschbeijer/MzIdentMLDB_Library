@@ -7051,8 +7051,8 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<ProteinListParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?details                     : seq<ProteinListParam>
+                    //?mzQuantMLDocument           : MzQuantMLDocument
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -7060,7 +7060,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                //let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new ProteinList(
                                 id',
@@ -7070,7 +7070,7 @@ module InsertStatements =
                                 studyVariableQuantLayer',
                                 ratioQuantLayer',
                                 details',
-                                mzQuantMLDocument',
+                                //mzQuantMLDocument',
                                 Nullable(DateTime.Now)
                                )
             
@@ -7119,11 +7119,11 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinList) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
-                table
+            /////Replaces mzQuantMLDocument of existing object with new one.
+            //static member addMzQuantMLDocument
+            //    (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinList) =
+            //    let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            //    table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -7955,7 +7955,7 @@ module InsertStatements =
                     ?studyVariables              : seq<StudyVariable>,
                     ?ratios                      : seq<Ratio>,
                     ?proteinGroupList            : seq<ProteinGroupList>,
-                    ?proteinList                 : seq<ProteinList>,
+                    ?proteinList                 : ProteinList,
                     ?peptideConsensusList        : seq<PeptideConsensusList>,
                     ?smallMolecule               : seq<SmallMoleculeList>,
                     ?featureList                 : seq<FeatureList>
@@ -7978,7 +7978,7 @@ module InsertStatements =
                 let studyVariables'                 = convertOptionToList studyVariables
                 let ratios'                         = convertOptionToList ratios
                 let proteinGroupList'               = convertOptionToList proteinGroupList
-                let proteinList'                    = convertOptionToList proteinList
+                let proteinList'                    = defaultArg proteinList Unchecked.defaultof<ProteinList>
                 let peptideConsensusList'           = convertOptionToList peptideConsensusList
                 let smallMoleculeList'              = convertOptionToList smallMolecule
                 let featureList'                    = convertOptionToList featureList
@@ -8031,13 +8031,12 @@ module InsertStatements =
             static member addProteinGroupList
                 (proteinGroupList:ProteinGroupList) (table:MzQuantMLDocument) =
                 table.ProteinGroupList <- addToList table.ProteinGroupList proteinGroupList
-                table
-
-            ///Adds new proteinList to collection of enzymenames.
-            static member addProteinList
-                (proteinList:ProteinList) (table:MzQuantMLDocument) =
-                table.ProteinList <- addToList table.ProteinList proteinList
                 table 
+
+            ///Replaces proteinList of existing object with new one.
+            static member addProteinList (proteinList:ProteinList) (table:MzQuantMLDocument) =
+                table.ProteinList <- proteinList
+                table
 
             ///Adds new peptideConsensusList to collection of enzymenames.
             static member addPeptideConsensusList
