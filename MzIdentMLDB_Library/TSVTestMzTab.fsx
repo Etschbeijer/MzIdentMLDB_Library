@@ -254,13 +254,6 @@ let testFindAllSearchDBTerms =
 let testFindAllDBSeqTerms =
     findAllDBSequenceTerms sqliteMzIdentMLContext "Test1" testFindAllSearchDBTerms
 
-//let standardCSVPath = fileDir + "\Databases\TSVTest1.csv"
-
-//let test =
-//    testFindAllDBSeqTerms
-//    |> Seq.toCSV "\t" true
-//    |> Seq.write standardCSVPath
-
 let listOfColumnNames =
     [
      "accession", "MS:1000885"
@@ -332,10 +325,108 @@ let completeDictionary (collectionOfColumnNames:Dictionary<string, string>) (col
     |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
     tmp1
 
-let finalTest =
+let finalDictionary =
     completeDictionary dictionaryOfColumnAndIDs testFindAllDBSeqTerms
 
-let tmp = new Dictionary<string,string>(finalTest)
-let test = tmp.Item "description" <- "Test"
-tmp
-finalTest
+let xyz =
+    finalDictionary.Values |> Seq.map (fun item -> item)
+
+let findAllProteins (dbContext:MzQuantML) (id:string) =
+    
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.Details :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:ProteinParam) -> item.Term)
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.SearchDatabase.Details :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:SearchDatabaseParam) -> item.Term)
+                            .Where(fun x -> x.ID=id)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do                    
+                    select prot    
+          }
+
+let findAllDBSequencesOfProteins (dbContext:MzIdentML) (mzIdentID:string) (protAccession:string)=    
+    
+    query {
+           for mzIdent in dbContext.MzIdentMLDocument
+                            .Include(fun item -> item.DBSequences :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:DBSequence) -> item.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:DBSequenceParam) -> item.Term)
+                            .Where(fun x -> x.ID=mzIdentID)
+                            .ToList()
+                            do
+                for dbSeq in mzIdent.DBSequences do
+                    where (mzIdent.ID=mzIdentID && dbSeq.Accession=protAccession)
+                    select dbSeq
+          }
+    |> Array.ofSeq
+
+let getProteinsAndDBSeqs
+    (mzIdentContext:MzIdentML) (mzIdentID:string) (mzQuantContext:MzQuantML) (mzQuantID:string) =
+
+    findAllProteins mzQuantContext mzQuantID
+    |> Seq.map (fun protein ->
+        protein, findAllDBSequencesOfProteins mzIdentContext mzIdentID protein.Accession
+               )
+    |> Array.ofSeq
+
+let collectionOfProteinAndDBSeq =
+    getProteinsAndDBSeqs sqliteMzIdentMLContext "Test1" sqliteMzQuantMLContext "Test1"
+
+let matchDictionary (dictionary:Dictionary<string, string>) (cvParam:CVParamBase) =
+
+    let tmp = new Dictionary<string,string>(dictionary)
+
+    dictionary.Values
+    |> Seq.iter (fun item -> match item=cvParam.Term.ID with
+                            | true -> tmp.Item item <- cvParam.Value
+                            | _ -> tmp |> ignore 
+               )
+    tmp
+
+
+let createFinalDictonary 
+    (dictionary:Dictionary<string,string>) ((protein,dbSequences):Protein*(DBSequence[])) =
+    
+    //let tmp = new Dictionary<string,string>(dictionary)
+
+    let collectionOfCvParamBase =
+        [protein.Details |> Seq.map (fun protParam -> protParam :> CVParamBase); 
+         protein.SearchDatabase.Details |> Seq.map (fun searchDBParam -> searchDBParam :> CVParamBase); 
+         dbSequences 
+         |> Seq.collect (fun dbSequence -> dbSequence.Details 
+                                           |> Seq.map (fun dbSeqParam -> dbSeqParam :> CVParamBase))
+        ]
+        |> Seq.concat
+        |> Array.ofSeq
+
+    collectionOfCvParamBase
+    |> Array.map (fun cvParam -> matchDictionary dictionary cvParam)
+
+    //collectionOfCvParamBase
+    //|> Array.map (fun cvParamBase -> tmp.Values 
+    //                                |> Seq.map (fun item -> 
+    //                                                    match item with
+    //                                                    | cvParamBase.Term.ID -> cvParamBase.Value
+    //                                                    | _ -> ""
+    //    ))
+
+
+let collectionOfCVParamBase =
+    collectionOfProteinAndDBSeq
+    |> Array.collect (fun item -> createFinalDictonary finalDictionary item)
+    |> Array.distinct
+
+collectionOfCVParamBase.[10529]
+
+//let standardCSVPath = fileDir + "\Databases\TSVTest1.csv"
+
+//let test =
+//    testFindAllDBSeqTerms
+//    |> Seq.toCSV "\t" true
+//    |> Seq.write standardCSVPath
