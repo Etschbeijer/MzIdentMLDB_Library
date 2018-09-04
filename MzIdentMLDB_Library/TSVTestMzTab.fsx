@@ -76,29 +76,6 @@ let testStringTimes4Collection = [testStringTimes4]
 //    TSVFileHandler.init(metaDataSectionMinimum, [proteinSectionFull])
 //    |> TSVFileHandler.saveTSVFile (standardTSVPath + "\TSV_TestFile_1.csv")
 
-type TestUnionCase =
-        |Test1
-        |Test2
-        static member toFunction (item:TestUnionCase) =
-            match item with
-            |Test1 -> Test2
-            |Test2 -> TestUnionCase.toFunction Test1
-            
-type Test =
-    {
-     ID         : TestUnionCase
-     ToFunction : TestUnionCase
-    }
-
-let createTest id =
-    {
-     Test.ID         = id
-     Test.ToFunction = TestUnionCase.toFunction id
-    }
-
-createTest Test1
-createTest Test2
-
 ////////////////////////////////////////////////////
 //New Test//////////
 ////////////////////////////////////////////////////
@@ -212,19 +189,10 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
 
 #time
 
-let findAllProteinTerms (dbContext:MzQuantML) (id:string) (dict:System.Collections.Generic.Dictionary<string,string>) =    
-    //dbContext.MzQuantMLDocument
-    //    .Where(fun item -> item.ID=id)
-    //    .Select(fun item -> item.ProteinList.Proteins)
-    //    .Include(fun protein -> protein :> IEnumerable<_>)
-    //    .ThenInclude(fun (item:Protein) -> item.ID) //.ThenInclude(fun item -> item)
-    ////                                                                             |> Seq.collect (fun protein -> protein.Details 
-    ////                                                                                                            |> Seq.map (fun proteinParam -> proteinParam.Term)))
-    ////|> Seq.concat
+let findAllProteinTerms (dbContext:MzQuantML) (id:string) (dict:System.Collections.Generic.Dictionary<string,string>) =
+
     query {
-            
-            
-            for mzQdoc in dbContext.MzQuantMLDocument
+           for mzQdoc in dbContext.MzQuantMLDocument
                             .Include(fun item -> item.ProteinList)
                             .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
                             .ThenInclude(fun (item:Protein) -> item.Details :> IEnumerable<_>) 
@@ -234,16 +202,140 @@ let findAllProteinTerms (dbContext:MzQuantML) (id:string) (dict:System.Collectio
                             do
                 for prot in mzQdoc.ProteinList.Proteins do                    
                     for cv in prot.Details do 
-            //where (mzQdoc.ID=id)
-                        select (cv.Term.ID,cv.Term.Name)
+                        select (cv.Term.ID(*,cv.Term.Name*))
                         distinct
-            }
-    //|> Seq.iter (fun term -> dict.Add(term,""))
+          }
+    |> Seq.iter (fun termID -> dict.Add(termID,""))
+    dict
 
-    //dict
+let findAllSearchDatabaseTerms (dbContext:MzQuantML) (id:string) (dict:System.Collections.Generic.Dictionary<string,string>) =    
+
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.SearchDatabase.Details :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:SearchDatabaseParam) -> item.Term)
+                            .Where(fun x -> x.ID=id)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do                    
+                    for cv in prot.SearchDatabase.Details do 
+                        select (cv.Term.ID(*,cv.Term.Name*))
+                        distinct
+          }
+    |> Seq.iter (fun termID -> dict.Add(termID,""))
+    dict
+
+let findAllDBSequenceTerms (dbContext:MzIdentML) (id:string) (dict:System.Collections.Generic.Dictionary<string,string>) =    
+
+    query {
+           for mzIdent in dbContext.MzIdentMLDocument
+                            .Include(fun item -> item.DBSequences :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:DBSequence) -> item.Details :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:DBSequenceParam) -> item.Term)
+                            .Where(fun x -> x.ID=id)
+                            .ToList()
+                            do
+                for dbSeq in mzIdent.DBSequences do  
+                    for cv in dbSeq.Details do  
+                    select (cv.Term.ID(*,cv.Term.Name*))
+                    distinct
+          }
+    |> Seq.iter (fun termID -> dict.Add(termID,""))
+    dict
 
 let testFindAllProteinTerms =
     findAllProteinTerms sqliteMzQuantMLContext "Test1" (Dictionary())
-    |> Seq.toArray
     
-let test = testFindAllProteinTerms
+let testFindAllSearchDBTerms =
+    findAllSearchDatabaseTerms sqliteMzQuantMLContext "Test1" testFindAllProteinTerms
+
+let testFindAllDBSeqTerms =
+    findAllDBSequenceTerms sqliteMzIdentMLContext "Test1" testFindAllSearchDBTerms
+
+//let standardCSVPath = fileDir + "\Databases\TSVTest1.csv"
+
+//let test =
+//    testFindAllDBSeqTerms
+//    |> Seq.toCSV "\t" true
+//    |> Seq.write standardCSVPath
+
+let listOfColumnNames =
+    [
+     "accession", "MS:1000885"
+     "description", "MS:1001088"
+     "taxid", "MS:1001467"
+     "species", "MS:1001469"
+     "database", "MS:1001013"
+     "database_version", "MS:1001016"
+     "search_engine", "MS:1002337"
+     "best_search_engine_score[1]", "User:0000079"
+     "search_engine_score[1-n]_ms_run[1]", "MS:1002338"
+     //"reliability", ""
+     //"num_psms_ms_run[1-n]", ""
+     "num_peptides_distinct_ms_run[1]", "MS:1001097"
+     "num_peptides_unique_ms_run[1]", "MS:1001897"
+     "ambiguity_members", "PRIDE:0000418"
+     "modifications", "MS:1000933"
+     //"uri", ""
+     "go_terms", "MS:1000934"
+     "protein_coverage", "MS:1001093"
+     //"protein_abundance_assay[1-n]", ""
+     //"protein_abundance_study_variable[1-n]", ""
+     //"protein_abundance_stdev_study_variable[1-n]", ""
+     //"protein_abundance_std_error_study_variable [1-n]", ""
+     "opt_{identifier}_*", ""
+    ]
+
+let createDictionaryofColumNames (collectionOfCollumnNames:seq<string*string>) =
+    let startDictionary = Dictionary()
+    collectionOfCollumnNames
+    |> Seq.iter (fun (columnName, termID) -> startDictionary.Add(termID, columnName)) |> ignore
+    startDictionary
+
+type TryTest =
+    | Accession of string
+    | Description
+        static member toName (item:TryTest) =
+            match item with
+            | Accession s -> s
+            | Description -> "TestI"
+
+let Accession = TryTest.Accession "Test"
+let y = TryTest.Accession "TestII"
+TryTest.Accession "Test"
+TryTest.toName Description
+TryTest.toName y
+TryTest.toName Accession
+let x = testFindAllDBSeqTerms.Keys
+
+
+let dictionaryOfColumnAndIDs = createDictionaryofColumNames listOfColumnNames
+
+let testMatch =
+    dictionaryOfColumnAndIDs.Values
+    |> Seq.map (fun item -> testFindAllDBSeqTerms.Item item)
+
+let completeDictionary (collectionOfColumnNames:Dictionary<string, string>) (collectionOfTerms:Dictionary<string, string>) =
+    let tmp1 = Dictionary()
+    let tmp2 = Dictionary()
+    collectionOfTerms.Keys
+    |> Seq.iter (fun item ->
+        try
+            tmp1.Add(collectionOfColumnNames.Item item, item)
+        with
+            :? System.Collections.Generic.KeyNotFoundException ->
+            tmp2.Add("opt_{identifier}_" + (tmp2.Count.ToString()), item)
+                )
+    tmp2 
+    |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
+    tmp1
+
+let finalTest =
+    completeDictionary dictionaryOfColumnAndIDs testFindAllDBSeqTerms
+
+let tmp = new Dictionary<string,string>(finalTest)
+let test = tmp.Item "description" <- "Test"
+tmp
+finalTest

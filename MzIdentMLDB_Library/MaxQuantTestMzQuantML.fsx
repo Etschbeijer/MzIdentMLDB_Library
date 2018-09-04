@@ -598,6 +598,7 @@ let user79 =
 
 type TermSymbol =
     | Accession of string
+
     //Else
     | RawFile
     ///Length of sequence (MaxQuant).
@@ -687,6 +688,8 @@ type TermSymbol =
     | UniqueProtein
     ///Modifications of the Protein.
     | ProteinModifications
+    ///Other members of the protein-ambiguity-group
+    | ProteinAmbiguityGroupMembers
 
     //Peptides
     ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -1189,6 +1192,7 @@ type TermSymbol =
         | BestAndromedaScore -> "User:0000079"
         | DataBaseName -> "MS:1001013"
         | ProteinModifications -> "MS:1000933"
+        | ProteinAmbiguityGroupMembers -> "PRIDE:0000418"
 
 
 let mzQuantMLDocument =
@@ -1487,6 +1491,9 @@ let proteinParams1 =
             (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinModifications)).Value
                             )
     |> ProteinParamHandler.addValue "Methionine oxidation";
+    ProteinParamHandler.init(
+            (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinAmbiguityGroupMembers)).Value
+                            );
     ]
 
 let proteinParams2 =
