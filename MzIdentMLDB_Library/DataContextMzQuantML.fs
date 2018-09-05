@@ -608,7 +608,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A software package used in the analysis.
-    and [<AllowNullLiteral>] [<Table("Software")>]
+    type [<AllowNullLiteral>] [<Table("Software")>]
         AnalysisSoftware (id:string, version:string, details:List<AnalysisSoftwareParam>, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'         = id
@@ -626,7 +626,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A file from which this MzQuantML instance was created, including potentially MzQuantML files for earlier stages in a workflow.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormat:CVParam, rowVersion:Nullable<DateTime>) =
             let mutable id'                          = id
             let mutable name'                        = name
@@ -645,7 +645,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Organizations are entities like companies, universities, government agencies.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Organization (id:string, name:string, details:List<OrganizationParam>, parent:string, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable name'       = name
@@ -665,7 +665,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A person's name and contact details.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Person (id:string, name:string, firstName:string, midInitials:string, 
                 lastName:string, organizations:List<Organization>, 
                 details:List<PersonParam>, mzQuantML:MzQuantMLDocument,
@@ -694,7 +694,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The software used for performing the analyses.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ContactRole (id:string, person:Person, role:CVParam, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable person'     = person
@@ -709,7 +709,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The provider of the document in terms of the Contact and the software the produced the document instance. 
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, 
                   contactRole:ContactRole, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
                  ) =
@@ -730,7 +730,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database used for searching mass spectra. Examples include a set of amino acid sequence entries, or annotated spectra libraries.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         SearchDatabase (id:string, name:string, location:string, numDatabaseEntries:Nullable<int>, releaseDate:Nullable<DateTime>, 
                         version:string, externalFormatDocumentation:string, fileFormat:CVParam, databaseName:CVParam,
                         details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>
@@ -762,7 +762,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A single identification file associated with this analysis.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         IdentificationFile (id:string, name:string, location:string, searchDatabase:SearchDatabase,
                             externalFormatDocumentation:string, fileFormat:CVParam,
                             details:List<IdentificationFileParam>, rowVersion:Nullable<DateTime>
@@ -793,7 +793,7 @@ module DataModel =
     ///2: Reference for the identification evidence for peptides from the referenced external file and 
     ///unique identifier e.g. a link to an mzIdentML file and ID for the ProteinDetectionHypothesis.
 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         IdentificationRef (id:string, fkIdentificationFile:string, identificationFile:IdentificationFile,
                            rowVersion:Nullable<DateTime>
                           ) =
@@ -814,7 +814,7 @@ module DataModel =
     ///and unique identifier e.g. a link to an mzIdentML file and ID for the ProteinAmbiguityGroup.
     ///2: Reference for the identification evidence for peptides from the referenced external file 
     ///and unique identifier e.g. a link to an mzIdentML file and ID for the ProteinDetectionHypothesis.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MethodFile (id:string, name:string, location:string, externalFormatDocumentation:string, 
                     fileFormat:CVParam, rowVersion:Nullable<DateTime>
                    ) =
@@ -838,7 +838,7 @@ module DataModel =
     ///The same raw file can be referenced in multiple assays, for example if it contains multiple samples differentially labelled or tagged. 
     ///Note, the name raw file does not necessarily imply that the file has not been processed, since in some quant methods, 
     ///processed peak list formats such as MGF or DTA can be used, which could be referenced here.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         RawFile (id:string, name:string, location:string, methodFile:MethodFile, externalFormatDocumentation:string, 
                  fileFormat:CVParam, details:List<RawFileParam>, rowVersion:Nullable<DateTime>
                 ) =
@@ -865,7 +865,7 @@ module DataModel =
     ///The raw file or collection of raw files that together form one unit of analysis. 
     ///This is mandatory unless raw files were not used for quantitation e.g. spectral counting. 
     ///Multiple raw files should only be provided within a group if they have been used for sample pre-fractionation which are later summed together.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         RawFilesGroup (id:string, rawFiles:List<RawFile>, details:List<RawFilesGroupParam> ,rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable rawFiles'   = rawFiles
@@ -880,7 +880,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A single methods file associated with this analysis e.g. a TraML file used for SRM analysis.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         InputFiles (id:string, rawFilesGroups:List<RawFilesGroup>, methodFiles:List<MethodFile>,
                     identificationFiles:List<IdentificationFile>, searchDatabases:List<SearchDatabase>,
                     sourceFiles:List<SourceFile>, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
@@ -906,7 +906,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The modification searched for or used to define the label or tag for quantification.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Modification (id:string, massDelta:Nullable<float>, residues:string, detail:CVParam, 
                       rowVersion:Nullable<DateTime>
                      ) =
@@ -942,7 +942,7 @@ module DataModel =
 
     ///Describes a single analysis of a sample (e.g. with the channel mapping in iTRAQ), 
     ///which could constitute multiple raw files e.g. if pre-separation steps have occurred. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Assay (id:string, name:string, rawFilesGroup:RawFilesGroup, label:List<Modification>,
                identificationFile:IdentificationFile, details:List<AssayParam>, 
                mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
@@ -968,7 +968,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A logical grouping of assays into conditions or user-defined study variables such as wild-and versus disease or time points in a time course.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         StudyVariable (id:string, name:string, assays:List<Assay>, details:List<StudyVariableParam>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable name'       = name
@@ -988,7 +988,7 @@ module DataModel =
     ///It is expected that the numerator and denominator MUST both be Assays or MUST both be StudyVariables. 
     ///However, StudyVariables MAY contain 1 to many Assays, thus allowing more complex ratios to be constructed 
     ///if needed via use of StudyVariables with unbalanced numbers of Assays.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Ratio (id:string, name:string, denominatorSV:StudyVariable, numeratorSV:StudyVariable, 
                denominatorAS:Assay, numeratorAS:Assay, 
                ratioCalculation:List<RatioCalculationParam>, numeratorDataType:CVParam, 
@@ -1037,7 +1037,7 @@ module DataModel =
     //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The datatype and index position of one column of data in the DataMatrix.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Column (id:string, index:Nullable<int>, dataType:CVParam, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable index'      = index
@@ -1067,7 +1067,7 @@ module DataModel =
     //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A matrix of data stored in rows and columns, as defined in the parent QuantLayer.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         DataMatrix (id:string, row:string, rowVersion:Nullable<DateTime>
                         ) =
             let mutable id'         = id
@@ -1125,7 +1125,7 @@ module DataModel =
 
     ///Quant layer for reporting data values about MS2 features (e.g. iTRAQ) 
     ///related to different assays i.e. the column index MUST refer to Assays defined in the file.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MS2AssayQuantLayer (id:string, dataType:CVParam, columnIndex:string, dataMatrix:DataMatrix,
                             rowVersion:Nullable<DateTime>
                            ) =
@@ -1171,7 +1171,7 @@ module DataModel =
     ///3: Quant layer for reporting data values about peptides related to different ratios i.e. the column index MUST refer to Ratio elements defined in the file. 
     ///4: Quant layer for reporting data values about small molecules related to different ratios i.e. the column index MUST refer to Ratio elements defined in the file.
 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         RatioQuantLayer (id:string, columnIndex:string, dataMatrix:DataMatrix, rowVersion:Nullable<DateTime>
                         ) =
             let mutable id'          = id
@@ -1187,7 +1187,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Description of one step within the data processing pipeline.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ProcessingMethod (id:string, order:Nullable<int>, details:List<ProcessingMethodParam>, 
                           rowVersion:Nullable<DateTime>
                          ) =
@@ -1205,7 +1205,7 @@ module DataModel =
 
     ///Description of the way in which a particular software package was used to analyse data and 
     ///for example produce different quant layers or lists in the file. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         DataProcessing (id:string, order:Nullable<int>, analysisSoftware:AnalysisSoftware, 
                         inputObjects:string, outputObjects:string, processingMethods:List<ProcessingMethod>,
                         mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
@@ -1231,7 +1231,7 @@ module DataModel =
             member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///External database references for the small molecule identification.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         DBIdentificationRef (id:string, fkExternalFile:string, searchDatabase:SearchDatabase, rowVersion:Nullable<DateTime>
                             ) =
             let mutable id'             = id
@@ -1250,7 +1250,7 @@ module DataModel =
     ///retention time, mass over charge and optionally a mass trace. Quantitative values about features 
     ///can be added in the associated QuantLayers. For techniques that analyse data from single 
     ///scans e.g. MS2 tagging approaches, a Feature corresponds with the mz of the parent ions only.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Feature (id:string, charge:Nullable<int>, fkChromatogram:string, mz:Nullable<float>, rawFile:RawFile, 
                  retentionTime:Nullable<float>, fkSpectrum:string, massTraces:List<MassTraceParam>,
                  details:List<FeatureParam>, rowVersion:Nullable<DateTime>
@@ -1281,7 +1281,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An element to represent a unique identifier of a small molecule for which quantitative values are reported.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SmallMolecule (id:string, modifications:List<Modification>, dbIdentificationRefs:List<DBIdentificationRef>, features:List<Feature>, 
                        details:List<SmallMoleculeParam>, rowVersion:Nullable<DateTime>
                       ) =
@@ -1303,7 +1303,7 @@ module DataModel =
 
     ///TThe list of all individual proteins (i.e. ungrouped) for which quantitation values are being reported. 
     ///If quantitation is done on protein groups, the constituent proteins should be listed here with no QuantLayers.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SmallMoleculeList (id:string, smallMolecules:List<SmallMolecule>, globalQuantLayers:List<GlobalQuantLayer>,
                            assayQuantLayers:List<AssayQuantLayer>, studyVariableQuantLayers:List<StudyVariableQuantLayer>, 
                            ratioQuantLayer:RatioQuantLayer, details:List<SmallMoleculeListParam>, 
@@ -1333,7 +1333,7 @@ module DataModel =
 
     ///All the data values about features in one raw file or raw file group, 
     ///such as feature raw intensity, feature RT window size etc. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         FeatureQuantLayer (id:string, columns:List<Column>, dataMatrix:DataMatrix, rowVersion:Nullable<DateTime>) =
             let mutable id'           = id
             //Former column name was ColumnDefinition.
@@ -1351,7 +1351,7 @@ module DataModel =
 
     ///Quant layer for reporting data values about MS2 features (e.g. iTRAQ) 
     ///related to different ratios i.e. the column index MUST refer to Ratio elements defined in the file. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MS2RatioQuantLayer (id:string, dataType:CVParam, columnIndex:string, dataMatrix:DataMatrix,
                             rowVersion:Nullable<DateTime>
                            ) =
@@ -1372,7 +1372,7 @@ module DataModel =
     ///Quant layer for reporting data values about MS2 features (e.g. iTRAQ) 
     ///related to different study variables i.e. the column index MUST refer to StudyVariables 
     ///defined in the file. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MS2StudyVariableQuantLayer (id:string, dataType:CVParam, columnIndex:string, 
                                     dataMatrix:DataMatrix, rowVersion:Nullable<DateTime>
                                    ) =
@@ -1394,7 +1394,7 @@ module DataModel =
     ///retention time, mass over charge and optionally a mass trace. Quantitative values about features 
     ///can be added in the associated QuantLayers. For techniques that analyse data from single 
     ///scans e.g. MS2 tagging approaches, a Feature corresponds with the mz of the parent ions only.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         FeatureList (id:string, rawFilesGroup:RawFilesGroup, features:List<Feature>, 
                      featureQuantLayers:List<FeatureQuantLayer>, 
                      ms2AssayQuantLayers:List<MS2AssayQuantLayer>, 
@@ -1429,7 +1429,7 @@ module DataModel =
 
     ///Evidence associated with the PeptideConsensus, including mandatory associations to features and 
     ///optional references to identifications that have been assigned to the feature.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         EvidenceRef (id:string, assays:List<Assay>, feature:Feature, fkExternalFileRef:string, 
                      identificationFile:IdentificationFile, rowVersion:Nullable<DateTime>
                     ) =
@@ -1455,7 +1455,7 @@ module DataModel =
     ///same peptide sequence, for example capturing different charge states or different modifications, 
     ///if they are differentially quantified. If peptides with different charge states are aggregated, 
     ///they should be represented by a single PeptideConsensus element.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         PeptideConsensus (id:string, charge:Nullable<int>, searchDatabase:SearchDatabase, 
                           dataMatrix:DataMatrix, peptideSequence:string, modifications:List<Modification>,
                           evidenceRefs:List<EvidenceRef>, details:List<PeptideConsensusParam>,
@@ -1485,7 +1485,7 @@ module DataModel =
 
     ///One protein that has been quantified in the file, including references to peptides 
     ///on which the quantification is based. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Protein (id:string, accession:string, searchDatabase:SearchDatabase, identificationRefs:List<IdentificationRef>, 
                  peptideConsensi:List<PeptideConsensus>, details:List<ProteinParam>, rowVersion:Nullable<DateTime>
                 ) =
@@ -1509,7 +1509,7 @@ module DataModel =
 
     ///TThe list of all individual proteins (i.e. ungrouped) for which quantitation values are being reported. 
     ///If quantitation is done on protein groups, the constituent proteins should be listed here with no QuantLayers.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ProteinList (id:string, proteins:List<Protein>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
                      studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
                      details:List<ProteinListParam>, (*mzQuantML:MzQuantMLDocument,*) rowVersion:Nullable<DateTime>
@@ -1539,7 +1539,7 @@ module DataModel =
     ///A reference to one of the Proteins contained within this group, 
     ///along with CV terms describing the role it plays within the group, 
     ///such as representative or anchor protein, same set or sub-set.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ProteinRef (id:string, protein:Protein, details:List<ProteinRefParam>, rowVersion:Nullable<DateTime>
                    ) =
             let mutable id'         = id
@@ -1556,7 +1556,7 @@ module DataModel =
 
     ///A grouping of quantified proteins based on ambiguous assignment of peptide evidence to protein identification. 
     ///The semantics of elements within the group, such as a leading protein or those sharing equal evidence can be reported using cvParams.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ProteinGroup (id:string, searchDatabase:SearchDatabase, identificationRefs:List<IdentificationRef>, 
                       proteinRefs:List<ProteinRef>, details:List<ProteinGroupParam>, rowVersion:Nullable<DateTime>
                      ) =
@@ -1578,7 +1578,7 @@ module DataModel =
     
     ///The list of all groups of proteins with conflicting evidence for which quantitation values are being reported 
     ///along with quantitative values about those protein groups.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ProteinGroupList (id:string, proteinGroups:List<ProteinGroup>, globalQuantLayers:List<GlobalQuantLayer>,assayQuantLayers:List<AssayQuantLayer>, 
                           studyVariableQuantLayers:List<StudyVariableQuantLayer>, ratioQuantLayer:RatioQuantLayer,
                           details:List<ProteinGroupListParam>, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
@@ -1606,7 +1606,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The list of all peptides for which quantitation values are reported. 
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         PeptideConsensusList (id:string, finalResult:Nullable<bool>, peptideConsensi:List<PeptideConsensus>, 
                               globalQuantLayers:List<GlobalQuantLayer>, assayQuantLayers:List<AssayQuantLayer>, 
                               studyVariableQuantLayers:List<StudyVariableQuantLayer>, 
@@ -1638,7 +1638,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Any bibliographic references associated with the file.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                 issue:string, pages:string, publication:string, publisher:string, title:string,
                                 volume:string, year:Nullable<int>, mzQuantML:MzQuantMLDocument, rowVersion:Nullable<DateTime>
@@ -1676,15 +1676,27 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
     ///Root element of the instance document. 
-    and [<AllowNullLiteral>]
-        MzQuantMLDocument (id:string, name:string, creationDate:Nullable<DateTime>, version:string, 
-                           provider:List<Provider>, persons:List<Person>, organizations:List<Organization>, 
-                           analysisSummaries:List<AnalysisSummary>, inputFiles:List<InputFiles>, 
-                           analysisSoftwares:List<AnalysisSoftware>, dataProcessings:List<DataProcessing>, 
-                           assays:List<Assay>, biblioGraphicReferences:List<BiblioGraphicReference>, 
-                           studyVariables:List<StudyVariable>, ratios:List<Ratio>, proteinGroupList:List<ProteinGroupList>, 
-                           proteinList:ProteinList, peptideConsensusList:List<PeptideConsensusList>, 
-                           smallMoleculeList:List<SmallMoleculeList>, featureList:List<FeatureList>, 
+    type [<AllowNullLiteral>]
+        MzQuantMLDocument (id:string, 
+                           name:string, 
+                           creationDate:Nullable<DateTime>, 
+                           version:string, 
+                           provider:List<Provider>, 
+                           persons:List<Person>,
+                           organizations:List<Organization>, 
+                           analysisSummaries:List<AnalysisSummary>, 
+                           inputFiles:List<InputFiles>, 
+                           analysisSoftwares:List<AnalysisSoftware>, 
+                           dataProcessings:List<DataProcessing>, 
+                           assays:List<Assay>, 
+                           biblioGraphicReferences:List<BiblioGraphicReference>, 
+                           studyVariables:List<StudyVariable>, 
+                           ratios:List<Ratio>, 
+                           proteinGroupList:List<ProteinGroupList>, 
+                           proteinList:ProteinList, 
+                           peptideConsensusList:List<PeptideConsensusList>, 
+                           smallMoleculeList:List<SmallMoleculeList>, 
+                           featureList:List<FeatureList>, 
                            rowVersion:Nullable<DateTime>
                           ) =
             let mutable id'                      = id

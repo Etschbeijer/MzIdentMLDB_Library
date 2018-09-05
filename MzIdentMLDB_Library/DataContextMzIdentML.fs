@@ -33,7 +33,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("OrganizationParams")>]
+    type [<AllowNullLiteral>] [<Table("OrganizationParams")>]
         OrganizationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -58,7 +58,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("PersonParams")>]
+    type [<AllowNullLiteral>] [<Table("PersonParams")>]
         PersonParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -83,7 +83,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SampleParams")>]
+    type [<AllowNullLiteral>] [<Table("SampleParams")>]
         SampleParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -108,7 +108,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ModificationParams")>]
+    type [<AllowNullLiteral>] [<Table("ModificationParams")>]
         ModificationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -133,7 +133,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("PeptideParams")>]
+    type [<AllowNullLiteral>] [<Table("PeptideParams")>]
         PeptideParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -158,7 +158,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
+    type [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
         TranslationTableParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -183,7 +183,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("MeasureParams")>]
+    type [<AllowNullLiteral>] [<Table("MeasureParams")>]
         MeasureParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -208,7 +208,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
+    type [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
         AmbiguousResidueParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -233,7 +233,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("MassTableParams")>]
+    type [<AllowNullLiteral>] [<Table("MassTableParams")>]
         MassTableParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -258,7 +258,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("IonTypeParams")>]
+    type [<AllowNullLiteral>] [<Table("IonTypeParams")>]
         IonTypeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -283,7 +283,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
+    type [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
         SpecificityRuleParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -308,7 +308,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
+    type [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
         SearchModificationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -333,7 +333,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
+    type [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
         EnzymeNameParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -358,7 +358,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("IncludeParams")>]
+    type [<AllowNullLiteral>] [<Table("IncludeParams")>]
         IncludeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -383,7 +383,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ExcludeParams")>]
+    type [<AllowNullLiteral>] [<Table("ExcludeParams")>]
         ExcludeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -408,7 +408,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
+    type [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
         AdditionalSearchParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -433,7 +433,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
+    type [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
         FragmentToleranceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -458,7 +458,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
+    type [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
         ParentToleranceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -483,7 +483,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ThresholdParams")>]
+    type [<AllowNullLiteral>] [<Table("ThresholdParams")>]
         ThresholdParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -508,7 +508,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
+    type [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
         SearchDatabaseParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -533,7 +533,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
+    type [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
         DBSequenceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -558,7 +558,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
+    type [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
         PeptideEvidenceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -583,7 +583,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
+    type [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
         SpectrumIdentificationItemParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -608,7 +608,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
+    type [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
         SpectrumIdentificationResultParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -633,7 +633,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
+    type [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
         SpectrumIdentificationListParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -683,7 +683,7 @@ module DataModel =
     //            member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("AnalysisParams")>]
+    type [<AllowNullLiteral>] [<Table("AnalysisParams")>]
         AnalysisParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -708,7 +708,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("SourceFileParams")>]
+    type [<AllowNullLiteral>] [<Table("SourceFileParams")>]
         SourceFileParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -733,7 +733,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
+    type [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
         ProteinDetectionHypothesisParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -758,7 +758,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
+    type [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
         ProteinAmbiguityGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -783,7 +783,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    and [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
+    type [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
         ProteinDetectionListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
             //inherit CVParam(null, null, null, null, Nullable())
             let mutable id'         = id
@@ -814,16 +814,16 @@ module DataModel =
 
 
     ///Organizations are entities like companies, universities, government agencies.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Organization (id:string, name:string, parent:string,
-                      details:List<OrganizationParam>, mzIdentMLDocument:MzIdentMLDocument,  
+                      details:List<OrganizationParam>, mzIdentMLDocumentID:string,  
                       rowVersion:Nullable<DateTime>
                      ) =
             let mutable id'                = id
             let mutable name'              = name 
             let mutable parent'            = parent
             let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = Organization(null, null, null, null, null, Nullable())
@@ -832,16 +832,16 @@ module DataModel =
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Parent with get() = parent' and set(value) = parent' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A person's name and contact details.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Person (id:string, name:string, firstName:string, midInitials:string, 
                 lastName:string, organizations:List<Organization>, 
-                details:List<PersonParam>, mzIdentMLDocument:MzIdentMLDocument,
+                details:List<PersonParam>, mzIdentMLDocumentID:string,
                 rowVersion:Nullable<DateTime>
-                ) =
+               ) =
             let mutable id'                = id
             let mutable name'              = name
             let mutable firstName'         = firstName
@@ -849,7 +849,7 @@ module DataModel =
             let mutable lastName'          = lastName
             let mutable organizations'     = organizations
             let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = Person(null, null, null, null, null, null, null, null, Nullable())
@@ -861,11 +861,11 @@ module DataModel =
             member this.LastName with get() = lastName' and set(value) = lastName' <- value
             member this.Organizations with get() = organizations' and set(value) = organizations' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The software used for performing the analyses.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         ContactRole (id:string, person:Person, role:CVParam, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable person'     = person
@@ -880,9 +880,9 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The software used for performing the analyses.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, contactRole:ContactRole, 
-                          softwareName:CVParam, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                          softwareName:CVParam, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'                = id
             let mutable name'              = name
@@ -891,7 +891,7 @@ module DataModel =
             let mutable customization'     = customizations
             let mutable contactRole'       = contactRole
             let mutable softwareName'      = softwareName
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = AnalysisSoftware(null, null, null, null, null, null, null, null, Nullable())
@@ -903,33 +903,33 @@ module DataModel =
             member this.Customizations with get() = customization' and set(value) = customization' <- value
             member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
             member this.SoftwareName with get() = softwareName' and set(value) = softwareName' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///References to the individual component samples within a mixed parent sample.
-    and [<AllowNullLiteral>]
-        SubSample (id:string, sample:Sample, rowVersion:Nullable<DateTime>) =
+    type [<AllowNullLiteral>]
+        SubSample (id:string, sampleID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
-            let mutable sample'     = sample
+            let mutable sampleID'   = sampleID
             let mutable rowVersion' = rowVersion
 
             new() = SubSample(null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
-            member this.Sample with get() = sample' and set(value) = sample' <- value
+            member this.SampleID with get() = sampleID' and set(value) = sampleID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A description of the sample analysed by mass spectrometry using CVParams or UserParams.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Sample (id:string, name:string, contactRoles:List<ContactRole>, subSamples:List<SubSample>, 
-                details:List<SampleParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                details:List<SampleParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'                = id
             let mutable name'              = name
             let mutable contactRoles'      = contactRoles
             let mutable subSamples'        = subSamples
             let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = Sample(null, null, null, null, null, null, Nullable())
@@ -939,11 +939,11 @@ module DataModel =
             member this.ContactRoles with get() = contactRoles' and set(value) = contactRoles' <- value
             member this.SubSamples with get() = subSamples' and set(value) = subSamples' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A molecule modification specification.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Modification (id:string, residues:string, location:Nullable<int>, monoIsotopicMassDelta:Nullable<float>, 
                       avgMassDelta:Nullable<float>, details:List<ModificationParam>, rowVersion:Nullable<DateTime>
                      ) =
@@ -966,7 +966,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A modification where one residue is substituted by another (amino acid change).
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SubstitutionModification (id:string, originalResidue:string, replacementResidue:string, location:Nullable<int>, 
                                   monoIsotopicMassDelta:Nullable<float>, avgMassDelta:Nullable<float>, rowVersion:Nullable<DateTime>
                                  ) =
@@ -989,9 +989,9 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///One (poly)peptide (a sequence with modifications).
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, substitutionModifications:List<SubstitutionModification>, 
-                 details:List<PeptideParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                 details:List<PeptideParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                 ) =
             let mutable id'                        = id
             let mutable name'                      = name
@@ -999,7 +999,7 @@ module DataModel =
             let mutable modifications'             = modifications
             let mutable substitutionModifications' = substitutionModifications
             let mutable details'                   = details
-            let mutable mzIdentMLDocument'         = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID'         = mzIdentMLDocumentID
             let mutable rowVersion'                = rowVersion
 
             new() = Peptide(null, null, null, null, null, null, null, Nullable())
@@ -1010,11 +1010,11 @@ module DataModel =
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.SubstitutionModifications with get() = substitutionModifications' and set(value) = substitutionModifications' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         TranslationTable (id:string, name:string, details:List<TranslationTableParam>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable name'       = name
@@ -1029,7 +1029,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///References to CV terms defining the measures about product ions to be reported in SpectrumIdentificationItem.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Measure (id:string, name:string, details:List<MeasureParam>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable name'       = name
@@ -1044,7 +1044,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The specification of a single residue within the mass table.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Residue (id:string, code:string, mass:Nullable<float>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable code'       = code
@@ -1059,7 +1059,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Ambiguous residues e.g. X can be specified by the Code attribute and a set of parameters for example giving the different masses that will be used in the search.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         AmbiguousResidue (id:string, code:string, details:List<AmbiguousResidueParam>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable code'       = code
@@ -1074,7 +1074,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The masses of residues used in the search.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MassTable (id:string, name:string, msLevel:string, residues:List<Residue>, 
                    ambiguousResidues:List<AmbiguousResidue>, details:List<MassTableParam>, rowVersion:Nullable<DateTime>
                   ) =
@@ -1097,7 +1097,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The values of this particular measure, corresponding to the index defined in ion and.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Value (id:string, value:Nullable<float>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
@@ -1110,7 +1110,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An array of values for a given and of measure and for a particular ion and, in parallel to the index of ions identified.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         FragmentArray (id:string, measure:Measure, values:Nullable<float>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable measure'    = measure
@@ -1125,7 +1125,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The index of ions identified as integers, following standard notation for a-c, x-z e.g. if b3 b5 and b6 have been identified, the index would store "3 5 6".
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Index (id:string, index:Nullable<int>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable index'      = index
@@ -1138,7 +1138,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///IonType defines the index of fragmentation ions being reported, importing a CV term for the and of ion e.g. b ion. Example: if b3 b7 b8 and b10 have been identified, the index attribute will contain 3 7 8 10.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         IonType (id:string, index:List<Index>, fragmentArrays:List<FragmentArray>, 
                  details:List<IonTypeParam>, rowVersion:Nullable<DateTime>
                 ) =
@@ -1157,7 +1157,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A data set containing spectra data (consisting of one or more spectra).
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SpectraData (id:string, name:string, location:string, externalFormatDocumentation:string, 
                      fileFormat:CVParam, spectrumIDFormat:CVParam, rowVersion:Nullable<DateTime>
                     ) =
@@ -1194,7 +1194,7 @@ module DataModel =
     //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Specification of a search modification as parameter for a spectra search.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SearchModification (id:string, fixedMod:Nullable<bool>, massDelta:Nullable<float>, residues:string, specificityRules:List<SpecificityRuleParam>, 
                             searchModificationParams:List<SearchModificationParam>, rowVersion:Nullable<DateTime>
                            ) =
@@ -1217,7 +1217,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The details of an individual cleavage enzyme should be provided by giving a regular expression or a CV term if a "standard" enzyme cleavage has been performed.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Enzyme (id:string, name:string, cTermGain:string, nTermGain:string, minDistance:Nullable<int>, missedCleavages:Nullable<int>, 
                 semiSpecific:Nullable<bool>, siteRegexc:string, enzymeName:List<EnzymeNameParam>, rowVersion:Nullable<DateTime>
                ) =
@@ -1246,7 +1246,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Filters applied to the search database. The filter MUST include at least one of Include and Exclude.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Filter (id:string, filterType:CVParam, includes:List<IncludeParam>, excludes:List<ExcludeParam>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable filterType' = filterType
@@ -1263,7 +1263,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The frames in which the nucleic acid sequence has been translated as a space separated list.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         Frame (id:string, frame:Nullable<int>, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable frame'      = frame
@@ -1276,13 +1276,13 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The parameters and settings of a SpectrumIdentification analysis.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         SpectrumIdentificationProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, searchType:CVParam,
                                         additionalSearchParams:List<AdditionalSearchParam>, modificationParams:List<SearchModification>,
                                         enzymes:List<Enzyme>, independent_Enzymes:Nullable<bool>, massTables:List<MassTable>,
                                         fragmentTolerance:List<FragmentToleranceParam>, parentTolerance:List<ParentToleranceParam>,
                                         threshold:List<ThresholdParam>, databaseFilters:List<Filter>, frames:List<Frame>,
-                                        translationTables:List<TranslationTable>, mzIdentMLDocument:MzIdentMLDocument, 
+                                        translationTables:List<TranslationTable>, mzIdentMLDocumentID:string, 
                                         rowVersion:Nullable<DateTime>
                                        ) =
             let mutable id'                     = id
@@ -1306,7 +1306,7 @@ module DataModel =
             let mutable frames'                 = frames
             let mutable translationTables'      = translationTables
             //
-            let mutable mzIdentMLDocument'      = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID'    = mzIdentMLDocumentID
             let mutable rowVersion'             = rowVersion
 
             new() = SpectrumIdentificationProtocol(null, null, null, null, null, null, null, Nullable(), null, null, null, null, null, null, null, null, Nullable())
@@ -1326,11 +1326,11 @@ module DataModel =
             member this.DatabaseFilters with get() = databaseFilters' and set(value) = databaseFilters' <- value
             member this.Frames with get() = frames' and set(value) = frames' <- value
             member this.TranslationTables with get() = translationTables' and set(value) = translationTables' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value  
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value  
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database for searching mass spectra.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SearchDatabase (id:string, name:string, location:string, numDatabaseSequences:Nullable<int64>, numResidues:Nullable<int64>,
                         releaseDate:Nullable<DateTime>, version:string, externalFormatDocumentation:string, fileFormat:CVParam,
                         databaseName:CVParam, details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>
@@ -1364,9 +1364,9 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
-                    length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                    length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                    ) =
             let mutable id'                = id
             let mutable name'              = name
@@ -1375,7 +1375,7 @@ module DataModel =
             let mutable sequence'          = sequence
             let mutable length'            = length
             let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = DBSequence(null, null, null, null, null, Nullable(), null, null, Nullable())
@@ -1387,14 +1387,14 @@ module DataModel =
             member this.Sequence with get() = sequence' and set(value) = sequence' <- value
             member this.Length with get() = length' and set(value) = length' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///PeptideEvidence links a specific Peptide element to a specific position in a DBSequence.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         PeptideEvidence (id:string, name:string, dbSequence:DBSequence, peptide:Peptide, start:Nullable<int>, 
                          ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, translationTable:TranslationTable, 
-                         details:List<PeptideEvidenceParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                         details:List<PeptideEvidenceParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                         ) =
             let mutable id'                = id
             let mutable name'              = name
@@ -1414,7 +1414,7 @@ module DataModel =
             let mutable translationTable'  = translationTable
             //
             let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = PeptideEvidence(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), null, null, null, Nullable())
@@ -1431,11 +1431,11 @@ module DataModel =
             member this.IsDecoy with get() = isDecoy' and set(value) = isDecoy' <- value
             member this.TranslationTable with get() = translationTable' and set(value) = translationTable' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SpectrumIdentificationItem (id:string, name:string, sample:Sample, massTable:MassTable, 
                                     passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
                                     fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
@@ -1478,7 +1478,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///All identifications made from searching one spectrum.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
                                       spectrumIdentificationItem:List<SpectrumIdentificationItem>, details:List<SpectrumIdentificationResultParam>,
                                       rowVersion:Nullable<DateTime>
@@ -1502,7 +1502,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Represents the set of all search results from SpectrumIdentification.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SpectrumIdentificationList (id:string, name:string, numSequencesSearched:Nullable<int64>, fragmentationTables:List<Measure>,
                                     spectrumIdentificationResult:List<SpectrumIdentificationResult>, details:List<SpectrumIdentificationListParam>,
                                     rowVersion:Nullable<DateTime>
@@ -1526,10 +1526,10 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An Analysis which tries to identify peptides in input spectra, referencing the database searched, the input spectra, the output results and the protocol that is run.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         SpectrumIdentification (id:string, name:string, activityDate:Nullable<DateTime>, spectrumidentificationList:SpectrumIdentificationList,
                                 spectrumIdentificationProtocol:SpectrumIdentificationProtocol, spectraData:List<SpectraData>,
-                                searchDatabase:List<SearchDatabase>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                searchDatabase:List<SearchDatabase>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                                ) =
             let mutable id'                             = id
             let mutable name'                           = name
@@ -1542,7 +1542,7 @@ module DataModel =
             //SearchDatabase_Ref
             let mutable searchDatabase'                 = searchDatabase
             //
-            let mutable mzIdentMLDocument'              = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID'            = mzIdentMLDocumentID
             let mutable rowVersion'                     = rowVersion
 
             new() = SpectrumIdentification(null, null, Nullable(), null, null, null, null, null, Nullable())
@@ -1554,20 +1554,20 @@ module DataModel =
             member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
             member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The parameters and settings of a SpectrumIdentification analysis.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
-                                  threshold:List<ThresholdParam>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                  threshold:List<ThresholdParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                                  ) =
             let mutable id'                = id
             let mutable name'              = name
             let mutable analysisSoftware'  = analysisSoftware
             let mutable analysisParams'    = analysisParams
             let mutable threshold'         = threshold
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
             let mutable rowVersion'        = rowVersion
 
             new() = ProteinDetectionProtocol(null, null, null, null, null, null, Nullable())
@@ -1577,11 +1577,11 @@ module DataModel =
             member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
             member this.AnalysisParams with get() = analysisParams' and set(value) = analysisParams' <- value
             member this.Threshold with get() = threshold' and set(value) = threshold' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A file from which this mzIdentML instance was created.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         SourceFile (id:string, name:string, location:string, externalFormatDocumentation:string, fileFormat:CVParam,
                     details:List<SourceFileParam>, rowVersion:Nullable<DateTime>
                    ) =
@@ -1604,28 +1604,26 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The inputs to the analyses including the databases searched, the spectral data and the source file converted to mzIdentML.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         Inputs (id:string, sourceFiles:List<SourceFile>, searchDatabases:List<SearchDatabase>,
-                spectraData:List<SpectraData>, mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                spectraData:List<SpectraData>, rowVersion:Nullable<DateTime>
                ) =
             let mutable id'                = id
             let mutable sourceFiles'       = sourceFiles
             let mutable searchDatabases'   = searchDatabases
             let mutable spectraData'       = spectraData
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
             let mutable rowVersion'        = rowVersion
 
-            new() = Inputs(null, null, null, null, null, Nullable())
+            new() = Inputs(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
             member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
             member this.SpectraData with get() = spectraData' and set(value) = spectraData' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, spectrumIdentificationItems:List<SpectrumIdentificationItem>,
                            rowVersion:Nullable<DateTime>
                           ) =
@@ -1642,21 +1640,20 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A single result of the ProteinDetection analysis (i.e. a protein).
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         ProteinDetectionHypothesis (id:string, name:string, passThreshold:Nullable<bool>, dbSequence:DBSequence,
                                     peptideHypothesis:List<PeptideHypothesis>, details:List<ProteinDetectionHypothesisParam>,
-                                    mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                    rowVersion:Nullable<DateTime>
                                    ) =
-            let mutable id'                = id
-            let mutable name'              = name
-            let mutable passThreshold'     = passThreshold
-            let mutable dbSequence'        = dbSequence
-            let mutable peptideHypothesis' = peptideHypothesis
-            let mutable details'           = details
-            let mutable mzIdentMLDocument' = mzIdentMLDocument
-            let mutable rowVersion'        = rowVersion
+            let mutable id'                  = id
+            let mutable name'                = name
+            let mutable passThreshold'       = passThreshold
+            let mutable dbSequence'          = dbSequence
+            let mutable peptideHypothesis'   = peptideHypothesis
+            let mutable details'             = details
+            let mutable rowVersion'          = rowVersion
 
-            new() = ProteinDetectionHypothesis(null, null, Nullable(), null, null, null, null, Nullable())
+            new() = ProteinDetectionHypothesis(null, null, Nullable(), null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1664,11 +1661,10 @@ module DataModel =
             member this.DBSequence with get() = dbSequence' and set(value) = dbSequence' <- value
             member this.PeptideHypothesis with get() = peptideHypothesis' and set(value) = peptideHypothesis' <- value
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A set of logically related results from a protein detection, for example to represent conflicting assignments of peptides to proteins.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         ProteinAmbiguityGroup (id:string, name:string, proteinDetecionHypothesis:List<ProteinDetectionHypothesis>,
                                details:List<ProteinAmbiguityGroupParam>, rowVersion:Nullable<DateTime>
                               ) =
@@ -1687,7 +1683,7 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The protein list resulting from a protein detection process.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         ProteinDetectionList (id:string, name:string, proteinAmbiguityGroups:List<ProteinAmbiguityGroup>,
                               details:List<ProteinDetectionListParam>, rowVersion:Nullable<DateTime>
                              ) =
@@ -1706,29 +1702,27 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Data sets generated by the analyses, including peptide and protein lists.
-    and [<AllowNullLiteral>] 
-        AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, proteinDetectionList:ProteinDetectionList, 
-                      mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+    type [<AllowNullLiteral>] 
+        AnalysisData (id:string, spectrumIdentificationList:List<SpectrumIdentificationList>, 
+                      proteinDetectionList:ProteinDetectionList, rowVersion:Nullable<DateTime>
                      ) =
             let mutable id'                         = id
             let mutable spectrumIdentificationList' = spectrumIdentificationList
             let mutable proteinDetectionList'       = proteinDetectionList
-            let mutable mzIdentMLDocument'          = mzIdentMLDocument
             let mutable rowVersion'                 = rowVersion
 
-            new() = AnalysisData(null, null, null, null, Nullable())
+            new() = AnalysisData(null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.SpectrumIdentificationList with get() = spectrumIdentificationList' and set(value) = spectrumIdentificationList' <- value
             member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An Analysis which assembles a set of peptides (e.g. from a spectra search analysis) to proteins. 
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         ProteinDetection (id:string, name:string, activityDate:Nullable<DateTime>, proteinDetectionList:ProteinDetectionList,
                           proteinDetectionProtocol:ProteinDetectionProtocol, spectrumIdentificationLists:List<SpectrumIdentificationList>,
-                          mzIdentMLDocument:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                          rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'                          = id
             let mutable name'                        = name
@@ -1736,10 +1730,9 @@ module DataModel =
             let mutable proteinDetectionList'        = proteinDetectionList
             let mutable proteinDetectionProtocol'    = proteinDetectionProtocol
             let mutable spectrumIdentificationLists' = spectrumIdentificationLists
-            let mutable mzIdentMLDocument'           = mzIdentMLDocument
             let mutable rowVersion'                  = rowVersion
 
-            new() = ProteinDetection(null, null, Nullable(), null, null, null, null, Nullable())
+            new() = ProteinDetection(null, null, Nullable(), null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1747,29 +1740,28 @@ module DataModel =
             member this.ProteinDetectionList with get() = proteinDetectionList' and set(value) = proteinDetectionList' <- value
             member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
             member this.SpectrumIdentificationLists with get() = spectrumIdentificationLists' and set(value) = spectrumIdentificationLists' <- value
-            member this.MzIdentMLDocument with get() = mzIdentMLDocument' and set(value) = mzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Any bibliographic references associated with the file.
-    and [<AllowNullLiteral>] 
+    type [<AllowNullLiteral>] 
         BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
                                 issue:string, pages:string, publication:string, publisher:string, title:string,
-                                volume:string, year:Nullable<int>, mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+                                volume:string, year:Nullable<int>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                                ) =
-            let mutable id'          = id
-            let mutable name'        = name
-            let mutable authors'     = authors
-            let mutable doi'         = doi
-            let mutable editor'      = editor
-            let mutable issue'       = issue
-            let mutable pages'       = pages
-            let mutable publication' = publication
-            let mutable publisher'   = publisher
-            let mutable title'       = title
-            let mutable volume'      = volume
-            let mutable year'        = year
-            let mutable mzIdentML'   = mzIdentML
-            let mutable rowVersion'  = rowVersion
+            let mutable id'                  = id
+            let mutable name'                = name
+            let mutable authors'             = authors
+            let mutable doi'                = doi
+            let mutable editor'              = editor
+            let mutable issue'               = issue
+            let mutable pages'               = pages
+            let mutable publication'         = publication
+            let mutable publisher'           = publisher
+            let mutable title'               = title
+            let mutable volume'              = volume
+            let mutable year'                = year
+            let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
+            let mutable rowVersion'          = rowVersion
 
             new() = BiblioGraphicReference(null, null, null, null, null, null, null, null, null, null, null, Nullable(), null, Nullable())
 
@@ -1785,38 +1777,35 @@ module DataModel =
             member this.Title with get() = title' and set(value) = title' <- value
             member this.Volume with get() = volume' and set(value) = volume' <- value
             member this.Year with get() = year' and set(value) = year' <- value
-            member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
+            member this.MzIdentMLDocumentID with get() = mzIdentMLDocumentID' and set(value) = mzIdentMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The Provider of the mzIdentML record in terms of the contact and software.
-    and [<AllowNullLiteral>] 
-        Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, 
-                  mzIdentML:MzIdentMLDocument, rowVersion:Nullable<DateTime>
+    type [<AllowNullLiteral>] 
+        Provider (id:string, name:string, analysisSoftware:AnalysisSoftware, contactRole:ContactRole, rowVersion:Nullable<DateTime>
                  ) =
             let mutable id'               = id
             let mutable name'             = name
             let mutable analysisSoftware' = analysisSoftware
             let mutable contactRole'      = contactRole
-            let mutable mzIdentML'        = mzIdentML
             let mutable rowVersion'       = rowVersion
 
-            new() = Provider(null, null, null, null, null, Nullable())
+            new() = Provider(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
             member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
-            member this.MzIdentMLDocument with get() = mzIdentML' and set(value) = mzIdentML' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
-    and [<AllowNullLiteral>]
+    type [<AllowNullLiteral>]
         MzIdentMLDocument(
                           id:string,
                           name:string, 
                           version:string,
                           analysisSoftwares:List<AnalysisSoftware>,
-                          provider:List<Provider>,
+                          provider:Provider,
                           persons:List<Person>, 
                           organizations:List<Organization>, 
                           samples:List<Sample>, 
@@ -1824,11 +1813,11 @@ module DataModel =
                           peptides:List<Peptide>,
                           peptideEvidences:List<PeptideEvidence>, 
                           spectrumIdentification:List<SpectrumIdentification>, 
-                          proteinDetection:List<ProteinDetection>, 
+                          proteinDetection:ProteinDetection, 
                           spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
-                          proteinDetectionProtocol:List<ProteinDetectionProtocol>,
-                          inputs:List<Inputs>,
-                          analysisData:List<AnalysisData>,
+                          proteinDetectionProtocol:ProteinDetectionProtocol,
+                          inputs:Inputs,
+                          analysisData:AnalysisData,
                           biblioGraphicReferences:List<BiblioGraphicReference>,
                           rowVersion:Nullable<DateTime>
                          ) =
@@ -1889,8 +1878,6 @@ module DataModel =
             member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
-
- 
 
     type MzIdentML =
      
