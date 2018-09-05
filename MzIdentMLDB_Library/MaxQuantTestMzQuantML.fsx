@@ -1572,12 +1572,9 @@ let proteinGroupParam =
 
 let terms =
     [|
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Dalton)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID KiloDalton)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID Ppm)).Value
-        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID ProteinScore)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID XICArea)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID NormalizedXICArea)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID TotalXIC)).Value
@@ -1592,6 +1589,9 @@ let terms =
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID DiscardUnmodifiedPeptide)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MinPepUnique)).Value
         (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MS1LabelBasedPeptideAnalysis)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID BIon)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID MaxQuant)).Value
+        (TermHandler.tryFindByID sqliteMzQuantMLContext (TermSymbol.toID XIon)).Value
     |]
 
 let createTestProteinParams  (dbContext:MzQuantML)=
@@ -1694,7 +1694,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 1000 then 
+    if n < 10000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert
