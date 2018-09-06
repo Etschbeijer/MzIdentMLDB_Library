@@ -224,7 +224,7 @@ let createDictionaryWithValuesAndColumnNames
         |> Seq.concat
         |> Array.ofSeq
 
-    let valuesAndTermIDs =
+    let dictionaryWithValues =
         CvParamsBase
         |> Array.iter (fun cvParam -> 
             tmp.Item cvParam.Term.ID <- convert4timesStringToSingleString("", cvParam.Term.ID, cvParam.Term.Name, cvParam.Value))
