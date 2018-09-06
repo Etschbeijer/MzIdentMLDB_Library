@@ -31,8 +31,6 @@ open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 open MzQuantMLDataBase.DataModel
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
-open TSVMzTabDataBase.DataModel
-open TSVMzTabDataBase.InsertStatements.ObjectHandlers
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open MzBasis.Basetypes
 
@@ -45,89 +43,6 @@ let testStringTimes4 = (testString, testString, testString, testString)
 let testStringCollection = [testString]
 let testStringTimes4Collection = [testStringTimes4]
 
-////////////////////////////////////////////////////
-//New Test//////////
-////////////////////////////////////////////////////
-
-let createProteinSection
-    accession description taxid species database databaseVersion searchEngines bestSearchEngineScore
-    searchEngineScoresMSRuns reliability numPSMsMSRuns numPeptidesDistinctMSRuns numPeptidesUniqueMSRuns
-    ambiguityMembers modifications uri goTerms proteinCoverage proteinAbundanceAssays proteinAbundanceStudyVariables
-    proteinAbundanceStandardDeviationStudyVariables proteinAbundanceStandardErrorStudyVariables 
-    optionalInformation
-    =
-    {
-     ProteinSection.Accession                                       = accession 
-     ProteinSection.Description                                     = description 
-     ProteinSection.Taxid                                           = taxid 
-     ProteinSection.Species                                         = species 
-     ProteinSection.Database                                        = database 
-     ProteinSection.DatabaseVersion                                 = databaseVersion 
-     ProteinSection.SearchEngines                                   = searchEngines 
-     ProteinSection.BestSearchEngineScore                           = bestSearchEngineScore
-     ProteinSection.SearchEngineScoresMSRuns                        = searchEngineScoresMSRuns 
-     ProteinSection.Reliability                                     = reliability 
-     ProteinSection.NumPSMsMSRuns                                   = numPSMsMSRuns 
-     ProteinSection.NumPeptidesDistinctMSRuns                       = numPeptidesDistinctMSRuns 
-     ProteinSection.NumPeptidesUniqueMSRuns                         = numPeptidesUniqueMSRuns
-     ProteinSection.AmbiguityMembers                                = ambiguityMembers 
-     ProteinSection.Modifications                                   = modifications 
-     ProteinSection.URI                                             = uri 
-     ProteinSection.GoTerms                                         = goTerms 
-     ProteinSection.ProteinCoverage                                 = proteinCoverage 
-     ProteinSection.ProteinAbundanceAssays                          = proteinAbundanceAssays 
-     ProteinSection.ProteinAbundanceStudyVariables                  = proteinAbundanceStudyVariables
-     ProteinSection.ProteinAbundanceStandardDeviationStudyVariables = proteinAbundanceStandardDeviationStudyVariables 
-     ProteinSection.ProteinAbundanceStandardErrorStudyVariables     = proteinAbundanceStandardErrorStudyVariables 
-     ProteinSection.OptionalInformations                            = optionalInformation
-    }
-
-type Converter =
-    {
-     ColumnName     : string
-     ColumnValue    : string
-     Optional       : bool
-    }
-
-let createConverter columnName columnValue optional =
-    {
-     Converter.ColumnName   = columnName
-     Converter.ColumnValue  = columnValue
-     Converter.Optional     = optional
-    }
-
-let createProteinSectionArray 
-    accession description taxid species database databaseVersion searchEngines bestSearchEngineScore
-    searchEngineScoresMSRuns reliability numPSMsMSRuns numPeptidesDistinctMSRuns numPeptidesUniqueMSRuns
-    ambiguityMembers modifications uri goTerms proteinCoverage proteinAbundanceAssays proteinAbundanceStudyVariables
-    proteinAbundanceStandardDeviationStudyVariables proteinAbundanceStandardErrorStudyVariables 
-    optionalInformation
-    =
-    [|
-      createConverter "accession"                                       accession                                       true;
-      createConverter "description"                                     description                                     true;
-      createConverter "taxid"                                           taxid                                           true;
-      createConverter "species"                                         species                                         true;
-      createConverter "database"                                        database                                        true;
-      createConverter "database_version"                                databaseVersion                                 true;
-      createConverter "search_engine"                                   searchEngines                                   true;
-      createConverter "best_search_engine_score[1-n]"                   bestSearchEngineScore                           true;
-      createConverter "search_engine_score[1-n]_ms_run[1-n]"            searchEngineScoresMSRuns                        false;
-      createConverter "reliability"                                     reliability                                     false;
-      createConverter "num_psms_ms_run[1-n]"                            numPSMsMSRuns                                   false;
-      createConverter "num_peptides_distinct_ms_run[1-n]"               numPeptidesDistinctMSRuns                       false;
-      createConverter "num_peptides_unique_ms_run[1-n]"                 numPeptidesUniqueMSRuns                         false;
-      createConverter "ambiguity_members"                               ambiguityMembers                                true;
-      createConverter "modifications"                                   modifications                                   true;
-      createConverter "uri"                                             uri                                             false;
-      createConverter "go_terms"                                        goTerms                                         false;
-      createConverter "protein_coverage"                                proteinCoverage                                 false;
-      createConverter "protein_abundance_assay[1-n]"                    proteinAbundanceAssays                          false;
-      createConverter "protein_abundance_study_variable[1-n]"           proteinAbundanceStudyVariables                  false;
-      createConverter "protein_abundance_stdev_study_variable[1-n]"     proteinAbundanceStandardDeviationStudyVariables false;
-      createConverter "protein_abundance_std_error_study_variable[1-n]" proteinAbundanceStandardErrorStudyVariables     false;
-      createConverter "opt_{identifier}_*"                              optionalInformation                             false;
-    |]
 
 let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 
@@ -144,15 +59,7 @@ sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled = false
 
 let convert4timesStringToSingleString (item:string*string*string*string) =
                 let a,b,c,d = item
-                sprintf "%s| %s| %s| %s|" a b c d
-                //let tmp =
-                //    (fun (a,b,c,d) -> a + "| " + b + "| "+ c + "| " + d + "| ") item
-                //tmp
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                sprintf "| %s | %s | %s | %s |" a b c d
 
 
 #time
