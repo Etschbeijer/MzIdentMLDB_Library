@@ -6,17 +6,19 @@ open System.Collections.Generic
 module Basetypes =
 
     type [<AllowNullLiteral>]
-        Term (id:string, name:string, ontology:Ontology, rowVersion:Nullable<DateTime>) =
+        Term (id:string, name:string, ontology:Ontology, ontologyID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable name'       = name
             let mutable ontology'   = ontology
+            let mutable ontologyID' = ontologyID
             let mutable rowVersion' = rowVersion
 
-            new() = Term(null, null, null, Nullable())
+            new() = Term(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Ontology with get() = ontology' and set(value) = ontology' <- value
+            member this.OntologyID with get() = ontologyID' and set(value) = ontologyID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
         
     ///Standarized vocabulary for MS-Database.

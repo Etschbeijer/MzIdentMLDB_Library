@@ -1929,6 +1929,25 @@ module DataModel =
             member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+    ///The complete set of Contacts (people and organisations) for this file.
+    type [<AllowNullLiteral>]
+        AuditCollection (id:string, persons:List<Person>, organizations:List<Organization>, 
+                         fkMzIdentMLDocument:string, rowVersion:Nullable<DateTime>
+                        ) =
+            let mutable id'                  = id
+            let mutable persons'             = persons
+            let mutable organizations'       = organizations
+            let mutable fkMzIdentMLDocument' = fkMzIdentMLDocument
+            let mutable rowVersion'          = rowVersion
+
+            new() = AuditCollection(null, null, null, null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Persons with get() = persons' and set(value) = persons' <- value
+            member this.Organizations with get() = organizations' and set(value) = organizations' <- value
+            member this.MzIdentMLDocumentID with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value 
+
     ///The upper-most hierarchy level of mzIdentML with sub-containers for example describing software, protocols and search results.
     type [<AllowNullLiteral>]
         MzIdentMLDocument(
@@ -1937,8 +1956,7 @@ module DataModel =
                           version:string,
                           analysisSoftwares:List<AnalysisSoftware>,
                           provider:Provider,
-                          persons:List<Person>, 
-                          organizations:List<Organization>, 
+                          auditCollection:AuditCollection, 
                           samples:List<Sample>, 
                           dbSequences:List<DBSequence>, 
                           peptides:List<Peptide>,
@@ -1957,8 +1975,7 @@ module DataModel =
             let mutable version'                         = version
             let mutable analysisSoftwares'               = analysisSoftwares
             let mutable provider'                        = provider
-            let mutable persons'                         = persons
-            let mutable organizations'                   = organizations
+            let mutable auditCollection'                 = auditCollection
             let mutable samples'                         = samples
             let mutable dbSequences'                     = dbSequences
             let mutable peptides'                        = peptides
@@ -1972,7 +1989,7 @@ module DataModel =
             let mutable biblioGraphicReferences'         = biblioGraphicReferences
             let mutable rowVersion'                      = rowVersion
 
-            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null,null, null, null, null, Nullable())
+            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null,null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1982,10 +1999,7 @@ module DataModel =
             member this. AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
             //
             member this.Provider with get() = provider' and set(value) = provider' <- value
-            //Formerly AuditCollection
-            member this. Persons with get() = persons and set(value) = persons' <- value
-            member this. Organizations with get() = organizations' and set(value) = organizations' <- value
-            //
+            member this.AuditCollection with get() = auditCollection and set(value) = auditCollection' <- value
             //Formerly AnalysisSampleCollection
             member this. Samples with get() = samples' and set(value) = samples' <- value
             //
@@ -2405,6 +2419,11 @@ module DataModel =
             val mutable m_ProteinDetectionListParam : DbSet<ProteinDetectionListParam>
             member public this.ProteinDetectionListParam with get() = this.m_ProteinDetectionListParam
                                                                       and set value = this.m_ProteinDetectionListParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_AuditCollection : DbSet<AuditCollection>
+            member public this.AuditCollection with get() = this.m_AuditCollection
+                                                            and set value = this.m_AuditCollection <- value
 
             //override this.OnModelCreating (modelBuilder :  ModelBuilder) =
             //         modelBuilder.Entity<MzIdentMLDocument>()

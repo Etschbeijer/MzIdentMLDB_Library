@@ -47,27 +47,36 @@ let fromUnit_Ontology =
 let initStandardDB (dbContext : MzIdentML) =
 
     let termsPSIMS =
-        let ontology =  OntologyHandler.init ("PSI-MS")
+        let ontology = 
+            OntologyHandler.init ("PSI-MS")
+            |> ContextHandler.tryAddToContext dbContext |> ignore
+
         fromPsiMS
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, "PSI-MS"))
         |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore) 
 
     let termsPride =
-        let ontology =  OntologyHandler.init ("PRIDE")
+        let ontology = 
+            OntologyHandler.init ("PRIDE")
+            |> ContextHandler.tryAddToContext dbContext |> ignore
         fromPride
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, "PRIDE"))
         |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnimod =
-        let ontology =  OntologyHandler.init ("UNIMOD")
+        let ontology = 
+            OntologyHandler.init ("UNIMOD")
+            |> ContextHandler.tryAddToContext dbContext |> ignore
         fromUniMod
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, "UNIMOD"))
         |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let termsUnit_Ontology =
-        let ontology =  OntologyHandler.init ("UNIT-ONTOLOGY") 
+        let ontology = 
+            OntologyHandler.init ("UNIT-ONTOLOGY")
+            |> ContextHandler.tryAddToContext dbContext |> ignore
         fromUnit_Ontology
-        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontology))
+        |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, "UNIT-ONTOLOGY"))
         |> Seq.iter (fun term -> ContextHandler.tryAddToContext dbContext term |> ignore)
 
     let userOntology =

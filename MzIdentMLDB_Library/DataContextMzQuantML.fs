@@ -1814,7 +1814,26 @@ module DataModel =
             member this.Year with get() = year' and set(value) = year' <- value
             member this.MzQuantMLDocumentID with get() = mzQuantMLDocumentID' and set(value) = mzQuantMLDocumentID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-    
+ 
+    ///The complete set of Contacts (people and organisations) for this file.
+    type [<AllowNullLiteral>]
+        AuditCollection (id:string, persons:List<Person>, organizations:List<Organization>, 
+                         fkMzIdentMLDocument:string, rowVersion:Nullable<DateTime>
+                        ) =
+            let mutable id'                  = id
+            let mutable persons'             = persons
+            let mutable organizations'       = organizations
+            let mutable fkMzIdentMLDocument' = fkMzIdentMLDocument
+            let mutable rowVersion'          = rowVersion
+
+            new() = AuditCollection(null, null, null, null, Nullable())
+
+            member this.ID with get() = id' and set(value) = id' <- value
+            member this.Persons with get() = persons' and set(value) = persons' <- value
+            member this.Organizations with get() = organizations' and set(value) = organizations' <- value
+            member this.MzQuantMLDocumentID with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value 
+
     ///Root element of the instance document. 
     type [<AllowNullLiteral>]
         MzQuantMLDocument (id:string, 
@@ -1822,9 +1841,8 @@ module DataModel =
                            creationDate:Nullable<DateTime>, 
                            version:string, 
                            provider:Provider, 
-                           persons:List<Person>,
-                           organizations:List<Organization>, 
-                           analysisSummary:AnalysisSummary, 
+                           auditCollection:AuditCollection, 
+                           analysisSummaries:List<AnalysisSummary>, 
                            inputFiles:InputFiles, 
                            softwares:List<Software>, 
                            dataProcessings:List<DataProcessing>, 
@@ -1844,11 +1862,9 @@ module DataModel =
             let mutable creationDate'            = creationDate
             let mutable version'                 = version
             let mutable provider'                = provider
-            //Formerly Audicollection
-            let mutable persons'                 = persons
-            let mutable organizations'           = organizations
+            let mutable auditCollection'         = auditCollection
             //
-            let mutable analysisSummary'         = analysisSummary
+            let mutable analysisSummaries'       = analysisSummaries
             //Formerly SoftwareList
             let mutable softwares'               = softwares
             //
@@ -1883,7 +1899,7 @@ module DataModel =
             //
             let mutable rowVersion'              = rowVersion
 
-            new() = MzQuantMLDocument(null, null, Nullable(), null, null, null, null, null, null, null, null, 
+            new() = MzQuantMLDocument(null, null, Nullable(), null, null, null, null, null, null, null, 
                                       null, null, null, null, null, null, null, null, null, Nullable()
                                      )
 
@@ -1892,9 +1908,8 @@ module DataModel =
             member this.CreationDate with get() = creationDate' and set(value) = creationDate' <- value
             member this.Version with get() = version' and set(value) = version' <- value
             member this.Provider with get() = provider' and set(value) = provider' <- value
-            member this.Persons with get() = persons' and set(value) = persons' <- value
-            member this.Organizations with get() = organizations' and set(value) = organizations' <- value
-            member this.AnalysisSummary with get() = analysisSummary' and set(value) = analysisSummary' <- value
+            member this.AuditCollection with get() = auditCollection' and set(value) = auditCollection' <- value
+            member this.AnalysisSummaries with get() = analysisSummaries' and set(value) = analysisSummaries' <- value
             member this.Softwares with get() = softwares' and set(value) = softwares' <- value
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
@@ -2270,6 +2285,11 @@ module DataModel =
             val mutable m_PersonParam : DbSet<PersonParam>
             member public this.PersonParam with get() = this.m_PersonParam
                                                         and set value = this.m_PersonParam <- value
+
+            [<DefaultValue>] 
+            val mutable m_AuditCollection : DbSet<AuditCollection>
+            member public this.AuditCollection with get() = this.m_AuditCollection
+                                                            and set value = this.m_AuditCollection <- value
 
             override this.OnModelCreating (modelBuilder:ModelBuilder) =
                     modelBuilder.Entity<MzQuantMLDocument>()

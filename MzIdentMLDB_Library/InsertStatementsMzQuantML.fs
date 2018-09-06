@@ -70,7 +70,8 @@ module InsertStatements =
                                 else
                                     loop 0 (n+1)
                         else
-                            if item1.Term=item2.Term && item2.Unit=item2.Unit && item1.Value=item2.Value
+                            if item1.Term=item2.Term && item1.TermID=item2.TermID && item2.Unit=item2.Unit && 
+                               item2.UnitID=item2.UnitID && item1.Value=item2.Value
                                 then true
                                 else loop (i+1) n
                 loop 0 0
@@ -118,23 +119,24 @@ module InsertStatements =
             static member tryAddToContextAndInsert (context:MzQuantML) (item:'b) =
                 context.Add(item) |> ignore
                 context.SaveChanges()
-
+   
         type TermHandler =
-            ///Initializes a term-object with at least all necessary parameters.
+        ///Initializes a term-object with at least all necessary parameters.
             static member init
                 (
-                    id        : string,
-                    ?name     : string,
-                    ?ontology : Ontology  
+                    id          : string,
+                    ?name       : string,
+                    ?ontologyID : string  
                 ) =
-                let name'      = defaultArg name Unchecked.defaultof<string>
-                let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
+                let name'        = defaultArg name Unchecked.defaultof<string>
+                let ontologyID'  = defaultArg ontologyID Unchecked.defaultof<string>
 
                 new Term(
-                         id, 
-                         name', 
-                         ontology', 
-                         (Nullable(DateTime.Now))
+                            id, 
+                            name',
+                            null,
+                            ontologyID', 
+                            (Nullable(DateTime.Now))
                         )
 
             ///Replaces a name of an existing object with new name.
@@ -143,59 +145,59 @@ module InsertStatements =
                 table.Name <- name
                 table
                     
-            ///Replaces an ontology of an existing term-object with new ontology.
-            static member addOntology
-                (ontology:Ontology) (table:Term) =
-                table.Ontology <- ontology
+            ///Replaces an ontologyID of an existing term-object with new ontology.
+            static member addOntologyID
+                (ontologyID:string) (table:Term) =
+                table.OntologyID <- ontologyID
                 table
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+            static member tryFindByID (dbContext:MzQuantML) (ontologyID:string) =
                 query {
-                       for i in dbContext.Term.Local do
-                           if i.ID=id
-                              then select (i, i.Ontology)
-                      }
+                        for i in dbContext.Term.Local do
+                            if i.OntologyID=ontologyID
+                                then select (i, i.Ontology)
+                        }
                 |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
-                                   for i in dbContext.Term do
-                                       if i.ID=id
-                                          then select (i, i.Ontology)
-                                  }
+                                    for i in dbContext.Term do
+                                        if i.OntologyID=ontologyID
+                                            then select (i, i.Ontology)
+                                    }
                             |> Seq.map (fun (term,_) -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some (term.Single())
-                               )
+                                )
                         else Some (term.Single())
-                   )
+                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByName (dbContext:MzQuantML) (name:string) =
                 query {
-                       for i in dbContext.Term.Local do
-                           if i.Name=name
-                              then select (i, i.Ontology)
-                      }
+                        for i in dbContext.Term.Local do
+                            if i.Name=name
+                                then select (i, i.Ontology)
+                        }
                 |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
-                                   for i in dbContext.Term do
-                                       if i.Name=name
-                                          then select (i, i.Ontology)
-                                  }
+                                    for i in dbContext.Term do
+                                        if i.Name=name
+                                            then select (i, i.Ontology)
+                                    }
                             |> Seq.map (fun (term,_) -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some term
-                               )
+                                )
                         else Some term
-                   )
+                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
@@ -206,26 +208,26 @@ module InsertStatements =
             static member addToContext (dbContext:MzQuantML) (item:Term) =
                     TermHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
-                                                      |Some x -> x
-                                                                 |> Seq.map (fun organization -> match TermHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> true
-                                                                                                 |false -> false
+                                                        |Some x -> x
+                                                                    |> Seq.map (fun organization -> match TermHandler.hasEqualFieldValues organization item with
+                                                                                                    |true -> true
+                                                                                                    |false -> false
                                                                             )
                                                                             |> (fun collection -> 
-                                                                                 if Seq.contains true collection=true
+                                                                                    if Seq.contains true collection=true
                                                                                     then None
                                                                                     else Some(dbContext.Add item)
-                                                                               )
-                                                      |None -> Some(dbContext.Add item)
-                       )
+                                                                                )
+                                                        |None -> Some(dbContext.Add item)
+                        )
 
             
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Term) =
                 TermHandler.addToContext dbContext item |> ignore |> ignore
-                dbContext.SaveChanges()
-        
+                dbContext.SaveChanges()  
+
         type OntologyHandler =
             ///Initializes a ontology-object with at least all necessary parameters.
             static member init
@@ -610,7 +612,7 @@ module InsertStatements =
                 PersonParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
-        type SoftwareParamParamHandler =
+        type SoftwareParamHandler =
             ///Initializes a softwareParam-object with at least all necessary parameters.
             static member init
                 (
@@ -700,10 +702,10 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SoftwareParam) =
-                    SoftwareParamParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SoftwareParamHandler.tryFindByTermName dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
-                                                                 |> Seq.map (fun organization -> match SoftwareParamParamHandler.hasEqualFieldValues organization item with
+                                                                 |> Seq.map (fun organization -> match SoftwareParamHandler.hasEqualFieldValues organization item with
                                                                                                  |true -> true
                                                                                                  |false -> false
                                                                             )
@@ -718,7 +720,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SoftwareParam) =
-                SoftwareParamParamHandler.addToContext dbContext item |> ignore |> ignore
+                SoftwareParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SearchDatabaseParamHandler =
@@ -7928,6 +7930,109 @@ module InsertStatements =
                 BiblioGraphicReferenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
+        type AuditCollectionHandler =
+        ///Initializes a term-object with at least all necessary parameters.
+            static member init
+                (
+                    persons              : seq<Person>,
+                    organisations        : seq<Organization>,
+                    ?id                  : string,
+                    ?fkMzIdentMLDocument : string
+                ) =
+                let id'                     = defaultArg id Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
+
+                new AuditCollection(
+                                    id', 
+                                    persons |> List,
+                                    organisations |> List,
+                                    fkMzIdentMLDocument', 
+                                    (Nullable(DateTime.Now))
+                                   )
+
+            ///Adds new person to collection of persons.
+            static member addPerson
+                (person:Person) (table:AuditCollection) =
+                table.Persons <- addToList table.Persons person
+                table
+
+            ///Add new collection of persons to collection of persons.
+            static member addPersons
+                (persons:seq<Person>) (table:AuditCollection) =
+                table.Persons <- addCollectionToList table.Persons persons
+                table
+
+            ///Adds new organization to collection of organizations.
+            static member addOrganization
+                (organization:Organization) (table:AuditCollection) =
+                table.Organizations <- addToList table.Organizations organization
+                table
+
+            ///Add new collection of organizations to collection of organizations.
+            static member addOrganizations
+                (organizations:seq<Organization>) (table:AuditCollection) =
+                table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+    
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addMzQuantMLDocumentID
+                (fkMzQuantMLDocument:string) (table:AuditCollection) =
+                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                table
+
+            ///Tries to find a auditCollection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                        for i in dbContext.AuditCollection.Local do
+                            if i.ID=id
+                                then select (i, i.Persons, i.Organizations)
+                        }
+                |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
+                |> (fun auditCollection -> 
+                    if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
+                        then 
+                            query {
+                                    for i in dbContext.AuditCollection do
+                                        if i.ID=id
+                                            then select (i, i.Persons, i.Organizations)
+                                    }
+                            |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
+                            |> (fun auditCollection -> if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
+                                                        then None
+                                                        else Some auditCollection
+                                )
+                        else Some auditCollection
+                    )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AuditCollection) (item2:AuditCollection) =
+                item1.Persons=item2.Persons && item1.Organizations=item2.Organizations
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:AuditCollection) =
+                    AuditCollectionHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                        |Some x -> x
+                                                                    |> Seq.map (fun organization -> match AuditCollectionHandler.hasEqualFieldValues organization item with
+                                                                                                    |true -> true
+                                                                                                    |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                    if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                                )
+                                                        |None -> Some(dbContext.Add item)
+                        )
+
+            
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:AuditCollection) =
+                AuditCollectionHandler.addToContext dbContext item |> ignore |> ignore
+                dbContext.SaveChanges()  
+
         type MzQuantMLDocumentHandler =
             ///Initializes a mzQuantMLDocument-object with at least all necessary parameters.
             static member init
@@ -7938,9 +8043,8 @@ module InsertStatements =
                     ?creationDate                : DateTime,
                     ?version                     : string,
                     ?provider                    : Provider,
-                    ?persons                     : seq<Person>,
-                    ?organizations               : seq<Organization>,
-                    ?analysisSummary             : AnalysisSummary,
+                    ?auditCollection             : AuditCollection,
+                    ?analysisSummaries           : seq<AnalysisSummary>,
                     ?inputFiles                  : InputFiles,
                     ?analysisSoftwares           : seq<Software>,
                     ?dataProcessings             : seq<DataProcessing>,
@@ -7960,9 +8064,8 @@ module InsertStatements =
                 let creationDate'                   = defaultArg creationDate Unchecked.defaultof<DateTime>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
-                let persons'                        = convertOptionToList persons
-                let organizations'                  = convertOptionToList organizations
-                let analysisSummary'                = defaultArg analysisSummary Unchecked.defaultof<AnalysisSummary>
+                let auditCollection'                = defaultArg auditCollection Unchecked.defaultof<AuditCollection>
+                let analysisSummaries'              = convertOptionToList analysisSummaries
                 let inputFiles'                     = defaultArg inputFiles Unchecked.defaultof<InputFiles>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
                 let dataProcessings'                = convertOptionToList dataProcessings
@@ -7981,9 +8084,8 @@ module InsertStatements =
                                       Nullable(creationDate'), 
                                       version', 
                                       provider',
-                                      persons', 
-                                      organizations', 
-                                      analysisSummary', 
+                                      auditCollection', 
+                                      analysisSummaries', 
                                       inputFiles', 
                                       analysisSoftwares', 
                                       dataProcessings', 
@@ -8031,6 +8133,11 @@ module InsertStatements =
                 table.ProteinList <- proteinList
                 table
 
+            ///Replaces auditCollection of existing object with new one.
+            static member addAuditCollection (auditCollection:AuditCollection) (table:MzQuantMLDocument) =
+                table.AuditCollection <- auditCollection
+                table
+
             ///Adds new peptideConsensusList to collection of enzymenames.
             static member addPeptideConsensusList
                 (peptideConsensusList:PeptideConsensusList) (table:MzQuantMLDocument) =
@@ -8049,34 +8156,16 @@ module InsertStatements =
                 table.FeatureList <- addToList table.FeatureList featureList
                 table
 
-            ///Adds new person to collection of enzymenames.
-            static member addPerson
-                (person:Person) (table:MzQuantMLDocument) =
-                table.Persons <- addToList table.Persons person
-                table
-
-            ///Add new collection of persons to collection of enzymenames.
-            static member addPersons
-                (persons:seq<Person>) (table:MzQuantMLDocument) =
-                table.Persons <- addCollectionToList table.Persons persons
-                table
-
-            ///Adds new organization to collection of enzymenames.
-            static member addOrganization
-                (organization:Organization) (table:MzQuantMLDocument) =
-                table.Organizations <- addToList table.Organizations organization
-                table
-
-            ///Add new collection of organizations to collection of enzymenames.
-            static member addOrganizations
-                (organizations:seq<Organization>) (table:MzQuantMLDocument) =
-                table.Organizations <- addCollectionToList table.Organizations organizations
-                table
-
-            ///Replaces analysisSummary of existing object with new one.
+            ///Adds new analysisSummary to collection of enzymenames.
             static member addAnalysisSummary
                 (analysisSummary:AnalysisSummary) (table:MzQuantMLDocument) =
-                table.AnalysisSummary <- analysisSummary
+                table.AnalysisSummaries <- addToList table.AnalysisSummaries analysisSummary
+                table
+
+            ///Add new collection of analysisSummaries to collection of enzymenames.
+            static member addAnalysisSummaries
+                (analysisSummaries:seq<AnalysisSummary>) (table:MzQuantMLDocument) =
+                table.AnalysisSummaries <- addCollectionToList table.AnalysisSummaries analysisSummaries
                 table
 
             ///Replaces inputFiles of existing object with new one.
@@ -8126,26 +8215,26 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                           i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                              then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
                                           )
                       }
-                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                 |> (fun mzQuantML -> 
                     if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                         then 
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                                       i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                          then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
                                                       )
                                   }
-                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                             |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                                                     then None
                                                     else Some (mzQuantML.Single())
@@ -8158,26 +8247,26 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                           i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                              then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
                                           )
                       }
-                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                 |> (fun mzQuantML -> 
                     if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                         then 
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                                       i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
+                                          then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
                                                       )
                                   }
-                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                             |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                                                                 then None
                                                                 else Some mzQuantML
@@ -8187,15 +8276,14 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzQuantMLDocument) (item2:MzQuantMLDocument) =
-                item1.AnalysisSummary=item2.AnalysisSummary && 
+                item1.AnalysisSummaries=item2.AnalysisSummaries && 
                 item1.Softwares=item2.Softwares && 
                 item1.InputFiles=item2.InputFiles && 
                 item1.FeatureList=item2.FeatureList && 
                 item1.Assays=item2.Assays && 
                 item1.DataProcessings=item2.DataProcessings && 
                 item1.Provider=item2.Provider && 
-                item1.Persons=item2.Persons && 
-                item1.Organizations=item2.Organizations && 
+                item1.AuditCollection=item2.AuditCollection && 
                 item1.BiblioGraphicReferences=item2.BiblioGraphicReferences &&
                 item1.StudyVariables=item2.StudyVariables && 
                 item1.Ratios=item2.Ratios && 

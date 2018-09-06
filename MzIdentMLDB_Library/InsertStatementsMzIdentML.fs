@@ -70,7 +70,8 @@ module InsertStatements =
                                 else
                                     loop 0 (n+1)
                         else
-                            if item1.Term=item2.Term && item2.Unit=item2.Unit && item1.Value=item2.Value
+                            if item1.Term=item2.Term && item1.TermID=item2.TermID && item2.Unit=item2.Unit && 
+                               item2.UnitID=item2.UnitID && item1.Value=item2.Value
                                 then true
                                 else loop (i+1) n
                 loop 0 0
@@ -119,114 +120,115 @@ module InsertStatements =
             static member tryAddToContextAndInsert (context:MzIdentML) (item:'b) =
                 context.Add(item) |> ignore
                 context.SaveChanges()
-
+        
         type TermHandler =
-            ///Initializes a term-object with at least all necessary parameters.
+        ///Initializes a term-object with at least all necessary parameters.
             static member init
                 (
-                    id        : string,
-                    ?name     : string,
-                    ?ontology : Ontology  
+                    id          : string,
+                    ?name       : string,
+                    ?ontologyID : string  
                 ) =
-                let name'      = defaultArg name Unchecked.defaultof<string>
-                let ontology'  = defaultArg ontology Unchecked.defaultof<Ontology>
+                let name'        = defaultArg name Unchecked.defaultof<string>
+                let ontologyID'  = defaultArg ontologyID Unchecked.defaultof<string>
 
                 new Term(
-                         id, 
-                         name', 
-                         ontology', 
-                         (Nullable(DateTime.Now))
+                            id, 
+                            name',
+                            null,
+                            ontologyID', 
+                            (Nullable(DateTime.Now))
                         )
 
             ///Replaces a name of an existing object with new name.
             static member addName
-                (name:string) (term:Term) =
-                term.Name <- name
-                term
+                (name:string) (table:Term) =
+                table.Name <- name
+                table
                     
-            ///Replaces an ontology of an existing term-object with new ontology.
-            static member addOntology
-                (ontology:Ontology) (term:Term) =
-                term.Ontology <- ontology
-                term
+            ///Replaces an ontologyID of an existing term-object with new ontology.
+            static member addOntologyID
+                (ontologyID:string) (table:Term) =
+                table.OntologyID <- ontologyID
+                table
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+            static member tryFindByID (dbContext:MzIdentML) (ontologyID:string) =
                 query {
-                       for i in dbContext.Term.Local do
-                           if i.ID=id
-                              then select (i, i.Ontology)
-                      }
-                |> Seq.map (fun (term, _) -> term)
-                |> (fun param -> 
-                    if (Seq.exists (fun param' -> param' <> null) param) = false
-                        then 
-                            query {
-                                   for i in dbContext.Term do
-                                       if i.ID=id
-                                          then select (i, i.Ontology)
-                                  }
-                            |> Seq.map (fun (term, _) -> term)
-                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-                                                then None
-                                                else Some (param.Single())
-                               )
-                        else Some (param.Single())
-                   )
-
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByName (dbContext:MzIdentML) (name:string) =
-                query {
-                       for i in dbContext.Term.Local do
-                           if i.Name=name
-                              then select (i, i.Ontology)
-                      }
-                |> Seq.map (fun (term, _) -> term)
+                        for i in dbContext.Term.Local do
+                            if i.OntologyID=ontologyID
+                                then select (i, i.Ontology)
+                        }
+                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
-                                   for i in dbContext.Term do
-                                       if i.Name=name
-                                          then select (i, i.Ontology)
-                                  }
-                            |> Seq.map (fun (term, _) -> term)
+                                    for i in dbContext.Term do
+                                        if i.OntologyID=ontologyID
+                                            then select (i, i.Ontology)
+                                    }
+                            |> Seq.map (fun (term,_) -> term)
+                            |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
+                                                then None
+                                                else Some (term.Single())
+                                )
+                        else Some (term.Single())
+                    )
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByName (dbContext:MzIdentML) (name:string) =
+                query {
+                        for i in dbContext.Term.Local do
+                            if i.Name=name
+                                then select (i, i.Ontology)
+                        }
+                |> Seq.map (fun (term,_) -> term)
+                |> (fun term -> 
+                    if (Seq.exists (fun term' -> term' <> null) term) = false
+                        then 
+                            query {
+                                    for i in dbContext.Term do
+                                        if i.Name=name
+                                            then select (i, i.Ontology)
+                                    }
+                            |> Seq.map (fun (term,_) -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some term
-                               )
+                                )
                         else Some term
-                   )
+                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
-                item1.Ontology=item2.Ontology
+                item1.Ontology.ID=item2.Ontology.ID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Term) =
                     TermHandler.tryFindByName dbContext item.Name
                     |> (fun organizationCollection -> match organizationCollection with
-                                                      |Some x -> x
-                                                                 |> Seq.map (fun organization -> match TermHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> true
-                                                                                                 |false -> false
+                                                        |Some x -> x
+                                                                    |> Seq.map (fun organization -> match TermHandler.hasEqualFieldValues organization item with
+                                                                                                    |true -> true
+                                                                                                    |false -> false
                                                                             )
                                                                             |> (fun collection -> 
-                                                                                 if Seq.contains true collection=true
+                                                                                    if Seq.contains true collection=true
                                                                                     then None
                                                                                     else Some(dbContext.Add item)
-                                                                               )
-                                                      |None -> Some(dbContext.Add item)
-                       )
+                                                                                )
+                                                        |None -> Some(dbContext.Add item)
+                        )
 
             
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Term) =
                 TermHandler.addToContext dbContext item |> ignore |> ignore
-                dbContext.SaveChanges()
-        
+                dbContext.SaveChanges() 
+
         type OntologyHandler =
             ///Initializes a ontology-object with at least all necessary parameters.
             static member init
@@ -5555,9 +5557,9 @@ module InsertStatements =
             ///Initializes a fragmentarray-object with at least all necessary parameters.
             static member init
                 (
-                    measure : Measure,
-                    value   : float,
-                    ?id     : string
+                    measure  : Measure,
+                    value    : float,
+                    ?id      : string
                 ) =
                 let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
@@ -9292,6 +9294,109 @@ module InsertStatements =
                 ProviderHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
+        type AuditCollectionHandler =
+        ///Initializes a term-object with at least all necessary parameters.
+            static member init
+                (
+                    persons              : seq<Person>,
+                    organisations        : seq<Organization>,
+                    ?id                  : string,
+                    ?fkMzIdentMLDocument : string
+                ) =
+                let id'                     = defaultArg id Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
+
+                new AuditCollection(
+                                    id', 
+                                    persons |> List,
+                                    organisations |> List,
+                                    fkMzIdentMLDocument', 
+                                    (Nullable(DateTime.Now))
+                                   )
+
+            ///Adds new person to collection of persons.
+            static member addPerson
+                (person:Person) (table:AuditCollection) =
+                table.Persons <- addToList table.Persons person
+                table
+
+            ///Add new collection of persons to collection of persons.
+            static member addPersons
+                (persons:seq<Person>) (table:AuditCollection) =
+                table.Persons <- addCollectionToList table.Persons persons
+                table
+
+            ///Adds new organization to collection of organizations.
+            static member addOrganization
+                (organization:Organization) (table:AuditCollection) =
+                table.Organizations <- addToList table.Organizations organization
+                table
+
+            ///Add new collection of organizations to collection of organizations.
+            static member addOrganizations
+                (organizations:seq<Organization>) (table:AuditCollection) =
+                table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+    
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addMzIdentMLDocumentID
+                (fkMzIdentMLDocument:string) (table:AuditCollection) =
+                table.MzIdentMLDocumentID <- fkMzIdentMLDocument
+                table
+
+            ///Tries to find a auditCollection-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzIdentML) (id:string) =
+                query {
+                        for i in dbContext.AuditCollection.Local do
+                            if i.ID=id
+                                then select (i, i.Persons, i.Organizations)
+                        }
+                |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
+                |> (fun auditCollection -> 
+                    if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
+                        then 
+                            query {
+                                    for i in dbContext.AuditCollection do
+                                        if i.ID=id
+                                            then select (i, i.Persons, i.Organizations)
+                                    }
+                            |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
+                            |> (fun auditCollection -> if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
+                                                        then None
+                                                        else Some auditCollection
+                                )
+                        else Some auditCollection
+                    )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:AuditCollection) (item2:AuditCollection) =
+                item1.Persons=item2.Persons && item1.Organizations=item2.Organizations
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzIdentML) (item:AuditCollection) =
+                    AuditCollectionHandler.tryFindByID dbContext item.ID
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                        |Some x -> x
+                                                                    |> Seq.map (fun organization -> match AuditCollectionHandler.hasEqualFieldValues organization item with
+                                                                                                    |true -> true
+                                                                                                    |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                    if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                                )
+                                                        |None -> Some(dbContext.Add item)
+                        )
+
+            
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzIdentML) (item:AuditCollection) =
+                AuditCollectionHandler.addToContext dbContext item |> ignore |> ignore
+                dbContext.SaveChanges()  
+        
         type MzIdentMLDocumentHandler =
             ///Initializes a mzIdentML-object with at least all necessary parameters.
             static member init
@@ -9305,8 +9410,7 @@ module InsertStatements =
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
                     ?provider                       : Provider,
-                    ?persons                        : seq<Person>,
-                    ?organizations                  : seq<Organization>,
+                    ?auditCollection                : AuditCollection, 
                     ?samples                        : seq<Sample>,
                     ?dbSequences                    : seq<DBSequence>,
                     ?peptides                       : seq<Peptide>,
@@ -9320,8 +9424,7 @@ module InsertStatements =
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
                 let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
-                let persons'                        = convertOptionToList persons
-                let organizations'                  = convertOptionToList organizations
+                let auditCollection'                = defaultArg auditCollection Unchecked.defaultof<AuditCollection>
                 let samples'                        = convertOptionToList samples
                 let dbSequences'                    = convertOptionToList dbSequences
                 let peptides'                       = convertOptionToList peptides
@@ -9339,8 +9442,7 @@ module InsertStatements =
                                       version',
                                       analysisSoftwares', 
                                       provider', 
-                                      persons', 
-                                      organizations', 
+                                      auditCollection', 
                                       samples', 
                                       dbSequences', 
                                       peptides', 
@@ -9385,28 +9487,10 @@ module InsertStatements =
                 mzIdentML.Provider <- provider
                 mzIdentML
 
-            ///Adds a person to an existing mzidentmldocument-object.
-            static member addPerson
-                (person:Person) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Persons <- addToList mzIdentML.Persons person
-                mzIdentML
-
-            ///Adds a collection of persons to an existing mzidentmldocument-object.
-            static member addPersons
-                (persons:seq<Person>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
-                mzIdentML
-
-            ///Adds a organization to an existing mzidentmldocument-object.
-            static member addOrganization
-                (organization:Organization) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
-                mzIdentML
-
-            ///Adds a collection of organizations to an existing mzidentmldocument-object.
-            static member addOrganizations
-                (organizations:seq<Organization>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
+            ///Replaces auditCollection of existing object with new one.
+            static member addAuditCollection
+                (auditCollection:AuditCollection) (mzIdentML:MzIdentMLDocument) =
+                mzIdentML.AuditCollection <- auditCollection
                 mzIdentML
 
             ///Adds a sample to an existing mzidentmldocument-object.
@@ -9522,24 +9606,24 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.ID=id
-                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.AuditCollection, i.Samples,
                                            i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
                                            i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
                             query {
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.ID=id
-                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.AuditCollection, i.Samples,
                                                        i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
                                                        i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                             then None
                                                             else Some (mzIdentMLDocument.Single())
@@ -9552,24 +9636,24 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                              then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.AuditCollection, i.Samples,
                                            i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
                                            i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
                             query {
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.Name=name
-                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
+                                          then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.AuditCollection, i.Samples,
                                                        i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
                                                        i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                              then None
                                                              else Some mzIdentMLDocument
@@ -9580,7 +9664,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzIdentMLDocument) (item2:MzIdentMLDocument) =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
-               item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
+               item1.Provider=item2.Provider && item1.AuditCollection=item2.AuditCollection &&
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentifications=item2.SpectrumIdentifications &&
                item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocols=item2.SpectrumIdentificationProtocols &&

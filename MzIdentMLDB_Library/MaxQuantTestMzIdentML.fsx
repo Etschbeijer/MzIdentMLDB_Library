@@ -40,565 +40,566 @@ sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 let user0 =
     TermHandler.init("User:0000000")
     |> TermHandler.addName "N-term cleavage window"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user1 =
     TermHandler.init("User:0000001")
     |> TermHandler.addName "C-term cleavage window"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user2 =
     TermHandler.init("User:0000002")
     |> TermHandler.addName "Leading razor protein"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user3 =
     TermHandler.init("User:0000003")
     |> TermHandler.addName "MaxQuant: Unique Protein Group"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user4 =
     TermHandler.init("User:0000004")
     |> TermHandler.addName "MaxQuant: Unique Protein"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user5 =
     TermHandler.init("User:0000005")
     |> TermHandler.addName "MaxQuant: PEP"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user6 =
     TermHandler.init("User:0000006")
     |> TermHandler.addName "IdentificationType"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user7 =
     TermHandler.init("User:0000007")
     |> TermHandler.addName "AminoAcid modification"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user8 =
     TermHandler.init("User:0000008")
     |> TermHandler.addName "Charge corrected mass of the precursor ion"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user9 =
     TermHandler.init("User:0000009")
     |> TermHandler.addName "Calibrated retention time"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user10 =
     TermHandler.init("User:0000010")
     |> TermHandler.addName "Mass error"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user11 =
     TermHandler.init("User:0000011")
     |> TermHandler.addName "The intensity values of the isotopes."
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user12 =
     TermHandler.init("User:0000012")
     |> TermHandler.addName "MaxQuant: Major protein IDs"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user13 =
     TermHandler.init("User:0000013")
     |> TermHandler.addName "MaxQuant: Number of proteins"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user14 =
     TermHandler.init("User:0000014")
     |> TermHandler.addName "MaxQuant: Peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user15 =
     TermHandler.init("User:0000015")
     |> TermHandler.addName "MaxQuant: Razor + unique peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user16 =
     TermHandler.init("User:0000016")
     |> TermHandler.addName "MaxQuant: Unique peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user17 =
     TermHandler.init("User:0000017")
     |> TermHandler.addName "MaxQuant: Unique + razor sequence coverage"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user18 =
     TermHandler.init("User:0000018")
     |> TermHandler.addName "MaxQuant: Unique sequence coverage"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user19 =
     TermHandler.init("User:0000019")
     |> TermHandler.addName "MaxQuant: SequenceLength(s)"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user20 =
     TermHandler.init("User:0000020")
     |> TermHandler.addName "Metabolic labeling N14/N15"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user21 =
     TermHandler.init("User:0000021")
     |> TermHandler.addName "DetectionType"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user22 =
     TermHandler.init("User:0000022")
     |> TermHandler.addName "MaxQuant: Uncalibrated m/z"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user23 =
     TermHandler.init("User:0000023")
     |> TermHandler.addName "MaxQuant: Number of data points"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user24 =
     TermHandler.init("User:0000024")
     |> TermHandler.addName "MaxQuant: Number of isotopic peaks"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user25 =
     TermHandler.init("User:0000025")
     |> TermHandler.addName "MaxQuant: Parent ion fraction"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user26 =
     TermHandler.init("User:0000026")
     |> TermHandler.addName "MaxQuant: Mass precision"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user27 =
     TermHandler.init("User:0000027")
     |> TermHandler.addName "Retention length (FWHM)"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user28 =
     TermHandler.init("User:0000028")
     |> TermHandler.addName "MaxQuant: Min scan number"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user29 =
     TermHandler.init("User:0000029")
     |> TermHandler.addName "MaxQuant: Max scan number"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user30 =
     TermHandler.init("User:0000030")
     |> TermHandler.addName "MaxQuant: MSMS scan numbers"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user31 =
     TermHandler.init("User:0000031")
     |> TermHandler.addName "MaxQuant: MSMS isotope indices"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user32 =
     TermHandler.init("User:0000032")
     |> TermHandler.addName "MaxQuant: Filtered peaks"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user33 =
     TermHandler.init("User:0000033")
     |> TermHandler.addName "FragmentationType"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user34 =
     TermHandler.init("User:0000034")
     |> TermHandler.addName "Parent intensity fraction"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user35 =
     TermHandler.init("User:0000035")
     |> TermHandler.addName "Fraction of total spectrum"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user36 =
     TermHandler.init("User:0000036")
     |> TermHandler.addName "Base peak fraction"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user37 =
     TermHandler.init("User:0000037")
     |> TermHandler.addName "Precursor full scan number"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user38 =
     TermHandler.init("User:0000038")
     |> TermHandler.addName "Precursor intensity"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user39 =
     TermHandler.init("User:0000039")
     |> TermHandler.addName "Precursor apex fraction"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user40 =
     TermHandler.init("User:0000040")
     |> TermHandler.addName "Precursor apex offset"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user41 =
     TermHandler.init("User:0000041")
     |> TermHandler.addName "Precursor apex offset time"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user42 =
     TermHandler.init("User:0000042")
     |> TermHandler.addName "Scan event number"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user43 =
     TermHandler.init("User:0000043")
     |> TermHandler.addName "MaxQuant: Score difference"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user44 =
     TermHandler.init("User:0000044")
     |> TermHandler.addName "MaxQuant: Combinatorics"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user45 =
     TermHandler.init("User:0000045")
     |> TermHandler.addName "MaxQuant: Matches"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user46 =
     TermHandler.init("User:0000046")
     |> TermHandler.addName "MaxQuant: Match between runs"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user47 =
     TermHandler.init("User:0000047")
     |> TermHandler.addName "MaxQuant: Number of matches"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user48 =
     TermHandler.init("User:0000048")
     |> TermHandler.addName "MaxQuant: Intensity coverage"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user49 =
     TermHandler.init("User:0000049")
     |> TermHandler.addName "MaxQuant: Peak coverage"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user50 =
     TermHandler.init("User:0000050")
     |> TermHandler.addName "MaxQuant: ETD identification type"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user51 =
     TermHandler.init("User:0000051")
     |> TermHandler.addName "Min. score unmodified peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
   
 let user52 =
     TermHandler.init("User:0000052")
     |> TermHandler.addName "Min. score modified peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user53 =
     TermHandler.init("User:0000053")
     |> TermHandler.addName "Min. delta score of unmodified peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext 
 
 let user54 =
     TermHandler.init("User:0000054")
     |> TermHandler.addName "Min. delta score of modified peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user55 =
     TermHandler.init("User:0000055")
     |> TermHandler.addName "Min. amount unique peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user56 =
     TermHandler.init("User:0000056")
     |> TermHandler.addName "Min. amount razor peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user57 =
     TermHandler.init("User:0000057")
     |> TermHandler.addName "Min. amount peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user58 =
     TermHandler.init("User:0000058")
     |> TermHandler.addName "MaxQuant: Decoy mode"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user59 =
     TermHandler.init("User:0000059")
     |> TermHandler.addName "MaxQuant: Special AAs"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user60 =
     TermHandler.init("User:0000060")
     |> TermHandler.addName "MaxQuant: Include contaminants"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user61 =
     TermHandler.init("User:0000061")
     |> TermHandler.addName "MaxQuant: iBAQ"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user62 =
     TermHandler.init("User:0000062")
     |> TermHandler.addName "MaxQuant: Top MS/MS peaks per 100 Dalton"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user63 =
     TermHandler.init("User:0000063")
     |> TermHandler.addName "MaxQuant: IBAQ log fit"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user64 =
     TermHandler.init("User:0000064")
     |> TermHandler.addName "MaxQuant: Protein FDR"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user65 =
     TermHandler.init("User:0000065")
     |> TermHandler.addName "MaxQuant: SiteFDR"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user66 =
     TermHandler.init("User:0000066")
     |> TermHandler.addName "MaxQuant: Use Normalized Ratios For Occupancy"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user67 =
     TermHandler.init("User:0000067")
     |> TermHandler.addName "MaxQuant: Peptides used for protein quantification"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user68 =
     TermHandler.init("User:0000068")
     |> TermHandler.addName "MaxQuant: Discard unmodified counterpart peptides"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user69 =
     TermHandler.init("User:0000069")
     |> TermHandler.addName "MaxQuant: Min. ratio count"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user70 =
     TermHandler.init("User:0000070")
     |> TermHandler.addName "MaxQuant: Use delta score"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user71 =
     TermHandler.init("User:0000071")
     |> TermHandler.addName "Data-dependt acquisition"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user72 =
     TermHandler.init("User:0000072")
     |> TermHandler.addName "razor-protein"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user73 =
     TermHandler.init("User:0000073")
     |> TermHandler.addName "razor-peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user74 =
     TermHandler.init("User:0000074")
     |> TermHandler.addName "Mass-deviation"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user75 =
     TermHandler.init("User:0000075")
     |> TermHandler.addName "leading-peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user76 =
     TermHandler.init("User:0000076")
     |> TermHandler.addName "unique-protein"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user77 =
     TermHandler.init("User:0000077")
     |> TermHandler.addName "unique-peptide"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user78 =
     TermHandler.init("User:0000078")
     |> TermHandler.addName "MaxQuant: Delta score"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
 let user79 =
     TermHandler.init("User:0000079")
     |> TermHandler.addName "MaxQuant: Best andromeda score"
-    |> TermHandler.addOntology 
-        (OntologyHandler.tryFindByID sqliteMzIdentMLContext "UserParam").Value
+    |> TermHandler.addOntologyID 
+        "UserParam"
     |> TermHandler.addToContext sqliteMzIdentMLContext
 
-type TermIDByName =
+type TermSymbol =
     | Accession of string
+
     //Else
     | RawFile
     ///Length of sequence (MaxQuant).
@@ -688,6 +689,8 @@ type TermIDByName =
     | UniqueProtein
     ///Modifications of the Protein.
     | ProteinModifications
+    ///Other members of the protein-ambiguity-group
+    | ProteinAmbiguityGroupMembers
 
     //Peptides
     ///Peptide is unique to a single protein group in the proteinGroups file.
@@ -1002,7 +1005,7 @@ type TermIDByName =
     ///Score difference to the second best identified peptide.
     | DeltaScore
 
-    static member toID (item:TermIDByName) =
+    static member toID (item:TermSymbol) =
         match item with
         | Accession s -> s
         | RawFile -> "MS:1000577"
@@ -1190,6 +1193,7 @@ type TermIDByName =
         | BestAndromedaScore -> "User:0000079"
         | DataBaseName -> "MS:1001013"
         | ProteinModifications -> "MS:1000933"
+        | ProteinAmbiguityGroupMembers -> "PRIDE:0000418"
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
@@ -1199,78 +1203,78 @@ let mzIdentMLDocument =
 let measureErrors =
     [
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorPpm)).Value
+        (TermSymbol.toID MassErrorPpm)
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorPercent)).Value
+        (TermSymbol.toID MassErrorPercent)
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
+        (TermSymbol.toID Percentage);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassErrorDa)).Value
+        (TermSymbol.toID MassErrorDa)
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+        (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+        (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviation)).Value,
+        (TermSymbol.toID MassDeviation),
             "Mass Deviation [ppm]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+        (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [Da]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+        (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [Da]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDeviation)).Value,
+        (TermSymbol.toID MassDeviation),
             "Mass Deviation [Da]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonErrorMZ)).Value,
+        (TermSymbol.toID ProductIonErrorMZ),
             "Product-ion error [M/Z]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value; 
+        (TermSymbol.toID MZ); 
     ]
 
 let measureTypes =
     [
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonMZ)).Value,
+        (TermSymbol.toID ProductIonMZ),
             "Product-ion [M/Z]"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value;                       
+        (TermSymbol.toID MZ);                       
     MeasureParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProductIonIntensity)).Value,
+        (TermSymbol.toID ProductIonIntensity),
             "Intensity"
                             )
     |> MeasureParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDetections)).Value;
+        (TermSymbol.toID NumberOfDetections);
     ]
 
 MeasureHandler.init(measureTypes, "FragmentationTable measure-type")
@@ -1279,33 +1283,30 @@ MeasureHandler.init(measureTypes, "FragmentationTable measure-type")
 MeasureHandler.init(measureErrors, "FragmentationTable measure-error")
 |> MeasureHandler.addToContext sqliteMzIdentMLContext
 
-MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-type"
-MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-error"
-
 let fileFormat1 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DataStoredInDataBase)).Value
+        (TermSymbol.toID DataStoredInDataBase)
                         )
 
 let fileFormat2 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UnknownFileType)).Value
+        (TermSymbol.toID UnknownFileType)
                         )
 
 let fileFormat3 =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FASTAFormat)).Value
+        (TermSymbol.toID FASTAFormat)
                         )
 
 let databaseName =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DataBaseName)).Value
+        (TermSymbol.toID DataBaseName)
                         )
     |> CVParamHandler.addValue "Unknown to me at the moment"
 
 let searchDataBaseParam =
     SearchDatabaseParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DatabaseVersion)).Value
+        (TermSymbol.toID DatabaseVersion)
                                    )
     |> SearchDatabaseParamHandler.addValue "1.0"
 
@@ -1318,11 +1319,11 @@ let searchDatabase =
 let dbSequenceParams =
     [
     DBSequenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TaxidNCBI)).Value
+        (TermSymbol.toID TaxidNCBI)
                                )
     |> DBSequenceParamHandler.addValue "906914";
     DBSequenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScientificName)).Value
+        (TermSymbol.toID ScientificName)
                                )
     |> DBSequenceParamHandler.addValue "C. reinhardtii";
     ]
@@ -1332,7 +1333,7 @@ let dbSequence =
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams
-    |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> DBSequenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let searchDatabase1 =
     SearchDatabaseHandler.init(
@@ -1343,11 +1344,11 @@ let searchDatabase1 =
 let dbSequenceParams1 =
     [
     DBSequenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TaxidNCBI)).Value
+        (TermSymbol.toID TaxidNCBI)
                                )
     |> DBSequenceParamHandler.addValue "906914";
     DBSequenceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScientificName)).Value
+        (TermSymbol.toID ScientificName)
                                )
     |> DBSequenceParamHandler.addValue "C. reinhardtii";
     ]
@@ -1357,42 +1358,42 @@ let dbSequence1 =
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams1
-    |> DBSequenceHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> DBSequenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let peptideParamUnmodified =
     [
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AminoAcidSequence)).Value
+        (TermSymbol.toID AminoAcidSequence)
                             )
     |> PeptideParamHandler.addValue "AAIEASFGSVDEMK";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLength)).Value
+        (TermSymbol.toID SequenceLength)
                             )
     |> PeptideParamHandler.addValue "14";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NTermCleavageWindow)).Value
+        (TermSymbol.toID NTermCleavageWindow)
                             )
     |> PeptideParamHandler.addValue "NGPNGDVKAAIEASFG";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID CTermCleavageWindow)).Value
+        (TermSymbol.toID CTermCleavageWindow)
                             )
     |> PeptideParamHandler.addValue "FGSVDEMKAKFNAAAA";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToGroups)).Value
+        (TermSymbol.toID UniqueToGroups)
                             )
     |> PeptideParamHandler.addValue "yes";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AmnoAcidModification)).Value
+        (TermSymbol.toID AmnoAcidModification)
                             )
     |> PeptideParamHandler.addValue "yes";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Mass)).Value
+        (TermSymbol.toID Mass)
                             )
     |> PeptideParamHandler.addValue "1453.6797"
     |> PeptideParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID KiloDalton)).Value;
+        (TermSymbol.toID KiloDalton);
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+        (TermSymbol.toID MonoIsotopicMass)
                             )
     |> PeptideParamHandler.addValue "1453.6759";
     ]
@@ -1400,11 +1401,11 @@ let peptideParamUnmodified =
 let peptideUnmodified =
     PeptideHandler.init("AAIEASFGSVDEMK", "119")
     |> PeptideHandler.addDetails peptideParamUnmodified
-    |> PeptideHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> PeptideHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let enzymeName =
     EnzymeNameParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Trypsin)).Value;
+        (TermSymbol.toID Trypsin);
                                )
 let enzyme =
     EnzymeHandler.init()
@@ -1414,99 +1415,99 @@ let enzyme =
 let spectrumidentificationItemParamPeptideUnmodified =
     [
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
+    //    (TermSymbol.toID PosteriorErrorProbability)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "2.95E-39";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+        (TermSymbol.toID AndromedaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "122.97";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
+    //    (TermSymbol.toID IdentificationType)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+    //    (TermSymbol.toID TotalXIC)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "290760";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+    //    (TermSymbol.toID MSMSCount)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "14";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
+    //    (TermSymbol.toID MSMSScanNumber)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "15279";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTime)).Value
+        (TermSymbol.toID RetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "25.752"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID CalibratedRetentionTime)).Value
+        (TermSymbol.toID CalibratedRetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "25.664"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DeltaScore)).Value
+        (TermSymbol.toID DeltaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "110.81";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DetectionType)).Value
+        (TermSymbol.toID DetectionType)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "MULTI";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UncalibratedMZ)).Value
+        (TermSymbol.toID UncalibratedMZ)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "727.8481";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FWHM)).Value
+        (TermSymbol.toID FWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "NAN";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDataPoints)).Value
+        (TermSymbol.toID NumberOfDataPoints)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "27";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+        (TermSymbol.toID ScanNumber)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "11";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfIsotopicPeaks)).Value
+        (TermSymbol.toID NumberOfIsotopicPeaks)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "3";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PIF)).Value
+        (TermSymbol.toID PIF)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "0.8484042";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDefect)).Value
+        (TermSymbol.toID MassDefect)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "-0.028955966";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassPrecision)).Value
+        (TermSymbol.toID MassPrecision)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "0.771146"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MzDeltaScore)).Value
+        (TermSymbol.toID MzDeltaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "727.8458225";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionLength)).Value
+        (TermSymbol.toID RetentionLength)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "22.688"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTimeFWHM)).Value
+        (TermSymbol.toID RetentionTimeFWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "11.349"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     ]
 
 
@@ -1540,6 +1541,7 @@ let valueMassesUnModified =
     672.320238153757;747.363964421907
     ]
 
+
 let fragmentArrayUnModified1 =
     [
     FragmentArrayHandler.init(
@@ -1571,10 +1573,10 @@ let fragmentArrayUnModified1 =
 let ionTypeParamUnModified1 =
     [
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+        (TermSymbol.toID Fragment)
                             );
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
+        (TermSymbol.toID YIon)
                             )
     |> IonTypeParamHandler.addValue "y4";
     ]
@@ -1610,10 +1612,10 @@ let fragmentArrayUnModified2 =
 let ionTypeParamUnModified2 =
     [
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+        (TermSymbol.toID Fragment)
                             );
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
+        (TermSymbol.toID YIon)
                             )
     |> IonTypeParamHandler.addValue "y5";
     ]
@@ -1642,15 +1644,15 @@ let spectrumidentificationItemPeptideUnmodified =
 let modificationParamsMOxidized =
     [
     ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Oxidation)).Value
+        (TermSymbol.toID Oxidation)
                                     )
     |> ModificationParamHandler.addValue "Methionin";
     ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Combinatorics)).Value
+        (TermSymbol.toID Combinatorics)
                                     )
     |> ModificationParamHandler.addValue "1";
     ModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NeutralIonLoss)).Value
+        (TermSymbol.toID NeutralIonLoss)
                                     )
     |> ModificationParamHandler.addValue "None";
     ]
@@ -1663,35 +1665,35 @@ let modificationMOxidized =
 let peptideParamMOxidized =
     [
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AminoAcidSequence)).Value
+        (TermSymbol.toID AminoAcidSequence)
                             )
     |> PeptideParamHandler.addValue "AAIEASFGSVDEMK";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLength)).Value
+        (TermSymbol.toID SequenceLength)
                             )
     |> PeptideParamHandler.addValue "14";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NTermCleavageWindow)).Value
+        (TermSymbol.toID NTermCleavageWindow)
                             )
     |> PeptideParamHandler.addValue "NGPNGDVKAAIEASFG";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID CTermCleavageWindow)).Value
+        (TermSymbol.toID CTermCleavageWindow)
                             )
     |> PeptideParamHandler.addValue "FGSVDEMKAKFNAAAA";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToGroups)).Value
+        (TermSymbol.toID UniqueToGroups)
                             )
     |> PeptideParamHandler.addValue "yes";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AmnoAcidModification)).Value
+        (TermSymbol.toID AmnoAcidModification)
                             )
     |> PeptideParamHandler.addValue "yes"; 
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Mass)).Value
+        (TermSymbol.toID Mass)
                             )
     |> PeptideParamHandler.addValue "1469.6761";
     PeptideParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MonoIsotopicMass)).Value
+        (TermSymbol.toID MonoIsotopicMass)
                                                 )
     |> PeptideParamHandler.addValue "1469.6761";
     ]
@@ -1700,106 +1702,106 @@ let peptideMOxidized =
         PeptideHandler.init("AAIEASFGSVDEM(1)K", "119MOxidized")
         |> PeptideHandler.addModification modificationMOxidized
         |> PeptideHandler.addDetails peptideParamMOxidized
-        |> PeptideHandler.addMzIdentMLDocument mzIdentMLDocument
+        |> PeptideHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let spectrumidentificationItemParamPeptideMOxidized =
     [
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PosteriorErrorProbability)).Value
+    //    (TermSymbol.toID PosteriorErrorProbability)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "6,36E-25";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID AndromedaScore)).Value
+        (TermSymbol.toID AndromedaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "111.12";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IdentificationType)).Value
+    //    (TermSymbol.toID IdentificationType)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "By MS/MS";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+    //    (TermSymbol.toID TotalXIC)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "167790";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+    //    (TermSymbol.toID MSMSCount)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "14";
     //SpectrumIdentificationItemParamHandler.init(
-    //    (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumber)).Value
+    //    (TermSymbol.toID MSMSScanNumber)
     //                                            )
     //|> SpectrumIdentificationItemParamHandler.addValue "12427";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTime)).Value
+        (TermSymbol.toID RetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "21.489"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID CalibratedRetentionTime)).Value
+        (TermSymbol.toID CalibratedRetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "21.372"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DeltaScore)).Value
+        (TermSymbol.toID DeltaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "100.69";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DetectionType)).Value
+        (TermSymbol.toID DetectionType)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "MULTI";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UncalibratedMZ)).Value
+        (TermSymbol.toID UncalibratedMZ)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "735.8439"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MZ)).Value;
+        (TermSymbol.toID MZ);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FWHM)).Value
+        (TermSymbol.toID FWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "NAN";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfDataPoints)).Value
+        (TermSymbol.toID NumberOfDataPoints)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "24";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+        (TermSymbol.toID ScanNumber)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "10";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfIsotopicPeaks)).Value
+        (TermSymbol.toID NumberOfIsotopicPeaks)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "4";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PIF)).Value
+        (TermSymbol.toID PIF)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "0.8281062";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassDefect)).Value
+        (TermSymbol.toID MassDefect)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "-0.039976308";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MassPrecision)).Value
+        (TermSymbol.toID MassPrecision)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "1.815383"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MzDeltaScore)).Value
+        (TermSymbol.toID MzDeltaScore)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "735.8475942";
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionLength)).Value
+        (TermSymbol.toID RetentionLength)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "20.649"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RetentionTimeFWHM)).Value
+        (TermSymbol.toID RetentionTimeFWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "7.509"
     |> SpectrumIdentificationItemParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Minute)).Value;
+        (TermSymbol.toID Minute);
     ]
 
 let valueIntensitiesMOxized =
@@ -1865,10 +1867,10 @@ let fragmentArrayMOXidized1 =
 let ionTypeParamMOxidized1 =
     [
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+        (TermSymbol.toID Fragment)
                             );
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
+        (TermSymbol.toID YIon)
                             )
     |> IonTypeParamHandler.addValue "y3";
     ]
@@ -1904,10 +1906,10 @@ let fragmentArrayMOXidized2 =
 let ionTypeParamMOxidized2 =
     [
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Fragment)).Value
+        (TermSymbol.toID Fragment)
                             );
     IonTypeParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID YIon)).Value
+        (TermSymbol.toID YIon)
                             )
     |> IonTypeParamHandler.addValue "y4";
     ]
@@ -1940,13 +1942,13 @@ let peptideEvidences =
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument;
+    |> PeptideEvidenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
     PeptideEvidenceHandler.init(
         dbSequence, peptideMOxidized
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> PeptideEvidenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
     ]
 
 let peptideHypothesisUnModified =
@@ -1964,13 +1966,13 @@ let peptideHypothesisMOxidized =
 let proteinDetectionHypothesisParams =
     [
     ProteinDetectionHypothesisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinDescription)).Value
+        (TermSymbol.toID ProteinDescription)
                                                 )
     |> ProteinDetectionHypothesisParamHandler.addValue 
         ">Cre02.g096150.t1.2 Mn superoxide dismutase ALS=MSD1 DBV=JGI5.5 GN=MSD1 
         OS=Chlamydomonas reinhardtii SV=2 TOU=Cre"
     ProteinDetectionHypothesisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DistinctPeptideSequences)).Value
+        (TermSymbol.toID DistinctPeptideSequences)
                                                 )
     |> ProteinDetectionHypothesisParamHandler.addValue "TRUE";
     ]
@@ -1980,88 +1982,87 @@ let proteinDetectionHypothesis =
         true, dbSequence, [peptideHypothesisUnModified; peptideHypothesisMOxidized], "Cre02.g096150.t1.2", "Cre02.g096150.t1.2"
                                             )
     |> ProteinDetectionHypothesisHandler.addDetails proteinDetectionHypothesisParams
-    |> ProteinDetectionHypothesisHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let proteinAmbiguousGroupsParams =
     [
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MajorProteinIDs)).Value
+        (TermSymbol.toID MajorProteinIDs)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2";  
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfProteins)).Value
+        (TermSymbol.toID NumberOfProteins)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "1";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Peptides)).Value
+        (TermSymbol.toID Peptides)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "6";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID RazorAndUniquePeptides)).Value
+        (TermSymbol.toID RazorAndUniquePeptides)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "6";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniquePeptides)).Value
+        (TermSymbol.toID UniquePeptides)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "6";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceCoverage)).Value
+        (TermSymbol.toID SequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
+        (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueAndRazorSequenceCoverage)).Value
+        (TermSymbol.toID UniqueAndRazorSequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
+        (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueSequenceCoverage)).Value
+        (TermSymbol.toID UniqueSequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
+        (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MolecularWeight)).Value
+        (TermSymbol.toID MolecularWeight)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "23.9"
     |> ProteinAmbiguityGroupParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Percentage)).Value;
+        (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLength)).Value
+        (TermSymbol.toID SequenceLength)
                                           )
     |> ProteinAmbiguityGroupParamHandler.addValue "218";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SequenceLengths)).Value
+        (TermSymbol.toID SequenceLengths)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "218";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID QValue)).Value
+        (TermSymbol.toID QValue)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "0";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+        (TermSymbol.toID TotalXIC)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "1335100";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingProtein)).Value
+        (TermSymbol.toID LeadingProtein)
                                                )
     |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID LeadingRazorProtein)).Value
+        (TermSymbol.toID LeadingRazorProtein)
                                                )
     |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2"
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PSMFDR)).Value
+        (TermSymbol.toID PSMFDR)
                                         )
     |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ProteinFDR)).Value
+        (TermSymbol.toID ProteinFDR)
                                         )
     |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
     ProteinAmbiguityGroupParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SideFDR)).Value
+        (TermSymbol.toID SideFDR)
                                         )
     |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
     ]
@@ -2074,7 +2075,7 @@ let proteinAmbiguousGroups =
 
 let spectrumIDFormat =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MultipleIDs)).Value
+        (TermSymbol.toID MultipleIDs)
                         )
 
 let spectradata =
@@ -2092,11 +2093,11 @@ let spectradata =
 let organizations =
     [
     OrganizationHandler.init(name="TuKL")
-    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
     OrganizationHandler.init(name="BioTech")
-    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
     OrganizationHandler.init(name="CSB")
-    |> OrganizationHandler.addMzIdentMLDocument mzIdentMLDocument;
+    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
     ]
 
 let person =
@@ -2104,22 +2105,16 @@ let person =
     |> PersonHandler.addFirstName "Patrick"
     |> PersonHandler.addLastName "Blume"
     |> PersonHandler.addOrganizations organizations
-    |> PersonHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> PersonHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let role =
-    CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext "MS:1001267").Value
-                       )
+    CVParamHandler.init("MS:1001267")
 
 let contactRole =
-    ContactRoleHandler.init(
-        person, role
-                           )
+    ContactRoleHandler.init(person, role)
 
 let softwareName =
-    CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxQuant)).Value
-                        )
+    CVParamHandler.init((TermSymbol.toID MaxQuant))
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init(softwareName)
@@ -2127,73 +2122,73 @@ let analysisSoftware =
 
 let searchType =
     CVParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSSearch)).Value
+        (TermSymbol.toID MSMSSearch)
                         )
 
 let searchModificationParam =
     [
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NeutralFragmentLoss)).Value
+        (TermSymbol.toID NeutralFragmentLoss)
                             )
     |> SearchModificationParamHandler.addValue "None";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Oxidation)).Value
+        (TermSymbol.toID Oxidation)
                             )
     |> SearchModificationParamHandler.addValue "Methionine";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+        (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "20 for FTMS"
     |> SearchModificationParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+        (TermSymbol.toID TopPeakPer100Da)
                                         )
     |> SearchModificationParamHandler.addValue "12 for FTMS";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+        (TermSymbol.toID MSMSDeisotoping)
                                         )
     |> SearchModificationParamHandler.addValue "TRUE for FTMS";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+        (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "0.5 for ITMS"
     |> SearchModificationParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+        (TermSymbol.toID TopPeakPer100Da)
                                         )
     |> SearchModificationParamHandler.addValue "8 for ITMS";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+        (TermSymbol.toID MSMSDeisotoping)
                                         )
     |> SearchModificationParamHandler.addValue "FALSE for ITMS";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+        (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "40 for TOF"
     |> SearchModificationParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+        (TermSymbol.toID TopPeakPer100Da)
                                         )
     |> SearchModificationParamHandler.addValue "10 for TOF";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+        (TermSymbol.toID MSMSDeisotoping)
                                         )
     |> SearchModificationParamHandler.addValue "TRUE for TOF";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSTolerance)).Value
+        (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "0.5 for Unknown"
     |> SearchModificationParamHandler.addUnit
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TopPeakPer100Da)).Value
+        (TermSymbol.toID TopPeakPer100Da)
                                         )
     |> SearchModificationParamHandler.addValue "8 for Unknown";
     SearchModificationParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSDeisotoping)).Value
+        (TermSymbol.toID MSMSDeisotoping)
                                         )
     |> SearchModificationParamHandler.addValue "False for Unknown";
     ]
@@ -2211,27 +2206,27 @@ let searchModificationParams =
 let threshold =
     [
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScoreUnmodifiedPeptides)).Value
+        (TermSymbol.toID MinScoreUnmodifiedPeptides)
                                 )
     |> ThresholdParamHandler.addValue "0";
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScoreModifiedPeptides)).Value
+        (TermSymbol.toID MinScoreModifiedPeptides)
                                 )
     |> ThresholdParamHandler.addValue "40";
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinPeptideLength)).Value
+        (TermSymbol.toID MinPeptideLength)
                                 )
     |> ThresholdParamHandler.addValue "6";
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinDeltaScoreUnmod)).Value
+        (TermSymbol.toID MinDeltaScoreUnmod)
                                 )
     |> ThresholdParamHandler.addValue "0";
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinDeltaScoreMod)).Value
+        (TermSymbol.toID MinDeltaScoreMod)
                                 )
     |> ThresholdParamHandler.addValue "6";
     ThresholdParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinPepUnique)).Value
+        (TermSymbol.toID MinPepUnique)
                                 )
     |> ThresholdParamHandler.addValue "0";
     ]
@@ -2239,11 +2234,11 @@ let threshold =
 let additionalSearchParams =
     [
     AdditionalSearchParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DecoyMode)).Value
+        (TermSymbol.toID DecoyMode)
                                         )
     |> AdditionalSearchParamHandler.addValue "revert";
     AdditionalSearchParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Contaminants)).Value
+        (TermSymbol.toID Contaminants)
                                         )
     |> AdditionalSearchParamHandler.addValue "TRUE";
     ]
@@ -2251,51 +2246,51 @@ let additionalSearchParams =
 let fragmentTolerance =
     [
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+        (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [ppm]"
                             )
     |> FragmentToleranceParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+        (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [ppm]"
                             )
     |> FragmentToleranceParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Ppm)).Value;
+        (TermSymbol.toID Ppm);
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceUpperLimit)).Value,
+        (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [Da]"
                             )
     |> FragmentToleranceParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     FragmentToleranceParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID SearchToleranceLowerLimit)).Value,
+        (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [Da]"
                             )
     |> FragmentToleranceParamHandler.addUnit 
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID Dalton)).Value;
+        (TermSymbol.toID Dalton);
     ]
 
 let analysisParams =
     [
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptidesForProteinQuantification)).Value
+        (TermSymbol.toID PeptidesForProteinQuantification)
                                                     )
     |> AnalysisParamHandler.addValue "Razor";
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID DiscardUnmodifiedPeptide)).Value
+        (TermSymbol.toID DiscardUnmodifiedPeptide)
                                                     )
     |> AnalysisParamHandler.addValue "TRUE";
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinRatioCount)).Value
+        (TermSymbol.toID MinRatioCount)
                                                     )
     |> AnalysisParamHandler.addValue "2";
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UseDeltaScores)).Value
+        (TermSymbol.toID UseDeltaScores)
                                                     )
     |> AnalysisParamHandler.addValue "FALSE";
     AnalysisParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxQuant)).Value
+        (TermSymbol.toID MaxQuant)
                                                     );
     ]
 
@@ -2304,7 +2299,7 @@ let proteinDetectionProtocol =
         analysisSoftware, threshold
                                         )
     |> ProteinDetectionProtocolHandler.addAnalysisParams analysisParams
-    |> ProteinDetectionProtocolHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> ProteinDetectionProtocolHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let spectrumIdentificationProtocol =
     SpectrumIdentificationProtocolHandler.init(
@@ -2314,243 +2309,243 @@ let spectrumIdentificationProtocol =
     |> SpectrumIdentificationProtocolHandler.addModificationParams searchModificationParams
     |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParams additionalSearchParams
     |> SpectrumIdentificationProtocolHandler.addFragmentTolerances fragmentTolerance
-    |> SpectrumIdentificationProtocolHandler.addMzIdentMLDocument mzIdentMLDocument
+    |> SpectrumIdentificationProtocolHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let spectrumIdentificationResultParamUnModified =
     [
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakIntension)).Value
+        (TermSymbol.toID BasePeakIntension)
                                                     )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ElapsedTime)).Value
+        (TermSymbol.toID ElapsedTime)
                                                     )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
+        (TermSymbol.toID MinScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "15077";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
+        (TermSymbol.toID MaxScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "15329";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
+        (TermSymbol.toID PeptideScore)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "105.0287018";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+        (TermSymbol.toID TotalXIC)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "25278";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID XICAreas)).Value
+        (TermSymbol.toID XICAreas)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0;3563;15589;27011;28600;27211;19809;14169;10127;6641;1399;1375;0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+        (TermSymbol.toID MSMSCount)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
+        (TermSymbol.toID MSMSScanNumbers)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "15159";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
+        (TermSymbol.toID MSMSIsotopIndices)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+        (TermSymbol.toID ScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "15159";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
+        (TermSymbol.toID IonInjectionTime)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
+        (TermSymbol.toID TotalIonCurrent)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "92047";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
+        (TermSymbol.toID FilteredPeaks)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "135";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
+        (TermSymbol.toID ParentIntensityFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.8484042";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+        (TermSymbol.toID FractionOfTotalSpectrum)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.001671316";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
+        (TermSymbol.toID BasePeakFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.07051102";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
+        (TermSymbol.toID PrecursorFullScanNumbers)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "15140";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
+        (TermSymbol.toID PrecursorIntensity)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "10131";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
+        (TermSymbol.toID PrecursorApexFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.905362";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
+        (TermSymbol.toID PrecursorApexOffset)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "-2";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
+        (TermSymbol.toID PrecursorApexOffsetTime)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.06315041";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
+        (TermSymbol.toID ScanEventNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "19";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
+        (TermSymbol.toID ScoreDifference)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "NaN";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
+        (TermSymbol.toID NumberOfMatches)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "26";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
+        (TermSymbol.toID IntensityCoverage)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "0.5504808";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
+        (TermSymbol.toID PeakCoverage)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "0.1851852";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
+        (TermSymbol.toID ETDIdentificationType)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "Unknown";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+        (TermSymbol.toID UniqueToProtein)
                                                )
     ]
 
 let spectrumIdentificationResultParamMOxidized =
     [
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakIntension)).Value
+        (TermSymbol.toID BasePeakIntension)
                                                     )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ElapsedTime)).Value
+        (TermSymbol.toID ElapsedTime)
                                                     )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MinScanNumber)).Value
+        (TermSymbol.toID MinScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "12116";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MaxScanNumber)).Value
+        (TermSymbol.toID MaxScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "12347";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeptideScore)).Value
+        (TermSymbol.toID PeptideScore)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "69.04515839";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalXIC)).Value
+        (TermSymbol.toID TotalXIC)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "25120";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID XICAreas)).Value
+        (TermSymbol.toID XICAreas)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0;3731;6755;24524;24360;18177;11825;4543;4102.5;3066;2497;0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSCount)).Value
+        (TermSymbol.toID MSMSCount)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSScanNumbers)).Value
+        (TermSymbol.toID MSMSScanNumbers)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "12193";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID MSMSIsotopIndices)).Value
+        (TermSymbol.toID MSMSIsotopIndices)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanNumber)).Value
+        (TermSymbol.toID ScanNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "12193";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IonInjectionTime)).Value
+        (TermSymbol.toID IonInjectionTime)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID TotalIonCurrent)).Value
+        (TermSymbol.toID TotalIonCurrent)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "71250";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FilteredPeaks)).Value
+        (TermSymbol.toID FilteredPeaks)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "157";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ParentIntensityFraction)).Value
+        (TermSymbol.toID ParentIntensityFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.8028493";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID FractionOfTotalSpectrum)).Value
+        (TermSymbol.toID FractionOfTotalSpectrum)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.002043774";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID BasePeakFraction)).Value
+        (TermSymbol.toID BasePeakFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0.04564729";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorFullScanNumbers)).Value
+        (TermSymbol.toID PrecursorFullScanNumbers)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "12179";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorIntensity)).Value
+        (TermSymbol.toID PrecursorIntensity)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "10056";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexFraction)).Value
+        (TermSymbol.toID PrecursorApexFraction)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "1";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffset)).Value
+        (TermSymbol.toID PrecursorApexOffset)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PrecursorApexOffsetTime)).Value
+        (TermSymbol.toID PrecursorApexOffsetTime)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "0";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScanEventNumber)).Value
+        (TermSymbol.toID ScanEventNumber)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "14";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ScoreDifference)).Value
+        (TermSymbol.toID ScoreDifference)
                                                 )
     |> SpectrumIdentificationResultParamHandler.addValue "69.045";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID NumberOfMatches)).Value
+        (TermSymbol.toID NumberOfMatches)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "27";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID IntensityCoverage)).Value
+        (TermSymbol.toID IntensityCoverage)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "0.4059861";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID PeakCoverage)).Value
+        (TermSymbol.toID PeakCoverage)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "0.1719745";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID ETDIdentificationType)).Value
+        (TermSymbol.toID ETDIdentificationType)
                             )
     |> SpectrumIdentificationResultParamHandler.addValue "Unknown";
     SpectrumIdentificationResultParamHandler.init(
-        (TermHandler.tryFindByID sqliteMzIdentMLContext (TermIDByName.toID UniqueToProtein)).Value
+        (TermSymbol.toID UniqueToProtein)
                                                )
     ]
 
@@ -2578,7 +2573,7 @@ let spectrumIdentification =
     SpectrumIdentificationHandler.init(
         spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, [searchDatabase]
                                         )
-    |>SpectrumIdentificationHandler.addMzIdentMLDocument mzIdentMLDocument
+    |>SpectrumIdentificationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let proteinDetectionList =
     ProteinDetectionListHandler.init()
@@ -2588,12 +2583,10 @@ let proteinDetection =
     ProteinDetectionHandler.init(
         proteinDetectionList,proteinDetectionProtocol, [spectrumIdentificationList]
                                 )
-    |> ProteinDetectionHandler.addMzIdentMLDocument mzIdentMLDocument
             
 let analysisData =
     AnalysisDataHandler.init([spectrumIdentificationList])
     |> AnalysisDataHandler.addProteinDetectionList proteinDetectionList
-    |> AnalysisDataHandler.addMzIdentMLDocument mzIdentMLDocument
 
 let sourceFiles =
     [SourceFileHandler.init("local", fileFormat2, name="20170518 TM FSconc3009"); SourceFileHandler.init("local", fileFormat3, name="D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta")]
@@ -2607,7 +2600,9 @@ let provider =
     ProviderHandler.init()
     |> ProviderHandler.addContactRole contactRole
     |> ProviderHandler.addAnalysisSoftware analysisSoftware
-    |> ProviderHandler.addMzIdentMLDocument mzIdentMLDocument
+
+let auditCollection =
+    AuditCollectionHandler.init([person], organizations)
 
 let finalMzIdentMLDocument =
     mzIdentMLDocument
@@ -2623,8 +2618,7 @@ let finalMzIdentMLDocument =
     |> MzIdentMLDocumentHandler.addAnalysisData analysisData
     |> MzIdentMLDocumentHandler.addInputs inputs
     |> MzIdentMLDocumentHandler.addProvider provider
-    |> MzIdentMLDocumentHandler.addOrganizations organizations
-    |> MzIdentMLDocumentHandler.addPerson person
+    |> MzIdentMLDocumentHandler.addAuditCollection auditCollection
     |> MzIdentMLDocumentHandler.addToContext sqliteMzIdentMLContext
 
 sqliteMzIdentMLContext.SaveChanges()
