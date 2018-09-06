@@ -223,7 +223,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Term) =
-                TermHandler.addToContext dbContext item |> ignore
+                TermHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
         
         type OntologyHandler =
@@ -281,20 +281,22 @@ module InsertStatements =
             ///Initializes a cvparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new CVParam(
                             id', 
                             value', 
-                            term, 
-                            unit', 
+                            null,
+                            fkTerm,
+                            null,
+                            fkUnit', 
                             Nullable(DateTime.Now)
                            )
 
@@ -304,10 +306,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:CVParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:CVParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
@@ -383,27 +385,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:CVParam) =
-                CVParamHandler.addToContext dbContext item |> ignore
+                CVParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type OrganizationParamHandler =
             ///Initializes a organizationparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new OrganizationParam(
                                       id', 
                                       value', 
-                                      term, 
-                                      unit', 
+                                      null,
+                                      fkTerm,
+                                      null,
+                                      fkUnit', 
                                       Nullable(DateTime.Now)
                                      )
 
@@ -413,10 +417,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:OrganizationParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:OrganizationParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -492,27 +496,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:OrganizationParam) =
-                OrganizationParamHandler.addToContext dbContext item |> ignore
+                OrganizationParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PersonParamHandler =
             ///Initializes a personparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PersonParam(
                                 id', 
                                 value', 
-                                term, 
-                                unit', 
+                                null,
+                                fkTerm,
+                                null,
+                                fkUnit', 
                                 Nullable(DateTime.Now)
                                )
 
@@ -522,11 +528,11 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (param:PersonParam) =
-                param.Unit <- unit
-                param
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:PersonParam) =
+                table.UnitID <- fkUnit
+                table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -601,46 +607,48 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PersonParam) =
-                PersonParamHandler.addToContext dbContext item |> ignore
+                PersonParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
-        type AnalysisSoftwareParamHandler =
-            ///Initializes a analysisSoftwareParam-object with at least all necessary parameters.
+        type SoftwareParamParamHandler =
+            ///Initializes a softwareParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
-                new AnalysisSoftwareParam(
-                                          id', 
-                                          value', 
-                                          term, 
-                                          unit', 
-                                          Nullable(DateTime.Now)
-                                         )
+                new SoftwareParam(
+                                  id', 
+                                  value', 
+                                  null,
+                                  fkTerm,
+                                  null,
+                                  fkUnit', 
+                                  Nullable(DateTime.Now)
+                                 )
 
             ///Replaces value of existing object with new one.
             static member addValue
-                (value:string) (param:AnalysisSoftwareParam) =
+                (value:string) (param:SoftwareParam) =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:AnalysisSoftwareParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:SoftwareParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
-                       for i in dbContext.AnalysisSoftwareParam.Local do
+                       for i in dbContext.SoftwareParam.Local do
                            if i.ID=id
                               then select (i, i.Term, i.Unit)
                       }
@@ -649,7 +657,7 @@ module InsertStatements =
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
                             query {
-                                   for i in dbContext.AnalysisSoftwareParam do
+                                   for i in dbContext.SoftwareParam do
                                        if i.ID=id
                                           then select (i, i.Term, i.Unit)
                                   }
@@ -664,7 +672,7 @@ module InsertStatements =
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
-                       for i in dbContext.AnalysisSoftwareParam.Local do
+                       for i in dbContext.SoftwareParam.Local do
                            if i.Term.Name=name
                               then select (i, i.Term, i.Unit)
                       }
@@ -673,7 +681,7 @@ module InsertStatements =
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
                             query {
-                                   for i in dbContext.AnalysisSoftwareParam do
+                                   for i in dbContext.SoftwareParam do
                                        if i.Term.Name=name
                                           then select (i, i.Term, i.Unit)
                                   }
@@ -686,16 +694,16 @@ module InsertStatements =
                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
-            static member private hasEqualFieldValues (item1:AnalysisSoftwareParam) (item2:AnalysisSoftwareParam) =
+            static member private hasEqualFieldValues (item1:SoftwareParam) (item2:SoftwareParam) =
                 item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
-            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
-                    AnalysisSoftwareParamHandler.tryFindByTermName dbContext item.Term.Name
+            static member addToContext (dbContext:MzQuantML) (item:SoftwareParam) =
+                    SoftwareParamParamHandler.tryFindByTermName dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
-                                                                 |> Seq.map (fun organization -> match AnalysisSoftwareParamHandler.hasEqualFieldValues organization item with
+                                                                 |> Seq.map (fun organization -> match SoftwareParamParamHandler.hasEqualFieldValues organization item with
                                                                                                  |true -> true
                                                                                                  |false -> false
                                                                             )
@@ -709,28 +717,30 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftwareParam) =
-                AnalysisSoftwareParamHandler.addToContext dbContext item |> ignore
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:SoftwareParam) =
+                SoftwareParamParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SearchDatabaseParamHandler =
             ///Initializes a searchDataBaseParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SearchDatabaseParam(
                                         id', 
                                         value', 
-                                        term, 
-                                        unit', 
+                                        null,
+                                        fkTerm,
+                                        null,
+                                        fkUnit', 
                                         Nullable(DateTime.Now)
                                        )
 
@@ -740,10 +750,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:SearchDatabaseParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:SearchDatabaseParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -819,27 +829,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-                SearchDatabaseParamHandler.addToContext dbContext item |> ignore
+                SearchDatabaseParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type RawFileParamHandler =
             ///Initializes a rawFilePAram-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new RawFileParam(
                                  id', 
                                  value', 
-                                 term, 
-                                 unit', 
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -849,10 +861,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:RawFileParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:RawFileParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -928,27 +940,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFileParam) =
-                RawFileParamHandler.addToContext dbContext item |> ignore
+                RawFileParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type AssayParamHandler =
             ///Initializes a assayParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new AssayParam(
                                id', 
                                value', 
-                               term, 
-                               unit', 
+                               null,
+                               fkTerm,
+                               null,
+                               fkUnit', 
                                Nullable(DateTime.Now)
                               )
 
@@ -958,10 +972,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:AssayParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:AssayParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1037,27 +1051,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:AssayParam) =
-                AssayParamHandler.addToContext dbContext item |> ignore
+                AssayParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type StudyVariableParamHandler =
             ///Initializes a studyVariableParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new StudyVariableParam(
                                        id', 
                                        value', 
-                                       term, 
-                                       unit', 
+                                       null,
+                                       fkTerm,
+                                       null,
+                                       fkUnit', 
                                        Nullable(DateTime.Now)
                                       )
 
@@ -1067,10 +1083,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:StudyVariableParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:StudyVariableParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1146,27 +1162,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariableParam) =
-                StudyVariableParamHandler.addToContext dbContext item |> ignore
+                StudyVariableParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type RatioCalculationParamHandler =
             ///Initializes a ratioCalculationParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new RatioCalculationParam(
                                           id', 
                                           value', 
-                                          term, 
-                                          unit', 
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1176,10 +1194,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:RatioCalculationParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:RatioCalculationParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1255,27 +1273,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:RatioCalculationParam) =
-                RatioCalculationParamHandler.addToContext dbContext item |> ignore
+                RatioCalculationParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type FeatureParamHandler =
             ///Initializes a featureParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new FeatureParam(
                                  id', 
                                  value', 
-                                 term, 
-                                 unit', 
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1285,10 +1305,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:FeatureParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:FeatureParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1364,27 +1384,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureParam) =
-                FeatureParamHandler.addToContext dbContext item |> ignore
+                FeatureParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SmallMoleculeParamHandler =
             ///Initializes a smallMoleculeParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SmallMoleculeParam(
                                        id', 
                                        value', 
-                                       term, 
-                                       unit', 
+                                       null,
+                                       fkTerm,
+                                       null,
+                                       fkUnit', 
                                        Nullable(DateTime.Now)
                                       )
 
@@ -1394,10 +1416,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:SmallMoleculeParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:SmallMoleculeParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1473,27 +1495,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeParam) =
-                SmallMoleculeParamHandler.addToContext dbContext item |> ignore
+                SmallMoleculeParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SmallMoleculeListParamHandler =
             ///Initializes a smallMoleculeListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SmallMoleculeListParam(
                                            id', 
                                            value', 
-                                           term, 
-                                           unit', 
+                                           null,
+                                           fkTerm,
+                                           null,
+                                           fkUnit', 
                                            Nullable(DateTime.Now)
                                           )
 
@@ -1503,10 +1527,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:SmallMoleculeListParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:SmallMoleculeListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1582,27 +1606,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeListParam) =
-                SmallMoleculeListParamHandler.addToContext dbContext item |> ignore
+                SmallMoleculeListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PeptideConsensusParamHandler =
             ///Initializes a peptideConsensusParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PeptideConsensusParam(
                                           id', 
                                           value', 
-                                          term, 
-                                          unit', 
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1612,10 +1638,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:PeptideConsensusParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:PeptideConsensusParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1691,27 +1717,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusParam) =
-                PeptideConsensusParamHandler.addToContext dbContext item |> ignore
+                PeptideConsensusParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinParamHandler =
             ///Initializes a proteinParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ProteinParam(
                                  id', 
                                  value', 
-                                 term, 
-                                 unit', 
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1721,10 +1749,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ProteinParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ProteinParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1800,27 +1828,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinParam) =
-                ProteinParamHandler.addToContext dbContext item |> ignore
+                ProteinParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinListParamHandler =
             ///Initializes a proteinListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ProteinListParam(
                                      id', 
                                      value', 
-                                     term, 
-                                     unit', 
+                                     null,
+                                     fkTerm,
+                                     null,
+                                     fkUnit', 
                                      Nullable(DateTime.Now)
                                     )
 
@@ -1830,10 +1860,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ProteinListParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ProteinListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1909,27 +1939,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinListParam) =
-                ProteinListParamHandler.addToContext dbContext item |> ignore
+                ProteinListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinGroupParamHandler =
             ///Initializes a proteinGroupParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ProteinGroupParam(
                                       id', 
                                       value', 
-                                      term, 
-                                      unit', 
+                                      null,
+                                      fkTerm,
+                                      null,
+                                      fkUnit', 
                                       Nullable(DateTime.Now)
                                      )
 
@@ -1939,10 +1971,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ProteinGroupParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ProteinGroupParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2018,27 +2050,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupParam) =
-                ProteinGroupParamHandler.addToContext dbContext item |> ignore
+                ProteinGroupParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinGroupListParamHandler =
             ///Initializes a proteinGroupListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ProteinGroupListParam(
                                           id', 
                                           value', 
-                                          term, 
-                                          unit', 
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -2048,10 +2082,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ProteinGroupListParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ProteinGroupListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2127,27 +2161,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupListParam) =
-                ProteinGroupListParamHandler.addToContext dbContext item |> ignore
+                ProteinGroupListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PeptideConsensusListParamHandler =
             ///Initializes a peptideConsensusListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PeptideConsensusListParam(
                                               id', 
                                               value', 
-                                              term, 
-                                              unit', 
+                                              null,
+                                              fkTerm,
+                                              null,
+                                              fkUnit', 
                                               Nullable(DateTime.Now)
                                              )
 
@@ -2157,10 +2193,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:PeptideConsensusListParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:PeptideConsensusListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2236,30 +2272,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusListParam) =
-                PeptideConsensusListParamHandler.addToContext dbContext item |> ignore
+                PeptideConsensusListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type AnalysisSummaryHandler =
             ///Initializes a peptideConsensusListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term               : Term,
+                    fkTerm             : string,
                     ?id                : string,
                     ?value             : string,
-                    ?unit              : Term,
-                    ?mzQuantMLDocument : MzQuantMLDocument
+                    ?fkUnit            : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'             = defaultArg value Unchecked.defaultof<string>
-                let unit'              = defaultArg unit Unchecked.defaultof<Term>
-                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkUnit'            = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new AnalysisSummary(
                                     id', 
                                     value', 
-                                    term, 
-                                    unit',
-                                    mzQuantMLDocument',
+                                    null,
+                                    fkTerm,
+                                    null,
+                                    fkUnit', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2269,16 +2304,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:AnalysisSummary) =
-                table.Unit <- unit
-                table
-
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:AnalysisSummary) =
-                table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:AnalysisSummary) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2286,18 +2315,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisSummary.Local do
                            if i.ID=id
-                              then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                              then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (analysisSummary, _, _, _) -> analysisSummary)
+                |> Seq.map (fun (analysisSummary, _, _) -> analysisSummary)
                 |> (fun analysisSummary -> 
                     if (Seq.exists (fun analysisSummary' -> analysisSummary' <> null) analysisSummary) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisSummary do
                                        if i.ID=id
-                                          then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                                          then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (analysisSummary, _, _, _) -> analysisSummary)
+                            |> Seq.map (fun (analysisSummary, _, _) -> analysisSummary)
                             |> (fun analysisSummary -> if (Seq.exists (fun analysisSummary' -> analysisSummary' <> null) analysisSummary) = false
                                                         then None
                                                         else Some (analysisSummary.Single())
@@ -2310,18 +2339,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisSummary.Local do
                            if i.Term.Name=name
-                              then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                              then select (i, i.Term, i.Unit)
                       }
-                |> Seq.map (fun (term, _, _, _) -> term)
+                |> Seq.map (fun (term, _, _) -> term)
                 |> (fun param -> 
                     if (Seq.exists (fun param' -> param' <> null) param) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisSummary do
                                        if i.Term.Name=name
-                                          then select (i, i.Term, i.Unit, i.MzQuantMLDocument)
+                                          then select (i, i.Term, i.Unit)
                                   }
-                            |> Seq.map (fun (term, _, _, _) -> term)
+                            |> Seq.map (fun (term, _, _) -> term)
                             |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
                                                 then None
                                                 else Some param
@@ -2354,27 +2383,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSummary) =
-                AnalysisSummaryHandler.addToContext dbContext item |> ignore
+                AnalysisSummaryHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinRefParamHandler =
             ///Initializes a peptideConsensusListParam-object with at least all necessary parameters.
             static member init
                 (
-                    term               : Term,
+                    fkTerm             : string,
                     ?id                : string,
                     ?value             : string,
-                    ?unit              : Term
+                    ?fkUnit            : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'             = defaultArg value Unchecked.defaultof<string>
-                let unit'              = defaultArg unit Unchecked.defaultof<Term> 
+                let fkUnit'            = defaultArg fkUnit Unchecked.defaultof<string> 
                     
                 new ProteinRefParam(
                                     id', 
                                     value', 
-                                    term, 
-                                    unit',
+                                    null,
+                                    fkTerm,
+                                    null,
+                                    fkUnit', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2384,10 +2415,10 @@ module InsertStatements =
                 param.Value <- value
                 param
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ProteinRefParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ProteinRefParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2463,57 +2494,57 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinRefParam) =
-                ProteinRefParamHandler.addToContext dbContext item |> ignore
+                ProteinRefParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
 //////////////////////////////////////////
 //End of paramHandlers//////////////////////////////////////////////
 //////////////////////////////////////////
 
-        type AnalysisSoftwareHandler =
+        type SoftwareHandler =
             ///Initializes a analysisSoftware-object with at least all necessary parameters.
             static member init
                 (
                     
-                    version            : string,
-                    ?id                : string,
-                    ?details           : seq<AnalysisSoftwareParam>,
-                    ?mzQuantMLDocument : MzQuantMLDocument
+                    version              : string,
+                    ?id                  : string,
+                    ?details             : seq<SoftwareParam>,
+                    ?fkMzQuantMLDocument : string
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let details'           = convertOptionToList details
-                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let details'             = convertOptionToList details
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
-                new AnalysisSoftware(
-                                     id', 
-                                     version, 
-                                     details',
-                                     mzQuantMLDocument',
-                                     Nullable(DateTime.Now)
-                                    )
+                new Software(
+                             id', 
+                             version, 
+                             details',
+                             fkMzQuantMLDocument',
+                             Nullable(DateTime.Now)
+                            )
 
-            ///Adds new analysisSoftwareParam to collection of enzymenames.
+            ///Adds new softwareParam to collection of enzymenames.
             static member addDetail
-                (analysisSoftwareParam:AnalysisSoftwareParam) (table:AnalysisSoftware) =
-                let result = table.Details <- addToList table.Details analysisSoftwareParam
+                (softwareParam:SoftwareParam) (table:Software) =
+                let result = table.Details <- addToList table.Details softwareParam
                 table
 
             ///Add new collection of analysisSoftwareParams to collection of enzymenames.
             static member addDetails
-                (analysisSoftwareParams:seq<AnalysisSoftwareParam>) (table:AnalysisSoftware) =
+                (analysisSoftwareParams:seq<SoftwareParam>) (table:Software) =
                 let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:AnalysisSoftware) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Software) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
-                       for i in dbContext.AnalysisSoftware.Local do
+                       for i in dbContext.Software.Local do
                            if i.ID=id
                               then select (i, i.Details)
                       }
@@ -2522,7 +2553,7 @@ module InsertStatements =
                     if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
                         then 
                             query {
-                                   for i in dbContext.AnalysisSoftware do
+                                   for i in dbContext.Software do
                                        if i.ID=id
                                           then select (i, i.Details)
                                   }
@@ -2537,7 +2568,7 @@ module InsertStatements =
             ///Tries to find a analysisSoftware-object in the context and database, based on its 2nd most unique identifier.
             static member tryFindByVersion (dbContext:MzQuantML) (version:string) =
                 query {
-                       for i in dbContext.AnalysisSoftware.Local do
+                       for i in dbContext.Software.Local do
                            if i.Version=version
                               then select (i, i.Details)
                       }
@@ -2546,7 +2577,7 @@ module InsertStatements =
                     if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
                         then 
                             query {
-                                   for i in dbContext.AnalysisSoftware do
+                                   for i in dbContext.Software do
                                        if i.Version=version
                                           then select (i, i.Details)
                                   }
@@ -2559,16 +2590,16 @@ module InsertStatements =
                    )
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
-            static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
+            static member private hasEqualFieldValues (item1:Software) (item2:Software) =
                 matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
-            static member addToContext (dbContext:MzQuantML) (item:AnalysisSoftware) =
-                    AnalysisSoftwareHandler.tryFindByVersion dbContext item.Version
+            static member addToContext (dbContext:MzQuantML) (item:Software) =
+                    SoftwareHandler.tryFindByVersion dbContext item.Version
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
-                                                                 |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
+                                                                 |> Seq.map (fun organization -> match SoftwareHandler.hasEqualFieldValues organization item with
                                                                                                  |true -> true
                                                                                                  |false -> false
                                                                             )
@@ -2582,8 +2613,8 @@ module InsertStatements =
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-            static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSoftware) =
-                AnalysisSoftwareHandler.addToContext dbContext item
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:Software) =
+                SoftwareHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SourceFileHandler =
@@ -2701,31 +2732,31 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SourceFile) =
-                SourceFileHandler.addToContext dbContext item
+                SourceFileHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type OrganizationHandler =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id                : string,
-                    ?name              : string,
-                    ?details           : seq<OrganizationParam>,
-                    ?parent            : string,
-                    ?mzQuantMLDocument : MzQuantMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?details             : seq<OrganizationParam>,
+                    ?parent              : string,
+                    ?fkMzQuantMLDocument : string
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'              = defaultArg name Unchecked.defaultof<string>
-                let details'           = convertOptionToList details
-                let parent'            = defaultArg parent Unchecked.defaultof<string>
-                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let details'             = convertOptionToList details
+                let parent'              = defaultArg parent Unchecked.defaultof<string>
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
                     
                 new Organization(
                                  id', 
                                  name', 
                                  details',  
                                  parent',
-                                 mzQuantMLDocument',
+                                 fkMzQuantMLDocument',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -2753,10 +2784,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:Organization) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Organization) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -2832,30 +2863,30 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Organization) =
-                OrganizationHandler.addToContext dbContext item |> ignore
+                OrganizationHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PersonHandler =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id                : string,
-                    ?name              : string,
-                    ?firstName         : string,
-                    ?midInitials       : string,
-                    ?lastName          : string,
-                    ?contactDetails    : seq<PersonParam>,
-                    ?organizations     : seq<Organization>,
-                    ?mzQuantMLDocument : MzQuantMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?firstName           : string,
+                    ?midInitials         : string,
+                    ?lastName            : string,
+                    ?contactDetails      : seq<PersonParam>,
+                    ?organizations       : seq<Organization>,
+                    ?fkMzQuantMLDocument : string
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'              = defaultArg name Unchecked.defaultof<string>
-                let firstName'         = defaultArg firstName Unchecked.defaultof<string>
-                let midInitials'       = defaultArg midInitials Unchecked.defaultof<string>
-                let lastName'          = defaultArg lastName Unchecked.defaultof<string>
-                let contactDetails'    = convertOptionToList contactDetails
-                let organizations'     = convertOptionToList organizations
-                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let firstName'           = defaultArg firstName Unchecked.defaultof<string>
+                let midInitials'         = defaultArg midInitials Unchecked.defaultof<string>
+                let lastName'            = defaultArg lastName Unchecked.defaultof<string>
+                let contactDetails'      = convertOptionToList contactDetails
+                let organizations'       = convertOptionToList organizations
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
                     
                 new Person(
                            id', 
@@ -2865,7 +2896,7 @@ module InsertStatements =
                            lastName', 
                            organizations',
                            contactDetails', 
-                           mzQuantMLDocument',
+                           fkMzQuantMLDocument',
                            Nullable(DateTime.Now)
                           )
 
@@ -2916,10 +2947,10 @@ module InsertStatements =
                 let result = table.Organizations <- addCollectionToList table.Organizations organizations
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:Person) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Person) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -2997,7 +3028,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Person) =
-                PersonHandler.addToContext dbContext item |> ignore
+                PersonHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ContactRoleHandler =
@@ -3090,31 +3121,28 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ContactRole) =
-                ContactRoleHandler.addToContext dbContext item |> ignore
+                ContactRoleHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProviderHandler =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id                : string,
-                    ?name              : string,
-                    ?analysisSoftware  : AnalysisSoftware,
-                    ?contactRole       : ContactRole,
-                    ?mzQuantMLDocument : MzQuantMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?analysisSoftware    : Software,
+                    ?contactRole         : ContactRole
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'              = defaultArg name Unchecked.defaultof<string>
-                let analysisSoftware'  = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
-                let contactRole'       = defaultArg contactRole Unchecked.defaultof<ContactRole>
-                let mzQuantMLDocument' = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let analysisSoftware'    = defaultArg analysisSoftware Unchecked.defaultof<Software>
+                let contactRole'         = defaultArg contactRole Unchecked.defaultof<ContactRole>
 
                 new Provider(
                              id', 
                              name', 
                              analysisSoftware', 
                              contactRole', 
-                             mzQuantMLDocument',
                              Nullable(DateTime.Now)
                             )
 
@@ -3126,8 +3154,8 @@ module InsertStatements =
 
             ///Replaces analysissoftware of existing object with new one.
             static member addAnalysisSoftware
-                (analysisSoftware:AnalysisSoftware) (table:Provider) =
-                table.AnalysisSoftware <- analysisSoftware
+                (analysisSoftware:Software) (table:Provider) =
+                table.Software <- analysisSoftware
                 table
 
             ///Replaces contactrole of existing object with new one.
@@ -3136,29 +3164,23 @@ module InsertStatements =
                 table.ContactRole <- contactRole
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:Provider) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
-                table
-
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.Provider.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                              then select (i, i.Software, i.ContactRole)
                       }
-                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> Seq.map (fun (provider, _, _) -> provider)
                 |> (fun provider -> 
                     if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                                          then select (i, i.Software, i.ContactRole)
                                   }
-                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> Seq.map (fun (provider, _, _) -> provider)
                             |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                                                 then None
                                                 else Some (provider.Single())
@@ -3171,18 +3193,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.Provider.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                              then select (i, i.Software, i.ContactRole)
                       }
-                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> Seq.map (fun (provider, _, _) -> provider)
                 |> (fun provider -> 
                     if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzQuantMLDocument)
+                                          then select (i, i.Software, i.ContactRole)
                                   }
-                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> Seq.map (fun (provider, _, _) -> provider)
                             |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                                                     then None
                                                     else Some provider
@@ -3192,8 +3214,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole && 
-               item1.MzQuantMLDocument=item2.MzQuantMLDocument 
+               item1.Software=item2.Software && item1.ContactRole=item2.ContactRole
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3216,7 +3237,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Provider) =
-                ProviderHandler.addToContext dbContext item
+                ProviderHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SearchDatabaseHandler =
@@ -3390,7 +3411,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SearchDatabase) =
-                SearchDatabaseHandler.addToContext dbContext item
+                SearchDatabaseHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type IdentificationFileHandler =
@@ -3536,7 +3557,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:IdentificationFile) =
-                IdentificationFileHandler.addToContext dbContext item
+                IdentificationFileHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type IdentificationRefHandler =
@@ -3632,7 +3653,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:IdentificationRef) =
-                IdentificationRefHandler.addToContext dbContext item
+                IdentificationRefHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MethodFileHandler =
@@ -3754,7 +3775,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MethodFile) =
-                MethodFileHandler.addToContext dbContext item
+                MethodFileHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type RawFileHandler =
@@ -3899,7 +3920,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFile) =
-                RawFileHandler.addToContext dbContext item
+                RawFileHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type RawFilesGroupHandler =
@@ -4016,7 +4037,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFilesGroup) =
-                RawFilesGroupHandler.addToContext dbContext item
+                RawFilesGroupHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type InputFilesHandler =
@@ -4028,8 +4049,7 @@ module InsertStatements =
                     ?methodFiles                 : seq<MethodFile>,
                     ?identificationFiles         : seq<IdentificationFile>,
                     ?searchDatabases             : seq<SearchDatabase>,
-                    ?sourceFiles                 : seq<SourceFile>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?sourceFiles                 : seq<SourceFile>
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let rawFilesGroups'              = convertOptionToList rawFilesGroups
@@ -4037,7 +4057,6 @@ module InsertStatements =
                 let identificationFiles'         = convertOptionToList identificationFiles
                 let searchDatabases'             = convertOptionToList searchDatabases
                 let sourceFiles'                 = convertOptionToList sourceFiles
-                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new InputFiles(
                                id', 
@@ -4046,7 +4065,6 @@ module InsertStatements =
                                identificationFiles',
                                searchDatabases',
                                sourceFiles',
-                               mzQuantMLDocument',
                                Nullable(DateTime.Now)
                               )
 
@@ -4098,12 +4116,6 @@ module InsertStatements =
             ///Adds a collection of sourceFiles to an existing object.
             static member addSourceFiles (details:seq<SourceFile>) (table:InputFiles) =
                 let result = table.SourceFiles <- addCollectionToList table.SourceFiles details
-                table
-
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:InputFiles) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a inputFiles-object in the context and database, based on its primary-key(ID).
@@ -4180,7 +4192,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:InputFiles) =
-                InputFilesHandler.addToContext dbContext item
+                InputFilesHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ModificationHandler =
@@ -4292,7 +4304,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Modification) =
-                ModificationHandler.addToContext dbContext item
+                ModificationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type AssayHandler =
@@ -4305,7 +4317,7 @@ module InsertStatements =
                     ?label                       : seq<Modification>,
                     ?identificationFile          : IdentificationFile,
                     ?details                     : seq<AssayParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -4313,7 +4325,7 @@ module InsertStatements =
                 let label'                       = convertOptionToList label
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
                 let details'                     = convertOptionToList details
-                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Assay(
                           id', 
@@ -4322,7 +4334,7 @@ module InsertStatements =
                           label', 
                           identificationFile', 
                           details',
-                          mzQuantMLDocument',
+                          fkMzQuantMLDocument',
                           Nullable(DateTime.Now)
                          )
 
@@ -4364,10 +4376,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:Assay) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Assay) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
@@ -4444,7 +4456,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Assay) =
-                AssayHandler.addToContext dbContext item
+                AssayHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type StudyVariableHandler =
@@ -4559,7 +4571,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariable) =
-                StudyVariableHandler.addToContext dbContext item
+                StudyVariableHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type RatioHandler =
@@ -4576,7 +4588,7 @@ module InsertStatements =
                     ?numeratorAS                 : Assay,
                     ?denominatorAS               : Assay,
                     ?ratioCalculation            : seq<RatioCalculationParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -4585,7 +4597,7 @@ module InsertStatements =
                 let numeratorAS'                 = defaultArg numeratorAS Unchecked.defaultof<Assay>
                 let denominatorAS'               = defaultArg denominatorAS Unchecked.defaultof<Assay>
                 let ratioCalculation'            = convertOptionToList ratioCalculation
-                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Ratio(
                           id', 
@@ -4597,7 +4609,7 @@ module InsertStatements =
                           ratioCalculation',
                           numeratorDatatype,
                           denominatorDatatype,
-                          mzQuantMLDocument',
+                          fkMzQuantMLDocument',
                           Nullable(DateTime.Now)
                          )
 
@@ -4641,10 +4653,10 @@ module InsertStatements =
                 let result = table.RatioCalculation <- addCollectionToList table.RatioCalculation ratioCalculationParams
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:Ratio) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Ratio) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
@@ -4723,7 +4735,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Ratio) =
-                RatioHandler.addToContext dbContext item
+                RatioHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ColumnHandler =
@@ -4818,7 +4830,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Column) =
-                ColumnHandler.addToContext dbContext item
+                ColumnHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type DataMatrixHandler =
@@ -4911,7 +4923,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:DataMatrix) =
-                DataMatrixHandler.addToContext dbContext item
+                DataMatrixHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type AssayQuantLayerHandler =
@@ -5008,7 +5020,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:AssayQuantLayer) =
-                AssayQuantLayerHandler.addToContext dbContext item
+                AssayQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type GlobalQuantLayerHandler =
@@ -5103,7 +5115,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:GlobalQuantLayer) =
-                GlobalQuantLayerHandler.addToContext dbContext item
+                GlobalQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MS2AssayQuantLayerHandler =
@@ -5200,7 +5212,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2AssayQuantLayer) =
-                MS2AssayQuantLayerHandler.addToContext dbContext item
+                MS2AssayQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type StudyVariableQuantLayerHandler =
@@ -5297,7 +5309,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:StudyVariableQuantLayer) =
-                StudyVariableQuantLayerHandler.addToContext dbContext item
+                StudyVariableQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type RatioQuantLayerHandler =
@@ -5392,7 +5404,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:RatioQuantLayer) =
-                RatioQuantLayerHandler.addToContext dbContext item
+                RatioQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProcessingMethodHandler =
@@ -5498,7 +5510,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProcessingMethod) =
-                ProcessingMethodHandler.addToContext dbContext item
+                ProcessingMethodHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type DataProcessingHandler =
@@ -5506,17 +5518,17 @@ module InsertStatements =
             static member init
                 (             
                     order                        : int,
-                    analysisSoftware             : AnalysisSoftware,
+                    analysisSoftware             : Software,
                     processingMethods            : seq<ProcessingMethod>,
                     ?id                          : string,
                     ?inputObjects                : string,
                     ?outputObjects               : string,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument           : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let inputObjects'                = defaultArg inputObjects Unchecked.defaultof<string>
                 let outputObjects'               = defaultArg outputObjects Unchecked.defaultof<string>
-                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'           = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new DataProcessing(
                                    id', 
@@ -5525,7 +5537,7 @@ module InsertStatements =
                                    inputObjects',
                                    outputObjects',
                                    processingMethods |> List,
-                                   mzQuantMLDocument',
+                                   fkMzQuantMLDocument',
                                    Nullable(DateTime.Now)
                                   )
 
@@ -5541,10 +5553,10 @@ module InsertStatements =
                 table.OutputObjects <- outputObjects
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:DataProcessing) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:DataProcessing) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
@@ -5552,7 +5564,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DataProcessing.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                              then select (i, i.Software, i.ProcessingMethods)
                       }
                 |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
                 |> (fun dataProcessing -> 
@@ -5561,7 +5573,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DataProcessing do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                                          then select (i, i.Software, i.ProcessingMethods)
                                   }
                             |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
                             |> (fun dataProcessing -> if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
@@ -5576,7 +5588,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DataProcessing.Local do
                            if i.Order=order
-                              then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                              then select (i, i.Software, i.ProcessingMethods)
                       }
                 |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
                 |> (fun dataProcessing -> 
@@ -5585,7 +5597,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DataProcessing do
                                        if i.Order=order
-                                          then select (i, i.AnalysisSoftware, i.ProcessingMethods)
+                                          then select (i, i.Software, i.ProcessingMethods)
                                   }
                             |> Seq.map (fun (dataProcessing, _, _) -> dataProcessing)
                             |> (fun dataProcessing -> if (Seq.exists (fun dataProcessing' -> dataProcessing' <> null) dataProcessing) = false
@@ -5597,7 +5609,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DataProcessing) (item2:DataProcessing) =
-                item1.AnalysisSoftware=item2.AnalysisSoftware && item1.InputObjects=item2.InputObjects &&
+                item1.Software=item2.Software && item1.InputObjects=item2.InputObjects &&
                 item1.OutputObjects=item2.OutputObjects && item1.ProcessingMethods=item2.ProcessingMethods
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -5621,7 +5633,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:DataProcessing) =
-                DataProcessingHandler.addToContext dbContext item
+                DataProcessingHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type DBIdentificationRefHandler =
@@ -5716,7 +5728,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:DBIdentificationRef) =
-                DBIdentificationRefHandler.addToContext dbContext item
+                DBIdentificationRefHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FeatureHandler =
@@ -5868,7 +5880,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Feature) =
-                FeatureHandler.addToContext dbContext item
+                FeatureHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SmallMoleculeHandler =
@@ -6011,7 +6023,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMolecule) =
-                SmallMoleculeHandler.addToContext dbContext item
+                SmallMoleculeHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SmallMoleculeListHandler =
@@ -6024,8 +6036,7 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<SmallMoleculeListParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?details                     : seq<SmallMoleculeListParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -6033,7 +6044,6 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new SmallMoleculeList(
                                       id',
@@ -6043,7 +6053,6 @@ module InsertStatements =
                                       studyVariableQuantLayer',
                                       ratioQuantLayer',
                                       details',
-                                      mzQuantMLDocument',
                                       Nullable(DateTime.Now)
                                      )
             
@@ -6090,12 +6099,6 @@ module InsertStatements =
             ///Adds a collection of smallMoleculeListParams to an existing object.
             static member addDetails (smallMoleculeListParams:seq<SmallMoleculeListParam>) (table:SmallMoleculeList) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeListParams
-                table
-
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:SmallMoleculeList) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a smallMoleculeList-object in the context and database, based on its primary-key(ID).
@@ -6173,7 +6176,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:SmallMoleculeList) =
-                SmallMoleculeListHandler.addToContext dbContext item
+                SmallMoleculeListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FeatureQuantLayerHandler =
@@ -6268,7 +6271,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureQuantLayer) =
-                FeatureQuantLayerHandler.addToContext dbContext item
+                FeatureQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MS2RatioQuantLayerHandler =
@@ -6365,7 +6368,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2RatioQuantLayer) =
-                MS2RatioQuantLayerHandler.addToContext dbContext item
+                MS2RatioQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MS2StudyVariableQuantLayerHandler =
@@ -6462,7 +6465,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MS2StudyVariableQuantLayer) =
-                MS2StudyVariableQuantLayerHandler.addToContext dbContext item
+                MS2StudyVariableQuantLayerHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FeatureListHandler =
@@ -6477,7 +6480,7 @@ module InsertStatements =
                     ?ms2StudyVariableQuantLayer  : seq<MS2StudyVariableQuantLayer>,
                     ?ms2RatioQuantLayer          : seq<MS2RatioQuantLayer>,
                     ?details                     : seq<FeatureListParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let featureQuantLayers'          = convertOptionToList featureQuantLayers
@@ -6485,7 +6488,7 @@ module InsertStatements =
                 let ms2StudyVariableQuantLayer'  = convertOptionToList ms2StudyVariableQuantLayer
                 let ms2RatioQuantLayer'          = convertOptionToList ms2RatioQuantLayer
                 let details'                     = convertOptionToList details
-                let mzQuantMLDocument'           = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new FeatureList(
                                 id', 
@@ -6496,7 +6499,7 @@ module InsertStatements =
                                 ms2StudyVariableQuantLayer',
                                 ms2RatioQuantLayer',
                                 details',
-                                mzQuantMLDocument',
+                                fkMzQuantMLDocument',
                                 Nullable(DateTime.Now)
                                )
             
@@ -6550,10 +6553,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details featureListParams
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:FeatureList) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:FeatureList) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
@@ -6639,7 +6642,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:FeatureList) =
-                FeatureListHandler.addToContext dbContext item
+                FeatureListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type EvidenceRefHandler =
@@ -6753,7 +6756,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:EvidenceRef) =
-                EvidenceRefHandler.addToContext dbContext item
+                EvidenceRefHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type PeptideConsensusHandler =
@@ -6903,7 +6906,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensus) =
-                PeptideConsensusHandler.addToContext dbContext item
+                PeptideConsensusHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinHandler =
@@ -7038,7 +7041,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:Protein) =
-                ProteinHandler.addToContext dbContext item
+                ProteinHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinListHandler =
@@ -7052,7 +7055,7 @@ module InsertStatements =
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
                     ?details                     : seq<ProteinListParam>
-                    //?mzQuantMLDocument           : MzQuantMLDocument
+                    //?fkMzQuantMLDocument           : string
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -7060,7 +7063,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                //let fkMzQuantMLDocument'              = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new ProteinList(
                                 id',
@@ -7070,7 +7073,7 @@ module InsertStatements =
                                 studyVariableQuantLayer',
                                 ratioQuantLayer',
                                 details',
-                                //mzQuantMLDocument',
+                                //fkMzQuantMLDocument
                                 Nullable(DateTime.Now)
                                )
             
@@ -7119,10 +7122,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            /////Replaces mzQuantMLDocument of existing object with new one.
-            //static member addMzQuantMLDocument
-            //    (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinList) =
-            //    let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            /////Replaces fkMzQuantMLDocument of existing object with new one.
+            //static member addFkMzQuantMLDocument
+            //    (fkMzQuantMLDocument:string) (table:ProteinList) =
+            //    let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
             //    table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
@@ -7200,7 +7203,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinList) =
-                ProteinListHandler.addToContext dbContext item
+                ProteinListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinRefHandler =
@@ -7306,7 +7309,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinRef) =
-                ProteinRefHandler.addToContext dbContext item
+                ProteinRefHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinGroupHandler =
@@ -7418,7 +7421,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroup) =
-                ProteinGroupHandler.addToContext dbContext item
+                ProteinGroupHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinGroupListHandler =
@@ -7431,8 +7434,7 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<ProteinGroupListParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?details                     : seq<ProteinGroupListParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -7440,7 +7442,6 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
 
                 new ProteinGroupList(
                                      id',
@@ -7450,7 +7451,6 @@ module InsertStatements =
                                      studyVariableQuantLayer',
                                      ratioQuantLayer',
                                      details',
-                                     mzQuantMLDocument',
                                      Nullable(DateTime.Now)
                                     )
             
@@ -7497,12 +7497,6 @@ module InsertStatements =
             ///Adds a collection of smallMoleculeParams to an existing object.
             static member addDetails (smallMoleculeParams:seq<ProteinGroupListParam>) (table:ProteinGroupList) =
                 let result = table.Details <- addCollectionToList table.Details smallMoleculeParams
-                table
-
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:ProteinGroupList) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
                 table
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its primary-key(ID).
@@ -7580,7 +7574,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:ProteinGroupList) =
-                ProteinGroupListHandler.addToContext dbContext item
+                ProteinGroupListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type PeptideConsensusListHandler =
@@ -7595,7 +7589,7 @@ module InsertStatements =
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
                     ?details                     : seq<PeptideConsensusListParam>,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -7603,7 +7597,7 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'            = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new PeptideConsensusList(
                                          id',
@@ -7614,7 +7608,7 @@ module InsertStatements =
                                          studyVariableQuantLayer',
                                          ratioQuantLayer',
                                          details',
-                                         mzQuantMLDocument',
+                                         fkMzQuantMLDocument',
                                          Nullable(DateTime.Now)
                                         )
             
@@ -7663,10 +7657,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details peptideConsensusListParams
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:PeptideConsensusList) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:PeptideConsensusList) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
@@ -7744,7 +7738,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:PeptideConsensusList) =
-                PeptideConsensusListHandler.addToContext dbContext item
+                PeptideConsensusListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
@@ -7763,7 +7757,7 @@ module InsertStatements =
                     ?title                       : string,
                     ?volume                      : string,
                     ?year                        : int,
-                    ?mzQuantMLDocument           : MzQuantMLDocument
+                    ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
@@ -7777,7 +7771,7 @@ module InsertStatements =
                 let title'                          = defaultArg title Unchecked.defaultof<string>
                 let volume'                         = defaultArg volume Unchecked.defaultof<string>
                 let year'                           = defaultArg year Unchecked.defaultof<int>
-                let mzQuantMLDocument'              = defaultArg mzQuantMLDocument Unchecked.defaultof<MzQuantMLDocument>
+                let fkMzQuantMLDocument'            = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new BiblioGraphicReference(
                                            id',
@@ -7792,7 +7786,7 @@ module InsertStatements =
                                            title',
                                            volume',
                                            Nullable(year'),
-                                           mzQuantMLDocument',
+                                           fkMzQuantMLDocument',
                                            Nullable(DateTime.Now)
                                           ) 
 
@@ -7851,10 +7845,10 @@ module InsertStatements =
                 table.Year <- Nullable(year)
                 table
 
-            ///Replaces mzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocument
-                (mzQuantMLDocument:MzQuantMLDocument) (table:BiblioGraphicReference) =
-                let result = table.MzQuantMLDocument <- mzQuantMLDocument
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:BiblioGraphicReference) =
+                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
@@ -7931,7 +7925,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:BiblioGraphicReference) =
-                BiblioGraphicReferenceHandler.addToContext dbContext item
+                BiblioGraphicReferenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MzQuantMLDocumentHandler =
@@ -7943,21 +7937,21 @@ module InsertStatements =
                     ?name                        : string,
                     ?creationDate                : DateTime,
                     ?version                     : string,
-                    ?provider                    : seq<Provider>,
+                    ?provider                    : Provider,
                     ?persons                     : seq<Person>,
                     ?organizations               : seq<Organization>,
-                    ?analysisSummary             : seq<AnalysisSummary>,
-                    ?inputFiles                  : seq<InputFiles>,
-                    ?analysisSoftwares           : seq<AnalysisSoftware>,
+                    ?analysisSummary             : AnalysisSummary,
+                    ?inputFiles                  : InputFiles,
+                    ?analysisSoftwares           : seq<Software>,
                     ?dataProcessings             : seq<DataProcessing>,
                     ?assays                      : seq<Assay>,
                     ?biblioGraphicReferences     : seq<BiblioGraphicReference>,
                     ?studyVariables              : seq<StudyVariable>,
                     ?ratios                      : seq<Ratio>,
-                    ?proteinGroupList            : seq<ProteinGroupList>,
+                    ?proteinGroupList            : ProteinGroupList,
                     ?proteinList                 : ProteinList,
                     ?peptideConsensusList        : seq<PeptideConsensusList>,
-                    ?smallMolecule               : seq<SmallMoleculeList>,
+                    ?smallMolecule               : SmallMoleculeList,
                     ?featureList                 : seq<FeatureList>
                     
                 ) =
@@ -7965,22 +7959,21 @@ module InsertStatements =
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let creationDate'                   = defaultArg creationDate Unchecked.defaultof<DateTime>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
-                let provider'                       = convertOptionToList provider
-                let provider'                       = convertOptionToList provider
+                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
                 let persons'                        = convertOptionToList persons
                 let organizations'                  = convertOptionToList organizations
-                let analysisSummary'                = convertOptionToList analysisSummary
-                let inputFiles'                     = convertOptionToList inputFiles
+                let analysisSummary'                = defaultArg analysisSummary Unchecked.defaultof<AnalysisSummary>
+                let inputFiles'                     = defaultArg inputFiles Unchecked.defaultof<InputFiles>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
                 let dataProcessings'                = convertOptionToList dataProcessings
                 let assays'                         = convertOptionToList assays
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 let studyVariables'                 = convertOptionToList studyVariables
                 let ratios'                         = convertOptionToList ratios
-                let proteinGroupList'               = convertOptionToList proteinGroupList
+                let proteinGroupList'               = defaultArg proteinGroupList Unchecked.defaultof<ProteinGroupList>
                 let proteinList'                    = defaultArg proteinList Unchecked.defaultof<ProteinList>
                 let peptideConsensusList'           = convertOptionToList peptideConsensusList
-                let smallMoleculeList'              = convertOptionToList smallMolecule
+                let smallMoleculeList'              = defaultArg smallMolecule Unchecked.defaultof<SmallMoleculeList>
                 let featureList'                    = convertOptionToList featureList
 
                 new MzQuantMLDocument(id', 
@@ -8021,16 +8014,16 @@ module InsertStatements =
                 table.Version <- version
                 table
 
-            ///Adds new provider to collection of enzymenames.
+            ///Replaces provider of existing object with new one.
             static member addProvider
                 (provider:Provider) (table:MzQuantMLDocument) =
-                table.Provider <- addToList table.Provider provider
+                table.Provider <- provider
                 table
 
-             ///Adds new proteinGroupList to collection of enzymenames.
+             ///Replaces proteinGroupList of existing object with new one.
             static member addProteinGroupList
                 (proteinGroupList:ProteinGroupList) (table:MzQuantMLDocument) =
-                table.ProteinGroupList <- addToList table.ProteinGroupList proteinGroupList
+                table.ProteinGroupList <- proteinGroupList
                 table 
 
             ///Replaces proteinList of existing object with new one.
@@ -8044,10 +8037,10 @@ module InsertStatements =
                 table.PeptideConsensusList <- addToList table.PeptideConsensusList peptideConsensusList
                 table
 
-            ///Adds new smallMoleculeList to collection of enzymenames.
+            ///Replaces smallMoleculeList of existing object with new one.
             static member addSmallMoleculeList
                 (smallMoleculeList:SmallMoleculeList) (table:MzQuantMLDocument) =
-                table.SmallMoleculeList <- addToList table.SmallMoleculeList smallMoleculeList
+                table.SmallMoleculeList <- smallMoleculeList
                 table
 
             ///Adds new featureList to collection of enzymenames.
@@ -8080,22 +8073,16 @@ module InsertStatements =
                 table.Organizations <- addCollectionToList table.Organizations organizations
                 table
 
-            ///Adds new analysisSummary to collection of enzymenames.
+            ///Replaces analysisSummary of existing object with new one.
             static member addAnalysisSummary
                 (analysisSummary:AnalysisSummary) (table:MzQuantMLDocument) =
-                table.AnalysisSummaries <- addToList table.AnalysisSummaries analysisSummary
+                table.AnalysisSummary <- analysisSummary
                 table
 
-            ///Add new collection of persons to collection of enzymenames.
-            static member addAnalysisSummaries
-                (analysisSummaries:seq<AnalysisSummary>) (table:MzQuantMLDocument) =
-                table.AnalysisSummaries <- addCollectionToList table.AnalysisSummaries analysisSummaries
-                table
-
-            ///Adds new inputFiles to collection of enzymenames.
+            ///Replaces inputFiles of existing object with new one.
             static member addInputFiles
                 (inputFiles:InputFiles) (table:MzQuantMLDocument) =
-                table.InputFiles <- addToList table.InputFiles inputFiles
+                table.InputFiles <- inputFiles
                 table
 
             ///Adds new biblioGraphicReference to collection of enzymenames.
@@ -8139,7 +8126,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                              then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
                                            i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
@@ -8152,7 +8139,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                          then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
                                                        i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
@@ -8171,7 +8158,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                              then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
                                            i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
@@ -8184,7 +8171,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSummaries, i.AnalysisSoftwares, i.InputFiles, i.FeatureList, i.Assays, 
+                                          then select (i, i.AnalysisSummary, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
                                                        i.DataProcessings, i.Provider, i.Persons, i.Organizations, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
@@ -8200,8 +8187,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzQuantMLDocument) (item2:MzQuantMLDocument) =
-                item1.AnalysisSummaries=item2.AnalysisSummaries && 
-                item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
+                item1.AnalysisSummary=item2.AnalysisSummary && 
+                item1.Softwares=item2.Softwares && 
                 item1.InputFiles=item2.InputFiles && 
                 item1.FeatureList=item2.FeatureList && 
                 item1.Assays=item2.Assays && 
@@ -8238,5 +8225,5 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MzQuantMLDocument) =
-                MzQuantMLDocumentHandler.addToContext dbContext item
+                MzQuantMLDocumentHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()

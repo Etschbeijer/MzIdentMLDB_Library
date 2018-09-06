@@ -224,7 +224,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Term) =
-                TermHandler.addToContext dbContext item |> ignore
+                TermHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
         
         type OntologyHandler =
@@ -282,20 +282,22 @@ module InsertStatements =
             ///Initializes a cvparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new CVParam(
                             id', 
-                            value', 
-                            term, 
-                            unit', 
+                            value',
+                            null,
+                            fkTerm,
+                            null,
+                            fkUnit', 
                             Nullable(DateTime.Now)
                            )
 
@@ -305,10 +307,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:CVParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:CVParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
@@ -384,27 +386,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:CVParam) =
-                CVParamHandler.addToContext dbContext item |> ignore
+                CVParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type OrganizationParamHandler =
             ///Initializes a organizationparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new OrganizationParam(
                                       id', 
-                                      value', 
-                                      term, 
-                                      unit', 
+                                      value',
+                                      null,
+                                      fkTerm,
+                                      null,
+                                      fkUnit', 
                                       Nullable(DateTime.Now)
                                      )
 
@@ -414,10 +418,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:OrganizationParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:OrganizationParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a organizationParam-object in the context and database, based on its primary-key(ID).
@@ -493,27 +497,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:OrganizationParam) =
-                OrganizationParamHandler.addToContext dbContext item |> ignore
+                OrganizationParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PersonParamHandler =
             ///Initializes a personparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PersonParam(
                                 id', 
-                                value', 
-                                term, 
-                                unit', 
+                                value',
+                                null,
+                                fkTerm,
+                                null,
+                                fkUnit', 
                                 Nullable(DateTime.Now)
                                )
 
@@ -523,10 +529,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:PersonParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:PersonParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a personParam-object in the context and database, based on its primary-key(ID).
@@ -602,27 +608,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PersonParam) =
-                PersonParamHandler.addToContext dbContext item |> ignore
+                PersonParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SampleParamHandler =
             ///Initializes a sampleparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SampleParam(
                                 id', 
-                                value', 
-                                term, 
-                                unit', 
+                                value',
+                                null,
+                                fkTerm,
+                                null,
+                                fkUnit', 
                                 Nullable(DateTime.Now)
                                )
 
@@ -632,10 +640,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SampleParam)  =
-                table.Unit <- unit
+                (fkUnit:string) (table:SampleParam)  =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find an sampleParam-object in the context and database, based on its primary-key(ID).
@@ -711,27 +719,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SampleParam) =
-                SampleParamHandler.addToContext dbContext item |> ignore
+                SampleParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ModificationParamHandler =
             ///Initializes a modificationparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ModificationParam(
                                       id', 
-                                      value', 
-                                      term, 
-                                      unit', 
+                                      value',
+                                      null,
+                                      fkTerm,
+                                      null,
+                                      fkUnit', 
                                       Nullable(DateTime.Now)
                                      )
 
@@ -741,10 +751,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ModificationParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ModificationParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a modificationParam-object in the context and database, based on its primary-key(ID).
@@ -820,27 +830,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ModificationParam) =
-                ModificationParamHandler.addToContext dbContext item |> ignore
+                ModificationParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PeptideParamHandler =
             ///Initializes a peptideparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PeptideParam(
                                  id', 
-                                 value', 
-                                 term, 
-                                 unit', 
+                                 value',
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -850,10 +862,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:PeptideParam)  =
-                table.Unit <- unit
+                (fkUnit:string) (table:PeptideParam)  =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a peptideParam-object in the context and database, based on its primary-key(ID).
@@ -929,27 +941,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideParam) =
-                PeptideParamHandler.addToContext dbContext item |> ignore
+                PeptideParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type TranslationTableParamHandler =
             ///Initializes a translationtableparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new TranslationTableParam(
                                           id', 
-                                          value', 
-                                          term, 
-                                          unit', 
+                                          value',
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -959,10 +973,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:TranslationTableParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:TranslationTableParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a translationTableParam-object in the context and database, based on its primary-key(ID).
@@ -1038,27 +1052,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:TranslationTableParam) =
-                TranslationTableParamHandler.addToContext dbContext item |> ignore
+                TranslationTableParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type MeasureParamHandler =
             ///Initializes a measureparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new MeasureParam(
                                  id', 
-                                 value', 
-                                 term, 
-                                 unit', 
+                                 value',
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1068,10 +1084,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:MeasureParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:MeasureParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a measureParam-object in the context and database, based on its primary-key(ID).
@@ -1147,27 +1163,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MeasureParam) =
-                MeasureParamHandler.addToContext dbContext item |> ignore
+                MeasureParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type AmbiguousResidueParamHandler =
             ///Initializes a ambiguousresidueparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new AmbiguousResidueParam(
                                           id', 
-                                          value', 
-                                          term, 
-                                          unit', 
+                                          value',
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1177,10 +1195,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:AmbiguousResidueParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:AmbiguousResidueParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ambiguousResidueParam-object in the context and database, based on its primary-key(ID).
@@ -1256,27 +1274,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
-                AmbiguousResidueParamHandler.addToContext dbContext item |> ignore
+                AmbiguousResidueParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type MassTableParamHandler =
             ///Initializes a masstableparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new MassTableParam(
                                    id', 
-                                   value', 
-                                   term, 
-                                   unit', 
+                                   value',
+                                   null,
+                                   fkTerm,
+                                   null,
+                                   fkUnit', 
                                    Nullable(DateTime.Now)
                                   )
 
@@ -1286,10 +1306,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:MassTableParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:MassTableParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a massTableParam-object in the context and database, based on its primary-key(ID).
@@ -1365,27 +1385,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MassTableParam) =
-                MassTableParamHandler.addToContext dbContext item |> ignore
+                MassTableParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type IonTypeParamHandler =
             ///Initializes a iontypeparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new IonTypeParam(
                                  id', 
-                                 value', 
-                                 term, 
-                                 unit', 
+                                 value',
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1395,10 +1417,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:IonTypeParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:IonTypeParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a ionTypeParam-object in the context and database, based on its primary-key(ID).
@@ -1474,27 +1496,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IonTypeParam) =
-                IonTypeParamHandler.addToContext dbContext item |> ignore
+                IonTypeParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SpecificityRuleParamHandler =
             ///Initializes a specificityruleparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new SpecificityRuleParam(
                                          id', 
-                                         value', 
-                                         term, 
-                                         unit', 
+                                         value',
+                                         null,
+                                         fkTerm,
+                                         null,
+                                         fkUnit', 
                                          Nullable(DateTime.Now)
                                         )
 
@@ -1504,10 +1528,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SpecificityRuleParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SpecificityRuleParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a specificityRuleParam-object in the context and database, based on its primary-key(ID).
@@ -1583,27 +1607,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpecificityRuleParam) =
-                SpecificityRuleParamHandler.addToContext dbContext item |> ignore
+                SpecificityRuleParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SearchModificationParamHandler =
             ///Initializes a searchmodificationparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SearchModificationParam(
                                             id', 
-                                            value', 
-                                            term, 
-                                            unit',  
+                                            value',
+                                            null,
+                                            fkTerm,
+                                            null,
+                                            fkUnit', 
                                             Nullable(DateTime.Now)
                                            )
 
@@ -1613,10 +1639,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SearchModificationParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SearchModificationParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a searchModificationParam-object in the context and database, based on its primary-key(ID).
@@ -1692,27 +1718,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchModificationParam) =
-                SearchModificationParamHandler.addToContext dbContext item |> ignore
+                SearchModificationParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type EnzymeNameParamHandler =
             ///Initializes a enzymenameparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new EnzymeNameParam(
-                                    id',  
-                                    value', 
-                                    term, 
-                                    unit', 
+                                    id', 
+                                    value',
+                                    null,
+                                    fkTerm,
+                                    null,
+                                    fkUnit', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -1722,10 +1750,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:EnzymeNameParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:EnzymeNameParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a enzymeNameParam-object in the context and database, based on its primary-key(ID).
@@ -1801,27 +1829,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:EnzymeNameParam) =
-                EnzymeNameParamHandler.addToContext dbContext item |> ignore
+                EnzymeNameParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type IncludeParamHandler =
             ///Initializes a includeparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new IncludeParam(
                                  id', 
-                                 value', 
-                                 term, 
-                                 unit',  
+                                 value',
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1831,10 +1861,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:IncludeParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:IncludeParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a includeParam-object in the context and database, based on its primary-key(ID).
@@ -1910,27 +1940,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IncludeParam) =
-                IncludeParamHandler.addToContext dbContext item |> ignore
+                IncludeParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ExcludeParamHandler =
             ///Initializes a excludeparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ExcludeParam(
                                  id', 
-                                 value', 
-                                 term, 
-                                 unit',  
+                                 value',
+                                 null,
+                                 fkTerm,
+                                 null,
+                                 fkUnit', 
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1940,10 +1972,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ExcludeParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ExcludeParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a excludeParam-object in the context and database, based on its primary-key(ID).
@@ -2019,27 +2051,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ExcludeParam) =
-                ExcludeParamHandler.addToContext dbContext item |> ignore
+                ExcludeParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type AdditionalSearchParamHandler =
             ///Initializes a additionalssearchparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new AdditionalSearchParam(
                                           id', 
-                                          value', 
-                                          term, 
-                                          unit',  
+                                          value',
+                                          null,
+                                          fkTerm,
+                                          null,
+                                          fkUnit', 
                                           Nullable(DateTime.Now)
                                          )
 
@@ -2049,10 +2083,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:AdditionalSearchParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:AdditionalSearchParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a additionalSearchParam-object in the context and database, based on its primary-key(ID).
@@ -2128,27 +2162,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AdditionalSearchParam) =
-                AdditionalSearchParamHandler.addToContext dbContext item |> ignore
+                AdditionalSearchParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type FragmentToleranceParamHandler =
             ///Initializes a fragmenttoleranceparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new FragmentToleranceParam(
-                                           id',  
-                                           value', 
-                                           term, 
-                                           unit', 
+                                           id', 
+                                           value',
+                                           null,
+                                           fkTerm,
+                                           null,
+                                           fkUnit', 
                                            Nullable(DateTime.Now)
                                           )
 
@@ -2158,10 +2194,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:FragmentToleranceParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:FragmentToleranceParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a fragmentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2237,27 +2273,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:FragmentToleranceParam) =
-                FragmentToleranceParamHandler.addToContext dbContext item |> ignore
+                FragmentToleranceParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ParentToleranceParamHandler =
             ///Initializes a parenttoleranceparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ParentToleranceParam(
                                          id', 
-                                         value', 
-                                         term, 
-                                         unit', 
+                                         value',
+                                         null,
+                                         fkTerm,
+                                         null,
+                                         fkUnit', 
                                          Nullable(DateTime.Now)
                                         )
 
@@ -2267,10 +2305,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ParentToleranceParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ParentToleranceParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a parentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2346,27 +2384,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ParentToleranceParam) =
-                ParentToleranceParamHandler.addToContext dbContext item |> ignore
+                ParentToleranceParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ThresholdParamHandler =
             ///Initializes a thresholdparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ThresholdParam(
                                    id', 
-                                   value', 
-                                   term, 
-                                   unit', 
+                                   value',
+                                   null,
+                                   fkTerm,
+                                   null,
+                                   fkUnit', 
                                    Nullable(DateTime.Now)
                                   )
 
@@ -2376,10 +2416,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
-            static member addUnit
-                (unit:Term) (table:ThresholdParam) =
-                table.Unit <- unit
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:ThresholdParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a thresholdParam-object in the context and database, based on its primary-key(ID).
@@ -2455,27 +2495,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ThresholdParam) =
-                ThresholdParamHandler.addToContext dbContext item |> ignore
+                ThresholdParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SearchDatabaseParamHandler =
             ///Initializes a searchdatabaseparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SearchDatabaseParam(
                                         id', 
-                                        value', 
-                                        term, 
-                                        unit', 
+                                        value',
+                                        null,
+                                        fkTerm,
+                                        null,
+                                        fkUnit', 
                                         Nullable(DateTime.Now)
                                        )
 
@@ -2485,10 +2527,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SearchDatabaseParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SearchDatabaseParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a searchDatabaseParam-object in the context and database, based on its primary-key(ID).
@@ -2564,27 +2606,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchDatabaseParam) =
-                SearchDatabaseParamHandler.addToContext dbContext item |> ignore
+                SearchDatabaseParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type DBSequenceParamHandler =
             ///Initializes a dbsequenceparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new DBSequenceParam(
                                     id', 
-                                    value', 
-                                    term, 
-                                    unit', 
+                                    value',
+                                    null,
+                                    fkTerm,
+                                    null,
+                                    fkUnit', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2594,10 +2638,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:DBSequenceParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:DBSequenceParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a dbSequenceParam-object in the context and database, based on its primary-key(ID).
@@ -2673,27 +2717,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:DBSequenceParam) =
-                DBSequenceParamHandler.addToContext dbContext item |> ignore
+                DBSequenceParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PeptideEvidenceParamHandler =
             ///Initializes a peptideevidenceparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new PeptideEvidenceParam(
-                                         id',
-                                         value', 
-                                         term, 
-                                         unit', 
+                                         id', 
+                                         value',
+                                         null,
+                                         fkTerm,
+                                         null,
+                                         fkUnit', 
                                          Nullable(DateTime.Now)
                                         )
 
@@ -2703,10 +2749,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:PeptideEvidenceParam)  =
-                table.Unit <- unit
+                (fkUnit:string) (table:PeptideEvidenceParam)  =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a peptideEvidenceParam-object in the context and database, based on its primary-key(ID).
@@ -2782,27 +2828,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
-                PeptideEvidenceParamHandler.addToContext dbContext item |> ignore
+                PeptideEvidenceParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationItemParamHandler =
             ///Initializes a spectrumidentificationparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new SpectrumIdentificationItemParam(
                                                     id', 
-                                                    value', 
-                                                    term, 
-                                                    unit',  
+                                                    value',
+                                                    null,
+                                                    fkTerm,
+                                                    null,
+                                                    fkUnit', 
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -2812,10 +2860,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SpectrumIdentificationItemParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SpectrumIdentificationItemParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationItemParam-object in the context and database, based on its primary-key(ID).
@@ -2891,27 +2939,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
-                SpectrumIdentificationItemParamHandler.addToContext dbContext item |> ignore
+                SpectrumIdentificationItemParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationResultParamHandler =
             ///Initializes a spectrumidentificationresultparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new SpectrumIdentificationResultParam(
                                                       id', 
-                                                      value', 
-                                                      term, 
-                                                      unit', 
+                                                      value',
+                                                      null,
+                                                      fkTerm,
+                                                      null,
+                                                      fkUnit', 
                                                       Nullable(DateTime.Now)
                                                      )
 
@@ -2921,10 +2971,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SpectrumIdentificationResultParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SpectrumIdentificationResultParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationResultParam-object in the context and database, based on its primary-key(ID).
@@ -3000,27 +3050,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
-                SpectrumIdentificationResultParamHandler.addToContext dbContext item |> ignore
+                SpectrumIdentificationResultParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationListParamHandler =
             ///Initializes a spectrumidentificationlistparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new SpectrumIdentificationListParam(
                                                     id', 
-                                                    value', 
-                                                    term, 
-                                                    unit',  
+                                                    value',
+                                                    null,
+                                                    fkTerm,
+                                                    null,
+                                                    fkUnit', 
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -3030,10 +3082,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SpectrumIdentificationListParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SpectrumIdentificationListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationListParam-object in the context and database, based on its primary-key(ID).
@@ -3109,112 +3161,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
-                SpectrumIdentificationListParamHandler.addToContext dbContext item |> ignore
+                SpectrumIdentificationListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
-
-        //type SpectrumIdentificationProtocolParamHandler =
-        //    ///Initializes a fragmenttoleranceparam-object with at least all necessary parameters.
-        //    static member init
-        //        (
-        //            term      : Term,
-        //            ?id       : string,
-        //            ?value    : string,
-        //            ?unit     : Term
-        //        ) =
-        //        let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-        //        let value'    = defaultArg value Unchecked.defaultof<string>
-        //        let unit'     = defaultArg unit Unchecked.defaultof<Term>
-                    
-        //        new SpectrumIdentificationProtocolParam(
-        //                                   id',  
-        //                                   value', 
-        //                                   term, 
-        //                                   unit', 
-        //                                   Nullable(DateTime.Now)
-        //                                  )
-
-        //    ///Replaces value of existing object with new one..
-        //    static member addValue
-        //        (value:string) (table:SpectrumIdentificationProtocolParam)  =
-        //        table.Value <- value
-        //        param
-
-        //    ///Replaces unit of existing object with new one.
-        //    static member addUnit
-        //        (unit:Term) (table:SpectrumIdentificationProtocolParam) =
-        //        table.Unit <- unit
-        //        param
-
-        //    ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
-        //    static member tryFindByID
-        //        (context:MzIdentML) (paramID:string) =
-        //        tryFind (context.SpectrumIdentificationProtocolParam.Find(paramID))
-
-        //    ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-        //    static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
-        //        query {
-        //               for i in dbContext.SpectrumIdentificationProtocolParam.Local do
-        //                   if i.Term.Name=name
-        //                      then select (i, i.Term, i.Unit)
-        //              }
-        //        |> Seq.map (fun (param,_ ,_) -> param)
-        //        |> (fun param -> 
-        //            if (Seq.exists (fun param' -> param' <> null) param) = false
-        //                then 
-        //                    query {
-        //                           for i in dbContext.SpectrumIdentificationProtocolParam do
-        //                               if i.Term.Name=name
-        //                                  then select (i, i.Term, i.Unit)
-        //                          }
-        //                    |> Seq.map (fun (param,_ ,_) -> param)
-        //                    |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
-        //                                        then None
-        //                                        else Some param
-        //                       )
-        //                else Some param
-        //           )
-
-        //    ///Checks whether all other fields of the current object and context object have the same values or not.
-        //    static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocolParam) (item2:SpectrumIdentificationProtocolParam) =
-        //         item1.Value=item2.Value && item1.Unit=item2.Unit
-
-        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-        //    ///If no entry exists, a new object is added to the context and otherwise does nothing.
-        //    static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationProtocolParam) =
-        //            SpectrumIdentificationProtocolParamHandler.tryFindByTermName dbContext item.Term.Name
-        //            |> (fun cvParamCollection -> match cvParamCollection with
-        //                                         |Some x -> x
-        //                                                    |> Seq.map (fun cvParam -> match SpectrumIdentificationProtocolParamHandler.hasEqualFieldValues cvParam item with
-        //                                                                               |true -> null
-        //                                                                               |false -> dbContext.Add item
-        //                                                               ) |> ignore
-        //                                         |None -> dbContext.Add item |> ignore
-        //               )
-
-        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-        //    ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-        //    static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationProtocolParam) =
-        //        SpectrumIdentificationProtocolParamHandler.addToContext dbContext item |> ignore
-        //        dbContext.SaveChanges()
 
         type AnalysisParamHandler =
             ///Initializes a analysisparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new AnalysisParam(
-                                  id',  
-                                  value', 
-                                  term, 
-                                  unit',  
+                                  id', 
+                                  value',
+                                  null,
+                                  fkTerm,
+                                  null,
+                                  fkUnit', 
                                   Nullable(DateTime.Now)
                                  )
 
@@ -3224,10 +3193,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:AnalysisParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:AnalysisParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a analysisParam-object in the context and database, based on its primary-key(ID).
@@ -3303,27 +3272,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisParam) =
-                AnalysisParamHandler.addToContext dbContext item |> ignore
+                AnalysisParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type SourceFileParamHandler =
             ///Initializes a sourcefileparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new SourceFileParam(
-                                    id',  
-                                    value', 
-                                    term, 
-                                    unit', 
+                                    id', 
+                                    value',
+                                    null,
+                                    fkTerm,
+                                    null,
+                                    fkUnit', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -3333,10 +3304,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:SourceFileParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:SourceFileParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a sourceFileParam-object in the context and database, based on its primary-key(ID).
@@ -3412,27 +3383,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SourceFileParam) =
-                SourceFileParamHandler.addToContext dbContext item |> ignore
+                SourceFileParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionHypothesisParamHandler =
             ///Initializes a proteindetectionhypothesisparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
                     
                 new ProteinDetectionHypothesisParam(
                                                     id', 
-                                                    value', 
-                                                    term, 
-                                                    unit',  
+                                                    value',
+                                                    null,
+                                                    fkTerm,
+                                                    null,
+                                                    fkUnit', 
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -3442,10 +3415,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ProteinDetectionHypothesisParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ProteinDetectionHypothesisParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a proteinDetectionHypothesisParam-object in the context and database, based on its primary-key(ID).
@@ -3521,27 +3494,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
-                ProteinDetectionHypothesisParamHandler.addToContext dbContext item |> ignore
+                ProteinDetectionHypothesisParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinAmbiguityGroupParamHandler =
             ///Initializes a proteinambiguitygroupparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new  ProteinAmbiguityGroupParam(
                                                 id', 
-                                                value', 
-                                                term, 
-                                                unit', 
+                                                value',
+                                                null,
+                                                fkTerm,
+                                                null,
+                                                fkUnit', 
                                                 Nullable(DateTime.Now)
                                                )
 
@@ -3551,10 +3526,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ProteinAmbiguityGroupParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ProteinAmbiguityGroupParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a proteinAmbiguityGroupParam-object in the context and database, based on its primary-key(ID).
@@ -3630,27 +3605,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
-                ProteinAmbiguityGroupParamHandler.addToContext dbContext item |> ignore
+                ProteinAmbiguityGroupParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionListParamHandler =
             ///Initializes a proteindetectionlistparam-object with at least all necessary parameters.
             static member init
                 (
-                    term      : Term,
+                    fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?unit     : Term
+                    ?fkUnit   : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
-                let unit'     = defaultArg unit Unchecked.defaultof<Term>
+                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
 
                 new ProteinDetectionListParam(
-                                              id',
-                                              value', 
-                                              term, 
-                                              unit', 
+                                              id', 
+                                              value',
+                                              null,
+                                              fkTerm,
+                                              null,
+                                              fkUnit', 
                                               Nullable(DateTime.Now)
                                              )
 
@@ -3660,10 +3637,10 @@ module InsertStatements =
                 table.Value <- value
                 table
 
-            ///Replaces unit of existing object with new one.
+            ///Replaces fkUnit of existing object with new one.
             static member addUnit
-                (unit:Term) (table:ProteinDetectionListParam) =
-                table.Unit <- unit
+                (fkUnit:string) (table:ProteinDetectionListParam) =
+                table.UnitID <- fkUnit
                 table
 
             ///Tries to find a proteinDetectionListParam-object in the context and database, based on its primary-key(ID).
@@ -3739,41 +3716,41 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
-                ProteinDetectionListParamHandler.addToContext dbContext item |> ignore
+                ProteinDetectionListParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type OrganizationHandler =
             ///Initializes a organization-object with at least all necessary parameters.
             static member init
                 (
-                    ?id                : string,
-                    ?name              : string,
-                    ?parent            : string,
-                    ?details           : seq<OrganizationParam>,
-                    ?mzIdentMLDocument : MzIdentMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?parent              : string,
+                    ?details             : seq<OrganizationParam>,
+                    ?fkMzIdentMLDocument : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'              = defaultArg name Unchecked.defaultof<string>
                 let parent'            = defaultArg parent Unchecked.defaultof<string>
                 let details'           = convertOptionToList details
-                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new Organization(
                                  id', 
                                  name', 
                                  parent',
                                  details',
-                                 mzIdentMLDocument',
+                                 fkMzIdentMLDocument',
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (organization:Organization) =
                 organization.Name <- name
                 organization
 
-            ///Replaces parent of existing object with new parent.
+            ///Replaces parent of existing object with new one.
             static member addParent
                 (parent:string) (organization:Organization) =
                 organization.Parent <- parent
@@ -3791,10 +3768,10 @@ module InsertStatements =
                 let result = organization.Details <- addCollectionToList organization.Details details
                 organization
 
-            ///Replaces mzIdentML of existing object with new one.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (table:Organization)=
-                let result = table.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces fkMzIdentML of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:Organization)=
+                let result = table.MzIdentMLDocumentID <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -3847,8 +3824,10 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent &&
-                item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent &&
+                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3871,30 +3850,30 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Organization) =
-                OrganizationHandler.addToContext dbContext item |> ignore
+                OrganizationHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type PersonHandler =
         ///Initializes a person-object with at least all necessary parameters.
             static member init
                 (
-                    ?id                : string,
-                    ?name              : string,
-                    ?firstName         : string,
-                    ?midInitials       : string,
-                    ?lastName          : string,
-                    ?organizations     : seq<Organization>,
-                    ?contactDetails    : seq<PersonParam>,
-                    ?mzIdentMLDocument : MzIdentMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?firstName           : string,
+                    ?midInitials         : string,
+                    ?lastName            : string,
+                    ?organizations       : seq<Organization>,
+                    ?contactDetails      : seq<PersonParam>,
+                    ?fkMzIdentMLDocument : string
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'              = defaultArg name Unchecked.defaultof<string>
-                let firstName'         = defaultArg firstName Unchecked.defaultof<string>
-                let midInitials'       = defaultArg midInitials Unchecked.defaultof<string>
-                let lastName'          = defaultArg lastName Unchecked.defaultof<string>    
-                let organizations'     = convertOptionToList organizations
-                let contactDetails'    = convertOptionToList contactDetails
-                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let firstName'           = defaultArg firstName Unchecked.defaultof<string>
+                let midInitials'         = defaultArg midInitials Unchecked.defaultof<string>
+                let lastName'            = defaultArg lastName Unchecked.defaultof<string>    
+                let organizations'       = convertOptionToList organizations
+                let contactDetails'      = convertOptionToList contactDetails
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
 
                     
                 new Person(
@@ -3905,29 +3884,29 @@ module InsertStatements =
                            lastName', 
                            organizations',
                            contactDetails',
-                           mzIdentMLDocument',
+                           fkMzIdentMLDocument',
                            Nullable(DateTime.Now)
                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (person:Person) =
                 person.Name <- name
                 person
 
-            ///Replaces firstname of existing object with new firstname.
+            ///Replaces firstname of existing object with new one.
             static member addFirstName
                 (firstName:string) (person:Person) =
                 person.FirstName <- firstName
                 person
 
-            ///Replaces midinitials of existing object with new midinitials.
+            ///Replaces midinitials of existing object with new one.
             static member addMidInitials
                 (midInitials:string) (person:Person) =
                 person.MidInitials <- midInitials
                 person
 
-            ///Replaces lastname of existing object with new lastname.
+            ///Replaces lastname of existing object with new one.
             static member addLastName
                 (lastName:string) (person:Person) =
                 person.LastName <- lastName
@@ -3956,10 +3935,10 @@ module InsertStatements =
                 let result = person.Organizations <- addCollectionToList person.Organizations organizations
                 person
 
-            ///Replaces mzIdentML of existing object with new one.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (table:Person)=
-                let result = table.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:Person)=
+                let result = table.MzIdentMLDocumentID <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -3967,7 +3946,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.Person.Local do
                            if i.ID=id
-                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (person, _, _, _) -> person)
                 |> (fun person -> 
@@ -3976,7 +3955,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.Person do
                                        if i.ID=id
-                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (person, _, _, _) -> person)
                             |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
@@ -3991,7 +3970,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.Person.Local do
                            if i.Name = name
-                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                              then select (i, i.Details, i.Organizations, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (person, _, _, _) -> person)
                 |> (fun person -> 
@@ -4000,7 +3979,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.Person do
                                        if i.Name = name
-                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocument)
+                                          then select (i, i.Details, i.Organizations, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (person, _, _, _) -> person)
                             |> (fun person -> if (Seq.exists (fun person' -> person' <> null) person) = false
@@ -4015,7 +3994,7 @@ module InsertStatements =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
                 item1.Organizations=item2.Organizations && item1.Organizations=item2.Organizations &&
-                item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4038,7 +4017,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Person) =
-                PersonHandler.addToContext dbContext item |> ignore
+                PersonHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ContactRoleHandler =
@@ -4131,29 +4110,29 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ContactRole) =
-                ContactRoleHandler.addToContext dbContext item |> ignore
+                ContactRoleHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type AnalysisSoftwareHandler =
             ///Initializes a analysissoftware-object with at least all necessary parameters.
             static member init
                 (
-                    softwareName       : CVParam,
-                    ?id                : string,
-                    ?name              : string,
-                    ?uri               : string,
-                    ?version           : string,
-                    ?customizations    : string,
-                    ?softwareDeveloper : ContactRole,
-                    ?mzIdentML         : MzIdentMLDocument
+                    softwareName         : CVParam,
+                    ?id                  : string,
+                    ?name                : string,
+                    ?uri                 : string,
+                    ?version             : string,
+                    ?customizations      : string,
+                    ?softwareDeveloper   : ContactRole,
+                    ?fkMzIdentMLDocument : string
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'           = defaultArg name Unchecked.defaultof<string>
-                let uri'            = defaultArg uri Unchecked.defaultof<string>
-                let version'        = defaultArg version Unchecked.defaultof<string>
-                let customizations' = defaultArg customizations Unchecked.defaultof<string>
-                let contactRole'    = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
-                let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let uri'                 = defaultArg uri Unchecked.defaultof<string>
+                let version'             = defaultArg version Unchecked.defaultof<string>
+                let customizations'      = defaultArg customizations Unchecked.defaultof<string>
+                let contactRole'         = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new AnalysisSoftware(
                                      id', 
@@ -4163,7 +4142,7 @@ module InsertStatements =
                                      customizations', 
                                      contactRole', 
                                      softwareName, 
-                                     mzIdentML', 
+                                     fkMzIdentMLDocument', 
                                      Nullable(DateTime.Now)
                                     )
 
@@ -4197,10 +4176,10 @@ module InsertStatements =
                 analysisSoftware.ContactRole <- analysisSoftwareDeveloper
                 analysisSoftware
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (analysisSoftware:AnalysisSoftware)=
-                let result = analysisSoftware.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (analysisSoftware:AnalysisSoftware)=
+                let result = analysisSoftware.MzIdentMLDocumentID <- fkMzIdentMLDocument
                 analysisSoftware
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
@@ -4208,7 +4187,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisSoftware.Local do
                            if i.ID=id
-                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                 |> (fun analysisSoftware -> 
@@ -4217,7 +4196,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.AnalysisSoftware do
                                        if i.ID=id
-                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                             |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
@@ -4232,7 +4211,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisSoftware.Local do
                            if i.SoftwareName.Value = name
-                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                              then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                 |> (fun analysisSoftware -> 
@@ -4241,7 +4220,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.AnalysisSoftware do
                                        if i.SoftwareName.Value = name
-                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocument)
+                                          then select (i, i.SoftwareName, i.ContactRole, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (analysisSoftware, _, _, _) -> analysisSoftware)
                             |> (fun analysisSoftware -> if (Seq.exists (fun analysisSoftware' -> analysisSoftware' <> null) analysisSoftware) = false
@@ -4255,7 +4234,7 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
                 item1.Name=item2.Name && item1.URI=item2.URI && item1.Version=item2.Version && 
                 item1.Customizations=item2.Customizations && item1.ContactRole=item2.ContactRole && 
-                item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4278,7 +4257,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisSoftware) =
-                AnalysisSoftwareHandler.addToContext dbContext item
+                AnalysisSoftwareHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SubSampleHandler =
@@ -4286,21 +4265,21 @@ module InsertStatements =
             static member init
                 (
                     ?id          : string,
-                    ?sample      : Sample
+                    ?fkSample    : string
                 ) =
                 let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                let Sample'      = defaultArg sample Unchecked.defaultof<Sample>
+                let fkSample'    = defaultArg fkSample Unchecked.defaultof<string>
                     
                 new SubSample(
                               id', 
-                              Sample', 
+                              fkSample', 
                               Nullable(DateTime.Now)
                              )
 
-            ///Replaces sample of existing object with new sample.
+            ///Replaces SampleID of existing object with new one.
             static member addSample
-                (sampleID:Sample) (subSample:SubSample) =
-                subSample.Sample <- sampleID
+                (fkSample:string) (subSample:SubSample) =
+                subSample.SampleID <- fkSample
                 subSample
 
             ///Tries to find a subSample-object in the context and database, based on its primary-key(ID).
@@ -4308,7 +4287,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.SubSample.Local do
                            if i.ID=id
-                              then select (i, i.Sample)
+                              then select (i, i.SampleID)
                       }
                 |> Seq.map (fun (subSample, _) -> subSample)
                 |> (fun subSample -> 
@@ -4317,7 +4296,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.SubSample do
                                        if i.ID=id
-                                          then select (i, i.Sample)
+                                          then select (i, i.SampleID)
                                   }
                             |> Seq.map (fun (subSample, _) -> subSample)
                             |> (fun subSample -> if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
@@ -4328,11 +4307,11 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySampleName (dbContext:MzIdentML) (name:string) =
+            static member tryFindBySampleName (dbContext:MzIdentML) (sampleID:string) =
                 query {
                        for i in dbContext.SubSample.Local do
-                           if i.Sample.Name=name
-                              then select (i, i.Sample)
+                           if i.SampleID=sampleID
+                              then select (i, i.SampleID)
                       }
                 |> Seq.map (fun (subSample, _) -> subSample)
                 |> (fun subSample -> 
@@ -4340,8 +4319,8 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SubSample do
-                                       if i.Sample.Name=name
-                                          then select (i, i.Sample)
+                                       if i.SampleID=sampleID
+                                          then select (i, i.SampleID)
                                   }
                             |> Seq.map (fun (subSample, _) -> subSample)
                             |> (fun subSample -> if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
@@ -4358,7 +4337,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SubSample) =
-                    SubSampleHandler.tryFindBySampleName dbContext item.Sample.Name
+                    SubSampleHandler.tryFindBySampleName dbContext item.SampleID
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SubSampleHandler.hasEqualFieldValues organization item with
@@ -4376,7 +4355,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SubSample) =
-                SubSampleHandler.addToContext dbContext item
+                SubSampleHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SampleHandler =
@@ -4388,14 +4367,14 @@ module InsertStatements =
                     ?contactRoles : seq<ContactRole>,
                     ?subSamples   : seq<SubSample>,
                     ?details      : seq<SampleParam>,
-                    ?mzIdentML    : MzIdentMLDocument
+                    ?fkMzIdentML  : string
                 ) =
                 let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'         = defaultArg name Unchecked.defaultof<string>
                 let contactRoles' = convertOptionToList contactRoles
                 let subSamples'   = convertOptionToList subSamples
                 let details'      = convertOptionToList details
-                let mzIdentML'    = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentML'  = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new Sample(
                            id', 
@@ -4403,11 +4382,11 @@ module InsertStatements =
                            contactRoles', 
                            subSamples', 
                            details', 
-                           mzIdentML', 
+                           fkMzIdentML', 
                            Nullable(DateTime.Now)
                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (sample:Sample) =
                 sample.Name <- name
@@ -4449,10 +4428,10 @@ module InsertStatements =
                 let result = sample.Details <- addCollectionToList sample.Details details
                 sample
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (sample:Sample) =
-                let result = sample.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new mzIdentML.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (sample:Sample) =
+                let result = sample.MzIdentMLDocumentID <- fkMzIdentML
                 sample
 
             ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
@@ -4506,7 +4485,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Sample) (item2:Sample) =
                 item1.ContactRoles=item2.ContactRoles && item1.SubSamples=item2.SubSamples &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4529,7 +4510,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Sample) =
-                SampleHandler.addToContext dbContext item
+                SampleHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ModificationHandler =
@@ -4633,7 +4614,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
                 item1.Residues=item2.Residues && item1.Location=item2.Location &&
-                item1.AvgMassDelta=item2.AvgMassDelta && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.AvgMassDelta=item2.AvgMassDelta && matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4656,7 +4639,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Modification) =
-                ModificationHandler.addToContext dbContext item
+                ModificationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SubstitutionModificationHandler =
@@ -4773,7 +4756,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Modification) =
-                ModificationHandler.addToContext dbContext item
+                ModificationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type PeptideHandler =
@@ -4786,14 +4769,14 @@ module InsertStatements =
                     ?modifications             : seq<Modification>,
                     ?substitutionModifications : seq<SubstitutionModification>,
                     ?details                   : seq<PeptideParam>,
-                    ?mzIdentML                 : MzIdentMLDocument
+                    ?fkMzIdentML               : string
                 ) =
                 let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                      = defaultArg name Unchecked.defaultof<string>
                 let modifications'             = convertOptionToList modifications
                 let substitutionModifications' = convertOptionToList substitutionModifications
                 let details'                   = convertOptionToList details
-                let mzIdentML'                 = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentML'               = defaultArg fkMzIdentML Unchecked.defaultof<string>
 
                 new Peptide(
                             id', 
@@ -4802,7 +4785,7 @@ module InsertStatements =
                             modifications', 
                             substitutionModifications', 
                             details', 
-                            mzIdentML', 
+                            fkMzIdentML', 
                             Nullable(DateTime.Now)
                            )
 
@@ -4848,10 +4831,10 @@ module InsertStatements =
                 let result = peptide.Details <- addCollectionToList peptide.Details details
                 peptide
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (peptide:Peptide) =
-                let result = peptide.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (peptide:Peptide) =
+                let result = peptide.MzIdentMLDocumentID <- fkMzIdentML
                 peptide
 
             ///Tries to find a peptide-object in the context and database, based on its primary-key(ID).
@@ -4905,7 +4888,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Peptide) (item2:Peptide) =
                 item1.Name=item2.Name && item1.Modifications=item2.Modifications &&
-                item1.MzIdentMLDocument=item2.MzIdentMLDocument && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
+                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
                 item1.SubstitutionModifications=item2.SubstitutionModifications
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -4929,7 +4914,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Peptide) =
-                PeptideHandler.addToContext dbContext item
+                PeptideHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type TranslationTableHandler =
@@ -5019,7 +5004,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTable) (item2:TranslationTable) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5042,7 +5029,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:TranslationTable) =
-                TranslationTableHandler.addToContext dbContext item
+                TranslationTableHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type MeasureHandler =
@@ -5118,7 +5105,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member hasEqualFieldValues (item1:Measure) (item2:Measure) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5141,7 +5130,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Measure) =
-                MeasureHandler.addToContext dbContext item
+                MeasureHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ResidueHandler =
@@ -5230,7 +5219,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Residue) =
-                ResidueHandler.addToContext dbContext item
+                ResidueHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type AmbiguousResidueHandler =
@@ -5299,7 +5288,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidue) (item2:AmbiguousResidue) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5322,7 +5313,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AmbiguousResidue) =
-                AmbiguousResidueHandler.addToContext dbContext item
+                AmbiguousResidueHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MassTableHandler =
@@ -5444,7 +5435,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5467,7 +5460,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MassTable) =
-                MassTableHandler.addToContext dbContext item
+                MassTableHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ValueHandler =
@@ -5555,7 +5548,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Value) =
-                ValueHandler.addToContext dbContext item
+                ValueHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FragmentArrayHandler =
@@ -5648,7 +5641,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:FragmentArray) =
-                FragmentArrayHandler.addToContext dbContext item
+                FragmentArrayHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type IndexHandler =
@@ -5736,7 +5729,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Index) =
-                IndexHandler.addToContext dbContext item
+                IndexHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type IonTypeHandler =
@@ -5856,7 +5849,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:IonType) =
-                IonTypeHandler.addToContext dbContext item
+                IonTypeHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectraDataHandler =
@@ -5968,7 +5961,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectraData) =
-                SpectraDataHandler.addToContext dbContext item
+                SpectraDataHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         //type SpecificityRulesHandler =
@@ -6035,7 +6028,7 @@ module InsertStatements =
         //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
               ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
         //    static member addToContextAndInsert (dbContext:MzIdentML) (item:SpecificityRule) =
-        //        SpecificityRulesHandler.addToContext dbContext item
+        //        SpecificityRulesHandler.addToContext dbContext item |> ignore
         //        dbContext.SaveChanges()
 
         type SearchModificationHandler =
@@ -6124,7 +6117,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
                 item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
-                item1.SpecificityRules=item2.SpecificityRules && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.SpecificityRules=item2.SpecificityRules && matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6147,7 +6142,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchModification) =
-                SearchModificationHandler.addToContext dbContext item
+                SearchModificationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type EnzymeHandler =
@@ -6316,7 +6311,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Enzyme) =
-                EnzymeHandler.addToContext dbContext item
+                EnzymeHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FilterHandler =
@@ -6437,7 +6432,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Filter) =
-                FilterHandler.addToContext dbContext item
+                FilterHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type FrameHandler =
@@ -6525,7 +6520,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Frame) =
-                FrameHandler.addToContext dbContext item
+                FrameHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationProtocolHandler =
@@ -6547,7 +6542,7 @@ module InsertStatements =
                     ?databaseFilters        : seq<Filter>,
                     ?frames                 : seq<Frame>,
                     ?translationTable       : seq<TranslationTable>,
-                    ?mzIdentML              : MzIdentMLDocument
+                    ?fkMzIdentML            : string
                 ) =
                 let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
@@ -6561,7 +6556,7 @@ module InsertStatements =
                 let databaseFilters'        = convertOptionToList databaseFilters
                 let frames'                 = convertOptionToList frames
                 let translationTable'       = convertOptionToList translationTable
-                let mzIdentML'              = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentML'            = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new SpectrumIdentificationProtocol(
                                                    id', 
@@ -6579,7 +6574,7 @@ module InsertStatements =
                                                    databaseFilters',
                                                    frames', 
                                                    translationTable', 
-                                                   mzIdentML', 
+                                                   fkMzIdentML', 
                                                    Nullable(DateTime.Now)
                                                   )
 
@@ -6703,10 +6698,10 @@ module InsertStatements =
                 let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
                 spectrumIdentificationProtocol
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
+                let result = spectrumIdentificationProtocol.MzIdentMLDocumentID <- fkMzIdentML
                 spectrumIdentificationProtocol
 
             ///Tries to find a spectrumIdentificationProtocol-object in the context and database, based on its primary-key(ID).
@@ -6717,7 +6712,7 @@ module InsertStatements =
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                           i.MzIdentMLDocument
+                                           i.MzIdentMLDocumentID
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6730,7 +6725,7 @@ module InsertStatements =
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                                       i.MzIdentMLDocument
+                                                       i.MzIdentMLDocumentID
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6749,7 +6744,7 @@ module InsertStatements =
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                           i.MzIdentMLDocument
+                                           i.MzIdentMLDocumentID
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6762,7 +6757,7 @@ module InsertStatements =
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                                       i.MzIdentMLDocument
+                                                       i.MzIdentMLDocumentID
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6775,11 +6770,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
-                item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && 
-                item1.AdditionalSearchParams=item2.AdditionalSearchParams && item1.ModificationParams=item2.ModificationParams && 
-                item1.Enzymes=item2.Enzymes && item1.MassTables=item2.MassTables && item1.FragmentTolerance=item2.FragmentTolerance &&
-                item1.ParentTolerance=item2.ParentTolerance && item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames &&
-                item1.TranslationTables=item2.TranslationTables && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+                item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && item1.AdditionalSearchParams=item2.AdditionalSearchParams && 
+                item1.ModificationParams=item2.ModificationParams && item1.Enzymes=item2.Enzymes && item1.MassTables=item2.MassTables && 
+                item1.FragmentTolerance=item2.FragmentTolerance && item1.ParentTolerance=item2.ParentTolerance && 
+                item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames && item1.TranslationTables=item2.TranslationTables && 
+                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6802,7 +6797,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationProtocol) =
-                SpectrumIdentificationProtocolHandler.addToContext dbContext item
+                SpectrumIdentificationProtocolHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SearchDatabaseHandler =
@@ -6946,7 +6941,9 @@ module InsertStatements =
                item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
                item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
                item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
-               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
+               matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6969,7 +6966,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SearchDatabase) =
-                SearchDatabaseHandler.addToContext dbContext item
+                SearchDatabaseHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type DBSequenceHandler =
@@ -6983,14 +6980,14 @@ module InsertStatements =
                     ?sequence      : string,
                     ?length        : int,
                     ?details       : seq<DBSequenceParam>,
-                    ?mzIdentML     : MzIdentMLDocument
+                    ?fkMzIdentML   : string
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'      = defaultArg name Unchecked.defaultof<string>
-                let sequence'  = defaultArg sequence Unchecked.defaultof<string>
-                let length'    = defaultArg length Unchecked.defaultof<int>
-                let details'   = convertOptionToList details
-                let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'        = defaultArg name Unchecked.defaultof<string>
+                let sequence'    = defaultArg sequence Unchecked.defaultof<string>
+                let length'      = defaultArg length Unchecked.defaultof<int>
+                let details'     = convertOptionToList details
+                let fkMzIdentML' = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new DBSequence(
                                id', 
@@ -7000,7 +6997,7 @@ module InsertStatements =
                                sequence', 
                                Nullable(length'), 
                                details', 
-                               mzIdentML', 
+                               fkMzIdentML', 
                                Nullable(DateTime.Now)
                               )
 
@@ -7034,10 +7031,10 @@ module InsertStatements =
                 let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                 dbSequence
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (dbSequence:DBSequence) =
-                let result = dbSequence.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (dbSequence:DBSequence) =
+                let result = dbSequence.MzIdentMLDocumentID <- fkMzIdentML
                 dbSequence
 
             ///Tries to find a dbSequence-object in the context and database, based on its primary-key(ID).
@@ -7045,7 +7042,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DBSequence.Local do
                            if i.ID=id
-                              then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                              then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
@@ -7054,7 +7051,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DBSequence do
                                        if i.ID=id
-                                          then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                                          then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
                                   }
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                             |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
@@ -7069,7 +7066,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DBSequence.Local do
                            if i.Accession=accession
-                              then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                              then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
@@ -7078,7 +7075,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DBSequence do
                                        if i.Accession=accession
-                                          then select (i, i.SearchDatabase, i.MzIdentMLDocument, i.Details)
+                                          then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
                                   }
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                             |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
@@ -7091,7 +7088,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
                item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
-               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
+               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID &&
                item1.SearchDatabase=item2.SearchDatabase
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7115,7 +7112,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:DBSequence) =
-                DBSequenceHandler.addToContext dbContext item
+                DBSequenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type PeptideEvidenceHandler =
@@ -7134,19 +7131,19 @@ module InsertStatements =
                     ?isDecoy                    : bool,
                     ?translationTable           : TranslationTable,
                     ?details                    : seq<PeptideEvidenceParam>,
-                    ?mzIdentML                  : MzIdentMLDocument
+                    ?fkMzIdentML                : string
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                       = defaultArg name Unchecked.defaultof<string>
-                let start'                      = defaultArg start Unchecked.defaultof<int>
-                let end''                       = defaultArg end' Unchecked.defaultof<int>
-                let pre'                        = defaultArg pre Unchecked.defaultof<string>
-                let post'                       = defaultArg post Unchecked.defaultof<string>
-                let frame'                      = defaultArg frame Unchecked.defaultof<Frame>
-                let isDecoy'                    = defaultArg isDecoy Unchecked.defaultof<bool>
-                let translationTable'           = defaultArg translationTable Unchecked.defaultof<TranslationTable>
-                let details'                    = convertOptionToList details
-                let mzIdentML'                  = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'             = defaultArg name Unchecked.defaultof<string>
+                let start'            = defaultArg start Unchecked.defaultof<int>
+                let end''             = defaultArg end' Unchecked.defaultof<int>
+                let pre'              = defaultArg pre Unchecked.defaultof<string>
+                let post'             = defaultArg post Unchecked.defaultof<string>
+                let frame'            = defaultArg frame Unchecked.defaultof<Frame>
+                let isDecoy'          = defaultArg isDecoy Unchecked.defaultof<bool>
+                let translationTable' = defaultArg translationTable Unchecked.defaultof<TranslationTable>
+                let details'          = convertOptionToList details
+                let fkMzIdentML'      = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new PeptideEvidence(
                                     id', 
@@ -7161,7 +7158,7 @@ module InsertStatements =
                                     Nullable(isDecoy'), 
                                     translationTable', 
                                     details', 
-                                    mzIdentML', 
+                                    fkMzIdentML', 
                                     Nullable(DateTime.Now)
                                    )
 
@@ -7225,10 +7222,10 @@ module InsertStatements =
                 let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
                 peptideEvidence
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (peptideEvidence:PeptideEvidence) =
-                let result = peptideEvidence.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (peptideEvidence:PeptideEvidence) =
+                let result = peptideEvidence.MzIdentMLDocumentID <- fkMzIdentML
                 peptideEvidence
 
             ///Tries to find a peptideEvidence-object in the context and database, based on its primary-key(ID).
@@ -7236,7 +7233,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
                            if i.ID=id
-                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
@@ -7245,7 +7242,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.PeptideEvidence do
                                        if i.ID=id
-                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                             |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
@@ -7260,7 +7257,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
                            if i.Name=name
-                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
@@ -7269,7 +7266,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.PeptideEvidence do
                                        if i.Name=name
-                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocument, i.Details)
+                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                             |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
@@ -7284,8 +7281,10 @@ module InsertStatements =
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
                item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
                item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
-               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument &&
-               item1.DBSequence=item2.DBSequence
+               matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
+               item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && item1.DBSequence=item2.DBSequence
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7308,7 +7307,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideEvidence) =
-                PeptideEvidenceHandler.addToContext dbContext item
+                PeptideEvidenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationItemHandler =
@@ -7489,7 +7488,9 @@ module InsertStatements =
                item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
                item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
                item1.Fragmentations=item2.Fragmentations && item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && 
-               item1.CalculatedPI=item2.CalculatedPI && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.ChargeState=item2.ChargeState && 
+               item1.CalculatedPI=item2.CalculatedPI && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.ChargeState=item2.ChargeState && 
                item1.Peptide.PeptideSequence=item2.Peptide.PeptideSequence
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7513,7 +7514,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
-                SpectrumIdentificationItemHandler.addToContext dbContext item
+                SpectrumIdentificationItemHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationResultHandler =
@@ -7613,7 +7614,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
-               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
+               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
                item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7637,7 +7640,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationResult) =
-                SpectrumIdentificationResultHandler.addToContext dbContext item
+                SpectrumIdentificationResultHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationListHandler =
@@ -7754,7 +7757,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
                item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
-               item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7777,7 +7782,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentificationList) =
-                SpectrumIdentificationListHandler.addToContext dbContext item
+                SpectrumIdentificationListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SpectrumIdentificationHandler =
@@ -7791,12 +7796,12 @@ module InsertStatements =
                     ?id                            : string,
                     ?name                          : string,
                     ?activityDate                  : DateTime,
-                    ?mzIdentML                     : MzIdentMLDocument
+                    ?fkMzIdentML                   : string
                 ) =
                 let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
-                let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentML'      = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new SpectrumIdentification(
                                            id', 
@@ -7806,7 +7811,7 @@ module InsertStatements =
                                            spectrumIdentificationProtocol,
                                            spectraData |> List, 
                                            searchDatabase |> List, 
-                                           mzIdentML', 
+                                           fkMzIdentML', 
                                            Nullable(DateTime.Now)
                                           )
 
@@ -7822,10 +7827,10 @@ module InsertStatements =
                 spectrumIdentification.ActivityDate <- Nullable(activityDate)
                 spectrumIdentification
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (spectrumIdentification:SpectrumIdentification) =
-                let result = spectrumIdentification.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (spectrumIdentification:SpectrumIdentification) =
+                let result = spectrumIdentification.MzIdentMLDocumentID <- fkMzIdentML
                 spectrumIdentification
 
             ///Tries to find a spectrumIdentification-object in the context and database, based on its primary-key(ID).
@@ -7834,7 +7839,7 @@ module InsertStatements =
                        for i in dbContext.SpectrumIdentification.Local do
                            if i.ID=id
                               then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7845,7 +7850,7 @@ module InsertStatements =
                                    for i in dbContext.SpectrumIdentification do
                                        if i.ID=id
                                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7862,7 +7867,7 @@ module InsertStatements =
                        for i in dbContext.SpectrumIdentification.Local do
                            if i.Name=name
                               then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7873,7 +7878,7 @@ module InsertStatements =
                                    for i in dbContext.SpectrumIdentification do
                                        if i.Name=name
                                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocument
+                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7887,7 +7892,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
-               item1.MzIdentMLDocument=item2.MzIdentMLDocument && item1.Name=item2.Name &&
+               item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && item1.Name=item2.Name &&
                item1.SpectraData=item2.SpectraData && item1.SearchDatabase=item2.SearchDatabase &&
                item1.ActivityDate=item2.ActivityDate
 
@@ -7912,7 +7917,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SpectrumIdentification) =
-                SpectrumIdentificationHandler.addToContext dbContext item
+                SpectrumIdentificationHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionProtocolHandler =
@@ -7924,12 +7929,12 @@ module InsertStatements =
                     ?id              : string,
                     ?name            : string,
                     ?analysisParams  : seq<AnalysisParam>,
-                    ?mzIdentML       : MzIdentMLDocument
+                    ?fkMzIdentML     : string
                 ) =
                 let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'           = defaultArg name Unchecked.defaultof<string>
                 let analysisParams' = convertOptionToList analysisParams
-                let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let fkMzIdentML'    = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new ProteinDetectionProtocol(
                                              id', 
@@ -7937,7 +7942,7 @@ module InsertStatements =
                                              analysisSoftware, 
                                              analysisParams', 
                                              threshold |> List,
-                                             mzIdentML', 
+                                             fkMzIdentML', 
                                              Nullable(DateTime.Now)
                                             )
 
@@ -7959,10 +7964,10 @@ module InsertStatements =
                 let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
                 proteinDetectionProtocol
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                let result = proteinDetectionProtocol.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (proteinDetectionProtocol:ProteinDetectionProtocol) =
+                let result = proteinDetectionProtocol.MzIdentMLDocumentID <- fkMzIdentML
                 proteinDetectionProtocol
 
             ///Tries to find a proteinDetectionProtocol-object in the context and database, based on its primary-key(ID).
@@ -7970,7 +7975,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
                            if i.ID=id
-                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
@@ -7979,7 +7984,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.ProteinDetectionProtocol do
                                        if i.ID=id
-                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                             |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
@@ -7994,7 +7999,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
                            if i.Name=name
-                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
@@ -8003,7 +8008,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.ProteinDetectionProtocol do
                                        if i.Name=name
-                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocument)
+                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                             |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
@@ -8016,7 +8021,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
                item1.Threshold=item2.Threshold && item1.Name=item2.Name && item1.AnalysisSoftware=item2.AnalysisSoftware &&
-               item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8039,7 +8044,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionProtocol) =
-                ProteinDetectionProtocolHandler.addToContext dbContext item
+                ProteinDetectionProtocolHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type SourceFileHandler =
@@ -8146,7 +8151,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
-               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
+               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -8170,7 +8177,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:SourceFile) =
-                SourceFileHandler.addToContext dbContext item
+                SourceFileHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type InputsHandler =
@@ -8180,20 +8187,17 @@ module InsertStatements =
                     spectraData     : seq<SpectraData>,
                     ?id             : string,
                     ?sourceFile     : seq<SourceFile>,
-                    ?searchDatabase : seq<SearchDatabase>,
-                    ?mzIdentML      : MzIdentMLDocument
+                    ?searchDatabase : seq<SearchDatabase>
                 ) =
                 let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let sourceFile'     = convertOptionToList sourceFile
                 let searchDatabase' = convertOptionToList searchDatabase
-                let mzIdentML'      = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new Inputs(
                            id', 
                            sourceFile', 
                            searchDatabase', 
-                           spectraData |> List, 
-                           mzIdentML', 
+                           spectraData |> List,  
                            Nullable(DateTime.Now)
                           )
 
@@ -8221,29 +8225,23 @@ module InsertStatements =
                 let result = inputs.SearchDatabases <- addCollectionToList inputs.SearchDatabases searchDatabases
                 inputs
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (inputs:Inputs) =
-                let result = inputs.MzIdentMLDocument <- mzIdentMLDocument
-                inputs
-
             ///Tries to find a inputs-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.Inputs.Local do
                            if i.ID=id
-                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases)
                       }
-                |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                |> Seq.map (fun (inputs, _, _, _) -> inputs)
                 |> (fun inputs -> 
                     if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
                         then 
                             query {
                                    for i in dbContext.Inputs do
                                        if i.ID=id
-                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases)
                                   }
-                            |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                            |> Seq.map (fun (inputs, _, _, _) -> inputs)
                             |> (fun inputs -> if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
                                                 then None
                                                 else Some (inputs.Single())
@@ -8256,18 +8254,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.Inputs.Local do
                            if i.SpectraData=(spectraData |> List)
-                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                              then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases)
                       }
-                |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                |> Seq.map (fun (inputs, _, _, _) -> inputs)
                 |> (fun inputs -> 
                     if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
                         then 
                             query {
                                    for i in dbContext.Inputs do
                                        if i.SpectraData=(spectraData |> List)
-                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases, i.MzIdentMLDocument)
+                                          then select (i, i.SourceFiles, i.SpectraData, i.SearchDatabases)
                                   }
-                            |> Seq.map (fun (inputs, _, _, _, _) -> inputs)
+                            |> Seq.map (fun (inputs, _, _, _) -> inputs)
                             |> (fun inputs -> if (Seq.exists (fun inputs' -> inputs' <> null) inputs) = false
                                                   then None
                                                   else Some inputs
@@ -8277,8 +8275,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Inputs) (item2:Inputs) =
-               item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases &&
-               item1.MzIdentMLDocument.Name=item2.MzIdentMLDocument.Name
+               item1.SourceFiles=item2.SourceFiles && item1.SearchDatabases=item2.SearchDatabases
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8301,7 +8298,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Inputs) =
-                InputsHandler.addToContext dbContext item
+                InputsHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type PeptideHypothesisHandler =
@@ -8394,7 +8391,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:PeptideHypothesis) =
-                PeptideHypothesisHandler.addToContext dbContext item
+                PeptideHypothesisHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionHypothesisHandler =
@@ -8406,13 +8403,11 @@ module InsertStatements =
                     peptideHypothesis : seq<PeptideHypothesis>,
                     ?id               : string,
                     ?name             : string,
-                    ?details          : seq<ProteinDetectionHypothesisParam>,
-                    ?mzIdentML        : MzIdentMLDocument
+                    ?details          : seq<ProteinDetectionHypothesisParam>
                 ) =
                 let id'        = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'      = defaultArg name Unchecked.defaultof<string>
-                let details'   = convertOptionToList details
-                let mzIdentML' = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let name'        = defaultArg name Unchecked.defaultof<string>
+                let details'     = convertOptionToList details
                     
                 new ProteinDetectionHypothesis(
                                                id', 
@@ -8421,7 +8416,6 @@ module InsertStatements =
                                                dbSequence, 
                                                peptideHypothesis |> List,
                                                details', 
-                                               mzIdentML', 
                                                Nullable(DateTime.Now)
                                               )
 
@@ -8443,29 +8437,23 @@ module InsertStatements =
                 let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
                 proteinDetectionHypothesis
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
-                let result = proteinDetectionHypothesis.MzIdentMLDocument <- mzIdentMLDocument
-                proteinDetectionHypothesis
-
             ///Tries to find a proteinDetectionHypothesis-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesis.Local do
                            if i.ID=id
-                              then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                              then select (i, i.PeptideHypothesis, i.Details)
                       }
-                |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                |> Seq.map (fun (proteinDetectionHypothesis, _, _) -> proteinDetectionHypothesis)
                 |> (fun proteinDetectionHypothesis -> 
                     if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesis do
                                        if i.ID=id
-                                          then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                                          then select (i, i.PeptideHypothesis, i.Details)
                                   }
-                            |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                            |> Seq.map (fun (proteinDetectionHypothesis, _, _) -> proteinDetectionHypothesis)
                             |> (fun proteinDetectionHypothesis -> if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
                                                                     then None
                                                                     else Some (proteinDetectionHypothesis.Single())
@@ -8478,18 +8466,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.ProteinDetectionHypothesis.Local do
                            if i.PassThreshold=passThreshold
-                              then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                              then select (i, i.PeptideHypothesis, i.Details)
                       }
-                |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                |> Seq.map (fun (proteinDetectionHypothesis, _, _) -> proteinDetectionHypothesis)
                 |> (fun proteinDetectionHypothesis -> 
                     if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesis do
                                        if i.PassThreshold=passThreshold
-                                          then select (i, i.PeptideHypothesis, i.Details, i. MzIdentMLDocument)
+                                          then select (i, i.PeptideHypothesis, i.Details)
                                   }
-                            |> Seq.map (fun (proteinDetectionHypothesis, _, _, _) -> proteinDetectionHypothesis)
+                            |> Seq.map (fun (proteinDetectionHypothesis, _, _) -> proteinDetectionHypothesis)
                             |> (fun proteinDetectionHypothesis -> if (Seq.exists (fun proteinDetectionHypothesis' -> proteinDetectionHypothesis' <> null) proteinDetectionHypothesis) = false
                                                                       then None
                                                                       else Some proteinDetectionHypothesis
@@ -8500,7 +8488,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
                item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
-               item1.Name=item2.Name && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.Name=item2.Name && matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8523,7 +8513,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionHypothesis) =
-                ProteinDetectionHypothesisHandler.addToContext dbContext item
+                ProteinDetectionHypothesisHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinAmbiguityGroupHandler =
@@ -8615,7 +8605,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
-               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8638,7 +8630,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinAmbiguityGroup) =
-                ProteinAmbiguityGroupHandler.addToContext dbContext item
+                ProteinAmbiguityGroupHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionListHandler =
@@ -8743,7 +8735,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionList) (item2:ProteinDetectionList) =
-               item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               item1.ProteinAmbiguityGroups=item2.ProteinAmbiguityGroups && matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8766,7 +8760,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetectionList) =
-                ProteinDetectionListHandler.addToContext dbContext item
+                ProteinDetectionListHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type AnalysisDataHandler =
@@ -8775,31 +8769,22 @@ module InsertStatements =
                 (             
                     spectrumIdentificationList : seq<SpectrumIdentificationList>,
                     ?id                        : string,
-                    ?proteinDetectionList      : ProteinDetectionList,
-                    ?mzIdentML                 : MzIdentMLDocument
+                    ?proteinDetectionList      : ProteinDetectionList
                 ) =
                 let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
                 let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
-                let mzIdentML'            = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
                     
                 new AnalysisData(
                                  id', 
                                  spectrumIdentificationList |> List, 
-                                 proteinDetectionList', 
-                                 mzIdentML', 
+                                 proteinDetectionList',  
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces proteindetectionlist of existing object with new mzIdentML.
+            ///Replaces proteindetectionlist of existing object with new one.
             static member addProteinDetectionList
                 (proteinDetectionList:ProteinDetectionList) (analysisData:AnalysisData) =
                 analysisData.ProteinDetectionList <- proteinDetectionList
-                analysisData
-
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (analysisData:AnalysisData) =
-                let result = analysisData.MzIdentMLDocument <- mzIdentMLDocument
                 analysisData
 
             ///Tries to find a analysisData-object in the context and database, based on its primary-key(ID).
@@ -8807,18 +8792,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.AnalysisData.Local do
                            if i.ID=id
-                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                       }
-                |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                |> Seq.map (fun (analysisData, _, _) -> analysisData)
                 |> (fun analysisData -> 
                     if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisData do
                                        if i.ID=id
-                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                                   }
-                            |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                            |> Seq.map (fun (analysisData, _, _) -> analysisData)
                             |> (fun analysisData -> if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
                                                     then None
                                                     else Some (analysisData.Single())
@@ -8827,22 +8812,22 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByMzIdentMLDocument (dbContext:MzIdentML) (mzIdentMLDocument:MzIdentMLDocument) =
+            static member tryFindByMzIdentMLDocument (dbContext:MzIdentML) (proteinDetectionListID:string) =
                 query {
                        for i in dbContext.AnalysisData.Local do
-                           if i.MzIdentMLDocument=mzIdentMLDocument
-                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                           if i.ProteinDetectionList.ID=proteinDetectionListID
+                              then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                       }
-                |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                |> Seq.map (fun (analysisData, _, _) -> analysisData)
                 |> (fun analysisData -> 
                     if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
                         then 
                             query {
                                    for i in dbContext.AnalysisData do
-                                       if i.MzIdentMLDocument=mzIdentMLDocument
-                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList, i.MzIdentMLDocument)
+                                       if i.ProteinDetectionList.ID=proteinDetectionListID
+                                          then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                                   }
-                            |> Seq.map (fun (analysisData, _, _, _) -> analysisData)
+                            |> Seq.map (fun (analysisData, _, _) -> analysisData)
                             |> (fun analysisData -> if (Seq.exists (fun analysisData' -> analysisData' <> null) analysisData) = false
                                                         then None
                                                         else Some analysisData
@@ -8858,7 +8843,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisData) =
-                    AnalysisDataHandler.tryFindByMzIdentMLDocument dbContext item.MzIdentMLDocument
+                    AnalysisDataHandler.tryFindByMzIdentMLDocument dbContext item.ProteinDetectionList.ID
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisDataHandler.hasEqualFieldValues organization item with
@@ -8876,7 +8861,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:AnalysisData) =
-                AnalysisDataHandler.addToContext dbContext item
+                AnalysisDataHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProteinDetectionHandler =
@@ -8888,13 +8873,11 @@ module InsertStatements =
                     spectrumIdentificationLists : seq<SpectrumIdentificationList>,
                     ?id                         : string,
                     ?name                       : string,
-                    ?activityDate               : DateTime,
-                    ?mzIdentMLDocument          : MzIdentMLDocument
+                    ?activityDate               : DateTime
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'              = defaultArg name Unchecked.defaultof<string>
                 let activityDate'      = defaultArg activityDate Unchecked.defaultof<DateTime>
-                let mzIdentMLDocument' = defaultArg mzIdentMLDocument Unchecked.defaultof<MzIdentMLDocument>
                     
                 new ProteinDetection(
                                      id', 
@@ -8903,7 +8886,6 @@ module InsertStatements =
                                      proteinDetectionList, 
                                      proteinDetectionProtocol,
                                      spectrumIdentificationLists |> List,
-                                     mzIdentMLDocument',
                                      Nullable(DateTime.Now)
                                     )
 
@@ -8917,12 +8899,6 @@ module InsertStatements =
             static member addActivityDate
                 (activityDate:DateTime) (proteinDetection:ProteinDetection) =
                 proteinDetection.ActivityDate <- Nullable(activityDate)
-                proteinDetection
-
-            ///Replaces mzidentmldocument of existing object with new mzidentmldocument.
-            static member addMzIdentMLDocument
-                (mzIdentML:MzIdentMLDocument) (proteinDetection:ProteinDetection) =
-                proteinDetection.MzIdentMLDocument <- mzIdentML
                 proteinDetection
 
             ///Tries to find a proteinDetection-object in the context and database, based on its primary-key(ID).
@@ -8999,40 +8975,40 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:ProteinDetection) =
-                ProteinDetectionHandler.addToContext dbContext item
+                ProteinDetectionHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type BiblioGraphicReferenceHandler =
             ///Initializes a bibliographicreference-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id          : string,
-                    ?name        : string,
-                    ?authors     : string,
-                    ?doi         : string,
-                    ?editor      : string,
-                    ?issue       : string,
-                    ?pages       : string,
-                    ?publication : string,
-                    ?publisher   : string,
-                    ?title       : string,
-                    ?volume      : string,
-                    ?year        : int,
-                    ?mzIdentML   : MzIdentMLDocument
+                    ?id                  : string,
+                    ?name                : string,
+                    ?authors             : string,
+                    ?doi                 : string,
+                    ?editor              : string,
+                    ?issue               : string,
+                    ?pages               : string,
+                    ?publication         : string,
+                    ?publisher           : string,
+                    ?title               : string,
+                    ?volume              : string,
+                    ?year                : int,
+                    ?fkMzIdentMLDocument : string
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'        = defaultArg name Unchecked.defaultof<string>
-                let authors'     = defaultArg authors Unchecked.defaultof<string>
-                let doi'         = defaultArg doi Unchecked.defaultof<string>
-                let editor'      = defaultArg editor Unchecked.defaultof<string>
-                let issue'       = defaultArg issue Unchecked.defaultof<string>
-                let pages'       = defaultArg pages Unchecked.defaultof<string>
-                let publication' = defaultArg publication Unchecked.defaultof<string>
-                let publisher'   = defaultArg publisher Unchecked.defaultof<string>
-                let title'       = defaultArg title Unchecked.defaultof<string>
-                let volume'      = defaultArg volume Unchecked.defaultof<string>
-                let year'        = defaultArg year Unchecked.defaultof<int>
-                let mzIdentML'   = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                = defaultArg name Unchecked.defaultof<string>
+                let authors'             = defaultArg authors Unchecked.defaultof<string>
+                let doi'                 = defaultArg doi Unchecked.defaultof<string>
+                let editor'              = defaultArg editor Unchecked.defaultof<string>
+                let issue'               = defaultArg issue Unchecked.defaultof<string>
+                let pages'               = defaultArg pages Unchecked.defaultof<string>
+                let publication'         = defaultArg publication Unchecked.defaultof<string>
+                let publisher'           = defaultArg publisher Unchecked.defaultof<string>
+                let title'               = defaultArg title Unchecked.defaultof<string>
+                let volume'              = defaultArg volume Unchecked.defaultof<string>
+                let year'                = defaultArg year Unchecked.defaultof<int>
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new BiblioGraphicReference(
                                            id', 
@@ -9046,7 +9022,7 @@ module InsertStatements =
                                            title', 
                                            volume', 
                                            Nullable(year'), 
-                                           mzIdentML', 
+                                           fkMzIdentMLDocument', 
                                            Nullable(DateTime.Now)
                                           )
 
@@ -9116,10 +9092,10 @@ module InsertStatements =
                 biblioGraphicReference.Year <- Nullable(year)
                 biblioGraphicReference
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (biblioGraphicReference:BiblioGraphicReference) =
-                let result = biblioGraphicReference.MzIdentMLDocument <- mzIdentMLDocument
+            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            static member addFkMzIdentMLDocument
+                (fkMzIdentML:string) (biblioGraphicReference:BiblioGraphicReference) =
+                let result = biblioGraphicReference.MzIdentMLDocumentID <- fkMzIdentML
                 biblioGraphicReference
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
@@ -9127,7 +9103,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
                            if i.ID=id
-                              then select (i, i.MzIdentMLDocument)
+                              then select (i, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                 |> (fun biblioGraphicReference -> 
@@ -9136,7 +9112,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.BiblioGraphicReference do
                                        if i.ID=id
-                                          then select (i, i.MzIdentMLDocument)
+                                          then select (i, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                             |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
@@ -9151,7 +9127,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
                            if i.Name=name
-                              then select (i, i.MzIdentMLDocument)
+                              then select (i, i.MzIdentMLDocumentID)
                       }
                 |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                 |> (fun biblioGraphicReference -> 
@@ -9160,7 +9136,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.BiblioGraphicReference do
                                        if i.Name=name
-                                          then select (i, i.MzIdentMLDocument)
+                                          then select (i, i.MzIdentMLDocumentID)
                                   }
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                             |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
@@ -9174,7 +9150,7 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
                item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
                item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
-               item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocument=item2.MzIdentMLDocument
+               item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -9197,7 +9173,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:BiblioGraphicReference) =
-                BiblioGraphicReferenceHandler.addToContext dbContext item
+                BiblioGraphicReferenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type ProviderHandler =
@@ -9207,21 +9183,18 @@ module InsertStatements =
                     ?id               : string,
                     ?name             : string,
                     ?analysisSoftware : AnalysisSoftware,
-                    ?contactRole      : ContactRole,
-                    ?mzIdentML        : MzIdentMLDocument
+                    ?contactRole      : ContactRole
                 ) =
                 let id'               = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'             = defaultArg name Unchecked.defaultof<string>
                 let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                 let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
-                let mzIdentML'        = defaultArg mzIdentML Unchecked.defaultof<MzIdentMLDocument>
 
                 new Provider(
                              id', 
                              name', 
                              analysisSoftware', 
                              contactRole', 
-                             mzIdentML', 
                              Nullable(DateTime.Now)
                             )
 
@@ -9243,29 +9216,23 @@ module InsertStatements =
                 provider.ContactRole <- contactRole
                 provider
 
-            ///Replaces mzIdentML of existing object with new mzIdentML.
-            static member addMzIdentMLDocument
-                (mzIdentMLDocument:MzIdentMLDocument) (provider:Provider) =
-                let result = provider.MzIdentMLDocument <- mzIdentMLDocument
-                provider
-
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.Provider.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                              then select (i, i.AnalysisSoftware, i.ContactRole)
                       }
-                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> Seq.map (fun (provider, _, _) -> provider)
                 |> (fun provider -> 
                     if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                                          then select (i, i.AnalysisSoftware, i.ContactRole)
                                   }
-                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> Seq.map (fun (provider, _, _) -> provider)
                             |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                                                 then None
                                                 else Some (provider.Single())
@@ -9278,18 +9245,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.Provider.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                              then select (i, i.AnalysisSoftware, i.ContactRole)
                       }
-                |> Seq.map (fun (provider, _, _, _) -> provider)
+                |> Seq.map (fun (provider, _, _) -> provider)
                 |> (fun provider -> 
                     if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                         then 
                             query {
                                    for i in dbContext.Provider do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSoftware, i.ContactRole, i.MzIdentMLDocument)
+                                          then select (i, i.AnalysisSoftware, i.ContactRole)
                                   }
-                            |> Seq.map (fun (provider, _, _, _) -> provider)
+                            |> Seq.map (fun (provider, _, _) -> provider)
                             |> (fun provider -> if (Seq.exists (fun provider' -> provider' <> null) provider) = false
                                                     then None
                                                     else Some provider
@@ -9299,8 +9266,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole &&
-               item1.MzIdentMLDocument=item2.MzIdentMLDocument 
+               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -9323,37 +9289,37 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:Provider) =
-                ProviderHandler.addToContext dbContext item
+                ProviderHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
         type MzIdentMLDocumentHandler =
             ///Initializes a mzIdentML-object with at least all necessary parameters.
             static member init
                 (             
-                    ?inputs                         : seq<Inputs>,
+                    ?inputs                         : Inputs,
                     ?version                        : string,
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
-                    ?analysisData                   : seq<AnalysisData>,
+                    ?analysisData                   : AnalysisData,
                     ?id                             : string,
                     ?name                           : string,
                     ?analysisSoftwares              : seq<AnalysisSoftware>,
-                    ?provider                       : seq<Provider>,
+                    ?provider                       : Provider,
                     ?persons                        : seq<Person>,
                     ?organizations                  : seq<Organization>,
                     ?samples                        : seq<Sample>,
                     ?dbSequences                    : seq<DBSequence>,
                     ?peptides                       : seq<Peptide>,
                     ?peptideEvidences               : seq<PeptideEvidence>,
-                    ?proteinDetection               : seq<ProteinDetection>,
-                    ?proteinDetectionProtocol       : seq<ProteinDetectionProtocol>,
+                    ?proteinDetection               : ProteinDetection,
+                    ?proteinDetectionProtocol       : ProteinDetectionProtocol,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
                 let analysisSoftwares'              = convertOptionToList analysisSoftwares
-                let provider'                       = convertOptionToList provider
+                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
                 let persons'                        = convertOptionToList persons
                 let organizations'                  = convertOptionToList organizations
                 let samples'                        = convertOptionToList samples
@@ -9361,11 +9327,11 @@ module InsertStatements =
                 let peptides'                       = convertOptionToList peptides
                 let peptideEvidences'               = convertOptionToList peptideEvidences
                 let spectrumIdentification'         = convertOptionToList spectrumIdentification
-                let proteinDetection'               = convertOptionToList proteinDetection
+                let proteinDetection'               = defaultArg proteinDetection Unchecked.defaultof<ProteinDetection>
                 let spectrumIdentificationProtocol' = convertOptionToList spectrumIdentificationProtocol
-                let proteinDetectionProtocol'       = convertOptionToList proteinDetectionProtocol
-                let inputs'                         = convertOptionToList inputs
-                let analysisData'                   = convertOptionToList analysisData
+                let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
+                let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
+                let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
                                       id', 
@@ -9389,13 +9355,13 @@ module InsertStatements =
                                       Nullable(DateTime.Now)
                                      )
                     
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (mzIdentML:MzIdentMLDocument) =
                 mzIdentML.Name <- name
                 mzIdentML
 
-            ///Replaces version of existing object with new name.
+            ///Replaces version of existing object with new one.
             static member addVersion
                 (version:string) (mzIdentML:MzIdentMLDocument) =
                 mzIdentML.Version <- version
@@ -9413,10 +9379,10 @@ module InsertStatements =
                 let result = mzIdentML.AnalysisSoftwares <- addCollectionToList mzIdentML.AnalysisSoftwares analysisSoftwares
                 mzIdentML
 
-            ///Adds a provider to an existing mzidentmldocument-object.
+            ///Replaces provider of existing object with new one.
             static member addProvider
                 (provider:Provider) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Provider <- addToList mzIdentML.Provider provider
+                mzIdentML.Provider <- provider
                 mzIdentML
 
             ///Adds a person to an existing mzidentmldocument-object.
@@ -9465,7 +9431,6 @@ module InsertStatements =
             static member addDBSequences
                 (dbSequences:seq<DBSequence>) (mzIdentML:MzIdentMLDocument) =
                 let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
-                printfn "%A" dbSequences
                 mzIdentML
 
             ///Adds a peptide to an existing mzidentmldocument-object.
@@ -9495,49 +9460,49 @@ module InsertStatements =
             ///Adds a spectrumidentification to an existing mzidentmldocument-object.
             static member addSpectrumIdentification
                 (spectrumIdentification:SpectrumIdentification) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentification <- addToList mzIdentML.SpectrumIdentification spectrumIdentification
+                let result = mzIdentML.SpectrumIdentifications <- addToList mzIdentML.SpectrumIdentifications spectrumIdentification
                 mzIdentML
 
             ///Adds a collection of spectrumidentifications to an existing mzidentmldocument-object.
             static member addSpectrumIdentifications
                 (spectrumIdentification:seq<SpectrumIdentification>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentification <- addCollectionToList mzIdentML.SpectrumIdentification spectrumIdentification
+                let result = mzIdentML.SpectrumIdentifications <- addCollectionToList mzIdentML.SpectrumIdentifications spectrumIdentification
                 mzIdentML
 
-            ///Adds a proteinDetection to an existing mzidentmldocument-object.
+            ///Replaces proteinDetection of existing object with new one.
             static member addProteinDetection
                 (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetection <- addToList mzIdentML.ProteinDetection proteinDetection
+                mzIdentML.ProteinDetection <- proteinDetection
                 mzIdentML
 
             ///Adds a spectrumidentificationprotocol to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocol
                 (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentificationProtocol <- addToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
+                let result = mzIdentML.SpectrumIdentificationProtocols <- addToList mzIdentML.SpectrumIdentificationProtocols spectrumIdentificationProtocol
                 mzIdentML
 
             ///Adds a collection of spectrumidentificationprotocols to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocols
                 (spectrumIdentificationProtocol:seq<SpectrumIdentificationProtocol>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentificationProtocol <- addCollectionToList mzIdentML.SpectrumIdentificationProtocol spectrumIdentificationProtocol
+                let result = mzIdentML.SpectrumIdentificationProtocols <- addCollectionToList mzIdentML.SpectrumIdentificationProtocols spectrumIdentificationProtocol
                 mzIdentML
 
-            ///Adds a proteinDetectionProtocol to an existing mzidentmldocument-object.
+            ///Replaces proteinDetectionProtocol of existing object with new one.
             static member addProteinDetectionProtocol
                 (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetectionProtocol <- addToList mzIdentML.ProteinDetectionProtocol proteinDetectionProtocol
+                mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
                 mzIdentML
 
-            ///Adds a inputs to an existing mzidentmldocument-object.
+            ///Replaces inputs of existing object with new one.
             static member addInputs
                 (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Inputs <- addToList mzIdentML.Inputs inputs
+                mzIdentML.Inputs <- inputs
                 mzIdentML
 
-            ///Adds a analysisData to an existing mzidentmldocument-object.
+            ///Replaces analysisData of existing object with new one.
             static member addAnalysisData
                 (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.AnalysisData <- addToList mzIdentML.AnalysisData analysisData
+                mzIdentML.AnalysisData <- analysisData
                 mzIdentML
 
             ///Adds a bibliographicreference to an existing mzidentmldocument-object.
@@ -9558,8 +9523,8 @@ module InsertStatements =
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.ID=id
                               then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
+                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
                 |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
@@ -9570,8 +9535,8 @@ module InsertStatements =
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.ID=id
                                           then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
+                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
                             |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
@@ -9588,8 +9553,8 @@ module InsertStatements =
                        for i in dbContext.MzIdentMLDocument.Local do
                            if i.Name=name
                               then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                           i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                           i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
+                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                           )
                       }
                 |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
@@ -9600,8 +9565,8 @@ module InsertStatements =
                                    for i in dbContext.MzIdentMLDocument do
                                        if i.Name=name
                                           then select (i, i.Inputs, i.AnalysisSoftwares, i.Provider, i.Persons, i.Organizations, i.Samples,
-                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentification, i.ProteinDetection,
-                                                       i.SpectrumIdentificationProtocol, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                       i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetection,
+                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
                                                       )
                                   }
                             |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
@@ -9617,8 +9582,8 @@ module InsertStatements =
                item1.Name=item2.Name && item1.Version=item2.Version && item1.AnalysisSoftwares=item2.AnalysisSoftwares && 
                item1.Provider=item2.Provider && item1.Persons=item2.Persons && item1.Organizations=item2.Organizations && 
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
-               item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentification=item2.SpectrumIdentification &&
-               item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocol=item2.SpectrumIdentificationProtocol &&
+               item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentifications=item2.SpectrumIdentifications &&
+               item1.ProteinDetection=item2.ProteinDetection && item1.SpectrumIdentificationProtocols=item2.SpectrumIdentificationProtocols &&
                item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&
                item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
@@ -9643,5 +9608,5 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzIdentML) (item:MzIdentMLDocument) =
-                MzIdentMLDocumentHandler.addToContext dbContext item
+                MzIdentMLDocumentHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()

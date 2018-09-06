@@ -38,5 +38,7 @@ module Basetypes =
         abstract member ID         : string
         abstract member Value      : string
         abstract member Term       : Term
+        abstract member TermID     : string
         abstract member Unit       : Term
+        abstract member UnitID     : string
         abstract member RowVersion : Nullable<DateTime>

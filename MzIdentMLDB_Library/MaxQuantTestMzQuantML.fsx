@@ -1694,7 +1694,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 10000 then 
+    if n < 1000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert

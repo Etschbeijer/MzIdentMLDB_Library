@@ -301,7 +301,7 @@ let getProteinsAndDBSeqs
 let proteinsAndDBSeqs =
     getProteinsAndDBSeqs sqliteMzIdentMLContext "Test1" sqliteMzQuantMLContext "Test1"
 
-let findValuesOfProteins
+let createDictionaryWithValuesAndColumnNames
     (columnNames:Dictionary<string, string>) (terms:Dictionary<string,string>) ((protein, dbSequences):Protein*(DBSequence[])) =
     
     let tmp = new Dictionary<string, string>(terms)
@@ -362,7 +362,7 @@ let findValuesOfProteins
 
 let valuesAndTermIDs =
     proteinsAndDBSeqs
-    |> Array.map (fun item -> findValuesOfProteins dictionaryOfColumnAndIDs allTerms item)
+    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames dictionaryOfColumnAndIDs allTerms item)
 
 //let addColumnNames (columnNames:Dictionary<string, string>) (terms:Dictionary<string, string>) =
 //    let tmp1 = Dictionary()
@@ -385,7 +385,7 @@ let valuesAndTermIDs =
 
 let standardCSVPath = fileDir + "\Databases\TSVTest1.tab"
 
-let finalDictionary (path:string) (termsAndValues:Dictionary<string, string>[]) =
+let writeTSVFileAsTable (path:string) (termsAndValues:Dictionary<string, string>[]) =
     let columnNames = termsAndValues.[0].Keys |> Array.ofSeq
     let tmp = 
         termsAndValues |> Array.map (fun item -> item.ToArray())
@@ -395,4 +395,4 @@ let finalDictionary (path:string) (termsAndValues:Dictionary<string, string>[]) 
     |> Seq.write path
 
 let finalStep =
-    finalDictionary standardCSVPath valuesAndTermIDs
+    writeTSVFileAsTable standardCSVPath valuesAndTermIDs

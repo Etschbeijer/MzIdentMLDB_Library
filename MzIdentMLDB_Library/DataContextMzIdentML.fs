@@ -10,801 +10,932 @@ module DataModel =
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("CVParams")>]
-        CVParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =  
+        CVParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = CVParam(null, null, null, null, Nullable())
+            new() = CVParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("OrganizationParams")>]
-        OrganizationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        OrganizationParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = OrganizationParam(null, null, null, null, Nullable())
+            new() = OrganizationParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("PersonParams")>]
-        PersonParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        PersonParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = PersonParam(null, null, null, null, Nullable())
+            new() = PersonParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SampleParams")>]
-        SampleParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SampleParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SampleParam(null, null, null, null, Nullable())
+            new() = SampleParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ModificationParams")>]
-        ModificationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ModificationParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ModificationParam(null, null, null, null, Nullable())
+            new() = ModificationParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("PeptideParams")>]
-        PeptideParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        PeptideParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = PeptideParam(null, null, null, null, Nullable())
+            new() = PeptideParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("TranslationTableParams")>]
-        TranslationTableParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        TranslationTableParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = TranslationTableParam(null, null, null, null, Nullable())
+            new() = TranslationTableParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("MeasureParams")>]
-        MeasureParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        MeasureParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = MeasureParam(null, null, null, null, Nullable())
+            new() = MeasureParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AmbiguousResidueParams")>]
-        AmbiguousResidueParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        AmbiguousResidueParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = AmbiguousResidueParam(null, null, null, null, Nullable())
+            new() = AmbiguousResidueParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("MassTableParams")>]
-        MassTableParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        MassTableParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = MassTableParam(null, null, null, null, Nullable())
+            new() = MassTableParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("IonTypeParams")>]
-        IonTypeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        IonTypeParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = IonTypeParam(null, null, null, null, Nullable())
+            new() = IonTypeParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SpecificityRuleParams")>]
-        SpecificityRuleParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SpecificityRuleParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SpecificityRuleParam(null, null, null, null, Nullable())
+            new() = SpecificityRuleParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SearchModificationParams")>]
-        SearchModificationParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SearchModificationParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SearchModificationParam(null, null, null, null, Nullable())
+            new() = SearchModificationParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("EnzymeNameParams")>]
-        EnzymeNameParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        EnzymeNameParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = EnzymeNameParam(null, null, null, null, Nullable())
+            new() = EnzymeNameParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("IncludeParams")>]
-        IncludeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        IncludeParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = IncludeParam(null, null, null, null, Nullable())
+            new() = IncludeParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ExcludeParams")>]
-        ExcludeParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ExcludeParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ExcludeParam(null, null, null, null, Nullable())
+            new() = ExcludeParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
-        AdditionalSearchParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        AdditionalSearchParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = AdditionalSearchParam(null, null, null, null, Nullable())
+            new() = AdditionalSearchParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("FragmentToleranceParams")>]
-        FragmentToleranceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        FragmentToleranceParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = FragmentToleranceParam(null, null, null, null, Nullable())
+            new() = FragmentToleranceParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ParentToleranceParams")>]
-        ParentToleranceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ParentToleranceParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ParentToleranceParam(null, null, null, null, Nullable())
+            new() = ParentToleranceParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ThresholdParams")>]
-        ThresholdParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ThresholdParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ThresholdParam(null, null, null, null, Nullable())
+            new() = ThresholdParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
-        SearchDatabaseParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SearchDatabaseParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SearchDatabaseParam(null, null, null, null, Nullable())
+            new() = SearchDatabaseParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("DBSequenceParams")>]
-        DBSequenceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        DBSequenceParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = DBSequenceParam(null, null, null, null, Nullable())
+            new() = DBSequenceParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("PeptideEvidenceParams")>]
-        PeptideEvidenceParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        PeptideEvidenceParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = PeptideEvidenceParam(null, null, null, null, Nullable())
+            new() = PeptideEvidenceParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SpectrumIdentificationItemParams")>]
-        SpectrumIdentificationItemParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SpectrumIdentificationItemParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SpectrumIdentificationItemParam(null, null, null, null, Nullable())
+            new() = SpectrumIdentificationItemParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SpectrumIdentificationResultParams")>]
-        SpectrumIdentificationResultParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SpectrumIdentificationResultParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SpectrumIdentificationResultParam(null, null, null, null, Nullable())
+            new() = SpectrumIdentificationResultParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SpectrumIdentificationListParams")>]
-        SpectrumIdentificationListParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SpectrumIdentificationListParam(id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SpectrumIdentificationListParam(null, null, null, null, Nullable())
+            new() = SpectrumIdentificationListParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
-
-    /////A single entry from an ontology or a controlled vocabulary.
-    //and [<AllowNullLiteral>] [<Table("SpectrumIdentificationProtocolParams")>]
-    //    SpectrumIdentificationProtocolParam(id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-    //        //inherit CVParam(null, null, null, null, Nullable())
-    //        let mutable id'         = id
-    //        let mutable value'      = value
-    //        let mutable term'       = term
-    //        let mutable unit'       = unit
-    //        let mutable rowVersion' = rowVersion
-
-    //        new() = SpectrumIdentificationProtocolParam(null, null, null, null, Nullable())
-
-    //        [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
-    //        member this.ID with get() = id' and set(value) = id' <- value
-    //        member this.Value with get() = value' and set(value) = value' <- value
-    //        member this.Term with get() = term' and set(value) = term' <- value
-    //        member this.Unit with get() = unit' and set(value) = unit' <- value
-    //        member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-    //        interface CVParamBase with
-    //            member x.ID         = x.ID
-    //            member x.Value      = x.Value
-    //            member x.Term       = x.Term
-    //            member x.Unit       = x.Unit
-    //            member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AnalysisParams")>]
-        AnalysisParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        AnalysisParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = AnalysisParam(null, null, null, null, Nullable())
+            new() = AnalysisParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SourceFileParams")>]
-        SourceFileParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        SourceFileParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = SourceFileParam(null, null, null, null, Nullable())
+            new() = SourceFileParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinDetectionHypothesisParams")>]
-        ProteinDetectionHypothesisParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ProteinDetectionHypothesisParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ProteinDetectionHypothesisParam(null, null, null, null, Nullable())
+            new() = ProteinDetectionHypothesisParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinAmbiguityGroupParams")>]
-        ProteinAmbiguityGroupParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ProteinAmbiguityGroupParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ProteinAmbiguityGroupParam(null, null, null, null, Nullable())
+            new() = ProteinAmbiguityGroupParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinDetectionListParams")>]
-        ProteinDetectionListParam (id:string, value:string, term:Term, unit:Term, rowVersion:Nullable<DateTime>) =
-            //inherit CVParam(null, null, null, null, Nullable())
+        ProteinDetectionListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
+            let mutable termID'     = termID
             let mutable unit'       = unit
+            let mutable unitID'     = unitID
             let mutable rowVersion' = rowVersion
 
-            new() = ProteinDetectionListParam(null, null, null, null, Nullable())
+            new() = ProteinDetectionListParam(null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
+            member this.TermID with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
+            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
+                member x.TermID     = x.TermID
                 member x.Unit       = x.Unit
+                member x.UnitID     = x.UnitID
                 member x.RowVersion = x.RowVersion
 
 
@@ -1812,34 +1943,34 @@ module DataModel =
                           dbSequences:List<DBSequence>, 
                           peptides:List<Peptide>,
                           peptideEvidences:List<PeptideEvidence>, 
-                          spectrumIdentification:List<SpectrumIdentification>, 
+                          spectrumIdentifications:List<SpectrumIdentification>, 
                           proteinDetection:ProteinDetection, 
-                          spectrumIdentificationProtocol:List<SpectrumIdentificationProtocol>, 
+                          spectrumIdentificationProtocols:List<SpectrumIdentificationProtocol>, 
                           proteinDetectionProtocol:ProteinDetectionProtocol,
                           inputs:Inputs,
                           analysisData:AnalysisData,
                           biblioGraphicReferences:List<BiblioGraphicReference>,
                           rowVersion:Nullable<DateTime>
                          ) =
-            let mutable id'                             = id
-            let mutable name'                           = name
-            let mutable version'                        = version
-            let mutable analysisSoftwares'              = analysisSoftwares
-            let mutable provider'                       = provider
-            let mutable persons'                        = persons
-            let mutable organizations'                  = organizations
-            let mutable samples'                        = samples
-            let mutable dbSequences'                    = dbSequences
-            let mutable peptides'                       = peptides
-            let mutable peptideEvidences'               = peptideEvidences
-            let mutable spectrumIdentification'         = spectrumIdentification
-            let mutable proteinDetection'               = proteinDetection
-            let mutable spectrumIdentificationProtocol' = spectrumIdentificationProtocol
-            let mutable proteinDetectionProtocol'       = proteinDetectionProtocol
-            let mutable inputs'                         = inputs
-            let mutable analysisData'                   = analysisData
-            let mutable biblioGraphicReferences'        = biblioGraphicReferences
-            let mutable rowVersion'                     = rowVersion
+            let mutable id'                              = id
+            let mutable name'                            = name
+            let mutable version'                         = version
+            let mutable analysisSoftwares'               = analysisSoftwares
+            let mutable provider'                        = provider
+            let mutable persons'                         = persons
+            let mutable organizations'                   = organizations
+            let mutable samples'                         = samples
+            let mutable dbSequences'                     = dbSequences
+            let mutable peptides'                        = peptides
+            let mutable peptideEvidences'                = peptideEvidences
+            let mutable spectrumIdentifications'         = spectrumIdentifications
+            let mutable proteinDetection'                = proteinDetection
+            let mutable spectrumIdentificationProtocols' = spectrumIdentificationProtocols
+            let mutable proteinDetectionProtocol'        = proteinDetectionProtocol
+            let mutable inputs'                          = inputs
+            let mutable analysisData'                    = analysisData
+            let mutable biblioGraphicReferences'         = biblioGraphicReferences
+            let mutable rowVersion'                      = rowVersion
 
             new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null,null, null, null, null, Nullable())
 
@@ -1864,11 +1995,11 @@ module DataModel =
             member this. PeptideEvidences with get() = peptideEvidences' and set(value) = peptideEvidences' <- value
             //
             //AnalysisCollection
-            member this.SpectrumIdentification with get() = spectrumIdentification' and set(value) = spectrumIdentification' <- value
+            member this.SpectrumIdentifications with get() = spectrumIdentifications' and set(value) = spectrumIdentifications' <- value
             member this.ProteinDetection with get() = proteinDetection' and set(value) = proteinDetection' <- value
             //
             //AnalysisProtocolCollection
-            member this.SpectrumIdentificationProtocol with get() = spectrumIdentificationProtocol' and set(value) = spectrumIdentificationProtocol' <- value
+            member this.SpectrumIdentificationProtocols with get() = spectrumIdentificationProtocols' and set(value) = spectrumIdentificationProtocols' <- value
             member this.ProteinDetectionProtocol with get() = proteinDetectionProtocol' and set(value) = proteinDetectionProtocol' <- value
             //
             //DataCollection
