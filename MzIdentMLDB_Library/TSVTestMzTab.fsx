@@ -59,12 +59,10 @@ sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled = false
 
 let convert4timesStringToSingleString (item:string*string*string*string) =
                 let a,b,c,d = item
-                sprintf "| %s | %s | %s | %s |" a b c d
+                sprintf "[%s ,%s ,%s ,%s ]" a b c d
 
 
-#time
-
-let findAllProteinTerms (dbContext:MzQuantML) (mzQuantID:string) (dict:System.Collections.Generic.Dictionary<string,string>) =
+let getAllProteinTerms (dbContext:MzQuantML) (mzQuantID:string) =
 
     query {
            for mzQdoc in dbContext.MzQuantMLDocument
@@ -80,10 +78,10 @@ let findAllProteinTerms (dbContext:MzQuantML) (mzQuantID:string) (dict:System.Co
                         select (cv.Term.ID(*,cv.Term.Name*))
                         distinct
           }
-    |> Seq.iter (fun termID -> dict.Add(termID,""))
-    dict
+    //|> Seq.iter (fun termID -> dict.Add(termID,""))
+    //dict
 
-let findAllSearchDatabaseTerms (dbContext:MzQuantML) (mzQuantID:string) (dict:System.Collections.Generic.Dictionary<string,string>) =    
+let getAllSearchDatabaseTerms (dbContext:MzQuantML) (mzQuantID:string) =    
 
     query {
            for mzQdoc in dbContext.MzQuantMLDocument
@@ -99,10 +97,10 @@ let findAllSearchDatabaseTerms (dbContext:MzQuantML) (mzQuantID:string) (dict:Sy
                         select (cv.Term.ID(*,cv.Term.Name*))
                         distinct
           }
-    |> Seq.iter (fun termID -> dict.Add(termID,""))
-    dict
+    //|> Seq.iter (fun termID -> dict.Add(termID,""))
+    //dict
 
-let findAllDBSequenceTerms (dbContext:MzIdentML) (mzIdentID:string) (dict:System.Collections.Generic.Dictionary<string,string>) =    
+let getAllDBSequenceTerms (dbContext:MzIdentML) (mzIdentID:string) =    
 
     query {
            for mzIdent in dbContext.MzIdentMLDocument
@@ -117,13 +115,25 @@ let findAllDBSequenceTerms (dbContext:MzIdentML) (mzIdentID:string) (dict:System
                     select (cv.Term.ID(*,cv.Term.Name*))
                     distinct
           }
+    //|> Seq.iter (fun termID -> dict.Add(termID,""))
+    //dict
+
+let getAllProteinSectionTerms 
+    (mzQuantContext:MzQuantML) (mzQuantID:string) 
+    (mzIDentContext:MzIdentML) (mzIdentID:string) 
+    (dict:System.Collections.Generic.Dictionary<string,string>) =    
+    [
+     getAllProteinTerms mzQuantContext mzQuantID
+     getAllSearchDatabaseTerms mzQuantContext mzQuantID
+     getAllDBSequenceTerms mzIDentContext mzIdentID
+    ]
+    |> Seq.concat
+    |> Seq.distinct
     |> Seq.iter (fun termID -> dict.Add(termID,""))
     dict
 
-let allTerms =
-    findAllProteinTerms sqliteMzQuantMLContext "Test1" (Dictionary())
-    |> findAllSearchDatabaseTerms sqliteMzQuantMLContext "Test1"
-    |> findAllDBSequenceTerms sqliteMzIdentMLContext "Test1"
+//let allTerms =
+//    getAllProteinSectionTerms sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" (Dictionary())
 
 //replace with Map!!!
 let columnNames =
@@ -159,7 +169,8 @@ let createDictionaryofColumnNames (columnNames:seq<string*string>) =
     |> Seq.iter (fun (termID, columnName) -> startDictionary.Add(termID, columnName)) |> ignore
     startDictionary
 
-let dictionaryOfColumnAndIDs = createDictionaryofColumnNames columnNames
+//let dictionaryOfColumnAndIDs = 
+//    createDictionaryofColumnNames columnNames
 
 let findAllProteins (dbContext:MzQuantML) (mzQuantID:string) =
     
@@ -197,7 +208,7 @@ let findAllDBSequencesOfProteins (dbContext:MzIdentML) (mzIdentID:string) (protA
     |> Array.ofSeq
 
 let getProteinsAndDBSeqs
-    (mzIdentContext:MzIdentML) (mzIdentID:string) (mzQuantContext:MzQuantML) (mzQuantID:string) =
+    (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) =
 
     findAllProteins mzQuantContext mzQuantID
     |> Seq.map (fun protein ->
@@ -205,8 +216,42 @@ let getProteinsAndDBSeqs
                )
     |> Array.ofSeq
 
-let proteinsAndDBSeqs =
-    getProteinsAndDBSeqs sqliteMzIdentMLContext "Test1" sqliteMzQuantMLContext "Test1"
+//let proteinsAndDBSeqs =
+//    getProteinsAndDBSeqs sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1"
+
+let addColumnNamesOfProteinSection (prot:Protein) (columnNames:Dictionary<string, string>) (values:Dictionary<string, string>) =
+        let tmp1 = 
+            match values.Keys.Contains "MS:1000885" with
+            | true -> 
+                let tmp =
+                    let tmp2=
+                        Dictionary()
+                    tmp2.Add("PRH", "PRT")
+                    tmp2
+                tmp
+            | false -> 
+                let tmp =
+                    let tmp2=
+                        Dictionary()
+                    tmp2.Add("PRH", "PRT")
+                    tmp2.Add("accession", prot.Accession)
+                    tmp2.Add("uri", prot.SearchDatabase.Location)
+                    tmp2
+                tmp
+
+        let tmp2 = Dictionary()
+
+        values.Keys
+        |> Seq.iter (fun item ->
+            try
+                tmp1.Add(columnNames.Item item, values.Item item)
+            with
+                :? System.Collections.Generic.KeyNotFoundException ->
+                tmp2.Add("opt_{" + item + "}_", values.Item item)
+                    )
+        tmp2 
+        |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
+        tmp1
 
 let createDictionaryWithValuesAndColumnNames
     (columnNames:Dictionary<string, string>) (terms:Dictionary<string,string>) ((protein, dbSequences):Protein*(DBSequence[])) =
@@ -227,49 +272,14 @@ let createDictionaryWithValuesAndColumnNames
     let dictionaryWithValues =
         CvParamsBase
         |> Array.iter (fun cvParam -> 
-            tmp.Item cvParam.Term.ID <- convert4timesStringToSingleString("", cvParam.Term.ID, cvParam.Term.Name, cvParam.Value))
+            tmp.Item cvParam.Term.ID <- cvParam.Value (*convert4timesStringToSingleString("", cvParam.Term.ID, cvParam.Term.Name, cvParam.Value)*))
         tmp
 
-    let addColumnNamesOfProteinSection (terms:Dictionary<string, string>) =
-        let tmp1 = 
-            match terms.Keys.Contains "MS:1000885" with
-            | true -> 
-                let tmp1 =
-                    let tmp2=
-                        Dictionary()
-                    tmp2.Add("PRH", "PRT")
-                    terms
-                    |> Seq.iter (fun item -> tmp2.Add(item.Key, item.Value))
-                    tmp2
-                tmp1
-            | false -> 
-                let tmp1 =
-                    let tmp2=
-                        Dictionary()
-                    tmp2.Add("PRH", "PRT")
-                    tmp2.Add("accession", protein.Accession)
-                    tmp2.Add("uri", protein.SearchDatabase.Location)
-                    terms
-                    |> Seq.iter (fun item -> tmp2.Add(item.Key, item.Value))
-                    tmp2
-                tmp1
-        let tmp2 = Dictionary()
-        terms.Keys
-        |> Seq.iter (fun item ->
-            try
-                tmp1.Add(columnNames.Item item, terms.Item item)
-            with
-                :? System.Collections.Generic.KeyNotFoundException ->
-                tmp2.Add("opt_{identifier}_" + (tmp2.Count.ToString()), terms.Item item)
-                    )
-        tmp2 
-        |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
-        tmp1 
-    addColumnNamesOfProteinSection tmp
+    addColumnNamesOfProteinSection protein columnNames dictionaryWithValues
 
-let valuesAndTermIDs =
-    proteinsAndDBSeqs
-    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames dictionaryOfColumnAndIDs allTerms item)
+//let valuesAndTermIDs =
+//    proteinsAndDBSeqs
+//    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames dictionaryOfColumnAndIDs allTerms item)
 
 //let addColumnNames (columnNames:Dictionary<string, string>) (terms:Dictionary<string, string>) =
 //    let tmp1 = Dictionary()
@@ -293,7 +303,8 @@ let valuesAndTermIDs =
 let standardCSVPath = fileDir + "\Databases\TSVTest1.tab"
 
 let writeTSVFileAsTable (path:string) (termsAndValues:Dictionary<string, string>[]) =
-    let columnNames = termsAndValues.[0].Keys |> Array.ofSeq
+    let columnNames = 
+        termsAndValues.[0].Keys |> Array.ofSeq
     let tmp = 
         termsAndValues |> Array.map (fun item -> item.ToArray())
         |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
@@ -301,5 +312,26 @@ let writeTSVFileAsTable (path:string) (termsAndValues:Dictionary<string, string>
     |> Array.map (fun item -> item |> String.concat "\t")
     |> Seq.write path
 
-let finalStep =
-    writeTSVFileAsTable standardCSVPath valuesAndTermIDs
+//let finalStep =
+//    writeTSVFileAsTable standardCSVPath valuesAndTermIDs
+
+let createProteinSection (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) (columnNames:seq<string*string>) =
+    
+    let tmpDict = Dictionary<string, string>()
+    
+    let allTerms =
+        getAllProteinSectionTerms mzQuantContext mzQuantID mzIdentContext mzIdentID tmpDict
+
+    let namesOfColumns =
+        createDictionaryofColumnNames columnNames
+
+    let protsAndDBSeqs = 
+        getProteinsAndDBSeqs mzQuantContext mzQuantID mzIdentContext mzIdentID
+
+    protsAndDBSeqs
+    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames namesOfColumns allTerms item)
+
+#time
+let proteinSection =
+    createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" columnNames
+    |> writeTSVFileAsTable standardCSVPath

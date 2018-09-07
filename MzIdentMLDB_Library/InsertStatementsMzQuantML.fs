@@ -2510,18 +2510,15 @@ module InsertStatements =
                     
                     version              : string,
                     ?id                  : string,
-                    ?details             : seq<SoftwareParam>,
-                    ?fkMzQuantMLDocument : string
+                    ?details             : seq<SoftwareParam>
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let details'             = convertOptionToList details
-                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Software(
                              id', 
                              version, 
                              details',
-                             fkMzQuantMLDocument',
                              Nullable(DateTime.Now)
                             )
 
@@ -2535,12 +2532,6 @@ module InsertStatements =
             static member addDetails
                 (analysisSoftwareParams:seq<SoftwareParam>) (table:Software) =
                 let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams
-                table
-
-            ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addFkMzQuantMLDocument
-                (fkMzQuantMLDocument:string) (table:Software) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
@@ -2593,7 +2584,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Software) (item2:Software) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2745,20 +2738,20 @@ module InsertStatements =
                     ?name                : string,
                     ?details             : seq<OrganizationParam>,
                     ?parent              : string,
-                    ?fkMzQuantMLDocument : string
+                    ?mzQuantMLDocumentID : string
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
                 let details'             = convertOptionToList details
                 let parent'              = defaultArg parent Unchecked.defaultof<string>
-                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+                let mzQuantMLDocumentID' = defaultArg mzQuantMLDocumentID Unchecked.defaultof<string>
                     
                 new Organization(
                                  id', 
                                  name', 
                                  details',  
                                  parent',
-                                 fkMzQuantMLDocument',
+                                 mzQuantMLDocumentID',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -2787,9 +2780,9 @@ module InsertStatements =
                 table
 
             ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addFkMzQuantMLDocument
+            static member addMzQuantMLDocumentID
                 (fkMzQuantMLDocument:string) (table:Organization) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -2842,7 +2835,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2879,7 +2874,7 @@ module InsertStatements =
                     ?lastName            : string,
                     ?contactDetails      : seq<PersonParam>,
                     ?organizations       : seq<Organization>,
-                    ?fkMzQuantMLDocument : string
+                    ?mzQuantMLDocumentID : string
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
@@ -2888,7 +2883,7 @@ module InsertStatements =
                 let lastName'            = defaultArg lastName Unchecked.defaultof<string>
                 let contactDetails'      = convertOptionToList contactDetails
                 let organizations'       = convertOptionToList organizations
-                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+                let mzQuantMLDocumentID' = defaultArg mzQuantMLDocumentID Unchecked.defaultof<string>
                     
                 new Person(
                            id', 
@@ -2897,8 +2892,8 @@ module InsertStatements =
                            midInitials', 
                            lastName', 
                            organizations',
-                           contactDetails', 
-                           fkMzQuantMLDocument',
+                           contactDetails',
+                           mzQuantMLDocumentID',
                            Nullable(DateTime.Now)
                           )
 
@@ -2950,9 +2945,9 @@ module InsertStatements =
                 table
 
             ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addFkMzQuantMLDocument
+            static member addMzQuantMLDocumentID
                 (fkMzQuantMLDocument:string) (table:Person) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -3007,7 +3002,10 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:Person) (item2:Person) =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
-                item1.Organizations=item2.Organizations && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.Organizations=item2.Organizations && 
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3154,8 +3152,8 @@ module InsertStatements =
                 table.Name <- name
                 table
 
-            ///Replaces analysissoftware of existing object with new one.
-            static member addAnalysisSoftware
+            ///Replaces software of existing object with new one.
+            static member addSoftware
                 (analysisSoftware:Software) (table:Provider) =
                 table.Software <- analysisSoftware
                 table
@@ -3390,7 +3388,9 @@ module InsertStatements =
                item1.ReleaseDate=item2.ReleaseDate && item1.Version=item2.Version &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
                item1.FileFormat=item2.FileFormat && item1.DatabaseName=item2.DatabaseName &&
-               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3536,7 +3536,10 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:IdentificationFile) (item2:IdentificationFile) =
                item1.Name=item2.Name && item1.SearchDatabase=item2.SearchDatabase &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-               item1.FileFormat=item2.FileFormat && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               item1.FileFormat=item2.FileFormat && 
+               matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3897,9 +3900,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RawFile) (item2:RawFile) =
-               item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
-               && item1.FileFormat=item2.FileFormat && item1.MethodFile=item2.MethodFile
-               && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+               item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
+               item1.FileFormat=item2.FileFormat && item1.MethodFile=item2.MethodFile && 
+               matchCVParamBases 
+                (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4016,7 +4021,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RawFilesGroup) (item2:RawFilesGroup) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4434,8 +4441,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Assay) (item2:Assay) =
-                item1.RawFilesGroup=item2.RawFilesGroup && item1.IdentificationFile=item2.IdentificationFile 
-                && item1.Label=item2.Label && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                item1.RawFilesGroup=item2.RawFilesGroup && item1.IdentificationFile=item2.IdentificationFile && 
+                item1.Label=item2.Label && 
+                    matchCVParamBases 
+                        (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                        (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4550,7 +4560,10 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:StudyVariable) (item2:StudyVariable) =
-                item1.Assays=item2.Assays && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                item1.Assays=item2.Assays &&
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5489,7 +5502,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProcessingMethod) (item2:ProcessingMethod) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)            
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)            
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6002,7 +6017,10 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SmallMolecule) (item2:SmallMolecule) =
-                item1.DBIdentificationRefs=item2.DBIdentificationRefs && item1.Features=item2.Features && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.DBIdentificationRefs=item2.DBIdentificationRefs && item1.Features=item2.Features && 
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6155,7 +6173,9 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:SmallMoleculeList) (item2:SmallMoleculeList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
                 item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6621,7 +6641,10 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:FeatureList) (item2:FeatureList) =
                 item1.MS2AssayQuantLayers=item2.MS2AssayQuantLayers && item1.MS2StudyVariableQuantLayers=item2.MS2StudyVariableQuantLayers && 
                 item1.MS2RatioQuantLayers=item2.MS2RatioQuantLayers && item1.Features=item2.Features &&
-                item1.FeatureQuantLayers=item2.FeatureQuantLayers && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.FeatureQuantLayers=item2.FeatureQuantLayers && 
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6885,7 +6908,9 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:PeptideConsensus) (item2:PeptideConsensus) =
                 item1.EvidenceRefs=item2.EvidenceRefs && item1.SearchDatabase=item2.SearchDatabase &&
                 item1.DataMatrix=item2.DataMatrix && item1.Modifications=item2.Modifications &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7020,7 +7045,10 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Protein) (item2:Protein) =
                 item1.IdentificationRefs=item2.IdentificationRefs && item1.SearchDatabase=item2.SearchDatabase &&
-                item1.PeptideConsensi=item2.PeptideConsensi && matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                item1.PeptideConsensi=item2.PeptideConsensi && 
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7182,7 +7210,9 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:ProteinList) (item2:ProteinList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
                 item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7288,7 +7318,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinRef) (item2:ProteinRef) =
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7400,7 +7432,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinGroup) (item2:ProteinGroup) =
                 item1.ProteinRefs=item2.ProteinRefs && item1.IdentificationRefs=item2.IdentificationRefs && 
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7553,7 +7587,9 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:ProteinGroupList) (item2:ProteinGroupList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
                 item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7717,7 +7753,10 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:PeptideConsensusList) (item2:PeptideConsensusList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
                 item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
-                matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.PeptideConsensi=item2.PeptideConsensi
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
+                item1.PeptideConsensi=item2.PeptideConsensi
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7930,109 +7969,6 @@ module InsertStatements =
                 BiblioGraphicReferenceHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
-        type AuditCollectionHandler =
-        ///Initializes a term-object with at least all necessary parameters.
-            static member init
-                (
-                    persons              : seq<Person>,
-                    organisations        : seq<Organization>,
-                    ?id                  : string,
-                    ?fkMzIdentMLDocument : string
-                ) =
-                let id'                     = defaultArg id Unchecked.defaultof<string>
-                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
-
-                new AuditCollection(
-                                    id', 
-                                    persons |> List,
-                                    organisations |> List,
-                                    fkMzIdentMLDocument', 
-                                    (Nullable(DateTime.Now))
-                                   )
-
-            ///Adds new person to collection of persons.
-            static member addPerson
-                (person:Person) (table:AuditCollection) =
-                table.Persons <- addToList table.Persons person
-                table
-
-            ///Add new collection of persons to collection of persons.
-            static member addPersons
-                (persons:seq<Person>) (table:AuditCollection) =
-                table.Persons <- addCollectionToList table.Persons persons
-                table
-
-            ///Adds new organization to collection of organizations.
-            static member addOrganization
-                (organization:Organization) (table:AuditCollection) =
-                table.Organizations <- addToList table.Organizations organization
-                table
-
-            ///Add new collection of organizations to collection of organizations.
-            static member addOrganizations
-                (organizations:seq<Organization>) (table:AuditCollection) =
-                table.Organizations <- addCollectionToList table.Organizations organizations
-                table
-    
-            ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocumentID
-                (fkMzQuantMLDocument:string) (table:AuditCollection) =
-                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
-                table
-
-            ///Tries to find a auditCollection-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID (dbContext:MzQuantML) (id:string) =
-                query {
-                        for i in dbContext.AuditCollection.Local do
-                            if i.ID=id
-                                then select (i, i.Persons, i.Organizations)
-                        }
-                |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
-                |> (fun auditCollection -> 
-                    if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
-                        then 
-                            query {
-                                    for i in dbContext.AuditCollection do
-                                        if i.ID=id
-                                            then select (i, i.Persons, i.Organizations)
-                                    }
-                            |> Seq.map (fun (auditCollection,_, _) -> auditCollection)
-                            |> (fun auditCollection -> if (Seq.exists (fun auditCollection' -> auditCollection' <> null) auditCollection) = false
-                                                        then None
-                                                        else Some auditCollection
-                                )
-                        else Some auditCollection
-                    )
-
-            ///Checks whether all other fields of the current object and context object have the same values or not.
-            static member private hasEqualFieldValues (item1:AuditCollection) (item2:AuditCollection) =
-                item1.Persons=item2.Persons && item1.Organizations=item2.Organizations
-
-            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-            static member addToContext (dbContext:MzQuantML) (item:AuditCollection) =
-                    AuditCollectionHandler.tryFindByID dbContext item.ID
-                    |> (fun organizationCollection -> match organizationCollection with
-                                                        |Some x -> x
-                                                                    |> Seq.map (fun organization -> match AuditCollectionHandler.hasEqualFieldValues organization item with
-                                                                                                    |true -> true
-                                                                                                    |false -> false
-                                                                            )
-                                                                            |> (fun collection -> 
-                                                                                    if Seq.contains true collection=true
-                                                                                    then None
-                                                                                    else Some(dbContext.Add item)
-                                                                                )
-                                                        |None -> Some(dbContext.Add item)
-                        )
-
-            
-            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-            static member addToContextAndInsert (dbContext:MzQuantML) (item:AuditCollection) =
-                AuditCollectionHandler.addToContext dbContext item |> ignore |> ignore
-                dbContext.SaveChanges()  
-
         type MzQuantMLDocumentHandler =
             ///Initializes a mzQuantMLDocument-object with at least all necessary parameters.
             static member init
@@ -8042,11 +7978,12 @@ module InsertStatements =
                     ?name                        : string,
                     ?creationDate                : DateTime,
                     ?version                     : string,
-                    ?provider                    : Provider,
-                    ?auditCollection             : AuditCollection,
+                    ?providers                   : seq<Provider>,
+                    ?organizations               : seq<Organization>,
+                    ?persons                     : seq<Person>,
                     ?analysisSummaries           : seq<AnalysisSummary>,
                     ?inputFiles                  : InputFiles,
-                    ?analysisSoftwares           : seq<Software>,
+                    ?softwares                   : seq<Software>,
                     ?dataProcessings             : seq<DataProcessing>,
                     ?assays                      : seq<Assay>,
                     ?biblioGraphicReferences     : seq<BiblioGraphicReference>,
@@ -8063,11 +8000,12 @@ module InsertStatements =
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let creationDate'                   = defaultArg creationDate Unchecked.defaultof<DateTime>
                 let version'                        = defaultArg version Unchecked.defaultof<string>
-                let provider'                       = defaultArg provider Unchecked.defaultof<Provider>
-                let auditCollection'                = defaultArg auditCollection Unchecked.defaultof<AuditCollection>
+                let providers'                      = convertOptionToList providers
+                let organizations'                  = convertOptionToList organizations
+                let persons'                        = convertOptionToList persons
                 let analysisSummaries'              = convertOptionToList analysisSummaries
                 let inputFiles'                     = defaultArg inputFiles Unchecked.defaultof<InputFiles>
-                let analysisSoftwares'              = convertOptionToList analysisSoftwares
+                let softwares'                      = convertOptionToList softwares
                 let dataProcessings'                = convertOptionToList dataProcessings
                 let assays'                         = convertOptionToList assays
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
@@ -8083,11 +8021,12 @@ module InsertStatements =
                                       name', 
                                       Nullable(creationDate'), 
                                       version', 
-                                      provider',
-                                      auditCollection', 
+                                      providers',
+                                      organizations', 
+                                      persons', 
                                       analysisSummaries', 
                                       inputFiles', 
-                                      analysisSoftwares', 
+                                      softwares', 
                                       dataProcessings', 
                                       assays', 
                                       biblioGraphicReferences', 
@@ -8116,10 +8055,16 @@ module InsertStatements =
                 table.Version <- version
                 table
 
-            ///Replaces provider of existing object with new one.
+            ///Adds new provider to collection of enzymenames.
             static member addProvider
                 (provider:Provider) (table:MzQuantMLDocument) =
-                table.Provider <- provider
+                table.Providers <- addToList table.Providers provider
+                table
+
+            ///Add new collection of providers to collection of enzymenames.
+            static member addProviders
+                (providers:seq<Provider>) (table:MzQuantMLDocument) =
+                table.Providers <- addCollectionToList table.Providers providers
                 table
 
              ///Replaces proteinGroupList of existing object with new one.
@@ -8133,15 +8078,40 @@ module InsertStatements =
                 table.ProteinList <- proteinList
                 table
 
-            ///Replaces auditCollection of existing object with new one.
-            static member addAuditCollection (auditCollection:AuditCollection) (table:MzQuantMLDocument) =
-                table.AuditCollection <- auditCollection
+            ///Adds new person to collection of persons.
+            static member addPerson
+                (person:Person) (table:MzQuantMLDocument) =
+                table.Persons <- addToList table.Persons person
                 table
 
-            ///Adds new peptideConsensusList to collection of enzymenames.
+            ///Add new collection of persons to collection of persons.
+            static member addPersons
+                (persons:seq<Person>) (table:MzQuantMLDocument) =
+                table.Persons <- addCollectionToList table.Persons persons
+                table
+
+            ///Adds new organization to collection of organizations.
+            static member addOrganization
+                (organization:Organization) (table:MzQuantMLDocument) =
+                table.Organizations <- addToList table.Organizations organization
+                table
+
+            ///Add new collection of organizations to collection of organizations.
+            static member addOrganizations
+                (organizations:seq<Organization>) (table:MzQuantMLDocument) =
+                table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+
+            ///Adds new peptideConsensusList to collection of peptideConsensusLists.
             static member addPeptideConsensusList
                 (peptideConsensusList:PeptideConsensusList) (table:MzQuantMLDocument) =
                 table.PeptideConsensusList <- addToList table.PeptideConsensusList peptideConsensusList
+                table
+
+            ///Add new collection of peptideConsensusLists to collection of peptideConsensusLists.
+            static member addPeptideConsensusLists
+                (peptideConsensusLists:seq<PeptideConsensusList>) (table:MzQuantMLDocument) =
+                table.PeptideConsensusList <- addCollectionToList table.PeptideConsensusList peptideConsensusLists
                 table
 
             ///Replaces smallMoleculeList of existing object with new one.
@@ -8172,6 +8142,18 @@ module InsertStatements =
             static member addInputFiles
                 (inputFiles:InputFiles) (table:MzQuantMLDocument) =
                 table.InputFiles <- inputFiles
+                table
+
+            ///Adds new software to collection of softwares.
+            static member addSoftware
+                (software:Software) (table:MzQuantMLDocument) =
+                table.SoftwareList <- addToList table.SoftwareList software
+                table
+
+            ///Add new collection of softwares to collection of softwares.
+            static member addSoftwares
+                (softwares:seq<Software>) (table:MzQuantMLDocument) =
+                table.SoftwareList <- addCollectionToList table.SoftwareList softwares
                 table
 
             ///Adds new biblioGraphicReference to collection of enzymenames.
@@ -8215,26 +8197,26 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.ID=id
-                              then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                           i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
+                              then select (i, i.AnalysisSummaries, i.SoftwareList, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Providers, i.Organizations, i.Persons, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
                                           )
                       }
-                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                 |> (fun mzQuantML -> 
                     if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                         then 
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.ID=id
-                                          then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                                       i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
+                                          then select (i, i.AnalysisSummaries, i.SoftwareList, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Providers, i.Organizations, i.Persons, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
                                                       )
                                   }
-                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                             |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                                                     then None
                                                     else Some (mzQuantML.Single())
@@ -8247,26 +8229,26 @@ module InsertStatements =
                 query {
                        for i in dbContext.MzQuantMLDocument.Local do
                            if i.Name=name
-                              then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                           i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
+                              then select (i, i.AnalysisSummaries, i.SoftwareList, i.InputFiles, i.FeatureList, i.Assays, 
+                                           i.DataProcessings, i.Providers, i.Organizations, i.Persons, i.BiblioGraphicReferences, 
                                            i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                            i.SmallMoleculeList
                                           )
                       }
-                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                 |> (fun mzQuantML -> 
                     if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                         then 
                             query {
                                    for i in dbContext.MzQuantMLDocument do
                                        if i.Name=name
-                                          then select (i, i.AnalysisSummaries, i.Softwares, i.InputFiles, i.FeatureList, i.Assays, 
-                                                       i.DataProcessings, i.Provider, i.AuditCollection, i.BiblioGraphicReferences, 
+                                          then select (i, i.AnalysisSummaries, i.SoftwareList, i.InputFiles, i.FeatureList, i.Assays, 
+                                                       i.DataProcessings, i.Providers, i.Organizations, i.Persons, i.BiblioGraphicReferences, 
                                                        i.StudyVariables, i.Ratios, i.ProteinList, i.ProteinGroupList, i.PeptideConsensusList,
                                                        i.SmallMoleculeList
                                                       )
                                   }
-                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
+                            |> Seq.map (fun (mzQuantML, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzQuantML)
                             |> (fun mzQuantML -> if (Seq.exists (fun mzQuantML' -> mzQuantML' <> null) mzQuantML) = false
                                                                 then None
                                                                 else Some mzQuantML
@@ -8277,13 +8259,14 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MzQuantMLDocument) (item2:MzQuantMLDocument) =
                 item1.AnalysisSummaries=item2.AnalysisSummaries && 
-                item1.Softwares=item2.Softwares && 
+                item1.SoftwareList=item2.SoftwareList && 
                 item1.InputFiles=item2.InputFiles && 
                 item1.FeatureList=item2.FeatureList && 
                 item1.Assays=item2.Assays && 
                 item1.DataProcessings=item2.DataProcessings && 
-                item1.Provider=item2.Provider && 
-                item1.AuditCollection=item2.AuditCollection && 
+                item1.Providers=item2.Providers && 
+                item1.Organizations=item2.Organizations &&
+                item1.Persons=item2.Persons && 
                 item1.BiblioGraphicReferences=item2.BiblioGraphicReferences &&
                 item1.StudyVariables=item2.StudyVariables && 
                 item1.Ratios=item2.Ratios && 

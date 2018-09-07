@@ -2092,12 +2092,9 @@ let spectradata =
 
 let organizations =
     [
-    OrganizationHandler.init(name="TuKL")
-    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
-    OrganizationHandler.init(name="BioTech")
-    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
-    OrganizationHandler.init(name="CSB")
-    |> OrganizationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
+    OrganizationHandler.init(name="TuKL");
+    OrganizationHandler.init(name="BioTech");
+    OrganizationHandler.init(name="CSB");
     ]
 
 let person =
@@ -2105,7 +2102,6 @@ let person =
     |> PersonHandler.addFirstName "Patrick"
     |> PersonHandler.addLastName "Blume"
     |> PersonHandler.addOrganizations organizations
-    |> PersonHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let role =
     CVParamHandler.init("MS:1001267")
@@ -2601,9 +2597,6 @@ let provider =
     |> ProviderHandler.addContactRole contactRole
     |> ProviderHandler.addAnalysisSoftware analysisSoftware
 
-let auditCollection =
-    AuditCollectionHandler.init([person], organizations)
-
 let finalMzIdentMLDocument =
     mzIdentMLDocument
     |> MzIdentMLDocumentHandler.addName "Test MzIdentMLDatabase"
@@ -2618,7 +2611,8 @@ let finalMzIdentMLDocument =
     |> MzIdentMLDocumentHandler.addAnalysisData analysisData
     |> MzIdentMLDocumentHandler.addInputs inputs
     |> MzIdentMLDocumentHandler.addProvider provider
-    |> MzIdentMLDocumentHandler.addAuditCollection auditCollection
+    |> MzIdentMLDocumentHandler.addPerson person
+    |> MzIdentMLDocumentHandler.addOrganizations organizations
     |> MzIdentMLDocumentHandler.addToContext sqliteMzIdentMLContext
 
 sqliteMzIdentMLContext.SaveChanges()

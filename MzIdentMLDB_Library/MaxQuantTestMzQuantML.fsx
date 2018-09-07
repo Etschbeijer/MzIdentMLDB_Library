@@ -1176,43 +1176,41 @@ let analysisSoftwareParams =
     [
     SoftwareParamHandler.init(
         (TermSymbol.toID MaxQuant);
-                                     )
+                             )
     SoftwareParamHandler.init(
         (TermSymbol.toID IBAQ);
-                                     )
+                             )
     SoftwareParamHandler.init(
         (TermSymbol.toID IBAQLogFit);
-                                     )
+                             )
     SoftwareParamHandler.init(
         (TermSymbol.toID MatchBetweenRuns);
-                                     )
+                             )
     SoftwareParamHandler.init(
         (TermSymbol.toID PeptidesForProteinQuantification)
-                                                    )
+                             )
     |> SoftwareParamHandler.addValue "Razor";
     SoftwareParamHandler.init(
         (TermSymbol.toID DiscardUnmodifiedPeptide)
-                                                    )
+                             )
     |> SoftwareParamHandler.addValue "TRUE";
     SoftwareParamHandler.init(
         (TermSymbol.toID MinRatioCount)
-                                                    )
+                             )
     |> SoftwareParamHandler.addValue "2";
     SoftwareParamHandler.init(
-        (TermSymbol.toID UseDeltaScores)                                             )
+        (TermSymbol.toID UseDeltaScores)
+                             )
     |> SoftwareParamHandler.addValue "FALSE";
     SoftwareParamHandler.init(
         (TermSymbol.toID UseDeltaScores)
-                                                    )
+                             )
     |> SoftwareParamHandler.addValue "TRUE";
     ]
 
-let analysisSoftware =
+let software =
     SoftwareHandler.init("1.0", "MzQuantMLDataBase")
     |> SoftwareHandler.addDetails analysisSoftwareParams
-    |> SoftwareHandler.addToContext sqliteMzQuantMLContext |> ignore
-    sqliteMzQuantMLContext.SaveChanges()
-    //|> SoftwareHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID
 
 let analysisSummaries =
     [
@@ -1656,7 +1654,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 1000 then 
+    if n < 10000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert
@@ -1678,12 +1676,9 @@ let proteinGroupList =
 
 let organizations =
     [
-    OrganizationHandler.init(name="TuKL")
-    |> OrganizationHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID;
-    OrganizationHandler.init(name="BioTech")
-    |> OrganizationHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID;
-    OrganizationHandler.init(name="CSB")
-    |> OrganizationHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID;
+    OrganizationHandler.init(name="TuKL");
+    OrganizationHandler.init(name="BioTech");
+    OrganizationHandler.init(name="CSB");
     ]
 
 let person =
@@ -1691,7 +1686,6 @@ let person =
     |> PersonHandler.addFirstName "Patrick"
     |> PersonHandler.addLastName "Blume"
     |> PersonHandler.addOrganizations organizations
-    |> PersonHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID
 
 let role =
     CVParamHandler.init("MS:1001267")
@@ -1702,16 +1696,14 @@ let contactRole =
 let provider =
     ProviderHandler.init()
     |> ProviderHandler.addContactRole contactRole
-    |> ProviderHandler.addAnalysisSoftware
-        (SoftwareHandler.tryFindByID sqliteMzQuantMLContext "MzQuantMLDataBase").Value
-
-let auditCollection =
-    AuditCollectionHandler.init([person], organizations)
+    |> ProviderHandler.addSoftware software
 
 let finalMzQuantMLDocument = 
     mzQuantMLDocument
     |> MzQuantMLDocumentHandler.addProteinGroupList proteinGroupList
-    |> MzQuantMLDocumentHandler.addAuditCollection auditCollection
+    |> MzQuantMLDocumentHandler.addOrganizations organizations
+    |> MzQuantMLDocumentHandler.addPerson person
+    |> MzQuantMLDocumentHandler.addSoftware software
     |> MzQuantMLDocumentHandler.addProvider provider
     |> MzQuantMLDocumentHandler.addPeptideConsensusList peptideConsensusList
     |> MzQuantMLDocumentHandler.addInputFiles inputFiles
