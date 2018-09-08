@@ -34,15 +34,9 @@ open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open MzBasis.Basetypes
 
+
+
 let fileDir = __SOURCE_DIRECTORY__
-let standardTSVPath = fileDir + "\Databases"
-
-
-let testString = "Test"
-let testStringTimes4 = (testString, testString, testString, testString)
-let testStringCollection = [testString]
-let testStringTimes4Collection = [testStringTimes4]
-
 
 let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 
@@ -61,6 +55,19 @@ let convert4timesStringToSingleString (item:string*string*string*string) =
                 let a,b,c,d = item
                 sprintf "[%s ,%s ,%s ,%s ]" a b c d
 
+let createSeperatedStringOfCollection (collection:seq<'a>) =
+
+    let tmp = [|""|]
+
+    for i in collection do
+        tmp.[0] <- tmp.[0] + " | " + i.ToString()
+        tmp.[0] <- tmp.[0] + " |; "
+
+    tmp.[0]
+
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            ////////////PROTEIN-SECTION||||||||||PROTEIN-SECTION||||||||||PROTEIN-SECTION\\\\\\\\\\            
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 let getAllProteinTerms (dbContext:MzQuantML) (mzQuantID:string) =
 
@@ -75,11 +82,9 @@ let getAllProteinTerms (dbContext:MzQuantML) (mzQuantID:string) =
                             do
                 for prot in mzQdoc.ProteinList.Proteins do                    
                     for cv in prot.Details do 
-                        select (cv.Term.ID(*,cv.Term.Name*))
+                        select (cv.Term)
                         distinct
           }
-    //|> Seq.iter (fun termID -> dict.Add(termID,""))
-    //dict
 
 let getAllSearchDatabaseTerms (dbContext:MzQuantML) (mzQuantID:string) =    
 
@@ -94,11 +99,9 @@ let getAllSearchDatabaseTerms (dbContext:MzQuantML) (mzQuantID:string) =
                             do
                 for prot in mzQdoc.ProteinList.Proteins do                    
                     for cv in prot.SearchDatabase.Details do 
-                        select (cv.Term.ID(*,cv.Term.Name*))
+                        select (cv.Term)
                         distinct
           }
-    //|> Seq.iter (fun termID -> dict.Add(termID,""))
-    //dict
 
 let getAllDBSequenceTerms (dbContext:MzIdentML) (mzIdentID:string) =    
 
@@ -112,11 +115,9 @@ let getAllDBSequenceTerms (dbContext:MzIdentML) (mzIdentID:string) =
                             do
                 for dbSeq in mzIdent.DBSequences do  
                     for cv in dbSeq.Details do  
-                    select (cv.Term.ID(*,cv.Term.Name*))
+                    select (cv.Term)
                     distinct
           }
-    //|> Seq.iter (fun termID -> dict.Add(termID,""))
-    //dict
 
 let getAllProteinSectionTerms 
     (mzQuantContext:MzQuantML) (mzQuantID:string) 
@@ -129,14 +130,14 @@ let getAllProteinSectionTerms
     ]
     |> Seq.concat
     |> Seq.distinct
-    |> Seq.iter (fun termID -> dict.Add(termID,""))
+    |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
     dict
 
 //let allTerms =
 //    getAllProteinSectionTerms sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" (Dictionary())
 
 //replace with Map!!!
-let columnNames =
+let proteinSectionColumnNames =
     [
      "MS:1000885", "accession"
      "MS:1001088", "description"
@@ -169,9 +170,6 @@ let createDictionaryofColumnNames (columnNames:seq<string*string>) =
     |> Seq.iter (fun (termID, columnName) -> startDictionary.Add(termID, columnName)) |> ignore
     startDictionary
 
-//let dictionaryOfColumnAndIDs = 
-//    createDictionaryofColumnNames columnNames
-
 let findAllProteins (dbContext:MzQuantML) (mzQuantID:string) =
     
     query {
@@ -203,9 +201,10 @@ let findAllDBSequencesOfProteins (dbContext:MzIdentML) (mzIdentID:string) (protA
                             do
                 for dbSeq in mzIdent.DBSequences do
                     where (mzIdent.ID=mzIdentID && dbSeq.Accession=protAccession)
-                    select dbSeq
+                    select (dbSeq.Details.ToArray())
           }
     |> Array.ofSeq
+    |> Array.concat
 
 let getProteinsAndDBSeqs
     (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) =
@@ -216,70 +215,68 @@ let getProteinsAndDBSeqs
                )
     |> Array.ofSeq
 
-//let proteinsAndDBSeqs =
-//    getProteinsAndDBSeqs sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1"
-
-let addColumnNamesOfProteinSection (prot:Protein) (columnNames:Dictionary<string, string>) (values:Dictionary<string, string>) =
+let addColumnNamesOfProteinSection (prot:Protein) (columnNames:Dictionary<string, string>) (values:Dictionary<string, string*string>) =
         let tmp1 = 
-            match values.Keys.Contains "MS:1000885" with
-            | true -> 
-                let tmp =
-                    let tmp2=
-                        Dictionary()
-                    tmp2.Add("PRH", "PRT")
-                    tmp2
-                tmp
-            | false -> 
-                let tmp =
-                    let tmp2=
-                        Dictionary()
-                    tmp2.Add("PRH", "PRT")
-                    tmp2.Add("accession", prot.Accession)
-                    tmp2.Add("uri", prot.SearchDatabase.Location)
-                    tmp2
-                tmp
+            //match values.Keys.Contains "MS:1000885" with
+            //| true -> 
+            //    let tmp =
+            //        let tmp2=
+            //            Dictionary()
+            //        tmp2.Add("PRH", "PRT")
+            //        tmp2
+            //    tmp
+            //| false -> 
+            let tmp =
+                let tmp2=
+                    Dictionary()
+                tmp2.Add("PRH", "PRT")
+                tmp2.Add("accession", prot.Accession)
+                tmp2.Add("uri", prot.SearchDatabase.Location)
+                tmp2
+            tmp
 
         let tmp2 = Dictionary()
 
         values.Keys
         |> Seq.iter (fun item ->
             try
-                tmp1.Add(columnNames.Item item, values.Item item)
+                tmp1.Add(columnNames.Item item, snd (values.Item item))
             with
                 :? System.Collections.Generic.KeyNotFoundException ->
-                tmp2.Add("opt_{" + item + "}_", values.Item item)
+                tmp2.Add("opt_{" + fst(values.Item item) + "}_", snd(values.Item item))
                     )
         tmp2 
         |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
         tmp1
 
-let createDictionaryWithValuesAndColumnNames
-    (columnNames:Dictionary<string, string>) (terms:Dictionary<string,string>) ((protein, dbSequences):Protein*(DBSequence[])) =
+let createDictionaryWithValuesAndColumnNamesForProteinSection
+    (columnNames:Dictionary<string, string>) (terms:Dictionary<string,string>) ((protein, dbSequenceParams):Protein*(DBSequenceParam[])) =
     
-    let tmp = new Dictionary<string, string>(terms)
+    let tmp =
+        let tmp1 =
+            Dictionary<string, string*string>()
+        terms
+        |> Seq.iter (fun item -> tmp1.Add(item.Key, (item.Value, "")))
+        tmp1
         
 
     let CvParamsBase =
         [protein.Details |> Seq.map (fun protParam -> protParam :> CVParamBase); 
          protein.SearchDatabase.Details |> Seq.map (fun searchDBParam -> searchDBParam :> CVParamBase); 
-         dbSequences 
-         |> Seq.collect (fun dbSequence -> dbSequence.Details 
-                                           |> Seq.map (fun dbSeqParam -> dbSeqParam :> CVParamBase))
+         dbSequenceParams 
+         |> Seq.map (fun dbSeqParam -> dbSeqParam :> CVParamBase)
         ]
         |> Seq.concat
         |> Array.ofSeq
 
-    let dictionaryWithValues =
+    let values =
         CvParamsBase
         |> Array.iter (fun cvParam -> 
-            tmp.Item cvParam.Term.ID <- cvParam.Value (*convert4timesStringToSingleString("", cvParam.Term.ID, cvParam.Term.Name, cvParam.Value)*))
+            tmp.Item cvParam.Term.ID <- (fst(tmp.Item cvParam.Term.ID), snd(tmp.Item cvParam.Term.ID) + cvParam.Value + "; ")
+                      )
         tmp
-
-    addColumnNamesOfProteinSection protein columnNames dictionaryWithValues
-
-//let valuesAndTermIDs =
-//    proteinsAndDBSeqs
-//    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames dictionaryOfColumnAndIDs allTerms item)
+        
+    addColumnNamesOfProteinSection protein columnNames values
 
 //let addColumnNames (columnNames:Dictionary<string, string>) (terms:Dictionary<string, string>) =
 //    let tmp1 = Dictionary()
@@ -300,7 +297,7 @@ let createDictionaryWithValuesAndColumnNames
 //    valuesAndTermIDs
 //    |> Array.map (fun item -> addColumnNames dictionaryOfColumnAndIDs item)
 
-let standardCSVPath = fileDir + "\Databases\TSVTest1.tab"
+
 
 let writeTSVFileAsTable (path:string) (termsAndValues:Dictionary<string, string>[]) =
     let columnNames = 
@@ -311,9 +308,6 @@ let writeTSVFileAsTable (path:string) (termsAndValues:Dictionary<string, string>
     [|yield columnNames; yield! tmp|]
     |> Array.map (fun item -> item |> String.concat "\t")
     |> Seq.write path
-
-//let finalStep =
-//    writeTSVFileAsTable standardCSVPath valuesAndTermIDs
 
 let createProteinSection (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) (columnNames:seq<string*string>) =
     
@@ -329,9 +323,260 @@ let createProteinSection (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentC
         getProteinsAndDBSeqs mzQuantContext mzQuantID mzIdentContext mzIdentID
 
     protsAndDBSeqs
-    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNames namesOfColumns allTerms item)
+    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNamesForProteinSection namesOfColumns allTerms item)
+
+
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            ////////////PEPTIDE-SECTION||||||||||PEPTIDE-SECTION||||||||||PEPTIDE-SECTION\\\\\\\\\\            
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+let getAllPeptideTerms (dbContext:MzQuantML) (mzQuantID:string) =
+    
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:PeptideConsensusParam) -> item.Term)
+                            .Where(fun x -> x.ID=mzQuantID)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do
+                    for pept in prot.PeptideConsensi do
+                        for cvParam in pept.Details do
+                        select cvParam.Term
+                        distinct
+          } 
+
+let getAllPeptideModificationTerms (dbContext:MzQuantML) (mzQuantID:string) =
+    
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.Modifications :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Modification) -> item.Detail)
+                            .ThenInclude(fun item -> item.Term)
+                            .Where(fun x -> x.ID=mzQuantID)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do                    
+                    for pept in prot.PeptideConsensi do
+                        for modi in pept.Modifications do
+                        select modi.Detail.Term
+                        distinct
+          }
+
+let getAllPeptideFeatureTerms (dbContext:MzQuantML) (mzQuantID:string) =
+    
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.EvidenceRefs :> IEnumerable<_>)
+                            .ThenInclude(fun (item:EvidenceRef) -> item.Feature.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:FeatureParam) -> item.Term)
+                            .Where(fun x -> x.ID=mzQuantID)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do                    
+                    for pept in prot.PeptideConsensi do
+                        for eviRefs in pept.EvidenceRefs do
+                            for cvParam in eviRefs.Feature.Details do
+                            select cvParam.Term
+                            distinct
+          }
+
+let getAllPeptideSectionTerms 
+    (mzQuantContext:MzQuantML) (mzQuantID:string) 
+    (mzIdentContext:MzIdentML) (mzIdentID:string) 
+    (dict:System.Collections.Generic.Dictionary<string,string>) =
+    [
+     getAllPeptideTerms mzQuantContext mzQuantID;
+     getAllPeptideModificationTerms mzQuantContext mzQuantID;
+     getAllPeptideFeatureTerms mzQuantContext mzQuantID;
+     getAllSearchDatabaseTerms mzQuantContext mzQuantID;
+     getAllDBSequenceTerms mzIdentContext mzIdentID;
+    ]
+    |> Seq.concat
+    |> Seq.distinct
+    |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
+    dict
+
+let peptideSectionColumnNames =
+    [
+     "MS:1000888","sequence"
+     "MS:1000885", "accession"
+     "MS:1001363", "unique"
+     "MS:1001013", "database"
+     "MS:1001016", "database_version"
+     "MS:1002337", "search_engine"
+     "User:0000079", "best_search_engine_score[1]"
+     "MS:1002338", "search_engine_score[1-n]_ms_run[1]"
+     //"", "reliability"
+     "MS:1001471","modifications"
+     "MS:1001114", "retention_time"
+     "MS:1000916", "retentime_window" //lower offset
+     "MS:1000917", "retentime_window" //upper offset
+     "MS:1000041", "charge" //maybe better use object-field"
+     "MS:1000040", "mass_to_charge" //maybe better use object-field"
+     //"", "uri" //maybe better use object-field"
+     //"", "spectra_ref" //maybe better use object-field"
+     // "", "peptide_abundance_assay[1-n]"
+     // "", "peptide_abundance_study_variable[1-n]"
+     //"", "peptide_abundance_stdev_study_variable[1-n]"
+     //"", "peptide_abundance_std_error_study_variable[1-n]"
+     "", "opt_{identifier}_*"
+    ]
+
+let findAllPeptidesWithProtAccs (dbContext:MzQuantML) (mzQuantID:string) =
+    
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:PeptideConsensusParam) -> item.Term)
+
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.SearchDatabase.DatabaseName) 
+                            .ThenInclude(fun item -> item.Term)
+
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.SearchDatabase.Details :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:SearchDatabaseParam) -> item.Term)
+
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.EvidenceRefs :> IEnumerable<_>)
+                            .ThenInclude(fun (item:EvidenceRef) -> item.Feature.Details:> IEnumerable<_>)
+                            .ThenInclude(fun (item:FeatureParam) -> item.Term)
+
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.EvidenceRefs :> IEnumerable<_>)
+                            .ThenInclude(fun (item:EvidenceRef) -> item.Assays :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Assay) -> item.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:AssayParam) -> item.Term)
+
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:PeptideConsensus) -> item.Modifications :> IEnumerable<_>)
+                            .ThenInclude(fun (item:Modification) -> item.Detail)
+                            .ThenInclude(fun item -> item.Term)
+                            .Where(fun x -> x.ID=mzQuantID)
+                            .ToList()
+                            do
+                for prot in mzQdoc.ProteinList.Proteins do                    
+                    select (prot, prot.PeptideConsensi.ToArray())   
+          }
+
+
+let addColumnNamesOfPeptideSection (prot:Protein) (peptide:PeptideConsensus) (columnNames:Dictionary<string, string>) (values:Dictionary<string, string*string>) =
+        let tmp1 =  
+            let tmp =
+                let tmp2=
+                    Dictionary()
+                tmp2.Add("PEH", "PEP")
+                tmp2.Add("sequence", peptide.PeptideSequence)
+                tmp2.Add("accession", prot.Accession)
+                tmp2.Add("uri", prot.SearchDatabase.Location)
+                tmp2.Add("modifications", createSeperatedStringOfCollection (peptide.Modifications |> Seq.map (fun modification -> modification.Residues + "-" +  modification.Detail.Term.Name)))
+                tmp2.Add("retention_time", createSeperatedStringOfCollection (peptide.EvidenceRefs |> Seq.map (fun evidenceRef -> evidenceRef.Feature.RetentionTime)))
+                tmp2.Add("charge", string peptide.Charge)
+                tmp2.Add("mass_to_charge", createSeperatedStringOfCollection (peptide.EvidenceRefs |> Seq.map (fun evidenceRef -> evidenceRef.Feature.MZ)))
+                //tmp2.Add("spectra_ref", createSeperatedStringOfCollection (peptide.EvidenceRefs |> Seq.map (fun evidenceRef -> evidenceRef)))
+                tmp2
+            tmp
+
+        let tmp2 = Dictionary()
+
+        values.Keys
+        |> Seq.iter (fun item ->
+            try
+                tmp1.Add(columnNames.Item item, snd (values.Item item))
+            with
+                :? System.Collections.Generic.KeyNotFoundException ->
+                tmp2.Add("opt_{" + fst(values.Item item) + "}_", snd(values.Item item))
+                    )
+        tmp2 
+        |> Seq.iter (fun item -> tmp1.Add(item.Key, item.Value)) |> ignore
+        tmp1
+
+let createDictionaryWithValuesAndColumnNamesForPeptideSection
+    (columnNames:Dictionary<string, string>) (terms:Dictionary<string,string>) ((prot, peptide, dbSequenceParams):Protein*PeptideConsensus*(DBSequenceParam[])) =
+    
+    let tmp =
+        let tmp1 =
+            Dictionary<string, string*string>()
+        terms
+        |> Seq.iter (fun item -> tmp1.Add(item.Key, (item.Value, "")))
+        tmp1
+        
+    let CvParamsBase =
+        [prot.SearchDatabase.Details |> Seq.map (fun searchDBParam -> searchDBParam :> CVParamBase);
+         peptide.Details |> Seq.map (fun protParam -> protParam :> CVParamBase); 
+         peptide.Modifications |> Seq.map (fun modification -> modification.Detail :> CVParamBase); 
+         peptide.EvidenceRefs |> Seq.collect (fun evidenceRef -> evidenceRef.Feature.Details |> Seq.map (fun featureParam -> featureParam :> CVParamBase));
+         dbSequenceParams 
+         |> Seq.map (fun dbSeqParam -> dbSeqParam :> CVParamBase)
+        ]
+        |> Seq.concat
+        |> Array.ofSeq
+
+    let values =
+        CvParamsBase
+        |> Array.iter (fun cvParam -> 
+            tmp.Item cvParam.Term.ID <- (fst(tmp.Item cvParam.Term.ID), snd(tmp.Item cvParam.Term.ID) + cvParam.Value + "; ")
+                      )
+        tmp
+    
+    addColumnNamesOfPeptideSection prot peptide columnNames values
+
+let allProtAccsWithPeptidesWithDBSeqParams
+    (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) =
+
+    findAllPeptidesWithProtAccs mzQuantContext mzQuantID
+    |> Seq.map (fun (prot, peptides) ->
+        prot, peptides, findAllDBSequencesOfProteins mzIdentContext mzIdentID prot.Accession
+             )
+    |> Array.ofSeq
+    |> Array.collect (fun (protAcc, peptides, dbSeqs) -> 
+        peptides |> Array.map (fun peptide -> protAcc, peptide, dbSeqs))
+
+let createPeptideSection (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) (columnNames:seq<string*string>) =
+    
+    let tmpDict = Dictionary<string, string>()
+
+    let allTerms =
+        getAllPeptideSectionTerms mzQuantContext mzQuantID mzIdentContext mzIdentID tmpDict
+
+    let namesOfColumns =
+        createDictionaryofColumnNames columnNames
+
+    let allProtAccsWithPeptidesWithDBSeqParams = 
+        allProtAccsWithPeptidesWithDBSeqParams mzQuantContext mzQuantID mzIdentContext mzIdentID
+    
+    allProtAccsWithPeptidesWithDBSeqParams
+    |> Array.map (fun item -> createDictionaryWithValuesAndColumnNamesForPeptideSection namesOfColumns allTerms item)
+
+let standardCSVPath = fileDir + "\Databases\TSVTest1.tab"
 
 #time
-let proteinSection =
-    createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" columnNames
-    |> writeTSVFileAsTable standardCSVPath
+//let proteinSection =
+//    createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" proteinSectionColumnNames
+//    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest1.tab")
+
+let peptideSection =
+    createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
+    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
+

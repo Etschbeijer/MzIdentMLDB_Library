@@ -6795,7 +6795,8 @@ module InsertStatements =
                     ?dataMatrix                  : DataMatrix,
                     ?peptideSequence             : string,
                     ?modifications               : seq<Modification>,
-                    ?details                     : seq<PeptideConsensusParam>
+                    ?details                     : seq<PeptideConsensusParam>,
+                    ?proteinID                   : string
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
@@ -6804,6 +6805,7 @@ module InsertStatements =
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
                 let details'                     = convertOptionToList details
+                let proteinID'                   = defaultArg proteinID (System.Guid.NewGuid().ToString())
                 
 
                 new PeptideConsensus(
@@ -6814,6 +6816,7 @@ module InsertStatements =
                                      peptideSequence',
                                      modifications',
                                      evidenceRefs |> List,
+                                     proteinID',
                                      details',
                                      Nullable(DateTime.Now)
                                     )
@@ -6844,6 +6847,12 @@ module InsertStatements =
             ///Adds a collection of modifications to an existing object.
             static member addModifications (modifications:seq<Modification>) (table:PeptideConsensus) =
                 let result = table.Modifications <- addCollectionToList table.Modifications modifications
+                table
+
+            ///Replaces proteinID of existing object with new one.
+            static member addProteinID
+                (fkProtein:string) (table:PeptideConsensus) =
+                table.ProteinID <- fkProtein
                 table
 
             ///Adds a peptideConsensusParam to an existing object.

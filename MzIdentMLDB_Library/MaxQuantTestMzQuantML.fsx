@@ -1373,7 +1373,8 @@ let peptideConsensusUnmodifiedParams =
     |> PeptideConsensusParamHandler.addValue "0.001671316";
     PeptideConsensusParamHandler.init(
         (TermSymbol.toID UniqueToProtein)
-                                               )
+                                     )
+    |> PeptideConsensusParamHandler.addValue "true"
     ]
 
 let peptideConsensusUnmodified =
@@ -1654,7 +1655,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 10000 then 
+    if n < 100 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert

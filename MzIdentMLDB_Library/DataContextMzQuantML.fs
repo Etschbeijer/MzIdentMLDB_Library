@@ -1389,7 +1389,7 @@ module DataModel =
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
             member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-    ///FeatureA region on a (potentially) two-dimensional map of LC-MS (MS1) scans, defined by the 
+    ///Feature a region on a (potentially) two-dimensional map of LC-MS (MS1) scans, defined by the 
     ///retention time, mass over charge and optionally a mass trace. Quantitative values about features 
     ///can be added in the associated QuantLayers. For techniques that analyse data from single 
     ///scans e.g. MS2 tagging approaches, a Feature corresponds with the mz of the parent ions only.
@@ -1598,7 +1598,7 @@ module DataModel =
     type [<AllowNullLiteral>]
         PeptideConsensus (id:string, charge:Nullable<int>, searchDatabase:SearchDatabase, 
                           dataMatrix:DataMatrix, peptideSequence:string, modifications:List<Modification>,
-                          evidenceRefs:List<EvidenceRef>, details:List<PeptideConsensusParam>,
+                          evidenceRefs:List<EvidenceRef>, proteinID:string, details:List<PeptideConsensusParam>,
                           rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'              = id
@@ -1608,10 +1608,11 @@ module DataModel =
             let mutable peptideSequence' = peptideSequence
             let mutable modifications'   = modifications
             let mutable evidenceRefs'    = evidenceRefs
+            let mutable proteinID'       = proteinID
             let mutable details'         = details
             let mutable rowVersion'      = rowVersion
 
-            new() = PeptideConsensus(null, Nullable(), null, null, null, null, null, null, Nullable())
+            new() = PeptideConsensus(null, Nullable(), null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Charge with get() = charge' and set(value) = charge' <- value
@@ -1620,6 +1621,7 @@ module DataModel =
             member this.PeptideSequence with get() = peptideSequence' and set(value) = peptideSequence' <- value
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.EvidenceRefs with get() = evidenceRefs' and set(value) = evidenceRefs' <- value
+            member this.ProteinID with get() = proteinID' and set(value) = proteinID' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
