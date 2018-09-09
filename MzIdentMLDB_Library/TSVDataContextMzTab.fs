@@ -141,7 +141,7 @@
 //            mutable AssaysQuantificationModsSite     : string
 //            [<FieldAttribute("assay[1-n]-quantification_mod[1-n]-position")>]
 //            mutable AssaysQuantificationModsPosition : string
-//            [<FieldAttribute("assay[1-n]-sample_ref ")>]
+//            [<FieldAttribute("assay[1-n]-sample_ref")>]
 //            mutable AssaysSampleRef                  : string
 //            [<FieldAttribute("assay[1-n]-ms_run_ref")>]
 //            mutable AssaysMSRunRef                   : string

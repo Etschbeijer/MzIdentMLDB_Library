@@ -7303,30 +7303,32 @@ module InsertStatements =
             ///Initializes a spectrumidentificationitem-object with at least all necessary parameters.
             static member init
                 (
-                    peptide                       : Peptide,
-                    chargeState                   : int,
-                    experimentalMassToCharge      : float,
-                    passThreshold                 : bool,
-                    rank                          : int,
-                    ?id                           : string,
-                    ?name                         : string,
-                    ?sample                       : Sample,
-                    ?massTable                    : MassTable,
-                    ?peptideEvidences             : seq<PeptideEvidence>,
-                    ?fragmentations               : seq<IonType>,
-                    ?calculatedMassToCharge       : float,
-                    ?calculatedPI                 : float,
-                    ?details                      : seq<SpectrumIdentificationItemParam>
+                    peptide                         : Peptide,
+                    chargeState                     : int,
+                    experimentalMassToCharge        : float,
+                    passThreshold                   : bool,
+                    rank                            : int,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?sample                         : Sample,
+                    ?massTable                      : MassTable,
+                    ?peptideEvidences               : seq<PeptideEvidence>,
+                    ?fragmentations                 : seq<IonType>,
+                    ?calculatedMassToCharge         : float,
+                    ?calculatedPI                   : float,
+                    ?spectrumIdentificationResultID : string,
+                    ?details                        : seq<SpectrumIdentificationItemParam>
                 ) =
-                let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                         = defaultArg name Unchecked.defaultof<string>
-                let sample'                       = defaultArg sample Unchecked.defaultof<Sample>
-                let massTable'                    = defaultArg massTable Unchecked.defaultof<MassTable>
-                let peptideEvidences'             = convertOptionToList peptideEvidences
-                let fragmentations'               = convertOptionToList fragmentations
-                let calculatedMassToCharge'       = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
-                let calculatedPI'                 = defaultArg calculatedPI Unchecked.defaultof<float>
-                let details'                      = convertOptionToList details
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let sample'                         = defaultArg sample Unchecked.defaultof<Sample>
+                let massTable'                      = defaultArg massTable Unchecked.defaultof<MassTable>
+                let peptideEvidences'               = convertOptionToList peptideEvidences
+                let fragmentations'                 = convertOptionToList fragmentations
+                let calculatedMassToCharge'         = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
+                let calculatedPI'                   = defaultArg calculatedPI Unchecked.defaultof<float>
+                let spectrumIdentificationResultID' = defaultArg spectrumIdentificationResultID Unchecked.defaultof<string>
+                let details'                        = convertOptionToList details
                     
                 new SpectrumIdentificationItem(
                                                id', 
@@ -7341,7 +7343,8 @@ module InsertStatements =
                                                Nullable(chargeState), 
                                                Nullable(experimentalMassToCharge), 
                                                Nullable(calculatedMassToCharge'),
-                                               Nullable(calculatedPI'), 
+                                               Nullable(calculatedPI'),
+                                               spectrumIdentificationResultID',
                                                details', 
                                                Nullable(DateTime.Now)
                                               )
@@ -7352,13 +7355,13 @@ module InsertStatements =
                 spectrumIdentificationItem.Name <- name
                 spectrumIdentificationItem
 
-            ///Replaces sample of existing object with new sample.
+            ///Replaces sample of existing object with new one.
             static member addSample
                 (sample:Sample) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                 spectrumIdentificationItem.Sample <- sample 
                 spectrumIdentificationItem
 
-            ///Replaces masstable of existing object with new masstable.
+            ///Replaces masstable of existing object with new one.
             static member addMassTable
                 (massTable:MassTable) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                 spectrumIdentificationItem.MassTable <- massTable
@@ -7388,16 +7391,22 @@ module InsertStatements =
                 let result = spectrumIdentificationItem.Fragmentations <- addCollectionToList spectrumIdentificationItem.Fragmentations ionTypes
                 spectrumIdentificationItem 
 
-           ///Replaces calculatedmasstocharge of existing object with new calculatedmasstocharge.
+           ///Replaces calculatedmasstocharge of existing object with new one.
             static member addCalculatedMassToCharge
                 (calculatedMassToCharge:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                 spectrumIdentificationItem.CalculatedMassToCharge <- Nullable(calculatedMassToCharge)
                 spectrumIdentificationItem
 
-            ///Replaces calculatedpi of existing object with new calculatedpi.
+            ///Replaces calculatedpi of existing object with new one.
             static member addCalculatedPI
                 (calculatedPI:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                 spectrumIdentificationItem.CalculatedPI <- Nullable(calculatedPI)
+                spectrumIdentificationItem
+
+            ///Replaces spectrumIdentificationResultID of existing object with new one.
+            static member addSpectrumIdentificationResultID
+                (spectrumIdentificationResultID:string) (spectrumIdentificationItem:SpectrumIdentificationItem) =
+                spectrumIdentificationItem.SpectrumIdentificationResultID <- spectrumIdentificationResultID
                 spectrumIdentificationItem
 
             ///Adds a spectrumidentificationparam to an existing spectrumidentification-object.

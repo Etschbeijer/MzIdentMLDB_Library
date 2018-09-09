@@ -35,7 +35,6 @@ open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open MzBasis.Basetypes
 
 
-
 let fileDir = __SOURCE_DIRECTORY__
 
 let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
@@ -60,8 +59,8 @@ let createSeperatedStringOfCollection (collection:seq<'a>) =
     let tmp = [|""|]
 
     for i in collection do
-        tmp.[0] <- tmp.[0] + " | " + i.ToString()
-        tmp.[0] <- tmp.[0] + " |; "
+        tmp.[0] <- tmp.[0] + i.ToString() + "; "
+        //tmp.[0] <- tmp.[0] + "; "
 
     tmp.[0]
 
@@ -569,14 +568,206 @@ let createPeptideSection (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentC
     allProtAccsWithPeptidesWithDBSeqParams
     |> Array.map (fun item -> createDictionaryWithValuesAndColumnNamesForPeptideSection namesOfColumns allTerms item)
 
-let standardCSVPath = fileDir + "\Databases\TSVTest1.tab"
+let standardCSVPath = fileDir + "\Databases\TSVTest0.tab"
 
 #time
 //let proteinSection =
 //    createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" proteinSectionColumnNames
 //    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest1.tab")
 
-let peptideSection =
-    createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
-    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
+//let peptideSection =
+//    createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
+//    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
 
+//let writeWholeTSVFile (path:string) (proteinSection:Dictionary<string, string>[]) (peptideSection:Dictionary<string, string>[]) =
+//    let columnNamesOfProteinSection = 
+//        proteinSection.[0].Keys |> Array.ofSeq
+//    let valuesOfProteinSection = 
+//        proteinSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    let columnNamesOfPeptideSection = 
+//        peptideSection.[0].Keys |> Array.ofSeq
+//    let valuesOfPeptideSection = 
+//        peptideSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    [|
+//      yield columnNamesOfProteinSection; yield! valuesOfProteinSection; 
+//      yield [|""|]; 
+//      yield columnNamesOfPeptideSection; yield! valuesOfPeptideSection
+//    |]
+//    |> Array.map (fun item -> item |> String.concat "\t")
+//    |> Seq.write path
+
+//let wholeTSVFile = writeWholeTSVFile standardCSVPath proteinSection peptideSection
+
+
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ////////////////////////PSM-SECTION||||||||||PSM-SECTION||||||||||PSM-SECTION\\\\\\\\\\            
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+let psmSectionColumnNames =
+    [
+     "1000888","sequence"
+     "1000885", "PSM_ID"
+     "1000885", "accession"
+     "1001363", "unique"
+     "1001013", "database"
+     "1001016", "database_version"
+     "1002337", "search_engine"
+     "1002338", "search_engine_score[1-n]"
+     //"", "reliability"
+     "1001471","modifications"
+     "1001114", "retention_time"
+     "1000041", "charge" //maybe better use object-field"
+     "1000040", "exp_mass_to_charge" //maybe better use object-field"
+     "1000040", "calc_mass_to_charge" //maybe better use object-field"
+     //"", "spectra_ref" //maybe better use object-field"
+     //"", "uri" //maybe better use object-field"
+     //"", "pre" //maybe better use object-field"
+     // "", "post" //maybe better use object-field"
+     // "", "start" //maybe better use object-field"
+     //"", "end" //maybe better use object-field"
+     "", "opt_{identifier}_*"
+    ]
+
+//Get all psmTerms
+
+let findAllPSMsOfProteins (dbContext:MzIdentML) (mzIdentID:string) (protAccession:string)=    
+    
+    query {
+           for mzIdent in dbContext.MzIdentMLDocument
+                            .Include(fun item -> item.AnalysisData.ProteinDetectionList.ProteinAmbiguityGroups :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:ProteinAmbiguityGroup) -> item.ProteinDetectionHypothesis :> IEnumerable<_>)
+                            .ThenInclude(fun (item:ProteinDetectionHypothesis) -> item.DBSequence)
+
+                            //.Include(fun item -> item.AnalysisData.ProteinDetectionList.ProteinAmbiguityGroups :> IEnumerable<_>) 
+                            //.ThenInclude(fun (item:ProteinAmbiguityGroup) -> item.ProteinDetectionHypothesis :> IEnumerable<_>)
+                            //.ThenInclude(fun (item:ProteinDetectionHypothesis) -> item.PeptideHypothesis :> IEnumerable<_>)
+                            //.ThenInclude(fun (item:PeptideHypothesis) -> item.SpectrumIdentificationItems :> IEnumerable<_>)
+                            //.ThenInclude(fun (item:SpectrumIdentificationItem) -> item.PeptideEvidences:> IEnumerable<_>)
+                            //.ThenInclude(fun (item:PeptideEvidence) -> item.Details:> IEnumerable<_>)
+                            //.ThenInclude(fun (item:PeptideEvidenceParam) -> item.Term)
+
+                            .Include(fun item -> item.AnalysisData.ProteinDetectionList.ProteinAmbiguityGroups :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:ProteinAmbiguityGroup) -> item.ProteinDetectionHypothesis :> IEnumerable<_>)
+                            .ThenInclude(fun (item:ProteinDetectionHypothesis) -> item.PeptideHypothesis :> IEnumerable<_>)
+                            .ThenInclude(fun (item:PeptideHypothesis) -> item.SpectrumIdentificationItems :> IEnumerable<_>)
+                            .ThenInclude(fun (item:SpectrumIdentificationItem) -> item.Peptide.Modifications :> IEnumerable<_>)
+                            .ThenInclude(fun (item:MzIdentMLDataBase.DataModel.Modification) -> item.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:MzIdentMLDataBase.DataModel.ModificationParam) -> item.Term)
+
+                            .Where(fun x -> x.ID=mzIdentID)
+                            .ToList()
+                            do
+                for protAmbGroup in mzIdent.AnalysisData.ProteinDetectionList.ProteinAmbiguityGroups do
+                    for protDetHyp in protAmbGroup.ProteinDetectionHypothesis do
+                        for pepHyp in protDetHyp.PeptideHypothesis do
+                            for specItem in pepHyp.SpectrumIdentificationItems do
+                            where (mzIdent.ID=mzIdentID && protDetHyp.DBSequence.Accession=protAccession)
+                            select specItem
+          }
+    |> Array.ofSeq
+
+let findSpecResultOfPSMs (dbContext:MzIdentML) (mzIdentID:string) (specResultID:string)=    
+    
+    query {
+           for mzIdent in dbContext.MzIdentMLDocument
+                            .Include(fun item -> item.AnalysisData.SpectrumIdentificationList :> IEnumerable<_>) 
+                            .ThenInclude(fun (item:SpectrumIdentificationList) -> item.SpectrumIdentificationResult :> IEnumerable<_>)
+                            .ThenInclude(fun (item:SpectrumIdentificationResult) -> item.SpectraData)
+
+                            .Where(fun x -> x.ID=mzIdentID)
+                            .ToList()
+                            do
+                for specList in mzIdent.AnalysisData.SpectrumIdentificationList do
+                    for specIdentResult in specList.SpectrumIdentificationResult do
+                    where (mzIdent.ID=mzIdentID && specIdentResult.ID=specResultID)
+                    select specIdentResult
+          }
+    |> Array.ofSeq
+
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+          ////////////METADATA-SECTION||||||||||METADATA-SECTION||||||||||METADATA-SECTION\\\\\\\\\\            
+////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+let metaDataSectionColumnNames =
+    [
+     "1000888", "mzTab-version"
+     "1000885", "mzTab-mode"
+     "1000888", "mzTab-type"
+     "1000885", "mzTab-ID"
+     "1000888", "title"
+     "1000885", "description"
+     "1000888", "sample_processing[1-n]"
+     "1000885", "instrument[1-n]-name"
+     "1000888", "instrument[1-n]-source"
+     "1000885", "instrument[1-n]-analyzer[1-n]"
+     "1000888", "instrument[1-n]-detector"
+     "1000885", "software[1-n]"
+     "1000888", "software[1-n]-setting[1-n]"
+     "1000885", "protein_search_engine_score[1-n]"
+     "1000888", "peptide_search_engine_score[1-n]"
+     "1000885", "psm_search_engine_score[1-n]"
+     "1000888", "smallmolecule_search_engine_score[1-n]"
+     "1000885", "false_discovery_rate"
+     "1000888", "publication[1-n]"
+     "1000885", "contact[1-n]-name"
+     "1000888", "contact[1-n]-affiliation"
+     "1000885", "contact[1-n]-email"
+     "1000888", "uri[1-n]"
+     "1000885", "fixed_mod[1-n]"
+     "1000888", "fixed_mod[1-n]-site"
+     "1000885", "fixed_mod[1-n]-position"
+     "1000888", "variable_mod[1-n]"
+     "1000885", "variable_mod[1-n]-site"
+     "1000888", "variable_mod[1-n]-position"
+     "1000885", "quantification_method"
+     "1000888", "protein-quantification_unit"
+     "1000885", "peptide-quantification_unit"
+     "1000888", "small_molecule-quantification_unit"
+     "1000885", "ms_run[1-n]-format"
+     "1000888", "ms_run[1-n]-location"
+     "1000885", "ms_run[1-n]-id_format"
+     "1000888", "ms_run[1-n]-fragmentation_method"
+     "1000885", "ms_run[1-n]-hash"
+     "1000888", "ms_run[1-n]-hash_method"
+     "1000885", "custom[1-n]"
+     "1000888", "sample[1-n]-species[1-n]"
+     "1000885", "sample[1-n]-tissue[1-n]"
+     "1000888", "sample[1-n]-cell_type[1-n]"
+     "1000885", "sample[1-n]-disease[1-n]"
+     "1000888", "sample[1-n]-description"
+     "1000885", "sample[1-n]-custom[1-n]"
+     "1000888", "assay[1-n]-quantification_reagent"
+     "1000885", "assay[1-n]-quantification_mod[1-n]"
+     "1000888", "assay[1-n]-quantification_mod[1-n]-site"
+     "1000885", "assay[1-n]-quantification_mod[1-n]-position"
+     "1000888", "assay[1-n]-sample_ref"
+     "1000885", "assay[1-n]-ms_run_ref"
+     "1000888", "study_variable[1-n]-assay_refs"
+     "1000885", "study_variable[1-n]-sample_refs"
+     "1000888", "study_variable[1-n]-description"
+     "1000885", "cv[1-n]-label"
+     "1000888", "cv[1-n]-full_name"
+     "1000885", "cv[1-n]-version"
+     "1000888", "cv[1-n]-url"
+     "1000885", "colunit-protein"
+     "1000888", "colunit-peptide"
+     "1000885", "colunit-psm"
+     "1000888", "colunit-small_molecule"
+    ]
+
+///The results included in an mzTab file can be reported in 2 ways: 
+///‘Complete’ (when results for each assay/replicate are included) and 
+///‘Summary’, when only the most representative results are reported. 
+///1 stand for the value summary and 0 for complete.
+type MzTabMode =
+    | Summary  = 0 
+    | Complete = 1
+
+///The results included in an mzTab file MUST be flagged as ‘Identification’ or ‘Quantification’ 
+///- the latter encompassing approaches that are quantification only or quantification and identification.
+///1 stand for the value quantification and 0 for identification.
+type MzTabType =
+    | Identification = 0 
+    | Quantification = 1

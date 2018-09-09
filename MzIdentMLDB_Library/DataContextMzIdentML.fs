@@ -1051,13 +1051,13 @@ module DataModel =
         Sample (id:string, name:string, contactRoles:List<ContactRole>, subSamples:List<SubSample>, 
                 details:List<SampleParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                 ) =
-            let mutable id'                = id
-            let mutable name'              = name
-            let mutable contactRoles'      = contactRoles
-            let mutable subSamples'        = subSamples
-            let mutable details'           = details
+            let mutable id'                  = id
+            let mutable name'                = name
+            let mutable contactRoles'        = contactRoles
+            let mutable subSamples'          = subSamples
+            let mutable details'             = details
             let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
-            let mutable rowVersion'        = rowVersion
+            let mutable rowVersion'          = rowVersion
 
             new() = Sample(null, null, null, null, null, null, Nullable())
 
@@ -1126,7 +1126,7 @@ module DataModel =
             let mutable modifications'             = modifications
             let mutable substitutionModifications' = substitutionModifications
             let mutable details'                   = details
-            let mutable mzIdentMLDocumentID'         = mzIdentMLDocumentID
+            let mutable mzIdentMLDocumentID'       = mzIdentMLDocumentID
             let mutable rowVersion'                = rowVersion
 
             new() = Peptide(null, null, null, null, null, null, null, Nullable())
@@ -1495,15 +1495,15 @@ module DataModel =
         DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
                     length:Nullable<int>, details:List<DBSequenceParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                    ) =
-            let mutable id'                = id
-            let mutable name'              = name
-            let mutable accession'         = accession
-            let mutable searchDatabase'    = searchDatabase
-            let mutable sequence'          = sequence
-            let mutable length'            = length
-            let mutable details'           = details
+            let mutable id'                  = id
+            let mutable name'                = name
+            let mutable accession'           = accession
+            let mutable searchDatabase'      = searchDatabase
+            let mutable sequence'            = sequence
+            let mutable length'              = length
+            let mutable details'             = details
             let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
-            let mutable rowVersion'        = rowVersion
+            let mutable rowVersion'          = rowVersion
 
             new() = DBSequence(null, null, null, null, null, Nullable(), null, null, Nullable())
 
@@ -1523,26 +1523,26 @@ module DataModel =
                          ends:Nullable<int>, pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, translationTable:TranslationTable, 
                          details:List<PeptideEvidenceParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                         ) =
-            let mutable id'                = id
-            let mutable name'              = name
+            let mutable id'                  = id
+            let mutable name'                = name
             //Formerly DBSequence_Ref
-            let mutable dbSequence'        = dbSequence
+            let mutable dbSequence'          = dbSequence
             //
             //Formerly Peptide_Ref
-            let mutable peptide'           = peptide
+            let mutable peptide'             = peptide
             //
-            let mutable start'             = start
-            let mutable ends'              = ends
-            let mutable pre'               = pre
-            let mutable post'              = post
-            let mutable frame'             = frame
-            let mutable isDecoy'           = isDecoy
+            let mutable start'               = start
+            let mutable ends'                = ends
+            let mutable pre'                 = pre
+            let mutable post'                = post
+            let mutable frame'               = frame
+            let mutable isDecoy'             = isDecoy
             //Formerly TranslationTable_Ref
-            let mutable translationTable'  = translationTable
+            let mutable translationTable'    = translationTable
             //
-            let mutable details'           = details
+            let mutable details'             = details
             let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
-            let mutable rowVersion'        = rowVersion
+            let mutable rowVersion'          = rowVersion
 
             new() = PeptideEvidence(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), null, null, null, Nullable())
 
@@ -1566,27 +1566,29 @@ module DataModel =
         SpectrumIdentificationItem (id:string, name:string, sample:Sample, massTable:MassTable, 
                                     passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
                                     fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
-                                    calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, details:List<SpectrumIdentificationItemParam>, 
+                                    calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, 
+                                    spectrumIdentificationResultID:string, details:List<SpectrumIdentificationItemParam>, 
                                     rowVersion:Nullable<DateTime>
                                    ) =
 
-            let mutable id'                       = id
-            let mutable name'                     = name
-            let mutable sample'                   = sample
-            let mutable massTable'                = massTable
-            let mutable passThreshold'            = passThreshold
-            let mutable rank'                     = rank
-            let mutable peptideEvidences'         = peptideEvidences
-            let mutable fragmentations'           = fragmentations
-            let mutable peptide'                  = peptide
-            let mutable chargeState'              = chargeState
-            let mutable experimentalMassToCharge' = experimentalMassToCharge
-            let mutable calculatedMassToCharge'   = calculatedMassToCharge
-            let mutable calculatedPI'             = calculatedPI
-            let mutable details'                  = details
-            let mutable rowVersion'               = rowVersion
+            let mutable id'                             = id
+            let mutable name'                           = name
+            let mutable sample'                         = sample
+            let mutable massTable'                      = massTable
+            let mutable passThreshold'                  = passThreshold
+            let mutable rank'                           = rank
+            let mutable peptideEvidences'               = peptideEvidences
+            let mutable fragmentations'                 = fragmentations
+            let mutable peptide'                        = peptide
+            let mutable chargeState'                    = chargeState
+            let mutable experimentalMassToCharge'       = experimentalMassToCharge
+            let mutable calculatedMassToCharge'         = calculatedMassToCharge
+            let mutable calculatedPI'                   = calculatedPI
+            let mutable spectrumIdentificationResultID' = spectrumIdentificationResultID
+            let mutable details'                        = details
+            let mutable rowVersion'                     = rowVersion
 
-            new() = SpectrumIdentificationItem(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), Nullable(), Nullable(), Nullable(), null, Nullable())
+            new() = SpectrumIdentificationItem(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), Nullable(), Nullable(), Nullable(), null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1601,13 +1603,15 @@ module DataModel =
             member this.ExperimentalMassToCharge with get() = experimentalMassToCharge' and set(value) = experimentalMassToCharge' <- value
             member this.CalculatedMassToCharge with get() = calculatedMassToCharge' and set(value) = calculatedMassToCharge' <- value
             member this.CalculatedPI with get() = calculatedPI' and set(value) = calculatedPI' <- value
+            member this.SpectrumIdentificationResultID with get() = spectrumIdentificationResultID' and set(value) = spectrumIdentificationResultID' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///All identifications made from searching one spectrum.
     type [<AllowNullLiteral>]
         SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
-                                      spectrumIdentificationItem:List<SpectrumIdentificationItem>, details:List<SpectrumIdentificationResultParam>,
+                                      spectrumIdentificationItem:List<SpectrumIdentificationItem>, 
+                                      details:List<SpectrumIdentificationResultParam>,
                                       rowVersion:Nullable<DateTime>
                                      ) =
             let mutable id'                         = id
@@ -1689,13 +1693,13 @@ module DataModel =
         ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, analysisParams:List<AnalysisParam>,
                                   threshold:List<ThresholdParam>, mzIdentMLDocumentID:string, rowVersion:Nullable<DateTime>
                                  ) =
-            let mutable id'                = id
-            let mutable name'              = name
-            let mutable analysisSoftware'  = analysisSoftware
-            let mutable analysisParams'    = analysisParams
-            let mutable threshold'         = threshold
+            let mutable id'                  = id
+            let mutable name'                = name
+            let mutable analysisSoftware'    = analysisSoftware
+            let mutable analysisParams'      = analysisParams
+            let mutable threshold'           = threshold
             let mutable mzIdentMLDocumentID' = mzIdentMLDocumentID
-            let mutable rowVersion'        = rowVersion
+            let mutable rowVersion'          = rowVersion
 
             new() = ProteinDetectionProtocol(null, null, null, null, null, null, Nullable())
 
@@ -1751,7 +1755,8 @@ module DataModel =
 
     ///Peptide evidence on which this ProteinHypothesis is based by reference to a PeptideEvidence element.
     type [<AllowNullLiteral>]
-        PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, spectrumIdentificationItems:List<SpectrumIdentificationItem>,
+        PeptideHypothesis (id:string, peptideEvidence:PeptideEvidence, 
+                           spectrumIdentificationItems:List<SpectrumIdentificationItem>,
                            rowVersion:Nullable<DateTime>
                           ) =
             let mutable id'                          = id
@@ -1878,7 +1883,7 @@ module DataModel =
             let mutable id'                  = id
             let mutable name'                = name
             let mutable authors'             = authors
-            let mutable doi'                = doi
+            let mutable doi'                 = doi
             let mutable editor'              = editor
             let mutable issue'               = issue
             let mutable pages'               = pages
