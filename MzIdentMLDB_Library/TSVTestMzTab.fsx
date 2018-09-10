@@ -42,14 +42,14 @@ let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
 let sqliteMzIdentMLContext = 
     MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
 sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled = false
-sqliteMzIdentMLContext.Database.OpenConnection()
 
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
+
 
 let sqliteMzQuantMLContext = 
     ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
 sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled = false
-sqliteMzQuantMLContext.Database.OpenConnection()
+
 
 let convert4timesStringToSingleString (item:string*string*string*string) =
                 let a,b,c,d = item
@@ -678,9 +678,8 @@ let getPeptideTerms (dbContext:MzIdentML) (mzIdentID:string) (protAccession:stri
                             .ThenInclude(fun (item:ProteinAmbiguityGroup) -> item.ProteinDetectionHypothesis :> IEnumerable<_>)
                             .ThenInclude(fun (item:ProteinDetectionHypothesis) -> item.PeptideHypothesis :> IEnumerable<_>)
                             .ThenInclude(fun (item:PeptideHypothesis) -> item.SpectrumIdentificationItems :> IEnumerable<_>)
-                            .ThenInclude(fun (item:SpectrumIdentificationItem) -> item.Peptide.Modifications :> IEnumerable<_>)
-                            .ThenInclude(fun (item:MzIdentMLDataBase.DataModel.Modification) -> item.Details :> IEnumerable<_>)
-                            .ThenInclude(fun (item:MzIdentMLDataBase.DataModel.ModificationParam) -> item.Term)
+                            .ThenInclude(fun (item:SpectrumIdentificationItem) -> item.Peptide.Details :> IEnumerable<_>)
+                            .ThenInclude(fun (item:PeptideParam) -> item.Term)
 
                             .Where(fun x -> x.ID=mzIdentID)
                             .ToList()
@@ -864,12 +863,16 @@ let createDictionaryWithValuesAndColumnNamesForPSMSection
         
     let CvParamsBase =
         [
-         prot.SearchDatabase.Details |> Seq.map (fun searchDBParam -> searchDBParam :> CVParamBase); 
-         spectrumItem.Details |> Seq.map (fun specItemDBParam -> specItemDBParam :> CVParamBase);
-         spectrumItem.SpectrumIdentificationResult.Details |> Seq.map (fun specRes -> specRes :> CVParamBase)
+         prot.SearchDatabase.Details 
+         |> Seq.map (fun searchDBParam -> searchDBParam :> CVParamBase); 
+         spectrumItem.Details 
+         |> Seq.map (fun specItemDBParam -> specItemDBParam :> CVParamBase);
+         spectrumItem.SpectrumIdentificationResult.Details 
+         |> Seq.map (fun specRes -> specRes :> CVParamBase)
          spectrumItem.PeptideEvidences 
          |> Seq.collect (fun pepEvi -> pepEvi.Details |> Seq.map (fun pepEviParam -> pepEviParam :> CVParamBase))
-         spectrumItem.Peptide.Details |> Seq.map (fun peptideParam -> peptideParam :> CVParamBase);
+         spectrumItem.Peptide.Details 
+         |> Seq.map (fun peptideParam -> peptideParam :> CVParamBase);
          spectrumItem.Peptide.Modifications 
          |> Seq.collect (fun modification -> modification.Details |> Seq.map (fun modParam -> modParam :> CVParamBase));
         ]
@@ -1009,42 +1012,38 @@ let peptideSection =
 
 let psmSection =
     createPSMSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" psmSectionColumnNames
-    //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest3.tab")
-
-sqliteMzIdentMLContext.Database.CloseConnection()
-sqliteMzQuantMLContext.Database.CloseConnection()
-
-psmSection
-
-let writeWholeTSVFile (path:string) (proteinSection:Dictionary<string, string>[]) (peptideSection:Dictionary<string, string>[]) (psmSection:Dictionary<string, string>[]) =
-    let columnNamesOfProteinSection = 
-        proteinSection.[0].Keys |> Array.ofSeq
-    let valuesOfProteinSection = 
-        proteinSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    let columnNamesOfPeptideSection = 
-        peptideSection.[0].Keys |> Array.ofSeq
-    let valuesOfPeptideSection = 
-        peptideSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    let columnNamesOfPSMSection = 
-        psmSection.[0].Keys |> Array.ofSeq
-    let valuesOfPSMSection = 
-        psmSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    [|
-      yield columnNamesOfProteinSection; yield! valuesOfProteinSection; 
-      yield [|""|]; 
-      yield columnNamesOfPeptideSection; yield! valuesOfPeptideSection;
-      yield [|""|];
-      yield columnNamesOfPSMSection; yield! valuesOfPSMSection;
-    |]
-    |> Array.map (fun item -> item |> String.concat "\t")
-    |> Seq.write path
+//    //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest3.tab")
 
 
-let standardCSVPath = fileDir + "\Databases\TSVTest0.tab"
+//let writeWholeTSVFile (path:string) (proteinSection:Dictionary<string, string>[]) (peptideSection:Dictionary<string, string>[]) (psmSection:Dictionary<string, string>[]) =
+//    let columnNamesOfProteinSection = 
+//        proteinSection.[0].Keys |> Array.ofSeq
+//    let valuesOfProteinSection = 
+//        proteinSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    let columnNamesOfPeptideSection = 
+//        peptideSection.[0].Keys |> Array.ofSeq
+//    let valuesOfPeptideSection = 
+//        peptideSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    let columnNamesOfPSMSection = 
+//        psmSection.[0].Keys |> Array.ofSeq
+//    let valuesOfPSMSection = 
+//        psmSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    [|
+//      yield columnNamesOfProteinSection; yield! valuesOfProteinSection; 
+//      yield [|""|]; 
+//      yield columnNamesOfPeptideSection; yield! valuesOfPeptideSection;
+//      yield [|""|];
+//      yield columnNamesOfPSMSection; yield! valuesOfPSMSection;
+//    |]
+//    |> Array.map (fun item -> item |> String.concat "\t")
+//    |> Seq.write path
 
-let wholeTSVFile = 
-    writeWholeTSVFile standardCSVPath proteinSection peptideSection psmSection
+
+//let standardCSVPath = fileDir + "\Databases\TSVTest0.tab"
+
+//let wholeTSVFile = 
+//    writeWholeTSVFile standardCSVPath proteinSection peptideSection psmSection
  
