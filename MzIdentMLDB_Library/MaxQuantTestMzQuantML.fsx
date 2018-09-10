@@ -30,6 +30,7 @@ let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
 let sqliteMzQuantMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
 sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled=false
+sqliteMzQuantMLContext.Database.OpenConnection()
 
 //Using peptideID = 119; Modification-specific peptides IDs=125 & 126; 
 //Oxidation (M)Sites for Modification-specific peptides ID=97; ProteinGroups ID=173;
@@ -1655,7 +1656,7 @@ let testProtein n =
 
 #time
 let rec loppaddToContextAndInsert collection n =
-    if n < 100 then 
+    if n < 10000 then 
         loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
     else collection
 loppaddToContextAndInsert
@@ -1717,3 +1718,4 @@ let finalMzQuantMLDocument =
 
 sqliteMzQuantMLContext.SaveChanges()
 
+sqliteMzQuantMLContext.Database.CloseConnection()

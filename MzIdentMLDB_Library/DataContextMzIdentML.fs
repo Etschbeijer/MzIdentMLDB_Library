@@ -1567,7 +1567,8 @@ module DataModel =
                                     passThreshold:Nullable<bool>, rank:Nullable<int>, peptideEvidences:List<PeptideEvidence>,
                                     fragmentations:List<IonType>, peptide:Peptide, chargeState:Nullable<int>, experimentalMassToCharge:Nullable<float>,
                                     calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, 
-                                    spectrumIdentificationResultID:string, details:List<SpectrumIdentificationItemParam>, 
+                                    spectrumIdentificationResult:SpectrumIdentificationResult, spectrumIdentificationResultID:string, 
+                                    details:List<SpectrumIdentificationItemParam>, 
                                     rowVersion:Nullable<DateTime>
                                    ) =
 
@@ -1584,11 +1585,12 @@ module DataModel =
             let mutable experimentalMassToCharge'       = experimentalMassToCharge
             let mutable calculatedMassToCharge'         = calculatedMassToCharge
             let mutable calculatedPI'                   = calculatedPI
+            let mutable spectrumIdentificationResult'   = spectrumIdentificationResult
             let mutable spectrumIdentificationResultID' = spectrumIdentificationResultID
             let mutable details'                        = details
             let mutable rowVersion'                     = rowVersion
 
-            new() = SpectrumIdentificationItem(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), Nullable(), Nullable(), Nullable(), null, null, Nullable())
+            new() = SpectrumIdentificationItem(null, null, null, null, Nullable(), Nullable(), null, null, null, Nullable(), Nullable(), Nullable(), Nullable(), null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1603,12 +1605,13 @@ module DataModel =
             member this.ExperimentalMassToCharge with get() = experimentalMassToCharge' and set(value) = experimentalMassToCharge' <- value
             member this.CalculatedMassToCharge with get() = calculatedMassToCharge' and set(value) = calculatedMassToCharge' <- value
             member this.CalculatedPI with get() = calculatedPI' and set(value) = calculatedPI' <- value
+            member this.SpectrumIdentificationResult with get() = spectrumIdentificationResult' and set(value) = spectrumIdentificationResult' <- value
             member this.SpectrumIdentificationResultID with get() = spectrumIdentificationResultID' and set(value) = spectrumIdentificationResultID' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///All identifications made from searching one spectrum.
-    type [<AllowNullLiteral>]
+    and [<AllowNullLiteral>]
         SpectrumIdentificationResult (id:string, name:string, spectraData:SpectraData, spectrumID:string, 
                                       spectrumIdentificationItem:List<SpectrumIdentificationItem>, 
                                       details:List<SpectrumIdentificationResultParam>,

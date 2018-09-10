@@ -625,7 +625,7 @@ type TermSymbol =
     | IntensityCoverage
     ///The fraction of peaks in the MS/MS spectrum that are annotated.
     | PeakCoverage
-    ///False discovery rate for peptide spectrum machtes.
+    ///Local false discovery rate for peptide spectrum machtes.
     | PSMFDR
     ///False discovery rate for protein.
     | ProteinFDR
@@ -1396,6 +1396,10 @@ let peptideParamUnmodified =
         (TermSymbol.toID MonoIsotopicMass)
                             )
     |> PeptideParamHandler.addValue "1453.6759";
+    PeptideParamHandler.init(
+        (TermSymbol.toID PSMFDR)
+                                        )
+    |> PeptideParamHandler.addValue "0.01";
     ]
 
 let peptideUnmodified =
@@ -1694,8 +1698,12 @@ let peptideParamMOxidized =
     |> PeptideParamHandler.addValue "1469.6761";
     PeptideParamHandler.init(
         (TermSymbol.toID MonoIsotopicMass)
-                                                )
+                            )
     |> PeptideParamHandler.addValue "1469.6761";
+    PeptideParamHandler.init(
+        (TermSymbol.toID PSMFDR)
+                            )
+    |> PeptideParamHandler.addValue "0.01";
     ]
 
 let peptideMOxidized =
@@ -2053,10 +2061,6 @@ let proteinAmbiguousGroupsParams =
         (TermSymbol.toID LeadingRazorProtein)
                                                )
     |> ProteinAmbiguityGroupParamHandler.addValue "Cre02.g096150.t1.2"
-    ProteinAmbiguityGroupParamHandler.init(
-        (TermSymbol.toID PSMFDR)
-                                        )
-    |> ProteinAmbiguityGroupParamHandler.addValue "0.01";
     ProteinAmbiguityGroupParamHandler.init(
         (TermSymbol.toID ProteinFDR)
                                         )

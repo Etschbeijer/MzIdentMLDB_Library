@@ -7316,6 +7316,7 @@ module InsertStatements =
                     ?fragmentations                 : seq<IonType>,
                     ?calculatedMassToCharge         : float,
                     ?calculatedPI                   : float,
+                    ?spectrumIdentificationResult   : SpectrumIdentificationResult,
                     ?spectrumIdentificationResultID : string,
                     ?details                        : seq<SpectrumIdentificationItemParam>
                 ) =
@@ -7327,6 +7328,7 @@ module InsertStatements =
                 let fragmentations'                 = convertOptionToList fragmentations
                 let calculatedMassToCharge'         = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
                 let calculatedPI'                   = defaultArg calculatedPI Unchecked.defaultof<float>
+                let spectrumIdentificationResult'   = defaultArg spectrumIdentificationResult Unchecked.defaultof<SpectrumIdentificationResult>
                 let spectrumIdentificationResultID' = defaultArg spectrumIdentificationResultID Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
                     
@@ -7344,6 +7346,7 @@ module InsertStatements =
                                                Nullable(experimentalMassToCharge), 
                                                Nullable(calculatedMassToCharge'),
                                                Nullable(calculatedPI'),
+                                               spectrumIdentificationResult',
                                                spectrumIdentificationResultID',
                                                details', 
                                                Nullable(DateTime.Now)
@@ -7401,6 +7404,12 @@ module InsertStatements =
             static member addCalculatedPI
                 (calculatedPI:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
                 spectrumIdentificationItem.CalculatedPI <- Nullable(calculatedPI)
+                spectrumIdentificationItem
+
+            ///Replaces spectrumIdentificationResult of existing object with new one.
+            static member addSpectrumIdentificationResult
+                (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationItem:SpectrumIdentificationItem) =
+                spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
                 spectrumIdentificationItem
 
             ///Replaces spectrumIdentificationResultID of existing object with new one.
