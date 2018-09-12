@@ -2408,24 +2408,102 @@ module DataModel =
             member public this.ProteinDetectionListParam with get() = this.m_ProteinDetectionListParam
                                                                       and set value = this.m_ProteinDetectionListParam <- value
 
-            //override this.OnModelCreating (modelBuilder :  ModelBuilder) =
-            //         modelBuilder.Entity<MzIdentMLDocument>()
-            //            .HasOne(fun item -> item.Inputs)
-            //            .WithOne("MzIdentMLDocument")
-            //            .HasColumnName("MzIdentMLDocument") |> ignore
-                        //.OnDelete(DeleteBehavior.Cascade)|> ignore
-            //         modelBuilder.Entity<CVParam>()
-            //            .HasOne("PersonID")
-            //            .WithMany("Details")
-            //            .HasForeignKey("FK")
-            //            .OnDelete(DeleteBehavior.Cascade)|> ignore
-            //         modelBuilder.Entity<CVParam>()
-            //            .HasOne("AmbiguousResidueID")
-            //            .WithMany("Details")
-            //            .HasForeignKey("FK")
-            //            .OnDelete(DeleteBehavior.Cascade)|> ignore
-            //         modelBuilder.Entity<CVParam>()
-            //            .HasOne("SampleID")
-            //            .WithMany("Details")
-            //            .HasForeignKey("FK")
-            //            .OnDelete(DeleteBehavior.Cascade)|> ignore
+            override this.OnModelCreating (modelBuilder:ModelBuilder) =
+                    modelBuilder.Entity<MzIdentMLDocument>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<MzIdentMLDocument>()
+                        .HasIndex("AnalysisDataID") |> ignore
+                    modelBuilder.Entity<DBSequence>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<DBSequence>()
+                        .HasIndex("MzIdentMLDocumentID") |> ignore
+                    modelBuilder.Entity<DBSequenceParam>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<DBSequenceParam>()
+                        .HasIndex("DBSequenceID") |> ignore
+                    modelBuilder.Entity<DBSequenceParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<AnalysisData>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<AnalysisData>()
+                        .HasIndex("ProteinDetectionListID") |> ignore
+                    modelBuilder.Entity<ProteinDetectionList>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<ProteinAmbiguityGroup>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<ProteinAmbiguityGroup>()
+                        .HasIndex("ProteinDetectionListID") |> ignore
+                    modelBuilder.Entity<ProteinDetectionHypothesis>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<ProteinDetectionHypothesis>()
+                        .HasIndex("ProteinAmbiguityGroupID") |> ignore
+                    modelBuilder.Entity<PeptideHypothesis>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<PeptideHypothesis>()
+                        .HasIndex("ProteinDetectionHypothesisID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItem>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItem>()
+                        .HasIndex("PeptideHypothesisID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItemParam>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItemParam>()
+                        .HasIndex("SpectrumIdentificationItemID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItemParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItem>()
+                        .HasIndex("SpectrumIdentificationResultID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationResultParam>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationResultParam>()
+                        .HasIndex("SpectrumIdentificationResultID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationResultParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<PeptideEvidence>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<PeptideEvidence>()
+                        .HasIndex("SpectrumIdentificationItemID") |> ignore
+                    modelBuilder.Entity<PeptideEvidenceParam>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<PeptideEvidenceParam>()
+                        .HasIndex("PeptideEvidenceID") |> ignore
+                    modelBuilder.Entity<PeptideEvidenceParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<SpectrumIdentificationItem>()
+                        .HasIndex("PeptideID") |> ignore
+                    modelBuilder.Entity<Peptide>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<PeptideParam>()
+                        .HasIndex("PeptideID") |> ignore
+                    modelBuilder.Entity<PeptideParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<Modification>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<Modification>()
+                        .HasIndex("PeptideID") |> ignore
+                    modelBuilder.Entity<ModificationParam>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+                    modelBuilder.Entity<ModificationParam>()
+                        .HasIndex("ModificationID") |> ignore
+                    modelBuilder.Entity<ModificationParam>()
+                        .HasIndex("TermID") |> ignore
+                    modelBuilder.Entity<Term>()
+                        .HasIndex("ID")
+                        .IsUnique() |> ignore
+
