@@ -6795,6 +6795,7 @@ module InsertStatements =
                     ?dataMatrix                  : DataMatrix,
                     ?peptideSequence             : string,
                     ?modifications               : seq<Modification>,
+                    ?fkPeptideConsensusListID    : string,
                     ?details                     : seq<PeptideConsensusParam>,
                     ?proteinID                   : string
                     
@@ -6804,6 +6805,7 @@ module InsertStatements =
                 let dataMatrix'                  = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
+                let fkPeptideConsensusListID'    = defaultArg fkPeptideConsensusListID Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                 let proteinID'                   = defaultArg proteinID (System.Guid.NewGuid().ToString())
                 
@@ -6817,6 +6819,7 @@ module InsertStatements =
                                      modifications',
                                      evidenceRefs |> List,
                                      proteinID',
+                                     fkPeptideConsensusListID',
                                      details',
                                      Nullable(DateTime.Now)
                                     )
@@ -6853,6 +6856,12 @@ module InsertStatements =
             static member addProteinID
                 (fkProtein:string) (table:PeptideConsensus) =
                 table.ProteinID <- fkProtein
+                table
+
+            ///Replaces peptideConsensusListID of existing object with new one.
+            static member addPeptideConsensusListID
+                (peptideConsensusListID:string) (table:PeptideConsensus) =
+                table.PeptideConsensusListID <- peptideConsensusListID
                 table
 
             ///Adds a peptideConsensusParam to an existing object.

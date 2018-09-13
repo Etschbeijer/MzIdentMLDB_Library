@@ -25,6 +25,7 @@ open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open BioFSharp
 
 
+
 let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
@@ -1419,7 +1420,7 @@ let peptideConsensusMOxidized =
     |> PeptideConsensusHandler.addModifications modifications
 
 let peptideConsensusList =
-    PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized])
+    PeptideConsensusListHandler.init(true, [peptideConsensusUnmodified; peptideConsensusMOxidized], "List1")
     |> PeptideConsensusListHandler.addFkMzQuantMLDocument mzQuantMLDocument.ID
 
 let proteinParams1 =
@@ -1556,7 +1557,7 @@ let terms =
         (TermSymbol.toID XIon)
     |]
 
-let createTestProteinParams  (dbContext:MzQuantML)=
+let createTestProteinParams  (dbContext:MzQuantML) =
     [
     ProteinParamHandler.init(
         terms.[0]
@@ -1650,22 +1651,122 @@ let testSearchDatabase =
     SearchDatabaseHandler.init("local", databaseName)
     |> SearchDatabaseHandler.addDetail testSearchDatabaseParam
 
+let testPeptideParam (dbContext:MzQuantML) =
+    [
+    PeptideConsensusParamHandler.init(
+        terms.[0]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[1]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[2]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[3]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[4]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[5]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[6]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[7]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[8]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[9]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+     PeptideConsensusParamHandler.init(
+        terms.[10]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[11]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[12]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[13]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[14]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[15]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[16]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[17]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[18]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    PeptideConsensusParamHandler.init(
+        terms.[19]
+                            )
+    |> PeptideConsensusParamHandler.addValue (System.Guid.NewGuid().ToString());
+    ]
+    
+
+let testPeptideConsensis n =
+    PeptideConsensusHandler.init(3, [evidenceRefMOxidized; evidenceRefUnmodified], n)
+    |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK"
+    |> PeptideConsensusHandler.addPeptideConsensusListID "List1"
+    |> PeptideConsensusHandler.addDetails (testPeptideParam sqliteMzQuantMLContext)
+
+let createMultiplePeptides collection =
+    let rec loop someThings i =
+        if i < 10 then
+            loop (List.append someThings [testPeptideConsensis (System.Guid.NewGuid().ToString())]) (i+1)
+        else someThings
+    loop collection 0
+    
+
 let testProtein n =
-    ProteinHandler.init("Test", testSearchDatabase, n)
+    ProteinHandler.init("Test", testSearchDatabase, string n)
     |> ProteinHandler.addDetails (createTestProteinParams sqliteMzQuantMLContext)
+    |> ProteinHandler.addPeptideConsensi (createMultiplePeptides [])
 
 #time
-let rec loppaddToContextAndInsert collection n =
+let rec loppAddToContextAndInsert collection n =
     if n < 10000 then 
-        loppaddToContextAndInsert (List.append collection [testProtein (string n)]) (n+1)
+        loppAddToContextAndInsert (List.append collection [testProtein n]) (n+1)
     else collection
-loppaddToContextAndInsert
+loppAddToContextAndInsert
 
-let fiveThousandEntries = 
-    loppaddToContextAndInsert [] 0
+let tenThousandEntries = 
+    loppAddToContextAndInsert [] 0
 
 let proteinList =
-    ProteinListHandler.init(List.append proteins fiveThousandEntries)
+    ProteinListHandler.init(List.append proteins tenThousandEntries)
 
 let proteinGroup =
     ProteinGroupHandler.init(

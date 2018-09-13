@@ -1598,21 +1598,22 @@ module DataModel =
     type [<AllowNullLiteral>]
         PeptideConsensus (id:string, charge:Nullable<int>, searchDatabase:SearchDatabase, 
                           dataMatrix:DataMatrix, peptideSequence:string, modifications:List<Modification>,
-                          evidenceRefs:List<EvidenceRef>, proteinID:string, details:List<PeptideConsensusParam>,
-                          rowVersion:Nullable<DateTime>
+                          evidenceRefs:List<EvidenceRef>, proteinID:string, peptideConsensusListID:string,
+                          details:List<PeptideConsensusParam>, rowVersion:Nullable<DateTime>
                          ) =
-            let mutable id'              = id
-            let mutable charge'          = charge
-            let mutable searchDatabase'  = searchDatabase
-            let mutable dataMatrix'      = dataMatrix
-            let mutable peptideSequence' = peptideSequence
-            let mutable modifications'   = modifications
-            let mutable evidenceRefs'    = evidenceRefs
-            let mutable proteinID'       = proteinID
-            let mutable details'         = details
-            let mutable rowVersion'      = rowVersion
+            let mutable id'                     = id
+            let mutable charge'                 = charge
+            let mutable searchDatabase'         = searchDatabase
+            let mutable dataMatrix'             = dataMatrix
+            let mutable peptideSequence'        = peptideSequence
+            let mutable modifications'          = modifications
+            let mutable evidenceRefs'           = evidenceRefs
+            let mutable proteinID'              = proteinID
+            let mutable peptideConsensusListID' = peptideConsensusListID
+            let mutable details'                = details
+            let mutable rowVersion'             = rowVersion
 
-            new() = PeptideConsensus(null, Nullable(), null, null, null, null, null, null, null, Nullable())
+            new() = PeptideConsensus(null, Nullable(), null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Charge with get() = charge' and set(value) = charge' <- value
@@ -1622,6 +1623,7 @@ module DataModel =
             member this.Modifications with get() = modifications' and set(value) = modifications' <- value
             member this.EvidenceRefs with get() = evidenceRefs' and set(value) = evidenceRefs' <- value
             member this.ProteinID with get() = proteinID' and set(value) = proteinID' <- value
+            member this.PeptideConsensusListID with get() = peptideConsensusListID' and set(value) = peptideConsensusListID' <- value
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
@@ -2273,76 +2275,75 @@ module DataModel =
                     modelBuilder.Entity<MzQuantMLDocument>()
                         .HasIndex("ID")
                         .IsUnique() |> ignore
-                    modelBuilder.Entity<MzQuantMLDocument>()
-                        .HasIndex("ProteinListID") |> ignore
-                    modelBuilder.Entity<ProteinList>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<Protein>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<Protein>()
-                        .HasIndex("ProteinListID") |> ignore
-                    modelBuilder.Entity<Protein>()
-                        .HasIndex("SearchDatabaseID") |> ignore
-                    modelBuilder.Entity<ProteinParam>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<SearchDatabaseParam>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<SearchDatabaseParam>()
-                        .HasIndex("SearchDatabaseID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<ProteinParam>()
-                        .HasIndex("ProteinID") |> ignore
-                    modelBuilder.Entity<ProteinParam>()
-                        .HasIndex("TermID") |> ignore
+                    //modelBuilder.Entity<MzQuantMLDocument>()
+                    //    .HasIndex("ProteinListID") |> ignore
+                    //modelBuilder.Entity<ProteinList>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<Protein>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<Protein>()
+                    //    .HasIndex("ProteinListID") |> ignore
+                    //modelBuilder.Entity<Protein>()
+                    //    .HasIndex("SearchDatabaseID") |> ignore
+                    //modelBuilder.Entity<ProteinParam>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<SearchDatabaseParam>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<SearchDatabaseParam>()
+                    //    .HasIndex("SearchDatabaseID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<ProteinParam>()
+                    //    .HasIndex("ProteinID") |> ignore
+                    //modelBuilder.Entity<ProteinParam>()
+                    //    .HasIndex("TermID") |> ignore
                     modelBuilder.Entity<PeptideConsensus>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
-                    modelBuilder.Entity<PeptideConsensus>()
-                        .HasIndex("ProteinID") |> ignore
-                    modelBuilder.Entity<PeptideConsensusParam>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<PeptideConsensusParam>()
-                        .HasIndex("PeptideConsensusID") |> ignore
-                    modelBuilder.Entity<PeptideConsensusParam>()
-                        .HasIndex("TermID") |> ignore
-                    modelBuilder.Entity<Modification>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<Modification>()
-                        .HasIndex("PeptideConsensusID") |> ignore
-                    modelBuilder.Entity<Modification>()
-                        .HasIndex("DetailID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<EvidenceRef>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<EvidenceRef>()
-                        .HasIndex("PeptideConsensusID") |> ignore
-                    modelBuilder.Entity<EvidenceRef>()
-                        .HasIndex("FeatureID") |> ignore
-                    modelBuilder.Entity<Feature>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<FeatureParam>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<FeatureParam>()
-                        .HasIndex("FeatureID") |> ignore
-                    modelBuilder.Entity<FeatureParam>()
-                        .HasIndex("TermID") |> ignore
-
-                    modelBuilder.Entity<CVParam>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore
-                    modelBuilder.Entity<CVParam>()
-                        .HasIndex("TermID") |> ignore
-                    modelBuilder.Entity<Term>()
-                        .HasIndex("ID")
-                        .IsUnique()|> ignore  
+                    //modelBuilder.Entity<PeptideConsensus>()
+                    //    .HasIndex("ProteinID") |> ignore
+                    //modelBuilder.Entity<PeptideConsensusParam>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<PeptideConsensusParam>()
+                    //    .HasIndex("PeptideConsensusID") |> ignore
+                    //modelBuilder.Entity<PeptideConsensusParam>()
+                    //    .HasIndex("TermID") |> ignore
+                    //modelBuilder.Entity<Modification>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<Modification>()
+                    //    .HasIndex("PeptideConsensusID") |> ignore
+                    //modelBuilder.Entity<Modification>()
+                    //    .HasIndex("DetailID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<EvidenceRef>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<EvidenceRef>()
+                    //    .HasIndex("PeptideConsensusID") |> ignore
+                    //modelBuilder.Entity<EvidenceRef>()
+                    //    .HasIndex("FeatureID") |> ignore
+                    //modelBuilder.Entity<Feature>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<FeatureParam>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<FeatureParam>()
+                    //    .HasIndex("FeatureID") |> ignore
+                    //modelBuilder.Entity<FeatureParam>()
+                    //    .HasIndex("TermID") |> ignore
+                    //modelBuilder.Entity<CVParam>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore
+                    //modelBuilder.Entity<CVParam>()
+                    //    .HasIndex("TermID") |> ignore
+                    //modelBuilder.Entity<Term>()
+                    //    .HasIndex("ID")
+                    //    .IsUnique()|> ignore  
                      
                     

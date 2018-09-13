@@ -129,6 +129,7 @@ let filterIDs (itemID:string) (idsAndTerms:seq<string*Term>) =
                )
     |> Seq.filter (fun item -> item <> null)
 
+
 ////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             ////////////PROTEIN-SECTION||||||||||PROTEIN-SECTION||||||||||PROTEIN-SECTION\\\\\\\\\\            
 ////////////////////////////////////////////////////////|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -189,8 +190,8 @@ let getAllProteinSectionTerms
      getAllSearchDatabaseTerms mzQuantContext
      getAllDBSequenceTerms mzIDentContext
     ]
-    |> Seq.map (fun term -> filterOfWrongMzdentAndMzQuantIDs mzIdentID mzQuantID term)
-    |> Seq.concat
+    |> Array.ofSeq
+    |> Seq.collect (fun term -> filterOfWrongMzdentAndMzQuantIDs mzIdentID mzQuantID term)
     |> Seq.distinct
     |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
     dict
@@ -391,19 +392,26 @@ let getAllPeptideSectionTerms
     let peptideIDs =
         getAllPeptideConsensusIDs mzQuantContext mzQuantID
 
+    let dbSeqTerms =
+        getAllDBSequenceTerms mzIdentContext
+        |> filterIDs mzIdentID
+        |> Array.ofSeq
+
     let terms =
         [
          getAllPeptideTerms mzQuantContext;
          getAllPeptideModificationTerms mzQuantContext;
          getAllPeptideFeatureTerms mzQuantContext;
          getAllSearchDatabaseTerms mzQuantContext;
-         getAllDBSequenceTerms mzIdentContext;
         ]
-            |> Seq.concat
+        |> Seq.concat
+        |> Array.ofSeq
     peptideIDs
     |> Seq.collect (fun peptideID -> filterIDs peptideID terms)
     |> Seq.distinct
     |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
+    dbSeqTerms
+    |> Array.iter (fun term -> dict.Add(term.ID, term.Name))
     dict
 
 let peptideSectionColumnNames =
@@ -669,7 +677,7 @@ let getAllPSMSectionTerms
     |> Seq.distinct
     |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
     dbSeqTerms
-    |> Seq.iter (fun term -> dict.Add(term.ID, term.Name))
+    |> Array.iter (fun term -> dict.Add(term.ID, term.Name))
     dict    
 
 let psmSectionColumnNames =
@@ -919,52 +927,52 @@ type MzTabType =
 #time
 let proteinSection =
     createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" proteinSectionColumnNames
-    //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest1.tab")
+//    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest1.tab")
 
 let peptideSection =
     createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
-    //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
+//    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
 
 let psmSection =
     createPSMSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" psmSectionColumnNames
-    //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest3.tab")
+//    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest3.tab")
 
 
-let writeWholeTSVFile (path:string) (proteinSection:Dictionary<string, string>[]) (peptideSection:Dictionary<string, string>[]) (psmSection:Dictionary<string, string>[]) =
-    let columnNamesOfProteinSection = 
-        proteinSection.[0].Keys |> Array.ofSeq
-    let valuesOfProteinSection = 
-        proteinSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    let columnNamesOfPeptideSection = 
-        peptideSection.[0].Keys |> Array.ofSeq
-    let valuesOfPeptideSection = 
-        peptideSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    let columnNamesOfPSMSection = 
-        psmSection.[0].Keys |> Array.ofSeq
-    let valuesOfPSMSection = 
-        psmSection |> Array.map (fun item -> item.ToArray())
-        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
-    [|
-      yield [|""|]; 
-      yield columnNamesOfProteinSection; yield! valuesOfProteinSection; 
-      yield [|""|]; 
-      yield columnNamesOfPeptideSection; yield! valuesOfPeptideSection;
-      yield [|""|];
-      yield columnNamesOfPSMSection; yield! valuesOfPSMSection;
-    |]
-    |> Array.map (fun item -> item |> String.concat "\t")
-    |> Seq.write path
+//let writeWholeTSVFile (path:string) (proteinSection:Dictionary<string, string>[]) (peptideSection:Dictionary<string, string>[]) (psmSection:Dictionary<string, string>[]) =
+//    let columnNamesOfProteinSection = 
+//        proteinSection.[0].Keys |> Array.ofSeq
+//    let valuesOfProteinSection = 
+//        proteinSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    let columnNamesOfPeptideSection = 
+//        peptideSection.[0].Keys |> Array.ofSeq
+//    let valuesOfPeptideSection = 
+//        peptideSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    let columnNamesOfPSMSection = 
+//        psmSection.[0].Keys |> Array.ofSeq
+//    let valuesOfPSMSection = 
+//        psmSection |> Array.map (fun item -> item.ToArray())
+//        |> Array.map (fun outer -> outer |> Array.map (fun inner -> inner.Value))
+//    [|
+//      yield [|""|]; 
+//      yield columnNamesOfProteinSection; yield! valuesOfProteinSection; 
+//      yield [|""|]; 
+//      yield columnNamesOfPeptideSection; yield! valuesOfPeptideSection;
+//      yield [|""|];
+//      yield columnNamesOfPSMSection; yield! valuesOfPSMSection;
+//    |]
+//    |> Array.map (fun item -> item |> String.concat "\t")
+//    |> Seq.write path
 
 
-let standardCSVPath = fileDir + "\Databases\TSVTest0.tab"
+//let standardCSVPath = fileDir + "\Databases\TSVTest0.tab"
 
-let wholeTSVFile = 
-    writeWholeTSVFile standardCSVPath proteinSection peptideSection psmSection
+//let wholeTSVFile = 
+//    writeWholeTSVFile standardCSVPath proteinSection peptideSection psmSection
  
 
 
-sqliteMzIdentMLContext.Database.CloseConnection()
-sqliteMzQuantMLContext.Database.CloseConnection()
+//sqliteMzIdentMLContext.Database.CloseConnection()
+//sqliteMzQuantMLContext.Database.CloseConnection()
 
