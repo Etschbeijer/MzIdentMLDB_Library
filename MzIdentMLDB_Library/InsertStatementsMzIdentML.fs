@@ -70,8 +70,8 @@ module InsertStatements =
                                 else
                                     loop 0 (n+1)
                         else
-                            if item1.Term=item2.Term && item1.TermID=item2.TermID && item2.Unit=item2.Unit && 
-                               item2.UnitID=item2.UnitID && item1.Value=item2.Value
+                            if item1.Term=item2.Term && item1.FKTerm=item2.FKTerm && item2.Unit=item2.Unit && 
+                               item2.FKUnit=item2.FKUnit && item1.Value=item2.Value
                                 then true
                                 else loop (i+1) n
                 loop 0 0
@@ -157,18 +157,17 @@ module InsertStatements =
                 query {
                         for i in dbContext.Term.Local do
                             if i.OntologyID=ontologyID
-                                then select (i, i.Ontology)
+                                then select i
                         }
-                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
                                     for i in dbContext.Term do
                                         if i.OntologyID=ontologyID
-                                            then select (i, i.Ontology)
+                                            then select i
                                     }
-                            |> Seq.map (fun (term,_) -> term)
+                            |> Seq.map (fun term -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some (term.Single())
@@ -181,18 +180,17 @@ module InsertStatements =
                 query {
                         for i in dbContext.Term.Local do
                             if i.Name=name
-                                then select (i, i.Ontology)
+                                then select i
                         }
-                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
                                     for i in dbContext.Term do
                                         if i.Name=name
-                                            then select (i, i.Ontology)
+                                            then select i
                                     }
-                            |> Seq.map (fun (term,_) -> term)
+                            |> Seq.map (fun term -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some term
@@ -202,7 +200,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
-                item1.Ontology.ID=item2.Ontology.ID
+                item1.OntologyID=item2.OntologyID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -312,7 +310,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:CVParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
@@ -423,7 +421,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:OrganizationParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a organizationParam-object in the context and database, based on its primary-key(ID).
@@ -534,7 +532,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:PersonParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a personParam-object in the context and database, based on its primary-key(ID).
@@ -645,7 +643,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SampleParam)  =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find an sampleParam-object in the context and database, based on its primary-key(ID).
@@ -756,7 +754,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ModificationParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a modificationParam-object in the context and database, based on its primary-key(ID).
@@ -867,7 +865,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:PeptideParam)  =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a peptideParam-object in the context and database, based on its primary-key(ID).
@@ -978,7 +976,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:TranslationTableParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a translationTableParam-object in the context and database, based on its primary-key(ID).
@@ -1089,7 +1087,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:MeasureParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a measureParam-object in the context and database, based on its primary-key(ID).
@@ -1200,7 +1198,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:AmbiguousResidueParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ambiguousResidueParam-object in the context and database, based on its primary-key(ID).
@@ -1311,7 +1309,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:MassTableParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a massTableParam-object in the context and database, based on its primary-key(ID).
@@ -1422,7 +1420,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:IonTypeParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ionTypeParam-object in the context and database, based on its primary-key(ID).
@@ -1533,7 +1531,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SpecificityRuleParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a specificityRuleParam-object in the context and database, based on its primary-key(ID).
@@ -1644,7 +1642,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SearchModificationParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a searchModificationParam-object in the context and database, based on its primary-key(ID).
@@ -1755,7 +1753,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:EnzymeNameParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a enzymeNameParam-object in the context and database, based on its primary-key(ID).
@@ -1866,7 +1864,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:IncludeParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a includeParam-object in the context and database, based on its primary-key(ID).
@@ -1977,7 +1975,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ExcludeParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a excludeParam-object in the context and database, based on its primary-key(ID).
@@ -2088,7 +2086,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:AdditionalSearchParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a additionalSearchParam-object in the context and database, based on its primary-key(ID).
@@ -2199,7 +2197,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:FragmentToleranceParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a fragmentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2310,7 +2308,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ParentToleranceParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a parentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2421,7 +2419,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ThresholdParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a thresholdParam-object in the context and database, based on its primary-key(ID).
@@ -2532,7 +2530,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SearchDatabaseParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a searchDatabaseParam-object in the context and database, based on its primary-key(ID).
@@ -2643,7 +2641,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:DBSequenceParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a dbSequenceParam-object in the context and database, based on its primary-key(ID).
@@ -2754,7 +2752,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:PeptideEvidenceParam)  =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a peptideEvidenceParam-object in the context and database, based on its primary-key(ID).
@@ -2865,7 +2863,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SpectrumIdentificationItemParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationItemParam-object in the context and database, based on its primary-key(ID).
@@ -2976,7 +2974,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SpectrumIdentificationResultParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationResultParam-object in the context and database, based on its primary-key(ID).
@@ -3087,7 +3085,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SpectrumIdentificationListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a spectrumIdentificationListParam-object in the context and database, based on its primary-key(ID).
@@ -3198,7 +3196,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:AnalysisParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a analysisParam-object in the context and database, based on its primary-key(ID).
@@ -3309,7 +3307,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:SourceFileParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a sourceFileParam-object in the context and database, based on its primary-key(ID).
@@ -3420,7 +3418,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ProteinDetectionHypothesisParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a proteinDetectionHypothesisParam-object in the context and database, based on its primary-key(ID).
@@ -3531,7 +3529,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ProteinAmbiguityGroupParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a proteinAmbiguityGroupParam-object in the context and database, based on its primary-key(ID).
@@ -3642,7 +3640,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addUnit
                 (fkUnit:string) (table:ProteinDetectionListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a proteinDetectionListParam-object in the context and database, based on its primary-key(ID).

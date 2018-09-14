@@ -7,16 +7,17 @@ open System.Collections.Generic
 open MzBasis.Basetypes
 
 module DataModel =
+    open Microsoft.EntityFrameworkCore.Metadata.Internal
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("CVParams")>]
-        CVParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        CVParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = CVParam(null, null, null, null, null, null, Nullable())
@@ -25,28 +26,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("FeatureParams")>]
-        FeatureParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        FeatureParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = FeatureParam(null, null, null, null, null, null, Nullable())
@@ -55,28 +58,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("FeatureListParams")>]
-        FeatureListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        FeatureListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = FeatureListParam(null, null, null, null, null, null, Nullable())
@@ -85,28 +90,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("IdentificationFileParams")>]
-        IdentificationFileParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        IdentificationFileParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = IdentificationFileParam(null, null, null, null, null, null, Nullable())
@@ -115,28 +122,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AssayParams")>]
-        AssayParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        AssayParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = AssayParam(null, null, null, null, null, null, Nullable())
@@ -145,28 +154,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("PeptideConsensusParams")>]
-        PeptideConsensusParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        PeptideConsensusParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = PeptideConsensusParam(null, null, null, null, null, null, Nullable())
@@ -175,28 +186,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("PeptideConsensusListParams")>]
-        PeptideConsensusListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        PeptideConsensusListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = PeptideConsensusListParam(null, null, null, null, null, null, Nullable())
@@ -205,28 +218,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinParams")>]
-        ProteinParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProteinParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProteinParam(null, null, null, null, null, null, Nullable())
@@ -235,28 +250,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinListParam")>]
-        ProteinListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProteinListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProteinListParam(null, null, null, null, null, null, Nullable())
@@ -265,28 +282,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
   
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinRefParams")>]
-        ProteinRefParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProteinRefParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProteinRefParam(null, null, null, null, null, null, Nullable())
@@ -295,28 +314,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinGroupParams")>]
-        ProteinGroupParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProteinGroupParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProteinGroupParam(null, null, null, null, null, null, Nullable())
@@ -325,28 +346,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("ProteinGroupListParams")>]
-        ProteinGroupListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProteinGroupListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProteinGroupListParam(null, null, null, null, null, null, Nullable())
@@ -355,28 +378,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("RatioCalculationParams")>]
-        RatioCalculationParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        RatioCalculationParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = RatioCalculationParam(null, null, null, null, null, null, Nullable())
@@ -385,28 +410,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("RawFileParams")>]
-        RawFileParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        RawFileParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = RawFileParam(null, null, null, null, null, null, Nullable())
@@ -415,28 +442,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("RawFilesGroupParams")>]
-        RawFilesGroupParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        RawFilesGroupParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = RawFilesGroupParam(null, null, null, null, null, null, Nullable())
@@ -445,28 +474,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SearchDatabaseParams")>]
-        SearchDatabaseParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        SearchDatabaseParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = SearchDatabaseParam(null, null, null, null, null, null, Nullable())
@@ -475,28 +506,30 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("SmallMoleculeParams")>]
-        SmallMoleculeParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        SmallMoleculeParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = SmallMoleculeParam(null, null, null, null, null, null, Nullable())
@@ -505,27 +538,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("SmallMoleculeListParams")>]
-        SmallMoleculeListParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        SmallMoleculeListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = SmallMoleculeListParam(null, null, null, null, null, null, Nullable())
@@ -534,27 +569,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("SoftwareParams")>]
-        SoftwareParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        SoftwareParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = SoftwareParam(null, null, null, null, null, null, Nullable())
@@ -563,27 +600,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("StudyVariableParams")>]
-        StudyVariableParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        StudyVariableParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = StudyVariableParam(null, null, null, null, null, null, Nullable())
@@ -592,27 +631,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("ProcessingMethodParams")>]
-        ProcessingMethodParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        ProcessingMethodParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = ProcessingMethodParam(null, null, null, null, null, null, Nullable())
@@ -621,27 +662,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("OrganizationParams")>]
-        OrganizationParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        OrganizationParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = OrganizationParam(null, null, null, null, null, null, Nullable())
@@ -650,27 +693,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("PersonParams")>]
-        PersonParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        PersonParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = PersonParam(null, null, null, null, null, null, Nullable())
@@ -679,27 +724,29 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     type [<AllowNullLiteral>] [<Table("MassTraceParams")>]
-        MassTraceParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        MassTraceParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = MassTraceParam(null, null, null, null, null, null, Nullable())
@@ -708,17 +755,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -727,13 +776,13 @@ module DataModel =
 
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AnalysisSummaryParams")>]
-        AnalysisSummary (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, rowVersion:Nullable<DateTime>) =
+        AnalysisSummary (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, rowVersion:Nullable<DateTime>) =
             let mutable id'         = id
             let mutable value'      = value
             let mutable term'       = term
-            let mutable termID'     = termID
+            let mutable fkTerm'     = fkTerm
             let mutable unit'       = unit
-            let mutable unitID'     = unitID
+            let mutable fkUnit'     = fkUnit
             let mutable rowVersion' = rowVersion
 
             new() = AnalysisSummary(null, null, null, null, null, null, Nullable())
@@ -742,17 +791,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = fkTerm' and set(value) = fkTerm' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = fkUnit' and set(value) = fkUnit' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A software package used in the analysis.
@@ -2299,7 +2350,7 @@ module DataModel =
                     //modelBuilder.Entity<ProteinParam>()
                     //    .HasIndex("ProteinID") |> ignore
                     //modelBuilder.Entity<ProteinParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     modelBuilder.Entity<PeptideConsensus>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
@@ -2311,7 +2362,7 @@ module DataModel =
                     //modelBuilder.Entity<PeptideConsensusParam>()
                     //    .HasIndex("PeptideConsensusID") |> ignore
                     //modelBuilder.Entity<PeptideConsensusParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<Modification>()
                     //    .HasIndex("ID")
                     //    .IsUnique()|> ignore
@@ -2336,14 +2387,18 @@ module DataModel =
                     //modelBuilder.Entity<FeatureParam>()
                     //    .HasIndex("FeatureID") |> ignore
                     //modelBuilder.Entity<FeatureParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<CVParam>()
                     //    .HasIndex("ID")
                     //    .IsUnique()|> ignore
                     //modelBuilder.Entity<CVParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<Term>()
                     //    .HasIndex("ID")
-                    //    .IsUnique()|> ignore  
+                    //    .IsUnique()|> ignore
+                    modelBuilder.Entity<Term>()
+                        .Property(fun item -> item.OntologyID)
+                        .HasColumnName("FKOntology") |> ignore
+
                      
                     

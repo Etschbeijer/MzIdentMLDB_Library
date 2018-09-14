@@ -70,8 +70,8 @@ module InsertStatements =
                                 else
                                     loop 0 (n+1)
                         else
-                            if item1.Term=item2.Term && item1.TermID=item2.TermID && item2.Unit=item2.Unit && 
-                               item2.UnitID=item2.UnitID && item1.Value=item2.Value
+                            if item1.Term=item2.Term && item1.FKTerm=item2.FKTerm && item2.Unit=item2.Unit && 
+                               item2.FKUnit=item2.FKUnit && item1.Value=item2.Value
                                 then true
                                 else loop (i+1) n
                 loop 0 0
@@ -100,10 +100,10 @@ module InsertStatements =
                 new MzQuantML(optionsBuilder.Options)       
 
             ///Creats connection for SQL-context and database.
-            static member sqlConnection() =
+            static member sqlConnection (name:string) =
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzQuantML>()
-                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;") |> ignore
+                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=" + name + ";Trusted_Connection=True;") |> ignore
                 new MzQuantML(optionsBuilder.Options) 
 
             ///Reads obo-file and creates sequence of Obo.Terms.
@@ -156,18 +156,17 @@ module InsertStatements =
                 query {
                         for i in dbContext.Term.Local do
                             if i.OntologyID=ontologyID
-                                then select (i, i.Ontology)
+                                then select i
                         }
-                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
                                     for i in dbContext.Term do
                                         if i.OntologyID=ontologyID
-                                            then select (i, i.Ontology)
+                                            then select i
                                     }
-                            |> Seq.map (fun (term,_) -> term)
+                            |> Seq.map (fun term -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some (term.Single())
@@ -180,18 +179,17 @@ module InsertStatements =
                 query {
                         for i in dbContext.Term.Local do
                             if i.Name=name
-                                then select (i, i.Ontology)
+                                then select i
                         }
-                |> Seq.map (fun (term,_) -> term)
                 |> (fun term -> 
                     if (Seq.exists (fun term' -> term' <> null) term) = false
                         then 
                             query {
                                     for i in dbContext.Term do
                                         if i.Name=name
-                                            then select (i, i.Ontology)
+                                            then select i
                                     }
-                            |> Seq.map (fun (term,_) -> term)
+                            |> Seq.map (fun term -> term)
                             |> (fun term -> if (Seq.exists (fun term' -> term' <> null) term) = false
                                                 then None
                                                 else Some term
@@ -201,7 +199,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
-                item1.Ontology.ID=item2.Ontology.ID
+                item1.OntologyID=item2.OntologyID
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -311,7 +309,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:CVParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a cvparam-object in the context and database, based on its primary-key(ID).
@@ -422,7 +420,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:OrganizationParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -533,7 +531,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:PersonParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -644,7 +642,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:SoftwareParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -755,7 +753,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:SearchDatabaseParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -866,7 +864,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:RawFileParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -977,7 +975,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:AssayParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1088,7 +1086,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:StudyVariableParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1199,7 +1197,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:RatioCalculationParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1310,7 +1308,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:FeatureParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1421,7 +1419,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:SmallMoleculeParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1532,7 +1530,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:SmallMoleculeListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1643,7 +1641,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:PeptideConsensusParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1754,7 +1752,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ProteinParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1865,7 +1863,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ProteinListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1976,7 +1974,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ProteinGroupParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2087,7 +2085,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ProteinGroupListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2198,7 +2196,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:PeptideConsensusListParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2309,7 +2307,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:AnalysisSummary) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2420,7 +2418,7 @@ module InsertStatements =
             ///Replaces fkUnit of existing object with new one.
             static member addFkUnit
                 (fkUnit:string) (table:ProteinRefParam) =
-                table.UnitID <- fkUnit
+                table.FKUnit <- fkUnit
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).

@@ -25,17 +25,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -55,17 +57,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -85,17 +89,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -115,17 +121,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -145,17 +153,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -175,17 +185,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -205,17 +217,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -235,17 +249,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -265,17 +281,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -295,17 +313,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -325,17 +345,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -355,17 +377,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -385,17 +409,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -415,17 +441,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -445,17 +473,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -475,17 +505,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -505,17 +537,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -535,17 +569,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -565,17 +601,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -595,17 +633,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -625,17 +665,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -655,17 +697,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -685,17 +729,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -715,17 +761,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -745,17 +793,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -775,17 +825,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -805,17 +857,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -835,17 +889,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -865,17 +921,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -895,17 +953,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
@@ -925,17 +985,19 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Value with get() = value' and set(value) = value' <- value
             member this.Term with get() = term' and set(value) = term' <- value
-            member this.TermID with get() = termID' and set(value) = termID' <- value
+            [<ForeignKey("Term")>]
+            member this.FKTerm with get() = termID' and set(value) = termID' <- value
             member this.Unit with get() = unit' and set(value) = unit' <- value
-            member this.UnitID with get() = unitID' and set(value) = unitID' <- value
+            [<ForeignKey("Unit")>]
+            member this.FKUnit with get() = unitID' and set(value) = unitID' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
             interface CVParamBase with
                 member x.ID         = x.ID
                 member x.Value      = x.Value
                 member x.Term       = x.Term
-                member x.TermID     = x.TermID
+                member x.FKTerm     = x.FKTerm
                 member x.Unit       = x.Unit
-                member x.UnitID     = x.UnitID
+                member x.FKUnit     = x.FKUnit
                 member x.RowVersion = x.RowVersion
 
 
@@ -2425,7 +2487,7 @@ module DataModel =
                     //modelBuilder.Entity<DBSequenceParam>()
                     //    .HasIndex("DBSequenceID") |> ignore
                     //modelBuilder.Entity<DBSequenceParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<AnalysisData>()
                     //    .HasIndex("ID")
                     //    .IsUnique() |> ignore
@@ -2460,7 +2522,7 @@ module DataModel =
                     //modelBuilder.Entity<SpectrumIdentificationItemParam>()
                     //    .HasIndex("SpectrumIdentificationItemID") |> ignore
                     //modelBuilder.Entity<SpectrumIdentificationItemParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<SpectrumIdentificationItem>()
                     //    .HasIndex("SpectrumIdentificationResultID") |> ignore
                     //modelBuilder.Entity<SpectrumIdentificationResultParam>()
@@ -2469,7 +2531,7 @@ module DataModel =
                     //modelBuilder.Entity<SpectrumIdentificationResultParam>()
                     //    .HasIndex("SpectrumIdentificationResultID") |> ignore
                     //modelBuilder.Entity<SpectrumIdentificationResultParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<PeptideEvidence>()
                     //    .HasIndex("ID")
                     //    .IsUnique() |> ignore
@@ -2481,7 +2543,7 @@ module DataModel =
                     //modelBuilder.Entity<PeptideEvidenceParam>()
                     //    .HasIndex("PeptideEvidenceID") |> ignore
                     //modelBuilder.Entity<PeptideEvidenceParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<SpectrumIdentificationItem>()
                     //    .HasIndex("PeptideID") |> ignore
                     //modelBuilder.Entity<Peptide>()
@@ -2490,7 +2552,7 @@ module DataModel =
                     //modelBuilder.Entity<PeptideParam>()
                     //    .HasIndex("PeptideID") |> ignore
                     //modelBuilder.Entity<PeptideParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<Modification>()
                     //    .HasIndex("ID")
                     //    .IsUnique() |> ignore
@@ -2502,7 +2564,7 @@ module DataModel =
                     //modelBuilder.Entity<ModificationParam>()
                     //    .HasIndex("ModificationID") |> ignore
                     //modelBuilder.Entity<ModificationParam>()
-                    //    .HasIndex("TermID") |> ignore
+                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<Term>()
                     //    .HasIndex("ID")
                     //    .IsUnique() |> ignore

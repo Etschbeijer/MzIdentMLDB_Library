@@ -1,3 +1,0 @@
-PEH	sequence	accession	uri	modifications	retention_time	charge	mass_to_charge	unique	database_version	best_search_engine_score[1]	opt_{monoisotopic mass}_	opt_{Fraction of total spectrum}_	opt_{Oxidation}_	opt_{neutral loss}_	opt_{NCBI TaxID}_	opt_{scientific name}_
-PEP	AAIEASFGSVDEMK	Cre02.g096150.t1.2	local	M-Oxidation | -neutral loss | 	21.489 | 	2	735.84531 | 	 | 	1.0 | 	111.12 | 	1469.6761 | 	0.002043774 | 	 | 	 | 	906914 | 	C. reinhardtii | 
-PEP	AAIEASFGSVDEMK	Cre02.g096150.t1.2	local		25.752 | 	2	727.84714 | 	true | 	1.0 | 	122.97 | 	1453.6759 | 	0.001671316 | 	Oxidation	neutral loss	906914 | 	C. reinhardtii | 
