@@ -149,14 +149,14 @@ module InsertStatements =
             ///Replaces an ontologyID of an existing term-object with new ontology.
             static member addOntologyID
                 (ontologyID:string) (table:Term) =
-                table.OntologyID <- ontologyID
+                table.FKOntology <- ontologyID
                 table
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (ontologyID:string) =
                 query {
                         for i in dbContext.Term.Local do
-                            if i.OntologyID=ontologyID
+                            if i.FKOntology=ontologyID
                                 then select i
                         }
                 |> (fun term -> 
@@ -164,7 +164,7 @@ module InsertStatements =
                         then 
                             query {
                                     for i in dbContext.Term do
-                                        if i.OntologyID=ontologyID
+                                        if i.FKOntology=ontologyID
                                             then select i
                                     }
                             |> Seq.map (fun term -> term)
@@ -200,7 +200,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
-                item1.OntologyID=item2.OntologyID
+                item1.FKOntology=item2.FKOntology
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.

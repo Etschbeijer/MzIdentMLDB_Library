@@ -148,14 +148,14 @@ module InsertStatements =
             ///Replaces an ontologyID of an existing term-object with new ontology.
             static member addOntologyID
                 (ontologyID:string) (table:Term) =
-                table.OntologyID <- ontologyID
+                table.FKOntology <- ontologyID
                 table
 
             ///Tries to find a term-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (ontologyID:string) =
                 query {
                         for i in dbContext.Term.Local do
-                            if i.OntologyID=ontologyID
+                            if i.FKOntology=ontologyID
                                 then select i
                         }
                 |> (fun term -> 
@@ -163,7 +163,7 @@ module InsertStatements =
                         then 
                             query {
                                     for i in dbContext.Term do
-                                        if i.OntologyID=ontologyID
+                                        if i.FKOntology=ontologyID
                                             then select i
                                     }
                             |> Seq.map (fun term -> term)
@@ -199,7 +199,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Term) (item2:Term) =
-                item1.OntologyID=item2.OntologyID
+                item1.FKOntology=item2.FKOntology
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2618,12 +2618,14 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
-                    ?fileFormat                  : CVParam
+                    ?fileFormat                  : CVParam,
+                    ?fkFileFormat                : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                         = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation'  = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                   = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkFileFormat'                 = defaultArg fkFileFormat Unchecked.defaultof<string>
                     
                 new SourceFile(
                                id',
@@ -2631,6 +2633,7 @@ module InsertStatements =
                                location, 
                                externalFormatDocumentation',
                                fileFormat',
+                               fkFileFormat',
                                Nullable(DateTime.Now)
                               )
 
@@ -2650,6 +2653,12 @@ module InsertStatements =
             static member addFileFormat
                 (fileFormat:CVParam) (table:SourceFile) =
                 table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkFileFormat of existing object with new one.
+            static member addFKFileFormat
+                (fkFileFormat:string) (table:SourceFile) =
+                table.FKFileFormat <- fkFileFormat
                 table
 
             ///Tries to find a sourceFile-object in the context and database, based on its primary-key(ID).
@@ -2702,7 +2711,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
-                item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
+                item1.FKFileFormat=item2.FKFileFormat && item1.Name=item2.Name && 
+                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2778,9 +2788,9 @@ module InsertStatements =
                 table
 
             ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocumentID
+            static member addFKMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:Organization) =
-                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -2835,7 +2845,8 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
-                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Parent=item2.Parent
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
+                item1.Parent=item2.Parent
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -2943,9 +2954,9 @@ module InsertStatements =
                 table
 
             ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addMzQuantMLDocumentID
+            static member addFKMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:Person) =
-                table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -3033,18 +3044,36 @@ module InsertStatements =
             ///Initializes a contactrole-object with at least all necessary parameters.
             static member init
                 (   
-                    person : Person, 
-                    role   : CVParam,
-                    ?id    : string
+                    fkPerson : string, 
+                    fkRole  : string,
+                    ?id      : string,
+                    ?person  : Person,
+                    ?role    : CVParam
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let person'              = defaultArg person Unchecked.defaultof<Person>
+                let role'                = defaultArg role Unchecked.defaultof<CVParam>
                     
                 new ContactRole(
                                 id', 
-                                person, 
-                                role, 
+                                person', 
+                                fkPerson,
+                                role', 
+                                fkRole,
                                 Nullable(DateTime.Now)
                                )
+
+            ///Replaces person of existing object with new one.
+            static member addPerson
+                (person:Person) (table:ContactRole) =
+                table.Person <- person
+                table
+
+            ///Replaces role of existing object with new one.
+            static member addRole
+                (role:CVParam) (table:ContactRole) =
+                table.Role <- role
+                table
 
             ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -3126,21 +3155,27 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id                  : string,
-                    ?name                : string,
-                    ?analysisSoftware    : Software,
-                    ?contactRole         : ContactRole
+                    ?id             : string,
+                    ?name           : string,
+                    ?software       : Software,
+                    ?fkSoftware     : string,
+                    ?contactRole    : ContactRole,
+                    ?fkContactRole  : string
                 ) =
-                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                = defaultArg name Unchecked.defaultof<string>
-                let analysisSoftware'    = defaultArg analysisSoftware Unchecked.defaultof<Software>
-                let contactRole'         = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'           = defaultArg name Unchecked.defaultof<string>
+                let software'       = defaultArg software Unchecked.defaultof<Software>
+                let fkSoftware'     = defaultArg fkSoftware Unchecked.defaultof<string>
+                let contactRole'    = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let fkContactRole'  = defaultArg fkContactRole Unchecked.defaultof<string>
 
                 new Provider(
                              id', 
                              name', 
-                             analysisSoftware', 
+                             software', 
+                             fkSoftware', 
                              contactRole', 
+                             fkContactRole', 
                              Nullable(DateTime.Now)
                             )
 
@@ -3156,10 +3191,22 @@ module InsertStatements =
                 table.Software <- analysisSoftware
                 table
 
+            ///Replaces fkSoftware of existing object with new one.
+            static member addFKSoftware
+                (fkSoftware:string) (table:Provider) =
+                table.FKSoftware <- fkSoftware
+                table
+
             ///Replaces contactrole of existing object with new one.
             static member addContactRole
                 (contactRole:ContactRole) (table:Provider) =
                 table.ContactRole <- contactRole
+                table
+
+            ///Replaces fkContactrole of existing object with new one.
+            static member addFKContactRole
+                (fkContactrole:string) (table:Provider) =
+                table.FKContactRole <- fkContactrole
                 table
 
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
@@ -3212,7 +3259,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-               item1.Software=item2.Software && item1.ContactRole=item2.ContactRole
+               item1.FKSoftware=item2.FKSoftware && item1.FKContactRole=item2.FKContactRole
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3243,7 +3290,7 @@ module InsertStatements =
             static member init
                 (             
                     location                     : string,
-                    databaseName                 : CVParam,
+                    fkDatabaseName               : string,
                     ?id                          : string,
                     ?name                        : string,
                     ?numDatabaseEntries          : int,
@@ -3251,6 +3298,8 @@ module InsertStatements =
                     ?version                     : string,
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam,
+                    ?fkFileFormat                : string,
+                    ?databaseName                : CVParam,
                     ?details                     : seq<SearchDatabaseParam>
                     //?mzIdentML        : MzIdentMLDocument
                 ) =
@@ -3261,6 +3310,8 @@ module InsertStatements =
                 let version'                     = defaultArg version Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
+                let databaseName'                = defaultArg databaseName Unchecked.defaultof<CVParam>
                 let details'                     = convertOptionToList details
                         
 
@@ -3273,7 +3324,9 @@ module InsertStatements =
                                    version',
                                    externalFormatDocumentation',
                                    fileFormat',
-                                   databaseName,
+                                   fkFileFormat',
+                                   databaseName',
+                                   fkDatabaseName,
                                    details',
                                    //mzIdentML', 
                                    Nullable(DateTime.Now)
@@ -3315,10 +3368,22 @@ module InsertStatements =
                 table.FileFormat <- fileFormat
                 table
             
+            ///Replaces fkFileFormat of existing object with new one.
+            static member addFKFileFormat
+                (fkFileFormat:string) (table:SearchDatabase) =
+                table.FKFileFormat <- fkFileFormat
+                table
+
             ///Replaces databaseName of existing object with new one.
             static member addDatabaseName
                 (databaseName:CVParam) (table:SearchDatabase) =
                 table.DatabaseName <- databaseName
+                table
+
+            ///Replaces fkDatabaseName of existing object with new one.
+            static member addFKDatabaseName
+                (fkDatabaseName:string) (table:SearchDatabase) =
+                table.FKDatabaseName <- fkDatabaseName
                 table
 
             ///Adds a searchDatabaseParam to an existing object.
@@ -3385,7 +3450,7 @@ module InsertStatements =
                item1.Name=item2.Name && item1.NumDatabaseEntries=item2.NumDatabaseEntries &&
                item1.ReleaseDate=item2.ReleaseDate && item1.Version=item2.Version &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-               item1.FileFormat=item2.FileFormat && item1.DatabaseName=item2.DatabaseName &&
+               item1.FKFileFormat=item2.FKFileFormat && item1.FKDatabaseName=item2.FKDatabaseName &&
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -3422,16 +3487,20 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?searchDatabase              : SearchDatabase,
+                    ?fkSearchDatabase            : string,
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam,
+                    ?fkFileFormat                : string,
                     ?details                     : seq<IdentificationFileParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
+                let fkSearchDatabase'            = defaultArg fkSearchDatabase Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
@@ -3440,10 +3509,11 @@ module InsertStatements =
                                        name', 
                                        location, 
                                        searchDatabase',
+                                       fkSearchDatabase',
                                        externalFormatDocumentation',
                                        fileFormat',
+                                       fkFileFormat',
                                        details',
-                                       //mzIdentML', 
                                        Nullable(DateTime.Now)
                                       )
 
@@ -3454,9 +3524,15 @@ module InsertStatements =
                 table
 
             ///Replaces searchDatabase of existing object with new one.
-            static member addNumSearchDatabase
+            static member addSearchDatabase
                 (searchDatabase:SearchDatabase) (table:IdentificationFile) =
                 table.SearchDatabase <- searchDatabase
+                table
+
+            ///Replaces fkSearchDatabase of existing object with new one.
+            static member addFKSearchDatabase
+                (fkSearchDatabase:string) (table:IdentificationFile) =
+                table.FKSearchDatabase <- fkSearchDatabase
                 table
 
             ///Replaces externalFormatDocumentation of existing object with new one.
@@ -3469,6 +3545,12 @@ module InsertStatements =
             static member addFileFormat
                 (fileFormat:CVParam) (table:IdentificationFile) =
                 table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkFileFormat of existing object with new one.
+            static member addFKFileFormat
+                (fkFileFormat:string) (table:IdentificationFile) =
+                table.FKFileFormat <- fkFileFormat
                 table
 
             ///Adds a identificationFileParam to an existing object.
@@ -3534,7 +3616,7 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:IdentificationFile) (item2:IdentificationFile) =
                item1.Name=item2.Name && item1.SearchDatabase=item2.SearchDatabase &&
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
-               item1.FileFormat=item2.FileFormat && 
+               item1.FKFileFormat=item2.FKFileFormat && 
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -3568,20 +3650,25 @@ module InsertStatements =
             static member init
                 (             
                     fkIdentificationFile : string,
-                    identificationFile   : IdentificationFile,
-                    ?id                  : string
+                    ?id                  : string,
+                    ?identificationFile  : IdentificationFile
                     
                 ) =
                 let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let identificationFile' = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
 
                 new IdentificationRef(
                                       id', 
+                                      identificationFile',
                                       fkIdentificationFile,
-                                      identificationFile,
-                                      //mzIdentML', 
                                       Nullable(DateTime.Now)
                                      )
+
+            ///Replaces identificationFile of existing object with new one.
+            static member addIdentificationFile
+                (identificationFile:IdentificationFile) (table:IdentificationRef) =
+                table.IdentificationFile <- identificationFile
+                table
 
             ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -3667,13 +3754,15 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
-                    ?fileFormat                  : CVParam
+                    ?fileFormat                  : CVParam,
+                    ?fkFileFormat                : string
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
                         
 
                 new MethodFile(
@@ -3682,7 +3771,7 @@ module InsertStatements =
                                location, 
                                externalFormatDocumentation',
                                fileFormat',
-                               //mzIdentML', 
+                               fkFileFormat',
                                Nullable(DateTime.Now)
                               )
 
@@ -3702,6 +3791,12 @@ module InsertStatements =
             static member addFileFormat
                 (fileFormat:CVParam) (table:MethodFile) =
                 table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkFileFormat of existing object with new one.
+            static member addFKFileFormat
+                (fkFileFormat:string) (table:MethodFile) =
+                table.FKFileFormat <- fkFileFormat
                 table
 
             ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
@@ -3755,7 +3850,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MethodFile) (item2:MethodFile) =
                item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
-               && item1.FileFormat=item2.FileFormat
+               && item1.FKFileFormat=item2.FKFileFormat 
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3790,15 +3885,19 @@ module InsertStatements =
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?methodFile                  : MethodFile,
+                    ?fkMethodFile                : string,
                     ?fileFormat                  : CVParam, 
+                    ?fkFileFormat                : string, 
                     ?details                     : seq<RawFileParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let methodFile'                  = defaultArg methodFile Unchecked.defaultof<MethodFile>
+                let fkMethodFile'                = defaultArg fkMethodFile Unchecked.defaultof<string>
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
@@ -3807,10 +3906,11 @@ module InsertStatements =
                             name', 
                             location, 
                             methodFile',
+                            fkMethodFile',
                             externalFormatDocumentation',
                             fileFormat',
-                            details',
-                            //mzIdentML', 
+                            fkFileFormat',
+                            details', 
                             Nullable(DateTime.Now)
                            )
 
@@ -3826,6 +3926,12 @@ module InsertStatements =
                 table.MethodFile <- methodFile
                 table
 
+            ///Replaces fkMethodFile of existing object with new one.
+            static member addFKMethodFile
+                (fkMethodFile:string) (table:RawFile) =
+                table.FKMethodFile <- fkMethodFile
+                table
+
             ///Replaces externalFormatDocumentation of existing object with new one.
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:RawFile) =
@@ -3836,6 +3942,12 @@ module InsertStatements =
             static member addFileFormat
                 (fileFormat:CVParam) (table:RawFile) =
                 table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkFileFormat of existing object with new one.
+            static member addFKFileFormat
+                (fkFileFormat:string) (table:RawFile) =
+                table.FKFileFormat <- fkFileFormat
                 table
 
             ///Adds a identificationFileParam to an existing object.
@@ -3899,7 +4011,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RawFile) (item2:RawFile) =
                item1.Name=item2.Name && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
-               item1.FileFormat=item2.FileFormat && item1.MethodFile=item2.MethodFile && 
+               item1.FKFileFormat=item2.FKFileFormat && item1.MethodFile=item2.MethodFile && 
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -4386,7 +4498,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:Assay) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
@@ -4669,7 +4781,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:Ratio) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a ratio-object in the context and database, based on its primary-key(ID).
@@ -5571,7 +5683,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:DataProcessing) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a dataProcessing-object in the context and database, based on its primary-key(ID).
@@ -6576,7 +6688,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:FeatureList) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a featureList-object in the context and database, based on its primary-key(ID).
@@ -7171,7 +7283,7 @@ module InsertStatements =
             /////Replaces fkMzQuantMLDocument of existing object with new one.
             //static member addFkMzQuantMLDocument
             //    (fkMzQuantMLDocument:string) (table:ProteinList) =
-            //    let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+            //    let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
             //    table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
@@ -7714,7 +7826,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:PeptideConsensusList) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a peptideConsensusList-object in the context and database, based on its primary-key(ID).
@@ -7905,7 +8017,7 @@ module InsertStatements =
             ///Replaces fkMzQuantMLDocument of existing object with new one.
             static member addFkMzQuantMLDocument
                 (fkMzQuantMLDocument:string) (table:BiblioGraphicReference) =
-                let result = table.MzQuantMLDocumentID <- fkMzQuantMLDocument
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
