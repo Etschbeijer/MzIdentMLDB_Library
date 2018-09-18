@@ -392,14 +392,16 @@ module InsertStatements =
             ///Initializes a organizationparam-object with at least all necessary parameters.
             static member init
                 (
-                    fkTerm    : string,
-                    ?id       : string,
-                    ?value    : string,
-                    ?fkUnit   : string
+                    fkTerm                  : string,
+                    ?id                     : string,
+                    ?value                  : string,
+                    ?fkUnit                 : string,
+                    ?fkMzQuantMLDocument    : string
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-                let value'    = defaultArg value Unchecked.defaultof<string>
-                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'                  = defaultArg value Unchecked.defaultof<string>
+                let fkUnit'                 = defaultArg fkUnit Unchecked.defaultof<string>
+                let fkMzQuantMLDocument'    = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new OrganizationParam(
                                       id', 
@@ -407,7 +409,8 @@ module InsertStatements =
                                       null,
                                       fkTerm,
                                       null,
-                                      fkUnit', 
+                                      fkUnit',
+                                      fkMzQuantMLDocument',
                                       Nullable(DateTime.Now)
                                      )
 
@@ -421,6 +424,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:OrganizationParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkOrganization of existing object with new one.
+            static member addFKOrganization
+                (fkOrganization:string) (table:OrganizationParam) =
+                table.FKOrganization <- fkOrganization
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -506,11 +515,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PersonParam(
                                 id', 
@@ -518,7 +529,8 @@ module InsertStatements =
                                 null,
                                 fkTerm,
                                 null,
-                                fkUnit', 
+                                fkUnit',
+                                fk',
                                 Nullable(DateTime.Now)
                                )
 
@@ -532,6 +544,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:PersonParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPerson of existing object with new one.
+            static member addFKPerson
+                (fkPerson:string) (table:PersonParam) =
+                table.FKPerson <- fkPerson
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -617,11 +635,14 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
+  
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SoftwareParam(
                                   id', 
@@ -629,7 +650,8 @@ module InsertStatements =
                                   null,
                                   fkTerm,
                                   null,
-                                  fkUnit', 
+                                  fkUnit',
+                                  fk',
                                   Nullable(DateTime.Now)
                                  )
 
@@ -643,6 +665,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:SoftwareParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSoftware of existing object with new one.
+            static member addFKSoftware
+                (fkSoftware:string) (table:SoftwareParam) =
+                table.FKSoftware <- fkSoftware
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -728,11 +756,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SearchDatabaseParam(
                                         id', 
@@ -741,6 +771,7 @@ module InsertStatements =
                                         fkTerm,
                                         null,
                                         fkUnit', 
+                                        fk',
                                         Nullable(DateTime.Now)
                                        )
 
@@ -754,6 +785,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:SearchDatabaseParam) =
                 table.FKUnit <- fkUnit
+                table
+        
+            ///Replaces fkSearchDatabase of existing object with new one.
+            static member addFKSearchDatabase
+                (fkSearchDatabase:string) (table:SearchDatabaseParam) =
+                table.FKSearchDatabase <- fkSearchDatabase
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -839,11 +876,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new RawFileParam(
                                  id', 
@@ -852,6 +891,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -865,6 +905,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:RawFileParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkRawFile of existing object with new one.
+            static member addFKRawFile
+                (fkRawFile:string) (table:RawFileParam) =
+                table.FKRawFile <- fkRawFile
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -950,11 +996,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new AssayParam(
                                id', 
@@ -963,6 +1011,7 @@ module InsertStatements =
                                fkTerm,
                                null,
                                fkUnit', 
+                               fk',
                                Nullable(DateTime.Now)
                               )
 
@@ -976,6 +1025,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:AssayParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkAssay of existing object with new one.
+            static member addFKAssay
+                (fkAssay:string) (table:AssayParam) =
+                table.FKAssay <- fkAssay
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1061,11 +1116,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new StudyVariableParam(
                                        id', 
@@ -1074,6 +1131,7 @@ module InsertStatements =
                                        fkTerm,
                                        null,
                                        fkUnit', 
+                                       fk',
                                        Nullable(DateTime.Now)
                                       )
 
@@ -1087,6 +1145,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:StudyVariableParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkStudyVariable of existing object with new one.
+            static member addFKStudyVariable
+                (fkStudyVariable:string) (table:StudyVariableParam) =
+                table.FKStudyVariable <- fkStudyVariable
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1172,11 +1236,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new RatioCalculationParam(
                                           id', 
@@ -1184,7 +1250,8 @@ module InsertStatements =
                                           null,
                                           fkTerm,
                                           null,
-                                          fkUnit', 
+                                          fkUnit',
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1198,6 +1265,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:RatioCalculationParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkRatioCalculation of existing object with new one.
+            static member addFKRatioCalculation
+                (fkRatio:string) (table:RatioCalculationParam) =
+                table.FKRatio <- fkRatio
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1283,11 +1356,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new FeatureParam(
                                  id', 
@@ -1295,7 +1370,8 @@ module InsertStatements =
                                  null,
                                  fkTerm,
                                  null,
-                                 fkUnit', 
+                                 fkUnit',
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1309,6 +1385,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:FeatureParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkFeature of existing object with new one.
+            static member addFKFeature
+                (fkFeature:string) (table:FeatureParam) =
+                table.FKFeature <- fkFeature
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1394,11 +1476,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SmallMoleculeParam(
                                        id', 
@@ -1406,7 +1490,8 @@ module InsertStatements =
                                        null,
                                        fkTerm,
                                        null,
-                                       fkUnit', 
+                                       fkUnit',
+                                       fk',
                                        Nullable(DateTime.Now)
                                       )
 
@@ -1420,6 +1505,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:SmallMoleculeParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSmallMolecule of existing object with new one.
+            static member addFKSmallMolecule
+                (fkSmallMolecule:string) (table:SmallMoleculeParam) =
+                table.FKSmallMolecule <- fkSmallMolecule
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1505,11 +1596,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SmallMoleculeListParam(
                                            id', 
@@ -1517,7 +1610,8 @@ module InsertStatements =
                                            null,
                                            fkTerm,
                                            null,
-                                           fkUnit', 
+                                           fkUnit',
+                                           fk',
                                            Nullable(DateTime.Now)
                                           )
 
@@ -1531,6 +1625,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:SmallMoleculeListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSmallMoleculeList of existing object with new one.
+            static member addFKSmallMoleculeList
+                (fkSmallMoleculeList:string) (table:SmallMoleculeListParam) =
+                table.FKSmallMoleculeList <- fkSmallMoleculeList
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1616,11 +1716,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PeptideConsensusParam(
                                           id', 
@@ -1628,7 +1730,8 @@ module InsertStatements =
                                           null,
                                           fkTerm,
                                           null,
-                                          fkUnit', 
+                                          fkUnit',
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1642,6 +1745,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:PeptideConsensusParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPeptideConsensus of existing object with new one.
+            static member addFKPeptideConsensus
+                (fkPeptideConsensus:string) (table:PeptideConsensusParam) =
+                table.FKPeptideConsensus <- fkPeptideConsensus
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1727,11 +1836,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ProteinParam(
                                  id', 
@@ -1739,7 +1850,8 @@ module InsertStatements =
                                  null,
                                  fkTerm,
                                  null,
-                                 fkUnit', 
+                                 fkUnit',
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1753,6 +1865,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:ProteinParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProtein of existing object with new one.
+            static member addFKProtein
+                (fkProtein:string) (table:ProteinParam) =
+                table.FKProtein <- fkProtein
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1838,11 +1956,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ProteinListParam(
                                      id', 
@@ -1850,7 +1970,8 @@ module InsertStatements =
                                      null,
                                      fkTerm,
                                      null,
-                                     fkUnit', 
+                                     fkUnit',
+                                     fk',
                                      Nullable(DateTime.Now)
                                     )
 
@@ -1864,6 +1985,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:ProteinListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:ProteinListParam) =
+                table.FKProteinList <- fkProteinList
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -1949,11 +2076,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ProteinGroupParam(
                                       id', 
@@ -1962,6 +2091,7 @@ module InsertStatements =
                                       fkTerm,
                                       null,
                                       fkUnit', 
+                                      fk',
                                       Nullable(DateTime.Now)
                                      )
 
@@ -1975,6 +2105,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:ProteinGroupParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinGroup of existing object with new one.
+            static member addFKProteinGroup
+                (fkProteinGroup:string) (table:ProteinGroupParam) =
+                table.FKProteinGroup <- fkProteinGroup
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2060,11 +2196,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ProteinGroupListParam(
                                           id', 
@@ -2072,7 +2210,8 @@ module InsertStatements =
                                           null,
                                           fkTerm,
                                           null,
-                                          fkUnit', 
+                                          fkUnit',
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -2086,6 +2225,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:ProteinGroupListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList
+                (fkProteinGroupList:string) (table:ProteinGroupListParam) =
+                table.FKProteinGroupList <- fkProteinGroupList
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2171,11 +2316,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PeptideConsensusListParam(
                                               id', 
@@ -2183,7 +2330,8 @@ module InsertStatements =
                                               null,
                                               fkTerm,
                                               null,
-                                              fkUnit', 
+                                              fkUnit',
+                                              fk',
                                               Nullable(DateTime.Now)
                                              )
 
@@ -2197,6 +2345,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:PeptideConsensusListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPeptideConsensusList of existing object with new one.
+            static member addFKPeptideConsensusList
+                (fkPeptideConsensusList:string) (table:PeptideConsensusListParam) =
+                table.FKPeptideConsensusList <- fkPeptideConsensusList
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2282,19 +2436,22 @@ module InsertStatements =
                     fkTerm             : string,
                     ?id                : string,
                     ?value             : string,
-                    ?fkUnit            : string
+                    ?fkUnit            : string,
+                    ?fk                : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'             = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'            = defaultArg fkUnit Unchecked.defaultof<string>
-                    
+                let fk'                = defaultArg fk Unchecked.defaultof<string>
+
                 new AnalysisSummary(
                                     id', 
                                     value', 
                                     null,
                                     fkTerm,
                                     null,
-                                    fkUnit', 
+                                    fkUnit',
+                                    fk',
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2308,6 +2465,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:AnalysisSummary) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFKMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:AnalysisSummary) =
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2393,19 +2556,22 @@ module InsertStatements =
                     fkTerm             : string,
                     ?id                : string,
                     ?value             : string,
-                    ?fkUnit            : string
+                    ?fkUnit            : string,
+                    ?fk                : string
                 ) =
                 let id'                = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'             = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'            = defaultArg fkUnit Unchecked.defaultof<string> 
-                    
+                let fk'                = defaultArg fk Unchecked.defaultof<string>
+                
                 new ProteinRefParam(
                                     id', 
                                     value', 
                                     null,
                                     fkTerm,
                                     null,
-                                    fkUnit', 
+                                    fkUnit',
+                                    fk',
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2419,6 +2585,12 @@ module InsertStatements =
             static member addFkUnit
                 (fkUnit:string) (table:ProteinRefParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinRef of existing object with new one.
+            static member addFKProteinRef
+                (fkProteinRef:string) (table:ProteinRefParam) =
+                table.FKProteinRef <- fkProteinRef
                 table
 
             ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
@@ -2508,17 +2680,26 @@ module InsertStatements =
                     
                     version              : string,
                     ?id                  : string,
+                    ?fkSoftwareList      : string,
                     ?details             : seq<SoftwareParam>
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkSoftwareList'      = defaultArg fkSoftwareList Unchecked.defaultof<string>
                 let details'             = convertOptionToList details
 
                 new Software(
                              id', 
                              version, 
                              details',
+                             fkSoftwareList',
                              Nullable(DateTime.Now)
                             )
+
+            ///Replaces fkSoftwareList of existing object with new one.
+            static member addFKSoftwareList
+                (fkSoftwareList:string) (table:Software) =
+                table.FKSoftwareList <- fkSoftwareList
+                table
 
             ///Adds new softwareParam to collection of enzymenames.
             static member addDetail
@@ -2618,20 +2799,24 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
+                    ?fkInputFiles                : string,
                     ?fileFormat                  : CVParam,
                     ?fkFileFormat                : string
+                    
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                           = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                         = defaultArg name Unchecked.defaultof<string>
                 let externalFormatDocumentation'  = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let fkInputFiles'                 = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let fileFormat'                   = defaultArg fileFormat Unchecked.defaultof<CVParam>
-                let fkFileFormat'                 = defaultArg fkFileFormat Unchecked.defaultof<string>
+                let fkFileFormat'                 = defaultArg fkFileFormat Unchecked.defaultof<string>                
                     
                 new SourceFile(
                                id',
                                name',
                                location, 
                                externalFormatDocumentation',
+                               fkInputFiles',
                                fileFormat',
                                fkFileFormat',
                                Nullable(DateTime.Now)
@@ -2647,6 +2832,12 @@ module InsertStatements =
             static member addExternalFormatDocumentation
                 (externalFormatDocumentation:string) (table:SourceFile) =
                 table.ExternalFormatDocumentation <- externalFormatDocumentation
+                table
+
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:SourceFile) =
+                table.FKInputFiles <- fkInputFiles
                 table
 
             ///Replaces fileFormat of existing object with new one.
@@ -2744,21 +2935,24 @@ module InsertStatements =
                 (
                     ?id                  : string,
                     ?name                : string,
-                    ?details             : seq<OrganizationParam>,
                     ?parent              : string,
+                    ?fkPerson            : string,
+                    ?details             : seq<OrganizationParam>,
                     ?mzQuantMLDocumentID : string
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
-                let details'             = convertOptionToList details
                 let parent'              = defaultArg parent Unchecked.defaultof<string>
+                let fkPerson'            = defaultArg fkPerson Unchecked.defaultof<string>
+                let details'             = convertOptionToList details
                 let mzQuantMLDocumentID' = defaultArg mzQuantMLDocumentID Unchecked.defaultof<string>
                     
                 new Organization(
                                  id', 
                                  name', 
-                                 details',  
                                  parent',
+                                 fkPerson',
+                                 details', 
                                  mzQuantMLDocumentID',
                                  Nullable(DateTime.Now)
                                 )
@@ -2773,6 +2967,12 @@ module InsertStatements =
             static member addParent
                 (parent:string) (table:Organization) =
                 table.Parent <- parent
+                table
+
+            ///Replaces fkPerson of existing object with new one.
+            static member addFKPerson
+                (fkPerson:string) (table:Organization) =
+                table.FKPerson <- fkPerson
                 table
 
             ///Adds a organizationparam to an existing organization-object.
@@ -3300,8 +3500,8 @@ module InsertStatements =
                     ?fileFormat                  : CVParam,
                     ?fkFileFormat                : string,
                     ?databaseName                : CVParam,
+                    ?fkInputFiles                : string,
                     ?details                     : seq<SearchDatabaseParam>
-                    //?mzIdentML        : MzIdentMLDocument
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -3312,8 +3512,8 @@ module InsertStatements =
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
                 let databaseName'                = defaultArg databaseName Unchecked.defaultof<CVParam>
+                let fkInputFiles'                = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
-                        
 
                 new SearchDatabase(
                                    id', 
@@ -3327,8 +3527,8 @@ module InsertStatements =
                                    fkFileFormat',
                                    databaseName',
                                    fkDatabaseName,
+                                   fkInputFiles',
                                    details',
-                                   //mzIdentML', 
                                    Nullable(DateTime.Now)
                                   )
 
@@ -3384,6 +3584,12 @@ module InsertStatements =
             static member addFKDatabaseName
                 (fkDatabaseName:string) (table:SearchDatabase) =
                 table.FKDatabaseName <- fkDatabaseName
+                table
+
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:SearchDatabase) =
+                table.FKInputFiles <- fkInputFiles
                 table
 
             ///Adds a searchDatabaseParam to an existing object.
@@ -3491,6 +3697,7 @@ module InsertStatements =
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam,
                     ?fkFileFormat                : string,
+                    ?fkInputFiles                : string,
                     ?details                     : seq<IdentificationFileParam>
                     
                 ) =
@@ -3501,6 +3708,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
+                let fkInputFiles'                = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
@@ -3513,6 +3721,7 @@ module InsertStatements =
                                        externalFormatDocumentation',
                                        fileFormat',
                                        fkFileFormat',
+                                       fkInputFiles',
                                        details',
                                        Nullable(DateTime.Now)
                                       )
@@ -3551,6 +3760,12 @@ module InsertStatements =
             static member addFKFileFormat
                 (fkFileFormat:string) (table:IdentificationFile) =
                 table.FKFileFormat <- fkFileFormat
+                table
+
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:IdentificationFile) =
+                table.FKInputFiles <- fkInputFiles
                 table
 
             ///Adds a identificationFileParam to an existing object.
@@ -3651,16 +3866,22 @@ module InsertStatements =
                 (             
                     fkIdentificationFile : string,
                     ?id                  : string,
-                    ?identificationFile  : IdentificationFile
+                    ?identificationFile  : IdentificationFile,
+                    ?fkProtein           : string,
+                    ?fkProteinGroup      : string
                     
                 ) =
                 let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
                 let identificationFile' = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
+                let fkProtein'          = defaultArg fkProtein Unchecked.defaultof<string>
+                let fkProteinGroup'     = defaultArg fkProteinGroup Unchecked.defaultof<string>
 
                 new IdentificationRef(
                                       id', 
                                       identificationFile',
                                       fkIdentificationFile,
+                                      fkProtein',
+                                      fkProteinGroup',
                                       Nullable(DateTime.Now)
                                      )
 
@@ -3668,6 +3889,18 @@ module InsertStatements =
             static member addIdentificationFile
                 (identificationFile:IdentificationFile) (table:IdentificationRef) =
                 table.IdentificationFile <- identificationFile
+                table
+
+            ///Replaces fkProtein of existing object with new one.
+            static member addFKProtein
+                (fkProtein:string) (table:IdentificationRef) =
+                table.FKProtein <- fkProtein
+                table
+
+            ///Replaces fkProteinGroup of existing object with new one.
+            static member addFKProteinGroup
+                (fkProteinGroup:string) (table:IdentificationRef) =
+                table.FKProteinGroup <- fkProteinGroup
                 table
 
             ///Tries to find a identificationRef-object in the context and database, based on its primary-key(ID).
@@ -3720,7 +3953,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IdentificationRef) (item2:IdentificationRef) =
-               item1.IdentificationFile=item2.IdentificationFile
+               item1.FKIdentificationFile=item2.FKIdentificationFile && item1.FKProtein=item2.FKProtein &&
+               item1.FKProteinGroup=item2.FKProteinGroup
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3755,7 +3989,8 @@ module InsertStatements =
                     ?name                        : string,
                     ?externalFormatDocumentation : string,
                     ?fileFormat                  : CVParam,
-                    ?fkFileFormat                : string
+                    ?fkFileFormat                : string,
+                    ?fkInputFiles                : string
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
@@ -3763,7 +3998,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
-                        
+                let fkInputFiles'                = defaultArg fkInputFiles Unchecked.defaultof<string>
 
                 new MethodFile(
                                id', 
@@ -3772,6 +4007,7 @@ module InsertStatements =
                                externalFormatDocumentation',
                                fileFormat',
                                fkFileFormat',
+                               fkInputFiles',
                                Nullable(DateTime.Now)
                               )
 
@@ -3797,6 +4033,12 @@ module InsertStatements =
             static member addFKFileFormat
                 (fkFileFormat:string) (table:MethodFile) =
                 table.FKFileFormat <- fkFileFormat
+                table
+
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:MethodFile) =
+                table.FKInputFiles <- fkInputFiles
                 table
 
             ///Tries to find a methodFile-object in the context and database, based on its primary-key(ID).
@@ -3887,7 +4129,8 @@ module InsertStatements =
                     ?methodFile                  : MethodFile,
                     ?fkMethodFile                : string,
                     ?fileFormat                  : CVParam, 
-                    ?fkFileFormat                : string, 
+                    ?fkFileFormat                : string,
+                    ?fkRawFilesGroup             : string,
                     ?details                     : seq<RawFileParam>
                     
                 ) =
@@ -3898,6 +4141,7 @@ module InsertStatements =
                 let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
                 let fileFormat'                  = defaultArg fileFormat Unchecked.defaultof<CVParam>
                 let fkFileFormat'                = defaultArg fkFileFormat Unchecked.defaultof<string>
+                let fkRawFilesGroup'             = defaultArg fkRawFilesGroup Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
@@ -3910,6 +4154,7 @@ module InsertStatements =
                             externalFormatDocumentation',
                             fileFormat',
                             fkFileFormat',
+                            fkRawFilesGroup',
                             details', 
                             Nullable(DateTime.Now)
                            )
@@ -3948,6 +4193,12 @@ module InsertStatements =
             static member addFKFileFormat
                 (fkFileFormat:string) (table:RawFile) =
                 table.FKFileFormat <- fkFileFormat
+                table
+
+            ///Replaces fkRawFilesGroup of existing object with new one.
+            static member addFKRawFilesGroup
+                (fkRawFilesGroup:string) (table:RawFile) =
+                table.FKRawFilesGroup <- fkRawFilesGroup
                 table
 
             ///Adds a identificationFileParam to an existing object.
@@ -4045,19 +4296,21 @@ module InsertStatements =
             static member init
                 (             
                     rawFiles                     : seq<RawFile>,
-                    ?id                          : string, 
+                    ?id                          : string,
+                    ?fkInputFiles                : string,
                     ?details                     : seq<RawFilesGroupParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkInputFiles'                = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
                 new RawFilesGroup(
                                   id', 
                                   rawFiles |> List, 
+                                  fkInputFiles', 
                                   details',
-                                  //mzIdentML', 
                                   Nullable(DateTime.Now)
                                  )
 
@@ -4071,6 +4324,12 @@ module InsertStatements =
                 let result = table.RawFiles <- addCollectionToList table.RawFiles details
                 table
             
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:RawFilesGroup) =
+                table.FKInputFiles <- fkInputFiles
+                table
+
             ///Adds a rawFilesGroupParam to an existing object.
             static member addDetail (detail:RawFilesGroupParam) (table:RawFilesGroup) =
                 let result = table.Details <- addToList table.Details detail
@@ -4318,36 +4577,53 @@ module InsertStatements =
             ///Initializes a modification-object with at least all necessary parameters.
             static member init
                 (             
-                    detail                     : CVParam,
+                    fkDetail                   : string,
                     ?id                        : string,
                     ?massDelta                 : float,
-                    ?residues                  : string
+                    ?residues                  : string,
+                    ?fkSmallMolecule           : string,
+                    ?detail                    : CVParam
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let massDelta'                   = defaultArg massDelta Unchecked.defaultof<float>
                 let residues'                    = defaultArg residues Unchecked.defaultof<string>
+                let fkSmallMolecule'             = defaultArg fkSmallMolecule Unchecked.defaultof<string>
+                let detail'                      = defaultArg detail Unchecked.defaultof<CVParam>
                         
 
                 new Modification(
                                  id', 
                                  Nullable(massDelta'),
                                  residues',
-                                 detail,
-                                 //mzIdentML', 
+                                 fkSmallMolecule',
+                                 detail',
+                                 fkDetail, 
                                  Nullable(DateTime.Now)
                                 )
 
-            ///Replaces name of existing object with new one.
+            ///Replaces massDelta of existing object with new one.
             static member addMassDelta
                 (massDelta:float) (table:Modification) =
                 table.MassDelta <- Nullable(massDelta)
                 table
 
-            ///Replaces name of existing object with new one.
+            ///Replaces residues of existing object with new one.
             static member addResidues
                 (residues:string) (table:Modification) =
                 table.Residues <- residues
+                table
+
+            ///Replaces fkSmallMolecule of existing object with new one.
+            static member addMassDelta
+                (fkSmallMolecule:string) (table:Modification) =
+                table.FKSmallMolecule <- fkSmallMolecule
+                table
+
+            ///Replaces detail of existing object with new one.
+            static member addDetail
+                (detail:CVParam) (table:Modification) =
+                table.Detail <- detail
                 table
 
             ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
@@ -4433,25 +4709,34 @@ module InsertStatements =
                     ?id                          : string,
                     ?name                        : string,
                     ?rawFilesGroup               : RawFilesGroup,
+                    ?fkRawFilesGroup             : string,
                     ?label                       : seq<Modification>,
                     ?identificationFile          : IdentificationFile,
+                    ?fkIdentificationFile        : string,
+                    ?fkStudyVariable             : string,
                     ?details                     : seq<AssayParam>,
                     ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
                 let rawFilesGroup'               = defaultArg rawFilesGroup Unchecked.defaultof<RawFilesGroup>
+                let fkRawFilesGroup'             = defaultArg fkRawFilesGroup Unchecked.defaultof<string>
                 let label'                       = convertOptionToList label
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
+                let fkIdentificationFile'        = defaultArg fkIdentificationFile Unchecked.defaultof<string>
+                let fkStudyVariable'             = defaultArg fkStudyVariable Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                 let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Assay(
                           id', 
                           name', 
-                          rawFilesGroup', 
+                          rawFilesGroup',
+                          fkRawFilesGroup',
                           label', 
-                          identificationFile', 
+                          identificationFile',
+                          fkIdentificationFile',
+                          fkStudyVariable',
                           details',
                           fkMzQuantMLDocument',
                           Nullable(DateTime.Now)
@@ -4469,10 +4754,28 @@ module InsertStatements =
                 table.RawFilesGroup <- rawFilesGroup
                 table
 
+            ///Replaces fkRawFilesGroup of existing object with new one.
+            static member addFKRawFilesGroup
+                (fkRawFilesGroup:string) (table:Assay) =
+                table.FKRawFilesGroup <- fkRawFilesGroup
+                table
+
             ///Replaces identificationFile of existing object with new one.
             static member addIdentificationFile
                 (identificationFile:IdentificationFile) (table:Assay) =
                 table.IdentificationFile <- identificationFile
+                table
+
+            ///Replaces fkIdentificationFile of existing object with new one.
+            static member addFKIdentificationFile
+                (fkIdentificationFile:string) (table:Assay) =
+                table.FKIdentificationFile <- fkIdentificationFile
+                table
+
+            ///Replaces fkStudyVariable of existing object with new one.
+            static member addFKStudyVariable
+                (fkStudyVariable:string) (table:Assay) =
+                table.FKStudyVariable <- fkStudyVariable
                 table
 
             ///Adds a modification to an existing object.
@@ -4704,36 +5007,54 @@ module InsertStatements =
             static member init
                 (             
                     
-                    numeratorDatatype            : CVParam,
-                    denominatorDatatype          : CVParam,
+                    fkDenominatorDatatype        : string,
+                    fkNumeratorDatatype          : string,
                     ?id                          : string,
                     ?name                        : string,
-                    ?numeratorSV                 : StudyVariable,
+                    ?denominatorDatatype         : CVParam,
                     ?denominatorSV               : StudyVariable,
-                    ?numeratorAS                 : Assay,
+                    ?fkDenominatorSV             : string,
                     ?denominatorAS               : Assay,
+                    ?fkDenominatorAS             : string,
+                    ?numeratorDatatype           : CVParam,
+                    ?numeratorSV                 : StudyVariable,
+                    ?fkNumeratorSV               : string,
+                    ?numeratorAS                 : Assay,
+                    ?fkNumeratorAS               : string,
                     ?ratioCalculation            : seq<RatioCalculationParam>,
                     ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
-                let numeratorSV'                 = defaultArg numeratorSV Unchecked.defaultof<StudyVariable>
+                let denominatorDatatype'         = defaultArg denominatorDatatype Unchecked.defaultof<CVParam>
                 let denominatorSV'               = defaultArg denominatorSV Unchecked.defaultof<StudyVariable>
-                let numeratorAS'                 = defaultArg numeratorAS Unchecked.defaultof<Assay>
+                let fkDenominatorSV'             = defaultArg fkDenominatorSV Unchecked.defaultof<string>
                 let denominatorAS'               = defaultArg denominatorAS Unchecked.defaultof<Assay>
+                let fkDenominatorAS'             = defaultArg fkDenominatorAS Unchecked.defaultof<string>
+                let numeratorDatatype'           = defaultArg numeratorDatatype Unchecked.defaultof<CVParam>
+                let numeratorSV'                 = defaultArg numeratorSV Unchecked.defaultof<StudyVariable>
+                let fkNumeratorSV'               = defaultArg fkNumeratorSV Unchecked.defaultof<string>
+                let numeratorAS'                 = defaultArg numeratorAS Unchecked.defaultof<Assay>
+                let fkNumeratorAS'               = defaultArg fkNumeratorAS Unchecked.defaultof<string>
                 let ratioCalculation'            = convertOptionToList ratioCalculation
                 let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Ratio(
                           id', 
                           name',
-                          numeratorSV',
                           denominatorSV',
-                          numeratorAS',
+                          fkDenominatorSV',
                           denominatorAS',
+                          fkDenominatorAS',
+                          denominatorDatatype',
+                          fkDenominatorDatatype,
+                          numeratorSV',
+                          fkNumeratorSV',
+                          numeratorAS',
+                          fkNumeratorAS',
+                          numeratorDatatype',
+                          fkNumeratorDatatype,
                           ratioCalculation',
-                          numeratorDatatype,
-                          denominatorDatatype,
                           fkMzQuantMLDocument',
                           Nullable(DateTime.Now)
                          )
