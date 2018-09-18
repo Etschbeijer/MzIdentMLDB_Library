@@ -840,7 +840,8 @@ module DataModel =
 
     ///A software package used in the analysis.
     type [<AllowNullLiteral>] [<Table("Software")>]
-        Software (id:string, version:string, details:List<SoftwareParam>, fkSoftwareList:string, rowVersion:Nullable<DateTime>
+        Software (id:string, version:string, details:List<SoftwareParam>, fkSoftwareList:string, 
+                  rowVersion:Nullable<DateTime>
                  ) =
             let mutable id'                   = id
             let mutable version'              = version
@@ -848,7 +849,7 @@ module DataModel =
             let mutable fkSoftwareList'       = fkSoftwareList
             let mutable rowVersion'           = rowVersion
 
-            new() = Software(null, null, null, Nullable())
+            new() = Software(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Version with get() = version' and set(value) = version' <- value
@@ -937,8 +938,8 @@ module DataModel =
 
     ///The software used for performing the analyses.
     type [<AllowNullLiteral>]
-        ContactRole (id:string, person:Person, fkPerson:string, 
-                     role:CVParam, fkRole:string, rowVersion:Nullable<DateTime>
+        ContactRole (id:string, person:Person, fkPerson:string, role:CVParam, fkRole:string, 
+                     rowVersion:Nullable<DateTime>
                     ) =
             let mutable id'                  = id
             let mutable person'              = person 
@@ -1128,7 +1129,7 @@ module DataModel =
             let mutable details'                     = details
             let mutable rowVersion'                  = rowVersion
 
-            new() = RawFile(null, null, null, null, null, null, null, null, null, Nullable())
+            new() = RawFile(null, null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1149,7 +1150,9 @@ module DataModel =
     ///This is mandatory unless raw files were not used for quantitation e.g. spectral counting. 
     ///Multiple raw files should only be provided within a group if they have been used for sample pre-fractionation which are later summed together.
     type [<AllowNullLiteral>]
-        RawFilesGroup (id:string, rawFiles:List<RawFile>, details:List<RawFilesGroupParam>, rowVersion:Nullable<DateTime>) =
+        RawFilesGroup (id:string, rawFiles:List<RawFile>, details:List<RawFilesGroupParam>, 
+                       rowVersion:Nullable<DateTime>
+                      ) =
             let mutable id'         = id
             let mutable rawFiles'   = rawFiles
             let mutable details'    = details
@@ -1181,10 +1184,15 @@ module DataModel =
             new() = InputFiles(null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            [<ForeignKey("FKInputFiles")>]
             member this.RawFilesGroups with get() = rawFilesGroups' and set(value) = rawFilesGroups' <- value
+            [<ForeignKey("FKInputFiles")>]
             member this.MethodFiles with get() = methodFiles' and set(value) = methodFiles' <- value
+            [<ForeignKey("FKInputFiles")>]
             member this.IdentificationFiles with get() = identificationFiles' and set(value) = identificationFiles' <- value
+            [<ForeignKey("FKInputFiles")>]
             member this.SearchDatabases with get() = searchDatabases' and set(value) = searchDatabases' <- value
+            [<ForeignKey("FKInputFiles")>]
             member this.SourceFiles with get() = sourceFiles' and set(value) = sourceFiles' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
