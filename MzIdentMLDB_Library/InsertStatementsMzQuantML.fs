@@ -340,7 +340,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.CVParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -349,7 +349,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.CVParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -362,12 +362,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:CVParam) =
-                    CVParamHandler.tryFindByTermName dbContext item.Term.Name
+                    CVParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match CVParamHandler.hasEqualFieldValues organization item with
@@ -460,7 +460,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.OrganizationParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -469,7 +469,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.OrganizationParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -482,12 +482,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:OrganizationParam) =
-                    OrganizationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    OrganizationParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match OrganizationParamHandler.hasEqualFieldValues organization item with
@@ -580,7 +580,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.PersonParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -589,7 +589,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PersonParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -602,12 +602,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:PersonParam) =
-                    PersonParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PersonParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PersonParamHandler.hasEqualFieldValues organization item with
@@ -701,7 +701,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.SoftwareParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -710,7 +710,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SoftwareParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -723,12 +723,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SoftwareParam) (item2:SoftwareParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SoftwareParam) =
-                    SoftwareParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SoftwareParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SoftwareParamHandler.hasEqualFieldValues organization item with
@@ -821,7 +821,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.SearchDatabaseParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -830,7 +830,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchDatabaseParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -843,12 +843,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SearchDatabaseParam) =
-                    SearchDatabaseParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SearchDatabaseParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchDatabaseParamHandler.hasEqualFieldValues organization item with
@@ -941,7 +941,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.RawFileParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -950,7 +950,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.RawFileParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -963,12 +963,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RawFileParam) (item2:RawFileParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:RawFileParam) =
-                    RawFileParamHandler.tryFindByTermName dbContext item.Term.Name
+                    RawFileParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match RawFileParamHandler.hasEqualFieldValues organization item with
@@ -1061,7 +1061,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.AssayParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1070,7 +1070,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AssayParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1083,12 +1083,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AssayParam) (item2:AssayParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:AssayParam) =
-                    AssayParamHandler.tryFindByTermName dbContext item.Term.Name
+                    AssayParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AssayParamHandler.hasEqualFieldValues organization item with
@@ -1181,7 +1181,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.StudyVariableParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1190,7 +1190,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.StudyVariableParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1203,12 +1203,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:StudyVariableParam) (item2:StudyVariableParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:StudyVariableParam) =
-                    StudyVariableParamHandler.tryFindByTermName dbContext item.Term.Name
+                    StudyVariableParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match StudyVariableParamHandler.hasEqualFieldValues organization item with
@@ -1301,7 +1301,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.RatioCalculationParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1310,7 +1310,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.RatioCalculationParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1323,12 +1323,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RatioCalculationParam) (item2:RatioCalculationParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:RatioCalculationParam) =
-                    RatioCalculationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    RatioCalculationParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match RatioCalculationParamHandler.hasEqualFieldValues organization item with
@@ -1421,7 +1421,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.FeatureParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1430,7 +1430,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FeatureParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1443,12 +1443,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FeatureParam) (item2:FeatureParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:FeatureParam) =
-                    FeatureParamHandler.tryFindByTermName dbContext item.Term.Name
+                    FeatureParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FeatureParamHandler.hasEqualFieldValues organization item with
@@ -1541,7 +1541,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.SmallMoleculeParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1550,7 +1550,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SmallMoleculeParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1563,12 +1563,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SmallMoleculeParam) (item2:SmallMoleculeParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeParam) =
-                    SmallMoleculeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SmallMoleculeParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SmallMoleculeParamHandler.hasEqualFieldValues organization item with
@@ -1661,7 +1661,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.SmallMoleculeListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1670,7 +1670,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SmallMoleculeListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1683,12 +1683,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SmallMoleculeListParam) (item2:SmallMoleculeListParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeListParam) =
-                    SmallMoleculeListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SmallMoleculeListParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SmallMoleculeListParamHandler.hasEqualFieldValues organization item with
@@ -1781,7 +1781,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.PeptideConsensusParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1790,7 +1790,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideConsensusParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1803,12 +1803,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideConsensusParam) (item2:PeptideConsensusParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusParam) =
-                    PeptideConsensusParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PeptideConsensusParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideConsensusParamHandler.hasEqualFieldValues organization item with
@@ -1901,7 +1901,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ProteinParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -1910,7 +1910,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -1923,12 +1923,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinParam) (item2:ProteinParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinParam) =
-                    ProteinParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinParamHandler.hasEqualFieldValues organization item with
@@ -2021,7 +2021,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ProteinListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -2030,7 +2030,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -2043,12 +2043,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinListParam) (item2:ProteinListParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinListParam) =
-                    ProteinListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinListParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinListParamHandler.hasEqualFieldValues organization item with
@@ -2141,7 +2141,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ProteinGroupParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -2150,7 +2150,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinGroupParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -2163,12 +2163,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinGroupParam) (item2:ProteinGroupParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinGroupParam) =
-                    ProteinGroupParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinGroupParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinGroupParamHandler.hasEqualFieldValues organization item with
@@ -2261,7 +2261,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ProteinGroupListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -2270,7 +2270,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinGroupListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -2283,12 +2283,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinGroupListParam) (item2:ProteinGroupListParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinGroupListParam) =
-                    ProteinGroupListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinGroupListParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinGroupListParamHandler.hasEqualFieldValues organization item with
@@ -2381,7 +2381,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.PeptideConsensusListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -2390,7 +2390,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideConsensusListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -2403,12 +2403,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideConsensusListParam) (item2:PeptideConsensusListParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:PeptideConsensusListParam) =
-                    PeptideConsensusListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PeptideConsensusListParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideConsensusListParamHandler.hasEqualFieldValues organization item with
@@ -2501,7 +2501,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.AnalysisSummary.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (term, _, _) -> term)
@@ -2510,7 +2510,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisSummary do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (term, _, _) -> term)
@@ -2523,12 +2523,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisSummary) (item2:AnalysisSummary) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:AnalysisSummary) =
-                    AnalysisSummaryHandler.tryFindByTermName dbContext item.Term.Name
+                    AnalysisSummaryHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisSummaryHandler.hasEqualFieldValues organization item with
@@ -2547,6 +2547,126 @@ module InsertStatements =
             ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
             static member addToContextAndInsert (dbContext:MzQuantML) (item:AnalysisSummary) =
                 AnalysisSummaryHandler.addToContext dbContext item |> ignore |> ignore
+                dbContext.SaveChanges()
+
+        type RawFilesGroupParamHandler =
+            ///Initializes a organizationparam-object with at least all necessary parameters.
+            static member init
+                (
+                    fkTerm                  : string,
+                    ?id                     : string,
+                    ?value                  : string,
+                    ?fkUnit                 : string,
+                    ?fkMzQuantMLDocument    : string
+                ) =
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'                  = defaultArg value Unchecked.defaultof<string>
+                let fkUnit'                 = defaultArg fkUnit Unchecked.defaultof<string>
+                let fkMzQuantMLDocument'    = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+
+                new RawFilesGroupParam(
+                                       id', 
+                                       value', 
+                                       null,
+                                       fkTerm,
+                                       null,
+                                       fkUnit',
+                                       fkMzQuantMLDocument',
+                                       Nullable(DateTime.Now)
+                                      )
+
+            ///Replaces value of existing object with new one.
+            static member addValue
+                (value:string) (table:RawFilesGroupParam) =
+                table.Value <- value
+                table
+
+            ///Replaces fkUnit of existing object with new one.
+            static member addFkUnit
+                (fkUnit:string) (table:RawFilesGroupParam) =
+                table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkOrganization of existing object with new one.
+            static member addFKRawFilesGroup
+                (fkRawFilesGroup:string) (table:RawFilesGroupParam) =
+                table.FKRawFilesGroup <- fkRawFilesGroup
+                table
+
+            ///Tries to find a ontology-object in the context and database, based on its primary-key(ID).
+            static member tryFindByID (dbContext:MzQuantML) (id:string) =
+                query {
+                       for i in dbContext.RawFilesGroupParam.Local do
+                           if i.ID=id
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.RawFilesGroupParam do
+                                       if i.ID=id
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some (param.Single())
+                               )
+                        else Some (param.Single())
+                   )
+
+            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+            static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
+                query {
+                       for i in dbContext.RawFilesGroupParam.Local do
+                           if i.FKTerm=name
+                              then select (i, i.Term, i.Unit)
+                      }
+                |> Seq.map (fun (param, _ ,_) -> param)
+                |> (fun param -> 
+                    if (Seq.exists (fun param' -> param' <> null) param) = false
+                        then 
+                            query {
+                                   for i in dbContext.RawFilesGroupParam do
+                                       if i.FKTerm=name
+                                          then select (i, i.Term, i.Unit)
+                                  }
+                            |> Seq.map (fun (param, _ ,_) -> param)
+                            |> (fun param -> if (Seq.exists (fun param' -> param' <> null) param) = false
+                                                then None
+                                                else Some param
+                               )
+                        else Some param
+                   )
+
+            ///Checks whether all other fields of the current object and context object have the same values or not.
+            static member private hasEqualFieldValues (item1:RawFilesGroupParam) (item2:RawFilesGroupParam) =
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is added to the context and otherwise does nothing.
+            static member addToContext (dbContext:MzQuantML) (item:RawFilesGroupParam) =
+                    RawFilesGroupParamHandler.tryFindByTermName dbContext item.FKTerm
+                    |> (fun organizationCollection -> match organizationCollection with
+                                                      |Some x -> x
+                                                                 |> Seq.map (fun organization -> match RawFilesGroupParamHandler.hasEqualFieldValues organization item with
+                                                                                                 |true -> true
+                                                                                                 |false -> false
+                                                                            )
+                                                                            |> (fun collection -> 
+                                                                                 if Seq.contains true collection=true
+                                                                                    then None
+                                                                                    else Some(dbContext.Add item)
+                                                                               )
+                                                      |None -> Some(dbContext.Add item)
+                       )
+
+            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+            static member addToContextAndInsert (dbContext:MzQuantML) (item:RawFilesGroupParam) =
+                RawFilesGroupParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
         type ProteinRefParamHandler =
@@ -2621,7 +2741,7 @@ module InsertStatements =
             static member tryFindByTermName (dbContext:MzQuantML) (name:string) =
                 query {
                        for i in dbContext.ProteinRefParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=name
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param, _ ,_) -> param)
@@ -2630,7 +2750,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinRefParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=name
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param, _ ,_) -> param)
@@ -2643,12 +2763,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinRefParam) (item2:ProteinRefParam) =
-                item1.Value=item2.Value && item1.Unit.ID=item2.Unit.ID
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinRefParam) =
-                    ProteinRefParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinRefParamHandler.tryFindByTermName dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinRefParamHandler.hasEqualFieldValues organization item with
@@ -2669,9 +2789,9 @@ module InsertStatements =
                 ProteinRefParamHandler.addToContext dbContext item |> ignore |> ignore
                 dbContext.SaveChanges()
 
-//////////////////////////////////////////
-//End of paramHandlers//////////////////////////////////////////////
-//////////////////////////////////////////
+//////////////////////////
+//End of paramHandlers////////////////////////////
+//////////////////////////
 
         type SoftwareHandler =
             ///Initializes a analysisSoftware-object with at least all necessary parameters.
@@ -2681,17 +2801,21 @@ module InsertStatements =
                     version              : string,
                     ?id                  : string,
                     ?fkSoftwareList      : string,
-                    ?details             : seq<SoftwareParam>
+                    ?details             : seq<SoftwareParam>,
+                    ?fkMzQuantMLDocument : string
+
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let fkSoftwareList'      = defaultArg fkSoftwareList Unchecked.defaultof<string>
                 let details'             = convertOptionToList details
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Software(
                              id', 
                              version, 
                              details',
                              fkSoftwareList',
+                             fkMzQuantMLDocument',
                              Nullable(DateTime.Now)
                             )
 
@@ -2711,6 +2835,12 @@ module InsertStatements =
             static member addDetails
                 (analysisSoftwareParams:seq<SoftwareParam>) (table:Software) =
                 let result = table.Details <- addCollectionToList table.Details analysisSoftwareParams
+                table
+
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFKMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Software) =
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
@@ -2938,14 +3068,14 @@ module InsertStatements =
                     ?parent              : string,
                     ?fkPerson            : string,
                     ?details             : seq<OrganizationParam>,
-                    ?mzQuantMLDocumentID : string
+                    ?fkMzQuantMLDocument : string
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
                 let parent'              = defaultArg parent Unchecked.defaultof<string>
                 let fkPerson'            = defaultArg fkPerson Unchecked.defaultof<string>
                 let details'             = convertOptionToList details
-                let mzQuantMLDocumentID' = defaultArg mzQuantMLDocumentID Unchecked.defaultof<string>
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
                     
                 new Organization(
                                  id', 
@@ -2953,7 +3083,7 @@ module InsertStatements =
                                  parent',
                                  fkPerson',
                                  details', 
-                                 mzQuantMLDocumentID',
+                                 fkMzQuantMLDocument',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -3083,7 +3213,7 @@ module InsertStatements =
                     ?lastName            : string,
                     ?contactDetails      : seq<PersonParam>,
                     ?organizations       : seq<Organization>,
-                    ?mzQuantMLDocumentID : string
+                    ?fkMzQuantMLDocument : string
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
@@ -3092,7 +3222,7 @@ module InsertStatements =
                 let lastName'            = defaultArg lastName Unchecked.defaultof<string>
                 let contactDetails'      = convertOptionToList contactDetails
                 let organizations'       = convertOptionToList organizations
-                let mzQuantMLDocumentID' = defaultArg mzQuantMLDocumentID Unchecked.defaultof<string>
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
                     
                 new Person(
                            id', 
@@ -3102,7 +3232,7 @@ module InsertStatements =
                            lastName', 
                            organizations',
                            contactDetails',
-                           mzQuantMLDocumentID',
+                           fkMzQuantMLDocument',
                            Nullable(DateTime.Now)
                           )
 
@@ -3355,12 +3485,14 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id             : string,
-                    ?name           : string,
-                    ?software       : Software,
-                    ?fkSoftware     : string,
-                    ?contactRole    : ContactRole,
-                    ?fkContactRole  : string
+                    ?id                  : string,
+                    ?name                : string,
+                    ?software            : Software,
+                    ?fkSoftware          : string,
+                    ?contactRole         : ContactRole,
+                    ?fkContactRole       : string,
+                    ?fkMzQuantMLDocument : string
+
                 ) =
                 let id'             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'           = defaultArg name Unchecked.defaultof<string>
@@ -3368,6 +3500,7 @@ module InsertStatements =
                 let fkSoftware'     = defaultArg fkSoftware Unchecked.defaultof<string>
                 let contactRole'    = defaultArg contactRole Unchecked.defaultof<ContactRole>
                 let fkContactRole'  = defaultArg fkContactRole Unchecked.defaultof<string>
+                let fkMzQuantMLDocument' = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Provider(
                              id', 
@@ -3375,7 +3508,8 @@ module InsertStatements =
                              software', 
                              fkSoftware', 
                              contactRole', 
-                             fkContactRole', 
+                             fkContactRole',
+                             fkMzQuantMLDocument',
                              Nullable(DateTime.Now)
                             )
 
@@ -3407,6 +3541,12 @@ module InsertStatements =
             static member addFKContactRole
                 (fkContactrole:string) (table:Provider) =
                 table.FKContactRole <- fkContactrole
+                table
+
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFKMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Provider) =
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
@@ -4365,10 +4505,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a rawFilesGroup-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByRawFiles (dbContext:MzQuantML) (rawFiles:seq<RawFile>) =
+            static member tryFindByFKInputFiles (dbContext:MzQuantML) (fkInputFiles:string) =
                 query {
                        for i in dbContext.RawFilesGroup.Local do
-                           if i.RawFiles=(rawFiles |> List)
+                           if i.FKInputFiles=fkInputFiles
                               then select (i, i.RawFiles, i.Details)
                       }
                 |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
@@ -4377,7 +4517,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.RawFilesGroup do
-                                       if i.RawFiles=(rawFiles |> List)
+                                       if i.FKInputFiles=fkInputFiles
                                           then select  (i, i.RawFiles, i.Details)
                                   }
                             |> Seq.map (fun (rawFilesGroup, _, _) -> rawFilesGroup)
@@ -4397,7 +4537,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:RawFilesGroup) =
-                    RawFilesGroupHandler.tryFindByRawFiles dbContext item.RawFiles
+                    RawFilesGroupHandler.tryFindByFKInputFiles dbContext item.FKInputFiles
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match RawFilesGroupHandler.hasEqualFieldValues organization item with
@@ -4615,7 +4755,7 @@ module InsertStatements =
                 table
 
             ///Replaces fkSmallMolecule of existing object with new one.
-            static member addMassDelta
+            static member addFKSmallMolecule
                 (fkSmallMolecule:string) (table:Modification) =
                 table.FKSmallMolecule <- fkSmallMolecule
                 table
@@ -4888,21 +5028,23 @@ module InsertStatements =
             ///Initializes a studyVariable-object with at least all necessary parameters.
             static member init
                 (             
-                    assays                       : seq<Assay>,
-                    ?id                          : string,
-                    ?name                        : string,
-                    ?details                     : seq<StudyVariableParam>
+                    assays                  : seq<Assay>,
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?details                : seq<StudyVariableParam>,
+                    ?fkMzQuantMLDocument    : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                        = defaultArg name Unchecked.defaultof<string>
-                let details'                     = convertOptionToList details
-                        
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                   = defaultArg name Unchecked.defaultof<string>
+                let details'                = convertOptionToList details
+                let fkMzQuantMLDocument'    = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>       
 
                 new StudyVariable(
                                   id', 
                                   name',
                                   assays |> List,
+                                  fkMzQuantMLDocument',
                                   details',
                                   Nullable(DateTime.Now)
                                  )
@@ -4911,6 +5053,12 @@ module InsertStatements =
             static member addName
                 (name:string) (table:StudyVariable) =
                 table.Name <- name
+                table
+
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFKMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Provider) =
+                table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Adds a studyVariableParam to an existing object.
@@ -5189,19 +5337,28 @@ module InsertStatements =
             static member init
                 (             
                     index       : int,
-                    datatype    : CVParam,
-                    ?id         : string
+                    fkdatatype  : string,
+                    ?id         : string,
+                    ?datatype   : CVParam
                     
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'   = defaultArg datatype Unchecked.defaultof<CVParam>
                         
 
                 new Column(
                            id',
                            Nullable(index),
-                           datatype,
+                           datatype',
+                           fkdatatype,
                            Nullable(DateTime.Now)
                           )
+
+            ///Replaces datatype of existing object with new one.
+            static member addDataType
+                (datatype:CVParam) (table:Column) =
+                table.DataType <- datatype
+                table
 
             ///Tries to find a column-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -5253,7 +5410,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Column) (item2:Column) =
-                item1.DataType=item2.DataType
+                item1.FKDataType=item2.FKDataType
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5376,40 +5533,93 @@ module InsertStatements =
             ///Initializes a assayQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    dataType                     : CVParam,
+                    fkdataType                   : string,
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkSmallMoleculeList         : string,
+                    ?fkProteinList               : string,
+                    ?fkProteinGroupList          : string,
+                    ?fkPeptideConsensusList      : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'               = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'             = defaultArg dataMatrix Unchecked.defaultof<DataMatrix> 
+                let fkSmallMoleculeList'    = defaultArg fkSmallMoleculeList Unchecked.defaultof<string> 
+                let fkProteinList'          = defaultArg fkProteinList Unchecked.defaultof<string> 
+                let fkProteinGroupList'     = defaultArg fkProteinGroupList Unchecked.defaultof<string> 
+                let fkPeptideConsensusList' = defaultArg fkPeptideConsensusList Unchecked.defaultof<string> 
 
                 new AssayQuantLayer(
                                     id',
-                                    dataType,
+                                    datatype',
+                                    fkdataType,
                                     columnIndex,
-                                    dataMatrix,
+                                    dataMatrix',
+                                    fkDataMatrix,
+                                    fkSmallMoleculeList',
+                                    fkProteinList',
+                                    fkProteinGroupList',
+                                    fkPeptideConsensusList',
                                     Nullable(DateTime.Now)
                                    )
+
+            ///Replaces datatype of existing object with new one.
+            static member addDataType
+                (datatype:CVParam) (table:AssayQuantLayer) =
+                table.DataType <- datatype
+                table
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:AssayQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkSmallMoleculeList of existing object with new one.
+            static member addFKSmallMoleculeList
+                (fkSmallMoleculeList:string) (table:AssayQuantLayer) =
+                table.FKSmallMoleculeList <- fkSmallMoleculeList
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:AssayQuantLayer) =
+                table.FKProteinList <- fkProteinList
+                table
+
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList
+                (fkProteinGroupList:string) (table:AssayQuantLayer) =
+                table.FKProteinGroupList <- fkProteinGroupList
+                table
+
+            ///Replaces fkPeptideConsensusList of existing object with new one.
+            static member addFKPeptideConsensusList
+                (fkPeptideConsensusList:string) (table:AssayQuantLayer) =
+                table.FKPeptideConsensusList <- fkPeptideConsensusList
+                table
 
             ///Tries to find a assayQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.AssayQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                |> Seq.map (fun (assayQuantLayer, _, _, _, _, _, _) -> assayQuantLayer)
                 |> (fun assayQuantLayer -> 
                     if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.AssayQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                            |> Seq.map (fun (assayQuantLayer, _, _, _, _, _, _) -> assayQuantLayer)
                             |> (fun assayQuantLayer -> if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
                                                         then None
                                                         else Some (assayQuantLayer.Single())
@@ -5422,18 +5632,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.AssayQuantLayer.Local do
                            if i.ColumnIndex=columnIndex
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                |> Seq.map (fun (assayQuantLayer, _, _, _, _, _, _) -> assayQuantLayer)
                 |> (fun assayQuantLayer -> 
                     if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.AssayQuantLayer do
                                        if i.ColumnIndex=columnIndex
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (assayQuantLayer, _, _) -> assayQuantLayer)
+                            |> Seq.map (fun (assayQuantLayer, _, _, _, _, _, _) -> assayQuantLayer)
                             |> (fun assayQuantLayer -> if (Seq.exists (fun assayQuantLayer' -> assayQuantLayer' <> null) assayQuantLayer) = false
                                                             then None
                                                             else Some assayQuantLayer
@@ -5443,7 +5653,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AssayQuantLayer) (item2:AssayQuantLayer) =
-                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
+                item1.FKDataType=item2.FKDataType && item1.DataMatrix=item2.DataMatrix
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5474,37 +5684,83 @@ module InsertStatements =
             static member init
                 (             
                     columns                      : seq<Column>,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
-                    
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkSmallMoleculeList         : string,
+                    ?fkProteinList               : string,
+                    ?fkProteinGroupList          : string,
+                    ?fkPeptideConsensusList      : string
+
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'               = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'             = defaultArg dataMatrix Unchecked.defaultof<DataMatrix> 
+                let fkSmallMoleculeList'    = defaultArg fkSmallMoleculeList Unchecked.defaultof<string> 
+                let fkProteinList'          = defaultArg fkProteinList Unchecked.defaultof<string> 
+                let fkProteinGroupList'     = defaultArg fkProteinGroupList Unchecked.defaultof<string> 
+                let fkPeptideConsensusList' = defaultArg fkPeptideConsensusList Unchecked.defaultof<string> 
 
                 new GlobalQuantLayer(
                                      id',
                                      columns |> List,
-                                     dataMatrix,
+                                     dataMatrix',
+                                     fkDataMatrix,
+                                     fkSmallMoleculeList',
+                                     fkProteinList',
+                                     fkProteinGroupList',
+                                     fkPeptideConsensusList',
                                      Nullable(DateTime.Now)
                                     )
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:GlobalQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkSmallMoleculeList of existing object with new one.
+            static member addFKSmallMoleculeList
+                (fkSmallMoleculeList:string) (table:GlobalQuantLayer) =
+                table.FKSmallMoleculeList <- fkSmallMoleculeList
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:GlobalQuantLayer) =
+                table.FKProteinList <- fkProteinList
+                table
+
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList
+                (fkProteinGroupList:string) (table:GlobalQuantLayer) =
+                table.FKProteinGroupList <- fkProteinGroupList
+                table
+
+            ///Replaces fkPeptideConsensusList of existing object with new one.
+            static member addFKPeptideConsensusList
+                (fkPeptideConsensusList:string) (table:GlobalQuantLayer) =
+                table.FKPeptideConsensusList <- fkPeptideConsensusList
+                table
 
             ///Tries to find a globalQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.GlobalQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.Columns, i.DataMatrix)
+                              then select (i, i.Columns, i.DataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                |> Seq.map (fun (globalQuantLayer, _, _, _, _, _, _) -> globalQuantLayer)
                 |> (fun globalQuantLayer -> 
                     if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.GlobalQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.Columns, i.DataMatrix)
+                                          then select (i, i.Columns, i.DataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                            |> Seq.map (fun (globalQuantLayer, _, _, _, _, _, _) -> globalQuantLayer)
                             |> (fun globalQuantLayer -> if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
                                                         then None
                                                         else Some (globalQuantLayer.Single())
@@ -5517,18 +5773,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.GlobalQuantLayer.Local do
                            if i.DataMatrix=dataMatrix
-                              then select (i, i.Columns, i.DataMatrix)
+                              then select (i, i.Columns, i.DataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                |> Seq.map (fun (globalQuantLayer, _, _, _, _, _, _) -> globalQuantLayer)
                 |> (fun globalQuantLayer -> 
                     if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.GlobalQuantLayer do
                                        if i.DataMatrix=dataMatrix
-                                          then select (i, i.Columns, i.DataMatrix)
+                                          then select (i, i.Columns, i.DataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (globalQuantLayer, _, _) -> globalQuantLayer)
+                            |> Seq.map (fun (globalQuantLayer, _, _, _, _, _, _) -> globalQuantLayer)
                             |> (fun globalQuantLayer -> if (Seq.exists (fun globalQuantLayer' -> globalQuantLayer' <> null) globalQuantLayer) = false
                                                             then None
                                                             else Some globalQuantLayer
@@ -5538,7 +5794,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:GlobalQuantLayer) (item2:GlobalQuantLayer) =
-                item1.Columns=item2.Columns
+                item1.FKDataMatrix=item2.FKDataMatrix &&
+                item1.FKSmallMoleculeList=item2.FKSmallMoleculeList && item1.FKProteinList=item2.FKProteinList &&
+                item1.FKProteinGroupList=item2.FKProteinGroupList && item1.FKPeptideConsensusList=item2.FKPeptideConsensusList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5568,40 +5826,66 @@ module InsertStatements =
             ///Initializes a ms2AssayQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    dataType                     : CVParam,
+                    fkdataType                   : string,
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkFeatureList               : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'       = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'     = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
+                let fkFeatureList'  = defaultArg fkFeatureList Unchecked.defaultof<string>
 
                 new MS2AssayQuantLayer(
                                        id',
-                                       dataType,
+                                       datatype',
+                                       fkdataType,
                                        columnIndex,
-                                       dataMatrix,
+                                       dataMatrix',
+                                       fkDataMatrix,
+                                       fkFeatureList',
                                        Nullable(DateTime.Now)
                                       )
+
+            ///Replaces datatype of existing object with new one.
+            static member addDataType
+                (datatype:CVParam) (table:MS2AssayQuantLayer) =
+                table.DataType <- datatype
+                table
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:MS2AssayQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkFeatureList of existing object with new one.
+            static member addFKFeatureList
+                (fkFeatureList:string) (table:MS2AssayQuantLayer) =
+                table.FKFeatureList <- fkFeatureList
+                table
 
             ///Tries to find a ms2AssayQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.MS2AssayQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKFeatureList)
                       }
-                |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                |> Seq.map (fun (ms2AssayQuantLayer, _, _, _) -> ms2AssayQuantLayer)
                 |> (fun ms2AssayQuantLayer -> 
                     if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.MS2AssayQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKFeatureList)
                                   }
-                            |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                            |> Seq.map (fun (ms2AssayQuantLayer, _, _, _) -> ms2AssayQuantLayer)
                             |> (fun ms2AssayQuantLayer -> if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
                                                             then None
                                                             else Some (ms2AssayQuantLayer.Single())
@@ -5614,18 +5898,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.MS2AssayQuantLayer.Local do
                            if i.ColumnIndex=columnIndex
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKFeatureList)
                       }
-                |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                |> Seq.map (fun (ms2AssayQuantLayer, _, _, _) -> ms2AssayQuantLayer)
                 |> (fun ms2AssayQuantLayer -> 
                     if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.MS2AssayQuantLayer do
                                        if i.ColumnIndex=columnIndex
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKFeatureList)
                                   }
-                            |> Seq.map (fun (ms2AssayQuantLayer, _, _) -> ms2AssayQuantLayer)
+                            |> Seq.map (fun (ms2AssayQuantLayer, _, _, _) -> ms2AssayQuantLayer)
                             |> (fun ms2AssayQuantLayer -> if (Seq.exists (fun ms2AssayQuantLayer' -> ms2AssayQuantLayer' <> null) ms2AssayQuantLayer) = false
                                                             then None
                                                             else Some ms2AssayQuantLayer
@@ -5635,7 +5919,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MS2AssayQuantLayer) (item2:MS2AssayQuantLayer) =
-                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
+                item1.FKDataType=item2.FKDataType && item1.FKDataMatrix=item2.FKDataMatrix &&
+                item1.FKFeatureList=item2.FKFeatureList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5665,40 +5950,94 @@ module InsertStatements =
             ///Initializes a studyVariableQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    dataType                     : CVParam,
+                    fkdataType                   : string,
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkSmallMoleculeList         : string,
+                    ?fkProteinList               : string,
+                    ?fkProteinGroupList          : string,
+                    ?fkPeptideConsensusList      : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'               = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'             = defaultArg dataMatrix Unchecked.defaultof<DataMatrix> 
+                let fkSmallMoleculeList'    = defaultArg fkSmallMoleculeList Unchecked.defaultof<string> 
+                let fkProteinList'          = defaultArg fkProteinList Unchecked.defaultof<string> 
+                let fkProteinGroupList'     = defaultArg fkProteinGroupList Unchecked.defaultof<string> 
+                let fkPeptideConsensusList' = defaultArg fkPeptideConsensusList Unchecked.defaultof<string> 
                         
 
                 new StudyVariableQuantLayer(
                                             id',
-                                            dataType,
+                                            datatype',
+                                            fkdataType,
                                             columnIndex,
-                                            dataMatrix,
+                                            dataMatrix',
+                                            fkDataMatrix,
+                                            fkSmallMoleculeList',
+                                            fkProteinList',
+                                            fkProteinGroupList',
+                                            fkPeptideConsensusList',
                                             Nullable(DateTime.Now)
                                            )
+
+            ///Replaces datatype of existing object with new one.
+            static member addDataType
+                (datatype:CVParam) (table:StudyVariableQuantLayer) =
+                table.DataType <- datatype
+                table
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:StudyVariableQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkSmallMoleculeList of existing object with new one.
+            static member addFKSmallMoleculeList
+                (fkSmallMoleculeList:string) (table:StudyVariableQuantLayer) =
+                table.FKSmallMoleculeList <- fkSmallMoleculeList
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:StudyVariableQuantLayer) =
+                table.FKProteinList <- fkProteinList
+                table
+
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList
+                (fkProteinGroupList:string) (table:StudyVariableQuantLayer) =
+                table.FKProteinGroupList <- fkProteinGroupList
+                table
+
+            ///Replaces fkPeptideConsensusList of existing object with new one.
+            static member addFKPeptideConsensusList
+                (fkPeptideConsensusList:string) (table:StudyVariableQuantLayer) =
+                table.FKPeptideConsensusList <- fkPeptideConsensusList
+                table
 
             ///Tries to find a studyVariableQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.StudyVariableQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                |> Seq.map (fun (studyVariableQuantLayer, _, _, _, _, _, _) -> studyVariableQuantLayer)
                 |> (fun studyVariableQuantLayer -> 
                     if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.StudyVariableQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                            |> Seq.map (fun (studyVariableQuantLayer, _, _, _, _, _, _) -> studyVariableQuantLayer)
                             |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
                                                                 then None
                                                                 else Some (studyVariableQuantLayer.Single())
@@ -5711,18 +6050,18 @@ module InsertStatements =
                 query {
                        for i in dbContext.StudyVariableQuantLayer.Local do
                            if i.ColumnIndex=columnIndex
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                       }
-                |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                |> Seq.map (fun (studyVariableQuantLayer, _, _, _, _, _, _) -> studyVariableQuantLayer)
                 |> (fun studyVariableQuantLayer -> 
                     if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
                         then 
                             query {
                                    for i in dbContext.StudyVariableQuantLayer do
                                        if i.ColumnIndex=columnIndex
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix, i.FKSmallMoleculeList, i.FKProteinList, i.FKProteinGroupList, i.FKPeptideConsensusList)
                                   }
-                            |> Seq.map (fun (studyVariableQuantLayer, _, _) -> studyVariableQuantLayer)
+                            |> Seq.map (fun (studyVariableQuantLayer, _, _, _, _, _, _) -> studyVariableQuantLayer)
                             |> (fun studyVariableQuantLayer -> if (Seq.exists (fun studyVariableQuantLayer' -> studyVariableQuantLayer' <> null) studyVariableQuantLayer) = false
                                                                     then None
                                                                     else Some studyVariableQuantLayer
@@ -5732,7 +6071,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:StudyVariableQuantLayer) (item2:StudyVariableQuantLayer) =
-                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
+                item1.FKDataType=item2.FKDataType && item1.FKDataMatrix=item2.FKDataMatrix &&
+                item1.FKSmallMoleculeList=item2.FKSmallMoleculeList && item1.FKProteinList=item2.FKProteinList &&
+                item1.FKProteinGroupList=item2.FKProteinGroupList && item1.FKPeptideConsensusList=item2.FKPeptideConsensusList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5763,19 +6104,28 @@ module InsertStatements =
             static member init
                 (             
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataMatrix                  : DataMatrix
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let dataMatrix'             = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
                         
 
                 new RatioQuantLayer(
                                     id',
                                     columnIndex,
-                                    dataMatrix,
+                                    dataMatrix',
+                                    fkDataMatrix,
                                     Nullable(DateTime.Now)
                                    )
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:RatioQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
 
             ///Tries to find a ratioQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -5827,7 +6177,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:RatioQuantLayer) (item2:RatioQuantLayer) =
-                item1.DataMatrix=item2.DataMatrix
+                item1.FKDataMatrix=item2.FKDataMatrix
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5859,19 +6209,28 @@ module InsertStatements =
                 (             
                     order                        : int,
                     ?id                          : string,
+                    ?fkDataProcessing            : string,
                     ?details                     : seq<ProcessingMethodParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkDataProcessing'            = defaultArg fkDataProcessing Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
                 new ProcessingMethod(
                                      id', 
                                      Nullable(order),
+                                     fkDataProcessing',
                                      details',
                                      Nullable(DateTime.Now)
                                     )
+
+            ///Replaces fkDataProcessing of existing object with new one.
+            static member addFKDataProcessing
+                (fkDataProcessing:string) (table:ProcessingMethod) =
+                table.FKDataProcessing <- fkDataProcessing
+                table
 
             ///Adds a processingMethodParam to an existing object.
             static member addDetail (processingMethodParam:ProcessingMethodParam) (table:ProcessingMethod) =
@@ -5966,22 +6325,26 @@ module InsertStatements =
             static member init
                 (             
                     order                        : int,
-                    analysisSoftware             : Software,
+                    fkSoftware                   : string,
                     processingMethods            : seq<ProcessingMethod>,
                     ?id                          : string,
+                    ?software                    : Software,
                     ?inputObjects                : string,
                     ?outputObjects               : string,
-                    ?fkMzQuantMLDocument           : string
+                    ?fkMzQuantMLDocument         : string                   
+
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let software'                    = defaultArg software Unchecked.defaultof<Software>
                 let inputObjects'                = defaultArg inputObjects Unchecked.defaultof<string>
                 let outputObjects'               = defaultArg outputObjects Unchecked.defaultof<string>
-                let fkMzQuantMLDocument'           = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+                let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new DataProcessing(
                                    id', 
                                    Nullable(order),
-                                   analysisSoftware,
+                                   software',
+                                   fkSoftware,
                                    inputObjects',
                                    outputObjects',
                                    processingMethods |> List,
@@ -5989,6 +6352,12 @@ module InsertStatements =
                                    Nullable(DateTime.Now)
                                   )
 
+            ///Replaces software of existing object with new one.
+            static member addSoftware
+                (software:Software) (table:DataProcessing) =
+                table.Software <- software
+                table
+            
             ///Replaces inputObjects of existing object with new one.
             static member addInputObjects
                 (inputObjects:string) (table:DataProcessing) =
@@ -6057,7 +6426,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DataProcessing) (item2:DataProcessing) =
-                item1.Software=item2.Software && item1.InputObjects=item2.InputObjects &&
+                item1.FKSoftware=item2.FKSoftware && item1.InputObjects=item2.InputObjects &&
                 item1.OutputObjects=item2.OutputObjects && item1.ProcessingMethods=item2.ProcessingMethods
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6089,19 +6458,36 @@ module InsertStatements =
             static member init
                 (             
                     fkExternalFile               : string,
-                    searchDatabase               : SearchDatabase,
-                    ?id                          : string
+                    fkSearchDatabase             : string,
+                    ?id                          : string,
+                    ?searchDatabase              : SearchDatabase,
+                    ?fkSmallMolecule             : string
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                
+                let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
+                let fkSmallMolecule'             = defaultArg fkSmallMolecule Unchecked.defaultof<string>
 
                 new DBIdentificationRef(
                                         id', 
                                         fkExternalFile,
-                                        searchDatabase,
+                                        searchDatabase',
+                                        fkSearchDatabase,
+                                        fkSmallMolecule',
                                         Nullable(DateTime.Now)
                                        )
+
+            ///Replaces searchDatabase of existing object with new one.
+            static member addSearchDatabase
+                (searchDatabase:string) (table:DBIdentificationRef) =
+                table.FKSearchDatabase <- searchDatabase
+                table
+
+            ///Replaces fkSmallMolecule of existing object with new one.
+            static member addFKSmallMolecule
+                (fkSmallMolecule:string) (table:DBIdentificationRef) =
+                table.FKSmallMolecule <- fkSmallMolecule
+                table
 
             ///Tries to find a dbIdentificationRef-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -6153,7 +6539,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBIdentificationRef) (item2:DBIdentificationRef) =
-                item1.SearchDatabase=item2.SearchDatabase
+                item1.FKSearchDatabase=item2.FKSearchDatabase && item1.FKSmallMolecule=item2.FKSmallMolecule
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6189,16 +6575,22 @@ module InsertStatements =
                     ?id                          : string,
                     ?fkChromatogram              : string,
                     ?rawFile                     : RawFile,
+                    ?fkRawFile                   : string,
                     ?fkSpectrum                  : string,
                     ?massTraces                  : seq<MassTraceParam>,
+                    ?fkSmallMolecule             : string,
+                    ?fkFeatureList               : string,
                     ?details                     : seq<FeatureParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let fkChromatogram'              = defaultArg fkChromatogram Unchecked.defaultof<string>
                 let rawFile'                     = defaultArg rawFile Unchecked.defaultof<RawFile>
+                let fkRawFile'                   = defaultArg fkRawFile Unchecked.defaultof<string>
                 let fkSpectrum'                  = defaultArg fkSpectrum Unchecked.defaultof<string>
                 let massTraces'                  = convertOptionToList massTraces
+                let fkSmallMolecule'             = defaultArg fkSmallMolecule Unchecked.defaultof<string>
+                let fkFeatureList'               = defaultArg fkFeatureList Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                 
 
@@ -6208,9 +6600,12 @@ module InsertStatements =
                             fkChromatogram',
                             Nullable(mz),
                             rawFile',
+                            fkRawFile',
                             Nullable(retentionTime),
                             fkSpectrum',
                             massTraces',
+                            fkSmallMolecule',
+                            fkFeatureList',
                             details',
                             Nullable(DateTime.Now)
                            )
@@ -6227,6 +6622,12 @@ module InsertStatements =
                 table.RawFile <- rawFile
                 table
 
+            ///Replaces fkRawFile of existing object with new one.
+            static member addFKRawFile
+                (fkRawFile:string) (table:Feature) =
+                table.FKRawFile <- fkRawFile
+                table
+
             ///Replaces fkSpectrum of existing object with new one.
             static member addFKSpectrum
                 (fkSpectrum:string) (table:Feature) =
@@ -6241,6 +6642,18 @@ module InsertStatements =
             ///Adds a collection of massTraceParams to an existing object.
             static member addMassTraces (massTraceParams:seq<MassTraceParam>) (table:Feature) =
                 let result = table.MassTraces <- addCollectionToList table.MassTraces massTraceParams
+                table
+
+            ///Replaces fkSmallMolecule of existing object with new one.
+            static member addFKSmallMolecule
+                (fkSmallMolecule:string) (table:Feature) =
+                table.FKSmallMolecule <- fkSmallMolecule
+                table
+
+            ///Replaces fkFeatureList of existing object with new one.
+            static member addFKFeatureList
+                (fkFeatureList:string) (table:Feature) =
+                table.FKFeatureList <- fkFeatureList
                 table
 
             ///Adds a processingMethodParam to an existing object.
@@ -6304,7 +6717,8 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Feature) (item2:Feature) =
                 item1.Charge=item2.Charge && item1.RetentionTime=item2.RetentionTime &&
-                item1.FKChromatogram=item2.FKChromatogram && item1.RawFile=item2.RawFile &&
+                item1.FKChromatogram=item2.FKChromatogram && item1.FKRawFile=item2.FKRawFile &&
+                item1.FKSpectrum=item2.FKSpectrum && item1.MassTraces=item2.MassTraces &&
                 item1.FKSpectrum=item2.FKSpectrum && item1.MassTraces=item2.MassTraces
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -6339,6 +6753,7 @@ module InsertStatements =
                     ?modifications               : seq<Modification>,
                     ?dbIdentificationRefs        : seq<DBIdentificationRef>,
                     ?features                    : seq<Feature>,
+                    ?fkSmallMoleculeList         : string,
                     ?details                     : seq<SmallMoleculeParam>
                     
                 ) =
@@ -6346,6 +6761,7 @@ module InsertStatements =
                 let modifications'               = convertOptionToList modifications
                 let dbIdentificationRefs'        = convertOptionToList dbIdentificationRefs
                 let features'                    = convertOptionToList features
+                let fkSmallMoleculeList'         = defaultArg fkSmallMoleculeList Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                 
 
@@ -6353,11 +6769,18 @@ module InsertStatements =
                                   id', 
                                   modifications',
                                   dbIdentificationRefs',
-                                  features',                                  
+                                  features',
+                                  fkSmallMoleculeList',
                                   details',
                                   Nullable(DateTime.Now)
                                  )
             
+            ///Replaces fkSmallMoleculeList of existing object with new one.
+            static member addFKSmallMoleculeList
+                (fkSmallMoleculeList:string) (table:SmallMolecule) =
+                table.FKSmallMoleculeList <- fkSmallMoleculeList
+                table
+
             ///Adds a modification to an existing object.
             static member addModification (modification:Modification) (table:SmallMolecule) =
                 let result = table.Modifications <- addToList table.Modifications modification
@@ -6423,10 +6846,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a smallMolecule-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByModifications (dbContext:MzQuantML) (modifications:seq<Modification>) =
+            static member tryFindByFKSmallMoleculeList (dbContext:MzQuantML) (fkSmallMoleculeList:string) =
                 query {
                        for i in dbContext.SmallMolecule.Local do
-                           if i.Modifications=(modifications |> List)
+                           if i.FKSmallMoleculeList=fkSmallMoleculeList
                               then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
                       }
                 |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
@@ -6435,7 +6858,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SmallMolecule do
-                                       if i.Modifications=(modifications |> List)
+                                       if i.FKSmallMoleculeList=fkSmallMoleculeList
                                           then select (i, i.Modifications, i.DBIdentificationRefs, i.Features, i.Details)
                                   }
                             |> Seq.map (fun (smallMolecule, _, _, _, _) -> smallMolecule)
@@ -6448,7 +6871,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SmallMolecule) (item2:SmallMolecule) =
-                item1.DBIdentificationRefs=item2.DBIdentificationRefs && item1.Features=item2.Features && 
+                item1.DBIdentificationRefs=item2.DBIdentificationRefs && item1.Features=item2.Features &&
+                item1.Modifications=item2.Modifications &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -6456,7 +6880,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SmallMolecule) =
-                    SmallMoleculeHandler.tryFindByModifications dbContext item.Modifications
+                    SmallMoleculeHandler.tryFindByFKSmallMoleculeList dbContext item.FKSmallMoleculeList
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SmallMoleculeHandler.hasEqualFieldValues organization item with
@@ -6487,6 +6911,7 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
+                    ?fkRatioQuantLayer           : string,
                     ?details                     : seq<SmallMoleculeListParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
@@ -6494,6 +6919,7 @@ module InsertStatements =
                 let assayQuantLayer'                = convertOptionToList assayQuantLayer
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
+                let fkRatioQuantLayer'              = defaultArg fkRatioQuantLayer Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
 
                 new SmallMoleculeList(
@@ -6503,6 +6929,7 @@ module InsertStatements =
                                       assayQuantLayer',
                                       studyVariableQuantLayer',
                                       ratioQuantLayer',
+                                      fkRatioQuantLayer',
                                       details',
                                       Nullable(DateTime.Now)
                                      )
@@ -6537,9 +6964,14 @@ module InsertStatements =
                 let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
                 table
 
-            /////Replaces ratioQuantLayer of existing object with new one.
+            ///Replaces ratioQuantLayer of existing object with new one.
             static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:SmallMoleculeList) =
                 table.RatioQuantLayer <- ratioQuantLayer
+                table
+
+            ///Replaces fkRatioQuantLayer of existing object with new one.
+            static member addFKRatioQuantLayer (fkRatioQuantLayer:string) (table:SmallMoleculeList) =
+                table.FKRatioQuantLayer <- fkRatioQuantLayer
                 table
 
             ///Adds a smallMoleculeListParam to an existing object.
@@ -6577,10 +7009,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a smallMoleculeList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySmallMolecules (dbContext:MzQuantML) (smallMolecules:seq<SmallMolecule>) =
+            static member tryFindByFKRatioQuantLayer (dbContext:MzQuantML) (fkRatioQuantLayer:string) =
                 query {
                        for i in dbContext.SmallMoleculeList.Local do
-                           if i.SmallMolecules=(smallMolecules |> List)
+                           if i.FKRatioQuantLayer=fkRatioQuantLayer
                               then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                       }
                 |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
@@ -6589,7 +7021,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SmallMoleculeList do
-                                       if i.SmallMolecules=(smallMolecules |> List)
+                                       if i.FKRatioQuantLayer=fkRatioQuantLayer
                                           then select (i, i.SmallMolecules, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                                   }
                             |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
@@ -6603,7 +7035,8 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SmallMoleculeList) (item2:SmallMoleculeList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
+                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && 
+                item1.FKRatioQuantLayer=item2.FKRatioQuantLayer &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -6611,7 +7044,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:SmallMoleculeList) =
-                    SmallMoleculeListHandler.tryFindBySmallMolecules dbContext item.SmallMolecules
+                    SmallMoleculeListHandler.tryFindByFKRatioQuantLayer dbContext item.FKRatioQuantLayer
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SmallMoleculeListHandler.hasEqualFieldValues organization item with
@@ -6636,20 +7069,35 @@ module InsertStatements =
             ///Initializes a featureQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    columns     : seq<Column>,
-                    dataMatrix  : DataMatrix,
-                    ?id         : string
+                    columns         : seq<Column>,
+                    fkDataMatrix    : string,
+                    ?id             : string,
+                    ?dataMatrix     : DataMatrix,
+                    ?fkFeatureList  : string
                     
                 ) =
-                let id'     = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let dataMatrix'     = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
+                let fkFeatureList'  = defaultArg fkFeatureList Unchecked.defaultof<string>
 
                 new FeatureQuantLayer(
                                       id',
                                       columns |> List,
-                                      dataMatrix,
+                                      dataMatrix',
+                                      fkDataMatrix,
+                                      fkFeatureList',
                                       Nullable(DateTime.Now)
                                      )
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix (dataMatrix:DataMatrix) (table:FeatureQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkFeatureList of existing object with new one.
+            static member addFKFeatureList (fkFeatureList:string) (table:FeatureQuantLayer) =
+                table.FKFeatureList <- fkFeatureList
+                table
 
             ///Tries to find a featureQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -6676,10 +7124,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a featureQuantLayer-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDataMatrix (dbContext:MzQuantML) (dataMatrix:DataMatrix) =
+            static member tryFindByFKDataMatrix (dbContext:MzQuantML) (fkDataMatrix:string) =
                 query {
                        for i in dbContext.FeatureQuantLayer.Local do
-                           if i.DataMatrix=dataMatrix
+                           if i.FKDataMatrix=fkDataMatrix
                               then select (i, i.Columns, i.DataMatrix)
                       }
                 |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
@@ -6688,7 +7136,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FeatureQuantLayer do
-                                       if i.DataMatrix=dataMatrix
+                                       if i.FKDataMatrix=fkDataMatrix
                                           then select (i, i.Columns, i.DataMatrix)
                                   }
                             |> Seq.map (fun (featureQuantLayer, _, _) -> featureQuantLayer)
@@ -6701,12 +7149,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FeatureQuantLayer) (item2:FeatureQuantLayer) =
-                item1.Columns=item2.Columns
+                item1.FKFeatureList=item2.FKFeatureList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:FeatureQuantLayer) =
-                    FeatureQuantLayerHandler.tryFindByDataMatrix dbContext item.DataMatrix
+                    FeatureQuantLayerHandler.tryFindByFKDataMatrix dbContext item.FKDataMatrix
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FeatureQuantLayerHandler.hasEqualFieldValues organization item with
@@ -6731,29 +7179,55 @@ module InsertStatements =
             ///Initializes a ms2ratioQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    dataType                     : CVParam,
+                    fkdataType                   : string,
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkFeatureList               : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                        
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'       = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'     = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
+                let fkFeatureList'  = defaultArg fkFeatureList Unchecked.defaultof<string>
 
                 new MS2RatioQuantLayer(
                                        id',
-                                       dataType,
+                                       datatype',
+                                       fkdataType,
                                        columnIndex,
-                                       dataMatrix,
+                                       dataMatrix',
+                                       fkDataMatrix,
+                                       fkFeatureList',
                                        Nullable(DateTime.Now)
                                       )
+            
+            ///Replaces datatype of existing object with new one.
+            static member addDataType
+                (datatype:CVParam) (table:MS2RatioQuantLayer) =
+                table.DataType <- datatype
+                table
+
+            ///Replaces dataMatrix of existing object with new one.
+            static member addDataMatrix
+                (dataMatrix:DataMatrix) (table:MS2RatioQuantLayer) =
+                table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkFeatureList of existing object with new one.
+            static member addFKFeatureList
+                (fkFeatureList:string) (table:MS2RatioQuantLayer) =
+                table.FKFeatureList <- fkFeatureList
+                table
 
             ///Tries to find a ms2RatioQuantLayer-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
                 query {
                        for i in dbContext.MS2RatioQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix)
                       }
                 |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                 |> (fun ms2RatioQuantLayer -> 
@@ -6762,7 +7236,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MS2RatioQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix)
                                   }
                             |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                             |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
@@ -6777,7 +7251,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MS2RatioQuantLayer.Local do
                            if i.ColumnIndex=columnIndex
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix)
                       }
                 |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                 |> (fun ms2RatioQuantLayer -> 
@@ -6786,7 +7260,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MS2RatioQuantLayer do
                                        if i.ColumnIndex=columnIndex
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix)
                                   }
                             |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                             |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
@@ -6798,7 +7272,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MS2RatioQuantLayer) (item2:MS2RatioQuantLayer) =
-                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
+                item1.FKDataType=item2.FKDataType && item1.FKDataMatrix=item2.FKDataMatrix &&
+                item1.FKFeatureList=item2.FKFeatureList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6828,20 +7303,29 @@ module InsertStatements =
             ///Initializes a ms2StudyVariableQuantLayer-object with at least all necessary parameters.
             static member init
                 (             
-                    dataType                     : CVParam,
+                    fkdataType                   : string,
                     columnIndex                  : string,
-                    dataMatrix                   : DataMatrix,
-                    ?id                          : string
+                    fkDataMatrix                 : string,
+                    ?id                          : string,
+                    ?dataType                    : CVParam,
+                    ?dataMatrix                  : DataMatrix,
+                    ?fkFeatureList               : string
                     
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'       = defaultArg dataType Unchecked.defaultof<CVParam>
+                let dataMatrix'     = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
+                let fkFeatureList'  = defaultArg fkFeatureList Unchecked.defaultof<string>
                         
 
                 new MS2StudyVariableQuantLayer(
                                                id',
-                                               dataType,
+                                               datatype',
+                                               fkdataType,
                                                columnIndex,
-                                               dataMatrix,
+                                               dataMatrix',
+                                               fkDataMatrix,
+                                               fkFeatureList',
                                                Nullable(DateTime.Now)
                                               )
 
@@ -6850,7 +7334,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MS2StudyVariableQuantLayer.Local do
                            if i.ID=id
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix)
                       }
                 |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                 |> (fun ms2RatioQuantLayer -> 
@@ -6859,7 +7343,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MS2StudyVariableQuantLayer do
                                        if i.ID=id
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix)
                                   }
                             |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                             |> (fun ms2RatioQuantLayer -> if (Seq.exists (fun ms2RatioQuantLayer' -> ms2RatioQuantLayer' <> null) ms2RatioQuantLayer) = false
@@ -6874,7 +7358,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.MS2StudyVariableQuantLayer.Local do
                            if i.ColumnIndex=columnIndex
-                              then select (i, i.DataType, i.DataMatrix)
+                              then select (i, i.FKDataType, i.FKDataMatrix)
                       }
                 |> Seq.map (fun (ms2RatioQuantLayer, _, _) -> ms2RatioQuantLayer)
                 |> (fun ms2StudyVariableQuantLayer -> 
@@ -6883,7 +7367,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.MS2StudyVariableQuantLayer do
                                        if i.ColumnIndex=columnIndex
-                                          then select (i, i.DataType, i.DataMatrix)
+                                          then select (i, i.FKDataType, i.FKDataMatrix)
                                   }
                             |> Seq.map (fun (ms2StudyVariableQuantLayer, _, _) -> ms2StudyVariableQuantLayer)
                             |> (fun ms2StudyVariableQuantLayer -> if (Seq.exists (fun ms2StudyVariableQuantLayer' -> ms2StudyVariableQuantLayer' <> null) ms2StudyVariableQuantLayer) = false
@@ -6895,7 +7379,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MS2StudyVariableQuantLayer) (item2:MS2StudyVariableQuantLayer) =
-                item1.DataType=item2.DataType && item1.DataMatrix=item2.DataMatrix
+                item1.FKDataType=item2.FKDataType && item1.FKDataMatrix=item2.FKDataMatrix &&
+                item1.FKFeatureList=item2.FKFeatureList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6925,9 +7410,10 @@ module InsertStatements =
             ///Initializes a featureList-object with at least all necessary parameters.
             static member init
                 (             
-                    rawFilesGroup                : RawFilesGroup,
+                    fkRawFilesGroup              : string,
                     features                     : seq<Feature>,
                     ?id                          : string,
+                    ?rawFilesGroup               : RawFilesGroup,
                     ?featureQuantLayers          : seq<FeatureQuantLayer>,
                     ?ms2AssayQuantLayers         : seq<MS2AssayQuantLayer>,
                     ?ms2StudyVariableQuantLayer  : seq<MS2StudyVariableQuantLayer>,
@@ -6936,6 +7422,7 @@ module InsertStatements =
                     ?fkMzQuantMLDocument         : string
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let rawFilesGroup'               = defaultArg rawFilesGroup Unchecked.defaultof<RawFilesGroup>
                 let featureQuantLayers'          = convertOptionToList featureQuantLayers
                 let ms2AssayQuantLayers'         = convertOptionToList ms2AssayQuantLayers
                 let ms2StudyVariableQuantLayer'  = convertOptionToList ms2StudyVariableQuantLayer
@@ -6945,7 +7432,8 @@ module InsertStatements =
 
                 new FeatureList(
                                 id', 
-                                rawFilesGroup,
+                                rawFilesGroup',
+                                fkRawFilesGroup,
                                 features |> List,
                                 featureQuantLayers', 
                                 ms2AssayQuantLayers',
@@ -6955,6 +7443,11 @@ module InsertStatements =
                                 fkMzQuantMLDocument',
                                 Nullable(DateTime.Now)
                                )
+            
+            ///Adds a rawFilesGroup to an existing object.
+            static member addRawFilesGroup (rawFilesGroup:RawFilesGroup) (table:FeatureList) =
+                table.RawFilesGroup <- rawFilesGroup
+                table
             
             ///Adds a featureQuantLayer to an existing object.
             static member addModification (featureQuantLayer:FeatureQuantLayer) (table:FeatureList) =
@@ -7041,10 +7534,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a featureList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByRawFilesGroup (dbContext:MzQuantML) (rawFilesGroup:RawFilesGroup) =
+            static member tryFindByRawFilesGroup (dbContext:MzQuantML) (fkRawFilesGroup:string) =
                 query {
                        for i in dbContext.FeatureList.Local do
-                           if i.RawFilesGroup=rawFilesGroup
+                           if i.FKRawFilesGroup=fkRawFilesGroup
                               then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
                                            i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
                                           )
@@ -7055,7 +7548,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FeatureList do
-                                       if i.RawFilesGroup=rawFilesGroup
+                                       if i.FKRawFilesGroup=fkRawFilesGroup
                                           then select (i, i.FeatureQuantLayers, i.MS2AssayQuantLayers, i.MS2StudyVariableQuantLayers, 
                                                        i.MS2RatioQuantLayers, i.RawFilesGroup, i.Features, i.Details
                                                       )
@@ -7080,7 +7573,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:FeatureList) =
-                    FeatureListHandler.tryFindByRawFilesGroup dbContext item.RawFilesGroup
+                    FeatureListHandler.tryFindByRawFilesGroup dbContext item.FKRawFilesGroup
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FeatureListHandler.hasEqualFieldValues organization item with
@@ -7106,25 +7599,39 @@ module InsertStatements =
             static member init
                 (             
                     assays                       : seq<Assay>,
-                    feature                      : Feature,
+                    fkFeature                    : string,
                     ?id                          : string,
+                    ?feature                     : Feature,
                     ?fkExternalFileRef           : string,
-                    ?identificationFile          : IdentificationFile
+                    ?identificationFile          : IdentificationFile,
+                    ?fkIdentificationFile        : string,
+                    ?fkPeptideConsensus          : string
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let feature'                     = defaultArg feature Unchecked.defaultof<Feature>
                 let fkExternalFileRef'           = defaultArg fkExternalFileRef Unchecked.defaultof<string>
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
-                
+                let fkIdentificationFile'        = defaultArg fkIdentificationFile Unchecked.defaultof<string>
+                let fkPeptideConsensus'          = defaultArg fkPeptideConsensus Unchecked.defaultof<string>
 
                 new EvidenceRef(
                                 id', 
                                 assays |> List,
-                                feature,
+                                feature',
+                                fkFeature,
                                 fkExternalFileRef',
                                 identificationFile',
+                                fkIdentificationFile',
+                                fkPeptideConsensus',
                                 Nullable(DateTime.Now)
                                )
+
+            ///Replaces feature of existing object with new one.
+            static member addFeature
+                (feature:Feature) (table:EvidenceRef) =
+                table.Feature <- feature
+                table
 
             ///Replaces fkExternalFileRef of existing object with new one.
             static member addFKExternalFileRef
@@ -7136,6 +7643,18 @@ module InsertStatements =
             static member addIdentificationFile
                 (identificationFile:IdentificationFile) (table:EvidenceRef) =
                 table.IdentificationFile <- identificationFile
+                table
+
+            ///Replaces fkIdentificationFile of existing object with new one.
+            static member addFKIdentificationFile
+                (fkIdentificationFile:string) (table:EvidenceRef) =
+                table.FKIdentificationFile <- fkIdentificationFile
+                table
+
+            ///Replaces fkPeptideConsensus of existing object with new one.
+            static member addFKPeptideConsensus
+                (fkPeptideConsensus:string) (table:EvidenceRef) =
+                table.FKPeptideConsensus <- fkPeptideConsensus
                 table
 
             ///Tries to find a evidenceRef-object in the context and database, based on its primary-key(ID).
@@ -7163,10 +7682,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a evidenceRef-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByFeature (dbContext:MzQuantML) (feature:Feature) =
+            static member tryFindByFKFeature (dbContext:MzQuantML) (fkFeature:string) =
                 query {
                        for i in dbContext.EvidenceRef.Local do
-                           if i.Feature=feature
+                           if i.FKFeature=fkFeature
                               then select (i, i.Feature, i.Assays, i.IdentificationFile)
                       }
                 |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
@@ -7175,7 +7694,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.EvidenceRef do
-                                       if i.Feature=feature
+                                       if i.FKFeature=fkFeature
                                           then select (i, i.Feature, i.Assays, i.IdentificationFile)
                                   }
                             |> Seq.map (fun (evidenceRef, _, _, _) -> evidenceRef)
@@ -7188,13 +7707,13 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:EvidenceRef) (item2:EvidenceRef) =
-                item1.Assays=item2.Assays && item1.IdentificationFile=item2.IdentificationFile &&
-                item1.FKExternalFileRef=item2.FKExternalFileRef && item1.IdentificationFile=item2.IdentificationFile
+                item1.Assays=item2.Assays && item1.FKIdentificationFile=item2.FKIdentificationFile &&
+                item1.FKExternalFileRef=item2.FKExternalFileRef
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:EvidenceRef) =
-                    EvidenceRefHandler.tryFindByFeature dbContext item.Feature
+                    EvidenceRefHandler.tryFindByFKFeature dbContext item.FKFeature
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match EvidenceRefHandler.hasEqualFieldValues organization item with
@@ -7223,34 +7742,40 @@ module InsertStatements =
                     evidenceRefs                 : seq<EvidenceRef>,
                     ?id                          : string,
                     ?searchDatabase              : SearchDatabase,
+                    ?fkSearchDatabase            : string,
                     ?dataMatrix                  : DataMatrix,
+                    ?fkDataMatrix                : string,
                     ?peptideSequence             : string,
                     ?modifications               : seq<Modification>,
-                    ?fkPeptideConsensusListID    : string,
-                    ?details                     : seq<PeptideConsensusParam>,
-                    ?proteinID                   : string
+                    ?fkProtein                   : string,
+                    ?fkPeptideConsensusList      : string,
+                    ?details                     : seq<PeptideConsensusParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
+                let fkSearchDatabase'            = defaultArg fkSearchDatabase Unchecked.defaultof<string>
                 let dataMatrix'                  = defaultArg dataMatrix Unchecked.defaultof<DataMatrix>
+                let fkDataMatrix'                = defaultArg fkDataMatrix Unchecked.defaultof<string>
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
-                let fkPeptideConsensusListID'    = defaultArg fkPeptideConsensusListID Unchecked.defaultof<string>
+                let fkPeptideConsensusList'      = defaultArg fkPeptideConsensusList Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
-                let proteinID'                   = defaultArg proteinID (System.Guid.NewGuid().ToString())
+                let fkProtein'                   = defaultArg fkProtein (System.Guid.NewGuid().ToString())
                 
 
                 new PeptideConsensus(
                                      id',
                                      Nullable(charge),
                                      searchDatabase',
+                                     fkSearchDatabase',
                                      dataMatrix',
+                                     fkDataMatrix',
                                      peptideSequence',
                                      modifications',
                                      evidenceRefs |> List,
-                                     proteinID',
-                                     fkPeptideConsensusListID',
+                                     fkProtein',
+                                     fkPeptideConsensusList',
                                      details',
                                      Nullable(DateTime.Now)
                                     )
@@ -7261,10 +7786,22 @@ module InsertStatements =
                 table.SearchDatabase <- searchDatabase
                 table
 
+            ///Replaces fkSearchDatabase of existing object with new one.
+            static member addFKSearchDatabase
+                (fkSearchDatabase:string) (table:PeptideConsensus) =
+                table.FKSearchDatabase <- fkSearchDatabase
+                table
+
             ///Replaces dataMatrix of existing object with new one.
             static member addDataMatrix
                 (dataMatrix:DataMatrix) (table:PeptideConsensus) =
                 table.DataMatrix <- dataMatrix
+                table
+
+            ///Replaces fkDataMatrix of existing object with new one.
+            static member addFKDataMatrix
+                (fkDataMatrix:string) (table:PeptideConsensus) =
+                table.FKDataMatrix <- fkDataMatrix
                 table
 
             ///Replaces peptideSequence of existing object with new one.
@@ -7283,16 +7820,16 @@ module InsertStatements =
                 let result = table.Modifications <- addCollectionToList table.Modifications modifications
                 table
 
-            ///Replaces proteinID of existing object with new one.
-            static member addProteinID
+            ///Replaces fkProtein of existing object with new one.
+            static member addFKProtein
                 (fkProtein:string) (table:PeptideConsensus) =
-                table.ProteinID <- fkProtein
+                table.FKProtein <- fkProtein
                 table
 
-            ///Replaces peptideConsensusListID of existing object with new one.
+            ///Replaces fkPeptideConsensusList of existing object with new one.
             static member addPeptideConsensusListID
-                (peptideConsensusListID:string) (table:PeptideConsensus) =
-                table.PeptideConsensusListID <- peptideConsensusListID
+                (fkPeptideConsensusList:string) (table:PeptideConsensus) =
+                table.FKPeptideConsensusList <- fkPeptideConsensusList
                 table
 
             ///Adds a peptideConsensusParam to an existing object.
@@ -7355,8 +7892,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideConsensus) (item2:PeptideConsensus) =
-                item1.EvidenceRefs=item2.EvidenceRefs && item1.SearchDatabase=item2.SearchDatabase &&
-                item1.DataMatrix=item2.DataMatrix && item1.Modifications=item2.Modifications &&
+                item1.EvidenceRefs=item2.EvidenceRefs && item1.FKSearchDatabase=item2.FKSearchDatabase &&
+                item1.FKDataMatrix=item2.FKDataMatrix && item1.Modifications=item2.Modifications &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -7390,28 +7927,40 @@ module InsertStatements =
             static member init
                 (             
                     accession                    : string,
-                    searchDatabase               : SearchDatabase,
+                    fkSearchDatabase             : string,
                     ?id                          : string,
+                    ?searchDatabase              : SearchDatabase,
                     ?identificationRefs          : seq<IdentificationRef>,
                     ?peptideConsensi             : seq<PeptideConsensus>,
+                    ?fkProteinList               : string,
                     ?details                     : seq<ProteinParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let searchDatabase'              = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
                 let identificationRefs'          = convertOptionToList identificationRefs
                 let peptideConsensi'             = convertOptionToList peptideConsensi
+                let fkProteinList'               = defaultArg fkProteinList Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                 
 
                 new Protein(
                             id',
                             accession,
-                            searchDatabase,
+                            searchDatabase',
+                            fkSearchDatabase,
                             identificationRefs',
                             peptideConsensi',
+                            fkProteinList',
                             details',
                             Nullable(DateTime.Now)
                            )
+
+            ///Replaces searchDatabase of existing object with new one.
+            static member addSearchDatabase
+                (searchDatabase:SearchDatabase) (table:Protein) =
+                table.SearchDatabase <- searchDatabase
+                table
 
             ///Adds a identificationRef to an existing object.
             static member addIdentificationRef (identificationRef:IdentificationRef) (table:Protein) =
@@ -7431,6 +7980,12 @@ module InsertStatements =
             ///Adds a collection of peptideConsensi to an existing object.
             static member addPeptideConsensi (peptideConsensi:seq<PeptideConsensus>) (table:Protein) =
                 let result = table.PeptideConsensi <- addCollectionToList table.PeptideConsensi peptideConsensi
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:Protein) =
+                table.FKProteinList <- fkProteinList
                 table
 
             ///Adds a proteinParam to an existing object.
@@ -7493,7 +8048,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Protein) (item2:Protein) =
-                item1.IdentificationRefs=item2.IdentificationRefs && item1.SearchDatabase=item2.SearchDatabase &&
+                item1.IdentificationRefs=item2.IdentificationRefs && 
+                item1.FKSearchDatabase=item2.FKSearchDatabase && item1.FKProteinList=item2.FKProteinList &&
                 item1.PeptideConsensi=item2.PeptideConsensi && 
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
@@ -7534,7 +8090,7 @@ module InsertStatements =
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
                     ?details                     : seq<ProteinListParam>
-                    //?fkMzQuantMLDocument           : string
+
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
@@ -7542,7 +8098,6 @@ module InsertStatements =
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
                 let details'                        = convertOptionToList details
-                //let fkMzQuantMLDocument'              = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new ProteinList(
                                 id',
@@ -7552,7 +8107,6 @@ module InsertStatements =
                                 studyVariableQuantLayer',
                                 ratioQuantLayer',
                                 details',
-                                //fkMzQuantMLDocument
                                 Nullable(DateTime.Now)
                                )
             
@@ -7586,7 +8140,7 @@ module InsertStatements =
                 let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
                 table
 
-            /////Replaces ratioQuantLayer of existing object with new one.
+            ///Replaces ratioQuantLayer of existing object with new one.
             static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:ProteinList) =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
@@ -7600,12 +8154,6 @@ module InsertStatements =
             static member addDetails (details:seq<ProteinListParam>) (table:ProteinList) =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
-
-            /////Replaces fkMzQuantMLDocument of existing object with new one.
-            //static member addFkMzQuantMLDocument
-            //    (fkMzQuantMLDocument:string) (table:ProteinList) =
-            //    let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
-            //    table
 
             ///Tries to find a proteinList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzQuantML) (id:string) =
@@ -7691,21 +8239,37 @@ module InsertStatements =
             ///Initializes a proteinRef-object with at least all necessary parameters.
             static member init
                 (             
-                    protein                      : Protein,
+                    fkProtein                    : string,
                     ?id                          : string,
+                    ?protein                     : Protein,
+                    ?fkProteinGroup              : string,
                     ?details                     : seq<ProteinRefParam>
                     
                 ) =
-                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-                let details'                        = convertOptionToList details
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let protein'                = defaultArg protein Unchecked.defaultof<Protein>
+                let fkProteinGroup'         = defaultArg fkProteinGroup Unchecked.defaultof<string>
+                let details'                = convertOptionToList details
                 
 
                 new ProteinRef(
                                id',
-                               protein,
+                               protein',
+                               fkProtein,
+                               fkProteinGroup',
                                details',
                                Nullable(DateTime.Now)
                               )  
+
+            ///Replaces protein of existing object with new one.
+            static member addProtein (protein:Protein) (table:ProteinRef) =
+                table.Protein <- protein
+                table
+
+            ///Replaces fkProteinGroup of existing object with new one.
+            static member addFKProteinGroup (fkProteinGroup:string) (table:ProteinRef) =
+                table.FKProteinGroup <- fkProteinGroup
+                table
 
             ///Adds a proteinRefParam to an existing object.
             static member addDetail (detail:ProteinRefParam) (table:ProteinRef) =
@@ -7742,10 +8306,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a proteinRef-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByProteinAccession (dbContext:MzQuantML) (accession:string) =
+            static member tryFindByFKProtein (dbContext:MzQuantML) (fkProtein:string) =
                 query {
                        for i in dbContext.ProteinRef.Local do
-                           if i.Protein.Accession=accession
+                           if i.FKProtein=fkProtein
                               then select (i, i.Protein, i.Details)
                       }
                 |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
@@ -7754,7 +8318,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinRef do
-                                       if i.Protein.Accession=accession
+                                       if i.FKProtein=fkProtein
                                           then select (i, i.Protein, i.Details)
                                   }
                             |> Seq.map (fun (proteinRef, _, _) -> proteinRef)
@@ -7767,6 +8331,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinRef) (item2:ProteinRef) =
+                item1.FKProteinGroup=item2.FKProteinGroup &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -7774,7 +8339,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinRef) =
-                    ProteinRefHandler.tryFindByProteinAccession dbContext item.Protein.Accession
+                    ProteinRefHandler.tryFindByFKProtein dbContext item.FKProtein
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinRefHandler.hasEqualFieldValues organization item with
@@ -7799,27 +8364,35 @@ module InsertStatements =
             ///Initializes a proteinGroup-object with at least all necessary parameters.
             static member init
                 (             
-                    searchDatabase               : SearchDatabase,
+                    fkSearchDatabase             : string,
                     proteinRefs                  : seq<ProteinRef>,
                     ?id                          : string,
+                    ?searchDatabase              : SearchDatabase,
                     ?identificationRefs          : seq<IdentificationRef>,
                     ?details                     : seq<ProteinGroupParam>
                     
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let searchDatabase'                 = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
                 let identificationRefs'             = convertOptionToList identificationRefs
                 let details'                        = convertOptionToList details
                 
 
                 new ProteinGroup(
                                  id',
-                                 searchDatabase,
+                                 searchDatabase',
+                                 fkSearchDatabase,
                                  identificationRefs',
                                  proteinRefs |> List,
                                  details',
                                  Nullable(DateTime.Now)
                                 )  
 
+            ///Replaces searchDatabase of existing object with new one.
+            static member addSearchDatabase (searchDatabase:SearchDatabase) (table:ProteinGroup) =
+                table.SearchDatabase <- searchDatabase
+                table
+            
             ///Adds a proteinGroupParam to an existing object.
             static member addDetail (detail:ProteinGroupParam) (table:ProteinGroup) =
                 let result = table.Details <- addToList table.Details detail
@@ -7855,10 +8428,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a proteinGroup-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySearchDatabaseLocation (dbContext:MzQuantML) (location:string) =
+            static member tryFindByFKSearchDatabase (dbContext:MzQuantML) (fkSearchDatabase:string) =
                 query {
                        for i in dbContext.ProteinGroup.Local do
-                           if i.SearchDatabase.Location=location
+                           if i.FKSearchDatabase=fkSearchDatabase
                               then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
                       }
                 |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
@@ -7867,7 +8440,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinGroup do
-                                       if i.SearchDatabase.Location=location
+                                       if i.FKSearchDatabase=fkSearchDatabase
                                           then select (i, i.ProteinRefs, i.IdentificationRefs, i.SearchDatabase, i.Details)
                                   }
                             |> Seq.map (fun (proteinGroup, _, _, _, _) -> proteinGroup)
@@ -7888,7 +8461,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinGroup) =
-                    ProteinGroupHandler.tryFindBySearchDatabaseLocation dbContext item.SearchDatabase.Location
+                    ProteinGroupHandler.tryFindByFKSearchDatabase dbContext item.SearchDatabase.Location
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinGroupHandler.hasEqualFieldValues organization item with
@@ -7919,6 +8492,7 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
+                    ?fkRatioQuantLayer           : string,
                     ?details                     : seq<ProteinGroupListParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
@@ -7926,6 +8500,7 @@ module InsertStatements =
                 let assayQuantLayer'                = convertOptionToList assayQuantLayer
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
+                let fkRatioQuantLayer'              = defaultArg fkRatioQuantLayer Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
 
                 new ProteinGroupList(
@@ -7935,6 +8510,7 @@ module InsertStatements =
                                      assayQuantLayer',
                                      studyVariableQuantLayer',
                                      ratioQuantLayer',
+                                     fkRatioQuantLayer',
                                      details',
                                      Nullable(DateTime.Now)
                                     )
@@ -7969,9 +8545,14 @@ module InsertStatements =
                 let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
                 table
 
-            /////Replaces ratioQuantLayer of existing object with new one.
+            ///Replaces ratioQuantLayer of existing object with new one.
             static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:ProteinGroupList) =
                 table.RatioQuantLayer <- ratioQuantLayer
+                table
+
+            ///Replaces fkRatioQuantLayer of existing object with new one.
+            static member addFKRatioQuantLayer (fkRatioQuantLayer:string) (table:ProteinGroupList) =
+                table.FKRatioQuantLayer <- fkRatioQuantLayer
                 table
 
             ///Adds a smallMoleculeParam to an existing object.
@@ -8009,10 +8590,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a proteinGroupList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByProteinGroup (dbContext:MzQuantML) (proteinGroup:seq<ProteinGroup>) =
+            static member tryFindByFKRatioQuantLayer (dbContext:MzQuantML) (fkRatioQuantLayer:string) =
                 query {
                        for i in dbContext.ProteinGroupList.Local do
-                           if i.ProteinGroups=(proteinGroup |> List)
+                           if i.FKRatioQuantLayer=fkRatioQuantLayer
                               then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                       }
                 |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
@@ -8021,7 +8602,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinGroupList do
-                                       if i.ProteinGroups=(proteinGroup |> List)
+                                       if i.FKRatioQuantLayer=fkRatioQuantLayer
                                           then select (i, i.ProteinGroups, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                                   }
                             |> Seq.map (fun (smallMoleculeList, _, _, _, _, _, _) -> smallMoleculeList)
@@ -8035,7 +8616,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinGroupList) (item2:ProteinGroupList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
+                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -8043,7 +8624,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:ProteinGroupList) =
-                    ProteinGroupListHandler.tryFindByProteinGroup dbContext item.ProteinGroups
+                    ProteinGroupListHandler.tryFindByFKRatioQuantLayer dbContext item.FKRatioQuantLayer
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinGroupListHandler.hasEqualFieldValues organization item with
@@ -8075,16 +8656,19 @@ module InsertStatements =
                     ?assayQuantLayer             : seq<AssayQuantLayer>,
                     ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
                     ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<PeptideConsensusListParam>,
-                    ?fkMzQuantMLDocument         : string
+                    ?fkRatioQuantLayer           : string,
+                    ?fkMzQuantMLDocument         : string,
+                    ?details                     : seq<PeptideConsensusListParam>
+                    
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let globalQuantLayer'               = convertOptionToList globalQuantLayer
                 let assayQuantLayer'                = convertOptionToList assayQuantLayer
                 let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
                 let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-                let details'                        = convertOptionToList details
+                let fkRatioQuantLayer'              = defaultArg fkRatioQuantLayer Unchecked.defaultof<string>
                 let fkMzQuantMLDocument'            = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+                let details'                        = convertOptionToList details
 
                 new PeptideConsensusList(
                                          id',
@@ -8094,6 +8678,7 @@ module InsertStatements =
                                          assayQuantLayer',
                                          studyVariableQuantLayer',
                                          ratioQuantLayer',
+                                         fkRatioQuantLayer',
                                          details',
                                          fkMzQuantMLDocument',
                                          Nullable(DateTime.Now)
@@ -8129,9 +8714,14 @@ module InsertStatements =
                 let result = table.StudyVariableQuantLayers <- addCollectionToList table.StudyVariableQuantLayers studyVariableQuantLayers
                 table
 
-            /////Replaces ratioQuantLayer of existing object with new one.
+            ///Replaces ratioQuantLayer of existing object with new one.
             static member addRatioQuantLayer (ratioQuantLayer:RatioQuantLayer) (table:PeptideConsensusList) =
                 table.RatioQuantLayer <- ratioQuantLayer
+                table
+
+            ///Replaces fkRatioQuantLayer of existing object with new one.
+            static member addFKRatioQuantLayer (fkRatioQuantLayer:string) (table:PeptideConsensusList) =
+                table.FKRatioQuantLayer <- fkRatioQuantLayer
                 table
 
             ///Adds a peptideConsensusListParam to an existing object.
@@ -8280,57 +8870,57 @@ module InsertStatements =
                                            Nullable(DateTime.Now)
                                           ) 
 
-            /////Replaces name of existing object with new one.
+            ///Replaces name of existing object with new one.
             static member addName (name:string) (table:BiblioGraphicReference) =
                 table.Name <- name
                 table
 
-            /////Replaces authors of existing object with new one.
+            ///Replaces authors of existing object with new one.
             static member addAuthors (authors:string) (table:BiblioGraphicReference) =
                 table.Authors <- authors
                 table
 
-            /////Replaces doi of existing object with new one.
+            ///Replaces doi of existing object with new one.
             static member addDOI (doi:string) (table:BiblioGraphicReference) =
                 table.DOI <- doi
                 table
 
-            /////Replaces editor of existing object with new one.
+            ///Replaces editor of existing object with new one.
             static member addEditor (editor:string) (table:BiblioGraphicReference) =
                 table.Editor <- editor
                 table
 
-            /////Replaces issue of existing object with new one.
+            ///Replaces issue of existing object with new one.
             static member addIssue (issue:string) (table:BiblioGraphicReference) =
                 table.Issue <- issue
                 table
 
-            /////Replaces pages of existing object with new one.
+            ///Replaces pages of existing object with new one.
             static member addPages (pages:string) (table:BiblioGraphicReference) =
                 table.Pages <- pages
                 table
 
-            /////Replaces publication of existing object with new one.
+            ///Replaces publication of existing object with new one.
             static member addPublication (publication:string) (table:BiblioGraphicReference) =
                 table.Publication <- publication
                 table
 
-            /////Replaces publisher of existing object with new one.
+            ///Replaces publisher of existing object with new one.
             static member addPublisher (publisher:string) (table:BiblioGraphicReference) =
                 table.Publisher <- publisher
                 table
 
-            /////Replaces title of existing object with new one.
+            ///Replaces title of existing object with new one.
             static member addTitle (title:string) (table:BiblioGraphicReference) =
                 table.Title <- title
                 table
 
-            /////Replaces volume of existing object with new one.
+            ///Replaces volume of existing object with new one.
             static member addVolume (volume:string) (table:BiblioGraphicReference) =
                 table.Volume <- volume
                 table
 
-            /////Replaces year of existing object with new one.
+            ///Replaces year of existing object with new one.
             static member addYear (year:int) (table:BiblioGraphicReference) =
                 table.Year <- Nullable(year)
                 table
@@ -8432,6 +9022,7 @@ module InsertStatements =
                     ?persons                     : seq<Person>,
                     ?analysisSummaries           : seq<AnalysisSummary>,
                     ?inputFiles                  : InputFiles,
+                    ?fkInputFiles                : string,
                     ?softwares                   : seq<Software>,
                     ?dataProcessings             : seq<DataProcessing>,
                     ?assays                      : seq<Assay>,
@@ -8439,9 +9030,12 @@ module InsertStatements =
                     ?studyVariables              : seq<StudyVariable>,
                     ?ratios                      : seq<Ratio>,
                     ?proteinGroupList            : ProteinGroupList,
+                    ?fkProteinGroupList          : string,
                     ?proteinList                 : ProteinList,
+                    ?fkProteinList               : string,
                     ?peptideConsensusList        : seq<PeptideConsensusList>,
-                    ?smallMolecule               : SmallMoleculeList,
+                    ?smallMoleculeList           : SmallMoleculeList,
+                    ?fkSmallMoleculeList         : string,
                     ?featureList                 : seq<FeatureList>
                     
                 ) =
@@ -8454,6 +9048,7 @@ module InsertStatements =
                 let persons'                        = convertOptionToList persons
                 let analysisSummaries'              = convertOptionToList analysisSummaries
                 let inputFiles'                     = defaultArg inputFiles Unchecked.defaultof<InputFiles>
+                let fkInputFiles'                   = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let softwares'                      = convertOptionToList softwares
                 let dataProcessings'                = convertOptionToList dataProcessings
                 let assays'                         = convertOptionToList assays
@@ -8461,9 +9056,12 @@ module InsertStatements =
                 let studyVariables'                 = convertOptionToList studyVariables
                 let ratios'                         = convertOptionToList ratios
                 let proteinGroupList'               = defaultArg proteinGroupList Unchecked.defaultof<ProteinGroupList>
+                let fkProteinGroupList'             = defaultArg fkProteinGroupList Unchecked.defaultof<string>
                 let proteinList'                    = defaultArg proteinList Unchecked.defaultof<ProteinList>
+                let fkProteinList'                  = defaultArg fkProteinList Unchecked.defaultof<string>
                 let peptideConsensusList'           = convertOptionToList peptideConsensusList
-                let smallMoleculeList'              = defaultArg smallMolecule Unchecked.defaultof<SmallMoleculeList>
+                let smallMoleculeList'              = defaultArg smallMoleculeList Unchecked.defaultof<SmallMoleculeList>
+                let fkSmallMoleculeList'            = defaultArg fkSmallMoleculeList Unchecked.defaultof<string>
                 let featureList'                    = convertOptionToList featureList
 
                 new MzQuantMLDocument(id', 
@@ -8474,7 +9072,8 @@ module InsertStatements =
                                       organizations', 
                                       persons', 
                                       analysisSummaries', 
-                                      inputFiles', 
+                                      inputFiles',
+                                      fkInputFiles',
                                       softwares', 
                                       dataProcessings', 
                                       assays', 
@@ -8482,9 +9081,12 @@ module InsertStatements =
                                       studyVariables', 
                                       ratios', 
                                       proteinGroupList',
+                                      fkProteinGroupList',
                                       proteinList', 
+                                      fkProteinList',
                                       peptideConsensusList', 
-                                      smallMoleculeList', 
+                                      smallMoleculeList',
+                                      fkSmallMoleculeList',
                                       featureList', 
                                       Nullable(DateTime.Now)
                                      )
@@ -8522,9 +9124,21 @@ module InsertStatements =
                 table.ProteinGroupList <- proteinGroupList
                 table 
 
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList
+                (fkProteinGroupList:string) (table:MzQuantMLDocument) =
+                table.FKProteinGroupList <- fkProteinGroupList
+                table
+
             ///Replaces proteinList of existing object with new one.
             static member addProteinList (proteinList:ProteinList) (table:MzQuantMLDocument) =
                 table.ProteinList <- proteinList
+                table
+
+            ///Replaces fkProteinList of existing object with new one.
+            static member addFKProteinList
+                (fkProteinList:string) (table:MzQuantMLDocument) =
+                table.FKProteinList <- fkProteinList
                 table
 
             ///Adds new person to collection of persons.
@@ -8591,6 +9205,12 @@ module InsertStatements =
             static member addInputFiles
                 (inputFiles:InputFiles) (table:MzQuantMLDocument) =
                 table.InputFiles <- inputFiles
+                table
+
+            ///Replaces fkInputFiles of existing object with new one.
+            static member addFKInputFiles
+                (fkInputFiles:string) (table:MzQuantMLDocument) =
+                table.FKInputFiles <- fkInputFiles
                 table
 
             ///Adds new software to collection of softwares.

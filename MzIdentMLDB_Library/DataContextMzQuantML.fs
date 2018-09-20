@@ -512,7 +512,7 @@ module DataModel =
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("RawFilesGroupParams")>]
         RawFilesGroupParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, 
-                            fkRawFilesGroup, rowVersion:Nullable<DateTime>
+                            fkRawFilesGroup:string, rowVersion:Nullable<DateTime>
                            ) =
             let mutable id'              = id
             let mutable value'           = value
@@ -905,21 +905,23 @@ module DataModel =
     ///A software package used in the analysis.
     type [<AllowNullLiteral>] [<Table("Software")>]
         Software (id:string, version:string, details:List<SoftwareParam>, fkSoftwareList:string, 
-                  rowVersion:Nullable<DateTime>
+                  fkMzQuantMLDocument:string, rowVersion:Nullable<DateTime>
                  ) =
             let mutable id'                   = id
             let mutable version'              = version
             let mutable details'              = details
             let mutable fkSoftwareList'       = fkSoftwareList
+            let mutable fkMzQuantMLDocument'  = fkMzQuantMLDocument
             let mutable rowVersion'           = rowVersion
 
-            new() = Software(null, null, null, null, Nullable())
+            new() = Software(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Version with get() = version' and set(value) = version' <- value
             [<ForeignKey("FKSoftware")>]
             member this.Details with get() = details' and set(value) = details' <- value
             member this.FKSoftwareList with get() = fkSoftwareList' and set(value) = fkSoftwareList' <- value
+            member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A file from which this MzQuantML instance was created, including potentially MzQuantML files for earlier stages in a workflow.
@@ -1029,17 +1031,19 @@ module DataModel =
     ///The provider of the document in terms of the Contact and the software the produced the document instance. 
     type [<AllowNullLiteral>] 
         Provider (id:string, name:string, software:Software, fkSoftware:string, 
-                  contactRole:ContactRole, fkContactRole:string, rowVersion:Nullable<DateTime>
+                  contactRole:ContactRole, fkContactRole:string, fkMzQuantMLDocument:string,
+                  rowVersion:Nullable<DateTime>
                  ) =
-            let mutable id'            = id
-            let mutable name'          = name
-            let mutable software'      = software
-            let mutable fkSoftware'    = fkSoftware
-            let mutable contactRole'   = contactRole
-            let mutable fkContactRole' = fkContactRole
-            let mutable rowVersion'    = rowVersion
+            let mutable id'                     = id
+            let mutable name'                   = name
+            let mutable software'               = software
+            let mutable fkSoftware'             = fkSoftware
+            let mutable contactRole'            = contactRole
+            let mutable fkContactRole'          = fkContactRole
+            let mutable fkMzQuantMLDocument'    = fkMzQuantMLDocument
+            let mutable rowVersion'             = rowVersion
 
-            new() = Provider(null, null, null, null, null, null, Nullable())
+            new() = Provider(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1049,6 +1053,7 @@ module DataModel =
             member this.ContactRole with get() = contactRole' and set(value) = contactRole' <- value
             [<ForeignKey("ContactRole")>]
             member this.FKContactRole with get() = fkContactRole' and set(value) = fkContactRole' <- value
+            member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A database used for searching mass spectra. Examples include a set of amino acid sequence entries, or annotated spectra libraries.
@@ -1339,6 +1344,7 @@ module DataModel =
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.RawFilesGroup with get() = rawFilesGroup' and set(value) = rawFilesGroup' <- value
+            [<ForeignKey("RawFilesGroup")>]
             member this.FKRawFilesGroup with get() = fkRawFilesGroup' and set(value) = fkRawFilesGroup' <- value
             member this.Label with get() = label' and set(value) = label' <- value
             member this.IdentificationFile with get() = identificationFile' and set(value) = identificationFile' <- value
@@ -1352,16 +1358,17 @@ module DataModel =
 
     ///A logical grouping of assays into conditions or user-defined study variables such as wild-and versus disease or time points in a time course.
     type [<AllowNullLiteral>]
-        StudyVariable (id:string, name:string, assays:List<Assay>, details:List<StudyVariableParam>, 
-                       rowVersion:Nullable<DateTime>
+        StudyVariable (id:string, name:string, assays:List<Assay>, fkMzQuantMLDocument:string,
+                       details:List<StudyVariableParam>, rowVersion:Nullable<DateTime>
                       ) =
-            let mutable id'         = id
-            let mutable name'       = name
-            let mutable assays'     = assays
-            let mutable details'    = details
-            let mutable rowVersion' = rowVersion
+            let mutable id'                     = id
+            let mutable name'                   = name
+            let mutable assays'                 = assays
+            let mutable details'                = details
+            let mutable fkMzQuantMLDocument'    = fkMzQuantMLDocument
+            let mutable rowVersion'             = rowVersion
 
-            new() = StudyVariable(null, null, null, null, Nullable())
+            new() = StudyVariable(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1369,6 +1376,7 @@ module DataModel =
             member this.Assays with get() = assays' and set(value) = assays' <- value
             [<ForeignKey("FKStudyVariable")>]
             member this.Details with get() = details' and set(value) = details' <- value
+            member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///The setup of a ratio of study variables or assays that is referenced elsewhere in the file. 
@@ -1568,21 +1576,25 @@ module DataModel =
     ///Quant layer for reporting data values about MS2 features (e.g. iTRAQ) 
     ///related to different assays i.e. the column index MUST refer to Assays defined in the file.
     type [<AllowNullLiteral>]
-        MS2AssayQuantLayer (id:string, dataType:CVParam, columnIndex:string, dataMatrix:DataMatrix,
-                            fkDataMatrix:string, fkFeatureList:string, rowVersion:Nullable<DateTime>
+        MS2AssayQuantLayer (id:string, dataType:CVParam, fkDataType:string, columnIndex:string, 
+                            dataMatrix:DataMatrix, fkDataMatrix:string, fkFeatureList:string, 
+                            rowVersion:Nullable<DateTime>
                            ) =
             let mutable id'            = id
             let mutable dataType'      = dataType
+            let mutable fkDataType'    = fkDataType
             let mutable columnIndex'   = columnIndex
             let mutable dataMatrix'    = dataMatrix
             let mutable fkDataMatrix'  = fkDataMatrix
             let mutable fkFeatureList' = fkFeatureList
             let mutable rowVersion'    = rowVersion
 
-            new() = MS2AssayQuantLayer(null, null, null, null, null, null, Nullable())
+            new() = MS2AssayQuantLayer(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.DataType with get() = dataType' and set(value) = dataType' <- value
+            [<ForeignKey("DataType")>]
+            member this.FKDataType with get() = fkDataType' and set(value) = fkDataType' <- value
             member this.ColumnIndex with get() = columnIndex' and set(value) = columnIndex' <- value      
             member this.DataMatrix with get() = dataMatrix' and set(value) = dataMatrix' <- value
             [<ForeignKey("DataMatrix")>]
@@ -1596,13 +1608,14 @@ module DataModel =
     ///3: Quant layer for reporting data values about peptides related to different study variables i.e. the column index MUST refer to StudyVariables defined in the file. 
     ///4: Quant layer for reporting data values about small molecules related to different study variables i.e. the column index MUST refer to StudyVariables defined in the file. 
     and [<AllowNullLiteral>]
-        StudyVariableQuantLayer (id:string, dataType:CVParam, columnIndex:string, dataMatrix:DataMatrix, 
-                                 fkDataMatrix:string, fkSmallMoleculeList:string, fkProteinList:string,
-                                 fkProteinGroupList:string, fkPeptideConsensusList:string, 
+        StudyVariableQuantLayer (id:string, dataType:CVParam, fkDataType:string, columnIndex:string, 
+                                 dataMatrix:DataMatrix, fkDataMatrix:string, fkSmallMoleculeList:string,
+                                 fkProteinList:string, fkProteinGroupList:string, fkPeptideConsensusList:string, 
                                  rowVersion:Nullable<DateTime>
                                 ) =
             let mutable id'                     = id
             let mutable dataType'               = dataType
+            let mutable fkDataType'             = fkDataType
             let mutable columnIndex'            = columnIndex
             let mutable dataMatrix'             = dataMatrix
             let mutable fkDataMatrix'           = fkDataMatrix
@@ -1612,10 +1625,12 @@ module DataModel =
             let mutable fkPeptideConsensusList' = fkPeptideConsensusList
             let mutable rowVersion'             = rowVersion
 
-            new() = StudyVariableQuantLayer(null, null, null, null, null, null, null, null, null, Nullable())
+            new() = StudyVariableQuantLayer(null, null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.DataType with get() = dataType' and set(value) = dataType' <- value
+            [<ForeignKey("DataType")>]
+            member this.FKDataType with get() = fkDataType' and set(value) = fkDataType' <- value
             member this.ColumnIndex with get() = columnIndex' and set(value) = columnIndex' <- value
             member this.DataMatrix with get() = dataMatrix' and set(value) = dataMatrix' <- value
             [<ForeignKey("DataMatrix")>]
@@ -1653,13 +1668,13 @@ module DataModel =
 
     ///Description of one step within the data processing pipeline.
     type [<AllowNullLiteral>]
-        ProcessingMethod (id:string, order:Nullable<int>, details:List<ProcessingMethodParam>, 
-                          fkDataProcessing:string, rowVersion:Nullable<DateTime>
+        ProcessingMethod (id:string, order:Nullable<int>, fkDataProcessing:string,
+                          details:List<ProcessingMethodParam>, rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'               = id
             let mutable order'            = order
-            let mutable details'          = details
             let mutable fkDataProcessing' = fkDataProcessing
+            let mutable details'          = details
             let mutable rowVersion'       = rowVersion
 
             new() = ProcessingMethod(null, Nullable(), null, null, Nullable())
@@ -1997,9 +2012,9 @@ module DataModel =
     ///they should be represented by a single PeptideConsensus element.
     type [<AllowNullLiteral>]
         PeptideConsensus (id:string, charge:Nullable<int>, searchDatabase:SearchDatabase, fkSearchDatabase:string, 
-                          dataMatrix:DataMatrix, fkDataMatrix:string, peptideSequence:string, modifications:List<Modification>,
-                          evidenceRefs:List<EvidenceRef>, fkProtein:string, fkPeptideConsensusList:string,
-                          details:List<PeptideConsensusParam>, rowVersion:Nullable<DateTime>
+                          dataMatrix:DataMatrix, fkDataMatrix:string, peptideSequence:string, 
+                          modifications:List<Modification>, evidenceRefs:List<EvidenceRef>, fkProtein:string, 
+                          fkPeptideConsensusList:string, details:List<PeptideConsensusParam>, rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'                     = id
             let mutable charge'                 = charge
@@ -2105,8 +2120,8 @@ module DataModel =
     ///along with CV terms describing the role it plays within the group, 
     ///such as representative or anchor protein, same set or sub-set.
     type [<AllowNullLiteral>]
-        ProteinRef (id:string, protein:Protein, fkProtein:string, details:List<ProteinRefParam>, 
-                    fkProteinGroup:string, rowVersion:Nullable<DateTime>
+        ProteinRef (id:string, protein:Protein, fkProtein:string, fkProteinGroup:string,
+                    details:List<ProteinRefParam>, rowVersion:Nullable<DateTime>
                    ) =
             let mutable id'             = id
             let mutable protein'        = protein
@@ -2355,7 +2370,7 @@ module DataModel =
             member this.SoftwareList with get() = softwareList' and set(value) = softwareList' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
-            [<ForeignKey("InputFiles")>]
+            [<ForeignKey("FKMzQuantMLDocument")>]
             member this.FKInputFiles with get() = fkInputFiles' and set(value) = fkInputFiles' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
@@ -2371,12 +2386,12 @@ module DataModel =
             [<ForeignKey("ProteinGroupList")>]
             member this.FKProteinGroupList with get() = fkProteinGroupList' and set(value) = fkProteinGroupList' <- value
             member this.ProteinList with get() = proteinList' and set(value) = proteinList' <- value
-            [<ForeignKey("ProteinList")>]
+            [<ForeignKey("FKMzQuantMLDocument")>]
             member this.FKProteinList with get() = fkProteinList' and set(value) = fkProteinList' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.PeptideConsensusList with get() = peptideConsensusList' and set(value) = peptideConsensusList' <- value
             member this.SmallMoleculeList with get() = smallMoleculeList' and set(value) = smallMoleculeList' <- value
-            [<ForeignKey("ProteinList")>]
+            [<ForeignKey("FKMzQuantMLDocument")>]
             member this.FKSmallMoleculeList with get() = fkSmallMoleculeList' and set(value) = fkSmallMoleculeList' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.FeatureList with get() = featureList' and set(value) = featureList' <- value
