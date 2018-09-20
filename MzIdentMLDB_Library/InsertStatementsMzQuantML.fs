@@ -4435,20 +4435,22 @@ module InsertStatements =
             ///Initializes a rawFilesGroup-object with at least all necessary parameters.
             static member init
                 (             
-                    rawFiles                     : seq<RawFile>,
+                    
                     ?id                          : string,
+                    ?rawFiles                    : seq<RawFile>,
                     ?fkInputFiles                : string,
                     ?details                     : seq<RawFilesGroupParam>
                     
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
+                let rawFiles'                    = convertOptionToList rawFiles
                 let fkInputFiles'                = defaultArg fkInputFiles Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details
                         
 
                 new RawFilesGroup(
                                   id', 
-                                  rawFiles |> List, 
+                                  rawFiles', 
                                   fkInputFiles', 
                                   details',
                                   Nullable(DateTime.Now)
