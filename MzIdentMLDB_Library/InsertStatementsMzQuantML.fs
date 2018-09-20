@@ -4721,6 +4721,8 @@ module InsertStatements =
                     ?id                        : string,
                     ?massDelta                 : float,
                     ?residues                  : string,
+                    ?fkAssay                   : string,
+                    ?fkPeptideConsensus        : string,
                     ?fkSmallMolecule           : string,
                     ?detail                    : CVParam
                     
@@ -4728,6 +4730,8 @@ module InsertStatements =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let massDelta'                   = defaultArg massDelta Unchecked.defaultof<float>
                 let residues'                    = defaultArg residues Unchecked.defaultof<string>
+                let fkAssay'                     = defaultArg fkAssay Unchecked.defaultof<string>
+                let fkPeptideConsensus'          = defaultArg fkPeptideConsensus Unchecked.defaultof<string>
                 let fkSmallMolecule'             = defaultArg fkSmallMolecule Unchecked.defaultof<string>
                 let detail'                      = defaultArg detail Unchecked.defaultof<CVParam>
                         
@@ -4736,6 +4740,8 @@ module InsertStatements =
                                  id', 
                                  Nullable(massDelta'),
                                  residues',
+                                 fkAssay',
+                                 fkPeptideConsensus',
                                  fkSmallMolecule',
                                  detail',
                                  fkDetail, 
@@ -4752,6 +4758,18 @@ module InsertStatements =
             static member addResidues
                 (residues:string) (table:Modification) =
                 table.Residues <- residues
+                table
+
+            ///Replaces fkAssay of existing object with new one.
+            static member addFKAssay
+                (fkAssay:string) (table:Modification) =
+                table.FKAssay <- fkAssay
+                table
+
+            ///Replaces fkPeptideConsensus of existing object with new one.
+            static member addFKPeptideConsensus
+                (fkPeptideConsensus:string) (table:Modification) =
+                table.FKPeptideConsensus <- fkPeptideConsensus
                 table
 
             ///Replaces fkSmallMolecule of existing object with new one.
@@ -4791,10 +4809,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a modification-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzQuantML) (termName:string) =
+            static member tryFindByFKAssay (dbContext:MzQuantML) (fkAssay:string) =
                 query {
                        for i in dbContext.Modification.Local do
-                           if i.Detail.Term.Name=termName
+                           if i.FKAssay=fkAssay
                               then select (i, i.Detail)
                       }
                 |> Seq.map (fun (modification, _) -> modification)
@@ -4803,7 +4821,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Modification do
-                                       if i.Detail.Term.Name=termName
+                                       if i.FKAssay=fkAssay
                                           then select (i, i.Detail)
                                   }
                             |> Seq.map (fun (modification, _) -> modification)
@@ -4816,12 +4834,13 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
-                item1.MassDelta=item2.MassDelta && item1.Residues=item2.Residues
+                item1.MassDelta=item2.MassDelta && item1.Residues=item2.Residues &&
+                item1.FKSmallMolecule=item2.FKSmallMolecule
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzQuantML) (item:Modification) =
-                    ModificationHandler.tryFindByTermName dbContext item.Detail.Term.Name
+                    ModificationHandler.tryFindByFKAssay dbContext item.FKAssay
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ModificationHandler.hasEqualFieldValues organization item with
@@ -4854,8 +4873,10 @@ module InsertStatements =
                     ?identificationFile          : IdentificationFile,
                     ?fkIdentificationFile        : string,
                     ?fkStudyVariable             : string,
-                    ?details                     : seq<AssayParam>,
-                    ?fkMzQuantMLDocument         : string
+                    ?fkEvidenceRef               : string,
+                    ?fkMzQuantMLDocument         : string,
+                    ?details                     : seq<AssayParam>
+
                 ) =
                 let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                        = defaultArg name Unchecked.defaultof<string>
@@ -4865,8 +4886,9 @@ module InsertStatements =
                 let identificationFile'          = defaultArg identificationFile Unchecked.defaultof<IdentificationFile>
                 let fkIdentificationFile'        = defaultArg fkIdentificationFile Unchecked.defaultof<string>
                 let fkStudyVariable'             = defaultArg fkStudyVariable Unchecked.defaultof<string>
-                let details'                     = convertOptionToList details
+                let fkEvidenceRef'               = defaultArg fkEvidenceRef Unchecked.defaultof<string>
                 let fkMzQuantMLDocument'         = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
+                let details'                     = convertOptionToList details
 
                 new Assay(
                           id', 
@@ -4877,8 +4899,9 @@ module InsertStatements =
                           identificationFile',
                           fkIdentificationFile',
                           fkStudyVariable',
-                          details',
+                          fkEvidenceRef',
                           fkMzQuantMLDocument',
+                          details',
                           Nullable(DateTime.Now)
                          )
 
@@ -4928,6 +4951,18 @@ module InsertStatements =
                 let result = table.Label <- addCollectionToList table.Label modifications
                 table
 
+            ///Replaces fkEvidenceRef of existing object with new one.
+            static member addFKEvidenceRef
+                (fkEvidenceRef:string) (table:Assay) =
+                table.FKEvidenceRef <- fkEvidenceRef
+                table
+
+            ///Replaces fkMzQuantMLDocument of existing object with new one.
+            static member addFkMzQuantMLDocument
+                (fkMzQuantMLDocument:string) (table:Assay) =
+                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
+                table
+
             ///Adds a assayParam to an existing object.
             static member addDetail (detail:AssayParam) (table:Assay) =
                 let result = table.Details <- addToList table.Details detail
@@ -4936,12 +4971,6 @@ module InsertStatements =
             ///Adds a collection of assayParams to an existing object.
             static member addDetails (details:seq<AssayParam>) (table:Assay) =
                 let result = table.Details <- addCollectionToList table.Details details
-                table
-
-            ///Replaces fkMzQuantMLDocument of existing object with new one.
-            static member addFkMzQuantMLDocument
-                (fkMzQuantMLDocument:string) (table:Assay) =
-                let result = table.FKMzQuantMLDocument <- fkMzQuantMLDocument
                 table
 
             ///Tries to find a assay-object in the context and database, based on its primary-key(ID).
@@ -7827,7 +7856,7 @@ module InsertStatements =
                 table
 
             ///Replaces fkPeptideConsensusList of existing object with new one.
-            static member addPeptideConsensusListID
+            static member addFKPeptideConsensusList
                 (fkPeptideConsensusList:string) (table:PeptideConsensus) =
                 table.FKPeptideConsensusList <- fkPeptideConsensusList
                 table
@@ -8369,12 +8398,14 @@ module InsertStatements =
                     ?id                          : string,
                     ?searchDatabase              : SearchDatabase,
                     ?identificationRefs          : seq<IdentificationRef>,
+                    ?fkProteinGroupList          : string,
                     ?details                     : seq<ProteinGroupParam>
                     
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let searchDatabase'                 = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
                 let identificationRefs'             = convertOptionToList identificationRefs
+                let fkProteinGroupList'             = defaultArg fkProteinGroupList Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
                 
 
@@ -8384,6 +8415,7 @@ module InsertStatements =
                                  fkSearchDatabase,
                                  identificationRefs',
                                  proteinRefs |> List,
+                                 fkProteinGroupList',
                                  details',
                                  Nullable(DateTime.Now)
                                 )  
@@ -8393,6 +8425,11 @@ module InsertStatements =
                 table.SearchDatabase <- searchDatabase
                 table
             
+            ///Replaces fkProteinGroupList of existing object with new one.
+            static member addFKProteinGroupList (fkProteinGroupList:string) (table:ProteinGroup) =
+                table.FKProteinGroupList <- fkProteinGroupList
+                table
+
             ///Adds a proteinGroupParam to an existing object.
             static member addDetail (detail:ProteinGroupParam) (table:ProteinGroup) =
                 let result = table.Details <- addToList table.Details detail

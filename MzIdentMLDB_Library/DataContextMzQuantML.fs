@@ -1282,22 +1282,27 @@ module DataModel =
 
     ///The modification searched for or used to define the label or tag for quantification.
     type [<AllowNullLiteral>]
-        Modification (id:string, massDelta:Nullable<float>, residues:string, fkSmallMolecule:string, 
-                      detail:CVParam, fkDetail:string, rowVersion:Nullable<DateTime>
+        Modification (id:string, massDelta:Nullable<float>, residues:string, fkAssay:string,
+                      fkPeptideConsensus:string, fkSmallMolecule:string, detail:CVParam, fkDetail:string, 
+                      rowVersion:Nullable<DateTime>
                      ) =
-            let mutable id'              = id
-            let mutable massDelta'       = massDelta
-            let mutable residues'        = residues
-            let mutable detail'          = detail
-            let mutable fkDetail'        = fkDetail
-            let mutable fkSmallMolecule' = fkSmallMolecule
-            let mutable rowVersion'      = rowVersion
+            let mutable id'                 = id
+            let mutable massDelta'          = massDelta
+            let mutable residues'           = residues
+            let mutable fkAssay'            = fkAssay
+            let mutable fkPeptideConsensus' = fkPeptideConsensus
+            let mutable fkSmallMolecule'    = fkSmallMolecule
+            let mutable detail'             = detail
+            let mutable fkDetail'           = fkDetail
+            let mutable rowVersion'         = rowVersion
 
-            new() = Modification(null, Nullable(), null, null, null, null, Nullable())
+            new() = Modification(null, Nullable(), null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.MassDelta with get() = massDelta' and set(value) = massDelta' <- value
             member this.Residues with get() = residues' and set(value) = residues' <- value
+            member this.FKAssay with get() = fkAssay' and set(value) = fkAssay' <- value
+            member this.FKPeptideConsensus with get() = fkPeptideConsensus' and set(value) = fkPeptideConsensus' <- value
             member this.FKSmallMolecule with get() = fkSmallMolecule' and set(value) = fkSmallMolecule' <- value
             member this.Detail with get() = detail' and set(value) = detail' <- value
             [<ForeignKey("Detail")>]
@@ -1324,8 +1329,9 @@ module DataModel =
     ///which could constitute multiple raw files e.g. if pre-separation steps have occurred. 
     type [<AllowNullLiteral>]
         Assay (id:string, name:string, rawFilesGroup:RawFilesGroup, fkRawFilesGroup:string, 
-               label:List<Modification>, identificationFile:IdentificationFile, fkIdentificationFile:string, 
-               fkStudyVariable:string, details:List<AssayParam>, fkMzQuantMLDocument:string, rowVersion:Nullable<DateTime>
+               label:List<Modification>, identificationFile:IdentificationFile,
+               fkIdentificationFile:string, fkStudyVariable:string, fkEvidenceRef:string, 
+               fkMzQuantMLDocument:string, details:List<AssayParam>, rowVersion:Nullable<DateTime>
               ) =
             let mutable id'                   = id
             let mutable name'                 = name
@@ -1335,11 +1341,12 @@ module DataModel =
             let mutable identificationFile'   = identificationFile
             let mutable fkIdentificationFile' = fkIdentificationFile
             let mutable fkStudyVariable'      = fkStudyVariable
-            let mutable details'              = details
+            let mutable fkEvidenceRef'        = fkEvidenceRef
             let mutable fkMzQuantMLDocument'  = fkMzQuantMLDocument
+            let mutable details'              = details
             let mutable rowVersion'           = rowVersion
 
-            new() = Assay(null, null, null, null, null, null, null, null, null, null, Nullable())
+            new() = Assay(null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1351,9 +1358,10 @@ module DataModel =
             [<ForeignKey("IdentificationFile")>]
             member this.FKIdentificationFile with get() = fkIdentificationFile' and set(value) = fkIdentificationFile' <- value
             member this.FKStudyVariable with get() = fkStudyVariable' and set(value) = fkStudyVariable' <- value
+            member this.FKEvidenceRef with get() = fkEvidenceRef' and set(value) = fkEvidenceRef' <- value
+            member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             [<ForeignKey("FKAssay")>]
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A logical grouping of assays into conditions or user-defined study variables such as wild-and versus disease or time points in a time course.
@@ -2146,17 +2154,18 @@ module DataModel =
     type [<AllowNullLiteral>]
         ProteinGroup (id:string, searchDatabase:SearchDatabase, fkSearchDatabase:string, 
                       identificationRefs:List<IdentificationRef>, proteinRefs:List<ProteinRef>, 
-                      details:List<ProteinGroupParam>, rowVersion:Nullable<DateTime>
+                      fkProteinGroupList:string, details:List<ProteinGroupParam>, rowVersion:Nullable<DateTime>
                      ) =
             let mutable id'                 = id
             let mutable searchDatabase'     = searchDatabase
             let mutable fkSearchDatabase'   = fkSearchDatabase
             let mutable identificationRefs' = identificationRefs
             let mutable proteinRefs'        = proteinRefs
+            let mutable fkProteinGroupList' = fkProteinGroupList
             let mutable details'            = details
             let mutable rowVersion'         = rowVersion
 
-            new() = ProteinGroup(null, null, null, null, null, null, Nullable())
+            new() = ProteinGroup(null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
@@ -2166,6 +2175,7 @@ module DataModel =
             member this.IdentificationRefs with get() = identificationRefs' and set(value) = identificationRefs' <- value
             [<ForeignKey("FKProteinGroup")>]
             member this.ProteinRefs with get() = proteinRefs' and set(value) = proteinRefs' <- value
+            member this.FKProteinGroupList with get() = fkProteinGroupList' and set(value) = fkProteinGroupList' <- value
             [<ForeignKey("FKProteinGroup")>]
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
