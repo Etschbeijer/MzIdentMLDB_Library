@@ -904,23 +904,21 @@ module DataModel =
 
     ///A software package used in the analysis.
     type [<AllowNullLiteral>] [<Table("Software")>]
-        Software (id:string, version:string, details:List<SoftwareParam>, fkSoftwareList:string, 
+        Software (id:string, version:string, details:List<SoftwareParam>,
                   fkMzQuantMLDocument:string, rowVersion:Nullable<DateTime>
                  ) =
             let mutable id'                   = id
             let mutable version'              = version
             let mutable details'              = details
-            let mutable fkSoftwareList'       = fkSoftwareList
             let mutable fkMzQuantMLDocument'  = fkMzQuantMLDocument
             let mutable rowVersion'           = rowVersion
 
-            new() = Software(null, null, null, null, null, Nullable())
+            new() = Software(null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Version with get() = version' and set(value) = version' <- value
             [<ForeignKey("FKSoftware")>]
             member this.Details with get() = details' and set(value) = details' <- value
-            member this.FKSoftwareList with get() = fkSoftwareList' and set(value) = fkSoftwareList' <- value
             member this.FKMzQuantMLDocument with get() = fkMzQuantMLDocument' and set(value) = fkMzQuantMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
