@@ -1830,22 +1830,32 @@ let testEvidenceRefMOxidized =
     |> EvidenceRefHandler.addToContext sqliteMzQuantMLContext
 
 let testPeptideConsensis (n:int) =
-    PeptideConsensusHandler.init(3, "PeptideConsensusList 1")
+    PeptideConsensusHandler.init(3, "PeptideConsensusList 1", string n)
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK" 
     |> PeptideConsensusHandler.addFKProtein (string n)
-    |> PeptideConsensusHandler.addDetails (createTestPeptideParam n)
+    //|> PeptideConsensusHandler.addDetails (createTestPeptideParam n)
 
 let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
     let rec loop (someThings:Map<string, PeptideConsensus>) n i =
-        if n < 10000 then
+        if n < 1000 then
             if i>10 then
                 loop someThings (n+1) 0
             else
                 loop (someThings.Add (System.Guid.NewGuid().ToString(), testPeptideConsensis n)) n (i+1)
         else someThings
     loop collection 0 0
+
+//let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
+//    let rec loop (someThings:Map<string, PeptideConsensus>) n i =
+//        if n < 100 then
+//            if i>10 then
+//                loop someThings (n+1) 0
+//            else
+//                loop (someThings.Add (System.Guid.NewGuid().ToString(), testPeptideConsensis n)) n (i+1)
+//        else someThings
+//    loop collection 0 0
    
-let tenThousandPeptides = 
+let manyThousandPeptides = 
     createMultiplePeptides Map.empty
     |> Seq.map (fun item -> item.Value)
     |> (fun item -> sqliteMzQuantMLContext.AddRange(item.Cast()))
@@ -1855,12 +1865,12 @@ let testProtein n =
     |> ProteinHandler.addDetails (createTestProteinParams n)
 
 let rec createMultipleProteins (collection:Map<string, Protein>) n =
-    if n < 10000 then 
+    if n < 100 then 
         createMultipleProteins (collection.Add (System.Guid.NewGuid().ToString(), testProtein n)) (n+1)
     else collection
 createMultipleProteins
 
-let tenThousandProteins = 
+let manyThousandProteins = 
     createMultipleProteins Map.empty 0
     |> Seq.map (fun item -> item.Value)
     |> (fun item -> sqliteMzQuantMLContext.AddRange(item.Cast()))
