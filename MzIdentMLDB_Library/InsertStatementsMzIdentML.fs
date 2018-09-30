@@ -308,7 +308,7 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:CVParam) =
                 table.FKUnit <- fkUnit
                 table
@@ -338,10 +338,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.CVParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -350,7 +350,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.CVParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -363,12 +363,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:CVParam) (item2:CVParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:CVParam) =
-                    CVParamHandler.tryFindByTermName dbContext item.Term.Name
+                    CVParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match CVParamHandler.hasEqualFieldValues organization item with
@@ -396,11 +396,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new OrganizationParam(
                                       id', 
@@ -409,6 +411,7 @@ module InsertStatements =
                                       fkTerm,
                                       null,
                                       fkUnit', 
+                                      fk',
                                       Nullable(DateTime.Now)
                                      )
 
@@ -419,9 +422,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:OrganizationParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkOrganization of existing object with new one.
+            static member addFKOrganization
+                (fkOrganization:string) (table:OrganizationParam) =
+                table.FKOrganization <- fkOrganization
                 table
 
             ///Tries to find a organizationParam-object in the context and database, based on its primary-key(ID).
@@ -449,10 +458,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.OrganizationParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -461,7 +470,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.OrganizationParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -474,12 +483,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:OrganizationParam) (item2:OrganizationParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:OrganizationParam) =
-                    OrganizationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    OrganizationParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match OrganizationParamHandler.hasEqualFieldValues organization item with
@@ -507,11 +516,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PersonParam(
                                 id', 
@@ -520,6 +531,7 @@ module InsertStatements =
                                 fkTerm,
                                 null,
                                 fkUnit', 
+                                fk',
                                 Nullable(DateTime.Now)
                                )
 
@@ -530,9 +542,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:PersonParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPerson of existing object with new one.
+            static member addFKPerson
+                (fkPerson:string) (table:PersonParam) =
+                table.FKPerson <- fkPerson
                 table
 
             ///Tries to find a personParam-object in the context and database, based on its primary-key(ID).
@@ -560,10 +578,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.PersonParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -572,7 +590,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PersonParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -585,12 +603,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PersonParam) (item2:PersonParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PersonParam) =
-                    PersonParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PersonParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PersonParamHandler.hasEqualFieldValues organization item with
@@ -618,11 +636,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SampleParam(
                                 id', 
@@ -631,6 +651,7 @@ module InsertStatements =
                                 fkTerm,
                                 null,
                                 fkUnit', 
+                                fk',
                                 Nullable(DateTime.Now)
                                )
 
@@ -641,9 +662,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SampleParam)  =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSample of existing object with new one.
+            static member addFKSample
+                (fkSample:string) (table:SampleParam)  =
+                table.FKSample <- fkSample
                 table
 
             ///Tries to find an sampleParam-object in the context and database, based on its primary-key(ID).
@@ -671,10 +698,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SampleParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -683,7 +710,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SampleParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -696,12 +723,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SampleParam) (item2:SampleParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SampleParam) =
-                    SampleParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SampleParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SampleParamHandler.hasEqualFieldValues organization item with
@@ -729,11 +756,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ModificationParam(
                                       id', 
@@ -742,6 +771,7 @@ module InsertStatements =
                                       fkTerm,
                                       null,
                                       fkUnit', 
+                                      fk',
                                       Nullable(DateTime.Now)
                                      )
 
@@ -752,9 +782,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ModificationParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkModification of existing object with new one.
+            static member addFKModification
+                (fkModification:string) (table:ModificationParam) =
+                table.FKModification <- fkModification
                 table
 
             ///Tries to find a modificationParam-object in the context and database, based on its primary-key(ID).
@@ -782,10 +818,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ModificationParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -794,7 +830,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ModificationParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -807,12 +843,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ModificationParam) (item2:ModificationParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ModificationParam) =
-                    ModificationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ModificationParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ModificationParamHandler.hasEqualFieldValues organization item with
@@ -840,11 +876,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PeptideParam(
                                  id', 
@@ -853,6 +891,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -863,9 +902,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:PeptideParam)  =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPeptide of existing object with new one.
+            static member addFKPeptide
+                (fkPeptide:string) (table:PeptideParam)  =
+                table.FKPeptide <- fkPeptide
                 table
 
             ///Tries to find a peptideParam-object in the context and database, based on its primary-key(ID).
@@ -893,10 +938,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.PeptideParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -905,7 +950,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -918,12 +963,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideParam) (item2:PeptideParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideParam) =
-                    PeptideParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PeptideParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideParamHandler.hasEqualFieldValues organization item with
@@ -951,11 +996,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new TranslationTableParam(
                                           id', 
@@ -964,6 +1011,7 @@ module InsertStatements =
                                           fkTerm,
                                           null,
                                           fkUnit', 
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -974,9 +1022,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:TranslationTableParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkTranslationTable of existing object with new one.
+            static member addFKTranslationTable
+                (fkTranslationTable:string) (table:TranslationTableParam) =
+                table.FKTranslationTable <- fkTranslationTable
                 table
 
             ///Tries to find a translationTableParam-object in the context and database, based on its primary-key(ID).
@@ -1004,10 +1058,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.TranslationTableParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1016,7 +1070,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.TranslationTableParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1029,12 +1083,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTableParam) (item2:TranslationTableParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:TranslationTableParam) =
-                    TranslationTableParamHandler.tryFindByTermName dbContext item.Term.Name
+                    TranslationTableParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match TranslationTableParamHandler.hasEqualFieldValues organization item with
@@ -1062,11 +1116,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new MeasureParam(
                                  id', 
@@ -1075,6 +1131,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1085,9 +1142,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:MeasureParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkMeasure of existing object with new one.
+            static member addFKMeasure
+                (fkMeasure:string) (table:MeasureParam) =
+                table.FKMeasure <- fkMeasure
                 table
 
             ///Tries to find a measureParam-object in the context and database, based on its primary-key(ID).
@@ -1115,10 +1178,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.MeasureParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1127,7 +1190,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MeasureParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1140,12 +1203,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MeasureParam) (item2:MeasureParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MeasureParam) =
-                    MeasureParamHandler.tryFindByTermName dbContext item.Term.Name
+                    MeasureParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match MeasureParamHandler.hasEqualFieldValues organization item with
@@ -1173,11 +1236,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new AmbiguousResidueParam(
                                           id', 
@@ -1186,6 +1251,7 @@ module InsertStatements =
                                           fkTerm,
                                           null,
                                           fkUnit', 
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -1196,9 +1262,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:AmbiguousResidueParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkAmbiguousResidue of existing object with new one.
+            static member addFKAmbiguousResidue
+                (fkAmbiguousResidue:string) (table:AmbiguousResidueParam) =
+                table.FKAmbiguousResidue <- fkAmbiguousResidue
                 table
 
             ///Tries to find a ambiguousResidueParam-object in the context and database, based on its primary-key(ID).
@@ -1226,10 +1298,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.AmbiguousResidueParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1238,7 +1310,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AmbiguousResidueParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1251,12 +1323,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AmbiguousResidueParam) (item2:AmbiguousResidueParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AmbiguousResidueParam) =
-                    AmbiguousResidueParamHandler.tryFindByTermName dbContext item.Term.Name
+                    AmbiguousResidueParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AmbiguousResidueParamHandler.hasEqualFieldValues organization item with
@@ -1284,11 +1356,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new MassTableParam(
                                    id', 
@@ -1297,6 +1371,7 @@ module InsertStatements =
                                    fkTerm,
                                    null,
                                    fkUnit', 
+                                   fk',
                                    Nullable(DateTime.Now)
                                   )
 
@@ -1307,9 +1382,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:MassTableParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkMassTable of existing object with new one.
+            static member addFKMassTable
+                (fkMassTable:string) (table:MassTableParam) =
+                table.FKMassTable <- fkMassTable
                 table
 
             ///Tries to find a massTableParam-object in the context and database, based on its primary-key(ID).
@@ -1337,10 +1418,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.MassTableParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1349,7 +1430,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.MassTableParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1362,12 +1443,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTableParam) (item2:MassTableParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:MassTableParam) =
-                    MassTableParamHandler.tryFindByTermName dbContext item.Term.Name
+                    MassTableParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match MassTableParamHandler.hasEqualFieldValues organization item with
@@ -1395,11 +1476,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new IonTypeParam(
                                  id', 
@@ -1408,6 +1491,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1418,9 +1502,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:IonTypeParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkIonType of existing object with new one.
+            static member addFKIonType
+                (fkIonType:string) (table:IonTypeParam) =
+                table.FKIonType <- fkIonType
                 table
 
             ///Tries to find a ionTypeParam-object in the context and database, based on its primary-key(ID).
@@ -1448,10 +1538,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.IonTypeParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1460,7 +1550,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IonTypeParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1473,12 +1563,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IonTypeParam) (item2:IonTypeParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IonTypeParam) =
-                    IonTypeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    IonTypeParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IonTypeParamHandler.hasEqualFieldValues organization item with
@@ -1506,11 +1596,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new SpecificityRuleParam(
                                          id', 
@@ -1519,6 +1611,7 @@ module InsertStatements =
                                          fkTerm,
                                          null,
                                          fkUnit', 
+                                         fk',
                                          Nullable(DateTime.Now)
                                         )
 
@@ -1529,9 +1622,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SpecificityRuleParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSearchModification of existing object with new one.
+            static member addFKSearchModification
+                (fkSearchModification:string) (table:SpecificityRuleParam) =
+                table.FKSearchModification <- fkSearchModification
                 table
 
             ///Tries to find a specificityRuleParam-object in the context and database, based on its primary-key(ID).
@@ -1559,10 +1658,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SpecificityRuleParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1571,7 +1670,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpecificityRuleParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1584,12 +1683,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpecificityRuleParam) (item2:SpecificityRuleParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpecificityRuleParam) =
-                    SpecificityRuleParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SpecificityRuleParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpecificityRuleParamHandler.hasEqualFieldValues organization item with
@@ -1617,11 +1716,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SearchModificationParam(
                                             id', 
@@ -1630,6 +1731,7 @@ module InsertStatements =
                                             fkTerm,
                                             null,
                                             fkUnit', 
+                                            fk',
                                             Nullable(DateTime.Now)
                                            )
 
@@ -1640,9 +1742,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SearchModificationParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSearchModification of existing object with new one.
+            static member addFKSearchModification
+                (fkSearchModification:string) (table:SearchModificationParam) =
+                table.FKSearchModification <- fkSearchModification
                 table
 
             ///Tries to find a searchModificationParam-object in the context and database, based on its primary-key(ID).
@@ -1670,10 +1778,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SearchModificationParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1682,7 +1790,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchModificationParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1695,12 +1803,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModificationParam) (item2:SearchModificationParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchModificationParam) =
-                    SearchModificationParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SearchModificationParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchModificationParamHandler.hasEqualFieldValues organization item with
@@ -1728,11 +1836,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new EnzymeNameParam(
                                     id', 
@@ -1741,6 +1851,7 @@ module InsertStatements =
                                     fkTerm,
                                     null,
                                     fkUnit', 
+                                    fk',
                                     Nullable(DateTime.Now)
                                    )
 
@@ -1751,9 +1862,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:EnzymeNameParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkEnzyme of existing object with new one.
+            static member addFKEnzyme
+                (fkEnzyme:string) (table:EnzymeNameParam) =
+                table.FKEnzyme <- fkEnzyme
                 table
 
             ///Tries to find a enzymeNameParam-object in the context and database, based on its primary-key(ID).
@@ -1781,10 +1898,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.EnzymeNameParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1793,7 +1910,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.EnzymeNameParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1806,12 +1923,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:EnzymeNameParam) (item2:EnzymeNameParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:EnzymeNameParam) =
-                    EnzymeNameParamHandler.tryFindByTermName dbContext item.Term.Name
+                    EnzymeNameParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match EnzymeNameParamHandler.hasEqualFieldValues organization item with
@@ -1839,11 +1956,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new IncludeParam(
                                  id', 
@@ -1852,6 +1971,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1862,9 +1982,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:IncludeParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkFilter of existing object with new one.
+            static member addFKFilter
+                (fkFilter:string) (table:IncludeParam) =
+                table.FKFilter <- fkFilter
                 table
 
             ///Tries to find a includeParam-object in the context and database, based on its primary-key(ID).
@@ -1892,10 +2018,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.IncludeParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -1904,7 +2030,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IncludeParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -1917,12 +2043,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IncludeParam) (item2:IncludeParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IncludeParam) =
-                    IncludeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    IncludeParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IncludeParamHandler.hasEqualFieldValues organization item with
@@ -1950,11 +2076,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ExcludeParam(
                                  id', 
@@ -1963,6 +2091,7 @@ module InsertStatements =
                                  fkTerm,
                                  null,
                                  fkUnit', 
+                                 fk',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -1973,9 +2102,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ExcludeParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkFilter of existing object with new one.
+            static member addFKFilter
+                (fkFilter:string) (table:ExcludeParam) =
+                table.FKFilter <- fkFilter
                 table
 
             ///Tries to find a excludeParam-object in the context and database, based on its primary-key(ID).
@@ -2003,10 +2138,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ExcludeParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2015,7 +2150,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ExcludeParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2028,12 +2163,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ExcludeParam) (item2:ExcludeParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ExcludeParam) =
-                    ExcludeParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ExcludeParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ExcludeParamHandler.hasEqualFieldValues organization item with
@@ -2061,11 +2196,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new AdditionalSearchParam(
                                           id', 
@@ -2074,6 +2211,7 @@ module InsertStatements =
                                           fkTerm,
                                           null,
                                           fkUnit', 
+                                          fk',
                                           Nullable(DateTime.Now)
                                          )
 
@@ -2084,9 +2222,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:AdditionalSearchParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:AdditionalSearchParam) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
                 table
 
             ///Tries to find a additionalSearchParam-object in the context and database, based on its primary-key(ID).
@@ -2114,10 +2258,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.AdditionalSearchParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2126,7 +2270,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AdditionalSearchParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2139,12 +2283,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AdditionalSearchParam) (item2:AdditionalSearchParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AdditionalSearchParam) =
-                    AdditionalSearchParamHandler.tryFindByTermName dbContext item.Term.Name
+                    AdditionalSearchParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AdditionalSearchParamHandler.hasEqualFieldValues organization item with
@@ -2172,11 +2316,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new FragmentToleranceParam(
                                            id', 
@@ -2185,6 +2331,7 @@ module InsertStatements =
                                            fkTerm,
                                            null,
                                            fkUnit', 
+                                           fk',
                                            Nullable(DateTime.Now)
                                           )
 
@@ -2195,9 +2342,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:FragmentToleranceParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:FragmentToleranceParam) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
                 table
 
             ///Tries to find a fragmentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2225,10 +2378,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.FragmentToleranceParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2237,7 +2390,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.FragmentToleranceParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2250,12 +2403,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentToleranceParam) (item2:FragmentToleranceParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:FragmentToleranceParam) =
-                    FragmentToleranceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    FragmentToleranceParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FragmentToleranceParamHandler.hasEqualFieldValues organization item with
@@ -2283,11 +2436,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ParentToleranceParam(
                                          id', 
@@ -2296,6 +2451,7 @@ module InsertStatements =
                                          fkTerm,
                                          null,
                                          fkUnit', 
+                                         fk',
                                          Nullable(DateTime.Now)
                                         )
 
@@ -2306,9 +2462,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ParentToleranceParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:ParentToleranceParam) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
                 table
 
             ///Tries to find a parentToleranceParam-object in the context and database, based on its primary-key(ID).
@@ -2336,10 +2498,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ParentToleranceParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2348,7 +2510,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ParentToleranceParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2361,12 +2523,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ParentToleranceParam) (item2:ParentToleranceParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ParentToleranceParam) =
-                    ParentToleranceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ParentToleranceParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ParentToleranceParamHandler.hasEqualFieldValues organization item with
@@ -2391,14 +2553,18 @@ module InsertStatements =
             ///Initializes a thresholdparam-object with at least all necessary parameters.
             static member init
                 (
-                    fkTerm    : string,
-                    ?id       : string,
-                    ?value    : string,
-                    ?fkUnit   : string
+                    fkTerm              : string,
+                    ?id                 : string,
+                    ?value              : string,
+                    ?fkUnit             : string,
+                    ?fkSpecIdentProt    : string,
+                    ?fkProteinDetProt   : string
                 ) =
-                let id'       = defaultArg id (System.Guid.NewGuid().ToString())
-                let value'    = defaultArg value Unchecked.defaultof<string>
-                let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let value'              = defaultArg value Unchecked.defaultof<string>
+                let fkUnit'             = defaultArg fkUnit Unchecked.defaultof<string>
+                let fkSpecIdentProt'    = defaultArg fkSpecIdentProt Unchecked.defaultof<string>
+                let fkProteinDetProt'   = defaultArg fkProteinDetProt Unchecked.defaultof<string>
                     
                 new ThresholdParam(
                                    id', 
@@ -2407,6 +2573,8 @@ module InsertStatements =
                                    fkTerm,
                                    null,
                                    fkUnit', 
+                                   fkSpecIdentProt',
+                                   fkProteinDetProt',
                                    Nullable(DateTime.Now)
                                   )
 
@@ -2417,9 +2585,21 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addFkUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ThresholdParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpecIdentProt of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpecIdentProt:string) (table:ThresholdParam) =
+                table.FKSpectrumIdentificationProtocol <- fkSpecIdentProt
+                table
+
+            ///Replaces fkProteinDetProt of existing object with new one.
+            static member addFKProteinDetectionProtocol
+                (fkProteinDetProt:string) (table:ThresholdParam) =
+                table.FKProteinDetectionProtocol <- fkProteinDetProt
                 table
 
             ///Tries to find a thresholdParam-object in the context and database, based on its primary-key(ID).
@@ -2447,10 +2627,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ThresholdParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2459,7 +2639,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ThresholdParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2472,12 +2652,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ThresholdParam) (item2:ThresholdParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ThresholdParam) =
-                    ThresholdParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ThresholdParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ThresholdParamHandler.hasEqualFieldValues organization item with
@@ -2505,11 +2685,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SearchDatabaseParam(
                                         id', 
@@ -2518,6 +2700,7 @@ module InsertStatements =
                                         fkTerm,
                                         null,
                                         fkUnit', 
+                                        fk',
                                         Nullable(DateTime.Now)
                                        )
 
@@ -2528,9 +2711,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SearchDatabaseParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSearchDatabase of existing object with new one.
+            static member addFKSearchDatabase
+                (fkSearchDatabase:string) (table:SearchDatabaseParam) =
+                table.FKSearchDatabase <- fkSearchDatabase
                 table
 
             ///Tries to find a searchDatabaseParam-object in the context and database, based on its primary-key(ID).
@@ -2558,10 +2747,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SearchDatabaseParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2570,7 +2759,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SearchDatabaseParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2583,12 +2772,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchDatabaseParam) (item2:SearchDatabaseParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SearchDatabaseParam) =
-                    SearchDatabaseParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SearchDatabaseParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SearchDatabaseParamHandler.hasEqualFieldValues organization item with
@@ -2616,11 +2805,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new DBSequenceParam(
                                     id', 
@@ -2629,6 +2820,7 @@ module InsertStatements =
                                     fkTerm,
                                     null,
                                     fkUnit', 
+                                    fk',
                                     Nullable(DateTime.Now)
                                    )
 
@@ -2639,9 +2831,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:DBSequenceParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkDBSequence of existing object with new one.
+            static member addFKDBSequence
+                (fkDBSequence:string) (table:DBSequenceParam) =
+                table.FKDBSequence <- fkDBSequence
                 table
 
             ///Tries to find a dbSequenceParam-object in the context and database, based on its primary-key(ID).
@@ -2669,10 +2867,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.DBSequenceParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2681,7 +2879,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.DBSequenceParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2694,12 +2892,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequenceParam) (item2:DBSequenceParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:DBSequenceParam) =
-                    DBSequenceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    DBSequenceParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match DBSequenceParamHandler.hasEqualFieldValues organization item with
@@ -2727,11 +2925,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new PeptideEvidenceParam(
                                          id', 
@@ -2740,6 +2940,7 @@ module InsertStatements =
                                          fkTerm,
                                          null,
                                          fkUnit', 
+                                         fk',
                                          Nullable(DateTime.Now)
                                         )
 
@@ -2750,9 +2951,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:PeptideEvidenceParam)  =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkPeptideEvidence of existing object with new one.
+            static member addFKPeptideEvidence
+                (fkPeptideEvidence:string) (table:PeptideEvidenceParam)  =
+                table.FKPeptideEvidence <- fkPeptideEvidence
                 table
 
             ///Tries to find a peptideEvidenceParam-object in the context and database, based on its primary-key(ID).
@@ -2780,10 +2987,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.PeptideEvidenceParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2792,7 +2999,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideEvidenceParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2805,12 +3012,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidenceParam) (item2:PeptideEvidenceParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideEvidenceParam) =
-                    PeptideEvidenceParamHandler.tryFindByTermName dbContext item.Term.Name
+                    PeptideEvidenceParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideEvidenceParamHandler.hasEqualFieldValues organization item with
@@ -2838,11 +3045,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new SpectrumIdentificationItemParam(
                                                     id', 
@@ -2851,6 +3060,7 @@ module InsertStatements =
                                                     fkTerm,
                                                     null,
                                                     fkUnit', 
+                                                    fk',
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -2861,9 +3071,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SpectrumIdentificationItemParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationItem of existing object with new one.
+            static member addFKSpectrumIdentificationItem
+                (fkSpectrumIdentificationItem:string) (table:SpectrumIdentificationItemParam) =
+                table.FKSpectrumIdentificationItem <- fkSpectrumIdentificationItem
                 table
 
             ///Tries to find a spectrumIdentificationItemParam-object in the context and database, based on its primary-key(ID).
@@ -2891,10 +3107,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationItemParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -2903,7 +3119,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationItemParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -2916,12 +3132,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItemParam) (item2:SpectrumIdentificationItemParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItemParam) =
-                    SpectrumIdentificationItemParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SpectrumIdentificationItemParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationItemParamHandler.hasEqualFieldValues organization item with
@@ -2949,11 +3165,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new SpectrumIdentificationResultParam(
                                                       id', 
@@ -2962,6 +3180,7 @@ module InsertStatements =
                                                       fkTerm,
                                                       null,
                                                       fkUnit', 
+                                                      fk',
                                                       Nullable(DateTime.Now)
                                                      )
 
@@ -2972,9 +3191,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SpectrumIdentificationResultParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationResult of existing object with new one.
+            static member addFKSpectrumIdentificationResult
+                (fkSpectrumIdentificationResult:string) (table:SpectrumIdentificationResultParam) =
+                table.FKSpectrumIdentificationResult <- fkSpectrumIdentificationResult
                 table
 
             ///Tries to find a spectrumIdentificationResultParam-object in the context and database, based on its primary-key(ID).
@@ -3002,10 +3227,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationResultParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3014,7 +3239,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationResultParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3027,12 +3252,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResultParam) (item2:SpectrumIdentificationResultParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationResultParam) =
-                    SpectrumIdentificationResultParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SpectrumIdentificationResultParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationResultParamHandler.hasEqualFieldValues organization item with
@@ -3060,11 +3285,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new SpectrumIdentificationListParam(
                                                     id', 
@@ -3073,6 +3300,7 @@ module InsertStatements =
                                                     fkTerm,
                                                     null,
                                                     fkUnit', 
+                                                    fk',
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -3083,9 +3311,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SpectrumIdentificationListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSpectrumIdentificationList of existing object with new one.
+            static member addFKSpectrumIdentificationList
+                (fkSpectrumIdentificationList:string) (table:SpectrumIdentificationListParam) =
+                table.FKSpectrumIdentificationList <- fkSpectrumIdentificationList
                 table
 
             ///Tries to find a spectrumIdentificationListParam-object in the context and database, based on its primary-key(ID).
@@ -3113,10 +3347,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SpectrumIdentificationListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3125,7 +3359,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SpectrumIdentificationListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3138,12 +3372,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationListParam) (item2:SpectrumIdentificationListParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationListParam) =
-                    SpectrumIdentificationListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SpectrumIdentificationListParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SpectrumIdentificationListParamHandler.hasEqualFieldValues organization item with
@@ -3171,11 +3405,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new AnalysisParam(
                                   id', 
@@ -3184,6 +3420,7 @@ module InsertStatements =
                                   fkTerm,
                                   null,
                                   fkUnit', 
+                                  fk',
                                   Nullable(DateTime.Now)
                                  )
 
@@ -3194,9 +3431,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:AnalysisParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinDetectionProtocol of existing object with new one.
+            static member addFKProteinDetectionProtocol
+                (fkProteinDetectionProtocol:string) (table:AnalysisParam) =
+                table.FKProteinDetectionProtocol <- fkProteinDetectionProtocol
                 table
 
             ///Tries to find a analysisParam-object in the context and database, based on its primary-key(ID).
@@ -3224,10 +3467,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.AnalysisParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3236,7 +3479,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3249,12 +3492,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisParam) (item2:AnalysisParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisParam) =
-                    AnalysisParamHandler.tryFindByTermName dbContext item.Term.Name
+                    AnalysisParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisParamHandler.hasEqualFieldValues organization item with
@@ -3282,11 +3525,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new SourceFileParam(
                                     id', 
@@ -3295,6 +3540,7 @@ module InsertStatements =
                                     fkTerm,
                                     null,
                                     fkUnit', 
+                                    fk',
                                     Nullable(DateTime.Now)
                                    )
 
@@ -3305,9 +3551,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:SourceFileParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkSourceFile of existing object with new one.
+            static member addFKSourceFile
+                (fkSourceFile:string) (table:SourceFileParam) =
+                table.FKSourceFile <- fkSourceFile
                 table
 
             ///Tries to find a sourceFileParam-object in the context and database, based on its primary-key(ID).
@@ -3335,10 +3587,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.SourceFileParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3347,7 +3599,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.SourceFileParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3360,12 +3612,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFileParam) (item2:SourceFileParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SourceFileParam) =
-                    SourceFileParamHandler.tryFindByTermName dbContext item.Term.Name
+                    SourceFileParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SourceFileParamHandler.hasEqualFieldValues organization item with
@@ -3393,11 +3645,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
                     
                 new ProteinDetectionHypothesisParam(
                                                     id', 
@@ -3406,6 +3660,7 @@ module InsertStatements =
                                                     fkTerm,
                                                     null,
                                                     fkUnit', 
+                                                    fk',
                                                     Nullable(DateTime.Now)
                                                    )
 
@@ -3416,9 +3671,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ProteinDetectionHypothesisParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinDetectionHypothesis of existing object with new one.
+            static member addFKProteinDetectionHypothesis
+                (fkProteinDetectionHypothesis:string) (table:ProteinDetectionHypothesisParam) =
+                table.FKProteinDetectionHypothesis <- fkProteinDetectionHypothesis
                 table
 
             ///Tries to find a proteinDetectionHypothesisParam-object in the context and database, based on its primary-key(ID).
@@ -3446,10 +3707,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ProteinDetectionHypothesisParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3458,7 +3719,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionHypothesisParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3471,12 +3732,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesisParam) (item2:ProteinDetectionHypothesisParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionHypothesisParam) =
-                    ProteinDetectionHypothesisParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinDetectionHypothesisParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionHypothesisParamHandler.hasEqualFieldValues organization item with
@@ -3504,11 +3765,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new  ProteinAmbiguityGroupParam(
                                                 id', 
@@ -3517,6 +3780,7 @@ module InsertStatements =
                                                 fkTerm,
                                                 null,
                                                 fkUnit', 
+                                                fk',
                                                 Nullable(DateTime.Now)
                                                )
 
@@ -3527,9 +3791,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ProteinAmbiguityGroupParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinAmbiguityGroup of existing object with new one.
+            static member addFKProteinAmbiguityGroup
+                (fkProteinAmbiguityGroup:string) (table:ProteinAmbiguityGroupParam) =
+                table.FKProteinAmbiguityGroup <- fkProteinAmbiguityGroup
                 table
 
             ///Tries to find a proteinAmbiguityGroupParam-object in the context and database, based on its primary-key(ID).
@@ -3557,10 +3827,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ProteinAmbiguityGroupParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3569,7 +3839,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinAmbiguityGroupParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3582,12 +3852,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroupParam) (item2:ProteinAmbiguityGroupParam) =
-                 item1.Value=item2.Value && item1.Unit=item2.Unit
+                 item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinAmbiguityGroupParam) =
-                    ProteinAmbiguityGroupParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinAmbiguityGroupParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinAmbiguityGroupParamHandler.hasEqualFieldValues organization item with
@@ -3615,11 +3885,13 @@ module InsertStatements =
                     fkTerm    : string,
                     ?id       : string,
                     ?value    : string,
-                    ?fkUnit   : string
+                    ?fkUnit   : string,
+                    ?fk       : string
                 ) =
                 let id'       = defaultArg id (System.Guid.NewGuid().ToString())
                 let value'    = defaultArg value Unchecked.defaultof<string>
                 let fkUnit'   = defaultArg fkUnit Unchecked.defaultof<string>
+                let fk'       = defaultArg fk Unchecked.defaultof<string>
 
                 new ProteinDetectionListParam(
                                               id', 
@@ -3628,6 +3900,7 @@ module InsertStatements =
                                               fkTerm,
                                               null,
                                               fkUnit', 
+                                              fk',
                                               Nullable(DateTime.Now)
                                              )
 
@@ -3638,9 +3911,15 @@ module InsertStatements =
                 table
 
             ///Replaces fkUnit of existing object with new one.
-            static member addUnit
+            static member addFKUnit
                 (fkUnit:string) (table:ProteinDetectionListParam) =
                 table.FKUnit <- fkUnit
+                table
+
+            ///Replaces fkProteinDetectionList of existing object with new one.
+            static member addFKProteinDetectionList
+                (fkProteinDetectionList:string) (table:ProteinDetectionListParam) =
+                table.FKProteinDetectionList <- fkProteinDetectionList
                 table
 
             ///Tries to find a proteinDetectionListParam-object in the context and database, based on its primary-key(ID).
@@ -3668,10 +3947,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKTerm (dbContext:MzIdentML) (fkTerm:string) =
                 query {
                        for i in dbContext.ProteinDetectionListParam.Local do
-                           if i.Term.Name=name
+                           if i.FKTerm=fkTerm
                               then select (i, i.Term, i.Unit)
                       }
                 |> Seq.map (fun (param,_ ,_) -> param)
@@ -3680,7 +3959,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinDetectionListParam do
-                                       if i.Term.Name=name
+                                       if i.FKTerm=fkTerm
                                           then select (i, i.Term, i.Unit)
                                   }
                             |> Seq.map (fun (param,_ ,_) -> param)
@@ -3693,12 +3972,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionListParam) (item2:ProteinDetectionListParam) =
-                item1.Value=item2.Value && item1.Unit=item2.Unit
+                item1.Value=item2.Value && item1.FKUnit=item2.FKUnit
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ProteinDetectionListParam) =
-                    ProteinDetectionListParamHandler.tryFindByTermName dbContext item.Term.Name
+                    ProteinDetectionListParamHandler.tryFindByFKTerm dbContext item.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ProteinDetectionListParamHandler.hasEqualFieldValues organization item with
@@ -3725,21 +4004,29 @@ module InsertStatements =
                 (
                     ?id                  : string,
                     ?name                : string,
-                    ?parent              : string,
-                    ?details             : seq<OrganizationParam>,
-                    ?mzIdentMLDocumentID : string
+                    ?parent              : Organization,
+                    ?fkParent            : string,
+                    ?fkPerson            : string,
+                    ?fkMzIdentMLDocument : string,
+                    ?details             : seq<OrganizationParam>
+                    
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
-                let parent'              = defaultArg parent Unchecked.defaultof<string>
+                let parent'              = defaultArg parent Unchecked.defaultof<Organization>
+                let fkParent'            = defaultArg fkParent Unchecked.defaultof<string>
+                let fkPerson'            = defaultArg fkPerson Unchecked.defaultof<string>
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                 let details'             = convertOptionToList details
-                let mzIdentMLDocumentID' = defaultArg mzIdentMLDocumentID Unchecked.defaultof<string>
+
                 new Organization(
                                  id', 
                                  name', 
                                  parent',
+                                 fkParent',
+                                 fkPerson',
+                                 fkMzIdentMLDocument',
                                  details',
-                                 mzIdentMLDocumentID',
                                  Nullable(DateTime.Now)
                                 )
 
@@ -3751,8 +4038,20 @@ module InsertStatements =
 
             ///Replaces parent of existing object with new one.
             static member addParent
-                (parent:string) (table:Organization) =
+                (parent:Organization) (table:Organization) =
                 table.Parent <- parent
+                table
+
+            ///Replaces fkParent of existing object with new one.
+            static member addFKParent
+                (fkParent:string) (table:Organization) =
+                table.FKParent <- fkParent
+                table
+
+            ///Replaces fkPerson of existing object with new one.
+            static member addFKPerson
+                (fkPerson:string) (table:Organization) =
+                table.FKPerson <- fkPerson
                 table
 
             ///Adds a organizationparam to an existing organization-object.
@@ -3770,7 +4069,7 @@ module InsertStatements =
             ///Replaces fkMzIDentMLDocument of existing object with new one.
             static member addMzIdentMLDocumentID
                 (fkMzIDentMLDocument:string) (table:Organization) =
-                table.MzIdentMLDocumentID <- fkMzIDentMLDocument
+                table.FKMzIdentMLDocument <- fkMzIDentMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -3823,10 +4122,10 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
+                item1.FKParent=item2.FKParent && item1.FKPerson=item2.FKPerson && 
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
-                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
-                item1.Parent=item2.Parent
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)  
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -3862,8 +4161,8 @@ module InsertStatements =
                     ?midInitials         : string,
                     ?lastName            : string,
                     ?organizations       : seq<Organization>,
-                    ?contactDetails      : seq<PersonParam>,
-                    ?mzIdentMLDocumentID : string
+                    ?fkMzIdentMLDocument : string,
+                    ?contactDetails      : seq<PersonParam>
                 ) =
                 let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                = defaultArg name Unchecked.defaultof<string>
@@ -3871,8 +4170,8 @@ module InsertStatements =
                 let midInitials'         = defaultArg midInitials Unchecked.defaultof<string>
                 let lastName'            = defaultArg lastName Unchecked.defaultof<string>    
                 let organizations'       = convertOptionToList organizations
+                let fkMzIdentMLDocument' = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                 let contactDetails'      = convertOptionToList contactDetails
-                let mzIdentMLDocumentID' = defaultArg mzIdentMLDocumentID Unchecked.defaultof<string>
 
                 new Person(
                            id', 
@@ -3881,63 +4180,63 @@ module InsertStatements =
                            midInitials', 
                            lastName', 
                            organizations',
+                           fkMzIdentMLDocument',
                            contactDetails',
-                           mzIdentMLDocumentID',
                            Nullable(DateTime.Now)
                           )
 
             ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (person:Person) =
-                person.Name <- name
-                person
+                (name:string) (table:Person) =
+                table.Name <- name
+                table
 
             ///Replaces firstname of existing object with new one.
             static member addFirstName
-                (firstName:string) (person:Person) =
-                person.FirstName <- firstName
-                person
+                (firstName:string) (table:Person) =
+                table.FirstName <- firstName
+                table
 
             ///Replaces midinitials of existing object with new one.
             static member addMidInitials
-                (midInitials:string) (person:Person) =
-                person.MidInitials <- midInitials
-                person
+                (midInitials:string) (table:Person) =
+                table.MidInitials <- midInitials
+                table
 
             ///Replaces lastname of existing object with new one.
             static member addLastName
-                (lastName:string) (person:Person) =
-                person.LastName <- lastName
-                person
-
-            ///Adds a personparam to an existing person-object.
-            static member addDetail (detail:PersonParam) (person:Person) =
-                let result = person.Details <- addToList person.Details detail
-                person
-
-            ///Adds a collection of personparams to an existing person-object.
-            static member addDetails
-                (details:seq<PersonParam>) (person:Person) =
-                let result = person.Details <- addCollectionToList person.Details details
-                person
+                (lastName:string) (table:Person) =
+                table.LastName <- lastName
+                table
 
             ///Adds a organization to an existing person-object.
             static member addOrganization
-                (organization:Organization) (person:Person) =
-                let result = person.Organizations <- addToList person.Organizations organization
-                person
+                (organization:Organization) (table:Person) =
+                let result = table.Organizations <- addToList table.Organizations organization
+                table
 
             ///Adds a collection of organizations to an existing person-object.
             static member addOrganizations
-                (organizations:seq<Organization>) (person:Person) =
-                let result = person.Organizations <- addCollectionToList person.Organizations organizations
-                person
+                (organizations:seq<Organization>) (table:Person) =
+                let result = table.Organizations <- addCollectionToList table.Organizations organizations
+                table
+
+            ///Adds a personparam to an existing person-object.
+            static member addDetail (detail:PersonParam) (table:Person) =
+                let result = table.Details <- addToList table.Details detail
+                table
+
+            ///Adds a collection of personparams to an existing person-object.
+            static member addDetails
+                (details:seq<PersonParam>) (table:Person) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Replaces fkMzIDentMLDocument of existing object with new one.
             static member addMzIdentMLDocumentID
-                (fkMzIDentMLDocument:string) (person:Person) =
-                person.MzIdentMLDocumentID <- fkMzIDentMLDocument
-                person
+                (fkMzIDentMLDocument:string) (table:Person) =
+                table.FKMzIdentMLDocument <- fkMzIDentMLDocument
+                table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4021,18 +4320,45 @@ module InsertStatements =
             ///Initializes a contactrole-object with at least all necessary parameters.
             static member init
                 (   
-                    person : Person, 
-                    role   : CVParam,
-                    ?id    : string
+                    fkPerson    : string, 
+                    fkRole      : string,
+                    ?id         : string,
+                    ?person     : Person, 
+                    ?role       : CVParam,
+                    ?fkSample   : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
-                    
+                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
+                let person'     = defaultArg person Unchecked.defaultof<Person>
+                let role'       = defaultArg role Unchecked.defaultof<CVParam>
+                let fkSample'   = defaultArg fkSample Unchecked.defaultof<string>
+
                 new ContactRole(
                                 id', 
-                                person, 
-                                role, 
+                                person',
+                                fkPerson,
+                                role',
+                                fkRole,
+                                fkSample',
                                 Nullable(DateTime.Now)
                                )
+
+            ///Replaces person of existing object with new one.
+            static member addPerson
+                (person:Person) (table:ContactRole) =
+                table.Person <- person
+                table
+
+            ///Replaces role of existing object with new one.
+            static member addRole
+                (role:CVParam) (table:ContactRole) =
+                table.Role <- role
+                table
+
+            ///Replaces fkSample of existing object with new one.
+            static member addFKSample
+                (fkSample:string) (table:ContactRole) =
+                table.FKSample <- fkSample
+                table
 
             ///Tries to find a contactRole-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4059,22 +4385,22 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByPersonName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKPerson (dbContext:MzIdentML) (fkPerson:string) =
                 query {
                        for i in dbContext.ContactRole.Local do
-                           if i.Person.Name = name
-                              then select (i, i.Role)
+                           if i.FKPerson=fkPerson
+                              then select (i, i.Role, i.Person)
                       }
-                |> Seq.map (fun (contactRole, _) -> contactRole)
+                |> Seq.map (fun (contactRole, _, _) -> contactRole)
                 |> (fun contactRole -> 
                     if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
                         then 
                             query {
                                    for i in dbContext.ContactRole do
-                                       if i.Person.Name = name
-                                          then select (i, i.Role)
+                                       if i.FKPerson=fkPerson
+                                          then select (i, i.Role, i.Person)
                                   }
-                            |> Seq.map (fun (contactRole, _) -> contactRole)
+                            |> Seq.map (fun (contactRole, _, _) -> contactRole)
                             |> (fun contactRole -> if (Seq.exists (fun contactRole' -> contactRole' <> null) contactRole) = false
                                                        then None
                                                        else Some contactRole
@@ -4084,12 +4410,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ContactRole) (item2:ContactRole) =
-                item1.Role=item2.Role
+                item1.FKRole=item2.FKRole && item1.FKSample=item2.FKSample
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:ContactRole) =
-                    ContactRoleHandler.tryFindByPersonName dbContext item.Person.Name
+                    ContactRoleHandler.tryFindByFKPerson dbContext item.FKPerson
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match ContactRoleHandler.hasEqualFieldValues organization item with
@@ -4114,20 +4440,24 @@ module InsertStatements =
             ///Initializes a analysissoftware-object with at least all necessary parameters.
             static member init
                 (
-                    softwareName         : CVParam,
-                    ?id                  : string,
-                    ?name                : string,
-                    ?uri                 : string,
-                    ?version             : string,
-                    ?customizations      : string,
-                    ?softwareDeveloper   : ContactRole
+                    fkSoftwareName          : string,
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?uri                    : string,
+                    ?version                : string,
+                    ?customizations         : string,
+                    ?softwareDeveloper      : ContactRole,
+                    ?fkSoftwareDeveloper    : string,
+                    ?softwareName           : CVParam
                 ) =
-                let id'                  = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                = defaultArg name Unchecked.defaultof<string>
-                let uri'                 = defaultArg uri Unchecked.defaultof<string>
-                let version'             = defaultArg version Unchecked.defaultof<string>
-                let customizations'      = defaultArg customizations Unchecked.defaultof<string>
-                let contactRole'         = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
+                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'               = defaultArg name Unchecked.defaultof<string>
+                let uri'                = defaultArg uri Unchecked.defaultof<string>
+                let version'            = defaultArg version Unchecked.defaultof<string>
+                let customizations'     = defaultArg customizations Unchecked.defaultof<string>
+                let contactRole'        = defaultArg softwareDeveloper Unchecked.defaultof<ContactRole>
+                let fkContactRole'      = defaultArg fkSoftwareDeveloper Unchecked.defaultof<string>
+                let softwareName'       = defaultArg softwareName Unchecked.defaultof<CVParam>
                     
                 new AnalysisSoftware(
                                      id', 
@@ -4135,40 +4465,54 @@ module InsertStatements =
                                      uri', 
                                      version', 
                                      customizations', 
-                                     contactRole', 
-                                     softwareName, 
+                                     contactRole',
+                                     fkContactRole', 
+                                     softwareName',
+                                     fkSoftwareName,
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (analysisSoftware:AnalysisSoftware) =
-                analysisSoftware.Name <- name
-                analysisSoftware
+                (name:string) (table:AnalysisSoftware) =
+                table.Name <- name
+                table
 
-            ///Replaces uri of existing object with new uri.
+            ///Replaces uri of existing object with new one.
             static member addURI
-                (uri:string) (analysisSoftware:AnalysisSoftware) =
-                analysisSoftware.URI <- uri
-                analysisSoftware
+                (uri:string) (table:AnalysisSoftware) =
+                table.URI <- uri
+                table
 
-            ///Replaces version of existing object with new version.
+            ///Replaces version of existing object with new one.
             static member addVersion
-                (version:string) (analysisSoftware:AnalysisSoftware) =
-                analysisSoftware.Version <- version
-                analysisSoftware
+                (version:string) (table:AnalysisSoftware) =
+                table.Version <- version
+                table
 
-            ///Replaces customization of existing object with new customization.
+            ///Replaces customization of existing object with new one.
             static member addCustomization
-                (customizations:string) (analysisSoftware:AnalysisSoftware) =
-                analysisSoftware.Customizations <- customizations
-                analysisSoftware
+                (customizations:string) (table:AnalysisSoftware) =
+                table.Customizations <- customizations
+                table
 
-            ///Replaces contactrole of existing object with new contactrole.
+            ///Replaces analysisSoftwareDeveloper of existing object with new one.
             static member addAnalysisSoftwareDeveloper
-                (analysisSoftwareDeveloper:ContactRole) (analysisSoftware:AnalysisSoftware)=
-                analysisSoftware.ContactRole <- analysisSoftwareDeveloper
-                analysisSoftware
+                (analysisSoftwareDeveloper:ContactRole) (table:AnalysisSoftware) =
+                table.ContactRole <- analysisSoftwareDeveloper
+                table
+
+            ///Replaces fkAnalysisSoftwareDeveloper of existing object with new one.
+            static member addFKAnalysisSoftwareDeveloper
+                (fkAnalysisSoftwareDeveloper:string) (table:AnalysisSoftware) =
+                table.FKContactRole <- fkAnalysisSoftwareDeveloper
+                table
+
+            ///Replaces softwareName of existing object with new one.
+            static member addSoftwareName
+                (softwareName:CVParam) (table:AnalysisSoftware) =
+                table.SoftwareName <- softwareName
+                table
 
             ///Tries to find a analysisSoftware-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4195,10 +4539,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySoftwareNameValue (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKSoftwareName (dbContext:MzIdentML) (fkSoftwareName:string) =
                 query {
                        for i in dbContext.AnalysisSoftware.Local do
-                           if i.SoftwareName.Value = name
+                           if i.FKSoftwareName=fkSoftwareName
                               then select (i, i.SoftwareName, i.ContactRole)
                       }
                 |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
@@ -4207,7 +4551,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisSoftware do
-                                       if i.SoftwareName.Value = name
+                                       if i.FKSoftwareName=fkSoftwareName
                                           then select (i, i.SoftwareName, i.ContactRole)
                                   }
                             |> Seq.map (fun (analysisSoftware, _, _) -> analysisSoftware)
@@ -4221,12 +4565,12 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisSoftware) (item2:AnalysisSoftware) =
                 item1.Name=item2.Name && item1.URI=item2.URI && item1.Version=item2.Version && 
-                item1.Customizations=item2.Customizations && item1.ContactRole=item2.ContactRole
+                item1.Customizations=item2.Customizations && item1.FKContactRole=item2.FKContactRole
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisSoftware) =
-                    AnalysisSoftwareHandler.tryFindBySoftwareNameValue dbContext item.SoftwareName.Value
+                    AnalysisSoftwareHandler.tryFindByFKSoftwareName dbContext item.FKSoftwareName
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisSoftwareHandler.hasEqualFieldValues organization item with
@@ -4263,29 +4607,29 @@ module InsertStatements =
                               Nullable(DateTime.Now)
                              )
 
-            ///Replaces SampleID of existing object with new one.
-            static member addSample
-                (fkSample:string) (subSample:SubSample) =
-                subSample.SampleID <- fkSample
-                subSample
+            ///Replaces fkSample of existing object with new one.
+            static member addFKSample
+                (fkSample:string) (table:SubSample) =
+                table.FKSample <- fkSample
+                table
 
             ///Tries to find a subSample-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.SubSample.Local do
                            if i.ID=id
-                              then select (i, i.SampleID)
+                              then select i
                       }
-                |> Seq.map (fun (subSample, _) -> subSample)
+                |> Seq.map (fun (subSample) -> subSample)
                 |> (fun subSample -> 
                     if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
                         then 
                             query {
                                    for i in dbContext.SubSample do
                                        if i.ID=id
-                                          then select (i, i.SampleID)
+                                          then select i
                                   }
-                            |> Seq.map (fun (subSample, _) -> subSample)
+                            |> Seq.map (fun (subSample) -> subSample)
                             |> (fun subSample -> if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
                                                     then None
                                                     else Some (subSample.Single())
@@ -4294,22 +4638,22 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindBySampleName (dbContext:MzIdentML) (sampleID:string) =
+            static member tryFindByFKSample (dbContext:MzIdentML) (fkSample:string) =
                 query {
                        for i in dbContext.SubSample.Local do
-                           if i.SampleID=sampleID
-                              then select (i, i.SampleID)
+                           if i.FKSample=fkSample
+                              then select i
                       }
-                |> Seq.map (fun (subSample, _) -> subSample)
+                |> Seq.map (fun (subSample) -> subSample)
                 |> (fun subSample -> 
                     if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
                         then 
                             query {
                                    for i in dbContext.SubSample do
-                                       if i.SampleID=sampleID
-                                          then select (i, i.SampleID)
+                                       if i.FKSample=fkSample
+                                          then select i
                                   }
-                            |> Seq.map (fun (subSample, _) -> subSample)
+                            |> Seq.map (fun (subSample) -> subSample)
                             |> (fun subSample -> if (Seq.exists (fun subSample' -> subSample' <> null) subSample) = false
                                                             then None
                                                             else Some subSample
@@ -4324,7 +4668,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SubSample) =
-                    SubSampleHandler.tryFindBySampleName dbContext item.SampleID
+                    SubSampleHandler.tryFindByFKSample dbContext item.FKSample
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match SubSampleHandler.hasEqualFieldValues organization item with
@@ -4368,58 +4712,58 @@ module InsertStatements =
                            name', 
                            contactRoles', 
                            subSamples', 
-                           details', 
                            fkMzIdentML', 
+                           details', 
                            Nullable(DateTime.Now)
                           )
 
             ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (sample:Sample) =
-                sample.Name <- name
-                sample
+                (name:string) (table:Sample) =
+                table.Name <- name
+                table
 
             ///Adds a contactrole to an existing sample-object.
             static member addContactRole
-                (contactRole:ContactRole) (sample:Sample) =
-                let result = sample.ContactRoles <- addToList sample.ContactRoles contactRole
-                sample
+                (contactRole:ContactRole) (table:Sample) =
+                let result = table.ContactRoles <- addToList table.ContactRoles contactRole
+                table
 
             ///Adds a collection of contactroles to an existing sample-object.
             static member addContactRoles
-                (contactRoles:seq<ContactRole>) (sample:Sample) =
-                let result = sample.ContactRoles <- addCollectionToList sample.ContactRoles contactRoles
-                sample
+                (contactRoles:seq<ContactRole>) (table:Sample) =
+                let result = table.ContactRoles <- addCollectionToList table.ContactRoles contactRoles
+                table
 
             ///Adds a subsample to an existing sample-object.
             static member addSubSample
-                (subSample:SubSample) (sample:Sample) =
-                let result = sample.SubSamples <- addToList sample.SubSamples subSample
-                sample
+                (subSample:SubSample) (table:Sample) =
+                let result = table.SubSamples <- addToList table.SubSamples subSample
+                table
 
             ///Adds a collection of subsamples to an existing sample-object.
             static member addSubSamples
-                (subSamples:seq<SubSample>) (sample:Sample) =
-                let result = sample.SubSamples <- addCollectionToList sample.SubSamples subSamples
-                sample
+                (subSamples:seq<SubSample>) (table:Sample) =
+                let result = table.SubSamples <- addCollectionToList table.SubSamples subSamples
+                table
 
             ///Adds a sampleparam to an existing sample-object.
             static member addDetail
-                (detail:SampleParam) (sample:Sample) =
-                let result = sample.Details <- addToList sample.Details detail
-                sample
+                (detail:SampleParam) (table:Sample) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of sampleparams to an existing sample-object.
             static member addDetails
-                (details:seq<SampleParam>) (sample:Sample) =
-                let result = sample.Details <- addCollectionToList sample.Details details
-                sample
+                (details:seq<SampleParam>) (table:Sample) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new mzIdentML.
+            ///Replaces fkMzIdentML of existing object with new mzIdentML.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (sample:Sample) =
-                let result = sample.MzIdentMLDocumentID <- fkMzIdentML
-                sample
+                (fkMzIdentML:string) (table:Sample) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4474,7 +4818,7 @@ module InsertStatements =
                 item1.ContactRoles=item2.ContactRoles && item1.SubSamples=item2.SubSamples &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
-                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4504,18 +4848,20 @@ module InsertStatements =
             ///Initializes a modification-object with at least all necessary parameters.
             static member init
                 (
-                    details                : seq<ModificationParam>,
-                    ?id                    : string,
-                    ?residues              : string,
-                    ?location              : int,
-                    ?monoIsotopicMassDelta : float,
-                    ?avgMassDelta          : float
+                    details                 : seq<ModificationParam>,
+                    ?id                     : string,
+                    ?residues               : string,
+                    ?location               : int,
+                    ?monoIsotopicMassDelta  : float,
+                    ?avgMassDelta           : float,
+                    ?fkPeptide              : string
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
-                let residues'              = defaultArg residues Unchecked.defaultof<string>
-                let location'              = defaultArg location Unchecked.defaultof<int>
-                let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
-                let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let residues'               = defaultArg residues Unchecked.defaultof<string>
+                let location'               = defaultArg location Unchecked.defaultof<int>
+                let monoIsotopicMassDelta'  = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
+                let avgMassDelta'           = defaultArg avgMassDelta Unchecked.defaultof<float>
+                let fkPeptide'              = defaultArg fkPeptide Unchecked.defaultof<string>
                     
                 new Modification(
                                  id', 
@@ -4523,32 +4869,40 @@ module InsertStatements =
                                  Nullable(location'), 
                                  Nullable(monoIsotopicMassDelta'), 
                                  Nullable(avgMassDelta'), 
-                                 details |> List, Nullable(DateTime.Now)
+                                 fkPeptide',
+                                 details |> List, 
+                                 Nullable(DateTime.Now)
                                 )
 
             ///Replaces residues of existing object with new residues.
             static member addResidues
-                (residues:string) (modification:Modification) =
-                modification.Residues <- residues
-                modification
+                (residues:string) (table:Modification) =
+                table.Residues <- residues
+                table
 
             ///Replaces location of existing object with new location.
             static member addLocation
-                (location:int) (modification:Modification) =
-                modification.Location <- Nullable(location)
-                modification
+                (location:int) (table:Modification) =
+                table.Location <- Nullable(location)
+                table
 
             ///Replaces monoisotopicmassdelta of existing object with new monoisotopicmassdelta.
             static member addMonoIsotopicMassDelta
-                (monoIsotopicMassDelta:float) (modification:Modification) =
-                modification.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
-                modification
+                (monoIsotopicMassDelta:float) (table:Modification) =
+                table.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
+                table
 
             ///Replaces avgmassdelta of existing object with new avgmassdelta.
             static member addAvgMassDelta
-                (avgMassDelta:float) (modification:Modification) =
-                modification.AvgMassDelta <- Nullable(avgMassDelta)
-                modification
+                (avgMassDelta:float) (table:Modification) =
+                table.AvgMassDelta <- Nullable(avgMassDelta)
+                table
+
+            ///Replaces fkPeptide of existing object with new avgmassdelta.
+            static member addFKPeptide
+                (fkPeptide:string) (table:Modification) =
+                table.FKPeptide <- fkPeptide
+                table
 
             ///Tries to find a modification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4600,7 +4954,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Modification) (item2:Modification) =
-                item1.Residues=item2.Residues && item1.Location=item2.Location &&
+                item1.Residues=item2.Residues && item1.Location=item2.Location && 
+                item1.FKPeptide=item2.FKPeptide &&
                 item1.AvgMassDelta=item2.AvgMassDelta && matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -4633,17 +4988,19 @@ module InsertStatements =
             ///Initializes a substitutionmodification-object with at least all necessary parameters.
             static member init
                 (
-                    originalResidue        : string,
-                    replacementResidue     : string,
-                    ?id                    : string,
-                    ?location              : int,
-                    ?monoIsotopicMassDelta : float,
-                    ?avgMassDelta          : float
+                    originalResidue         : string,
+                    replacementResidue      : string,
+                    ?id                     : string,
+                    ?location               : int,
+                    ?monoIsotopicMassDelta  : float,
+                    ?avgMassDelta           : float,
+                    ?fkPeptide              : string
                 ) =
-                let id'                    = defaultArg id (System.Guid.NewGuid().ToString())
-                let location'              = defaultArg location Unchecked.defaultof<int>
-                let monoIsotopicMassDelta' = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
-                let avgMassDelta'          = defaultArg avgMassDelta Unchecked.defaultof<float>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let location'               = defaultArg location Unchecked.defaultof<int>
+                let monoIsotopicMassDelta'  = defaultArg monoIsotopicMassDelta Unchecked.defaultof<float>
+                let avgMassDelta'           = defaultArg avgMassDelta Unchecked.defaultof<float>
+                let fkPeptide'              = defaultArg fkPeptide Unchecked.defaultof<string>
 
                 new SubstitutionModification(
                                              id', 
@@ -4651,27 +5008,34 @@ module InsertStatements =
                                              replacementResidue, 
                                              Nullable(location'), 
                                              Nullable(monoIsotopicMassDelta'), 
-                                             Nullable(avgMassDelta'), 
+                                             Nullable(avgMassDelta'),
+                                             fkPeptide',
                                              Nullable(DateTime.Now)
                                             )
 
-            ///Replaces location of existing object with new location.
+            ///Replaces location of existing object with new one.
             static member addLocation
-                (location:int) (substitutionModification:SubstitutionModification) =
-                substitutionModification.Location <- Nullable(location)
-                substitutionModification
+                (location:int) (table:SubstitutionModification) =
+                table.Location <- Nullable(location)
+                table
 
-            ///Replaces monoisotopicmassdelta of existing object with new monoisotopicmassdelta.
+            ///Replaces monoisotopicmassdelta of existing object with new one.
             static member addMonoIsotopicMassDelta
-                (monoIsotopicMassDelta:float) (substitutionModification:SubstitutionModification) =
-                substitutionModification.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
-                substitutionModification
+                (monoIsotopicMassDelta:float) (table:SubstitutionModification) =
+                table.MonoIsotopicMassDelta <- Nullable(monoIsotopicMassDelta)
+                table
 
-            ///Replaces avgmassdelta of existing object with new avgmassdelta.
+            ///Replaces avgmassdelta of existing object with new one.
             static member addAvgMassDelta
-                (avgMassDelta:float) (substitutionModification:SubstitutionModification) =
-                substitutionModification.AvgMassDelta <- Nullable(avgMassDelta)
-                substitutionModification
+                (avgMassDelta:float) (table:SubstitutionModification) =
+                table.AvgMassDelta <- Nullable(avgMassDelta)
+                table
+
+            ///Replaces fkPeptide of existing object with new one.
+            static member addFKPeptide
+                (fkPeptide:string) (table:SubstitutionModification) =
+                table.FKPeptide <- fkPeptide
+                table
 
             ///Tries to find a substitutionModification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4720,7 +5084,8 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SubstitutionModification) (item2:SubstitutionModification) =
                 item1.OriginalResidue=item2.OriginalResidue && item1.ReplacementResidue=item2.ReplacementResidue &&
-                item1.AvgMassDelta=item2.AvgMassDelta && item1.Location=item2.Location 
+                item1.AvgMassDelta=item2.AvgMassDelta && item1.Location=item2.Location && 
+                item1.FKPeptide=item2.FKPeptide 
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4754,16 +5119,16 @@ module InsertStatements =
                     ?id                        : string,
                     ?name                      : string,                    
                     ?modifications             : seq<Modification>,
-                    ?substitutionModifications : seq<SubstitutionModification>,
-                    ?details                   : seq<PeptideParam>,
-                    ?fkMzIdentML               : string
+                    ?substitutionModifications : seq<SubstitutionModification>,   
+                    ?fkMzIdentML               : string,
+                    ?details                   : seq<PeptideParam>
                 ) =
                 let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                      = defaultArg name Unchecked.defaultof<string>
                 let modifications'             = convertOptionToList modifications
                 let substitutionModifications' = convertOptionToList substitutionModifications
-                let details'                   = convertOptionToList details
                 let fkMzIdentML'               = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let details'                   = convertOptionToList details
 
                 new Peptide(
                             id', 
@@ -4771,12 +5136,12 @@ module InsertStatements =
                             peptideSequence, 
                             modifications', 
                             substitutionModifications', 
-                            details', 
                             fkMzIdentML', 
+                            details', 
                             Nullable(DateTime.Now)
                            )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (peptide:Peptide) =
                 peptide.Name <- name
@@ -4818,10 +5183,10 @@ module InsertStatements =
                 let result = peptide.Details <- addCollectionToList peptide.Details details
                 peptide
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
                 (fkMzIdentML:string) (peptide:Peptide) =
-                let result = peptide.MzIdentMLDocumentID <- fkMzIdentML
+                let result = peptide.FKMzIdentMLDocument <- fkMzIdentML
                 peptide
 
             ///Tries to find a peptide-object in the context and database, based on its primary-key(ID).
@@ -4875,7 +5240,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Peptide) (item2:Peptide) =
                 item1.Name=item2.Name && item1.Modifications=item2.Modifications &&
-                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && matchCVParamBases 
+                item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument && matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
                 item1.SubstitutionModifications=item2.SubstitutionModifications
@@ -4908,38 +5273,47 @@ module InsertStatements =
             ///Initializes a translationtable-object with at least all necessary parameters.
             static member init
                 (
-                    ?id      : string,
-                    ?name    : string,
-                    ?details : seq<TranslationTableParam>
+                    ?id                                 : string,
+                    ?name                               : string,
+                    ?fkSpectrumIdentificationProtocol   : string,
+                    ?details                            : seq<TranslationTableParam>
                 ) =
-                let id'      = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'    = defaultArg name Unchecked.defaultof<string>
-                let details' = convertOptionToList details
+                let id'                                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                               = defaultArg name Unchecked.defaultof<string>
+                let fkSpectrumIdentificationProtocol'   = defaultArg fkSpectrumIdentificationProtocol Unchecked.defaultof<string>
+                let details'                            = convertOptionToList details
                     
                 new TranslationTable(
                                      id', 
-                                     name', 
+                                     name',
+                                     fkSpectrumIdentificationProtocol',
                                      details', 
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (translationTable:TranslationTable) =
-                translationTable.Name <- name
-                translationTable
+                (name:string) (table:TranslationTable) =
+                table.Name <- name
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:TranslationTable) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
+                table
 
             ///Adds a translationtableparam to an existing translationtable-object.
             static member addDetail
-                (detail:TranslationTableParam) (translationTable:TranslationTable) =
-                let result = translationTable.Details <- addToList translationTable.Details detail
-                translationTable
+                (detail:TranslationTableParam) (table:TranslationTable) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of translationtableparams to an existing translationtable-object.
             static member addDetails
-                (details:seq<TranslationTableParam>) (translationTable:TranslationTable) =
-                let result = translationTable.Details <- addCollectionToList translationTable.Details details
-                translationTable
+                (details:seq<TranslationTableParam>) (table:TranslationTable) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a translationTable-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -4991,6 +5365,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:TranslationTable) (item2:TranslationTable) =
+                item1.FKSpectrumIdentificationProtocol=item2.FKSpectrumIdentificationProtocol &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -5023,24 +5398,33 @@ module InsertStatements =
             ///Initializes a measure-object with at least all necessary parameters.
             static member init
                 (
-                    details  : seq<MeasureParam>,
-                    ?id      : string,
-                    ?name    : string 
+                    details                         : seq<MeasureParam>,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?fkSpectrumIdentificationList   : string
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
-                let name' = defaultArg name Unchecked.defaultof<string>
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let fkSpectrumIdentificationList'   = defaultArg fkSpectrumIdentificationList Unchecked.defaultof<string>
                     
                 new Measure(
                             id', 
-                            name', 
+                            name',
+                            fkSpectrumIdentificationList',
                             details |> List, Nullable(DateTime.Now)
                            )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (measure:Measure) =
-                measure.Name <- name
-                measure
+                (name:string) (table:Measure) =
+                table.Name <- name
+                table
+
+            ///Replaces fkSpectrumIdentificationList of existing object with new one.
+            static member addFKSpectrumIdentificationList
+                (fkSpectrumIdentificationList:string) (table:Measure) =
+                table.FKSpectrumIdentificationList <- fkSpectrumIdentificationList
+                table
 
             ///Tries to find a measure-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5092,6 +5476,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member hasEqualFieldValues (item1:Measure) (item2:Measure) =
+                item1.FKSpectrumIdentificationList=item2.FKSpectrumIdentificationList &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -5124,17 +5509,27 @@ module InsertStatements =
             ///Initializes a residue-object with at least all necessary parameters.
             static member init
                 (
-                    code    : string,
-                    mass    : float,
-                    ?id     : string
+                    code            : string,
+                    mass            : float,
+                    ?id             : string,
+                    ?fkMassTable    : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkMassTable'    = defaultArg fkMassTable Unchecked.defaultof<string>
+
                 new Residue(
                             id', 
                             code, 
-                            Nullable(mass), 
+                            Nullable(mass),
+                            fkMassTable',
                             Nullable(DateTime.Now)
                            )
+
+            ///Replaces fkMassTable of existing object with new one.
+            static member addFKMassTable
+                (fkMassTable:string) (table:Residue) =
+                table.FKMassTable <- fkMassTable
+                table
 
             ///Tries to find a residue-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5183,7 +5578,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Residue) (item2:Residue) =
-                item1.Mass=item2.Mass
+                item1.Mass=item2.Mass && item1.FKMassTable=item2.FKMassTable
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5212,18 +5607,27 @@ module InsertStatements =
         type AmbiguousResidueHandler =
             static member init
                 (
-                    code    : string,
-                    details : seq<AmbiguousResidueParam>,
-                    ?id     : string
+                    code            : string,
+                    details         : seq<AmbiguousResidueParam>,
+                    ?id             : string,
+                    ?fkMassTable    : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkMassTable'    = defaultArg fkMassTable Unchecked.defaultof<string>
                     
                 new AmbiguousResidue(
                                      id', 
-                                     code, 
+                                     code,
+                                     fkMassTable',
                                      details |> List, 
                                      Nullable(DateTime.Now)
                                     )
+
+            ///Replaces fkMassTable of existing object with new one.
+            static member addFKMassTable
+                (fkMassTable:string) (table:AmbiguousResidue) =
+                table.FKMassTable <- fkMassTable
+                table
 
             ///Tries to find a ambiguousResidue-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5330,47 +5734,47 @@ module InsertStatements =
                               Nullable(DateTime.Now)
                              )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (massTable:MassTable) =
-                massTable.Name <- name
-                massTable
+                (name:string) (table:MassTable) =
+                table.Name <- name
+                table
 
             ///Adds a residue to an existing masstable-object.
             static member addResidue
-                (residue:Residue) (massTable:MassTable) =
-                let result = massTable.Residues <- addToList massTable.Residues residue
-                massTable
+                (residue:Residue) (table:MassTable) =
+                let result = table.Residues <- addToList table.Residues residue
+                table
 
             ///Adds a collection of residues to an existing masstable-object.
             static member addResidues
-                (residues:seq<Residue>) (massTable:MassTable) =
-                let result = massTable.Residues <- addCollectionToList massTable.Residues residues
-                massTable
+                (residues:seq<Residue>) (table:MassTable) =
+                let result = table.Residues <- addCollectionToList table.Residues residues
+                table
 
             ///Adds a ambiguousresidue to an existing masstable-object.
             static member addAmbiguousResidue
-                (ambiguousResidues:AmbiguousResidue) (massTable:MassTable) =
-                let result = massTable.AmbiguousResidues <- addToList massTable.AmbiguousResidues ambiguousResidues
-                massTable
+                (ambiguousResidues:AmbiguousResidue) (table:MassTable) =
+                let result = table.AmbiguousResidues <- addToList table.AmbiguousResidues ambiguousResidues
+                table
 
             ///Adds a collection of ambiguousresidues to an existing masstable-object.
             static member addAmbiguousResidues
-                (ambiguousResidues:seq<AmbiguousResidue>) (massTable:MassTable) =
-                let result = massTable.AmbiguousResidues <- addCollectionToList massTable.AmbiguousResidues ambiguousResidues
-                massTable
+                (ambiguousResidues:seq<AmbiguousResidue>) (table:MassTable) =
+                let result = table.AmbiguousResidues <- addCollectionToList table.AmbiguousResidues ambiguousResidues
+                table
 
             ///Adds a masstableparam to an existing masstable-object.
             static member addDetail
-                (detail:MassTableParam) (massTable:MassTable) =
-                let result = massTable.Details <- addToList massTable.Details detail
-                massTable
+                (detail:MassTableParam) (table:MassTable) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of masstableparams to an existing masstable-object.
             static member addDetails
-                (details:seq<MassTableParam>) (massTable:MassTable) =
-                let result = massTable.Details <- addCollectionToList massTable.Details details
-                massTable
+                (details:seq<MassTableParam>) (table:MassTable) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a massTable-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5422,6 +5826,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:MassTable) (item2:MassTable) =
+                item1.MSLevel=item2.MSLevel &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -5450,110 +5855,128 @@ module InsertStatements =
                 MassTableHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
 
-        type ValueHandler =
-            ///Initializes a value-object with at least all necessary parameters.
-            static member init
-                (
-                    value   : float,
-                    ?id     : string
-                ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+        //type ValueHandler =
+        //    ///Initializes a value-object with at least all necessary parameters.
+        //    static member init
+        //        (
+        //            value   : float,
+        //            ?id     : string
+        //        ) =
+        //        let id' = defaultArg id (System.Guid.NewGuid().ToString())
                     
-                new Value(
-                          id', 
-                          Nullable(value), 
-                          Nullable(DateTime.Now)
-                         )
+        //        new Value(
+        //                  id', 
+        //                  Nullable(value), 
+        //                  Nullable(DateTime.Now)
+        //                 )
 
-            //Tries to find a value-object in the context and database, based on its primary-key(ID).
-            static member tryFindByID (dbContext:MzIdentML) (id:string) =
-                query {
-                       for i in dbContext.Value.Local do
-                           if i.ID=id
-                              then select i
-                      }
-                |> (fun value -> 
-                    if (Seq.exists (fun value' -> value' <> null) value) = false
-                        then 
-                            query {
-                                   for i in dbContext.Value do
-                                       if i.ID=id
-                                          then select i
-                                  }
-                            |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
-                                                then None
-                                                else Some (value.Single())
-                               )
-                        else Some (value.Single())
-                   )
+        //    //Tries to find a value-object in the context and database, based on its primary-key(ID).
+        //    static member tryFindByID (dbContext:MzIdentML) (id:string) =
+        //        query {
+        //               for i in dbContext.Value.Local do
+        //                   if i.ID=id
+        //                      then select i
+        //              }
+        //        |> (fun value -> 
+        //            if (Seq.exists (fun value' -> value' <> null) value) = false
+        //                then 
+        //                    query {
+        //                           for i in dbContext.Value do
+        //                               if i.ID=id
+        //                                  then select i
+        //                          }
+        //                    |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
+        //                                        then None
+        //                                        else Some (value.Single())
+        //                       )
+        //                else Some (value.Single())
+        //           )
 
-            ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByValue (dbContext:MzIdentML) (item:Nullable<float>) =
-                query {
-                       for i in dbContext.Value.Local do
-                           if i.Value=item
-                              then select i
-                      }
-                |> (fun value -> 
-                    if (Seq.exists (fun value' -> value' <> null) value) = false
-                        then 
-                            query {
-                                   for i in dbContext.Value do
-                                       if i.Value=item
-                                          then select i
-                                  }
-                            |> Seq.map (fun (value) -> value)
-                            |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
-                                                            then None
-                                                            else Some value
-                               )
-                        else Some value
-                   )
+        //    ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
+        //    static member tryFindByValue (dbContext:MzIdentML) (item:Nullable<float>) =
+        //        query {
+        //               for i in dbContext.Value.Local do
+        //                   if i.Value=item
+        //                      then select i
+        //              }
+        //        |> (fun value -> 
+        //            if (Seq.exists (fun value' -> value' <> null) value) = false
+        //                then 
+        //                    query {
+        //                           for i in dbContext.Value do
+        //                               if i.Value=item
+        //                                  then select i
+        //                          }
+        //                    |> Seq.map (fun (value) -> value)
+        //                    |> (fun value -> if (Seq.exists (fun value' -> value' <> null) value) = false
+        //                                                    then None
+        //                                                    else Some value
+        //                       )
+        //                else Some value
+        //           )
 
-            ///Checks whether all other fields of the current object and context object have the same values or not.
-            static member private hasEqualFieldValues (item1:Value) (item2:Value) =
-                item1.ID = item2.ID
+        //    ///Checks whether all other fields of the current object and context object have the same values or not.
+        //    static member private hasEqualFieldValues (item1:Value) (item2:Value) =
+        //        item1.ID = item2.ID
 
-            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-            ///If no entry exists, a new object is added to the context and otherwise does nothing.
-            static member addToContext (dbContext:MzIdentML) (item:Value) =
-                    ValueHandler.tryFindByValue dbContext item.Value
-                    |> (fun organizationCollection -> match organizationCollection with
-                                                      |Some x -> x
-                                                                 |> Seq.map (fun organization -> match ValueHandler.hasEqualFieldValues organization item with
-                                                                                                 |true -> true
-                                                                                                 |false -> false
-                                                                            )
-                                                                            |> (fun collection -> 
-                                                                                 if Seq.contains true collection=true
-                                                                                    then None
-                                                                                    else Some(dbContext.Add item)
-                                                                               )
-                                                      |None -> Some(dbContext.Add item)
-                       )
+        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+        //    ///If no entry exists, a new object is added to the context and otherwise does nothing.
+        //    static member addToContext (dbContext:MzIdentML) (item:Value) =
+        //            ValueHandler.tryFindByValue dbContext item.Value
+        //            |> (fun organizationCollection -> match organizationCollection with
+        //                                              |Some x -> x
+        //                                                         |> Seq.map (fun organization -> match ValueHandler.hasEqualFieldValues organization item with
+        //                                                                                         |true -> true
+        //                                                                                         |false -> false
+        //                                                                    )
+        //                                                                    |> (fun collection -> 
+        //                                                                         if Seq.contains true collection=true
+        //                                                                            then None
+        //                                                                            else Some(dbContext.Add item)
+        //                                                                       )
+        //                                              |None -> Some(dbContext.Add item)
+        //               )
 
-            ///First checks if any object with same field-values (except primary key) exists within the context or database. 
-            ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
-            static member addToContextAndInsert (dbContext:MzIdentML) (item:Value) =
-                ValueHandler.addToContext dbContext item |> ignore
-                dbContext.SaveChanges()
+        //    ///First checks if any object with same field-values (except primary key) exists within the context or database. 
+        //    ///If no entry exists, a new object is first added to the context and then to the database and otherwise does nothing.
+        //    static member addToContextAndInsert (dbContext:MzIdentML) (item:Value) =
+        //        ValueHandler.addToContext dbContext item |> ignore
+        //        dbContext.SaveChanges()
 
         type FragmentArrayHandler =
             ///Initializes a fragmentarray-object with at least all necessary parameters.
             static member init
                 (
-                    measure  : Measure,
-                    value    : float,
-                    ?id      : string
+                    fkMeasure   : string,
+                    value       : float,
+                    ?id         : string,
+                    ?measure    : Measure,
+                    ?fkIonType  : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
-                    
+                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
+                let measure'    = defaultArg measure Unchecked.defaultof<Measure>
+                let fkIonType'  = defaultArg fkIonType Unchecked.defaultof<string>
+
                 new FragmentArray(
                                   id', 
-                                  measure, 
-                                  Nullable(value), 
+                                  measure',
+                                  fkMeasure,
+                                  Nullable(value),
+                                  fkIonType',
                                   Nullable(DateTime.Now)
                                  )
+
+            ///Replaces measure of existing object with new one.
+            static member addMeasure
+                (measure:Measure) (table:FragmentArray) =
+                table.Measure <- measure
+                table
+
+            ///Replaces fkIonType of existing object with new one.
+            static member addFKIonType
+                (fkIonType:string) (table:FragmentArray) =
+                table.FKIonType <- fkIonType
+                table
 
             ///Tries to find a fragmentArray-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5605,7 +6028,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:FragmentArray) (item2:FragmentArray) =
-                item1.Measure=item2.Measure
+                item1.FKMeasure=item2.FKMeasure && item1.FKIonType=item2.FKIonType
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -5635,16 +6058,25 @@ module InsertStatements =
             ///Initializes a index-object with at least all necessary parameters.
             static member init
                 (
-                    index : int,
-                    ?id   : string
+                    index       : int,
+                    ?id         : string,
+                    ?fkIonType  : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkIonType'  = defaultArg fkIonType Unchecked.defaultof<string>
 
                 new Index(
                           id', 
-                          Nullable(index), 
+                          Nullable(index),
+                          fkIonType',
                           Nullable(DateTime.Now)
                          )
+
+            ///Replaces fkIonType of existing object with new one.
+            static member addFKIonType
+                (fkIonType:string) (table:Index) =
+                table.FKIonType <- fkIonType
+                table
 
             ///Tries to find a index-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5669,10 +6101,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByIndexItem (dbContext:MzIdentML) (item:Nullable<int>) =
+            static member tryFindByFKIonType (dbContext:MzIdentML) (fkIonType:string) =
                 query {
                        for i in dbContext.Index.Local do
-                           if i.Index=item
+                           if i.FKIonType=fkIonType
                               then select i
                       }
                 |> (fun index -> 
@@ -5680,7 +6112,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Index do
-                                       if i.Index=item
+                                       if i.FKIonType=fkIonType
                                           then select i
                                   }
                             |> Seq.map (fun (index) -> index)
@@ -5693,12 +6125,12 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Index) (item2:Index) =
-                item1.ID = item2.ID
+                item1.Index=item2.Index
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Index) =
-                    IndexHandler.tryFindByIndexItem dbContext item.Index
+                    IndexHandler.tryFindByFKIonType dbContext item.FKIonType
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IndexHandler.hasEqualFieldValues organization item with
@@ -5723,45 +6155,54 @@ module InsertStatements =
             ///Initializes a iontype-object with at least all necessary parameters.
             static member init
                 (
-                    details        : seq<IonTypeParam>,
-                    ?id            : string,
-                    ?index         : seq<Index>,
-                    ?fragmentArray : seq<FragmentArray>
+                    details                         : seq<IonTypeParam>,
+                    ?id                             : string,
+                    ?index                          : seq<Index>,
+                    ?fragmentArray                  : seq<FragmentArray>,
+                    ?fkSpectrumIdentificationItem   : string
                 ) =
-                let id'            = defaultArg id (System.Guid.NewGuid().ToString())
-                let index'         = convertOptionToList index
-                let fragmentArray' = convertOptionToList fragmentArray
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let index'                          = convertOptionToList index
+                let fragmentArray'                  = convertOptionToList fragmentArray
+                let fkSpectrumIdentificationItem'   = defaultArg fkSpectrumIdentificationItem Unchecked.defaultof<string>
                     
                 new IonType(
                             id', 
                             index', 
-                            fragmentArray', 
+                            fragmentArray',
+                            fkSpectrumIdentificationItem',
                             details |> List, Nullable(DateTime.Now)
                            )
 
             ///Adds a index to an existing iontype-object.
             static member addIndex
-                (index:Index) (ionType:IonType) =
-                let result = ionType.Index <- addToList ionType.Index index
-                ionType
+                (index:Index) (table:IonType) =
+                let result = table.Index <- addToList table.Index index
+                table
 
             ///Adds a collection of indexes to an existing iontype-object.
             static member addIndexes
-                (index:seq<Index>) (ionType:IonType) =
-                let result = ionType.Index <- addCollectionToList ionType.Index index
-                ionType
+                (index:seq<Index>) (table:IonType) =
+                let result = table.Index <- addCollectionToList table.Index index
+                table
 
             ///Adds a fragmentarray to an existing iontype-object.
             static member addFragmentArray
-                (fragmentArray:FragmentArray) (ionType:IonType) =
-                let result = ionType.FragmentArrays <- addToList ionType.FragmentArrays fragmentArray
-                ionType
+                (fragmentArray:FragmentArray) (table:IonType) =
+                let result = table.FragmentArrays <- addToList table.FragmentArrays fragmentArray
+                table
 
             ///Adds a collection of fragmentarrays to an existing iontype-object.
             static member addFragmentArrays
-                (fragmentArrays:seq<FragmentArray>) (ionType:IonType) =
-                let result = ionType.FragmentArrays <- addCollectionToList ionType.FragmentArrays fragmentArrays
-                ionType
+                (fragmentArrays:seq<FragmentArray>) (table:IonType) =
+                let result = table.FragmentArrays <- addCollectionToList table.FragmentArrays fragmentArrays
+                table
+
+            ///Replaces fkSpectrumIdentificationItem of existing object with new one.
+            static member addFKSpectrumIdentificationItem
+                (fkSpectrumIdentificationItem:string) (table:IonType) =
+                table.FKSpectrumIdentificationItem <- fkSpectrumIdentificationItem
+                table
 
             ///Tries to find a ionType-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5788,10 +6229,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByDetails (dbContext:MzIdentML) (details:seq<IonTypeParam>) =
+            static member tryFindByFKSpectrumIdentificationItem (dbContext:MzIdentML) (fkSpectrumIdentificationItem:string) =
                 query {
                        for i in dbContext.IonType.Local do
-                           if i.Details=(details |> List)
+                           if i.FKSpectrumIdentificationItem=fkSpectrumIdentificationItem
                               then select (i, i.FragmentArrays, i.Details)
                       }
                 |> Seq.map (fun (ionType, _, _) -> ionType)
@@ -5800,7 +6241,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.IonType do
-                                       if i.Details=(details |> List)
+                                       if i.FKSpectrumIdentificationItem=fkSpectrumIdentificationItem
                                           then select (i, i.FragmentArrays, i.Details)
                                   }
                             |> Seq.map (fun (ionType, _, _) -> ionType)
@@ -5813,12 +6254,14 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:IonType) (item2:IonType) =
-                item1.ID = item2.ID
+                matchCVParamBases 
+                    (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
+                    (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:IonType) =
-                    IonTypeHandler.tryFindByDetails dbContext item.Details
+                    IonTypeHandler.tryFindByFKSpectrumIdentificationItem dbContext item.FKSpectrumIdentificationItem
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match IonTypeHandler.hasEqualFieldValues organization item with
@@ -5843,37 +6286,65 @@ module InsertStatements =
             ///Initializes a spectradata-object with at least all necessary parameters.
             static member init
                 ( 
-                    location                     : string,
-                    fileFormat                   : CVParam,
-                    spectrumIDFormat             : CVParam,
-                    ?id                          : string,
-                    ?name                        : string,
-                    ?externalFormatDocumentation : string
+                    location                        : string,
+                    fkFileFormat                    : string,
+                    fkSpectrumIDFormat              : string,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?externalFormatDocumentation    : string,
+                    ?fileFormat                     : CVParam,
+                    ?spectrumIDFormat               : CVParam,
+                    ?fkInputs                       : string
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                        = defaultArg name Unchecked.defaultof<string>
-                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let externalFormatDocumentation'    = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let fileFormat'                     = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let spectrumIDFormat'               = defaultArg spectrumIDFormat Unchecked.defaultof<CVParam>
+                let fkInputs'                       = defaultArg fkInputs Unchecked.defaultof<string>
 
                 new SpectraData(
                                 id', 
                                 name', 
                                 location, 
                                 externalFormatDocumentation', 
-                                fileFormat, spectrumIDFormat, 
+                                fileFormat',
+                                fkFileFormat,
+                                spectrumIDFormat',
+                                fkSpectrumIDFormat,
+                                fkInputs',
                                 Nullable(DateTime.Now)
                                )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces existing with new one.
             static member addName
-                (name:string) (spectraData:SpectraData) =
-                spectraData.Name <- name
-                spectraData
+                (name:string) (table:SpectraData) =
+                table.Name <- name
+                table
 
-            ///Replaces name of externalformatdocumentation object with new externalformatdocumentation.
+            ///Replaces externalformatdocumentation with new one.
             static member addExternalFormatDocumentation
-                (externalFormatDocumentation:string) (spectraData:SpectraData) =
-                spectraData.ExternalFormatDocumentation <- externalFormatDocumentation
-                spectraData
+                (externalFormatDocumentation:string) (table:SpectraData) =
+                table.ExternalFormatDocumentation <- externalFormatDocumentation
+                table
+
+            ///Replaces fileFormat object with new one.
+            static member addFileFormat
+                (fileFormat:CVParam) (table:SpectraData) =
+                table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkSpectrumIDFormat with new one.
+            static member addSpectrumIDFormat
+                (fkSpectrumIDFormat:CVParam) (table:SpectraData) =
+                table.SpectrumIDFormat <- fkSpectrumIDFormat
+                table
+
+            ///Replaces fkInputs with new one.
+            static member addFKInputs
+                (fkInputs:string) (table:SpectraData) =
+                table.FKInputs <- fkInputs
+                table
 
             ///Tries to find a spectraData-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -5925,7 +6396,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectraData) (item2:SpectraData) =
-                item1.ID = item2.ID
+                item1.FKSpectrumIDFormat = item2.FKSpectrumIDFormat &&
+                item1.FKFileFormat = item2.FKFileFormat && item1.FKInputs = item2.FKInputs
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6022,15 +6494,16 @@ module InsertStatements =
             ///Initializes a searchmodification-object with at least all necessary parameters.
             static member init
                 ( 
-                    fixedMod          : bool,
-                    massDelta         : float,
-                    residues          : string,
-                    details           : seq<SearchModificationParam>,
-                    ?id               : string,
-                    ?specificityRules : seq<SpecificityRuleParam>
+                    fixedMod                            : bool,
+                    massDelta                           : float,
+                    residues                            : string,
+                    fkSpectrumIdentificationProtocol    : string,
+                    details                             : seq<SearchModificationParam>,
+                    ?id                                 : string,
+                    ?specificityRules                   : seq<SpecificityRuleParam>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                let specificityRules' = convertOptionToList specificityRules
+                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let specificityRules'   = convertOptionToList specificityRules
                     
                 new SearchModification(
                                        id', 
@@ -6038,20 +6511,22 @@ module InsertStatements =
                                        Nullable(massDelta), 
                                        residues, 
                                        specificityRules', 
-                                       details |> List, Nullable(DateTime.Now)
+                                       fkSpectrumIdentificationProtocol,
+                                       details |> List, 
+                                       Nullable(DateTime.Now)
                                       )
 
             ///Adds a specificityruleparam to an existing searchmodification-object.
             static member addSpecificityRule
-                (specificityRule:SpecificityRuleParam) (searchModification:SearchModification) =
-                let result = searchModification.SpecificityRules <- addToList searchModification.SpecificityRules specificityRule
-                searchModification
+                (specificityRule:SpecificityRuleParam) (table:SearchModification) =
+                let result = table.SpecificityRules <- addToList table.SpecificityRules specificityRule
+                table
 
             ///Adds a collection of specificityruleparams to an existing searchmodification-object.
             static member addSpecificityRules
-                (specificityRules:seq<SpecificityRuleParam>) (searchModification:SearchModification) =
-                let result = searchModification.SpecificityRules <- addCollectionToList searchModification.SpecificityRules specificityRules
-                searchModification
+                (specificityRules:seq<SpecificityRuleParam>) (table:SearchModification) =
+                let result = table.SpecificityRules <- addCollectionToList table.SpecificityRules specificityRules
+                table
 
             ///Tries to find a searchModification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6104,7 +6579,9 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SearchModification) (item2:SearchModification) =
                 item1.FixedMod=item2.FixedMod && item1.Residues=item2.Residues && item1.Residues=item2.Residues &&
-                item1.SpecificityRules=item2.SpecificityRules && matchCVParamBases 
+                item1.SpecificityRules=item2.SpecificityRules && 
+                item1.FKSpectrumIdentificationProtocol=item2.FKSpectrumIdentificationProtocol &&
+                matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
@@ -6136,25 +6613,27 @@ module InsertStatements =
             ///Initializes a enzyme-object with at least all necessary parameters.
             static member init
                 (
-                    ?id              : string,
-                    ?name            : string,
-                    ?cTermGain       : string,
-                    ?nTermGain       : string,
-                    ?minDistance     : int,
-                    ?missedCleavages : int,
-                    ?semiSpecific    : bool,
-                    ?siteRegexc      : string,
-                    ?enzymeName      : seq<EnzymeNameParam>
+                    ?id                                 : string,
+                    ?name                               : string,
+                    ?cTermGain                          : string,
+                    ?nTermGain                          : string,
+                    ?minDistance                        : int,
+                    ?missedCleavages                    : int,
+                    ?semiSpecific                       : bool,
+                    ?siteRegexc                         : string,
+                    ?enzymeName                         : seq<EnzymeNameParam>,
+                    ?fkSpectrumIdentificationProtocol   : string
                 ) =
-                let id'              = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'            = defaultArg name Unchecked.defaultof<string>
-                let cTermGain'       = defaultArg cTermGain Unchecked.defaultof<string>
-                let nTermGain'       = defaultArg nTermGain Unchecked.defaultof<string>
-                let minDistance'     = defaultArg minDistance Unchecked.defaultof<int>
-                let missedCleavages' = defaultArg missedCleavages Unchecked.defaultof<int>
-                let semiSpecific'    = defaultArg semiSpecific Unchecked.defaultof<bool>
-                let siteRegexc'      = defaultArg siteRegexc Unchecked.defaultof<string>
-                let enzymeName'      = convertOptionToList enzymeName
+                let id'                                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                               = defaultArg name Unchecked.defaultof<string>
+                let cTermGain'                          = defaultArg cTermGain Unchecked.defaultof<string>
+                let nTermGain'                          = defaultArg nTermGain Unchecked.defaultof<string>
+                let minDistance'                        = defaultArg minDistance Unchecked.defaultof<int>
+                let missedCleavages'                    = defaultArg missedCleavages Unchecked.defaultof<int>
+                let semiSpecific'                       = defaultArg semiSpecific Unchecked.defaultof<bool>
+                let siteRegexc'                         = defaultArg siteRegexc Unchecked.defaultof<string>
+                let enzymeName'                         = convertOptionToList enzymeName
+                let fkSpectrumIdentificationProtocol'   = defaultArg fkSpectrumIdentificationProtocol Unchecked.defaultof<string>
                     
                 new Enzyme(
                            id', 
@@ -6165,63 +6644,70 @@ module InsertStatements =
                            Nullable(missedCleavages'), 
                            Nullable(semiSpecific'), 
                            siteRegexc', 
-                           enzymeName', 
+                           enzymeName',
+                           fkSpectrumIdentificationProtocol',
                            Nullable(DateTime.Now)
                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (enzyme:Enzyme) =
-                enzyme.Name <- name
-                enzyme
+                (name:string) (table:Enzyme) =
+                table.Name <- name
+                table
 
-            ///Replaces ctermgain of existing object with new ctermgain.
+            ///Replaces ctermgain of existing object with new one.
             static member addCTermGain
-                (cTermGain:string) (enzyme:Enzyme) =
-                enzyme.CTermGain <- cTermGain
-                enzyme
+                (cTermGain:string) (table:Enzyme) =
+                table.CTermGain <- cTermGain
+                table
 
-            ///Replaces ntermgain of existing object with new ntermgain.
+            ///Replaces ntermgain of existing object with new one.
             static member addNTermGain
-                (nTermGain:string) (enzyme:Enzyme) =
-                enzyme.NTermGain <- nTermGain
-                enzyme
+                (nTermGain:string) (table:Enzyme) =
+                table.NTermGain <- nTermGain
+                table
 
-            ///Replaces mindistance of existing object with new mindistance.
+            ///Replaces mindistance of existing object with new one.
             static member addMinDistance
-                (minDistance:int) (enzyme:Enzyme) =
-                enzyme.MinDistance <- Nullable(minDistance)
-                enzyme
+                (minDistance:int) (table:Enzyme) =
+                table.MinDistance <- Nullable(minDistance)
+                table
 
-            ///Replaces missedcleavages of existing object with new missedcleavages.
+            ///Replaces missedcleavages of existing object with new one.
             static member addMissedCleavages
-                (missedCleavages:int) (enzyme:Enzyme) =
-                enzyme.MissedCleavages <-Nullable( missedCleavages)
-                enzyme
+                (missedCleavages:int) (table:Enzyme) =
+                table.MissedCleavages <-Nullable( missedCleavages)
+                table
 
-            ///Replaces semispecific of existing object with new semispecific.
+            ///Replaces semispecific of existing object with new one.
             static member addSemiSpecific
-                (semiSpecific:bool) (enzyme:Enzyme) =
-                enzyme.SemiSpecific <- Nullable(semiSpecific)
-                enzyme
+                (semiSpecific:bool) (table:Enzyme) =
+                table.SemiSpecific <- Nullable(semiSpecific)
+                table
 
-            ///Replaces siteregexc of existing object with new siteregexc.
+            ///Replaces siteregexc of existing object with new one.
             static member addSiteRegexc
-                (siteRegexc:string) (enzyme:Enzyme) =
-                enzyme.SiteRegexc <- siteRegexc
-                enzyme
+                (siteRegexc:string) (table:Enzyme) =
+                table.SiteRegexc <- siteRegexc
+                table
 
             ///Adds new enzymename to collection of enzymenames.
             static member addEnzymeName
-                (enzymeName:EnzymeNameParam) (enzyme:Enzyme) =
-                let result = enzyme.EnzymeName <- addToList enzyme.EnzymeName enzymeName
-                enzyme
+                (enzymeName:EnzymeNameParam) (table:Enzyme) =
+                let result = table.EnzymeName <- addToList table.EnzymeName enzymeName
+                table
 
             ///Add new collection of enzymenames to collection of enzymenames.
             static member addEnzymeNames
-                (enzymeNames:seq<EnzymeNameParam>) (enzyme:Enzyme) =
-                let result = enzyme.EnzymeName <- addCollectionToList enzyme.EnzymeName enzymeNames
-                enzyme
+                (enzymeNames:seq<EnzymeNameParam>) (table:Enzyme) =
+                let result = table.EnzymeName <- addCollectionToList table.EnzymeName enzymeNames
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:Enzyme) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
+                table
 
             ///Tries to find a enzyme-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6275,7 +6761,8 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:Enzyme) (item2:Enzyme) =
                 item1.CTermGain=item2.CTermGain && item1.NTermGain=item2.NTermGain && item1.MinDistance=item2.MinDistance &&
                 item1.MissedCleavages=item2.MissedCleavages && item1.SemiSpecific=item2.SemiSpecific &&
-                item1.SiteRegexc=item2.SiteRegexc && item1.EnzymeName=item2.EnzymeName
+                item1.SiteRegexc=item2.SiteRegexc && item1.EnzymeName=item2.EnzymeName &&
+                item1.FKSpectrumIdentificationProtocol=item2.FKSpectrumIdentificationProtocol
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6305,46 +6792,64 @@ module InsertStatements =
             ///Initializes a filter-object with at least all necessary parameters.
             static member init
                 (
-                    filterType : CVParam,
-                    ?id        : string,
-                    ?includes  : seq<IncludeParam>,
-                    ?excludes  : seq<ExcludeParam>
+                    fkFilterType                        : string,
+                    ?id                                 : string,
+                    ?filterType                         : CVParam,
+                    ?includes                           : seq<IncludeParam>,
+                    ?excludes                           : seq<ExcludeParam>,
+                    ?fkSpectrumIdentificationProtocol   : string
                 ) =
-                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
-                let includes'   = convertOptionToList includes
-                let excludes'   = convertOptionToList excludes
+                let id'                                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let filterType'                         = defaultArg filterType Unchecked.defaultof<CVParam>
+                let includes'                           = convertOptionToList includes
+                let excludes'                           = convertOptionToList excludes
+                let fkSpectrumIdentificationProtocol'   = defaultArg fkSpectrumIdentificationProtocol Unchecked.defaultof<string>
                     
                 new Filter(
                            id', 
-                           filterType, 
+                           filterType',
+                           fkFilterType,
                            includes', 
-                           excludes', 
+                           excludes',
+                           fkSpectrumIdentificationProtocol',
                            Nullable(DateTime.Now)
                           )
 
             ///Adds a includeparam to an existing filter-object.
             static member addInclude
-                (include':IncludeParam) (filter:Filter) =
-                let result = filter.Includes <- addToList filter.Includes include'
-                filter
+                (include':IncludeParam) (table:Filter) =
+                let result = table.Includes <- addToList table.Includes include'
+                table
 
             ///Adds a collection of includeparams to an existing filter-object.
             static member addIncludes
-                (includes:seq<IncludeParam>) (filter:Filter) =
-                let result = filter.Includes <- addCollectionToList filter.Includes includes
-                filter
+                (includes:seq<IncludeParam>) (table:Filter) =
+                let result = table.Includes <- addCollectionToList table.Includes includes
+                table
 
             ///Adds a excludeparam to an existing filter-object.
             static member addExclude
-                (exclude':ExcludeParam) (filter:Filter) =
-                let result = filter.Excludes <- addToList filter.Excludes exclude'
-                filter
+                (exclude':ExcludeParam) (table:Filter) =
+                let result = table.Excludes <- addToList table.Excludes exclude'
+                table
 
             ///Adds a collection of excludeparams to an existing filter-object.
             static member addExcludes
-                (excludes:seq<ExcludeParam>) (filter:Filter) =
-                let result = filter.Excludes <- addCollectionToList filter.Excludes excludes
-                filter
+                (excludes:seq<ExcludeParam>) (table:Filter) =
+                let result = table.Excludes <- addCollectionToList table.Excludes excludes
+                table
+
+            ///Replaces filterType of existing object with new one.
+            static member addFilterType
+                (filterType:CVParam) (table:Filter) =
+                table.FilterType <- filterType
+                table
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:Filter) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
+                table
 
             ///Tries to find a filter-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6371,10 +6876,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByTermName (dbContext:MzIdentML) (name:string) =
+            static member tryFindByFKSpectrumIdentificationProtocol (dbContext:MzIdentML) (fkFilterType:string) =
                 query {
                        for i in dbContext.Filter.Local do
-                           if i.FilterType.Term.Name=name
+                           if i.FKFilterType=fkFilterType
                               then select (i, i.FilterType, i.Includes, i.Excludes)
                       }
                 |> Seq.map (fun (filter, _, _, _) -> filter)
@@ -6383,7 +6888,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.Filter do
-                                       if i.FilterType.Term.Name=name
+                                       if i.FKFilterType=fkFilterType
                                           then select (i, i.FilterType, i.Includes, i.Excludes)
                                   }
                             |> Seq.map (fun (filter, _, _, _) -> filter)
@@ -6396,12 +6901,13 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Filter) (item2:Filter) =
-                item1.Includes=item2.Includes && item1.Excludes=item2.Excludes
+                item1.Includes=item2.Includes && item1.Excludes=item2.Excludes &&
+                item1.FKSpectrumIdentificationProtocol=item2.FKSpectrumIdentificationProtocol
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:Filter) =
-                    FilterHandler.tryFindByTermName dbContext item.FilterType.Term.Name
+                    FilterHandler.tryFindByFKSpectrumIdentificationProtocol dbContext item.FilterType.Term.Name
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match FilterHandler.hasEqualFieldValues organization item with
@@ -6426,16 +6932,25 @@ module InsertStatements =
             ///Initializes a frame-object with at least all necessary parameters.
             static member init
                 ( 
-                    frame : int,
-                    ?id   : string
+                    frame                               : int,
+                    ?id                                 : string,
+                    ?fkSpectrumIdentificationProtocol   : string
                 ) =
-                let id'   = defaultArg id (System.Guid.NewGuid().ToString())
+                let id'                                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let fkSpectrumIdentificationProtocol'   = defaultArg fkSpectrumIdentificationProtocol Unchecked.defaultof<string>
                     
                 new Frame(
                           id', 
-                          Nullable(frame), 
+                          Nullable(frame),
+                          fkSpectrumIdentificationProtocol',
                           Nullable(DateTime.Now)
                          )
+
+            ///Replaces fkSpectrumIdentificationProtocol of existing object with new one.
+            static member addFKSpectrumIdentificationProtocol
+                (fkSpectrumIdentificationProtocol:string) (table:Frame) =
+                table.FKSpectrumIdentificationProtocol <- fkSpectrumIdentificationProtocol
+                table
 
             ///Tries to find a frame-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6484,7 +6999,7 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Frame) (item2:Frame) =
-                item1.ID = item2.ID
+                item1.FKSpectrumIdentificationProtocol = item2.FKSpectrumIdentificationProtocol
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6514,11 +7029,13 @@ module InsertStatements =
             ///Initializes a spectrumidentificationprotocol-object with at least all necessary parameters.
             static member init
                 (
-                    analysisSoftware        : AnalysisSoftware,
-                    searchType              : CVParam ,
+                    fkAnalysisSoftware      : string,
+                    fkSearchType            : string,
                     threshold               : seq<ThresholdParam>,
                     ?id                     : string,
                     ?name                   : string,
+                    ?analysisSoftware       : AnalysisSoftware,
+                    ?searchType             : CVParam,
                     ?additionalSearchParams : seq<AdditionalSearchParam>,
                     ?modificationParams     : seq<SearchModification>,
                     ?enzymes                : seq<Enzyme>,
@@ -6533,6 +7050,8 @@ module InsertStatements =
                 ) =
                 let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
+                let analysisSoftware'       = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
+                let searchType'             = defaultArg searchType Unchecked.defaultof<CVParam>
                 let additionalSearchParams' = convertOptionToList additionalSearchParams
                 let modificationParams'     = convertOptionToList modificationParams
                 let enzymes'                = convertOptionToList enzymes
@@ -6548,8 +7067,10 @@ module InsertStatements =
                 new SpectrumIdentificationProtocol(
                                                    id', 
                                                    name', 
-                                                   analysisSoftware, 
-                                                   searchType, 
+                                                   analysisSoftware',
+                                                   fkAnalysisSoftware,
+                                                   searchType', 
+                                                   fkSearchType,
                                                    additionalSearchParams',
                                                    modificationParams', 
                                                    enzymes',
@@ -6565,131 +7086,143 @@ module InsertStatements =
                                                    Nullable(DateTime.Now)
                                                   )
 
+            ///Replaces fkAnalysisSoftware of existing object with new one.
+            static member addFKAnalysisSoftware
+                (fkAnalysisSoftware:string) (table:SpectrumIdentificationProtocol) =
+                table.FKAnalysisSoftware <- fkAnalysisSoftware
+                table
+
+            ///Replaces fkSearchType of existing object with new one.
+            static member addFKSearchType
+                (fkSearchType:string) (table:SpectrumIdentificationProtocol) =
+                table.FKSearchType <- fkSearchType
+                table
+
             ///Replaces name of existing object with new name.
             static member addName
-                (name:string) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                spectrumIdentificationProtocol.Name <- name
-                spectrumIdentificationProtocol
+                (name:string) (table:SpectrumIdentificationProtocol) =
+                table.Name <- name
+                table
 
             ///Adds a additionalsearchparam to an existing spectrumIdentificationprotocol-object.
             static member addAdditionalSearchParam
-                (additionalSearchParam:AdditionalSearchParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParam
-                spectrumIdentificationProtocol
+                (additionalSearchParam:AdditionalSearchParam) (table:SpectrumIdentificationProtocol) =
+                let result = table.AdditionalSearchParams <- addToList table.AdditionalSearchParams additionalSearchParam
+                table
 
             ///Adds a collection of additionalsearchparams to an existing spectrumIdentificationprotocol-object.
             static member addAdditionalSearchParams
-                (additionalSearchParams:seq<AdditionalSearchParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.AdditionalSearchParams <- addCollectionToList spectrumIdentificationProtocol.AdditionalSearchParams additionalSearchParams
-                spectrumIdentificationProtocol
+                (additionalSearchParams:seq<AdditionalSearchParam>) (table:SpectrumIdentificationProtocol) =
+                let result = table.AdditionalSearchParams <- addCollectionToList table.AdditionalSearchParams additionalSearchParams
+                table
 
             ///Adds a modificationparam to an existing spectrumIdentificationprotocol-object.
             static member addModificationParam
-                (modificationParam:SearchModification) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.ModificationParams <- addToList spectrumIdentificationProtocol.ModificationParams modificationParam
-                spectrumIdentificationProtocol
+                (modificationParam:SearchModification) (table:SpectrumIdentificationProtocol) =
+                let result = table.ModificationParams <- addToList table.ModificationParams modificationParam
+                table
 
             ///Adds a collection of modificationparams to an existing spectrumIdentificationprotocol-object.
             static member addModificationParams
-                (modificationParams:seq<SearchModification>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.ModificationParams <- addCollectionToList spectrumIdentificationProtocol.ModificationParams modificationParams
-                spectrumIdentificationProtocol
+                (modificationParams:seq<SearchModification>) (table:SpectrumIdentificationProtocol) =
+                let result = table.ModificationParams <- addCollectionToList table.ModificationParams modificationParams
+                table
 
             ///Adds a enzyme to an existing spectrumIdentificationprotocol-object.
             static member addEnzyme
-                (enzyme:Enzyme) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.Enzymes <- addToList spectrumIdentificationProtocol.Enzymes enzyme
-                spectrumIdentificationProtocol
+                (enzyme:Enzyme) (table:SpectrumIdentificationProtocol) =
+                let result = table.Enzymes <- addToList table.Enzymes enzyme
+                table
 
             ///Adds a collection of enzymes to an existing spectrumIdentificationprotocol-object.
             static member addEnzymes
-                (enzymes:seq<Enzyme>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.Enzymes <- addCollectionToList spectrumIdentificationProtocol.Enzymes enzymes
-                spectrumIdentificationProtocol
+                (enzymes:seq<Enzyme>) (table:SpectrumIdentificationProtocol) =
+                let result = table.Enzymes <- addCollectionToList table.Enzymes enzymes
+                table
 
             ///Replaces independent_enzymes of existing object with new independent_enzymes.
             static member addIndependent_Enzymes
-                (independent_Enzymes:bool) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                spectrumIdentificationProtocol.Independent_Enzymes <- Nullable(independent_Enzymes)
-                spectrumIdentificationProtocol
+                (independent_Enzymes:bool) (table:SpectrumIdentificationProtocol) =
+                table.Independent_Enzymes <- Nullable(independent_Enzymes)
+                table
 
             ///Adds a masstable to an existing spectrumIdentificationprotocol-object.
             static member addMassTable
-                (massTable:MassTable) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.MassTables <- addToList spectrumIdentificationProtocol.MassTables massTable
-                spectrumIdentificationProtocol
+                (massTable:MassTable) (table:SpectrumIdentificationProtocol) =
+                let result = table.MassTables <- addToList table.MassTables massTable
+                table
 
             ///Adds a collection of masstables to an existing spectrumIdentificationprotocol-object.
             static member addMassTables
-                (massTables:seq<MassTable>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.MassTables <- addCollectionToList spectrumIdentificationProtocol.MassTables massTables
-                spectrumIdentificationProtocol
+                (massTables:seq<MassTable>) (table:SpectrumIdentificationProtocol) =
+                let result = table.MassTables <- addCollectionToList table.MassTables massTables
+                table
 
             ///Adds a fragmenttolerance to an existing spectrumIdentificationprotocol-object.
             static member addFragmentTolerance
-                (fragmentTolerance:FragmentToleranceParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.FragmentTolerance <- addToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerance
-                spectrumIdentificationProtocol
+                (fragmentTolerance:FragmentToleranceParam) (table:SpectrumIdentificationProtocol) =
+                let result = table.FragmentTolerance <- addToList table.FragmentTolerance fragmentTolerance
+                table
 
             ///Adds a collection of fragmenttolerances to an existing spectrumIdentificationprotocol-object.
             static member addFragmentTolerances
-                (fragmentTolerances:seq<FragmentToleranceParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.FragmentTolerance <- addCollectionToList spectrumIdentificationProtocol.FragmentTolerance fragmentTolerances
-                spectrumIdentificationProtocol
+                (fragmentTolerances:seq<FragmentToleranceParam>) (table:SpectrumIdentificationProtocol) =
+                let result = table.FragmentTolerance <- addCollectionToList table.FragmentTolerance fragmentTolerances
+                table
 
             ///Adds a parenttolerance to an existing spectrumIdentificationprotocol-object.
             static member addParentTolerance
-                (parentTolerance:ParentToleranceParam) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.ParentTolerance <- addToList spectrumIdentificationProtocol.ParentTolerance parentTolerance
-                spectrumIdentificationProtocol
+                (parentTolerance:ParentToleranceParam) (table:SpectrumIdentificationProtocol) =
+                let result = table.ParentTolerance <- addToList table.ParentTolerance parentTolerance
+                table
 
             ///Adds a collection of parenttolerances to an existing spectrumIdentificationprotocol-object.
             static member addParentTolerances
-                (parentTolerances:seq<ParentToleranceParam>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.ParentTolerance <- addCollectionToList spectrumIdentificationProtocol.ParentTolerance parentTolerances
-                spectrumIdentificationProtocol
+                (parentTolerances:seq<ParentToleranceParam>) (table:SpectrumIdentificationProtocol) =
+                let result = table.ParentTolerance <- addCollectionToList table.ParentTolerance parentTolerances
+                table
 
             ///Adds a databasefilter to an existing spectrumIdentificationprotocol-object.
             static member addDatabaseFilter
-                (databaseFilter:Filter) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.DatabaseFilters <- addToList spectrumIdentificationProtocol.DatabaseFilters databaseFilter
-                spectrumIdentificationProtocol
+                (databaseFilter:Filter) (table:SpectrumIdentificationProtocol) =
+                let result = table.DatabaseFilters <- addToList table.DatabaseFilters databaseFilter
+                table
 
             ///Adds a collection of databasefilters to an existing spectrumIdentificationprotocol-object.
             static member addDatabaseFilters
-                (databaseFilters:seq<Filter>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.DatabaseFilters <- addCollectionToList spectrumIdentificationProtocol.DatabaseFilters databaseFilters
-                spectrumIdentificationProtocol
+                (databaseFilters:seq<Filter>) (table:SpectrumIdentificationProtocol) =
+                let result = table.DatabaseFilters <- addCollectionToList table.DatabaseFilters databaseFilters
+                table
 
             ///Adds a frame to an existing spectrumIdentificationprotocol-object.
             static member addFrame
-                (frame:Frame) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.Frames <- addToList spectrumIdentificationProtocol.Frames frame
-                spectrumIdentificationProtocol
+                (frame:Frame) (table:SpectrumIdentificationProtocol) =
+                let result = table.Frames <- addToList table.Frames frame
+                table
 
             ///Adds a collection of frames to an existing spectrumIdentificationprotocol-object.
             static member addFrames
-                (frames:seq<Frame>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.Frames <- addCollectionToList spectrumIdentificationProtocol.Frames frames
-                spectrumIdentificationProtocol
+                (frames:seq<Frame>) (table:SpectrumIdentificationProtocol) =
+                let result = table.Frames <- addCollectionToList table.Frames frames
+                table
 
             ///Adds a translationtable to an existing spectrumIdentificationprotocol-object.
             static member addTranslationTable
-                (translationTable:TranslationTable) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.TranslationTables <- addToList spectrumIdentificationProtocol.TranslationTables translationTable
-                spectrumIdentificationProtocol
+                (translationTable:TranslationTable) (table:SpectrumIdentificationProtocol) =
+                let result = table.TranslationTables <- addToList table.TranslationTables translationTable
+                table
 
             ///Adds a collection of translationtables to an existing spectrumIdentificationprotocol-object.
             static member addTranslationTables
-                (translationTables:seq<TranslationTable>) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.TranslationTables <- addCollectionToList spectrumIdentificationProtocol.TranslationTables translationTables
-                spectrumIdentificationProtocol
+                (translationTables:seq<TranslationTable>) (table:SpectrumIdentificationProtocol) =
+                let result = table.TranslationTables <- addCollectionToList table.TranslationTables translationTables
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) =
-                let result = spectrumIdentificationProtocol.MzIdentMLDocumentID <- fkMzIdentML
-                spectrumIdentificationProtocol
+                (fkMzIdentML:string) (table:SpectrumIdentificationProtocol) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a spectrumIdentificationProtocol-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6699,7 +7232,7 @@ module InsertStatements =
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                           i.MzIdentMLDocumentID
+                                           i.FKMzIdentMLDocument
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6712,7 +7245,7 @@ module InsertStatements =
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                                       i.MzIdentMLDocumentID
+                                                       i.FKMzIdentMLDocument
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6731,7 +7264,7 @@ module InsertStatements =
                               then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                            i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                            i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                           i.MzIdentMLDocumentID
+                                           i.FKMzIdentMLDocument
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6744,7 +7277,7 @@ module InsertStatements =
                                           then select (i, i.AnalysisSoftware, i.SearchType, i.Threshold, i.AdditionalSearchParams, 
                                                        i.ModificationParams, i.Enzymes, i.MassTables, i.FragmentTolerance, 
                                                        i.ParentTolerance, i.DatabaseFilters, i.Frames, i.TranslationTables, 
-                                                       i.MzIdentMLDocumentID
+                                                       i.FKMzIdentMLDocument
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentificationProtocol, _, _, _, _, _, _, _, _, _, _, _, _, _) -> spectrumIdentificationProtocol)
@@ -6757,11 +7290,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationProtocol) (item2:SpectrumIdentificationProtocol) =
-                item1.SearchType=item2.SearchType && item1.Threshold=item2.Threshold && item1.AdditionalSearchParams=item2.AdditionalSearchParams && 
+                item1.FKSearchType=item2.FKSearchType && item1.Threshold=item2.Threshold && item1.AdditionalSearchParams=item2.AdditionalSearchParams && 
                 item1.ModificationParams=item2.ModificationParams && item1.Enzymes=item2.Enzymes && item1.MassTables=item2.MassTables && 
                 item1.FragmentTolerance=item2.FragmentTolerance && item1.ParentTolerance=item2.ParentTolerance && 
                 item1.DatabaseFilters=item2.DatabaseFilters && item1.Frames=item2.Frames && item1.TranslationTables=item2.TranslationTables && 
-                item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
+                item1.FKAnalysisSoftware=item2.FKAnalysisSoftware && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -6791,26 +7324,32 @@ module InsertStatements =
             ///Initializes a searchdatabase-object with at least all necessary parameters.
             static member init
                 (
-                    location                     : string,
-                    fileFormat                   : CVParam,
-                    databaseName                 : CVParam,
-                    ?id                          : string,
-                    ?name                        : string,                    
-                    ?numDatabaseSequences        : int64,
-                    ?numResidues                 : int64,
-                    ?releaseDate                 : DateTime,
-                    ?version                     : string,
-                    ?externalFormatDocumentation : string,
-                    ?details                     : seq<SearchDatabaseParam>
+                    location                        : string,
+                    fkFileFormat                    : string,
+                    fkDatabaseName                  : string,
+                    ?id                             : string,
+                    ?name                           : string,                    
+                    ?numDatabaseSequences           : int64,
+                    ?numResidues                    : int64,
+                    ?releaseDate                    : DateTime,
+                    ?fileFormat                     : CVParam,
+                    ?databaseName                   : CVParam,
+                    ?version                        : string,
+                    ?externalFormatDocumentation    : string,
+                    ?fkInputs                       : string,
+                    ?details                        : seq<SearchDatabaseParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                        = defaultArg name Unchecked.defaultof<string>
-                let numDatabaseSequences'        = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
-                let numResidues'                 = defaultArg numResidues Unchecked.defaultof<int64>
-                let releaseDate'                 = defaultArg releaseDate Unchecked.defaultof<DateTime>
-                let version'                     = defaultArg version Unchecked.defaultof<string>
-                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-                let details'                     = convertOptionToList details
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let numDatabaseSequences'           = defaultArg numDatabaseSequences Unchecked.defaultof<int64>
+                let numResidues'                    = defaultArg numResidues Unchecked.defaultof<int64>
+                let releaseDate'                    = defaultArg releaseDate Unchecked.defaultof<DateTime>
+                let fileFormat'                     = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let databaseName'                   = defaultArg databaseName Unchecked.defaultof<CVParam>
+                let version'                        = defaultArg version Unchecked.defaultof<string>
+                let externalFormatDocumentation'    = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let fkInputs'                       = defaultArg fkInputs Unchecked.defaultof<string>
+                let details'                        = convertOptionToList details
                     
                 new SearchDatabase(
                                    id', 
@@ -6821,59 +7360,80 @@ module InsertStatements =
                                    Nullable(releaseDate'), 
                                    version',
                                    externalFormatDocumentation', 
-                                   fileFormat, 
-                                   databaseName, 
+                                   fileFormat', 
+                                   fkFileFormat, 
+                                   databaseName', 
+                                   fkDatabaseName,
+                                   fkInputs',
                                    details', 
                                    Nullable(DateTime.Now)
                                   )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (searchDatabase:SearchDatabase) =
-                searchDatabase.Name <- name
-                searchDatabase
+                (name:string) (table:SearchDatabase) =
+                table.Name <- name
+                table
 
-            ///Replaces numdatabasesequences of existing object with new numdatabasesequences.
+            ///Replaces numdatabasesequences of existing object with new one.
             static member addNumDatabaseSequences
-                (numDatabaseSequences:int64) (searchDatabase:SearchDatabase) =
-                searchDatabase.NumDatabaseSequences <- Nullable(numDatabaseSequences)
-                searchDatabase
+                (numDatabaseSequences:int64) (table:SearchDatabase) =
+                table.NumDatabaseSequences <- Nullable(numDatabaseSequences)
+                table
 
-            ///Replaces numresidues of existing object with new numresidues.
+            ///Replaces numresidues of existing object with new one.
             static member addNumResidues
-                (numResidues:int64) (searchDatabase:SearchDatabase) =
-                searchDatabase.NumResidues <- Nullable(numResidues)
-                searchDatabase
+                (numResidues:int64) (table:SearchDatabase) =
+                table.NumResidues <- Nullable(numResidues)
+                table
 
-            ///Replaces releasedate of existing object with new releasedate.
+            ///Replaces releasedate of existing object with new one.
             static member addReleaseDate
-                (releaseDate:DateTime) (searchDatabase:SearchDatabase) =
-                searchDatabase.ReleaseDate <- Nullable(releaseDate)
-                searchDatabase
+                (releaseDate:DateTime) (table:SearchDatabase) =
+                table.ReleaseDate <- Nullable(releaseDate)
+                table
 
-            ///Replaces version of existing object with new version.
+            ///Replaces databaseName of existing object with new one.
+            static member addDatabaseName
+                (databaseName:CVParam) (table:SearchDatabase) =
+                table.DatabaseName <- databaseName
+                table
+
+            ///Replaces fileFormat of existing object with new one.
+            static member addFileFormat
+                (fileFormat:CVParam) (table:SearchDatabase) =
+                table.FileFormat <- fileFormat
+                table
+
+            ///Replaces version of existing object with new one.
             static member addVersion
-                (version:string) (searchDatabase:SearchDatabase) =
-                searchDatabase.Version <- version
-                searchDatabase
+                (version:string) (table:SearchDatabase) =
+                table.Version <- version
+                table
 
-            ///Replaces externalformatdocumentation of existing object with new externalformatdocumentation.
+            ///Replaces externalformatdocumentation of existing object with new one.
             static member addExternalFormatDocumentation
-                (externalFormatDocumentation:string) (searchDatabase:SearchDatabase) =
-                searchDatabase.Version <- externalFormatDocumentation
-                searchDatabase
+                (externalFormatDocumentation:string) (table:SearchDatabase) =
+                table.ExternalFormatDocumentation <- externalFormatDocumentation
+                table
+
+            ///Replaces inputs of existing object with new one.
+            static member addInputs
+                (fkInputs:string) (table:SearchDatabase) =
+                table.FKInputs <- fkInputs
+                table
 
             ///Adds a searchdatabaseparam to an existing searchdatabase-object.
             static member addDetail
-                (detail:SearchDatabaseParam) (searchDatabase:SearchDatabase) =
-                let result = searchDatabase.Details <- addToList searchDatabase.Details detail
-                searchDatabase
+                (detail:SearchDatabaseParam) (table:SearchDatabase) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of searchdatabaseparams to an existing searchdatabase-object.
             static member addDetails
-                (details:seq<SearchDatabaseParam>) (searchDatabase:SearchDatabase) =
-                let result = searchDatabase.Details <- addCollectionToList searchDatabase.Details details
-                searchDatabase
+                (details:seq<SearchDatabaseParam>) (table:SearchDatabase) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a searchDatabase-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -6927,7 +7487,9 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:SearchDatabase) (item2:SearchDatabase) =
                item1.Name=item2.Name && item1.NumDatabaseSequences=item2.NumDatabaseSequences && 
                item1.NumResidues=item2.NumResidues && item1.ReleaseDate=item2.ReleaseDate &&
-               item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation && 
+               item1.Version=item2.Version && item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation &&
+               item1.FKInputs=item2.FKInputs && item1.FKFileFormat=item2.FKFileFormat &&
+               item1.FKDatabaseName=item2.FKDatabaseName &&
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.Location=item2.Location && item1.FileFormat=item2.FileFormat
@@ -6983,8 +7545,8 @@ module InsertStatements =
                                searchDatabase, 
                                sequence', 
                                Nullable(length'), 
+                               fkMzIdentML',
                                details', 
-                               fkMzIdentML', 
                                Nullable(DateTime.Now)
                               )
 
@@ -7018,10 +7580,10 @@ module InsertStatements =
                 let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
                 dbSequence
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
                 (fkMzIdentML:string) (dbSequence:DBSequence) =
-                let result = dbSequence.MzIdentMLDocumentID <- fkMzIdentML
+                let result = dbSequence.FKMzIdentMLDocument <- fkMzIdentML
                 dbSequence
 
             ///Tries to find a dbSequence-object in the context and database, based on its primary-key(ID).
@@ -7029,7 +7591,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DBSequence.Local do
                            if i.ID=id
-                              then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
+                              then select (i, i.SearchDatabase, i.FKMzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
@@ -7038,7 +7600,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DBSequence do
                                        if i.ID=id
-                                          then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
+                                          then select (i, i.SearchDatabase, i.FKMzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                             |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
@@ -7053,7 +7615,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.DBSequence.Local do
                            if i.Accession=accession
-                              then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
+                              then select (i, i.SearchDatabase, i.FKMzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                 |> (fun dbSequence -> 
@@ -7062,7 +7624,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.DBSequence do
                                        if i.Accession=accession
-                                          then select (i, i.SearchDatabase, i.MzIdentMLDocumentID, i.Details)
+                                          then select (i, i.SearchDatabase, i.FKMzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (dbSequence, _, _, _) -> dbSequence)
                             |> (fun dbSequence -> if (Seq.exists (fun dbSequence' -> dbSequence' <> null) dbSequence) = false
@@ -7075,7 +7637,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:DBSequence) (item2:DBSequence) =
                item1.Name=item2.Name && item1.Sequence=item2.Sequence && item1.Length=item2.Length && 
-               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID &&
+               matchCVParamBases (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument &&
                item1.SearchDatabase=item2.SearchDatabase
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7106,37 +7668,47 @@ module InsertStatements =
             ///Initializes a peptideevidence-object with at least all necessary parameters.
             static member init
                 (
-                    dbSequence                  : DBSequence,
-                    peptide                     : Peptide,
-                    ?id                         : string,
-                    ?name                       : string,
-                    ?start                      : int,
-                    ?end'                       : int,
-                    ?pre                        : string,
-                    ?post                       : string,
-                    ?frame                      : Frame,
-                    ?isDecoy                    : bool,
-                    ?translationTable           : TranslationTable,
-                    ?details                    : seq<PeptideEvidenceParam>,
-                    ?fkMzIdentML                : string
+                    fkDBSequence                    : string,
+                    fkPeptide                       : string,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?dbSequence                     : DBSequence,
+                    ?peptide                        : Peptide,
+                    ?start                          : int,
+                    ?end'                           : int,
+                    ?pre                            : string,
+                    ?post                           : string,
+                    ?frame                          : Frame,
+                    ?isDecoy                        : bool,
+                    ?translationTable               : TranslationTable,
+                    ?fkTranslationTable             : string,
+                    ?fkSpectrumIdentificationItem   : string,
+                    ?fkMzIdentML                    : string,
+                    ?details                        : seq<PeptideEvidenceParam>
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'             = defaultArg name Unchecked.defaultof<string>
-                let start'            = defaultArg start Unchecked.defaultof<int>
-                let end''             = defaultArg end' Unchecked.defaultof<int>
-                let pre'              = defaultArg pre Unchecked.defaultof<string>
-                let post'             = defaultArg post Unchecked.defaultof<string>
-                let frame'            = defaultArg frame Unchecked.defaultof<Frame>
-                let isDecoy'          = defaultArg isDecoy Unchecked.defaultof<bool>
-                let translationTable' = defaultArg translationTable Unchecked.defaultof<TranslationTable>
-                let details'          = convertOptionToList details
-                let fkMzIdentML'      = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let dbSequence'                     = defaultArg dbSequence Unchecked.defaultof<DBSequence>
+                let peptide'                        = defaultArg peptide Unchecked.defaultof<Peptide>
+                let start'                          = defaultArg start Unchecked.defaultof<int>
+                let end''                           = defaultArg end' Unchecked.defaultof<int>
+                let pre'                            = defaultArg pre Unchecked.defaultof<string>
+                let post'                           = defaultArg post Unchecked.defaultof<string>
+                let frame'                          = defaultArg frame Unchecked.defaultof<Frame>
+                let isDecoy'                        = defaultArg isDecoy Unchecked.defaultof<bool>
+                let translationTable'               = defaultArg translationTable Unchecked.defaultof<TranslationTable>
+                let fkTranslationTable'             = defaultArg fkTranslationTable Unchecked.defaultof<string>
+                let fkSpectrumIdentificationItem'   = defaultArg fkSpectrumIdentificationItem Unchecked.defaultof<string>
+                let details'                        = convertOptionToList details
+                let fkMzIdentML'                    = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new PeptideEvidence(
                                     id', 
                                     name', 
-                                    dbSequence, 
-                                    peptide, 
+                                    dbSequence', 
+                                    fkDBSequence,
+                                    peptide', 
+                                    fkPeptide,
                                     Nullable(start'), 
                                     Nullable(end''), 
                                     pre', 
@@ -7144,83 +7716,103 @@ module InsertStatements =
                                     frame', 
                                     Nullable(isDecoy'), 
                                     translationTable', 
-                                    details', 
+                                    fkTranslationTable', 
+                                    fkSpectrumIdentificationItem',
                                     fkMzIdentML', 
+                                    details', 
                                     Nullable(DateTime.Now)
                                    )
 
             ///Replaces name of existing object with new name.
             static member addName
-                (name:string) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.Name <- name
-                peptideEvidence
+                (name:string) (table:PeptideEvidence) =
+                table.Name <- name
+                table
+
+            ///Replaces dbSequence of existing object with new one.
+            static member addDBSequence
+                (dbSequence:DBSequence) (table:PeptideEvidence) =
+                table.DBSequence <- dbSequence
+                table
+
+            ///Replaces peptide of existing object with new one.
+            static member addPeptide
+                (peptide:Peptide) (table:PeptideEvidence) =
+                table.Peptide <- peptide
+                table
 
             ///Replaces start of existing object with new start.
             static member addStart
-                (start:int) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.Start <- Nullable(start)
-                peptideEvidence
+                (start:int) (table:PeptideEvidence) =
+                table.Start <- Nullable(start)
+                table
 
             ///Replaces end of existing object with new end.
             static member addEnd 
-                (end':int) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.End  <- Nullable(end')
-                peptideEvidence
+                (end':int) (table:PeptideEvidence) =
+                table.End  <- Nullable(end')
+                table
 
             ///Replaces pre of existing object with new pre.
             static member addPre
-                (pre:string) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.Pre <- pre
-                peptideEvidence
+                (pre:string) (table:PeptideEvidence) =
+                table.Pre <- pre
+                table
 
             ///Replaces post of existing object with new post.
             static member addPost
-                (post:string) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.Post <- post
-                peptideEvidence
+                (post:string) (table:PeptideEvidence) =
+                table.Post <- post
+                table
 
             ///Replaces frame of existing object with new frame.
             static member addFrame
-                (frame:Frame) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.Frame <- frame
-                peptideEvidence
+                (frame:Frame) (table:PeptideEvidence) =
+                table.Frame <- frame
+                table
 
             ///Replaces isdecoy of existing object with new isdecoy.
             static member addIsDecoy
-                (isDecoy:bool) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.IsDecoy <- Nullable(isDecoy)
-                peptideEvidence
+                (isDecoy:bool) (table:PeptideEvidence) =
+                table.IsDecoy <- Nullable(isDecoy)
+                table
 
             ///Replaces translationtable of existing object with new translationtable.
             static member addTranslationTable
-                (translationTable:TranslationTable) (peptideEvidence:PeptideEvidence) =
-                peptideEvidence.TranslationTable <- translationTable
-                peptideEvidence
+                (translationTable:TranslationTable) (table:PeptideEvidence) =
+                table.TranslationTable <- translationTable
+                table
+
+            ///Replaces fkSpectrumIdentificationItem of existing object with new one.
+            static member addFKSpectrumIdentificationItem
+                (fkSpectrumIdentificationItem:string) (table:PeptideEvidence) =
+                table.FKSpectrumIdentificationItem <- fkSpectrumIdentificationItem
+                table
 
             ///Adds a peptideevidenceparam to an existing peptideevidence-object.
             static member addDetail
-                (detail:PeptideEvidenceParam) (peptideEvidence:PeptideEvidence) =
-                let result = peptideEvidence.Details <- addToList peptideEvidence.Details detail
-                peptideEvidence
+                (detail:PeptideEvidenceParam) (table:PeptideEvidence) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of peptideevidenceparam to an existing peptideevidence-object.
             static member addDetails
-                (details:seq<PeptideEvidenceParam>) (peptideEvidence:PeptideEvidence) =
-                let result = peptideEvidence.Details <- addCollectionToList peptideEvidence.Details details
-                peptideEvidence
+                (details:seq<PeptideEvidenceParam>) (table:PeptideEvidence) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (peptideEvidence:PeptideEvidence) =
-                let result = peptideEvidence.MzIdentMLDocumentID <- fkMzIdentML
-                peptideEvidence
+                (fkMzIdentML:string) (table:PeptideEvidence) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a peptideEvidence-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
                            if i.ID=id
-                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.FKMzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
@@ -7229,7 +7821,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.PeptideEvidence do
                                        if i.ID=id
-                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
+                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.FKMzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                             |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
@@ -7244,7 +7836,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.PeptideEvidence.Local do
                            if i.Name=name
-                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
+                              then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.FKMzIdentMLDocument, i.Details)
                       }
                 |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                 |> (fun peptideEvidence -> 
@@ -7253,7 +7845,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.PeptideEvidence do
                                        if i.Name=name
-                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.MzIdentMLDocumentID, i.Details)
+                                          then select (i, i.Peptide, i.TranslationTable, i.DBSequence,  i.FKMzIdentMLDocument, i.Details)
                                   }
                             |> Seq.map (fun (peptideEvidence, _, _, _, _, _) -> peptideEvidence)
                             |> (fun peptideEvidence -> if (Seq.exists (fun peptideEvidence' -> peptideEvidence' <> null) peptideEvidence) = false
@@ -7265,13 +7857,14 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideEvidence) (item2:PeptideEvidence) =
+               item1.FKPeptide=item2.FKPeptide && item1.FKDBSequence=item2.FKDBSequence &&
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
                item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
                item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
-               item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && item1.DBSequence=item2.DBSequence
+               item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7301,7 +7894,7 @@ module InsertStatements =
             ///Initializes a spectrumidentificationitem-object with at least all necessary parameters.
             static member init
                 (
-                    peptide                         : Peptide,
+                    fkPeptide                       : string,
                     chargeState                     : int,
                     experimentalMassToCharge        : float,
                     passThreshold                   : bool,
@@ -7309,124 +7902,154 @@ module InsertStatements =
                     ?id                             : string,
                     ?name                           : string,
                     ?sample                         : Sample,
+                    ?fkSample                       : string,
                     ?massTable                      : MassTable,
+                    ?fkMassTable                    : string,
                     ?peptideEvidences               : seq<PeptideEvidence>,
                     ?fragmentations                 : seq<IonType>,
+                    ?peptide                        : Peptide,
                     ?calculatedMassToCharge         : float,
                     ?calculatedPI                   : float,
                     ?spectrumIdentificationResult   : SpectrumIdentificationResult,
-                    ?spectrumIdentificationResultID : string,
+                    ?fkSpectrumIdentificationResult : string,
+                    ?fkPeptideHypothesis            : string,
                     ?details                        : seq<SpectrumIdentificationItemParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let sample'                         = defaultArg sample Unchecked.defaultof<Sample>
+                let fkSample'                       = defaultArg fkSample Unchecked.defaultof<string>
                 let massTable'                      = defaultArg massTable Unchecked.defaultof<MassTable>
+                let fkMassTable'                    = defaultArg fkMassTable Unchecked.defaultof<string>
                 let peptideEvidences'               = convertOptionToList peptideEvidences
                 let fragmentations'                 = convertOptionToList fragmentations
+                let peptide'                        = defaultArg peptide Unchecked.defaultof<Peptide>
                 let calculatedMassToCharge'         = defaultArg calculatedMassToCharge Unchecked.defaultof<float>
                 let calculatedPI'                   = defaultArg calculatedPI Unchecked.defaultof<float>
                 let spectrumIdentificationResult'   = defaultArg spectrumIdentificationResult Unchecked.defaultof<SpectrumIdentificationResult>
-                let spectrumIdentificationResultID' = defaultArg spectrumIdentificationResultID Unchecked.defaultof<string>
+                let fkSpectrumIdentificationResult' = defaultArg fkSpectrumIdentificationResult Unchecked.defaultof<string>
+                let fkPeptideHypothesis'            = defaultArg fkPeptideHypothesis Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
                     
                 new SpectrumIdentificationItem(
                                                id', 
                                                name', 
                                                sample', 
+                                               fkSample',
                                                massTable', 
+                                               fkMassTable',
                                                Nullable(passThreshold), 
                                                Nullable(rank), 
                                                peptideEvidences',
                                                fragmentations', 
-                                               peptide, 
+                                               peptide',
+                                               fkPeptide,
                                                Nullable(chargeState), 
                                                Nullable(experimentalMassToCharge), 
                                                Nullable(calculatedMassToCharge'),
                                                Nullable(calculatedPI'),
                                                spectrumIdentificationResult',
-                                               spectrumIdentificationResultID',
+                                               fkSpectrumIdentificationResult',
+                                               fkPeptideHypothesis',
                                                details', 
                                                Nullable(DateTime.Now)
                                               )
 
             ///Replaces name of existing object with new name.
             static member addName
-                (name:string) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.Name <- name
-                spectrumIdentificationItem
+                (name:string) (table:SpectrumIdentificationItem) =
+                table.Name <- name
+                table
 
             ///Replaces sample of existing object with new one.
             static member addSample
-                (sample:Sample) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.Sample <- sample 
-                spectrumIdentificationItem
+                (sample:Sample) (table:SpectrumIdentificationItem) =
+                table.Sample <- sample 
+                table
 
             ///Replaces masstable of existing object with new one.
             static member addMassTable
-                (massTable:MassTable) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.MassTable <- massTable
-                spectrumIdentificationItem
+                (massTable:MassTable) (table:SpectrumIdentificationItem) =
+                table.MassTable <- massTable
+                table
+
+            ///Replaces fkMassTable of existing object with new one.
+            static member addFKMassTable
+                (fkMassTable:string) (table:SpectrumIdentificationItem) =
+                table.FKMassTable <- fkMassTable
+                table
+
+            ///Replaces peptide of existing object with new one.
+            static member addPeptide
+                (peptide:Peptide) (table:SpectrumIdentificationItem) =
+                table.Peptide <- peptide
+                table
 
             ///Adds a peptideevidence to an existing spectrumidentification-object.
             static member addPeptideEvidence
-                (peptideEvidence:PeptideEvidence) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.PeptideEvidences <- addToList spectrumIdentificationItem.PeptideEvidences peptideEvidence
-                spectrumIdentificationItem
+                (peptideEvidence:PeptideEvidence) (table:SpectrumIdentificationItem) =
+                let result = table.PeptideEvidences <- addToList table.PeptideEvidences peptideEvidence
+                table
 
             ///Adds a collection of peptideevidences to an existing spectrumidentification-object.
             static member addPeptideEvidences
-                (peptideEvidences:seq<PeptideEvidence>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.PeptideEvidences <- addCollectionToList spectrumIdentificationItem.PeptideEvidences peptideEvidences
-                spectrumIdentificationItem   
+                (peptideEvidences:seq<PeptideEvidence>) (table:SpectrumIdentificationItem) =
+                let result = table.PeptideEvidences <- addCollectionToList table.PeptideEvidences peptideEvidences
+                table   
 
             ///Adds a fragmentation to an existing spectrumidentification-object.
             static member addFragmentation
-                (ionType:IonType) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.Fragmentations <- addToList spectrumIdentificationItem.Fragmentations ionType
-                spectrumIdentificationItem
+                (ionType:IonType) (table:SpectrumIdentificationItem) =
+                let result = table.Fragmentations <- addToList table.Fragmentations ionType
+                table
 
             ///Adds a collection of fragmentations to an existing spectrumidentification-object.
             static member addFragmentations
-                (ionTypes:seq<IonType>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.Fragmentations <- addCollectionToList spectrumIdentificationItem.Fragmentations ionTypes
-                spectrumIdentificationItem 
+                (ionTypes:seq<IonType>) (table:SpectrumIdentificationItem) =
+                let result = table.Fragmentations <- addCollectionToList table.Fragmentations ionTypes
+                table 
 
            ///Replaces calculatedmasstocharge of existing object with new one.
             static member addCalculatedMassToCharge
-                (calculatedMassToCharge:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.CalculatedMassToCharge <- Nullable(calculatedMassToCharge)
-                spectrumIdentificationItem
+                (calculatedMassToCharge:float) (table:SpectrumIdentificationItem) =
+                table.CalculatedMassToCharge <- Nullable(calculatedMassToCharge)
+                table
 
             ///Replaces calculatedpi of existing object with new one.
             static member addCalculatedPI
-                (calculatedPI:float) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.CalculatedPI <- Nullable(calculatedPI)
-                spectrumIdentificationItem
+                (calculatedPI:float) (table:SpectrumIdentificationItem) =
+                table.CalculatedPI <- Nullable(calculatedPI)
+                table
 
             ///Replaces spectrumIdentificationResult of existing object with new one.
             static member addSpectrumIdentificationResult
-                (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.SpectrumIdentificationResult <- spectrumIdentificationResult
-                spectrumIdentificationItem
+                (spectrumIdentificationResult:SpectrumIdentificationResult) (table:SpectrumIdentificationItem) =
+                table.SpectrumIdentificationResult <- spectrumIdentificationResult
+                table
 
-            ///Replaces spectrumIdentificationResultID of existing object with new one.
-            static member addSpectrumIdentificationResultID
-                (spectrumIdentificationResultID:string) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                spectrumIdentificationItem.SpectrumIdentificationResultID <- spectrumIdentificationResultID
-                spectrumIdentificationItem
+            ///Replaces fkSpectrumIdentificationResult of existing object with new one.
+            static member addFKSpectrumIdentificationResult
+                (fkSpectrumIdentificationResult:string) (table:SpectrumIdentificationItem) =
+                table.FKSpectrumIdentificationResult <- fkSpectrumIdentificationResult
+                table
+
+            ///Replaces fkPeptideHypothesis of existing object with new one.
+            static member addFKPeptideHypothesis
+                (fkPeptideHypothesis:string) (table:SpectrumIdentificationItem) =
+                table.FKPeptideHypothesis <- fkPeptideHypothesis
+                table
 
             ///Adds a spectrumidentificationparam to an existing spectrumidentification-object.
             static member addDetail
-                (detail:SpectrumIdentificationItemParam) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.Details <- addToList spectrumIdentificationItem.Details detail
-                spectrumIdentificationItem
+                (detail:SpectrumIdentificationItemParam) (table:SpectrumIdentificationItem) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of spectrumidentificationparams to an existing spectrumidentification-object.
             static member addDetails
-                (details:seq<SpectrumIdentificationItemParam>) (spectrumIdentificationItem:SpectrumIdentificationItem) =
-                let result = spectrumIdentificationItem.Details <- addCollectionToList spectrumIdentificationItem.Details details
-                spectrumIdentificationItem
+                (details:seq<SpectrumIdentificationItemParam>) (table:SpectrumIdentificationItem) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             //static member addSpectrumIdentificationResult
             //     (spectrumIdentificationItem:SpectrumIdentificationItem) (spectrumIdentificationResult:SpectrumIdentificationResult) =
@@ -7490,14 +8113,15 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationItem) (item2:SpectrumIdentificationItem) =
-               item1.Name=item2.Name && item1.Sample=item2.Sample && item1.MassTable=item2.MassTable && 
+               item1.Name=item2.Name && item1.FKSample=item2.FKSample && item1.FKMassTable=item2.FKMassTable && 
                item1.PassThreshold=item2.PassThreshold && item1.Rank=item2.Rank && item1.PeptideEvidences=item2.PeptideEvidences && 
                item1.Fragmentations=item2.Fragmentations && item1.CalculatedMassToCharge=item2.CalculatedMassToCharge && 
                item1.CalculatedPI=item2.CalculatedPI && matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
-                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && item1.ChargeState=item2.ChargeState && 
-               item1.Peptide.PeptideSequence=item2.Peptide.PeptideSequence
-
+                (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
+               item1.ChargeState=item2.ChargeState && item1.FKPeptide=item2.FKPeptide &&
+               item1.FKMassTable=item2.FKMassTable && item1.Peptide.PeptideSequence=item2.Peptide.PeptideSequence
+               
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:SpectrumIdentificationItem) =
@@ -7526,48 +8150,61 @@ module InsertStatements =
             ///Initializes a spectrumidentificationresult-object with at least all necessary parameters.
             static member init
                 (
-                    spectraData                 : SpectraData,
-                    spectrumID                  : string,
-                    spectrumIdentificationItem  : seq<SpectrumIdentificationItem>,
-                    ?id                         : string,
-                    ?name                       : string,
-                    ?details                    : seq<SpectrumIdentificationResultParam>
+                    fkSpectraData                   : string,
+                    spectrumID                      : string,
+                    spectrumIdentificationItem      : seq<SpectrumIdentificationItem>,
+                    fkSpectrumIdentificationList    : string,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?spectraData                    : SpectraData,
+                    ?details                        : seq<SpectrumIdentificationResultParam>
                 ) =
-                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                       = defaultArg name Unchecked.defaultof<string>
-                let details'                    = convertOptionToList details
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'           = defaultArg name Unchecked.defaultof<string>
+                let spectraData'    = defaultArg spectraData Unchecked.defaultof<SpectraData>
+                let details'        = convertOptionToList details
                     
                 new SpectrumIdentificationResult(
                                                  id', 
                                                  name', 
-                                                 spectraData, 
+                                                 spectraData', 
+                                                 fkSpectraData,
                                                  spectrumID, 
                                                  spectrumIdentificationItem |> List,
+                                                 fkSpectrumIdentificationList,
                                                  details', 
                                                  Nullable(DateTime.Now)
                                                 )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (spectrumIdentificationResult:SpectrumIdentificationResult)  =
-                spectrumIdentificationResult.Name <- name
-                spectrumIdentificationResult
+                (name:string) (table:SpectrumIdentificationResult)  =
+                table.Name <- name
+                table
+
+            ///Replaces spectraData of existing object with new one.
+            static member addSpectraData
+                (spectraData:SpectraData) (table:SpectrumIdentificationResult)  =
+                table.SpectraData <- spectraData
+                table
+
+            ///Replaces fkSpectrumIdentificationList of existing object with new one.
+            static member addFKSpectrumIdentificationList
+                (fkSpectrumIdentificationList:string) (table:SpectrumIdentificationResult)  =
+                table.FKSpectrumIdentificationList <- fkSpectrumIdentificationList
+                table
 
             ///Adds a spectrumidentificationresultparam to an existing spectrumidentificationresult-object.
             static member addDetail
-                (detail:SpectrumIdentificationResultParam) (spectrumIdentificationResult:SpectrumIdentificationResult) =
-                let result = spectrumIdentificationResult.Details <- addToList spectrumIdentificationResult.Details detail
-                spectrumIdentificationResult
+                (detail:SpectrumIdentificationResultParam) (table:SpectrumIdentificationResult) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of spectrumidentificationresultparams to an existing spectrumidentificationresult-object.
             static member addDetails
-                (details:seq<SpectrumIdentificationResultParam>) (spectrumIdentificationResult:SpectrumIdentificationResult) =
-                let result = spectrumIdentificationResult.Details <- addCollectionToList spectrumIdentificationResult.Details details
-                spectrumIdentificationResult
-
-            //static member addSpectrumIdentificationList
-            //     (spectrumIdentificationResult:SpectrumIdentificationResult) (spectrumIdentificationList:SpectrumIdentificationList) =
-            //     spectrumIdentificationResult.SpectrumIdentificationList <- spectrumIdentificationList
+                (details:seq<SpectrumIdentificationResultParam>) (table:SpectrumIdentificationResult) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a spectrumIdentificationResult-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -7619,10 +8256,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationResult) (item2:SpectrumIdentificationResult) =
-               item1.Name=item2.Name && item1.SpectraData=item2.SpectraData && matchCVParamBases 
+               item1.Name=item2.Name && item1.FKSpectraData=item2.FKSpectraData && matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) && 
-               item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem
+               item1.SpectrumIdentificationItem=item2.SpectrumIdentificationItem &&
+               item1.FKSpectrumIdentificationList=item2.FKSpectrumIdentificationList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -7652,18 +8290,20 @@ module InsertStatements =
             ///Initializes a spectrumidentificationlist-object with at least all necessary parameters.
             static member init
                 (
-                    spectrumIdentificationResult : seq<SpectrumIdentificationResult>,
-                    ?id                          : string,
-                    ?name                        : string,
-                    ?numSequencesSearched        : int64,
-                    ?fragmentationTable          : seq<Measure>,
-                    ?details                     : seq<SpectrumIdentificationListParam>          
+                    spectrumIdentificationResult    : seq<SpectrumIdentificationResult>,
+                    fkProteinDetection              : string,
+                    fkAnalysisData                  : string,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?numSequencesSearched           : int64,
+                    ?fragmentationTable             : seq<Measure>,
+                    ?details                        : seq<SpectrumIdentificationListParam>          
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                 = defaultArg name Unchecked.defaultof<string>
-                let numSequencesSearched' = defaultArg numSequencesSearched Unchecked.defaultof<int64>
-                let fragmentationTable'   = convertOptionToList fragmentationTable
-                let details'              = convertOptionToList details
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                   = defaultArg name Unchecked.defaultof<string>
+                let numSequencesSearched'   = defaultArg numSequencesSearched Unchecked.defaultof<int64>
+                let fragmentationTable'     = convertOptionToList fragmentationTable
+                let details'                = convertOptionToList details
                     
                 new SpectrumIdentificationList(
                                                id', 
@@ -7671,45 +8311,47 @@ module InsertStatements =
                                                Nullable(numSequencesSearched'), 
                                                fragmentationTable', 
                                                spectrumIdentificationResult |> List,
-                                               details', 
+                                               fkAnalysisData,
+                                               fkProteinDetection,
+                                               details',
                                                Nullable(DateTime.Now)
                                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (spectrumIdentificationList:SpectrumIdentificationList) =
-                spectrumIdentificationList.Name <- name
-                spectrumIdentificationList
+                (name:string) (table:SpectrumIdentificationList) =
+                table.Name <- name
+                table
 
             ///Replaces numsequencessearched of existing object with new numsequencessearched.
             static member addNumSequencesSearched
-                (numSequencesSearched:int64) (spectrumIdentificationList:SpectrumIdentificationList) =
-                spectrumIdentificationList.NumSequencesSearched <- Nullable(numSequencesSearched)
-                spectrumIdentificationList
+                (numSequencesSearched:int64) (table:SpectrumIdentificationList) =
+                table.NumSequencesSearched <- Nullable(numSequencesSearched)
+                table
 
             ///Adds a fragmentationtable to an existing spectrumidentificationlist-object.
             static member addFragmentationTable
-                (fragmentationTable:Measure) (spectrumIdentificationList:SpectrumIdentificationList) =
-                let result = spectrumIdentificationList.FragmentationTables <- addToList spectrumIdentificationList.FragmentationTables fragmentationTable
-                spectrumIdentificationList
+                (fragmentationTable:Measure) (table:SpectrumIdentificationList) =
+                let result = table.FragmentationTables <- addToList table.FragmentationTables fragmentationTable
+                table
 
             ///Adds a collection of fragmentationtables to an existing spectrumidentificationlist-object.
             static member addFragmentationTables
-                (fragmentationTables:seq<Measure>) (spectrumIdentificationList:SpectrumIdentificationList) =
-                let result = spectrumIdentificationList.FragmentationTables <- addCollectionToList spectrumIdentificationList.FragmentationTables fragmentationTables
-                spectrumIdentificationList
+                (fragmentationTables:seq<Measure>) (table:SpectrumIdentificationList) =
+                let result = table.FragmentationTables <- addCollectionToList table.FragmentationTables fragmentationTables
+                table
 
             ///Adds a spectrumidentificationlistparam to an existing spectrumidentificationlist-object.
             static member addDetail
-                (detail:SpectrumIdentificationListParam) (spectrumIdentificationList:SpectrumIdentificationList) =
-                let result = spectrumIdentificationList.Details <- addToList spectrumIdentificationList.Details detail
-                spectrumIdentificationList
+                (detail:SpectrumIdentificationListParam) (table:SpectrumIdentificationList) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of spectrumidentificationlistparams to an existing spectrumidentificationlist-object.
             static member addDetails
-                (details:seq<SpectrumIdentificationListParam>) (spectrumIdentificationList:SpectrumIdentificationList) =
-                let result = spectrumIdentificationList.Details <- addCollectionToList spectrumIdentificationList.Details details
-                spectrumIdentificationList
+                (details:seq<SpectrumIdentificationListParam>) (table:SpectrumIdentificationList) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a spectrumIdentificationList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -7762,6 +8404,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentificationList) (item2:SpectrumIdentificationList) =
                item1.NumSequencesSearched=item2.NumSequencesSearched && item1.FragmentationTables=item2.FragmentationTables &&
+               item1.FKAnalysisData=item2.FKAnalysisData && item1.FKProteinDetection=item2.FKProteinDetection &&
                item1.SpectrumIdentificationResult=item2.SpectrumIdentificationResult && matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
@@ -7794,49 +8437,67 @@ module InsertStatements =
             ///Initializes a spectrumidentification-object with at least all necessary parameters.
             static member init
                 (
-                    spectrumIdentificationList     : SpectrumIdentificationList,
-                    spectrumIdentificationProtocol : SpectrumIdentificationProtocol,
-                    spectraData                    : seq<SpectraData>,
-                    searchDatabase                 : seq<SearchDatabase>,
-                    ?id                            : string,
-                    ?name                          : string,
-                    ?activityDate                  : DateTime,
-                    ?fkMzIdentML                   : string
+                    fkSpectrumIdentificationList        : string,
+                    fkSpectrumIdentificationProtocol    : string,
+                    spectraData                         : seq<SpectraData>,
+                    searchDatabase                      : seq<SearchDatabase>,
+                    ?id                                 : string,
+                    ?name                               : string,
+                    ?spectrumIdentificationList         : SpectrumIdentificationList,
+                    ?spectrumIdentificationProtocol     : SpectrumIdentificationProtocol,
+                    ?activityDate                       : DateTime,
+                    ?fkMzIdentML                        : string
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'             = defaultArg name Unchecked.defaultof<string>
-                let activityDate'     = defaultArg activityDate Unchecked.defaultof<DateTime>
-                let fkMzIdentML'      = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let activityDate'                   = defaultArg activityDate Unchecked.defaultof<DateTime>
+                let spectrumIdentificationList'     = defaultArg spectrumIdentificationList Unchecked.defaultof<SpectrumIdentificationList>
+                let spectrumIdentificationProtocol' = defaultArg spectrumIdentificationProtocol Unchecked.defaultof<SpectrumIdentificationProtocol>
+                let fkMzIdentML'                    = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new SpectrumIdentification(
                                            id', 
                                            name',
                                            Nullable(activityDate'), 
-                                           spectrumIdentificationList, 
-                                           spectrumIdentificationProtocol,
+                                           spectrumIdentificationList', 
+                                           fkSpectrumIdentificationList, 
+                                           spectrumIdentificationProtocol',
+                                           fkSpectrumIdentificationProtocol,
                                            spectraData |> List, 
                                            searchDatabase |> List, 
                                            fkMzIdentML', 
                                            Nullable(DateTime.Now)
                                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (spectrumIdentification:SpectrumIdentification) =
-                spectrumIdentification.Name <- name
-                spectrumIdentification
+                (name:string) (table:SpectrumIdentification) =
+                table.Name <- name
+                table
 
             ///Replaces activitydate of existing object with new name.
             static member addActivityDate
-                (activityDate:DateTime) (spectrumIdentification:SpectrumIdentification) =
-                spectrumIdentification.ActivityDate <- Nullable(activityDate)
-                spectrumIdentification
+                (activityDate:DateTime) (table:SpectrumIdentification) =
+                table.ActivityDate <- Nullable(activityDate)
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces spectrumIdentificationList of existing object with new one.
+            static member addSpectrumIdentificationList
+                (spectrumIdentificationList:SpectrumIdentificationList) (table:SpectrumIdentification) =
+                table.SpectrumIdentificationList <- spectrumIdentificationList
+                table
+
+            ///Replaces spectrumIdentificationProtocol of existing object with new one.
+            static member addSpectrumIdentificationList
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (table:SpectrumIdentification) =
+                table.SpectrumIdentificationProtocol <- spectrumIdentificationProtocol
+                table
+
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (spectrumIdentification:SpectrumIdentification) =
-                let result = spectrumIdentification.MzIdentMLDocumentID <- fkMzIdentML
-                spectrumIdentification
+                (fkMzIdentML:string) (table:SpectrumIdentification) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a spectrumIdentification-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -7844,7 +8505,7 @@ module InsertStatements =
                        for i in dbContext.SpectrumIdentification.Local do
                            if i.ID=id
                               then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
+                                           i.SpectraData, i.SearchDatabases, i.FKMzIdentMLDocument
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7855,7 +8516,7 @@ module InsertStatements =
                                    for i in dbContext.SpectrumIdentification do
                                        if i.ID=id
                                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
+                                                       i.SpectraData, i.SearchDatabases, i.FKMzIdentMLDocument
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7872,7 +8533,7 @@ module InsertStatements =
                        for i in dbContext.SpectrumIdentification.Local do
                            if i.Name=name
                               then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                           i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
+                                           i.SpectraData, i.SearchDatabases, i.FKMzIdentMLDocument
                                           )
                       }
                 |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7883,7 +8544,7 @@ module InsertStatements =
                                    for i in dbContext.SpectrumIdentification do
                                        if i.Name=name
                                           then select (i, i.SpectrumIdentificationProtocol, i.SpectrumIdentificationList, 
-                                                       i.SpectraData, i.SearchDatabase, i.MzIdentMLDocumentID
+                                                       i.SpectraData, i.SearchDatabases, i.FKMzIdentMLDocument
                                                       )
                                   }
                             |> Seq.map (fun (spectrumIdentification, _, _, _, _, _) -> spectrumIdentification)
@@ -7896,9 +8557,10 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SpectrumIdentification) (item2:SpectrumIdentification) =
-               item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
-               item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID && item1.Name=item2.Name &&
-               item1.SpectraData=item2.SpectraData && item1.SearchDatabase=item2.SearchDatabase &&
+               item1.FKSpectrumIdentificationList=item2.FKSpectrumIdentificationList && 
+               item1.FKSpectrumIdentificationProtocol=item2.FKSpectrumIdentificationProtocol && 
+               item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument && item1.Name=item2.Name &&
+               item1.SpectraData=item2.SpectraData && item1.SearchDatabases=item2.SearchDatabases &&
                item1.ActivityDate=item2.ActivityDate
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -7929,58 +8591,67 @@ module InsertStatements =
             ///Initializes a proteindetectionprotocol-object with at least all necessary parameters.
             static member init
                 (
-                    analysisSoftware : AnalysisSoftware,
-                    threshold        : seq<ThresholdParam>,
-                    ?id              : string,
-                    ?name            : string,
-                    ?analysisParams  : seq<AnalysisParam>,
-                    ?fkMzIdentML     : string
+                    fkAnalysisSoftware  : string,
+                    threshold           : seq<ThresholdParam>,
+                    ?id                 : string,
+                    ?name               : string,
+                    ?analysisSoftware   : AnalysisSoftware,
+                    ?analysisParams     : seq<AnalysisParam>,
+                    ?fkMzIdentML        : string
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'           = defaultArg name Unchecked.defaultof<string>
-                let analysisParams' = convertOptionToList analysisParams
-                let fkMzIdentML'    = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'               = defaultArg name Unchecked.defaultof<string>
+                let analysisSoftware'   = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
+                let analysisParams'     = convertOptionToList analysisParams
+                let fkMzIdentML'        = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new ProteinDetectionProtocol(
                                              id', 
                                              name', 
-                                             analysisSoftware, 
+                                             analysisSoftware', 
+                                             fkAnalysisSoftware,
                                              analysisParams', 
                                              threshold |> List,
                                              fkMzIdentML', 
                                              Nullable(DateTime.Now)
                                             )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                proteinDetectionProtocol.Name <- name
-                proteinDetectionProtocol
+                (name:string) (table:ProteinDetectionProtocol) =
+                table.Name <- name
+                table
+
+            ///Replaces analysisSoftware of existing object with new one.
+            static member addAnalysisSoftware
+                (analysisSoftware:AnalysisSoftware) (table:ProteinDetectionProtocol) =
+                table.AnalysisSoftware <- analysisSoftware
+                table
 
             ///Adds a analysisparam to an existing proteindetectionprotocol-object.
             static member addAnalysisParam
-                (analysisParam:AnalysisParam) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                let result = proteinDetectionProtocol.AnalysisParams <- addToList proteinDetectionProtocol.AnalysisParams analysisParam
-                proteinDetectionProtocol
+                (analysisParam:AnalysisParam) (table:ProteinDetectionProtocol) =
+                let result = table.AnalysisParams <- addToList table.AnalysisParams analysisParam
+                table
 
             ///Adds a collection of analysisparams to an existing proteindetectionprotocol-object.
             static member addAnalysisParams
-                (analysisParams:seq<AnalysisParam>) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                let result = proteinDetectionProtocol.AnalysisParams <- addCollectionToList proteinDetectionProtocol.AnalysisParams analysisParams
-                proteinDetectionProtocol
+                (analysisParams:seq<AnalysisParam>) (table:ProteinDetectionProtocol) =
+                let result = table.AnalysisParams <- addCollectionToList table.AnalysisParams analysisParams
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (proteinDetectionProtocol:ProteinDetectionProtocol) =
-                let result = proteinDetectionProtocol.MzIdentMLDocumentID <- fkMzIdentML
-                proteinDetectionProtocol
+                (fkMzIdentML:string) (table:ProteinDetectionProtocol) =
+                table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a proteinDetectionProtocol-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
                            if i.ID=id
-                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
+                              then select (i, i.Threshold, i.AnalysisParams, i.FKMzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
@@ -7989,7 +8660,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.ProteinDetectionProtocol do
                                        if i.ID=id
-                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
+                                          then select (i, i.Threshold, i.AnalysisParams, i.FKMzIdentMLDocument)
                                   }
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                             |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
@@ -8004,7 +8675,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.ProteinDetectionProtocol.Local do
                            if i.Name=name
-                              then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
+                              then select (i, i.Threshold, i.AnalysisParams, i.FKMzIdentMLDocument)
                       }
                 |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                 |> (fun proteinDetectionProtocol -> 
@@ -8013,7 +8684,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.ProteinDetectionProtocol do
                                        if i.Name=name
-                                          then select (i, i.Threshold, i.AnalysisParams, i.MzIdentMLDocumentID)
+                                          then select (i, i.Threshold, i.AnalysisParams, i.FKMzIdentMLDocument)
                                   }
                             |> Seq.map (fun (proteinDetectionProtocol, _, _, _) -> proteinDetectionProtocol)
                             |> (fun proteinDetectionProtocol -> if (Seq.exists (fun proteinDetectionProtocol' -> proteinDetectionProtocol' <> null) proteinDetectionProtocol) = false
@@ -8025,8 +8696,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
-               item1.Threshold=item2.Threshold && item1.Name=item2.Name && item1.AnalysisSoftware=item2.AnalysisSoftware &&
-               item1.AnalysisParams=item2.AnalysisParams && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
+               item1.Threshold=item2.Threshold && item1.Name=item2.Name && 
+               item1.FKAnalysisSoftware=item2.FKAnalysisSoftware &&
+               item1.AnalysisParams=item2.AnalysisParams && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -8056,51 +8728,69 @@ module InsertStatements =
             ///Initializes a sourcefile-object with at least all necessary parameters.
             static member init
                 (             
-                    location                     : string,
-                    fileFormat                   : CVParam,
-                    ?id                          : string,
-                    ?name                        : string,
-                    ?externalFormatDocumentation : string,
-                    ?details                     : seq<SourceFileParam>
+                    location                        : string,
+                    fkFileFormat                    : string,
+                    ?id                             : string,
+                    ?name                           : string,
+                    ?externalFormatDocumentation    : string,
+                    ?fileFormat                     : CVParam,
+                    ?fkInputs                       : string,
+                    ?details                        : seq<SourceFileParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                        = defaultArg name Unchecked.defaultof<string>
-                let externalFormatDocumentation' = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
-                let details'                     = convertOptionToList details
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                           = defaultArg name Unchecked.defaultof<string>
+                let externalFormatDocumentation'    = defaultArg externalFormatDocumentation Unchecked.defaultof<string>
+                let fileFormat'                     = defaultArg fileFormat Unchecked.defaultof<CVParam>
+                let fkInputs'                       = defaultArg fkInputs Unchecked.defaultof<string>
+                let details'                        = convertOptionToList details
                     
                 new SourceFile(
                                id', 
                                name', 
                                location, 
                                externalFormatDocumentation', 
-                               fileFormat, 
+                               fileFormat', 
+                               fkFileFormat,
+                               fkInputs',
                                details', 
                                Nullable(DateTime.Now)
                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (sourceFile:SourceFile) =
-                sourceFile.Name <- name
-                sourceFile
+                (name:string) (table:SourceFile) =
+                table.Name <- name
+                table
 
-            ///Replaces externalformatdocumentation of existing object with new name.
+            ///Replaces externalformatdocumentation of existing object with new one.
             static member addExternalFormatDocumentation
-                (externalFormatDocumentation:string) (sourceFile:SourceFile) =
-                sourceFile.ExternalFormatDocumentation <- externalFormatDocumentation
-                sourceFile
+                (externalFormatDocumentation:string) (table:SourceFile) =
+                table.ExternalFormatDocumentation <- externalFormatDocumentation
+                table
+
+            ///Replaces fileFormat of existing object with new one.
+            static member addFileFormat
+                (fileFormat:CVParam) (table:SourceFile) =
+                table.FileFormat <- fileFormat
+                table
+
+            ///Replaces fkInputs of existing object with new one.
+            static member addFKInputs
+                (fkInputs:string) (table:SourceFile) =
+                table.FKInputs <- fkInputs
+                table
 
             ///Adds a sourcefileparam to an existing sourcefile-object.
             static member addDetail
-                (detail:SourceFileParam) (sourceFile:SourceFile) =
-                let result = sourceFile.Details <- addToList sourceFile.Details detail
-                sourceFile
+                (detail:SourceFileParam) (table:SourceFile) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of sourcefileparams to an existing sourcefile-object.
             static member addDetails
-                (details:seq<SourceFileParam>) (sourceFile:SourceFile) =
-                let result = sourceFile.Details <- addCollectionToList sourceFile.Details details
-                sourceFile
+                (details:seq<SourceFileParam>) (table:SourceFile) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             //static member addInputs
             //     (sourceFile:SourceFile) (inputs:Inputs) =
@@ -8156,9 +8846,11 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:SourceFile) (item2:SourceFile) =
-               item1.FileFormat=item2.FileFormat && item1.Name=item2.Name && matchCVParamBases 
+               item1.FKFileFormat=item2.FKFileFormat && item1.Name=item2.Name && 
+               matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) &&
+               item1.FKInputs=item2.FKInputs && 
                item1.ExternalFormatDocumentation=item2.ExternalFormatDocumentation
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -8310,18 +9002,36 @@ module InsertStatements =
             ///Initializes a peptidehypothesis-object with at least all necessary parameters.
             static member init
                 (              
-                    peptideEvidence             : PeptideEvidence,
-                    spectrumIdentificationItems : seq<SpectrumIdentificationItem>,
-                    ?id                         : string
+                    fkPeptideEvidence               : string,
+                    spectrumIdentificationItems     : seq<SpectrumIdentificationItem>,
+                    ?id                             : string,
+                    ?peptideEvidence                : PeptideEvidence,
+                    ?fkProteinDetectionHypothesis   : string
                 ) =
-                let id' = defaultArg id (System.Guid.NewGuid().ToString())
-                    
+                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
+                let peptideEvidence'                = defaultArg peptideEvidence Unchecked.defaultof<PeptideEvidence>
+                let fkProteinDetectionHypothesis'   = defaultArg fkProteinDetectionHypothesis Unchecked.defaultof<string>
+
                 new PeptideHypothesis(
                                       id', 
-                                      peptideEvidence, 
-                                      spectrumIdentificationItems |> List, 
+                                      peptideEvidence',
+                                      fkPeptideEvidence,
+                                      spectrumIdentificationItems |> List,
+                                      fkProteinDetectionHypothesis',
                                       Nullable(DateTime.Now)
                                      )
+
+            ///Replaces peptideEvidence of existing object with new one.
+            static member addPeptideEvidence
+                (peptideEvidence:PeptideEvidence) (table:PeptideHypothesis) =
+                table.PeptideEvidence <- peptideEvidence
+                table
+
+            ///Replaces fkProteinDetectionHypothesis of existing object with new one.
+            static member addFKProteinDetectionHypothesis
+                (fkProteinDetectionHypothesis:string) (table:PeptideHypothesis) =
+                table.FKProteinDetectionHypothesis <- fkProteinDetectionHypothesis
+                table
 
             ///Tries to find a peptideHypothesis-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8348,10 +9058,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByPeptideEvidencePeptideSequence (dbContext:MzIdentML) (peptideSequence:string) =
+            static member tryFindByFKPeptideEvidence (dbContext:MzIdentML) (fkPeptideEvidence:string) =
                 query {
                        for i in dbContext.PeptideHypothesis.Local do
-                           if i.PeptideEvidence.Peptide.PeptideSequence=peptideSequence
+                           if i.FKPeptideEvidence=fkPeptideEvidence
                               then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                       }
                 |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
@@ -8360,7 +9070,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.PeptideHypothesis do
-                                       if i.PeptideEvidence.Peptide.PeptideSequence=peptideSequence
+                                       if i.FKPeptideEvidence=fkPeptideEvidence
                                           then select (i, i.PeptideEvidence, i.SpectrumIdentificationItems)
                                   }
                             |> Seq.map (fun (peptideHypothesis, _, _) -> peptideHypothesis)
@@ -8373,12 +9083,13 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:PeptideHypothesis) (item2:PeptideHypothesis) =
-               item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
+               item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems &&
+               item1.FKProteinDetectionHypothesis=item2.FKProteinDetectionHypothesis
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:PeptideHypothesis) =
-                    PeptideHypothesisHandler.tryFindByPeptideEvidencePeptideSequence dbContext item.PeptideEvidence.Peptide.PeptideSequence
+                    PeptideHypothesisHandler.tryFindByFKPeptideEvidence dbContext item.FKPeptideEvidence
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match PeptideHypothesisHandler.hasEqualFieldValues organization item with
@@ -8403,44 +9114,61 @@ module InsertStatements =
             ///Initializes a proteindetectionhypothesis-object with at least all necessary parameters.
             static member init
                 (             
-                    passThreshold     : bool,
-                    dbSequence        : DBSequence,
-                    peptideHypothesis : seq<PeptideHypothesis>,
-                    ?id               : string,
-                    ?name             : string,
-                    ?details          : seq<ProteinDetectionHypothesisParam>
+                    passThreshold               : bool,
+                    fkDBSequence                : string,
+                    peptideHypothesis           : seq<PeptideHypothesis>,
+                    fkProteinAmbiguityGroup     : string,
+                    ?id                         : string,
+                    ?name                       : string,
+                    ?dbSequence                 : DBSequence,
+                    ?details                    : seq<ProteinDetectionHypothesisParam>
                 ) =
-                let id'        = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'        = defaultArg name Unchecked.defaultof<string>
-                let details'     = convertOptionToList details
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                       = defaultArg name Unchecked.defaultof<string>
+                let dbSequence'                 = defaultArg dbSequence Unchecked.defaultof<DBSequence>
+                let details'                    = convertOptionToList details
                     
                 new ProteinDetectionHypothesis(
                                                id', 
                                                name', 
                                                Nullable(passThreshold), 
-                                               dbSequence, 
+                                               dbSequence', 
+                                               fkDBSequence,
                                                peptideHypothesis |> List,
+                                               fkProteinAmbiguityGroup,
                                                details', 
                                                Nullable(DateTime.Now)
                                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
-                proteinDetectionHypothesis.Name <- name
-                proteinDetectionHypothesis
+                (name:string) (table:ProteinDetectionHypothesis) =
+                table.Name <- name
+                table
+
+            ///Replaces dbSequence of existing object with new one.
+            static member addDBSequence
+                (dbSequence:DBSequence) (table:ProteinDetectionHypothesis) =
+                table.DBSequence <- dbSequence
+                table
+
+            ///Replaces fkProteinAmbiguityGroup of existing object with new one.
+            static member addDBSequence
+                (fkProteinAmbiguityGroup:string) (table:ProteinDetectionHypothesis) =
+                table.FKProteinAmbiguityGroup <- fkProteinAmbiguityGroup
+                table
 
             ///Adds a proteindetectionhypothesisparam to an existing proteindetectionhypothesis-object.
             static member addDetail
-                (detail:ProteinDetectionHypothesisParam) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
-                let result = proteinDetectionHypothesis.Details <- addToList proteinDetectionHypothesis.Details detail
-                proteinDetectionHypothesis
+                (detail:ProteinDetectionHypothesisParam) (table:ProteinDetectionHypothesis) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of proteindetectionhypothesisparams to an existing proteindetectionhypothesis-object.
             static member addDetails
-                (details:seq<ProteinDetectionHypothesisParam>) (proteinDetectionHypothesis:ProteinDetectionHypothesis) =
-                let result = proteinDetectionHypothesis.Details <- addCollectionToList proteinDetectionHypothesis.Details details
-                proteinDetectionHypothesis
+                (details:seq<ProteinDetectionHypothesisParam>) (table:ProteinDetectionHypothesis) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a proteinDetectionHypothesis-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8493,7 +9221,8 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionHypothesis) (item2:ProteinDetectionHypothesis) =
                item1.PassThreshold=item2.PassThreshold && item1.PeptideHypothesis=item2.PeptideHypothesis &&
-               item1.Name=item2.Name && matchCVParamBases 
+               item1.Name=item2.Name && item1.FKProteinAmbiguityGroup=item2.FKProteinAmbiguityGroup &&
+               matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
@@ -8525,40 +9254,49 @@ module InsertStatements =
             ///Initializes a proteinambiguitygroup-object with at least all necessary parameters.
             static member init
                 (             
-                    proteinDetecionHypothesis : seq<ProteinDetectionHypothesis>,
-                    ?id                       : string,
-                    ?name                     : string,
-                    ?details                  : seq<ProteinAmbiguityGroupParam>
+                    proteinDetecionHypothesis   : seq<ProteinDetectionHypothesis>,
+                    ?id                         : string,
+                    ?name                       : string,
+                    ?fkProteinDetectionList     : string,
+                    ?details                    : seq<ProteinAmbiguityGroupParam>
                 ) =
-                let id'                          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                        = defaultArg name Unchecked.defaultof<string>
-                let details'                     = convertOptionToList details
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                       = defaultArg name Unchecked.defaultof<string>
+                let fkProteinDetectionList'     = defaultArg fkProteinDetectionList Unchecked.defaultof<string>
+                let details'                    = convertOptionToList details
                     
                 new ProteinAmbiguityGroup(
                                           id', 
                                           name', 
-                                          proteinDetecionHypothesis |> List, 
+                                          proteinDetecionHypothesis |> List,
+                                          fkProteinDetectionList',
                                           details', 
                                           Nullable(DateTime.Now)
                                          )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
-                proteinAmbiguityGroup.Name <- name
-                proteinAmbiguityGroup
+                (name:string) (table:ProteinAmbiguityGroup) =
+                table.Name <- name
+                table
+
+            ///Replaces fkProteinDetectionList of existing object with new one.
+            static member addFKProteinDetectionList
+                (fkProteinDetectionList:string) (table:ProteinAmbiguityGroup) =
+                table.FKProteinDetectionList <- fkProteinDetectionList
+                table
 
             ///Adds a proteinambiguitygroupparam to an existing proteinambiguitygroup-object.
             static member addDetail
-                (detail:ProteinAmbiguityGroupParam) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
-                let result = proteinAmbiguityGroup.Details <- addToList proteinAmbiguityGroup.Details detail
-                proteinAmbiguityGroup
+                (detail:ProteinAmbiguityGroupParam) (table:ProteinAmbiguityGroup) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of proteinambiguitygroupparam to an existing proteinambiguitygroupparam-object.
             static member addDetails
-                (details:seq<ProteinAmbiguityGroupParam>) (proteinAmbiguityGroup:ProteinAmbiguityGroup) =
-                let result = proteinAmbiguityGroup.Details <- addCollectionToList proteinAmbiguityGroup.Details details
-                proteinAmbiguityGroup
+                (details:seq<ProteinAmbiguityGroupParam>) (table:ProteinAmbiguityGroup) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a proteinAmbiguityGroup-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8610,7 +9348,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinAmbiguityGroup) (item2:ProteinAmbiguityGroup) =
-               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis && matchCVParamBases 
+               item1.ProteinDetectionHypothesis=item2.ProteinDetectionHypothesis &&
+               item1.FKProteinDetectionList=item2.FKProteinDetectionList &&
+               matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                 (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)
 
@@ -8660,35 +9400,35 @@ module InsertStatements =
                                          Nullable(DateTime.Now)
                                         )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (proteinDetectionList:ProteinDetectionList) =
-                proteinDetectionList.Name <- name
-                proteinDetectionList
+                (name:string) (table:ProteinDetectionList) =
+                table.Name <- name
+                table
 
             ///Adds a proteinambiguitygroup to an existing proteindetectionlist-object.
             static member addProteinAmbiguityGroup
-                (proteinAmbiguityGroup:ProteinAmbiguityGroup) (proteinDetectionList:ProteinDetectionList) =
-                let result = proteinDetectionList.ProteinAmbiguityGroups <- addToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroup
-                proteinDetectionList
+                (proteinAmbiguityGroup:ProteinAmbiguityGroup) (table:ProteinDetectionList) =
+                let result = table.ProteinAmbiguityGroups <- addToList table.ProteinAmbiguityGroups proteinAmbiguityGroup
+                table
 
             ///Adds a collection of proteinambiguitygroups to an existing proteindetectionlist-object.
             static member addProteinAmbiguityGroups
-                (proteinAmbiguityGroups:seq<ProteinAmbiguityGroup>) (proteinDetectionList:ProteinDetectionList) =
-                let result = proteinDetectionList.ProteinAmbiguityGroups <- addCollectionToList proteinDetectionList.ProteinAmbiguityGroups proteinAmbiguityGroups
-                proteinDetectionList
+                (proteinAmbiguityGroups:seq<ProteinAmbiguityGroup>) (table:ProteinDetectionList) =
+                let result = table.ProteinAmbiguityGroups <- addCollectionToList table.ProteinAmbiguityGroups proteinAmbiguityGroups
+                table
 
             ///Adds a proteindetectionlistparam to an existing proteindetectionlist-object.
             static member addDetail
-                (detail:ProteinDetectionListParam) (proteinDetectionList:ProteinDetectionList) =
-                let result = proteinDetectionList.Details <- addToList proteinDetectionList.Details detail
-                proteinDetectionList
+                (detail:ProteinDetectionListParam) (table:ProteinDetectionList) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of proteindetectionlistparams to an existing proteindetectionlist-object.
             static member addDetails
-                (details:seq<ProteinDetectionListParam>) (proteinDetectionList:ProteinDetectionList) =
-                let result = proteinDetectionList.Details <- addCollectionToList proteinDetectionList.Details details
-                proteinDetectionList
+                (details:seq<ProteinDetectionListParam>) (table:ProteinDetectionList) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Tries to find a proteinDetectionList-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8772,25 +9512,34 @@ module InsertStatements =
             ///Initializes a analysisdata-object with at least all necessary parameters.
             static member init
                 (             
-                    spectrumIdentificationList : seq<SpectrumIdentificationList>,
-                    ?id                        : string,
-                    ?proteinDetectionList      : ProteinDetectionList
+                    spectrumIdentificationList  : seq<SpectrumIdentificationList>,
+                    ?id                         : string,
+                    ?proteinDetectionList       : ProteinDetectionList,
+                    ?fkProteinDetectionList     : string
                 ) =
-                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
-                let proteinDetectionList' = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let proteinDetectionList'   = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
+                let fkProteinDetectionList' = defaultArg fkProteinDetectionList Unchecked.defaultof<string>
                     
                 new AnalysisData(
                                  id', 
                                  spectrumIdentificationList |> List, 
-                                 proteinDetectionList',  
+                                 proteinDetectionList',
+                                 fkProteinDetectionList',
                                  Nullable(DateTime.Now)
                                 )
 
             ///Replaces proteindetectionlist of existing object with new one.
             static member addProteinDetectionList
-                (proteinDetectionList:ProteinDetectionList) (analysisData:AnalysisData) =
-                analysisData.ProteinDetectionList <- proteinDetectionList
-                analysisData
+                (proteinDetectionList:ProteinDetectionList) (table:AnalysisData) =
+                table.ProteinDetectionList <- proteinDetectionList
+                table
+
+            ///Replaces fkProteinDetectionList of existing object with new one.
+            static member addFKProteinDetectionList
+                (fkProteinDetectionList:string) (table:AnalysisData) =
+                table.FKProteinDetectionList <- fkProteinDetectionList
+                table
 
             ///Tries to find a analysisData-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8817,10 +9566,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a cvparam-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByMzIdentMLDocument (dbContext:MzIdentML) (proteinDetectionListID:string) =
+            static member tryFindByFKProteinDetectionList (dbContext:MzIdentML) (fkProteinDetectionList:string) =
                 query {
                        for i in dbContext.AnalysisData.Local do
-                           if i.ProteinDetectionList.ID=proteinDetectionListID
+                           if i.FKProteinDetectionList=fkProteinDetectionList
                               then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                       }
                 |> Seq.map (fun (analysisData, _, _) -> analysisData)
@@ -8829,7 +9578,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.AnalysisData do
-                                       if i.ProteinDetectionList.ID=proteinDetectionListID
+                                       if i.FKProteinDetectionList=fkProteinDetectionList
                                           then select (i, i.SpectrumIdentificationList, i.ProteinDetectionList)
                                   }
                             |> Seq.map (fun (analysisData, _, _) -> analysisData)
@@ -8843,12 +9592,12 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:AnalysisData) (item2:AnalysisData) =
                item1.SpectrumIdentificationList=item2.SpectrumIdentificationList && 
-               item1.ProteinDetectionList=item2.ProteinDetectionList
+               item1.FKProteinDetectionList=item2.FKProteinDetectionList
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:AnalysisData) =
-                    AnalysisDataHandler.tryFindByMzIdentMLDocument dbContext item.ProteinDetectionList.ID
+                    AnalysisDataHandler.tryFindByFKProteinDetectionList dbContext item.FKProteinDetectionList
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match AnalysisDataHandler.hasEqualFieldValues organization item with
@@ -8873,38 +9622,56 @@ module InsertStatements =
             ///Initializes a proteindetection-object with at least all necessary parameters.
             static member init
                 (             
-                    proteinDetectionList        : ProteinDetectionList,
-                    proteinDetectionProtocol    : ProteinDetectionProtocol,
+                    fkProteinDetectionList      : string,
+                    fkProteinDetectionProtocol  : string,
                     spectrumIdentificationLists : seq<SpectrumIdentificationList>,
                     ?id                         : string,
                     ?name                       : string,
-                    ?activityDate               : DateTime
+                    ?activityDate               : DateTime,
+                    ?proteinDetectionList       : ProteinDetectionList,
+                    ?proteinDetectionProtocol   : ProteinDetectionProtocol
                 ) =
-                let id'                = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'              = defaultArg name Unchecked.defaultof<string>
-                let activityDate'      = defaultArg activityDate Unchecked.defaultof<DateTime>
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                       = defaultArg name Unchecked.defaultof<string>
+                let activityDate'               = defaultArg activityDate Unchecked.defaultof<DateTime>
+                let proteinDetectionList'       = defaultArg proteinDetectionList Unchecked.defaultof<ProteinDetectionList>
+                let proteinDetectionProtocol'   = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
                     
                 new ProteinDetection(
                                      id', 
                                      name', 
                                      Nullable(activityDate'), 
-                                     proteinDetectionList, 
-                                     proteinDetectionProtocol,
+                                     proteinDetectionList', 
+                                     fkProteinDetectionList,
+                                     proteinDetectionProtocol',
+                                     fkProteinDetectionProtocol,
                                      spectrumIdentificationLists |> List,
                                      Nullable(DateTime.Now)
                                     )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (proteinDetection:ProteinDetection) =
-                proteinDetection.Name <- name
-                proteinDetection
+                (name:string) (table:ProteinDetection) =
+                table.Name <- name
+                table
 
-            ///Replaces activitydate of existing object with new name.
+            ///Replaces activitydate of existing object with new one.
             static member addActivityDate
-                (activityDate:DateTime) (proteinDetection:ProteinDetection) =
-                proteinDetection.ActivityDate <- Nullable(activityDate)
-                proteinDetection
+                (activityDate:DateTime) (table:ProteinDetection) =
+                table.ActivityDate <- Nullable(activityDate)
+                table
+
+            ///Replaces proteinDetectionList of existing object with new one.
+            static member addProteinDetectionList
+                (proteinDetectionList:ProteinDetectionList) (table:ProteinDetection) =
+                table.ProteinDetectionList <- proteinDetectionList
+                table
+
+            ///Replaces proteinDetectionProtocol of existing object with new one.
+            static member addProteinDetectionProtocol
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (table:ProteinDetection) =
+                table.ProteinDetectionProtocol <- proteinDetectionProtocol
+                table
 
             ///Tries to find a proteinDetection-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8956,7 +9723,9 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetection) (item2:ProteinDetection) =
-               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
+               item1.FKProteinDetectionProtocol=item2.FKProteinDetectionProtocol && 
+               item1.FKProteinDetectionList=item2.FKProteinDetectionList &&
+               item1.SpectrumIdentificationLists=item2.SpectrumIdentificationLists &&
                item1.Name=item2.Name && item1.ActivityDate=item2.ActivityDate
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -9031,84 +9800,84 @@ module InsertStatements =
                                            Nullable(DateTime.Now)
                                           )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Name <- name
-                biblioGraphicReference
+                (name:string) (table:BiblioGraphicReference) =
+                table.Name <- name
+                table
 
             ///Replaces authors of existing object with new authors.
             static member addAuthors
-                (authors:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Authors <- authors
-                biblioGraphicReference
+                (authors:string) (table:BiblioGraphicReference) =
+                table.Authors <- authors
+                table
 
             ///Replaces doi of existing object with new doi.
             static member addDOI
-                (doi:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.DOI <- doi
-                biblioGraphicReference
+                (doi:string) (table:BiblioGraphicReference) =
+                table.DOI <- doi
+                table
 
             ///Replaces editor of existing object with new editor.
             static member addEditor
-                (editor:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Editor <- editor
-                biblioGraphicReference
+                (editor:string) (table:BiblioGraphicReference) =
+                table.Editor <- editor
+                table
 
             ///Replaces issue of existing object with new issue.
             static member addIssue
-                (issue:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Issue <- issue
-                biblioGraphicReference
+                (issue:string) (table:BiblioGraphicReference) =
+                table.Issue <- issue
+                table
 
             ///Replaces pages of existing object with new pages.
             static member addPages
-                (pages:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Pages <- pages
-                biblioGraphicReference
+                (pages:string) (table:BiblioGraphicReference) =
+                table.Pages <- pages
+                table
 
             ///Replaces publication of existing object with new publication.
             static member addPublication
-                (publication:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Publication <- publication
-                biblioGraphicReference
+                (publication:string) (table:BiblioGraphicReference) =
+                table.Publication <- publication
+                table
 
             ///Replaces publisher of existing object with new publisher.
             static member addPublisher
-                (publisher:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Publisher <- publisher
-                biblioGraphicReference
+                (publisher:string) (table:BiblioGraphicReference) =
+                table.Publisher <- publisher
+                table
 
             ///Replaces title of existing object with new title.
             static member addTitle
-                (title:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Title <- title
-                biblioGraphicReference
+                (title:string) (table:BiblioGraphicReference) =
+                table.Title <- title
+                table
 
             ///Replaces volume of existing object with new volume.
             static member addVolume
-                (volume:string) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Volume <- volume
-                biblioGraphicReference
+                (volume:string) (table:BiblioGraphicReference) =
+                table.Volume <- volume
+                table
 
             ///Replaces year of existing object with new year.
             static member addYear
-                (year:int) (biblioGraphicReference:BiblioGraphicReference) =
-                biblioGraphicReference.Year <- Nullable(year)
-                biblioGraphicReference
+                (year:int) (table:BiblioGraphicReference) =
+                table.Year <- Nullable(year)
+                table
 
-            ///Replaces MzIdentMLDocumentID of existing object with new one.
+            ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (biblioGraphicReference:BiblioGraphicReference) =
-                let result = biblioGraphicReference.MzIdentMLDocumentID <- fkMzIdentML
-                biblioGraphicReference
+                (fkMzIdentML:string) (table:BiblioGraphicReference) =
+                table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
                            if i.ID=id
-                              then select (i, i.MzIdentMLDocumentID)
+                              then select (i, i.FKMzIdentMLDocument)
                       }
                 |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                 |> (fun biblioGraphicReference -> 
@@ -9117,7 +9886,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.BiblioGraphicReference do
                                        if i.ID=id
-                                          then select (i, i.MzIdentMLDocumentID)
+                                          then select (i, i.FKMzIdentMLDocument)
                                   }
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                             |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
@@ -9132,7 +9901,7 @@ module InsertStatements =
                 query {
                        for i in dbContext.BiblioGraphicReference.Local do
                            if i.Name=name
-                              then select (i, i.MzIdentMLDocumentID)
+                              then select (i, i.FKMzIdentMLDocument)
                       }
                 |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                 |> (fun biblioGraphicReference -> 
@@ -9141,7 +9910,7 @@ module InsertStatements =
                             query {
                                    for i in dbContext.BiblioGraphicReference do
                                        if i.Name=name
-                                          then select (i, i.MzIdentMLDocumentID)
+                                          then select (i, i.FKMzIdentMLDocument)
                                   }
                             |> Seq.map (fun (biblioGraphicReference, _) -> biblioGraphicReference)
                             |> (fun biblioGraphicReference -> if (Seq.exists (fun biblioGraphicReference' -> biblioGraphicReference' <> null) biblioGraphicReference) = false
@@ -9155,7 +9924,7 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:BiblioGraphicReference) (item2:BiblioGraphicReference) =
                item1.Authors=item2.Authors && item1.DOI=item2.DOI && item1.Editor=item2.Editor && item1.Issue=item2.Issue &&
                item1.Pages=item2.Pages && item1.Publication=item2.Publication && item1.Publisher=item2.Publisher && item1.Title=item2.Title &&
-               item1.Volume=item2.Volume && item1.Year=item2.Year && item1.MzIdentMLDocumentID=item2.MzIdentMLDocumentID
+               item1.Volume=item2.Volume && item1.Year=item2.Year && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -9185,41 +9954,68 @@ module InsertStatements =
             ///Initializes a provider-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id               : string,
-                    ?name             : string,
-                    ?analysisSoftware : AnalysisSoftware,
-                    ?contactRole      : ContactRole
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?analysisSoftware       : AnalysisSoftware,
+                    ?fkAnalysisSoftware     : string,
+                    ?contactRole            : ContactRole,
+                    ?fkContactRole          : string,
+                    ?fkMzQuantMLDocument    : string
                 ) =
-                let id'               = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'             = defaultArg name Unchecked.defaultof<string>
-                let analysisSoftware' = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
-                let contactRole'      = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                   = defaultArg name Unchecked.defaultof<string>
+                let analysisSoftware'       = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
+                let fkAnalysisSoftware'     = defaultArg fkAnalysisSoftware Unchecked.defaultof<string>
+                let contactRole'            = defaultArg contactRole Unchecked.defaultof<ContactRole>
+                let fkContactRole'          = defaultArg fkContactRole Unchecked.defaultof<string>
+                let fkMzQuantMLDocument'    = defaultArg fkMzQuantMLDocument Unchecked.defaultof<string>
 
                 new Provider(
                              id', 
                              name', 
                              analysisSoftware', 
+                             fkAnalysisSoftware', 
                              contactRole', 
+                             fkContactRole', 
+                             fkMzQuantMLDocument', 
                              Nullable(DateTime.Now)
                             )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (provider:Provider) =
-                provider.Name <- name
-                provider
+                (name:string) (table:Provider) =
+                table.Name <- name
+                table
 
-            ///Replaces analysissoftware of existing object with new analysissoftware.
+            ///Replaces analysissoftware of existing object with new one.
             static member addAnalysisSoftware
-                (analysisSoftware:AnalysisSoftware) (provider:Provider) =
-                provider.AnalysisSoftware <- analysisSoftware
-                provider
+                (analysisSoftware:AnalysisSoftware) (table:Provider) =
+                table.AnalysisSoftware <- analysisSoftware
+                table
 
-            ///Replaces contactrole of existing object with new contactrole.
+            ///Replaces fkAnalysisSoftware of existing object with new one.
+            static member addFKAnalysisSoftware
+                (fkAnalysisSoftware:string) (table:Provider) =
+                table.FKAnalysisSoftware <- fkAnalysisSoftware
+                table
+
+            ///Replaces contactrole of existing object with new one.
             static member addContactRole
-                (contactRole:ContactRole) (provider:Provider) =
-                provider.ContactRole <- contactRole
-                provider
+                (contactRole:ContactRole) (table:Provider) =
+                table.ContactRole <- contactRole
+                table
+
+            ///Replaces fkContactRole of existing object with new one.
+            static member addFKContactRole
+                (fkContactRole:string) (table:Provider) =
+                table.FKContactRole <- fkContactRole
+                table
+
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFKMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:Provider) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
+                table
 
             ///Tries to find a provider-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -9271,7 +10067,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Provider) (item2:Provider) =
-               item1.AnalysisSoftware=item2.AnalysisSoftware && item1.ContactRole=item2.ContactRole
+               item1.FKAnalysisSoftware=item2.FKAnalysisSoftware && item1.FKContactRole=item2.FKContactRole &&
+               item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -9374,7 +10171,7 @@ module InsertStatements =
 
             ///Adds a analysisSoftware to an existing mzidentmldocument-object.
             static member addAnalysisSoftware
-                (analysisSoftware:AnalysisSoftware) (mzIdentML:MzIdentMLDocument) =
+                (table:AnalysisSoftware) (mzIdentML:MzIdentMLDocument) =
                 let result = mzIdentML.AnalysisSoftwareList <- addToList mzIdentML.AnalysisSoftwareList analysisSoftware
                 mzIdentML
 
@@ -9410,7 +10207,7 @@ module InsertStatements =
 
             ///Adds a person to an existing mzidentmldocument-object.
             static member addPerson
-                (person:Person) (mzIdentML:MzIdentMLDocument) =
+                (table:Person) (mzIdentML:MzIdentMLDocument) =
                 let result = mzIdentML.Persons <- addToList mzIdentML.Persons person
                 mzIdentML
 

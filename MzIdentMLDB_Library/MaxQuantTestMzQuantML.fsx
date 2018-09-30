@@ -1719,7 +1719,7 @@ let testSearchDatabase =
     SearchDatabaseHandler.init("local", "Name 1", "TestSearchDB 1")
     |> SearchDatabaseHandler.addToContext sqliteMzQuantMLContext
 
-let createTestPeptideParam (n:int) =
+let createTestPeptideParams (n:int) =
     [
     PeptideConsensusParamHandler.init(
         terms.[0]
@@ -1829,21 +1829,11 @@ let testEvidenceRefMOxidized =
     |> EvidenceRefHandler.addFKPeptideConsensus "PeptideConsensusMOxidized 1"
     |> EvidenceRefHandler.addToContext sqliteMzQuantMLContext
 
-let testPeptideConsensis (n:int) =
+let createPeptideConsensus (n:int) (i:int) =
     PeptideConsensusHandler.init(3, "PeptideConsensusList 1", string n)
     |> PeptideConsensusHandler.addPeptideSequence "AAIEASFGSVDEMK" 
-    |> PeptideConsensusHandler.addFKProtein (string n)
-    //|> PeptideConsensusHandler.addDetails (createTestPeptideParam n)
-
-let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
-    let rec loop (someThings:Map<string, PeptideConsensus>) n i =
-        if n < 1000 then
-            if i>10 then
-                loop someThings (n+1) 0
-            else
-                loop (someThings.Add (System.Guid.NewGuid().ToString(), testPeptideConsensis n)) n (i+1)
-        else someThings
-    loop collection 0 0
+    |> PeptideConsensusHandler.addFKProtein (string i)
+    //|> PeptideConsensusHandler.addDetails (createTestPeptideParams n)
 
 //let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
 //    let rec loop (someThings:Map<string, PeptideConsensus>) n i =
@@ -1854,26 +1844,57 @@ let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
 //                loop (someThings.Add (System.Guid.NewGuid().ToString(), testPeptideConsensis n)) n (i+1)
 //        else someThings
 //    loop collection 0 0
-   
+    
+let createProtein n =
+    ProteinHandler.init("Test", "TestSearchDB 1", "ProteinList", string n)
+    |> ProteinHandler.addDetails (createTestProteinParams n)
+
+let createMultiplePeptideParams (collection:Map<string, PeptideConsensusParam list>) =
+    let rec loop (someThings:Map<string, PeptideConsensusParam list>) n =
+        if n < 100000 then
+            loop (someThings.Add (System.Guid.NewGuid().ToString(), createTestPeptideParams n)) (n+1)
+        else someThings
+    loop collection 0
+
+let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
+    let rec loop (someThings:Map<string, PeptideConsensus>) n i =
+        if n < 100000 then
+            if i>=10000 then
+                loop someThings n 0
+            else
+                loop (someThings.Add (System.Guid.NewGuid().ToString(), createPeptideConsensus n i)) (n+1) (i+1)
+        else someThings
+    loop collection 0 0
+
+let rec createMultipleProteins (collection:Map<string, Protein>) =
+    let rec loop (someThings:Map<string, Protein>) n =
+        if n < 10000 then 
+            loop (someThings.Add (System.Guid.NewGuid().ToString(), createProtein n)) (n+1)
+        else someThings
+    loop collection 0
+createMultipleProteins
+
+let manyThousandPeptideParams = 
+    createMultiplePeptideParams Map.empty
+    |> Seq.map (fun item -> item.Value)
+    |> Seq.concat
+    |> Array.ofSeq
+    |> (fun item -> sqliteMzQuantMLContext.PeptideConsensusParam.AddRange(item.Cast()))
+
 let manyThousandPeptides = 
     createMultiplePeptides Map.empty
     |> Seq.map (fun item -> item.Value)
-    |> (fun item -> sqliteMzQuantMLContext.AddRange(item.Cast()))
+    |> Array.ofSeq
+    |> (fun item -> sqliteMzQuantMLContext.PeptideConsensus.AddRange(item.Cast()))
     
-let testProtein n =
-    ProteinHandler.init("Test", "TestSearchDB 1", "ProteinList", (string n))
-    |> ProteinHandler.addDetails (createTestProteinParams n)
-
-let rec createMultipleProteins (collection:Map<string, Protein>) n =
-    if n < 100 then 
-        createMultipleProteins (collection.Add (System.Guid.NewGuid().ToString(), testProtein n)) (n+1)
-    else collection
-createMultipleProteins
-
 let manyThousandProteins = 
-    createMultipleProteins Map.empty 0
+    createMultipleProteins Map.empty
     |> Seq.map (fun item -> item.Value)
-    |> (fun item -> sqliteMzQuantMLContext.AddRange(item.Cast()))
+    |> Array.ofSeq
+    |> (fun item -> sqliteMzQuantMLContext.Protein.AddRange(item.Cast()))
+
+//for i in manyThousandPeptideParams do
+//    printfn "%A" i.FKPeptideConsensus
 
 let proteinList =
     ProteinListHandler.init("ProteinList")

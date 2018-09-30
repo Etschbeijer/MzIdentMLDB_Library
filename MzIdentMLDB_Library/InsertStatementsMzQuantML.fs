@@ -7770,7 +7770,7 @@ module InsertStatements =
             static member init
                 (             
                     charge                       : int,
-                    fkPeptideConsensusList      : string,
+                    fkPeptideConsensusList       : string,
                     ?id                          : string,
                     ?searchDatabase              : SearchDatabase,
                     ?fkSearchDatabase            : string,
@@ -7791,9 +7791,8 @@ module InsertStatements =
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
                 let evidenceRefs'                = convertOptionToList evidenceRefs
-                let details'                     = convertOptionToList details
                 let fkProtein'                   = defaultArg fkProtein (System.Guid.NewGuid().ToString())
-                
+                let details'                     = convertOptionToList details                
 
                 new PeptideConsensus(
                                      id',

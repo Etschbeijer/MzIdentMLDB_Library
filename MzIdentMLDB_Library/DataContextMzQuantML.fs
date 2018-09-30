@@ -2406,11 +2406,14 @@ module DataModel =
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
 
-    and MzQuantML =
+    type MzQuantML =
      
             inherit DbContext
 
-            new(options : DbContextOptions<MzQuantML>) = {inherit DbContext(options)}
+            new (options : DbContextOptions<MzQuantML>) = 
+                {
+                 inherit DbContext(options)
+                }
 
             [<DefaultValue>] 
             val mutable m_term : DbSet<Term>
@@ -2796,11 +2799,11 @@ module DataModel =
                     //    .HasIndex("ProteinID") |> ignore
                     //modelBuilder.Entity<ProteinParam>()
                     //    .HasIndex("FKTerm") |> ignore
+
                     modelBuilder.Entity<PeptideConsensus>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
-                    //modelBuilder.Entity<PeptideConsensus>()
-                    //    .HasIndex("ProteinID") |> ignore
+
                     //modelBuilder.Entity<PeptideConsensusParam>()
                     //    .HasIndex("ID")
                     //    .IsUnique()|> ignore
