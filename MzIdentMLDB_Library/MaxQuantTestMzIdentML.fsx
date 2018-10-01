@@ -1306,6 +1306,7 @@ let databaseName =
         (TermSymbol.toID DataBaseName), "DB 1"
                         )
     |> CVParamHandler.addValue "Unknown to me at the moment"
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let searchDataBaseParam =
     SearchDatabaseParamHandler.init(
@@ -1315,7 +1316,7 @@ let searchDataBaseParam =
 
 let searchDatabase =
     SearchDatabaseHandler.init(
-        "local", "FASTA", "DB 1"
+        "local", "FASTA", "DB 1", "SearchDB"
                               )
     |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
@@ -1332,7 +1333,7 @@ let dbSequenceParams =
     ]
 
 let dbSequence =
-    DBSequenceHandler.init("Test", searchDatabase, "DBSeq 1")
+    DBSequenceHandler.init("Test", "SearchDB", "DBSeq 1")
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams
@@ -1340,7 +1341,7 @@ let dbSequence =
 
 let searchDatabase1 =
     SearchDatabaseHandler.init(
-        "local", "FASTA", "DB 1"
+        "local", "FASTA", "DB 1", "SearchDB 1"
                               )
     |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
@@ -1357,7 +1358,7 @@ let dbSequenceParams1 =
     ]
 
 let dbSequence1 =
-    DBSequenceHandler.init("Cre02.g096150.t1.2", searchDatabase1)
+    DBSequenceHandler.init("Cre02.g096150.t1.2", "SearchDB 1")
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams1
@@ -1926,7 +1927,7 @@ let proteinDetectionHypothesisParams =
     
 let proteinDetectionHypothesis =
     ProteinDetectionHypothesisHandler.init(
-        true, "DBSeq 1", [peptideHypothesisUnModified; peptideHypothesisMOxidized], "Cre02.g096150.t1.2", "Cre02.g096150.t1.2"
+        true, "DBSeq 1", [peptideHypothesisUnModified; peptideHypothesisMOxidized], "173","Cre02.g096150.t1.2", "Cre02.g096150.t1.2"
                                             )
     |> ProteinDetectionHypothesisHandler.addDetails proteinDetectionHypothesisParams
 
