@@ -1205,59 +1205,59 @@ let measureErrors =
     MeasureParamHandler.init(
         (TermSymbol.toID MassErrorPpm)
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
         (TermSymbol.toID MassErrorPercent)
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Percentage);
     MeasureParamHandler.init(
         (TermSymbol.toID MassErrorDa)
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
         (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [ppm]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
         (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [ppm]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
         (TermSymbol.toID MassDeviation),
             "Mass Deviation [ppm]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     MeasureParamHandler.init(
         (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [Da]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
         (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [Da]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
         (TermSymbol.toID MassDeviation),
             "Mass Deviation [Da]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     MeasureParamHandler.init(
         (TermSymbol.toID ProductIonErrorMZ),
             "Product-ion error [M/Z]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID MZ); 
     ]
 
@@ -1267,13 +1267,13 @@ let measureTypes =
         (TermSymbol.toID ProductIonMZ),
             "Product-ion [M/Z]"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID MZ);                       
     MeasureParamHandler.init(
         (TermSymbol.toID ProductIonIntensity),
             "Intensity"
                             )
-    |> MeasureParamHandler.addUnit 
+    |> MeasureParamHandler.addFKUnit 
         (TermSymbol.toID NumberOfDetections);
     ]
 
@@ -1285,22 +1285,25 @@ MeasureHandler.init(measureErrors, "FragmentationTable measure-error")
 
 let fileFormat1 =
     CVParamHandler.init(
-        (TermSymbol.toID DataStoredInDataBase)
-                        )
+        (TermSymbol.toID DataStoredInDataBase), "Data saved in DB"
+                       )
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let fileFormat2 =
     CVParamHandler.init(
-        (TermSymbol.toID UnknownFileType)
+        (TermSymbol.toID UnknownFileType), "Unknown"
                         )
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let fileFormat3 =
     CVParamHandler.init(
-        (TermSymbol.toID FASTAFormat)
+        (TermSymbol.toID FASTAFormat), "FASTA"
                         )
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let databaseName =
     CVParamHandler.init(
-        (TermSymbol.toID DataBaseName)
+        (TermSymbol.toID DataBaseName), "DB 1"
                         )
     |> CVParamHandler.addValue "Unknown to me at the moment"
 
@@ -1312,7 +1315,7 @@ let searchDataBaseParam =
 
 let searchDatabase =
     SearchDatabaseHandler.init(
-        "local", fileFormat3, databaseName
+        "local", "FASTA", "DB 1"
                               )
     |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
@@ -1329,7 +1332,7 @@ let dbSequenceParams =
     ]
 
 let dbSequence =
-    DBSequenceHandler.init("Test", searchDatabase)
+    DBSequenceHandler.init("Test", searchDatabase, "DBSeq 1")
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams
@@ -1337,7 +1340,7 @@ let dbSequence =
 
 let searchDatabase1 =
     SearchDatabaseHandler.init(
-        "local", fileFormat3, databaseName
+        "local", "FASTA", "DB 1"
                               )
     |> SearchDatabaseHandler.addDetail searchDataBaseParam
 
@@ -1390,7 +1393,7 @@ let peptideParamUnmodified =
         (TermSymbol.toID Mass)
                             )
     |> PeptideParamHandler.addValue "1453.6797"
-    |> PeptideParamHandler.addUnit
+    |> PeptideParamHandler.addFKUnit
         (TermSymbol.toID KiloDalton);
     PeptideParamHandler.init(
         (TermSymbol.toID MonoIsotopicMass)
@@ -1403,7 +1406,7 @@ let peptideParamUnmodified =
     ]
 
 let peptideUnmodified =
-    PeptideHandler.init("AAIEASFGSVDEMK", "119")
+    PeptideHandler.init("AAIEASFGSVDEMK", "PeptideUnmod 1")
     |> PeptideHandler.addDetails peptideParamUnmodified
     |> PeptideHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
@@ -1446,13 +1449,13 @@ let spectrumidentificationItemParamPeptideUnmodified =
         (TermSymbol.toID RetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "25.752"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID CalibratedRetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "25.664"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID DeltaScore)
@@ -1494,7 +1497,7 @@ let spectrumidentificationItemParamPeptideUnmodified =
         (TermSymbol.toID MassPrecision)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "0.771146"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Ppm);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID MzDeltaScore)
@@ -1504,13 +1507,13 @@ let spectrumidentificationItemParamPeptideUnmodified =
         (TermSymbol.toID RetentionLength)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "22.688"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID RetentionTimeFWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "11.349"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     ]
 
@@ -1545,34 +1548,31 @@ let valueMassesUnModified =
     672.320238153757;747.363964421907
     ]
 
+let measures =
+    [
+     MeasureHandler.init(
+                         [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Intensity").Value], "Intensity"
+                        );
+     MeasureHandler.init(
+                         [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [Da]").Value], "Mass Deviation [Da]"
+                        );
+     MeasureHandler.init(
+                         [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [ppm]").Value], "Mass Deviation [ppm]"
+                        );
+     MeasureHandler.init(
+                         [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Product-ion [M/Z]").Value], "Product-ion [M/Z]"
+                        );
+    ]
+    |> (fun item -> sqliteMzIdentMLContext.AddRange (item.Cast()))
 
 let fragmentArrayUnModified1 =
     [
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Intensity").Value]
-                            ),
-                            177.                
-                             );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [Da]").Value]
-                            ),
-                            0.00357427
-                             );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [ppm]").Value]
-                            ),
-                            6.844385
-                             );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Product-ion [M/Z]").Value]
-                            ),
-                            522.219250635495
-                             );
+     FragmentArrayHandler.init("Intensity", 177.);
+     FragmentArrayHandler.init("Mass Deviation [Da]", 0.00357427);
+     FragmentArrayHandler.init("Mass Deviation [ppm]", 6.844385);
+     FragmentArrayHandler.init("Product-ion [M/Z]", 522.219250635495);
     ]
+
   
 let ionTypeParamUnModified1 =
     [
@@ -1587,30 +1587,10 @@ let ionTypeParamUnModified1 =
 
 let fragmentArrayUnModified2 =
     [
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Intensity").Value]
-                            ),
-                            129.                
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [Da]").Value]
-                            ),
-                            0.00393288
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [ppm]").Value]
-                            ),
-                            6.330212
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Product-ion [M/Z]").Value]
-                            ),
-                            621.287305940905
-                             );
+    FragmentArrayHandler.init("Intensity", 129.);
+    FragmentArrayHandler.init("Mass Deviation [Da]", 0.00393288);
+    FragmentArrayHandler.init("Mass Deviation [ppm]", 6.330212);
+    FragmentArrayHandler.init("Product-ion [M/Z]", 621.287305940905);
     ]
   
 let ionTypeParamUnModified2 =
@@ -1640,7 +1620,7 @@ let fragmentationsUnModified =
 
 let spectrumidentificationItemPeptideUnmodified =
     SpectrumIdentificationItemHandler.init(
-        peptideUnmodified, 2, 727.84714, true, 0
+        "PeptideUnmod 1", 2, 727.84714, true, 0
                                             )
     |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsUnModified
     |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideUnmodified
@@ -1742,13 +1722,13 @@ let spectrumidentificationItemParamPeptideMOxidized =
         (TermSymbol.toID RetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "21.489"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID CalibratedRetentionTime)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "21.372"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID DeltaScore)
@@ -1762,7 +1742,7 @@ let spectrumidentificationItemParamPeptideMOxidized =
         (TermSymbol.toID UncalibratedMZ)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "735.8439"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID MZ);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID FWHM)
@@ -1792,7 +1772,7 @@ let spectrumidentificationItemParamPeptideMOxidized =
         (TermSymbol.toID MassPrecision)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "1.815383"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Ppm);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID MzDeltaScore)
@@ -1802,13 +1782,13 @@ let spectrumidentificationItemParamPeptideMOxidized =
         (TermSymbol.toID RetentionLength)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "20.649"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     SpectrumIdentificationItemParamHandler.init(
         (TermSymbol.toID RetentionTimeFWHM)
                                                 )
     |> SpectrumIdentificationItemParamHandler.addValue "7.509"
-    |> SpectrumIdentificationItemParamHandler.addUnit
+    |> SpectrumIdentificationItemParamHandler.addFKUnit
         (TermSymbol.toID Minute);
     ]
 
@@ -1842,34 +1822,13 @@ let valueMassDeviationsMassesMOxized =
     525.269156608527;747.374378106757;729.343517707074;834.390303674119;816.386556342786;933.462177668826;
     915.462263936226;1048.53310896602;1177.53089691696
     ]
-    |> Seq.map (fun value -> ValueHandler.init value)
 
 let fragmentArrayMOXidized1 =
     [
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Intensity").Value]
-                            ),
-                            68.                
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [Da]").Value]
-                            ),
-                            0.005498344
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [ppm]").Value]
-                            ),
-                            12.99276
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Product-ion [M/Z]").Value]
-                            ),
-                            423.185298151502
-                                );
+    FragmentArrayHandler.init("Intensity", 68.);
+    FragmentArrayHandler.init("Mass Deviation [Da]",0.005498344);
+    FragmentArrayHandler.init("Mass Deviation [ppm]", 12.99276);
+    FragmentArrayHandler.init("Product-ion [M/Z]", 423.185298151502);
     ]
   
 let ionTypeParamMOxidized1 =
@@ -1885,30 +1844,10 @@ let ionTypeParamMOxidized1 =
 
 let fragmentArrayMOXidized2 =
     [
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Intensity").Value]
-                            ),
-                            150.                
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [Da]").Value]
-                            ),
-                            -0.003835145
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Mass Deviation [ppm]").Value]
-                            ),
-                            -7.125587
-                                );
-    FragmentArrayHandler.init(
-        MeasureHandler.init(
-            [(MeasureParamHandler.tryFindByID sqliteMzIdentMLContext "Product-ion [M/Z]").Value]
-                            ),
-                            423.185298151502
-                                );
+    FragmentArrayHandler.init("Intensity", 150.);
+    FragmentArrayHandler.init("Mass Deviation [Da]", -0.003835145);
+    FragmentArrayHandler.init("Mass Deviation [ppm]", -7.125587);
+    FragmentArrayHandler.init("Product-ion [M/Z]", 423.185298151502);
     ]
   
 let ionTypeParamMOxidized2 =
@@ -1938,7 +1877,7 @@ let fragmentationsMOxidized =
 
 let spectrumidentificationItemPeptideMOxidized =
     SpectrumIdentificationItemHandler.init(
-        peptideMOxidized, 2, 735.84531, true, -1
+        "119MOxidized", 2, 735.84531, true, -1
                                             )
     |> SpectrumIdentificationItemHandler.addFragmentations fragmentationsMOxidized
     |> SpectrumIdentificationItemHandler.addDetails spectrumidentificationItemParamPeptideMOxidized
@@ -1946,13 +1885,13 @@ let spectrumidentificationItemPeptideMOxidized =
 let peptideEvidences =
     [
     PeptideEvidenceHandler.init(
-        dbSequence, peptideUnmodified
+        "DBSeq 1", "PeptideUnmod 1"
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
     |> PeptideEvidenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
     PeptideEvidenceHandler.init(
-        dbSequence, peptideMOxidized
+        "DBSeq 1", "119MOxidized"
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
@@ -1961,13 +1900,13 @@ let peptideEvidences =
 
 let peptideHypothesisUnModified =
     PeptideHypothesisHandler.init(
-        peptideEvidences.[0], 
+        peptideEvidences.[0].ID, 
         [spectrumidentificationItemPeptideUnmodified]
                                     )
 
 let peptideHypothesisMOxidized =
     PeptideHypothesisHandler.init(
-        peptideEvidences.[1], 
+        peptideEvidences.[1].ID, 
         [spectrumidentificationItemPeptideMOxidized]
                                     )
 
@@ -1987,7 +1926,7 @@ let proteinDetectionHypothesisParams =
     
 let proteinDetectionHypothesis =
     ProteinDetectionHypothesisHandler.init(
-        true, dbSequence, [peptideHypothesisUnModified; peptideHypothesisMOxidized], "Cre02.g096150.t1.2", "Cre02.g096150.t1.2"
+        true, "DBSeq 1", [peptideHypothesisUnModified; peptideHypothesisMOxidized], "Cre02.g096150.t1.2", "Cre02.g096150.t1.2"
                                             )
     |> ProteinDetectionHypothesisHandler.addDetails proteinDetectionHypothesisParams
 
@@ -2017,25 +1956,25 @@ let proteinAmbiguousGroupsParams =
         (TermSymbol.toID SequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
-    |> ProteinAmbiguityGroupParamHandler.addUnit
+    |> ProteinAmbiguityGroupParamHandler.addFKUnit
         (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
         (TermSymbol.toID UniqueAndRazorSequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
-    |> ProteinAmbiguityGroupParamHandler.addUnit
+    |> ProteinAmbiguityGroupParamHandler.addFKUnit
         (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
         (TermSymbol.toID UniqueSequenceCoverage)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "31.7"
-    |> ProteinAmbiguityGroupParamHandler.addUnit
+    |> ProteinAmbiguityGroupParamHandler.addFKUnit
         (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
         (TermSymbol.toID MolecularWeight)
                                             )
     |> ProteinAmbiguityGroupParamHandler.addValue "23.9"
-    |> ProteinAmbiguityGroupParamHandler.addUnit
+    |> ProteinAmbiguityGroupParamHandler.addFKUnit
         (TermSymbol.toID Percentage);
     ProteinAmbiguityGroupParamHandler.init(
         (TermSymbol.toID SequenceLength)
@@ -2079,17 +2018,18 @@ let proteinAmbiguousGroups =
 
 let spectrumIDFormat =
     CVParamHandler.init(
-        (TermSymbol.toID MultipleIDs)
+        (TermSymbol.toID MultipleIDs), "MultipleIDs"
                         )
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let spectradata =
     [
     SpectraDataHandler.init(
-        "local", fileFormat1, spectrumIDFormat
+        "local", "Data saved in DB", "MultipleIDs"
                             )
     |> SpectraDataHandler.addName "20170518 TM FSconc3001";
     SpectraDataHandler.init(
-        "local", fileFormat1, spectrumIDFormat
+        "local", "Data saved in DB", "MultipleIDs"
                             )
     |> SpectraDataHandler.addName "20170518 TM FSconc3002";
     ]
@@ -2102,28 +2042,31 @@ let organizations =
     ]
 
 let person =
-    PersonHandler.init()
+    PersonHandler.init("MasterStudent 2")
     |> PersonHandler.addFirstName "Patrick"
     |> PersonHandler.addLastName "Blume"
     |> PersonHandler.addOrganizations organizations
 
 let role =
-    CVParamHandler.init("MS:1001267")
+    CVParamHandler.init("MS:1001267", "Developer of DB")
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let contactRole =
-    ContactRoleHandler.init(person, role)
+    ContactRoleHandler.init("MasterStudent 2", "Developer of DB")
 
 let softwareName =
-    CVParamHandler.init((TermSymbol.toID MaxQuant))
+    CVParamHandler.init((TermSymbol.toID MaxQuant), "SoftwareName 1")
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let analysisSoftware =
-    AnalysisSoftwareHandler.init(softwareName)
+    AnalysisSoftwareHandler.init("SoftwareName 1", "Software 1")
     |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper contactRole
 
 let searchType =
     CVParamHandler.init(
-        (TermSymbol.toID MSMSSearch)
+        (TermSymbol.toID MSMSSearch), "SearchType 1"
                         )
+    |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let searchModificationParam =
     [
@@ -2139,7 +2082,7 @@ let searchModificationParam =
         (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "20 for FTMS"
-    |> SearchModificationParamHandler.addUnit
+    |> SearchModificationParamHandler.addFKUnit
         (TermSymbol.toID Ppm);
     SearchModificationParamHandler.init(
         (TermSymbol.toID TopPeakPer100Da)
@@ -2153,7 +2096,7 @@ let searchModificationParam =
         (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "0.5 for ITMS"
-    |> SearchModificationParamHandler.addUnit
+    |> SearchModificationParamHandler.addFKUnit
         (TermSymbol.toID Dalton);
     SearchModificationParamHandler.init(
         (TermSymbol.toID TopPeakPer100Da)
@@ -2167,7 +2110,7 @@ let searchModificationParam =
         (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "40 for TOF"
-    |> SearchModificationParamHandler.addUnit
+    |> SearchModificationParamHandler.addFKUnit
         (TermSymbol.toID Ppm);
     SearchModificationParamHandler.init(
         (TermSymbol.toID TopPeakPer100Da)
@@ -2181,7 +2124,7 @@ let searchModificationParam =
         (TermSymbol.toID MSMSTolerance)
                                         )
     |> SearchModificationParamHandler.addValue "0.5 for Unknown"
-    |> SearchModificationParamHandler.addUnit
+    |> SearchModificationParamHandler.addFKUnit
         (TermSymbol.toID Dalton);
     SearchModificationParamHandler.init(
         (TermSymbol.toID TopPeakPer100Da)
@@ -2196,10 +2139,10 @@ let searchModificationParam =
 let searchModificationParams =
     [
     SearchModificationHandler.init(
-        false, 15.9949, "M", searchModificationParam
+        false, 15.9949, "M", "SpectrumIdentificationProtocol 1", searchModificationParam
                                     );
     SearchModificationHandler.init(
-        false, 43.0, "N-Term", searchModificationParam
+        false, 43.0, "N-Term", "SpectrumIdentificationProtocol 1", searchModificationParam
                                     )
     ]
 
@@ -2249,25 +2192,25 @@ let fragmentTolerance =
         (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [ppm]"
                             )
-    |> FragmentToleranceParamHandler.addUnit 
+    |> FragmentToleranceParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     FragmentToleranceParamHandler.init(
         (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [ppm]"
                             )
-    |> FragmentToleranceParamHandler.addUnit 
+    |> FragmentToleranceParamHandler.addFKUnit 
         (TermSymbol.toID Ppm);
     FragmentToleranceParamHandler.init(
         (TermSymbol.toID SearchToleranceUpperLimit),
             "Mass Deviations upper limit [Da]"
                             )
-    |> FragmentToleranceParamHandler.addUnit 
+    |> FragmentToleranceParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     FragmentToleranceParamHandler.init(
         (TermSymbol.toID SearchToleranceLowerLimit),
             "Mass Deviations lower limit [Da]"
                             )
-    |> FragmentToleranceParamHandler.addUnit 
+    |> FragmentToleranceParamHandler.addFKUnit 
         (TermSymbol.toID Dalton);
     ]
 
@@ -2296,14 +2239,14 @@ let analysisParams =
 
 let proteinDetectionProtocol =
     ProteinDetectionProtocolHandler.init(
-        analysisSoftware, threshold
+        [analysisSoftware], threshold, "ProteinDetectionProtocol 1"
                                         )
     |> ProteinDetectionProtocolHandler.addAnalysisParams analysisParams
     |> ProteinDetectionProtocolHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let spectrumIdentificationProtocol =
     SpectrumIdentificationProtocolHandler.init(
-        analysisSoftware, searchType, threshold
+        "Software 1", "SearchType 1", threshold, "SpectrumIdentificationProtocol 1"
                                                 )
     |> SpectrumIdentificationProtocolHandler.addEnzyme enzyme
     |> SpectrumIdentificationProtocolHandler.addModificationParams searchModificationParams
@@ -2552,17 +2495,17 @@ let spectrumIdentificationResultParamMOxidized =
 let spectrumIdentificationResult =
     [
     SpectrumIdentificationResultHandler.init(
-        spectradata.[0], "568", [spectrumidentificationItemPeptideMOxidized]
+        spectradata.[0].ID, "568", [spectrumidentificationItemPeptideMOxidized], "SpectrumIdentificationList 1"
                                             )
     |> SpectrumIdentificationResultHandler.addDetails spectrumIdentificationResultParamMOxidized;
     SpectrumIdentificationResultHandler.init(
-        spectradata.[1], "576", [spectrumidentificationItemPeptideUnmodified]
+        spectradata.[1].ID, "576", [spectrumidentificationItemPeptideUnmodified], "SpectrumIdentificationList 1"
                                             )
     |> SpectrumIdentificationResultHandler.addDetails spectrumIdentificationResultParamUnModified
     ]
         
 let spectrumIdentificationList =
-    SpectrumIdentificationListHandler.init(spectrumIdentificationResult)
+    SpectrumIdentificationListHandler.init(spectrumIdentificationResult, "ProteinDetection 1", "AnalysisData 1", "SpectrumIdentificationList 1") 
     |> SpectrumIdentificationListHandler.addFragmentationTables
         [
         (MeasureHandler.tryFindByID sqliteMzIdentMLContext "FragmentationTable measure-type").Value;
@@ -2571,25 +2514,25 @@ let spectrumIdentificationList =
 
 let spectrumIdentification = 
     SpectrumIdentificationHandler.init(
-        spectrumIdentificationList, spectrumIdentificationProtocol, spectradata, [searchDatabase]
+        "SpectrumIdentificationList 1", "SpectrumIdentificationProtocol 1", spectradata, [searchDatabase], "SpectrumIdentification 1"
                                         )
     |>SpectrumIdentificationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
 
 let proteinDetectionList =
-    ProteinDetectionListHandler.init()
+    ProteinDetectionListHandler.init("ProteinDetectlionList 1")
     |> ProteinDetectionListHandler.addProteinAmbiguityGroup proteinAmbiguousGroups
 
 let proteinDetection =
     ProteinDetectionHandler.init(
-        proteinDetectionList,proteinDetectionProtocol, [spectrumIdentificationList]
+        "ProteinDetectlionList 1", "ProteinDetectionProtocol 1", [spectrumIdentificationList], "ProteinDetection 1"
                                 )
             
 let analysisData =
-    AnalysisDataHandler.init([spectrumIdentificationList])
+    AnalysisDataHandler.init([spectrumIdentificationList], "AnalysisData 1")
     |> AnalysisDataHandler.addProteinDetectionList proteinDetectionList
 
 let sourceFiles =
-    [SourceFileHandler.init("local", fileFormat2, name="20170518 TM FSconc3009"); SourceFileHandler.init("local", fileFormat3, name="D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta")]
+    [SourceFileHandler.init("local", "Unknown", name="20170518 TM FSconc3009"); SourceFileHandler.init("local", "FASTA", name="D:\Fred\FASTA\sequence\Chlamy\Chlamy_JGI5_5(Cp_Mp)TM.fasta")]
 
 let inputs =
     InputsHandler.init(spectradata)

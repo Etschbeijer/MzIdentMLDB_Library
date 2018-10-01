@@ -583,7 +583,7 @@ module DataModel =
     ///A single entry from an ontology or a controlled vocabulary.
     type [<AllowNullLiteral>] [<Table("AdditionalSearchParams")>]
         AdditionalSearchParam (id:string, value:string, term:Term, termID:string, unit:Term, unitID:string, 
-                               fkSpectrumIdentificationProtocol, rowVersion:Nullable<DateTime>) =
+                               fkSpectrumIdentificationProtocol:string, rowVersion:Nullable<DateTime>) =
             let mutable id'                                 = id
             let mutable value'                              = value
             let mutable term'                               = term
@@ -1829,26 +1829,30 @@ module DataModel =
 
     ///A database sequence from the specified SearchDatabase (nucleic acid or amino acid).
     type [<AllowNullLiteral>]
-        DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, sequence:string, 
-                    length:Nullable<int>, fkMzIdentMLDocument:string, details:List<DBSequenceParam>, 
+        DBSequence (id:string, name:string, accession:string, searchDatabase:SearchDatabase, 
+                    fkSearchDatabase:string, sequence:string, length:Nullable<int>, 
+                    fkMzIdentMLDocument:string, details:List<DBSequenceParam>, 
                     rowVersion:Nullable<DateTime>
                    ) =
-            let mutable id'                  = id
-            let mutable name'                = name
-            let mutable accession'           = accession
-            let mutable searchDatabase'      = searchDatabase
-            let mutable sequence'            = sequence
-            let mutable length'              = length
-            let mutable fkMzIdentMLDocument' = fkMzIdentMLDocument
-            let mutable details'             = details
-            let mutable rowVersion'          = rowVersion
+            let mutable id'                     = id
+            let mutable name'                   = name
+            let mutable accession'              = accession
+            let mutable searchDatabase'         = searchDatabase
+            let mutable fkSearchDatabase'       = fkSearchDatabase
+            let mutable sequence'               = sequence
+            let mutable length'                 = length
+            let mutable fkMzIdentMLDocument'    = fkMzIdentMLDocument
+            let mutable details'                = details
+            let mutable rowVersion'             = rowVersion
 
-            new() = DBSequence(null, null, null, null, null, Nullable(), null, null, Nullable())
+            new() = DBSequence(null, null, null, null, null, null, Nullable(), null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.Accession with get() = accession' and set(value) = accession' <- value
             member this.SearchDatabase with get() = searchDatabase' and set(value) = searchDatabase' <- value
+            [<ForeignKey("SearchDatabase")>]
+            member this.FKSearchDatabase with get() = fkSearchDatabase' and set(value) = fkSearchDatabase' <- value
             member this.Sequence with get() = sequence' and set(value) = sequence' <- value
             member this.Length with get() = length' and set(value) = length' <- value
             member this.FKMzIdentMLDocument with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
@@ -2100,27 +2104,23 @@ module DataModel =
 
     ///The parameters and settings of a SpectrumIdentification analysis.
     type [<AllowNullLiteral>] 
-        ProteinDetectionProtocol (id:string, name:string, analysisSoftware:AnalysisSoftware, 
-                                  fkAnalysisSoftware:string, analysisParams:List<AnalysisParam>, 
-                                  threshold:List<ThresholdParam>, fkMzIdentMLDocument:string, 
-                                  rowVersion:Nullable<DateTime>
+        ProteinDetectionProtocol (id:string, name:string, analysisSoftware:List<AnalysisSoftware>, 
+                                  analysisParams:List<AnalysisParam>, threshold:List<ThresholdParam>, 
+                                  fkMzIdentMLDocument:string, rowVersion:Nullable<DateTime>
                                  ) =
             let mutable id'                     = id
             let mutable name'                   = name
             let mutable analysisSoftware'       = analysisSoftware
-            let mutable fkAnalysisSoftware'     = fkAnalysisSoftware
             let mutable analysisParams'         = analysisParams
             let mutable threshold'              = threshold
             let mutable fkMzIdentMLDocument'    = fkMzIdentMLDocument
             let mutable rowVersion'             = rowVersion
 
-            new() = ProteinDetectionProtocol(null, null, null, null, null, null, null, Nullable())
+            new() = ProteinDetectionProtocol(null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
             member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
-            [<ForeignKey("AnalysisSoftware")>]
-            member this.FKAnalysisSoftware with get() = fkAnalysisSoftware' and set(value) = fkAnalysisSoftware' <- value
             [<ForeignKey("FKProteinDetectionProtocol")>]
             member this.AnalysisParams with get() = analysisParams' and set(value) = analysisParams' <- value
             [<ForeignKey("FKProteinDetectionProtocol")>]

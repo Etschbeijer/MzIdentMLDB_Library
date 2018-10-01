@@ -368,7 +368,7 @@ module InsertStatements =
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
             static member addToContext (dbContext:MzIdentML) (item:CVParam) =
-                    CVParamHandler.tryFindByFKTerm dbContext item.Term.Name
+                    CVParamHandler.tryFindByFKTerm dbContext item.FKTerm
                     |> (fun organizationCollection -> match organizationCollection with
                                                       |Some x -> x
                                                                  |> Seq.map (fun organization -> match CVParamHandler.hasEqualFieldValues organization item with
@@ -4759,7 +4759,7 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIdentML of existing object with new mzIdentML.
+            ///Replaces fkMzIdentML of existing object with new table.
             static member addFkMzIdentMLDocument
                 (fkMzIdentML:string) (table:Sample) =
                 let result = table.FKMzIdentMLDocument <- fkMzIdentML
@@ -7522,27 +7522,30 @@ module InsertStatements =
             ///Initializes a dbsequence-object with at least all necessary parameters.
             static member init
                 (
-                    accession      : string,
-                    searchDatabase : SearchDatabase,
-                    ?id            : string,
-                    ?name          : string,
-                    ?sequence      : string,
-                    ?length        : int,
-                    ?details       : seq<DBSequenceParam>,
-                    ?fkMzIdentML   : string
+                    accession           : string,
+                    fkSearchDatabase    : string,
+                    ?id                 : string,
+                    ?name               : string,
+                    ?searchDatabase     : SearchDatabase,
+                    ?sequence           : string,
+                    ?length             : int,
+                    ?details            : seq<DBSequenceParam>,
+                    ?fkMzIdentML        : string
                 ) =
-                let id'          = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'        = defaultArg name Unchecked.defaultof<string>
-                let sequence'    = defaultArg sequence Unchecked.defaultof<string>
-                let length'      = defaultArg length Unchecked.defaultof<int>
-                let details'     = convertOptionToList details
-                let fkMzIdentML' = defaultArg fkMzIdentML Unchecked.defaultof<string>
-                    
+                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'           = defaultArg name Unchecked.defaultof<string>
+                let searchDatabase' = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
+                let sequence'       = defaultArg sequence Unchecked.defaultof<string>
+                let length'         = defaultArg length Unchecked.defaultof<int>
+                let fkMzIdentML'    = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let details'        = convertOptionToList details
+
                 new DBSequence(
                                id', 
                                name', 
                                accession, 
-                               searchDatabase, 
+                               searchDatabase',
+                               fkSearchDatabase,
                                sequence', 
                                Nullable(length'), 
                                fkMzIdentML',
@@ -7550,41 +7553,47 @@ module InsertStatements =
                                Nullable(DateTime.Now)
                               )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (dbSequence:DBSequence) =
-                dbSequence.Name <- name
-                dbSequence
+                (name:string) (table:DBSequence) =
+                table.Name <- name
+                table
 
-            ///Replaces sequence of existing object with new sequence.
+            ///Replaces searchDatabase of existing object with new one.
+            static member addSearchDatabase
+                (searchDatabase:SearchDatabase) (table:DBSequence) =
+                table.SearchDatabase <- searchDatabase
+                table
+
+            ///Replaces sequence of existing object with new one.
             static member addSequence
-                (sequence:string) (dbSequence:DBSequence) =
-                dbSequence.Sequence <- sequence
-                dbSequence
+                (sequence:string) (table:DBSequence) =
+                table.Sequence <- sequence
+                table
 
-            ///Replaces length of existing object with new length.
+            ///Replaces length of existing object with new one.
             static member addLength
-                (length:int) (dbSequence:DBSequence) =
-                dbSequence.Length <- Nullable(length)
-                dbSequence
+                (length:int) (table:DBSequence) =
+                table.Length <- Nullable(length)
+                table
 
             ///Adds a dbsequenceparam to an existing dbsequence-object.
             static member addDetail
-                (detail:DBSequenceParam) (dbSequence:DBSequence) =
-                let result = dbSequence.Details <- addToList dbSequence.Details detail
-                dbSequence
+                (detail:DBSequenceParam) (table:DBSequence) =
+                let result = table.Details <- addToList table.Details detail
+                table
 
             ///Adds a collection of dbsequenceparams to an existing dbsequence-object.
             static member addDetails
-                (details:seq<DBSequenceParam>) (dbSequence:DBSequence) =
-                let result = dbSequence.Details <- addCollectionToList dbSequence.Details details
-                dbSequence
+                (details:seq<DBSequenceParam>) (table:DBSequence) =
+                let result = table.Details <- addCollectionToList table.Details details
+                table
 
             ///Replaces fkMzIdentML of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (dbSequence:DBSequence) =
-                let result = dbSequence.FKMzIdentMLDocument <- fkMzIdentML
-                dbSequence
+                (fkMzIdentML:string) (table:DBSequence) =
+                table.FKMzIdentMLDocument <- fkMzIdentML
+                table
 
             ///Tries to find a dbSequence-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -8488,7 +8497,7 @@ module InsertStatements =
                 table
 
             ///Replaces spectrumIdentificationProtocol of existing object with new one.
-            static member addSpectrumIdentificationList
+            static member addSpectrumIdentificationProtocol
                 (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (table:SpectrumIdentification) =
                 table.SpectrumIdentificationProtocol <- spectrumIdentificationProtocol
                 table
@@ -8591,25 +8600,22 @@ module InsertStatements =
             ///Initializes a proteindetectionprotocol-object with at least all necessary parameters.
             static member init
                 (
-                    fkAnalysisSoftware  : string,
+                    analysisSoftware    : seq<AnalysisSoftware>,
                     threshold           : seq<ThresholdParam>,
                     ?id                 : string,
                     ?name               : string,
-                    ?analysisSoftware   : AnalysisSoftware,
                     ?analysisParams     : seq<AnalysisParam>,
                     ?fkMzIdentML        : string
                 ) =
                 let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'               = defaultArg name Unchecked.defaultof<string>
-                let analysisSoftware'   = defaultArg analysisSoftware Unchecked.defaultof<AnalysisSoftware>
                 let analysisParams'     = convertOptionToList analysisParams
                 let fkMzIdentML'        = defaultArg fkMzIdentML Unchecked.defaultof<string>
                     
                 new ProteinDetectionProtocol(
                                              id', 
                                              name', 
-                                             analysisSoftware', 
-                                             fkAnalysisSoftware,
+                                             analysisSoftware |> List,
                                              analysisParams', 
                                              threshold |> List,
                                              fkMzIdentML', 
@@ -8622,11 +8628,11 @@ module InsertStatements =
                 table.Name <- name
                 table
 
-            ///Replaces analysisSoftware of existing object with new one.
-            static member addAnalysisSoftware
-                (analysisSoftware:AnalysisSoftware) (table:ProteinDetectionProtocol) =
-                table.AnalysisSoftware <- analysisSoftware
-                table
+            /////Replaces analysisSoftware of existing object with new one.
+            //static member addAnalysisSoftware
+            //    (analysisSoftware:AnalysisSoftware) (table:ProteinDetectionProtocol) =
+            //    table.AnalysisSoftware <- analysisSoftware
+            //    table
 
             ///Adds a analysisparam to an existing proteindetectionprotocol-object.
             static member addAnalysisParam
@@ -8697,7 +8703,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinDetectionProtocol) (item2:ProteinDetectionProtocol) =
                item1.Threshold=item2.Threshold && item1.Name=item2.Name && 
-               item1.FKAnalysisSoftware=item2.FKAnalysisSoftware &&
+               //item1.FKAnalysisSoftware=item2.FKAnalysisSoftware &&
                item1.AnalysisParams=item2.AnalysisParams && item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
@@ -9153,7 +9159,7 @@ module InsertStatements =
                 table
 
             ///Replaces fkProteinAmbiguityGroup of existing object with new one.
-            static member addDBSequence
+            static member addFKProteinAmbiguityGroup
                 (fkProteinAmbiguityGroup:string) (table:ProteinDetectionHypothesis) =
                 table.FKProteinAmbiguityGroup <- fkProteinAmbiguityGroup
                 table
@@ -10099,10 +10105,12 @@ module InsertStatements =
             static member init
                 (             
                     ?inputs                         : Inputs,
+                    ?fkInputs                       : string,
                     ?version                        : string,
                     ?spectrumIdentification         : seq<SpectrumIdentification>,
                     ?spectrumIdentificationProtocol : seq<SpectrumIdentificationProtocol>,
                     ?analysisData                   : AnalysisData,
+                    ?fkAnalysisData                 : string,
                     ?id                             : string,
                     ?name                           : string,
                     ?analysisSoftwareList           : seq<AnalysisSoftware>,
@@ -10115,6 +10123,7 @@ module InsertStatements =
                     ?peptideEvidences               : seq<PeptideEvidence>,
                     ?proteinDetections              : seq<ProteinDetection>,
                     ?proteinDetectionProtocol       : ProteinDetectionProtocol,
+                    ?fkProteinDetectionProtocol     : string,
                     ?biblioGraphicReferences        : seq<BiblioGraphicReference>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
@@ -10132,8 +10141,11 @@ module InsertStatements =
                 let proteinDetections'              = convertOptionToList proteinDetections
                 let spectrumIdentificationProtocol' = convertOptionToList spectrumIdentificationProtocol
                 let proteinDetectionProtocol'       = defaultArg proteinDetectionProtocol Unchecked.defaultof<ProteinDetectionProtocol>
+                let fkProteinDetectionProtocol'     = defaultArg fkProteinDetectionProtocol Unchecked.defaultof<string>
                 let inputs'                         = defaultArg inputs Unchecked.defaultof<Inputs>
+                let fkInputs'                       = defaultArg fkInputs Unchecked.defaultof<string>
                 let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
+                let fkAnalysisData'                 = defaultArg fkAnalysisData Unchecked.defaultof<string>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
                 new MzIdentMLDocument(
                                       id', 
@@ -10151,185 +10163,206 @@ module InsertStatements =
                                       proteinDetections',
                                       spectrumIdentificationProtocol',
                                       proteinDetectionProtocol', 
+                                      fkProteinDetectionProtocol', 
                                       inputs', 
+                                      fkInputs', 
                                       analysisData',
+                                      fkAnalysisData',
                                       biblioGraphicReferences',
                                       Nullable(DateTime.Now)
                                      )
                     
             ///Replaces name of existing object with new one.
             static member addName
-                (name:string) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Name <- name
-                mzIdentML
+                (name:string) (table:MzIdentMLDocument) =
+                table.Name <- name
+                table
 
             ///Replaces version of existing object with new one.
             static member addVersion
-                (version:string) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Version <- version
-                mzIdentML
+                (version:string) (table:MzIdentMLDocument) =
+                table.Version <- version
+                table
 
             ///Adds a analysisSoftware to an existing mzidentmldocument-object.
             static member addAnalysisSoftware
-                (table:AnalysisSoftware) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.AnalysisSoftwareList <- addToList mzIdentML.AnalysisSoftwareList analysisSoftware
-                mzIdentML
+                (analysisSoftware:AnalysisSoftware) (table:MzIdentMLDocument) =
+                let result = table.AnalysisSoftwareList <- addToList table.AnalysisSoftwareList analysisSoftware
+                table
 
             ///Adds a collection of analysisSoftwareList to an existing mzidentmldocument-object.
             static member addAnalysisSoftwareList
-                (analysisSoftwareList:seq<AnalysisSoftware>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.AnalysisSoftwareList <- addCollectionToList mzIdentML.AnalysisSoftwareList analysisSoftwareList
-                mzIdentML
+                (analysisSoftwareList:seq<AnalysisSoftware>) (table:MzIdentMLDocument) =
+                let result = table.AnalysisSoftwareList <- addCollectionToList table.AnalysisSoftwareList analysisSoftwareList
+                table
 
             ///Adds a provider to an existing mzidentmldocument-object.
             static member addProvider
-                (provider:Provider) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Providers <- addToList mzIdentML.Providers provider
-                mzIdentML
+                (provider:Provider) (table:MzIdentMLDocument) =
+                let result = table.Providers <- addToList table.Providers provider
+                table
 
             ///Adds a collection of providers to an existing mzidentmldocument-object.
             static member addProviders
-                (providers:seq<Provider>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Providers <- addCollectionToList mzIdentML.Providers providers
-                mzIdentML
+                (providers:seq<Provider>) (table:MzIdentMLDocument) =
+                let result = table.Providers <- addCollectionToList table.Providers providers
+                table
 
             ///Adds a organization to an existing mzidentmldocument-object.
             static member addOrganization
-                (organization:Organization) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Organizations <- addToList mzIdentML.Organizations organization
-                mzIdentML
+                (organization:Organization) (table:MzIdentMLDocument) =
+                let result = table.Organizations <- addToList table.Organizations organization
+                table
 
             ///Adds a collection of organizations to an existing mzidentmldocument-object.
             static member addOrganizations
-                (organizations:seq<Organization>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Organizations <- addCollectionToList mzIdentML.Organizations organizations
-                mzIdentML
+                (organizations:seq<Organization>) (table:MzIdentMLDocument) =
+                let result = table.Organizations <- addCollectionToList table.Organizations organizations
+                table
 
             ///Adds a person to an existing mzidentmldocument-object.
             static member addPerson
-                (table:Person) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Persons <- addToList mzIdentML.Persons person
-                mzIdentML
+                (person:Person) (table:MzIdentMLDocument) =
+                let result = table.Persons <- addToList table.Persons person
+                table
 
             ///Adds a collection of persons to an existing mzidentmldocument-object.
             static member addPersons
-                (persons:seq<Person>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Persons <- addCollectionToList mzIdentML.Persons persons
-                mzIdentML
+                (persons:seq<Person>) (table:MzIdentMLDocument) =
+                let result = table.Persons <- addCollectionToList table.Persons persons
+                table
 
             ///Adds a sample to an existing mzidentmldocument-object.
             static member addSample
-                (sample:Sample) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Samples <- addToList mzIdentML.Samples sample
-                mzIdentML
+                (sample:Sample) (table:MzIdentMLDocument) =
+                let result = table.Samples <- addToList table.Samples sample
+                table
 
             ///Adds a collection of samples to an existing mzidentmldocument-object.
             static member addSamples
-                (samples:seq<Sample>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Samples <- addCollectionToList mzIdentML.Samples samples
-                mzIdentML
+                (samples:seq<Sample>) (table:MzIdentMLDocument) =
+                let result = table.Samples <- addCollectionToList table.Samples samples
+                table
 
             ///Adds a dbsequence to an existing mzidentmldocument-object.
             static member addDBSequence
-                (dbSequence:DBSequence) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.DBSequences <- addToList mzIdentML.DBSequences dbSequence
-                mzIdentML
+                (dbSequence:DBSequence) (table:MzIdentMLDocument) =
+                let result = table.DBSequences <- addToList table.DBSequences dbSequence
+                table
 
             ///Adds a collection of dbsequences to an existing mzidentmldocument-object.
             static member addDBSequences
-                (dbSequences:seq<DBSequence>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.DBSequences <- addCollectionToList mzIdentML.DBSequences dbSequences
-                mzIdentML
+                (dbSequences:seq<DBSequence>) (table:MzIdentMLDocument) =
+                let result = table.DBSequences <- addCollectionToList table.DBSequences dbSequences
+                table
 
             ///Adds a peptide to an existing mzidentmldocument-object.
             static member addPeptide
-                (peptide:Peptide) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Peptides <- addToList mzIdentML.Peptides peptide
-                mzIdentML
+                (peptide:Peptide) (table:MzIdentMLDocument) =
+                let result = table.Peptides <- addToList table.Peptides peptide
+                table
 
             ///Adds a collection of peptides to an existing mzidentmldocument-object.
             static member addPeptides
-                (peptides:seq<Peptide>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.Peptides <- addCollectionToList mzIdentML.Peptides peptides
-                mzIdentML
+                (peptides:seq<Peptide>) (table:MzIdentMLDocument) =
+                let result = table.Peptides <- addCollectionToList table.Peptides peptides
+                table
 
             ///Adds a peptideevidence to an existing mzidentmldocument-object.
             static member addPeptideEvidence
-                (peptideEvidence:PeptideEvidence) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.PeptideEvidences <- addToList mzIdentML.PeptideEvidences peptideEvidence
-                mzIdentML
+                (peptideEvidence:PeptideEvidence) (table:MzIdentMLDocument) =
+                let result = table.PeptideEvidences <- addToList table.PeptideEvidences peptideEvidence
+                table
 
             ///Adds a collection of peptideevidences to an existing mzidentmldocument-object.
             static member addPeptideEvidences
-                (peptideEvidences:seq<PeptideEvidence>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.PeptideEvidences <- addCollectionToList mzIdentML.PeptideEvidences peptideEvidences
-                mzIdentML
+                (peptideEvidences:seq<PeptideEvidence>) (table:MzIdentMLDocument) =
+                let result = table.PeptideEvidences <- addCollectionToList table.PeptideEvidences peptideEvidences
+                table
 
             ///Adds a spectrumidentification to an existing mzidentmldocument-object.
             static member addSpectrumIdentification
-                (spectrumIdentification:SpectrumIdentification) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentifications <- addToList mzIdentML.SpectrumIdentifications spectrumIdentification
-                mzIdentML
+                (spectrumIdentification:SpectrumIdentification) (table:MzIdentMLDocument) =
+                let result = table.SpectrumIdentifications <- addToList table.SpectrumIdentifications spectrumIdentification
+                table
 
             ///Adds a collection of spectrumidentifications to an existing mzidentmldocument-object.
             static member addSpectrumIdentifications
-                (spectrumIdentification:seq<SpectrumIdentification>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentifications <- addCollectionToList mzIdentML.SpectrumIdentifications spectrumIdentification
-                mzIdentML
+                (spectrumIdentification:seq<SpectrumIdentification>) (table:MzIdentMLDocument) =
+                let result = table.SpectrumIdentifications <- addCollectionToList table.SpectrumIdentifications spectrumIdentification
+                table
 
             ///Adds a proteinDetection to an existing mzidentmldocument-object.
             static member addProteinDetection
-                (proteinDetection:ProteinDetection) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetections <- addToList mzIdentML.ProteinDetections proteinDetection
-                mzIdentML
+                (proteinDetection:ProteinDetection) (table:MzIdentMLDocument) =
+                table.ProteinDetections <- addToList table.ProteinDetections proteinDetection
+                table
 
             ///Adds a collection of proteinDetections to an existing mzidentmldocument-object.
             static member addProteinDetections
-                (proteinDetections:seq<ProteinDetection>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.ProteinDetections <- addCollectionToList mzIdentML.ProteinDetections proteinDetections
-                mzIdentML
+                (proteinDetections:seq<ProteinDetection>) (table:MzIdentMLDocument) =
+                let result = table.ProteinDetections <- addCollectionToList table.ProteinDetections proteinDetections
+                table
 
             ///Adds a spectrumidentificationprotocol to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocol
-                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentificationProtocols <- addToList mzIdentML.SpectrumIdentificationProtocols spectrumIdentificationProtocol
-                mzIdentML
+                (spectrumIdentificationProtocol:SpectrumIdentificationProtocol) (table:MzIdentMLDocument) =
+                let result = table.SpectrumIdentificationProtocols <- addToList table.SpectrumIdentificationProtocols spectrumIdentificationProtocol
+                table
 
             ///Adds a collection of spectrumidentificationprotocols to an existing mzidentmldocument-object.
             static member addSpectrumIdentificationProtocols
-                (spectrumIdentificationProtocol:seq<SpectrumIdentificationProtocol>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.SpectrumIdentificationProtocols <- addCollectionToList mzIdentML.SpectrumIdentificationProtocols spectrumIdentificationProtocol
-                mzIdentML
+                (spectrumIdentificationProtocol:seq<SpectrumIdentificationProtocol>) (table:MzIdentMLDocument) =
+                let result = table.SpectrumIdentificationProtocols <- addCollectionToList table.SpectrumIdentificationProtocols spectrumIdentificationProtocol
+                table
 
             ///Replaces proteinDetectionProtocol of existing object with new one.
             static member addProteinDetectionProtocol
-                (proteinDetectionProtocol:ProteinDetectionProtocol) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.ProteinDetectionProtocol <- proteinDetectionProtocol
-                mzIdentML
+                (proteinDetectionProtocol:ProteinDetectionProtocol) (table:MzIdentMLDocument) =
+                table.ProteinDetectionProtocol <- proteinDetectionProtocol
+                table
+
+            ///Replaces fkProteinDetectionProtocol of existing object with new one.
+            static member addFKProteinDetectionProtocol
+                (fkProteinDetectionProtocol:string) (table:MzIdentMLDocument) =
+                table.FKProteinDetectionProtocol <- fkProteinDetectionProtocol
+                table
 
             ///Replaces inputs of existing object with new one.
             static member addInputs
-                (inputs:Inputs) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.Inputs <- inputs
-                mzIdentML
+                (inputs:Inputs) (table:MzIdentMLDocument) =
+                table.Inputs <- inputs
+                table
+
+            ///Replaces fkInputs of existing object with new one.
+            static member addFKInputs
+                (fkInputs:string) (table:MzIdentMLDocument) =
+                table.FKInputs <- fkInputs
+                table
 
             ///Replaces analysisData of existing object with new one.
             static member addAnalysisData
-                (analysisData:AnalysisData) (mzIdentML:MzIdentMLDocument) =
-                mzIdentML.AnalysisData <- analysisData
-                mzIdentML
+                (analysisData:AnalysisData) (table:MzIdentMLDocument) =
+                table.AnalysisData <- analysisData
+                table
+
+            ///Replaces fkAnalysisData of existing object with new one.
+            static member addFKAnalysisData
+                (fkAnalysisData:string) (table:MzIdentMLDocument) =
+                table.FKAnalysisData <- fkAnalysisData
+                table
 
             ///Adds a bibliographicreference to an existing mzidentmldocument-object.
             static member addBiblioGraphicReference
-                (biblioGraphicReference:BiblioGraphicReference) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.BiblioGraphicReferences <- addToList mzIdentML.BiblioGraphicReferences biblioGraphicReference
-                mzIdentML
+                (biblioGraphicReference:BiblioGraphicReference) (table:MzIdentMLDocument) =
+                let result = table.BiblioGraphicReferences <- addToList table.BiblioGraphicReferences biblioGraphicReference
+                table
 
             ///Adds a collection of bibliographicreferences to an existing mzidentmldocument-object.
             static member addBiblioGraphicReferences
-                (biblioGraphicReferences:seq<BiblioGraphicReference>) (mzIdentML:MzIdentMLDocument) =
-                let result = mzIdentML.BiblioGraphicReferences <- addCollectionToList mzIdentML.BiblioGraphicReferences biblioGraphicReferences
-                mzIdentML
+                (biblioGraphicReferences:seq<BiblioGraphicReference>) (table:MzIdentMLDocument) =
+                let result = table.BiblioGraphicReferences <- addCollectionToList table.BiblioGraphicReferences biblioGraphicReferences
+                table
 
             ///Tries to find a mzIdentMLDocument-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
@@ -10398,8 +10431,8 @@ module InsertStatements =
                item1.Samples=item2.Samples && item1.DBSequences=item2.DBSequences && item1.Peptides=item2.Peptides && 
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentifications=item2.SpectrumIdentifications &&
                item1.ProteinDetections=item2.ProteinDetections && item1.SpectrumIdentificationProtocols=item2.SpectrumIdentificationProtocols &&
-               item1.ProteinDetectionProtocol=item2.ProteinDetectionProtocol && item1.Inputs=item2.Inputs && item1.AnalysisData=item2.AnalysisData &&
-               item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
+               item1.FKProteinDetectionProtocol=item2.FKProteinDetectionProtocol && item1.FKInputs=item2.FKInputs && 
+               item1.FKAnalysisData=item2.FKAnalysisData && item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
