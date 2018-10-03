@@ -116,11 +116,6 @@ type DBContext =
         | MzIdentML -> dbTypeMzIdentML'.Database.EnsureCreated()
         | MzQuantML -> dbTypeMzQuantML'.Database.EnsureCreated()
 
-DBContext.initDB(DBContext.MzIdentML, sqliteMzIdentMLDBName, pathDB, dbTypeMzIdentML=MzIdentMLDBContext.SQLite)
-DBContext.initDB(DBContext.MzQuantML, sqliteMzQuantMLDBName, pathDB, dbTypeMzQuantML=MzQuantMLDBContext.SQLite)
-
-
-//Functions to create everything related to spectrumIdentificationItem
 
 ///One (poly)peptide (a sequence with modifications).
 type [<AllowNullLiteral>]
@@ -222,9 +217,50 @@ type [<AllowNullLiteral>]
         member this.Details with get() = details' and set(value) = details' <- value
         member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
+
+type DBContextNew =
+    | MzIdentML
+    | MzQuantML
+    | SQLServer
+    | SQLite
+    static member initDB (
+                          dbContextType:DBContextNew, dbType:DBContextNew, dbName:string, ?path:string
+                         ) =
+        let path' = defaultArg path Unchecked.defaultof<string>
+        match dbContextType with
+        | MzIdentML -> match dbType with
+                       | SQLServer -> let dbContext =
+                                        MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path'
+                                      dbContext.Database.EnsureCreated()
+                       | SQLite    -> let dbContext =
+                                        MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path'
+                                      dbContext.Database.EnsureCreated()
+                       | _         -> printfn "Use either SQLServer or SQLite as the dbType." 
+                                      false
+        | MzQuantML -> match dbType with
+                       | SQLServer -> let dbContext =
+                                        MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path'
+                                      dbContext.Database.EnsureCreated()
+                       | SQLite    -> let dbContext =
+                                        MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path'
+                                      dbContext.Database.EnsureCreated()
+                       | _         -> printfn "Use either SQLServer or SQLite as the dbType." 
+                                      false
+        | _ -> printfn "Use either MzIdentML or MzQuantML as the dbContextType." 
+               false
+
+//Functions
+
+//DBContext.initDB(DBContext.MzIdentML, sqliteMzIdentMLDBName, pathDB, dbTypeMzIdentML=MzIdentMLDBContext.SQLite)
+//DBContext.initDB(DBContext.MzQuantML, sqliteMzQuantMLDBName, pathDB, dbTypeMzQuantML=MzQuantMLDBContext.SQLite)
+
+DBContextNew.initDB(DBContextNew.MzIdentML, DBContextNew.SQLite, sqliteMzIdentMLDBName, pathDB)
+DBContextNew.initDB(DBContextNew.MzIdentML, DBContextNew.MzIdentML, sqliteMzIdentMLDBName, pathDB)
+
+//Functions to create everything related to spectrumIdentificationItem
+
 let peptide =
     PeptideHandler.init("Some Sequence")
 
 let spectrumIdentificationItem =
     SpectrumIdentificationItemHandler.init("peptide 1", -1, -1., true, -1, "spectrumIDentificationItem 1")
-
