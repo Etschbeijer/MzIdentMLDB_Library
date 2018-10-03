@@ -93,17 +93,25 @@ module InsertStatements =
         type ContextHandler =
 
             ///Creates connection for SQLite-context and database.
-            static member sqliteConnection (path:string) =
+            static member sqliteConnection (name:string) (path:string) =
+                let path' = 
+                    match path with
+                    | null -> __SOURCE_DIRECTORY__
+                    | _ -> path 
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzQuantML>()
-                optionsBuilder.UseSqlite(@"Data Source=" + path) |> ignore
+                optionsBuilder.UseSqlite(@"Data Source=" + path' + "/" + name) |> ignore
                 new MzQuantML(optionsBuilder.Options)       
 
             ///Creats connection for SQL-context and database.
-            static member sqlConnection (name:string) =
+            static member sqlConnection (name:string) (path:string) =
+                let path' = 
+                    match path with
+                    | null -> "localdb"
+                    | _ -> path
                 let optionsBuilder = 
                     new DbContextOptionsBuilder<MzQuantML>()
-                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=" + name + ";Trusted_Connection=True;") |> ignore
+                optionsBuilder.UseSqlServer("Server=(" + path' + ")\mssqllocaldb;Database=" + name + ";Trusted_Connection=True;") |> ignore
                 new MzQuantML(optionsBuilder.Options) 
 
             ///Reads obo-file and creates sequence of Obo.Terms.

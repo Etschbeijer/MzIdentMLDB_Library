@@ -29,7 +29,7 @@ let fileDir = __SOURCE_DIRECTORY__
 let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
 
 let sqliteMzQuantMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
-let sqlMzQuantMLContext = ContextHandler.sqlConnection ("MzQuantMLDB")
+let sqlMzQuantMLContext = ContextHandler.sqlConnection standardDBPathSQLiteMzQuantML "MzQuantMLDB"
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")

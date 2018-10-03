@@ -26,11 +26,12 @@ open MzIdentMLDataBase.InsertStatements.ObjectHandlers
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+let pathSQLiteMzIdentML = fileDir + "\Databases/"
+let sqliteDBName = "MzIdentML1.db"
 
-let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
+let sqliteMzIdentMLContext = ContextHandler.sqliteConnection pathSQLiteMzIdentML sqliteDBName
 
-let sqlMzIdentMLContext = ContextHandler.sqlConnection()
+let sqlMzIdentMLContext = ContextHandler.sqlConnection("MzIdentMLDB")
 
 let fromPsiMS =
     ContextHandler.fromFileObo (fileDir + "\Ontologies\Psi-MS.txt")
