@@ -29,99 +29,21 @@ open FSharp.Data
 
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzIdentMLDataBase.InsertStatements.ObjectHandlers.DBFunctions
+open MzIdentMLDataBase.InsertStatements.ObjectHandlers.UserParams
 open MzQuantMLDataBase.DataModel
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
+open MzQuantMLDataBase.InsertStatements.ObjectHandlers.DBFunctions
 open MzBasis.Basetypes
-
-
-let fileDir = __SOURCE_DIRECTORY__
-let pathDB = fileDir + "\Databases/" 
-
-let sqliteMzIdentMLDBName = "MzIdentML1.db"
-//let sqliteMzIdentMLContext = 
-//    MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection (sqliteMzIdentMLDBName, pathDB) 
-//sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled = false
-
-let sqliteMzQuantMLDBName = "MzQuantML1.db"
-//let sqliteMzQuantMLContext = 
-//    MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection (sqliteMzQuantMLDBName, pathDB)
-//sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled = false
-
-
-
-type MzIdentMLDBContext =
-    | SQLServer
-    | SQLite
-    static member createDBContext (item:MzIdentMLDBContext) (dbName:string) (path:string) =
-        match item with
-        | SQLServer -> MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path
-        | SQLite    -> MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path
-
-type MzQuantMLDBContext =
-    | SQLServer
-    | SQLite
-    static member createDBContext (item:MzQuantMLDBContext) (dbName:string) (path:string) =
-        match item with
-        | SQLServer -> MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path
-        | SQLite    -> MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path
-
-let createMzIdentMLContext (dbType:MzIdentMLDBContext) (dbName:string) (path:string) =
-    let dbContext = MzIdentMLDBContext.createDBContext dbType dbName path
-    dbContext
-    //dbContext.Database.EnsureCreated()
-
-let createMzQuantMLContext (dbType:MzQuantMLDBContext) (dbName:string) (path:string) =
-    let dbContext = MzQuantMLDBContext.createDBContext dbType dbName path
-    dbContext
-    //dbContext.Database.EnsureCreated()
-
-type DBContext =
-    | MzIdentML
-    | MzQuantML
-    static member initDB (
-                          contextType:DBContext, dbName:string, ?path:string, 
-                          ?dbTypeMzIdentML:MzIdentMLDBContext, ?dbTypeMzQuantML:MzQuantMLDBContext
-                         ) =
-        let path'            = defaultArg path Unchecked.defaultof<string>
-        let dbTypeMzIdentML' = defaultArg dbTypeMzIdentML Unchecked.defaultof<MzIdentMLDBContext>
-        let dbTypeMzQuantML' = defaultArg dbTypeMzQuantML Unchecked.defaultof<MzQuantMLDBContext>
-        match contextType with
-        | MzIdentML -> let dbContext =
-                        createMzIdentMLContext dbTypeMzIdentML' dbName path'
-                       dbContext.Database.EnsureCreated()
-        | MzQuantML -> let dbContext =
-                        createMzQuantMLContext dbTypeMzQuantML' dbName path'
-                       dbContext.Database.EnsureCreated()
-
-    static member initMzIdentMLDBContext (
-                                          dbName:string, dbTypeMzIdentML:MzIdentMLDBContext, ?path:string
-                                         ) =
-        let path' = defaultArg path Unchecked.defaultof<string>
-        createMzIdentMLContext dbTypeMzIdentML dbName path'
-
-    static member initMzQuantMLDBContext (
-                                          dbName:string, dbTypeMzQuantML:MzQuantMLDBContext, ?path:string
-                                         ) =
-        let path' = defaultArg path Unchecked.defaultof<string>
-        createMzQuantMLContext dbTypeMzQuantML dbName path'
-
-    static member initDB (
-                          contextType:DBContext, ?dbContextMzIdentML:MzIdentML, 
-                          ?dbContextMzQuantML:MzQuantML
-                         ) =
-        let dbTypeMzIdentML' = defaultArg dbContextMzIdentML Unchecked.defaultof<MzIdentML>
-        let dbTypeMzQuantML' = defaultArg dbContextMzQuantML Unchecked.defaultof<MzQuantML>
-        match contextType with
-        | MzIdentML -> dbTypeMzIdentML'.Database.EnsureCreated()
-        | MzQuantML -> dbTypeMzQuantML'.Database.EnsureCreated()
 
 
 ///One (poly)peptide (a sequence with modifications).
 type [<AllowNullLiteral>]
-    Peptide (id:string, name:string, peptideSequence:string, modifications:List<Modification>, 
-                substitutionModifications:List<SubstitutionModification>, fkMzIdentMLDocument:string,
-                details:List<PeptideParam>, rowVersion:Nullable<DateTime>
+    Peptide (
+             id:string, name:string, peptideSequence:string, modifications:List<Modification>, 
+             substitutionModifications:List<SubstitutionModification>, fkMzIdentMLDocument:string,
+             details:List<PeptideParam>, rowVersion:Nullable<DateTime>
             ) =
         let mutable id'                        = id
         let mutable name'                      = name
@@ -148,7 +70,8 @@ type [<AllowNullLiteral>]
 
 ///An identification of a single (poly)peptide, resulting from querying an input spectra, along with the set of confidence values for that identification.
 type [<AllowNullLiteral>]
-    SpectrumIdentificationItem (id:string, name:string, sample:Sample, fkSample:string, massTable:MassTable, 
+    SpectrumIdentificationItem (
+                                id:string, name:string, sample:Sample, fkSample:string, massTable:MassTable, 
                                 fkMassTable:string, passThreshold:Nullable<bool>, rank:Nullable<int>, 
                                 peptideEvidences:List<PeptideEvidence>, fragmentations:List<IonType>, 
                                 peptide:Peptide, fkPeptide:string, chargeState:Nullable<int>, 
@@ -159,7 +82,7 @@ type [<AllowNullLiteral>]
                                 fkPeptideHypothesis:string,
                                 details:List<SpectrumIdentificationItemParam>, 
                                 rowVersion:Nullable<DateTime>
-                                ) =
+                               ) =
 
         let mutable id'                             = id
         let mutable name'                           = name
@@ -217,50 +140,145 @@ type [<AllowNullLiteral>]
         member this.Details with get() = details' and set(value) = details' <- value
         member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
-
-type DBContextNew =
-    | MzIdentML
-    | MzQuantML
-    | SQLServer
-    | SQLite
-    static member initDB (
-                          dbContextType:DBContextNew, dbType:DBContextNew, dbName:string, ?path:string
-                         ) =
-        let path' = defaultArg path Unchecked.defaultof<string>
-        match dbContextType with
-        | MzIdentML -> match dbType with
-                       | SQLServer -> let dbContext =
-                                        MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path'
-                                      dbContext.Database.EnsureCreated()
-                       | SQLite    -> let dbContext =
-                                        MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path'
-                                      dbContext.Database.EnsureCreated()
-                       | _         -> printfn "Use either SQLServer or SQLite as the dbType." 
-                                      false
-        | MzQuantML -> match dbType with
-                       | SQLServer -> let dbContext =
-                                        MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqlConnection dbName path'
-                                      dbContext.Database.EnsureCreated()
-                       | SQLite    -> let dbContext =
-                                        MzQuantMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection dbName path'
-                                      dbContext.Database.EnsureCreated()
-                       | _         -> printfn "Use either SQLServer or SQLite as the dbType." 
-                                      false
-        | _ -> printfn "Use either MzIdentML or MzQuantML as the dbContextType." 
-               false
-
 //Functions
 
-//DBContext.initDB(DBContext.MzIdentML, sqliteMzIdentMLDBName, pathDB, dbTypeMzIdentML=MzIdentMLDBContext.SQLite)
-//DBContext.initDB(DBContext.MzQuantML, sqliteMzQuantMLDBName, pathDB, dbTypeMzQuantML=MzQuantMLDBContext.SQLite)
+let fileDir = __SOURCE_DIRECTORY__
+let pathDB = fileDir + "\Databases/" 
+let sqliteMzIdentMLDBName = "MzIdentML1.db"
+let sqliteMzQuantMLDBName = "MzQuantML1.db"
 
-DBContextNew.initDB(DBContextNew.MzIdentML, DBContextNew.SQLite, sqliteMzIdentMLDBName, pathDB)
-DBContextNew.initDB(DBContextNew.MzIdentML, DBContextNew.MzIdentML, sqliteMzIdentMLDBName, pathDB)
+
+let mzIdentMLContext =
+    createMzIdentMLContext DBType.SQLite sqliteMzIdentMLDBName pathDB
+
+let mzQuantMLDBContext =
+    createMzQuantMLContext DBType.SQLite sqliteMzQuantMLDBName pathDB
+
+//createMzIdentMLDB mzIdentMLContext
+
+//createMzQuantMLDB mzQuantMLDBContext
+
+//mzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled = false
+
+//mzQuantMLDBContext.ChangeTracker.AutoDetectChangesEnabled = false
+
+type OntologyWithPath =
+    {
+     Name   :   string
+     Path   :   string
+    }
+
+let createOntologyWithPath (name:string) (path:string) =
+    {
+     Name   =   name
+     Path   =   path
+    }
+
+let ontologyNames =
+    [
+     "Psi-MS"; "Pride"; "Unimod"; "Unit_Ontology"; "UserParam"
+    ]
+
+let ontologyPaths =
+    [
+     (fileDir + "\Ontologies\Psi-MS.txt");
+     (fileDir + "\Ontologies\Pride.txt");
+     (fileDir + "\Ontologies\Unimod.txt");
+     (fileDir + "\Ontologies\Unit_Ontology.txt");
+     (fileDir + "\Ontologies\UserParam.txt");
+    ]
+
+let standardOntologyWithPaths =
+    List.map2 createOntologyWithPath ontologyNames ontologyPaths
+
+//let userParams =
+//    [
+//     user0; user1; user2; user3; user4; user5; user6; user7; user8; user9; user10; user11; user12; user13; user14; user15; user16; user17; 
+//     user18; user19; user20; user21; user22; user23; user24; user25; user26; user27; user28; user29; user30; user31; user32; user33; user34;
+//     user35; user36; user37; user38; user39; user40; user41; user42; user43; user44; user45; user46; user47; user48; user49; user50; user51;
+//     user52; user53; user54; user55; user56; user57; user58; user59; user60; user61; user62; user63; user64; user65; user66; user67; user68;
+//     user69; user70; user71; user72; user73; user74; user75; user76; user77; user78; user79;
+//    ]
+//    |> List.map (fun term -> createOboString term)
+//    |> List.concat
+
+//let userParamOboFile = createOboFile (fileDir + "\Ontologies\UserParam.txt") userParams
+
+//let ontologiesAndTerms =
+//    standardOntologyWithPaths
+//    |> List.map (fun item -> createOntologyAndTerms item.Name item.Path)
+
+//let addedOntoigiesAndTermsToMzIdentMLDB =
+//    ontologiesAndTerms
+//    |> List.map (fun item -> addOntologyAndTermsToMzIdentMLDB mzIdentMLContext item)
+
+//let addedOntoigiesAndTermsToMzQuantMLDB =
+//    ontologiesAndTerms
+//    |> List.map (fun item -> addOntologyAndTermsToMzQuantMLDB mzQuantMLDBContext item)
+
+let mzIdentMLDB =
+    initMzIdentMLDB DBType.SQLite sqliteMzIdentMLDBName pathDB ontologyNames ontologyPaths
+
+let mzQuantMLDB =
+    initMzQuantMLDB DBType.SQLite sqliteMzQuantMLDBName pathDB ontologyNames ontologyPaths
+
 
 //Functions to create everything related to spectrumIdentificationItem
 
-let peptide =
-    PeptideHandler.init("Some Sequence")
+let sequestScore =
+    TermSymbol.Accession "PRIDE:0000053"
 
-let spectrumIdentificationItem =
-    SpectrumIdentificationItemHandler.init("peptide 1", -1, -1., true, -1, "spectrumIDentificationItem 1")
+let xTandem =
+    TermSymbol.Accession "MS:1001476"
+
+let modificationParams =
+    [
+     MzIdentMLDataBase.InsertStatements.ObjectHandlers.ModificationParamHandler.init(TermSymbol.toID Oxidation, "Oxidation")
+    ]
+
+let modifications =
+    MzIdentMLDataBase.InsertStatements.ObjectHandlers.ModificationHandler.init(modificationParams, "Oxidation")
+    |> MzIdentMLDataBase.InsertStatements.ObjectHandlers.ModificationHandler.addResidues "M"
+    |> MzIdentMLDataBase.InsertStatements.ObjectHandlers.ModificationHandler.addFKPeptide "Peptide 2"
+
+let peptide1 =
+    PeptideHandler.init("Some Sequence", "Peptide 1")
+    |> PeptideHandler.addToContext mzIdentMLContext
+
+let peptide2 =
+    PeptideHandler.init("Some Sequence", "Peptide 2")
+    |> PeptideHandler.addModification modifications
+    |> PeptideHandler.addToContext mzIdentMLContext
+
+let spectrumIdentificationItemParams =
+    [
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID sequestScore)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 1";
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID xTandem)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 1";
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID AndromedaScore)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 1";
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID sequestScore)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 2";
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID xTandem)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 2";
+     SpectrumIdentificationItemParamHandler.init(TermSymbol.toID AndromedaScore)
+     |> SpectrumIdentificationItemParamHandler.addValue "Test Number"
+     |> SpectrumIdentificationItemParamHandler.addFKSpectrumIdentificationItem "SpectrumIDentificationItem 2";
+    ]
+    |> (fun item -> mzIdentMLContext.AddRange (item.Cast()))
+
+let spectrumIdentificationItem1 =
+    SpectrumIdentificationItemHandler.init("Peptide 1", -1, -1., true, 0, "SpectrumIDentificationItem 1")
+    |> SpectrumIdentificationItemHandler.addToContext mzIdentMLContext
+
+let spectrumIdentificationItem2 =
+    SpectrumIdentificationItemHandler.init("Peptide 2", -1, -1., true, 0, "SpectrumIDentificationItem 2")
+    |> SpectrumIdentificationItemHandler.addToContext mzIdentMLContext
+
+mzIdentMLContext.SaveChanges()

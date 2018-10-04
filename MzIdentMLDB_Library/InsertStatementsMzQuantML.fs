@@ -114,11 +114,6 @@ module InsertStatements =
                 optionsBuilder.UseSqlServer("Server=(" + path' + ")\mssqllocaldb;Database=" + name + ";Trusted_Connection=True;") |> ignore
                 new MzQuantML(optionsBuilder.Options) 
 
-            ///Reads obo-file and creates sequence of Obo.Terms.
-            static member fromFileObo (filePath:string) =
-                FileIO.readFile filePath
-                |> Obo.parseOboTerms
-
             ///Tries to add the object to the database-context.
             static member tryAddToContext (context:MzQuantML) (item:'b) =
                 context.Add(item)
@@ -9474,3 +9469,460 @@ module InsertStatements =
             static member addToContextAndInsert (dbContext:MzQuantML) (item:MzQuantMLDocument) =
                 MzQuantMLDocumentHandler.addToContext dbContext item |> ignore
                 dbContext.SaveChanges()
+
+        module DBFunctions =
+
+            ///Reads obo-file and creates sequence of Obo.Terms.
+            let fromFileObo (filePath:string) =
+                FileIO.readFile filePath
+                |> Obo.parseOboTerms
+
+            let createOntologyAndTerms (ontologyName:string) (path:string) =
+                let ontology =
+                    OntologyHandler.init (ontologyName)
+                let terms =
+                    fromFileObo path
+                    |> Seq.map (fun termItem -> TermHandler.init(termItem.Id, termItem.Name, ontologyName))
+                ontology, terms
+
+            let addOntologyAndTermsToMzQuantMLDB (mzQuantMLContext:MzQuantML) ((ontology, terms): Ontology*IEnumerable<Term>) =
+                mzQuantMLContext.Ontology.Add ontology    |> ignore
+                mzQuantMLContext.Term.AddRange (terms)    |> ignore
+                mzQuantMLContext.SaveChanges()
+
+            let createMzQuantMLContext (dbType:DBType) (dbName:string) (path:string) =
+                match dbType with
+                | MSSQL     -> ContextHandler.sqlConnection dbName path
+                | SQLite    -> ContextHandler.sqliteConnection dbName path
+
+            let createMzQuantMLDB (dbContext:MzQuantML) =
+                dbContext.Database.EnsureCreated()
+
+            let initMzQuantMLDB (dbType:DBType) (dbName:string) (dbPath:string) (ontologyNames:list<string>) (ontologyPaths:list<string>) =
+                let dbContext =
+                    match dbType with
+                    | MSSQL     -> ContextHandler.sqlConnection dbName dbPath
+                    | SQLite    -> ContextHandler.sqliteConnection dbName dbPath
+                dbContext.Database.EnsureCreated() |> ignore
+                List.map2 createOntologyAndTerms ontologyNames ontologyPaths                
+                |> List.map (fun item -> addOntologyAndTermsToMzQuantMLDB dbContext item)   |> ignore
+                dbContext
+
+        module UserParams =
+    
+            let user0 =
+                TermHandler.init("User:0000000")
+                |> TermHandler.addName "N-term cleavage window"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user1 =
+                TermHandler.init("User:0000001")
+                |> TermHandler.addName "C-term cleavage window"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user2 =
+                TermHandler.init("User:0000002")
+                |> TermHandler.addName "Leading razor protein"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user3 =
+                TermHandler.init("User:0000003")
+                |> TermHandler.addName "MaxQuant:Unique Protein Group"
+                |> TermHandler.addOntologyID  "UserParam"
+
+            let user4 =
+                TermHandler.init("User:0000004")
+                |> TermHandler.addName "MaxQuant:Unique Protein"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user5 =
+                TermHandler.init("User:0000005")
+                |> TermHandler.addName "MaxQuant:PEP"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user6 =
+                TermHandler.init("User:0000006")
+                |> TermHandler.addName "IdentificationType"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user7 =
+                TermHandler.init("User:0000007")
+                |> TermHandler.addName "AminoAcid modification"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user8 =
+                TermHandler.init("User:0000008")
+                |> TermHandler.addName "Charge corrected mass of the precursor ion"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user9 =
+                TermHandler.init("User:0000009")
+                |> TermHandler.addName "Calibrated retention time"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user10 =
+                TermHandler.init("User:0000010")
+                |> TermHandler.addName "Mass error"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user11 =
+                TermHandler.init("User:0000011")
+                |> TermHandler.addName "The intensity values of the isotopes."
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user12 =
+                TermHandler.init("User:0000012")
+                |> TermHandler.addName "MaxQuant:Major protein IDs"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user13 =
+                TermHandler.init("User:0000013")
+                |> TermHandler.addName "MaxQuant:Number of proteins"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user14 =
+                TermHandler.init("User:0000014")
+                |> TermHandler.addName "MaxQuant:Peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user15 =
+                TermHandler.init("User:0000015")
+                |> TermHandler.addName "MaxQuant:Razor + unique peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user16 =
+                TermHandler.init("User:0000016")
+                |> TermHandler.addName "MaxQuant:Unique peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user17 =
+                TermHandler.init("User:0000017")
+                |> TermHandler.addName "MaxQuant:Unique + razor sequence coverage"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user18 =
+                TermHandler.init("User:0000018")
+                |> TermHandler.addName "MaxQuant:Unique sequence coverage"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user19 =
+                TermHandler.init("User:0000019")
+                |> TermHandler.addName "MaxQuant:SequenceLength(s)"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user20 =
+                TermHandler.init("User:0000020")
+                |> TermHandler.addName "Metabolic labeling N14/N15"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user21 =
+                TermHandler.init("User:0000021")
+                |> TermHandler.addName "DetectionType"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user22 =
+                TermHandler.init("User:0000022")
+                |> TermHandler.addName "MaxQuant:Uncalibrated m/z"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user23 =
+                TermHandler.init("User:0000023")
+                |> TermHandler.addName "MaxQuant:Number of data points"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user24 =
+                TermHandler.init("User:0000024")
+                |> TermHandler.addName "MaxQuant:Number of isotopic peaks"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user25 =
+                TermHandler.init("User:0000025")
+                |> TermHandler.addName "MaxQuant:Parent ion fraction"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user26 =
+                TermHandler.init("User:0000026")
+                |> TermHandler.addName "MaxQuant:Mass precision"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user27 =
+                TermHandler.init("User:0000027")
+                |> TermHandler.addName "Retention length (FWHM)"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user28 =
+                TermHandler.init("User:0000028")
+                |> TermHandler.addName "MaxQuant:Min scan number"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user29 =
+                TermHandler.init("User:0000029")
+                |> TermHandler.addName "MaxQuant:Max scan number"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user30 =
+                TermHandler.init("User:0000030")
+                |> TermHandler.addName "MaxQuant:MSMS scan numbers"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user31 =
+                TermHandler.init("User:0000031")
+                |> TermHandler.addName "MaxQuant:MSMS isotope indices"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user32 =
+                TermHandler.init("User:0000032")
+                |> TermHandler.addName "MaxQuant:Filtered peaks"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user33 =
+                TermHandler.init("User:0000033")
+                |> TermHandler.addName "FragmentationType"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user34 =
+                TermHandler.init("User:0000034")
+                |> TermHandler.addName "Parent intensity fraction"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user35 =
+                TermHandler.init("User:0000035")
+                |> TermHandler.addName "Fraction of total spectrum"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user36 =
+                TermHandler.init("User:0000036")
+                |> TermHandler.addName "Base peak fraction"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user37 =
+                TermHandler.init("User:0000037")
+                |> TermHandler.addName "Precursor full scan number"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user38 =
+                TermHandler.init("User:0000038")
+                |> TermHandler.addName "Precursor intensity"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user39 =
+                TermHandler.init("User:0000039")
+                |> TermHandler.addName "Precursor apex fraction"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user40 =
+                TermHandler.init("User:0000040")
+                |> TermHandler.addName "Precursor apex offset"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user41 =
+                TermHandler.init("User:0000041")
+                |> TermHandler.addName "Precursor apex offset time"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user42 =
+                TermHandler.init("User:0000042")
+                |> TermHandler.addName "Scan event number"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user43 =
+                TermHandler.init("User:0000043")
+                |> TermHandler.addName "MaxQuant:Score difference"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user44 =
+                TermHandler.init("User:0000044")
+                |> TermHandler.addName "MaxQuant:Combinatorics"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user45 =
+                TermHandler.init("User:0000045")
+                |> TermHandler.addName "MaxQuant:Matches"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user46 =
+                TermHandler.init("User:0000046")
+                |> TermHandler.addName "MaxQuant:Match between runs"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user47 =
+                TermHandler.init("User:0000047")
+                |> TermHandler.addName "MaxQuant:Number of matches"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user48 =
+                TermHandler.init("User:0000048")
+                |> TermHandler.addName "MaxQuant:Intensity coverage"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user49 =
+                TermHandler.init("User:0000049")
+                |> TermHandler.addName "MaxQuant:Peak coverage"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user50 =
+                TermHandler.init("User:0000050")
+                |> TermHandler.addName "MaxQuant:ETD identification type"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user51 =
+                TermHandler.init("User:0000051")
+                |> TermHandler.addName "Min. score unmodified peptides"
+                |> TermHandler.addOntologyID "UserParam"
+  
+            let user52 =
+                TermHandler.init("User:0000052")
+                |> TermHandler.addName "Min. score modified peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user53 =
+                TermHandler.init("User:0000053")
+                |> TermHandler.addName "Min. delta score of unmodified peptides"
+                |> TermHandler.addOntologyID "UserParam" 
+
+            let user54 =
+                TermHandler.init("User:0000054")
+                |> TermHandler.addName "Min. delta score of modified peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user55 =
+                TermHandler.init("User:0000055")
+                |> TermHandler.addName "Min. amount unique peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user56 =
+                TermHandler.init("User:0000056")
+                |> TermHandler.addName "Min. amount razor peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user57 =
+                TermHandler.init("User:0000057")
+                |> TermHandler.addName "Min. amount peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user58 =
+                TermHandler.init("User:0000058")
+                |> TermHandler.addName "MaxQuant:Decoy mode"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user59 =
+                TermHandler.init("User:0000059")
+                |> TermHandler.addName "MaxQuant:Special AAs"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user60 =
+                TermHandler.init("User:0000060")
+                |> TermHandler.addName "MaxQuant:Include contaminants"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user61 =
+                TermHandler.init("User:0000061")
+                |> TermHandler.addName "MaxQuant:iBAQ"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user62 =
+                TermHandler.init("User:0000062")
+                |> TermHandler.addName "MaxQuant:Top MS/MS peaks per 100 Dalton"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user63 =
+                TermHandler.init("User:0000063")
+                |> TermHandler.addName "MaxQuant:IBAQ log fit"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user64 =
+                TermHandler.init("User:0000064")
+                |> TermHandler.addName "MaxQuant:Protein FDR"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user65 =
+                TermHandler.init("User:0000065")
+                |> TermHandler.addName "MaxQuant:SiteFDR"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user66 =
+                TermHandler.init("User:0000066")
+                |> TermHandler.addName "MaxQuant:Use Normalized Ratios For Occupancy"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user67 =
+                TermHandler.init("User:0000067")
+                |> TermHandler.addName "MaxQuant:Peptides used for protein quantification"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user68 =
+                TermHandler.init("User:0000068")
+                |> TermHandler.addName "MaxQuant:Discard unmodified counterpart peptides"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user69 =
+                TermHandler.init("User:0000069")
+                |> TermHandler.addName "MaxQuant:Min. ratio count"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user70 =
+                TermHandler.init("User:0000070")
+                |> TermHandler.addName "MaxQuant:Use delta score"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user71 =
+                TermHandler.init("User:0000071")
+                |> TermHandler.addName "Data-dependt acquisition"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user72 =
+                TermHandler.init("User:0000072")
+                |> TermHandler.addName "razor-protein"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user73 =
+                TermHandler.init("User:0000073")
+                |> TermHandler.addName "razor-peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user74 =
+                TermHandler.init("User:0000074")
+                |> TermHandler.addName "Mass-deviation"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user75 =
+                TermHandler.init("User:0000075")
+                |> TermHandler.addName "leading-peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user76 =
+                TermHandler.init("User:0000076")
+                |> TermHandler.addName "unique-protein"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user77 =
+                TermHandler.init("User:0000077")
+                |> TermHandler.addName "unique-peptide"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user78 =
+                TermHandler.init("User:0000078")
+                |> TermHandler.addName "MaxQuant:Delta score"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let user79 =
+                TermHandler.init("User:0000079")
+                |> TermHandler.addName "MaxQuant:Best andromeda score"
+                |> TermHandler.addOntologyID "UserParam"
+
+            let userParams =
+                [
+                 user0; user1; user2; user3; user4; user5; user6; user7; user8; user9; user10; user11; user12; user13; user14; user15; user16; user17; 
+                 user18; user19; user20; user21; user22; user23; user24; user25; user26; user27; user28; user29; user30; user31; user32; user33; user34;
+                 user35; user36; user37; user38; user39; user40; user41; user42; user43; user44; user45; user46; user47; user48; user49; user50; user51;
+                 user52; user53; user54; user55; user56; user57; user58; user59; user60; user61; user62; user63; user64; user65; user66; user67; user68;
+                 user69; user70; user71; user72; user73; user74; user75; user76; user77; user78; user79;
+                ]
+
+            let createOboString (term:Term) =
+                [["[Term]"; "id: " + term.ID; "name: " + term.Name]; [""]]
+                |> List.concat
+
+            let createOboFile (path:string) (oboTerm:seq<string>) =
+                Seq.write path oboTerm
+

@@ -1,0 +1,320 @@
+[Term]
+id: User:0000000
+name: N-term cleavage window
+
+[Term]
+id: User:0000001
+name: C-term cleavage window
+
+[Term]
+id: User:0000002
+name: Leading razor protein
+
+[Term]
+id: User:0000003
+name: MaxQuant:Unique Protein Group
+
+[Term]
+id: User:0000004
+name: MaxQuant:Unique Protein
+
+[Term]
+id: User:0000005
+name: MaxQuant:PEP
+
+[Term]
+id: User:0000006
+name: IdentificationType
+
+[Term]
+id: User:0000007
+name: AminoAcid modification
+
+[Term]
+id: User:0000008
+name: Charge corrected mass of the precursor ion
+
+[Term]
+id: User:0000009
+name: Calibrated retention time
+
+[Term]
+id: User:0000010
+name: Mass error
+
+[Term]
+id: User:0000011
+name: The intensity values of the isotopes.
+
+[Term]
+id: User:0000012
+name: MaxQuant:Major protein IDs
+
+[Term]
+id: User:0000013
+name: MaxQuant:Number of proteins
+
+[Term]
+id: User:0000014
+name: MaxQuant:Peptides
+
+[Term]
+id: User:0000015
+name: MaxQuant:Razor + unique peptides
+
+[Term]
+id: User:0000016
+name: MaxQuant:Unique peptides
+
+[Term]
+id: User:0000017
+name: MaxQuant:Unique + razor sequence coverage
+
+[Term]
+id: User:0000018
+name: MaxQuant:Unique sequence coverage
+
+[Term]
+id: User:0000019
+name: MaxQuant:SequenceLength(s)
+
+[Term]
+id: User:0000020
+name: Metabolic labeling N14/N15
+
+[Term]
+id: User:0000021
+name: DetectionType
+
+[Term]
+id: User:0000022
+name: MaxQuant:Uncalibrated m/z
+
+[Term]
+id: User:0000023
+name: MaxQuant:Number of data points
+
+[Term]
+id: User:0000024
+name: MaxQuant:Number of isotopic peaks
+
+[Term]
+id: User:0000025
+name: MaxQuant:Parent ion fraction
+
+[Term]
+id: User:0000026
+name: MaxQuant:Mass precision
+
+[Term]
+id: User:0000027
+name: Retention length (FWHM)
+
+[Term]
+id: User:0000028
+name: MaxQuant:Min scan number
+
+[Term]
+id: User:0000029
+name: MaxQuant:Max scan number
+
+[Term]
+id: User:0000030
+name: MaxQuant:MSMS scan numbers
+
+[Term]
+id: User:0000031
+name: MaxQuant:MSMS isotope indices
+
+[Term]
+id: User:0000032
+name: MaxQuant:Filtered peaks
+
+[Term]
+id: User:0000033
+name: FragmentationType
+
+[Term]
+id: User:0000034
+name: Parent intensity fraction
+
+[Term]
+id: User:0000035
+name: Fraction of total spectrum
+
+[Term]
+id: User:0000036
+name: Base peak fraction
+
+[Term]
+id: User:0000037
+name: Precursor full scan number
+
+[Term]
+id: User:0000038
+name: Precursor intensity
+
+[Term]
+id: User:0000039
+name: Precursor apex fraction
+
+[Term]
+id: User:0000040
+name: Precursor apex offset
+
+[Term]
+id: User:0000041
+name: Precursor apex offset time
+
+[Term]
+id: User:0000042
+name: Scan event number
+
+[Term]
+id: User:0000043
+name: MaxQuant:Score difference
+
+[Term]
+id: User:0000044
+name: MaxQuant:Combinatorics
+
+[Term]
+id: User:0000045
+name: MaxQuant:Matches
+
+[Term]
+id: User:0000046
+name: MaxQuant:Match between runs
+
+[Term]
+id: User:0000047
+name: MaxQuant:Number of matches
+
+[Term]
+id: User:0000048
+name: MaxQuant:Intensity coverage
+
+[Term]
+id: User:0000049
+name: MaxQuant:Peak coverage
+
+[Term]
+id: User:0000050
+name: MaxQuant:ETD identification type
+
+[Term]
+id: User:0000051
+name: Min. score unmodified peptides
+
+[Term]
+id: User:0000052
+name: Min. score modified peptides
+
+[Term]
+id: User:0000053
+name: Min. delta score of unmodified peptides
+
+[Term]
+id: User:0000054
+name: Min. delta score of modified peptides
+
+[Term]
+id: User:0000055
+name: Min. amount unique peptide
+
+[Term]
+id: User:0000056
+name: Min. amount razor peptide
+
+[Term]
+id: User:0000057
+name: Min. amount peptide
+
+[Term]
+id: User:0000058
+name: MaxQuant:Decoy mode
+
+[Term]
+id: User:0000059
+name: MaxQuant:Special AAs
+
+[Term]
+id: User:0000060
+name: MaxQuant:Include contaminants
+
+[Term]
+id: User:0000061
+name: MaxQuant:iBAQ
+
+[Term]
+id: User:0000062
+name: MaxQuant:Top MS/MS peaks per 100 Dalton
+
+[Term]
+id: User:0000063
+name: MaxQuant:IBAQ log fit
+
+[Term]
+id: User:0000064
+name: MaxQuant:Protein FDR
+
+[Term]
+id: User:0000065
+name: MaxQuant:SiteFDR
+
+[Term]
+id: User:0000066
+name: MaxQuant:Use Normalized Ratios For Occupancy
+
+[Term]
+id: User:0000067
+name: MaxQuant:Peptides used for protein quantification
+
+[Term]
+id: User:0000068
+name: MaxQuant:Discard unmodified counterpart peptides
+
+[Term]
+id: User:0000069
+name: MaxQuant:Min. ratio count
+
+[Term]
+id: User:0000070
+name: MaxQuant:Use delta score
+
+[Term]
+id: User:0000071
+name: Data-dependt acquisition
+
+[Term]
+id: User:0000072
+name: razor-protein
+
+[Term]
+id: User:0000073
+name: razor-peptide
+
+[Term]
+id: User:0000074
+name: Mass-deviation
+
+[Term]
+id: User:0000075
+name: leading-peptide
+
+[Term]
+id: User:0000076
+name: unique-protein
+
+[Term]
+id: User:0000077
+name: unique-peptide
+
+[Term]
+id: User:0000078
+name: MaxQuant:Delta score
+
+[Term]
+id: User:0000079
+name: MaxQuant:Best andromeda score
+
