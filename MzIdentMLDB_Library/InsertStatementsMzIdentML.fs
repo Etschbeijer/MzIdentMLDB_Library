@@ -4069,10 +4069,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIDentMLDocument of existing object with new one.
-            static member addMzIdentMLDocumentID
-                (fkMzIDentMLDocument:string) (table:Organization) =
-                table.FKMzIdentMLDocument <- fkMzIDentMLDocument
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFKMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:Organization) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a organization-object in the context and database, based on its primary-key(ID).
@@ -4126,6 +4126,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Organization) (item2:Organization) =
                 item1.FKParent=item2.FKParent && item1.FKPerson=item2.FKPerson && 
+                item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)  
@@ -4235,10 +4236,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIDentMLDocument of existing object with new one.
-            static member addMzIdentMLDocumentID
-                (fkMzIDentMLDocument:string) (table:Person) =
-                table.FKMzIdentMLDocument <- fkMzIDentMLDocument
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFKMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:Person) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a person-object in the context and database, based on its primary-key(ID).
@@ -4293,7 +4294,8 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:Person) (item2:Person) =
                 item1.FirstName=item2.FirstName && item1.FirstName=item2.FirstName && 
                 item1.MidInitials=item2.MidInitials && item1.LastName=item2.LastName && 
-                item1.Organizations=item2.Organizations && item1.Organizations=item2.Organizations
+                item1.Organizations=item2.Organizations && item1.Organizations=item2.Organizations &&
+                item1.FKMzIdentMLDocument=item2.FKMzIdentMLDocument
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.
@@ -4696,26 +4698,26 @@ module InsertStatements =
             ///Initializes a sample-object with at least all necessary parameters.
             static member init
                 (
-                    ?id           : string,
-                    ?name         : string,
-                    ?contactRoles : seq<ContactRole>,
-                    ?subSamples   : seq<SubSample>,
-                    ?details      : seq<SampleParam>,
-                    ?fkMzIdentML  : string
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?contactRoles           : seq<ContactRole>,
+                    ?subSamples             : seq<SubSample>,
+                    ?details                : seq<SampleParam>,
+                    ?fkMzIdentMLDocument    : string
                 ) =
                 let id'           = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'         = defaultArg name Unchecked.defaultof<string>
                 let contactRoles' = convertOptionToList contactRoles
                 let subSamples'   = convertOptionToList subSamples
                 let details'      = convertOptionToList details
-                let fkMzIdentML'  = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'  = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new Sample(
                            id', 
                            name', 
                            contactRoles', 
                            subSamples', 
-                           fkMzIdentML', 
+                           fkMzIdentMLDocument', 
                            details', 
                            Nullable(DateTime.Now)
                           )
@@ -4762,10 +4764,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIdentML of existing object with new table.
+            ///Replaces fkMzIdentMLDocument of existing object with new table.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:Sample) =
-                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:Sample) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a sample-object in the context and database, based on its primary-key(ID).
@@ -5118,20 +5120,20 @@ module InsertStatements =
             ///Initializes a peptide-object with at least all necessary parameters.
             static member init
                 (
-                    peptideSequence            : string,
-                    ?id                        : string,
-                    ?name                      : string,                    
-                    ?modifications             : seq<Modification>,
-                    ?substitutionModifications : seq<SubstitutionModification>,   
-                    ?fkMzIdentML               : string,
-                    ?details                   : seq<PeptideParam>
+                    peptideSequence             : string,
+                    ?id                         : string,
+                    ?name                       : string,                    
+                    ?modifications              : seq<Modification>,
+                    ?substitutionModifications  : seq<SubstitutionModification>,   
+                    ?fkMzIdentMLDocument        : string,
+                    ?details                    : seq<PeptideParam>
                 ) =
-                let id'                        = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'                      = defaultArg name Unchecked.defaultof<string>
-                let modifications'             = convertOptionToList modifications
-                let substitutionModifications' = convertOptionToList substitutionModifications
-                let fkMzIdentML'               = defaultArg fkMzIdentML Unchecked.defaultof<string>
-                let details'                   = convertOptionToList details
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                       = defaultArg name Unchecked.defaultof<string>
+                let modifications'              = convertOptionToList modifications
+                let substitutionModifications'  = convertOptionToList substitutionModifications
+                let fkMzIdentMLDocument'        = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
+                let details'                    = convertOptionToList details
 
                 new Peptide(
                             id', 
@@ -5139,7 +5141,7 @@ module InsertStatements =
                             peptideSequence, 
                             modifications', 
                             substitutionModifications', 
-                            fkMzIdentML', 
+                            fkMzIdentMLDocument', 
                             details', 
                             Nullable(DateTime.Now)
                            )
@@ -5186,10 +5188,10 @@ module InsertStatements =
                 let result = peptide.Details <- addCollectionToList peptide.Details details
                 peptide
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (peptide:Peptide) =
-                let result = peptide.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (peptide:Peptide) =
+                let result = peptide.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 peptide
 
             ///Tries to find a peptide-object in the context and database, based on its primary-key(ID).
@@ -7049,7 +7051,7 @@ module InsertStatements =
                     ?databaseFilters        : seq<Filter>,
                     ?frames                 : seq<Frame>,
                     ?translationTable       : seq<TranslationTable>,
-                    ?fkMzIdentML            : string
+                    ?fkMzIdentMLDocument    : string
                 ) =
                 let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                   = defaultArg name Unchecked.defaultof<string>
@@ -7065,7 +7067,7 @@ module InsertStatements =
                 let databaseFilters'        = convertOptionToList databaseFilters
                 let frames'                 = convertOptionToList frames
                 let translationTable'       = convertOptionToList translationTable
-                let fkMzIdentML'            = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new SpectrumIdentificationProtocol(
                                                    id', 
@@ -7085,7 +7087,7 @@ module InsertStatements =
                                                    databaseFilters',
                                                    frames', 
                                                    translationTable', 
-                                                   fkMzIdentML', 
+                                                   fkMzIdentMLDocument', 
                                                    Nullable(DateTime.Now)
                                                   )
 
@@ -7221,10 +7223,10 @@ module InsertStatements =
                 let result = table.TranslationTables <- addCollectionToList table.TranslationTables translationTables
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:SpectrumIdentificationProtocol) =
-                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:SpectrumIdentificationProtocol) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a spectrumIdentificationProtocol-object in the context and database, based on its primary-key(ID).
@@ -7525,23 +7527,23 @@ module InsertStatements =
             ///Initializes a dbsequence-object with at least all necessary parameters.
             static member init
                 (
-                    accession           : string,
-                    fkSearchDatabase    : string,
-                    ?id                 : string,
-                    ?name               : string,
-                    ?searchDatabase     : SearchDatabase,
-                    ?sequence           : string,
-                    ?length             : int,
-                    ?details            : seq<DBSequenceParam>,
-                    ?fkMzIdentML        : string
+                    accession               : string,
+                    fkSearchDatabase        : string,
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?searchDatabase         : SearchDatabase,
+                    ?sequence               : string,
+                    ?length                 : int,
+                    ?details                : seq<DBSequenceParam>,
+                    ?fkMzIdentMLDocument    : string
                 ) =
-                let id'             = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'           = defaultArg name Unchecked.defaultof<string>
-                let searchDatabase' = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
-                let sequence'       = defaultArg sequence Unchecked.defaultof<string>
-                let length'         = defaultArg length Unchecked.defaultof<int>
-                let fkMzIdentML'    = defaultArg fkMzIdentML Unchecked.defaultof<string>
-                let details'        = convertOptionToList details
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                   = defaultArg name Unchecked.defaultof<string>
+                let searchDatabase'         = defaultArg searchDatabase Unchecked.defaultof<SearchDatabase>
+                let sequence'               = defaultArg sequence Unchecked.defaultof<string>
+                let length'                 = defaultArg length Unchecked.defaultof<int>
+                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
+                let details'                = convertOptionToList details
 
                 new DBSequence(
                                id', 
@@ -7551,7 +7553,7 @@ module InsertStatements =
                                fkSearchDatabase,
                                sequence', 
                                Nullable(length'), 
-                               fkMzIdentML',
+                               fkMzIdentMLDocument',
                                details', 
                                Nullable(DateTime.Now)
                               )
@@ -7592,10 +7594,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:DBSequence) =
-                table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:DBSequence) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a dbSequence-object in the context and database, based on its primary-key(ID).
@@ -7695,7 +7697,7 @@ module InsertStatements =
                     ?translationTable               : TranslationTable,
                     ?fkTranslationTable             : string,
                     ?fkSpectrumIdentificationItem   : string,
-                    ?fkMzIdentML                    : string,
+                    ?fkMzIdentMLDocument            : string,
                     ?details                        : seq<PeptideEvidenceParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
@@ -7712,7 +7714,7 @@ module InsertStatements =
                 let fkTranslationTable'             = defaultArg fkTranslationTable Unchecked.defaultof<string>
                 let fkSpectrumIdentificationItem'   = defaultArg fkSpectrumIdentificationItem Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
-                let fkMzIdentML'                    = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'            = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new PeptideEvidence(
                                     id', 
@@ -7730,7 +7732,7 @@ module InsertStatements =
                                     translationTable', 
                                     fkTranslationTable', 
                                     fkSpectrumIdentificationItem',
-                                    fkMzIdentML', 
+                                    fkMzIdentMLDocument', 
                                     details', 
                                     Nullable(DateTime.Now)
                                    )
@@ -7813,10 +7815,10 @@ module InsertStatements =
                 let result = table.Details <- addCollectionToList table.Details details
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:PeptideEvidence) =
-                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:PeptideEvidence) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a peptideEvidence-object in the context and database, based on its primary-key(ID).
@@ -8457,14 +8459,14 @@ module InsertStatements =
                     ?spectrumIdentificationList         : SpectrumIdentificationList,
                     ?spectrumIdentificationProtocol     : SpectrumIdentificationProtocol,
                     ?activityDate                       : DateTime,
-                    ?fkMzIdentML                        : string
+                    ?fkMzIdentMLDocument                : string
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
                 let activityDate'                   = defaultArg activityDate Unchecked.defaultof<DateTime>
                 let spectrumIdentificationList'     = defaultArg spectrumIdentificationList Unchecked.defaultof<SpectrumIdentificationList>
                 let spectrumIdentificationProtocol' = defaultArg spectrumIdentificationProtocol Unchecked.defaultof<SpectrumIdentificationProtocol>
-                let fkMzIdentML'                    = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let fkMzIdentMLDocument'            = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new SpectrumIdentification(
                                            id', 
@@ -8476,7 +8478,7 @@ module InsertStatements =
                                            fkSpectrumIdentificationProtocol,
                                            spectraData |> List, 
                                            searchDatabase |> List, 
-                                           fkMzIdentML', 
+                                           fkMzIdentMLDocument', 
                                            Nullable(DateTime.Now)
                                           )
 
@@ -8504,10 +8506,10 @@ module InsertStatements =
                 table.SpectrumIdentificationProtocol <- spectrumIdentificationProtocol
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:SpectrumIdentification) =
-                let result = table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:SpectrumIdentification) =
+                let result = table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a spectrumIdentification-object in the context and database, based on its primary-key(ID).
@@ -8602,17 +8604,17 @@ module InsertStatements =
             ///Initializes a proteindetectionprotocol-object with at least all necessary parameters.
             static member init
                 (
-                    analysisSoftware    : seq<AnalysisSoftware>,
-                    threshold           : seq<ThresholdParam>,
-                    ?id                 : string,
-                    ?name               : string,
-                    ?analysisParams     : seq<AnalysisParam>,
-                    ?fkMzIdentML        : string
+                    analysisSoftware        : seq<AnalysisSoftware>,
+                    threshold               : seq<ThresholdParam>,
+                    ?id                     : string,
+                    ?name                   : string,
+                    ?analysisParams         : seq<AnalysisParam>,
+                    ?fkMzIdentMLDocument    : string
                 ) =
-                let id'                 = defaultArg id (System.Guid.NewGuid().ToString())
-                let name'               = defaultArg name Unchecked.defaultof<string>
-                let analysisParams'     = convertOptionToList analysisParams
-                let fkMzIdentML'        = defaultArg fkMzIdentML Unchecked.defaultof<string>
+                let id'                     = defaultArg id (System.Guid.NewGuid().ToString())
+                let name'                   = defaultArg name Unchecked.defaultof<string>
+                let analysisParams'         = convertOptionToList analysisParams
+                let fkMzIdentMLDocument'    = defaultArg fkMzIdentMLDocument Unchecked.defaultof<string>
                     
                 new ProteinDetectionProtocol(
                                              id', 
@@ -8620,7 +8622,7 @@ module InsertStatements =
                                              analysisSoftware |> List,
                                              analysisParams', 
                                              threshold |> List,
-                                             fkMzIdentML', 
+                                             fkMzIdentMLDocument', 
                                              Nullable(DateTime.Now)
                                             )
 
@@ -8648,10 +8650,10 @@ module InsertStatements =
                 let result = table.AnalysisParams <- addCollectionToList table.AnalysisParams analysisParams
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
             static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:ProteinDetectionProtocol) =
-                table.FKMzIdentMLDocument <- fkMzIdentML
+                (fkMzIdentMLDocument:string) (table:ProteinDetectionProtocol) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a proteinDetectionProtocol-object in the context and database, based on its primary-key(ID).
@@ -9874,10 +9876,10 @@ module InsertStatements =
                 table.Year <- Nullable(year)
                 table
 
-            ///Replaces fkMzIdentML of existing object with new one.
-            static member addFkMzIdentMLDocument
-                (fkMzIdentML:string) (table:BiblioGraphicReference) =
-                table.FKMzIdentMLDocument <- fkMzIdentML
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFKMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:BiblioGraphicReference) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Tries to find a biblioGraphicReference-object in the context and database, based on its primary-key(ID).
