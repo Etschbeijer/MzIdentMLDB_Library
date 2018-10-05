@@ -292,8 +292,8 @@ module Basetypes =
         ///HCD – High energy Collision induced Dissociation.
         ///ETD – Electron Transfer Dissociation.
         | FragmentationType
-        ///The mass analyzer used to record the MS/MS spectrum. ITMS
-        ///     Ion trap.
+        ///The mass analyzer used to record the MS/MS spectrum. 
+        ///ITMS Ion trap.
         ///FTMS Fourier transform ICR or orbitrap cell.
         ///TOF  Time of flight.
         | MassAnalyzerType
@@ -451,7 +451,7 @@ module Basetypes =
         ///An oxidaton.
         | Oxidation
         
-        //Type of scoring by searchEnginges
+        //SearchEnginges and scores
         ///Andromeda score for the associated MS/MS spectra.
         | AndromedaScore
         ///Best Andromeda score for the associated MS/MS spectra.
@@ -460,6 +460,10 @@ module Basetypes =
         | ProteomicDiscovererDeltaScore
         ///Score difference to the second best identified peptide.
         | DeltaScore
+        ///
+        | SequestScore
+        ///
+        | XTandem
 
         static member toID (item:TermSymbol) =
             match item with
@@ -650,4 +654,6 @@ module Basetypes =
             | DataBaseName -> "MS:1001013"
             | ProteinModifications -> "MS:1000933"
             | ProteinAmbiguityGroupMembers -> "PRIDE:0000418"
+            | SequestScore -> "PRIDE:0000053"
+            | XTandem -> "MS:1001476"
 
