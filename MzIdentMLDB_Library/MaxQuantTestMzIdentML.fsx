@@ -23,580 +23,23 @@ open Microsoft.EntityFrameworkCore
 open MzBasis.Basetypes
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzIdentMLDataBase.InsertStatements.ObjectHandlers.DBFunctions
 
 //open MzIdentMLDataBase.XMLParsing
 
 
 let fileDir = __SOURCE_DIRECTORY__
-let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+let pathDB = fileDir + "\Databases/" 
+let sqliteMzIdentMLDBName = "MzIdentML1.db"
 
-let sqliteMzIdentMLContext = ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
+let sqliteMzIdentMLContext = 
+        createMzIdentMLContext DBType.SQLite sqliteMzIdentMLDBName pathDB
 sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 
 //Using peptideID = 119; Modification-specific peptides IDs=125 & 126; 
 //Oxidation (M)Sites for Modification-specific peptides ID=97; ProteinGroups ID=173;
 //AllPeptides line 227574 (MOxidized) & line 616423 (unmodified); MS/MS scans MOxLine=10847, UnModID=41328,
 //Ms/MS MOxID=568, UnModID=576
-
-let user0 =
-    TermHandler.init("User:0000000")
-    |> TermHandler.addName "N-term cleavage window"
-    |> TermHandler.addOntologyID
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user1 =
-    TermHandler.init("User:0000001")
-    |> TermHandler.addName "C-term cleavage window"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user2 =
-    TermHandler.init("User:0000002")
-    |> TermHandler.addName "Leading razor protein"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user3 =
-    TermHandler.init("User:0000003")
-    |> TermHandler.addName "MaxQuant: Unique Protein Group"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user4 =
-    TermHandler.init("User:0000004")
-    |> TermHandler.addName "MaxQuant: Unique Protein"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user5 =
-    TermHandler.init("User:0000005")
-    |> TermHandler.addName "MaxQuant: PEP"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user6 =
-    TermHandler.init("User:0000006")
-    |> TermHandler.addName "IdentificationType"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user7 =
-    TermHandler.init("User:0000007")
-    |> TermHandler.addName "AminoAcid modification"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user8 =
-    TermHandler.init("User:0000008")
-    |> TermHandler.addName "Charge corrected mass of the precursor ion"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user9 =
-    TermHandler.init("User:0000009")
-    |> TermHandler.addName "Calibrated retention time"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user10 =
-    TermHandler.init("User:0000010")
-    |> TermHandler.addName "Mass error"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user11 =
-    TermHandler.init("User:0000011")
-    |> TermHandler.addName "The intensity values of the isotopes."
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user12 =
-    TermHandler.init("User:0000012")
-    |> TermHandler.addName "MaxQuant: Major protein IDs"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user13 =
-    TermHandler.init("User:0000013")
-    |> TermHandler.addName "MaxQuant: Number of proteins"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user14 =
-    TermHandler.init("User:0000014")
-    |> TermHandler.addName "MaxQuant: Peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user15 =
-    TermHandler.init("User:0000015")
-    |> TermHandler.addName "MaxQuant: Razor + unique peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user16 =
-    TermHandler.init("User:0000016")
-    |> TermHandler.addName "MaxQuant: Unique peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user17 =
-    TermHandler.init("User:0000017")
-    |> TermHandler.addName "MaxQuant: Unique + razor sequence coverage"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user18 =
-    TermHandler.init("User:0000018")
-    |> TermHandler.addName "MaxQuant: Unique sequence coverage"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user19 =
-    TermHandler.init("User:0000019")
-    |> TermHandler.addName "MaxQuant: SequenceLength(s)"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user20 =
-    TermHandler.init("User:0000020")
-    |> TermHandler.addName "Metabolic labeling N14/N15"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user21 =
-    TermHandler.init("User:0000021")
-    |> TermHandler.addName "DetectionType"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user22 =
-    TermHandler.init("User:0000022")
-    |> TermHandler.addName "MaxQuant: Uncalibrated m/z"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user23 =
-    TermHandler.init("User:0000023")
-    |> TermHandler.addName "MaxQuant: Number of data points"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user24 =
-    TermHandler.init("User:0000024")
-    |> TermHandler.addName "MaxQuant: Number of isotopic peaks"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user25 =
-    TermHandler.init("User:0000025")
-    |> TermHandler.addName "MaxQuant: Parent ion fraction"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user26 =
-    TermHandler.init("User:0000026")
-    |> TermHandler.addName "MaxQuant: Mass precision"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user27 =
-    TermHandler.init("User:0000027")
-    |> TermHandler.addName "Retention length (FWHM)"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user28 =
-    TermHandler.init("User:0000028")
-    |> TermHandler.addName "MaxQuant: Min scan number"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user29 =
-    TermHandler.init("User:0000029")
-    |> TermHandler.addName "MaxQuant: Max scan number"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user30 =
-    TermHandler.init("User:0000030")
-    |> TermHandler.addName "MaxQuant: MSMS scan numbers"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user31 =
-    TermHandler.init("User:0000031")
-    |> TermHandler.addName "MaxQuant: MSMS isotope indices"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user32 =
-    TermHandler.init("User:0000032")
-    |> TermHandler.addName "MaxQuant: Filtered peaks"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user33 =
-    TermHandler.init("User:0000033")
-    |> TermHandler.addName "FragmentationType"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user34 =
-    TermHandler.init("User:0000034")
-    |> TermHandler.addName "Parent intensity fraction"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user35 =
-    TermHandler.init("User:0000035")
-    |> TermHandler.addName "Fraction of total spectrum"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user36 =
-    TermHandler.init("User:0000036")
-    |> TermHandler.addName "Base peak fraction"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user37 =
-    TermHandler.init("User:0000037")
-    |> TermHandler.addName "Precursor full scan number"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user38 =
-    TermHandler.init("User:0000038")
-    |> TermHandler.addName "Precursor intensity"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user39 =
-    TermHandler.init("User:0000039")
-    |> TermHandler.addName "Precursor apex fraction"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user40 =
-    TermHandler.init("User:0000040")
-    |> TermHandler.addName "Precursor apex offset"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user41 =
-    TermHandler.init("User:0000041")
-    |> TermHandler.addName "Precursor apex offset time"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user42 =
-    TermHandler.init("User:0000042")
-    |> TermHandler.addName "Scan event number"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user43 =
-    TermHandler.init("User:0000043")
-    |> TermHandler.addName "MaxQuant: Score difference"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user44 =
-    TermHandler.init("User:0000044")
-    |> TermHandler.addName "MaxQuant: Combinatorics"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user45 =
-    TermHandler.init("User:0000045")
-    |> TermHandler.addName "MaxQuant: Matches"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user46 =
-    TermHandler.init("User:0000046")
-    |> TermHandler.addName "MaxQuant: Match between runs"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user47 =
-    TermHandler.init("User:0000047")
-    |> TermHandler.addName "MaxQuant: Number of matches"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user48 =
-    TermHandler.init("User:0000048")
-    |> TermHandler.addName "MaxQuant: Intensity coverage"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user49 =
-    TermHandler.init("User:0000049")
-    |> TermHandler.addName "MaxQuant: Peak coverage"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user50 =
-    TermHandler.init("User:0000050")
-    |> TermHandler.addName "MaxQuant: ETD identification type"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user51 =
-    TermHandler.init("User:0000051")
-    |> TermHandler.addName "Min. score unmodified peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-  
-let user52 =
-    TermHandler.init("User:0000052")
-    |> TermHandler.addName "Min. score modified peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user53 =
-    TermHandler.init("User:0000053")
-    |> TermHandler.addName "Min. delta score of unmodified peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext 
-
-let user54 =
-    TermHandler.init("User:0000054")
-    |> TermHandler.addName "Min. delta score of modified peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user55 =
-    TermHandler.init("User:0000055")
-    |> TermHandler.addName "Min. amount unique peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user56 =
-    TermHandler.init("User:0000056")
-    |> TermHandler.addName "Min. amount razor peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user57 =
-    TermHandler.init("User:0000057")
-    |> TermHandler.addName "Min. amount peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user58 =
-    TermHandler.init("User:0000058")
-    |> TermHandler.addName "MaxQuant: Decoy mode"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user59 =
-    TermHandler.init("User:0000059")
-    |> TermHandler.addName "MaxQuant: Special AAs"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user60 =
-    TermHandler.init("User:0000060")
-    |> TermHandler.addName "MaxQuant: Include contaminants"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user61 =
-    TermHandler.init("User:0000061")
-    |> TermHandler.addName "MaxQuant: iBAQ"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user62 =
-    TermHandler.init("User:0000062")
-    |> TermHandler.addName "MaxQuant: Top MS/MS peaks per 100 Dalton"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user63 =
-    TermHandler.init("User:0000063")
-    |> TermHandler.addName "MaxQuant: IBAQ log fit"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user64 =
-    TermHandler.init("User:0000064")
-    |> TermHandler.addName "MaxQuant: Protein FDR"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user65 =
-    TermHandler.init("User:0000065")
-    |> TermHandler.addName "MaxQuant: SiteFDR"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user66 =
-    TermHandler.init("User:0000066")
-    |> TermHandler.addName "MaxQuant: Use Normalized Ratios For Occupancy"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user67 =
-    TermHandler.init("User:0000067")
-    |> TermHandler.addName "MaxQuant: Peptides used for protein quantification"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user68 =
-    TermHandler.init("User:0000068")
-    |> TermHandler.addName "MaxQuant: Discard unmodified counterpart peptides"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user69 =
-    TermHandler.init("User:0000069")
-    |> TermHandler.addName "MaxQuant: Min. ratio count"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user70 =
-    TermHandler.init("User:0000070")
-    |> TermHandler.addName "MaxQuant: Use delta score"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user71 =
-    TermHandler.init("User:0000071")
-    |> TermHandler.addName "Data-dependt acquisition"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user72 =
-    TermHandler.init("User:0000072")
-    |> TermHandler.addName "razor-protein"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user73 =
-    TermHandler.init("User:0000073")
-    |> TermHandler.addName "razor-peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user74 =
-    TermHandler.init("User:0000074")
-    |> TermHandler.addName "Mass-deviation"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user75 =
-    TermHandler.init("User:0000075")
-    |> TermHandler.addName "leading-peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user76 =
-    TermHandler.init("User:0000076")
-    |> TermHandler.addName "unique-protein"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user77 =
-    TermHandler.init("User:0000077")
-    |> TermHandler.addName "unique-peptide"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user78 =
-    TermHandler.init("User:0000078")
-    |> TermHandler.addName "MaxQuant: Delta score"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
-
-let user79 =
-    TermHandler.init("User:0000079")
-    |> TermHandler.addName "MaxQuant: Best andromeda score"
-    |> TermHandler.addOntologyID 
-        "UserParam"
-    |> TermHandler.addToContext sqliteMzIdentMLContext
 
 //Peptides ID=119; Modification-specific peptides IDs=123 & 124
 
@@ -740,7 +183,7 @@ let dbSequence =
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams
-    |> DBSequenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |> DBSequenceHandler.addFkMzIdentMLDocument "Test1"
 
 let searchDatabase1 =
     SearchDatabaseHandler.init(
@@ -765,7 +208,7 @@ let dbSequence1 =
     |> DBSequenceHandler.addSequence "AAIEASFGSVDEMK"
     |> DBSequenceHandler.addLength 14
     |> DBSequenceHandler.addDetails dbSequenceParams1
-    |> DBSequenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |> DBSequenceHandler.addFkMzIdentMLDocument "Test1"
 
 let peptideParamUnmodified =
     [
@@ -812,7 +255,7 @@ let peptideParamUnmodified =
 let peptideUnmodified =
     PeptideHandler.init("AAIEASFGSVDEMK", "PeptideUnmod 1")
     |> PeptideHandler.addDetails peptideParamUnmodified
-    |> PeptideHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |> PeptideHandler.addFkMzIdentMLDocument "Test1"
 
 let enzymeName =
     EnzymeNameParamHandler.init(
@@ -1094,7 +537,7 @@ let peptideMOxidized =
         PeptideHandler.init("AAIEASFGSVDEM(1)K", "119MOxidized")
         |> PeptideHandler.addModification modificationMOxidized
         |> PeptideHandler.addDetails peptideParamMOxidized
-        |> PeptideHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+        |> PeptideHandler.addFkMzIdentMLDocument "Test1"
 
 let spectrumidentificationItemParamPeptideMOxidized =
     [
@@ -1293,13 +736,13 @@ let peptideEvidences =
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID;
+    |> PeptideEvidenceHandler.addFkMzIdentMLDocument "Test1";
     PeptideEvidenceHandler.init(
         "DBSeq 1", "119MOxidized"
                                 )
     |> PeptideEvidenceHandler.addStart 106
     |> PeptideEvidenceHandler.addEnd 119
-    |> PeptideEvidenceHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |> PeptideEvidenceHandler.addFkMzIdentMLDocument "Test1"
     ]
 
 let peptideHypothesisUnModified =
@@ -1440,9 +883,12 @@ let spectradata =
 
 let organizations =
     [
-    OrganizationHandler.init(name="TuKL");
-    OrganizationHandler.init(name="BioTech");
-    OrganizationHandler.init(name="CSB");
+    OrganizationHandler.init(name="TuKL")
+    |> OrganizationHandler.addFKMzIdentMLDocument "Test1";
+    OrganizationHandler.init(name="BioTech")
+    |> OrganizationHandler.addFKMzIdentMLDocument "Test1";
+    OrganizationHandler.init(name="CSB")
+    |> OrganizationHandler.addFKMzIdentMLDocument "Test1";
     ]
 
 let person =
@@ -1450,13 +896,14 @@ let person =
     |> PersonHandler.addFirstName "Patrick"
     |> PersonHandler.addLastName "Blume"
     |> PersonHandler.addOrganizations organizations
+    |> PersonHandler.addFKMzIdentMLDocument "Test1"
 
 let role =
     CVParamHandler.init("MS:1001267", "Developer of DB")
     |> CVParamHandler.addToContext sqliteMzIdentMLContext
 
 let contactRole =
-    ContactRoleHandler.init("MasterStudent 2", "Developer of DB")
+    ContactRoleHandler.init("MasterStudent 2", "Developer of DB", "contactRole1" )
 
 let softwareName =
     CVParamHandler.init((TermSymbol.toID MaxQuant), "SoftwareName 1")
@@ -1464,7 +911,9 @@ let softwareName =
 
 let analysisSoftware =
     AnalysisSoftwareHandler.init("SoftwareName 1", "Software 1")
-    |> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper contactRole
+    //|> AnalysisSoftwareHandler.addAnalysisSoftwareDeveloper contactRole
+    //|> AnalysisSoftwareHandler.addFKAnalysisSoftwareDeveloper contactRole.ID
+    |> AnalysisSoftwareHandler.addFKMzIdentMLDocument "Test1"
 
 let searchType =
     CVParamHandler.init(
@@ -1646,7 +1095,7 @@ let proteinDetectionProtocol =
         [analysisSoftware], threshold, "ProteinDetectionProtocol 1"
                                         )
     |> ProteinDetectionProtocolHandler.addAnalysisParams analysisParams
-    |> ProteinDetectionProtocolHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    //|> ProteinDetectionProtocolHandler.addFkMzIdentMLDocument "Test1"
 
 let spectrumIdentificationProtocol =
     SpectrumIdentificationProtocolHandler.init(
@@ -1656,7 +1105,7 @@ let spectrumIdentificationProtocol =
     |> SpectrumIdentificationProtocolHandler.addModificationParams searchModificationParams
     |> SpectrumIdentificationProtocolHandler.addAdditionalSearchParams additionalSearchParams
     |> SpectrumIdentificationProtocolHandler.addFragmentTolerances fragmentTolerance
-    |> SpectrumIdentificationProtocolHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |> SpectrumIdentificationProtocolHandler.addFkMzIdentMLDocument "Test1"
 
 let spectrumIdentificationResultParamUnModified =
     [
@@ -1918,9 +1367,9 @@ let spectrumIdentificationList =
 
 let spectrumIdentification = 
     SpectrumIdentificationHandler.init(
-        "SpectrumIdentificationList 1", "SpectrumIdentificationProtocol 1", spectradata, [searchDatabase], "SpectrumIdentification 1"
+        "SpectrumIdentificationList 1", "SpectrumIdentificationProtocol 1", spectradata, [searchDatabase; searchDatabase1], "SpectrumIdentification 1"
                                         )
-    |>SpectrumIdentificationHandler.addFkMzIdentMLDocument mzIdentMLDocument.ID
+    |>SpectrumIdentificationHandler.addFkMzIdentMLDocument "Test1"
 
 let proteinDetectionList =
     ProteinDetectionListHandler.init("ProteinDetectlionList 1")
@@ -1941,11 +1390,12 @@ let sourceFiles =
 let inputs =
     InputsHandler.init(spectradata)
     |> InputsHandler.addSourceFiles sourceFiles 
-    |> InputsHandler.addSearchDatabase searchDatabase
+    |> InputsHandler.addSearchDatabases [searchDatabase; searchDatabase1]
 
 let provider =
     ProviderHandler.init()
     |> ProviderHandler.addContactRole contactRole
+    |> ProviderHandler.addFKContactRole contactRole.ID
     |> ProviderHandler.addAnalysisSoftware analysisSoftware
 
 let finalMzIdentMLDocument =

@@ -1219,20 +1219,23 @@ module DataModel =
     type [<AllowNullLiteral>]
         AnalysisSoftware (id:string, name:string, uri:string, version:string, customizations:string, 
                           contactRole:ContactRole, fkContactRole:string, softwareName:CVParam, 
-                          fkSoftwareName:string, rowVersion:Nullable<DateTime>
+                          fkSoftwareName:string, fkMzIdentML:string, fkProteinDetectionProtocol:string,
+                          rowVersion:Nullable<DateTime>
                          ) =
-            let mutable id'                = id
-            let mutable name'              = name
-            let mutable uri'               = uri
-            let mutable version'           = version
-            let mutable customization'     = customizations
-            let mutable contactRole'       = contactRole
-            let mutable fkContactRole'     = fkContactRole
-            let mutable softwareName'      = softwareName
-            let mutable fkSoftwareName'    = fkSoftwareName
-            let mutable rowVersion'        = rowVersion
+            let mutable id'                         = id
+            let mutable name'                       = name
+            let mutable uri'                        = uri
+            let mutable version'                    = version
+            let mutable customization'              = customizations
+            let mutable contactRole'                = contactRole
+            let mutable fkContactRole'              = fkContactRole
+            let mutable softwareName'               = softwareName
+            let mutable fkSoftwareName'             = fkSoftwareName
+            let mutable fkProteinDetectionProtocol' = fkProteinDetectionProtocol
+            let mutable fkMzIdentML'                = fkMzIdentML
+            let mutable rowVersion'                 = rowVersion
 
-            new() = AnalysisSoftware(null, null, null, null, null, null, null, null, null, Nullable())
+            new() = AnalysisSoftware(null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -1245,6 +1248,8 @@ module DataModel =
             member this.SoftwareName with get() = softwareName' and set(value) = softwareName' <- value
             [<ForeignKey("SoftwareName")>]
             member this.FKSoftwareName with get() = fkSoftwareName' and set(value) = fkSoftwareName' <- value
+            member this.FKProteinDetectionProtocol with get() = fkProteinDetectionProtocol' and set(value) = fkProteinDetectionProtocol' <- value
+            member this.FKMzIdentMLDocument with get() = fkMzIdentML' and set(value) = fkMzIdentML' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///References to the individual component samples within a mixed parent sample.
@@ -1786,7 +1791,8 @@ module DataModel =
                         numResidues:Nullable<int64>, releaseDate:Nullable<DateTime>, version:string, 
                         externalFormatDocumentation:string, fileFormat:CVParam, fkFileFormat:string,
                         databaseName:CVParam, fkDatabaseName:string, fkInputs:string, 
-                        details:List<SearchDatabaseParam>, rowVersion:Nullable<DateTime>
+                        fkSpectrumIdentification:string, details:List<SearchDatabaseParam>, 
+                        rowVersion:Nullable<DateTime>
                        ) =
             let mutable id'                          = id
             let mutable name'                        = name
@@ -1801,11 +1807,12 @@ module DataModel =
             let mutable databaseName'                = databaseName
             let mutable fkDatabaseName'              = fkDatabaseName
             let mutable fkInputs'                    = fkInputs
+            let mutable fkSpectrumIdentification'    = fkSpectrumIdentification
             let mutable details'                     = details
             let mutable rowVersion'                  = rowVersion
 
             new() = SearchDatabase(null, null, null, Nullable(), Nullable(), Nullable(), null, null, null, null,
-                                   null, null, null, null, Nullable()
+                                   null, null, null, null, null, Nullable()
                                   )
 
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1823,6 +1830,7 @@ module DataModel =
             [<ForeignKey("DatabaseName")>]
             member this.FKDatabaseName with get() = fkDatabaseName' and set(value) = fkDatabaseName' <- value
             member this.FKInputs with get() = fkInputs' and set(value) = fkInputs' <- value
+            member this.FKSpectrumIdentification with get() = fkSpectrumIdentification' and set(value) = fkSpectrumIdentification' <- value
             [<ForeignKey("FKSearchDatabase")>]
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -2104,28 +2112,29 @@ module DataModel =
 
     ///The parameters and settings of a SpectrumIdentification analysis.
     type [<AllowNullLiteral>] 
-        ProteinDetectionProtocol (id:string, name:string, analysisSoftware:List<AnalysisSoftware>, 
+        ProteinDetectionProtocol (id:string, name:string, analysisSoftwares:List<AnalysisSoftware>, 
                                   analysisParams:List<AnalysisParam>, threshold:List<ThresholdParam>, 
-                                  fkMzIdentMLDocument:string, rowVersion:Nullable<DateTime>
+                                  (*fkMzIdentMLDocument:string,*) rowVersion:Nullable<DateTime>
                                  ) =
             let mutable id'                     = id
             let mutable name'                   = name
-            let mutable analysisSoftware'       = analysisSoftware
+            let mutable analysisSoftwares'      = analysisSoftwares
             let mutable analysisParams'         = analysisParams
             let mutable threshold'              = threshold
-            let mutable fkMzIdentMLDocument'    = fkMzIdentMLDocument
+            //let mutable fkMzIdentMLDocument'    = fkMzIdentMLDocument
             let mutable rowVersion'             = rowVersion
 
-            new() = ProteinDetectionProtocol(null, null, null, null, null, null, Nullable())
+            new() = ProteinDetectionProtocol(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
-            member this.AnalysisSoftware with get() = analysisSoftware' and set(value) = analysisSoftware' <- value
+            [<ForeignKey("FKProteinDetectionProtocol")>]
+            member this.AnalysisSoftwares with get() = analysisSoftwares' and set(value) = analysisSoftwares' <- value
             [<ForeignKey("FKProteinDetectionProtocol")>]
             member this.AnalysisParams with get() = analysisParams' and set(value) = analysisParams' <- value
             [<ForeignKey("FKProteinDetectionProtocol")>]
             member this.Threshold with get() = threshold' and set(value) = threshold' <- value
-            member this.FKMzIdentMLDocument with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
+            //member this.FKMzIdentMLDocument with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///A file from which this mzIdentML instance was created.
@@ -2309,7 +2318,7 @@ module DataModel =
                           proteinDetectionList:ProteinDetectionList, fkProteinDetectionList:string,
                           proteinDetectionProtocol:ProteinDetectionProtocol, fkProteinDetectionProtocol:string,
                           spectrumIdentificationLists:List<SpectrumIdentificationList>,
-                          rowVersion:Nullable<DateTime>
+                          fkMzIdentMLDocument:string, rowVersion:Nullable<DateTime>
                          ) =
             let mutable id'                          = id
             let mutable name'                        = name
@@ -2319,9 +2328,10 @@ module DataModel =
             let mutable proteinDetectionProtocol'    = proteinDetectionProtocol
             let mutable fkProteinDetectionProtocol'  = fkProteinDetectionProtocol
             let mutable spectrumIdentificationLists' = spectrumIdentificationLists
+            let mutable fkMzIdentMLDocument'         = fkMzIdentMLDocument
             let mutable rowVersion'                  = rowVersion
 
-            new() = ProteinDetection(null, null, Nullable(), null, null, null, null, null, Nullable())
+            new() = ProteinDetection(null, null, Nullable(), null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Name with get() = name' and set(value) = name' <- value
@@ -2334,8 +2344,9 @@ module DataModel =
             member this.FKProteinDetectionProtocol with get() = fkProteinDetectionProtocol' and set(value) = fkProteinDetectionProtocol' <- value
             [<ForeignKey("FKProteinDetection")>]
             member this.SpectrumIdentificationLists with get() = spectrumIdentificationLists' and set(value) = spectrumIdentificationLists' <- value
+            member this.FKMzIdentMLDocument with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
-
+            
     ///Any bibliographic references associated with the file.
     type [<AllowNullLiteral>] 
         BiblioGraphicReference (id:string, name:string, authors:string, doi:string, editor:string, 
@@ -2464,9 +2475,9 @@ module DataModel =
             member this.Providers with get() = providers' and set(value) = providers' <- value
             //Formerly AuditCollection
             [<ForeignKey("FKMzIdentMLDocument")>]
-            member this.Organizations with get() = organizations and set(value) = organizations' <- value
+            member this.Organizations with get() = organizations' and set(value) = organizations' <- value
             [<ForeignKey("FKMzIdentMLDocument")>]
-            member this.Persons with get() = persons and set(value) = persons' <- value
+            member this.Persons with get() = persons' and set(value) = persons' <- value
             //
             //Formerly AnalysisSampleCollection
             [<ForeignKey("FKMzIdentMLDocument")>]
@@ -2497,9 +2508,8 @@ module DataModel =
             member this.Inputs with get() = inputs' and set(value) = inputs' <- value
             [<ForeignKey("Inputs")>]
             member this.FKInputs with get() = fkInputs' and set(value) = fkInputs' <- value
-            [<ForeignKey("FKMzIdentMLDocument")>]
             member this.AnalysisData with get() = analysisData' and set(value) = analysisData' <- value
-            [<ForeignKey("FKMzIdentMLDocument")>]
+            [<ForeignKey("AnalysisData")>]
             member this.FKAnalysisData with get() = fkAnalysisData' and set(value) = fkAnalysisData' <- value
             //
             [<ForeignKey("FKMzIdentMLDocument")>]
