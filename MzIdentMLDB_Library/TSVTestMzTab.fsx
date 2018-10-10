@@ -1010,18 +1010,15 @@ type MzTabType =
 let findAllPeptidesWithProtAccs1 (dbContext:MzQuantML) (mzQuantID:string) =
 
     query {
-           for mzQdoc in dbContext.MzQuantMLDocument
-                            .Include(fun item -> item.ProteinList)
-                            //.ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>)
-                            .ToList()
-                            do
-                //for prot in mzQdoc.ProteinList.Proteins do
-                    where (mzQdoc.ID=mzQuantID)
-                    select mzQdoc (*(prot, prot.PeptideConsensi.ToArray()) *)  
+           for mzQdoc in dbContext.MzQuantMLDocument do
+                where (mzQdoc.ID=mzQuantID)
+                //where (prot.FKProteinList=mzQuantID) 
+                for prot in mzQdoc.ProteinList.Proteins do
+                select mzQdoc
           }
     |> Array.ofSeq
 
 let test =
     findAllPeptidesWithProtAccs1 sqliteMzQuantMLContext "Test1"
 
-test.[0]
+test
