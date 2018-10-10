@@ -91,6 +91,7 @@
     <Compile Include="TSVInsertStatementsMzTab.fs" />
     <None Include="TSVTestMzTab.fsx" />
     <None Include="DavidSpectrumIdentificationTest.fsx" />
+    <None Include="DBMergeTest.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BioFSharp">

@@ -2803,14 +2803,10 @@ module DataModel =
                     modelBuilder.Entity<PeptideConsensus>()
                         .HasIndex("ID")
                         .IsUnique()|> ignore
+                    modelBuilder.Entity<PeptideConsensusParam>()
+                        .HasIndex("ID")
+                        .IsUnique()|> ignore
 
-                    //modelBuilder.Entity<PeptideConsensusParam>()
-                    //    .HasIndex("ID")
-                    //    .IsUnique()|> ignore
-                    //modelBuilder.Entity<PeptideConsensusParam>()
-                    //    .HasIndex("PeptideConsensusID") |> ignore
-                    //modelBuilder.Entity<PeptideConsensusParam>()
-                    //    .HasIndex("FKTerm") |> ignore
                     //modelBuilder.Entity<Modification>()
                     //    .HasIndex("ID")
                     //    .IsUnique()|> ignore

@@ -7794,7 +7794,7 @@ module InsertStatements =
                 let peptideSequence'             = defaultArg peptideSequence Unchecked.defaultof<string>
                 let modifications'               = convertOptionToList modifications
                 let evidenceRefs'                = convertOptionToList evidenceRefs
-                let fkProtein'                   = defaultArg fkProtein (System.Guid.NewGuid().ToString())
+                let fkProtein'                   = defaultArg fkProtein Unchecked.defaultof<string>
                 let details'                     = convertOptionToList details                
 
                 new PeptideConsensus(

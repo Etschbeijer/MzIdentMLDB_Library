@@ -29,29 +29,27 @@ open FSharp.Data
 
 open MzIdentMLDataBase.DataModel
 open MzIdentMLDataBase.InsertStatements.ObjectHandlers
+open MzIdentMLDataBase.InsertStatements.ObjectHandlers.DBFunctions
 open MzQuantMLDataBase.DataModel
 open MzQuantMLDataBase.InsertStatements.ObjectHandlers
-open MzQuantMLDataBase.InsertStatements.ObjectHandlers
+open MzQuantMLDataBase.InsertStatements.ObjectHandlers.DBFunctions
 open MzBasis.Basetypes
 
 
 let fileDir = __SOURCE_DIRECTORY__
-
-let standardDBPathSQLiteMzIdentML = fileDir + "\Databases\MzIdentML1.db"
+let pathDB = fileDir + "\Databases/"
+let sqliteMzIdentMLDBName = "MzIdentML1.db"
+let sqliteMzQuantMLDBName = "MzQuantML1.db"
 
 let sqliteMzIdentMLContext = 
-    MzIdentMLDataBase.InsertStatements.ObjectHandlers.ContextHandler.sqliteConnection standardDBPathSQLiteMzIdentML
-sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled = false
-
-let standardDBPathSQLiteMzQuantML = fileDir + "\Databases\MzQuantML1.db"
-
+    createMzIdentMLContext DBType.SQLite sqliteMzIdentMLDBName pathDB
+sqliteMzIdentMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 
 let sqliteMzQuantMLContext = 
-    ContextHandler.sqliteConnection standardDBPathSQLiteMzQuantML
-sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled = false
+    createMzQuantMLContext DBType.SQLite sqliteMzQuantMLDBName pathDB
+sqliteMzQuantMLContext.ChangeTracker.AutoDetectChangesEnabled=false
 
-sqliteMzIdentMLContext.Database.OpenConnection()
-sqliteMzQuantMLContext.Database.OpenConnection()
+
 
 let convert4timesStringToSingleString ((a,b,c,d):string*string*string*string) =
 
@@ -477,8 +475,7 @@ let findAllPeptidesWithProtAccs (dbContext:MzQuantML) (mzQuantID:string) =
 
     query {
            for mzQdoc in dbContext.MzQuantMLDocument
-                            .Include(fun item -> item.ProteinList)
-                            .ThenInclude(fun item -> item.Proteins :> IEnumerable<_>)
+                            .Include(fun item -> item.ProteinList.Proteins :> IEnumerable<_>)
                             .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>)
                             .ToList()
                             do
@@ -486,6 +483,7 @@ let findAllPeptidesWithProtAccs (dbContext:MzQuantML) (mzQuantID:string) =
                     where (mzQdoc.ID=mzQuantID)
                     select (prot, prot.PeptideConsensi.ToArray())   
           }
+    |> Array.ofSeq
 
 let allProtAccsWithPeptidesWithDBSeqParams
     (mzQuantContext:MzQuantML) (mzQuantID:string) (mzIdentContext:MzIdentML) (mzIdentID:string) =
@@ -962,8 +960,8 @@ type MzTabType =
 //    createProteinSection  sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" proteinSectionColumnNames
 ////    |> writeTSVFileAsTable (fileDir + "\Databases\TSVTest1.tab")
 
-let peptideSection =
-    createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
+//let peptideSection =
+//    createPeptideSection sqliteMzQuantMLContext "Test1" sqliteMzIdentMLContext "Test1" peptideSectionColumnNames
     //|> writeTSVFileAsTable (fileDir + "\Databases\TSVTest2.tab")
 
 //let psmSection =
@@ -1009,3 +1007,21 @@ let peptideSection =
 //sqliteMzIdentMLContext.Database.CloseConnection()
 //sqliteMzQuantMLContext.Database.CloseConnection()
 
+let findAllPeptidesWithProtAccs1 (dbContext:MzQuantML) (mzQuantID:string) =
+
+    query {
+           for mzQdoc in dbContext.MzQuantMLDocument
+                            .Include(fun item -> item.ProteinList)
+                            //.ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>)
+                            .ToList()
+                            do
+                //for prot in mzQdoc.ProteinList.Proteins do
+                    where (mzQdoc.ID=mzQuantID)
+                    select mzQdoc (*(prot, prot.PeptideConsensi.ToArray()) *)  
+          }
+    |> Array.ofSeq
+
+let test =
+    findAllPeptidesWithProtAccs1 sqliteMzQuantMLContext "Test1"
+
+test.[0]
