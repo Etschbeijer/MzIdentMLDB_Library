@@ -8125,22 +8125,24 @@ module InsertStatements =
             ///Initializes a proteinList-object with at least all necessary parameters.
             static member init
                 (             
-                    ?id                          : string,
-                    ?proteins                    : seq<Protein>,
-                    ?globalQuantLayer            : seq<GlobalQuantLayer>,
-                    ?assayQuantLayer             : seq<AssayQuantLayer>,
-                    ?studyVariableQuantLayer     : seq<StudyVariableQuantLayer>,
-                    ?ratioQuantLayer             : RatioQuantLayer,
-                    ?details                     : seq<ProteinListParam>
+                    ?id                         : string,
+                    ?proteins                   : seq<Protein>,
+                    ?globalQuantLayer           : seq<GlobalQuantLayer>,
+                    ?assayQuantLayer            : seq<AssayQuantLayer>,
+                    ?studyVariableQuantLayer    : seq<StudyVariableQuantLayer>,
+                    ?ratioQuantLayer            : RatioQuantLayer,
+                    ?fkRatioQuantLayer          : string,
+                    ?details                    : seq<ProteinListParam>
 
                 ) =
-                let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
-                let proteins'                       = convertOptionToList proteins
-                let globalQuantLayer'               = convertOptionToList globalQuantLayer
-                let assayQuantLayer'                = convertOptionToList assayQuantLayer
-                let studyVariableQuantLayer'        = convertOptionToList studyVariableQuantLayer
-                let ratioQuantLayer'                = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
-                let details'                        = convertOptionToList details
+                let id'                         = defaultArg id (System.Guid.NewGuid().ToString())
+                let proteins'                   = convertOptionToList proteins
+                let globalQuantLayer'           = convertOptionToList globalQuantLayer
+                let assayQuantLayer'            = convertOptionToList assayQuantLayer
+                let studyVariableQuantLayer'    = convertOptionToList studyVariableQuantLayer
+                let ratioQuantLayer'            = defaultArg ratioQuantLayer Unchecked.defaultof<RatioQuantLayer>
+                let fkRatioQuantLayer'          = defaultArg fkRatioQuantLayer Unchecked.defaultof<string>
+                let details'                    = convertOptionToList details
 
                 new ProteinList(
                                 id',
@@ -8149,6 +8151,7 @@ module InsertStatements =
                                 assayQuantLayer',
                                 studyVariableQuantLayer',
                                 ratioQuantLayer',
+                                fkRatioQuantLayer',
                                 details',
                                 Nullable(DateTime.Now)
                                )
@@ -8198,6 +8201,11 @@ module InsertStatements =
                 table.RatioQuantLayer <- ratioQuantLayer
                 table
 
+            ///Replaces fkRatioQuantLayer of existing object with new one.
+            static member addFKRatioQuantLayer (fkRatioQuantLayer:string) (table:ProteinList) =
+                table.FKRatioQuantLayer <- fkRatioQuantLayer
+                table
+
             ///Adds a proteinListParam to an existing object.
             static member addDetail (detail:ProteinListParam) (table:ProteinList) =
                 let result = table.Details <- addToList table.Details detail
@@ -8233,10 +8241,10 @@ module InsertStatements =
                    )
 
             ///Tries to find a proteinList-object in the context and database, based on its 2nd most unique identifier.
-            static member tryFindByProteins (dbContext:MzQuantML) (proteins:seq<Protein>) =
+            static member tryFindByFKRatioQuantLayer (dbContext:MzQuantML) (fkRatioQuantLayer:string) =
                 query {
                        for i in dbContext.ProteinList.Local do
-                           if i.Proteins=(proteins |> List)
+                           if i.FKRatioQuantLayer=fkRatioQuantLayer
                               then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                       }
                 |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
@@ -8245,7 +8253,7 @@ module InsertStatements =
                         then 
                             query {
                                    for i in dbContext.ProteinList do
-                                       if i.Proteins=(proteins |> List)
+                                       if i.FKRatioQuantLayer=fkRatioQuantLayer
                                           then select (i, i.Proteins, i.GlobalQuantLayers, i.AssayQuantLayers, i.StudyVariableQuantLayers, i.RatioQuantLayer, i.Details)
                                   }
                             |> Seq.map (fun (proteinList, _, _, _, _, _, _) -> proteinList)
@@ -8259,7 +8267,7 @@ module InsertStatements =
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:ProteinList) (item2:ProteinList) =
                 item1.GlobalQuantLayers=item2.GlobalQuantLayers && item1.AssayQuantLayers=item2.AssayQuantLayers && 
-                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers && item1.RatioQuantLayer=item2.RatioQuantLayer &&
+                item1.StudyVariableQuantLayers=item2.StudyVariableQuantLayers &&
                 matchCVParamBases 
                     (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
                     (item2.Details |> Seq.map (fun item -> item :> CVParamBase) |> List)

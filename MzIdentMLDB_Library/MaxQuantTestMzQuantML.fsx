@@ -724,15 +724,15 @@ let createProtein n =
 
 let createMultiplePeptideParams (collection:Map<string, PeptideConsensusParam list>) =
     let rec loop (someThings:Map<string, PeptideConsensusParam list>) n =
-        if n < 10000 then
+        if n < 100000 then
             loop (someThings.Add (System.Guid.NewGuid().ToString(), createTestPeptideParams n)) (n+1)
         else someThings
     loop collection 0
 
 let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
     let rec loop (someThings:Map<string, PeptideConsensus>) n i =
-        if n < 10000 then
-            if i>=1000 then
+        if n < 100000 then
+            if i>=10000 then
                 loop someThings n 0
             else
                 loop (someThings.Add (System.Guid.NewGuid().ToString(), createPeptideConsensus n i)) (n+1) (i+1)
@@ -741,7 +741,7 @@ let createMultiplePeptides (collection:Map<string, PeptideConsensus>) =
 
 let rec createMultipleProteins (collection:Map<string, Protein>) =
     let rec loop (someThings:Map<string, Protein>) n =
-        if n < 1000 then 
+        if n < 10000 then 
             loop (someThings.Add (System.Guid.NewGuid().ToString(), createProtein n)) (n+1)
         else someThings
     loop collection 0
@@ -765,9 +765,6 @@ let manyThousandProteins =
     |> Seq.map (fun item -> item.Value)
     |> Array.ofSeq
     |> (fun item -> sqliteMzQuantMLContext.Protein.AddRange(item.Cast()))
-
-//for i in manyThousandPeptideParams do
-//    printfn "%A" i.FKPeptideConsensus
 
 let proteinList =
     ProteinListHandler.init("ProteinList")

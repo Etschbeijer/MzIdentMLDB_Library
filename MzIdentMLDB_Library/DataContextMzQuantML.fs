@@ -2095,7 +2095,8 @@ module DataModel =
     type [<AllowNullLiteral>]
         ProteinList (id:string, proteins:List<Protein>, globalQuantLayers:List<GlobalQuantLayer>,
                      assayQuantLayers:List<AssayQuantLayer>, studyVariableQuantLayers:List<StudyVariableQuantLayer>, 
-                     ratioQuantLayer:RatioQuantLayer, details:List<ProteinListParam>, rowVersion:Nullable<DateTime>
+                     ratioQuantLayer:RatioQuantLayer, fkRatioQuantLayer:string, details:List<ProteinListParam>, 
+                     rowVersion:Nullable<DateTime>
                     ) =
             let mutable id'                       = id
             let mutable proteins'                 = proteins
@@ -2103,10 +2104,11 @@ module DataModel =
             let mutable assayQuantLayers'         = assayQuantLayers
             let mutable studyVariableQuantLayers' = studyVariableQuantLayers
             let mutable ratioQuantLayer'          = ratioQuantLayer
+            let mutable fkRatioQuantLayer'        = fkRatioQuantLayer
             let mutable details'                  = details
             let mutable rowVersion'               = rowVersion
 
-            new() = ProteinList(null, null, null, null, null, null, null, Nullable())
+            new() = ProteinList(null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             [<ForeignKey("FKProteinList")>]
@@ -2118,6 +2120,8 @@ module DataModel =
             [<ForeignKey("FKProteinList")>]
             member this.StudyVariableQuantLayers with get() = studyVariableQuantLayers' and set(value) = studyVariableQuantLayers' <- value
             member this.RatioQuantLayer with get() = ratioQuantLayer' and set(value) = ratioQuantLayer' <- value
+            [<ForeignKey("RatioQuantLayer")>]
+            member this.FKRatioQuantLayer with get() = fkRatioQuantLayer' and set(value) = fkRatioQuantLayer' <- value
             [<ForeignKey("FKProteinList")>]
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -2376,9 +2380,8 @@ module DataModel =
             member this.AnalysisSummaries with get() = analysisSummaries' and set(value) = analysisSummaries' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.SoftwareList with get() = softwareList' and set(value) = softwareList' <- value
-            [<ForeignKey("FKMzQuantMLDocument")>]
             member this.InputFiles with get() = inputFiles' and set(value) = inputFiles' <- value
-            [<ForeignKey("FKMzQuantMLDocument")>]
+            [<ForeignKey("InputFiles")>]
             member this.FKInputFiles with get() = fkInputFiles' and set(value) = fkInputFiles' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.DataProcessings with get() = dataProcessings' and set(value) = dataProcessings' <- value
@@ -2394,12 +2397,12 @@ module DataModel =
             [<ForeignKey("ProteinGroupList")>]
             member this.FKProteinGroupList with get() = fkProteinGroupList' and set(value) = fkProteinGroupList' <- value
             member this.ProteinList with get() = proteinList' and set(value) = proteinList' <- value
-            [<ForeignKey("FKMzQuantMLDocument")>]
+            [<ForeignKey("ProteinList")>]
             member this.FKProteinList with get() = fkProteinList' and set(value) = fkProteinList' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.PeptideConsensusList with get() = peptideConsensusList' and set(value) = peptideConsensusList' <- value
             member this.SmallMoleculeList with get() = smallMoleculeList' and set(value) = smallMoleculeList' <- value
-            [<ForeignKey("FKMzQuantMLDocument")>]
+            [<ForeignKey("SmallMoleculeList")>]
             member this.FKSmallMoleculeList with get() = fkSmallMoleculeList' and set(value) = fkSmallMoleculeList' <- value
             [<ForeignKey("FKMzQuantMLDocument")>]
             member this.FeatureList with get() = featureList' and set(value) = featureList' <- value

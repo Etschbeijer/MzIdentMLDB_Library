@@ -475,7 +475,8 @@ let findAllPeptidesWithProtAccs (dbContext:MzQuantML) (mzQuantID:string) =
 
     query {
            for mzQdoc in dbContext.MzQuantMLDocument
-                            .Include(fun item -> item.ProteinList.Proteins :> IEnumerable<_>)
+                            .Include(fun item -> item.ProteinList)
+                            .ThenInclude(fun (item:ProteinList) -> item.Proteins :> IEnumerable<_>)
                             .ThenInclude(fun (item:Protein) -> item.PeptideConsensi :> IEnumerable<_>)
                             .ToList()
                             do
@@ -950,7 +951,6 @@ type MzTabType =
     | Quantification = 1
 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////FUNCTION-APPLICATION/////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1007,18 +1007,8 @@ type MzTabType =
 //sqliteMzIdentMLContext.Database.CloseConnection()
 //sqliteMzQuantMLContext.Database.CloseConnection()
 
-let findAllPeptidesWithProtAccs1 (dbContext:MzQuantML) (mzQuantID:string) =
-
-    query {
-           for mzQdoc in dbContext.MzQuantMLDocument do
-                where (mzQdoc.ID=mzQuantID)
-                //where (prot.FKProteinList=mzQuantID) 
-                for prot in mzQdoc.ProteinList.Proteins do
-                select mzQdoc
-          }
-    |> Array.ofSeq
 
 let test =
-    findAllPeptidesWithProtAccs1 sqliteMzQuantMLContext "Test1"
+    sqliteMzQuantMLContext.MzQuantMLDocument.FromSql("SELECT ID, CreationDate, FKInputFiles, FKProteinGroupList, FKProteinList, FKSmallMoleculeList, Name, RowVersion, Version FROM MzQuantMLDocument").ToList()
 
-test
+
