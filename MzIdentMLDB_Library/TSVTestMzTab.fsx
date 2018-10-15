@@ -1009,6 +1009,4 @@ type MzTabType =
 
 
 let test =
-    sqliteMzQuantMLContext.MzQuantMLDocument.FromSql("SELECT ID, CreationDate, FKInputFiles, FKProteinGroupList, FKProteinList, FKSmallMoleculeList, Name, RowVersion, Version FROM MzQuantMLDocument").ToList()
-
-
+    findAllPeptidesWithProtAccs sqliteMzQuantMLContext "Test1"

@@ -2777,16 +2777,12 @@ module DataModel =
                     modelBuilder.Entity<MzQuantMLDocument>()
                         .HasIndex("ID")
                         .IsUnique() |> ignore
-                    //modelBuilder.Entity<MzQuantMLDocument>()
-                    //    .HasIndex("ProteinListID") |> ignore
-                    //modelBuilder.Entity<ProteinList>()
-                    //    .HasIndex("ID")
-                    //    .IsUnique()|> ignore
-                    //modelBuilder.Entity<Protein>()
-                    //    .HasIndex("ID")
-                    //    .IsUnique()|> ignore
-                    //modelBuilder.Entity<Protein>()
-                    //    .HasIndex("ProteinListID") |> ignore
+                    modelBuilder.Entity<ProteinList>()
+                        .HasIndex("ID")
+                        .IsUnique()|> ignore
+                    modelBuilder.Entity<Protein>()
+                        .HasIndex("ID")
+                        .IsUnique()|> ignore
                     //modelBuilder.Entity<Protein>()
                     //    .HasIndex("SearchDatabaseID") |> ignore
                     //modelBuilder.Entity<ProteinParam>()
