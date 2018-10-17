@@ -5359,21 +5359,26 @@ module InsertStatements =
             ///Initializes a column-object with at least all necessary parameters.
             static member init
                 (             
-                    index       : int,
-                    fkdatatype  : string,
-                    ?id         : string,
-                    ?datatype   : CVParam
+                    index                   : int,
+                    fkdatatype              : string,
+                    ?id                     : string,
+                    ?datatype               : CVParam,
+                    ?fkGlobalQuantLayer     : string,
+                    ?fkFeatureQuantLayer    : string
                     
                 ) =
-                let id'         = defaultArg id (System.Guid.NewGuid().ToString())
-                let datatype'   = defaultArg datatype Unchecked.defaultof<CVParam>
-                        
+                let id'                   = defaultArg id (System.Guid.NewGuid().ToString())
+                let datatype'             = defaultArg datatype Unchecked.defaultof<CVParam>
+                let fkGlobalQuantLayer'   = defaultArg fkGlobalQuantLayer Unchecked.defaultof<string>
+                let fkFeatureQuantLayer'  = defaultArg fkFeatureQuantLayer Unchecked.defaultof<string>
 
                 new Column(
                            id',
                            Nullable(index),
                            datatype',
                            fkdatatype,
+                           fkGlobalQuantLayer',
+                           fkFeatureQuantLayer',
                            Nullable(DateTime.Now)
                           )
 
@@ -5381,6 +5386,18 @@ module InsertStatements =
             static member addDataType
                 (datatype:CVParam) (table:Column) =
                 table.DataType <- datatype
+                table
+
+            ///Replaces fkGlobalQuantLayer of existing object with new one.
+            static member addFKGlobalQuantLayer
+                (fkGlobalQuantLayer:string) (table:Column) =
+                table.FKGlobalQuantLayer <- fkGlobalQuantLayer
+                table
+
+            ///Replaces fkFeatureQuantLayer of existing object with new one.
+            static member addFKFeatureQuantLayer
+                (fkFeatureQuantLayer:string) (table:Column) =
+                table.FKFeatureQuantLayer <- fkFeatureQuantLayer
                 table
 
             ///Tries to find a column-object in the context and database, based on its primary-key(ID).
@@ -5433,7 +5450,8 @@ module InsertStatements =
 
             ///Checks whether all other fields of the current object and context object have the same values or not.
             static member private hasEqualFieldValues (item1:Column) (item2:Column) =
-                item1.FKDataType=item2.FKDataType
+                item1.FKDataType=item2.FKDataType && item1.FKGlobalQuantLayer=item2.FKGlobalQuantLayer && 
+                item1.FKFeatureQuantLayer=item2.FKFeatureQuantLayer
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.

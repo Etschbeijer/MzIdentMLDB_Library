@@ -294,7 +294,7 @@ module DataModel =
                 member x.RowVersion = x.RowVersion
 
     ///A single entry from an ontology or a controlled vocabulary.
-    type [<AllowNullLiteral>] [<Table("ProteinListParam")>]
+    type [<AllowNullLiteral>] [<Table("ProteinListParams")>]
         ProteinListParam (id:string, value:string, term:Term, fkTerm:string, unit:Term, fkUnit:string, 
                           fkProteinList:string, rowVersion:Nullable<DateTime>
                          ) =
@@ -943,9 +943,9 @@ module DataModel =
             member this.Location with get() = location' and set(value) = location' <- value
             member this.ExternalFormatDocumentation with get() = externalFormatDocumentation' and set(value) = externalFormatDocumentation' <- value
             member this.FileFormat with get() = fileFormat' and set(value) = fileFormat' <- value
-            member this.FKInputFiles with get() = fkInputFiles' and set(value) = fkInputFiles' <- value
             [<ForeignKey("FileFormat")>]
             member this.FKFileFormat with get() = fkFileFormat' and set(value) = fkFileFormat' <- value
+            member this.FKInputFiles with get() = fkInputFiles' and set(value) = fkInputFiles' <- value    
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Organizations are entities like companies, universities, government agencies.
@@ -1351,6 +1351,7 @@ module DataModel =
             member this.RawFilesGroup with get() = rawFilesGroup' and set(value) = rawFilesGroup' <- value
             [<ForeignKey("RawFilesGroup")>]
             member this.FKRawFilesGroup with get() = fkRawFilesGroup' and set(value) = fkRawFilesGroup' <- value
+            [<ForeignKey("FKAssay")>]
             member this.Label with get() = label' and set(value) = label' <- value
             member this.IdentificationFile with get() = identificationFile' and set(value) = identificationFile' <- value
             [<ForeignKey("IdentificationFile")>]
@@ -1460,21 +1461,25 @@ module DataModel =
     ///The datatype and index position of one column of data in the DataMatrix.
     type [<AllowNullLiteral>]
         Column (id:string, index:Nullable<int>, dataType:CVParam, fkDataType:string, 
-                rowVersion:Nullable<DateTime>
+                fkGlobalQuantLayer:string, fkFeatureQuantLayer:string, rowVersion:Nullable<DateTime>
                ) =
-            let mutable id'         = id
-            let mutable index'      = index
-            let mutable dataType'   = dataType
-            let mutable fkDataType' = fkDataType
-            let mutable rowVersion' = rowVersion
+            let mutable id'                     = id
+            let mutable index'                  = index
+            let mutable dataType'               = dataType
+            let mutable fkDataType'             = fkDataType
+            let mutable fkGlobalQuantLayer'     = fkGlobalQuantLayer
+            let mutable fkFeatureQuantLayer'    = fkFeatureQuantLayer
+            let mutable rowVersion'             = rowVersion
 
-            new() = Column(null, Nullable(), null, null, Nullable())
+            new() = Column(null, Nullable(), null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
             member this.Index with get() = index' and set(value) = index' <- value
             member this.DataType with get() = dataType' and set(value) = dataType' <- value
             [<ForeignKey("DataType")>]
             member this.FKDataType with get() = fkDataType' and set(value) = fkDataType' <- value
+            member this.FKGlobalQuantLayer with get() = fkGlobalQuantLayer' and set(value) = fkGlobalQuantLayer' <- value
+            member this.FKFeatureQuantLayer with get() = fkFeatureQuantLayer' and set(value) = fkFeatureQuantLayer' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     /////Depending on context:
@@ -1569,6 +1574,7 @@ module DataModel =
             new() = GlobalQuantLayer(null, null, null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            [<ForeignKey("FKGlobalQuantLayer")>]
             member this.Columns with get() = columns' and set(value) = columns' <- value            
             member this.DataMatrix with get() = dataMatrix' and set(value) = dataMatrix' <- value
             [<ForeignKey("DataMatrix")>]
@@ -1743,7 +1749,7 @@ module DataModel =
             [<ForeignKey("SearchDatabase")>]
             member this.FKSearchDatabase with get() = fkSearchDatabase' and set(value) = fkSearchDatabase' <- value
             member this.FKSmallMolecule with get() = fkSmallMolecule' and set(value) = fkSmallMolecule' <- value
-            member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///Feature a region on a (potentially) two-dimensional map of LC-MS (MS1) scans, defined by the 
     ///retention time, mass over charge and optionally a mass trace. Quantitative values about features 
@@ -1869,6 +1875,7 @@ module DataModel =
             new() = FeatureQuantLayer(null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            [<ForeignKey("FKFeatureQuantLayer")>]
             member this.Columns with get() = columns' and set(value) = columns' <- value            
             member this.DataMatrix with get() = dataMatrix' and set(value) = dataMatrix' <- value
             [<ForeignKey("DataMatrix")>]
@@ -1999,6 +2006,7 @@ module DataModel =
             new() = EvidenceRef(null, null,  null, null, null, null, null, null, Nullable())
 
             member this.ID with get() = id' and set(value) = id' <- value
+            [<ForeignKey("FKEvidenceRef")>]
             member this.Assays with get() = assays' and set(value) = assays' <- value            
             member this.Feature with get() = feature' and set(value) = feature' <- value
             [<ForeignKey("Feature")>]
@@ -2008,7 +2016,7 @@ module DataModel =
             [<ForeignKey("IdentificationFile")>]
             member this.FKIdentificationFile with get() = fkIdentificationFile' and set(value) = fkIdentificationFile' <- value
             member this.FKPeptideConsensus with get() = fkPeptideConsensus' and set(value) = fkPeptideConsensus' <- value
-            member this.rowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
+            member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
 
     ///An element representing a peptide in different assays that may or may not have been identified. 
     ///If it has been identified, the sequence and modification(s) SHOULD be reported. 
