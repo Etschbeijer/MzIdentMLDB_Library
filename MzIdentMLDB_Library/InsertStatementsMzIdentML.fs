@@ -7721,6 +7721,7 @@ module InsertStatements =
                     ?pre                            : string,
                     ?post                           : string,
                     ?frame                          : Frame,
+                    ?fkFrame                        : string,
                     ?isDecoy                        : bool,
                     ?translationTable               : TranslationTable,
                     ?fkTranslationTable             : string,
@@ -7737,6 +7738,7 @@ module InsertStatements =
                 let pre'                            = defaultArg pre Unchecked.defaultof<string>
                 let post'                           = defaultArg post Unchecked.defaultof<string>
                 let frame'                          = defaultArg frame Unchecked.defaultof<Frame>
+                let fkFrame'                        = defaultArg fkFrame Unchecked.defaultof<string>
                 let isDecoy'                        = defaultArg isDecoy Unchecked.defaultof<bool>
                 let translationTable'               = defaultArg translationTable Unchecked.defaultof<TranslationTable>
                 let fkTranslationTable'             = defaultArg fkTranslationTable Unchecked.defaultof<string>
@@ -7755,7 +7757,8 @@ module InsertStatements =
                                     Nullable(end''), 
                                     pre', 
                                     post', 
-                                    frame', 
+                                    frame',
+                                    fkFrame',
                                     Nullable(isDecoy'), 
                                     translationTable', 
                                     fkTranslationTable', 
@@ -7765,7 +7768,7 @@ module InsertStatements =
                                     Nullable(DateTime.Now)
                                    )
 
-            ///Replaces name of existing object with new name.
+            ///Replaces name of existing object with new one.
             static member addName
                 (name:string) (table:PeptideEvidence) =
                 table.Name <- name
@@ -7783,43 +7786,49 @@ module InsertStatements =
                 table.Peptide <- peptide
                 table
 
-            ///Replaces start of existing object with new start.
+            ///Replaces start of existing object with new one.
             static member addStart
                 (start:int) (table:PeptideEvidence) =
                 table.Start <- Nullable(start)
                 table
 
-            ///Replaces end of existing object with new end.
+            ///Replaces end of existing object with new one.
             static member addEnd 
                 (end':int) (table:PeptideEvidence) =
                 table.End  <- Nullable(end')
                 table
 
-            ///Replaces pre of existing object with new pre.
+            ///Replaces pre of existing object with new one.
             static member addPre
                 (pre:string) (table:PeptideEvidence) =
                 table.Pre <- pre
                 table
 
-            ///Replaces post of existing object with new post.
+            ///Replaces post of existing object with new one.
             static member addPost
                 (post:string) (table:PeptideEvidence) =
                 table.Post <- post
                 table
 
-            ///Replaces frame of existing object with new frame.
+            ///Replaces frame of existing object with new one.
             static member addFrame
                 (frame:Frame) (table:PeptideEvidence) =
                 table.Frame <- frame
                 table
 
-            ///Replaces isdecoy of existing object with new isdecoy.
+            ///Replaces fkFrame of existing object with new one.
+            static member addFKFrame
+                (fkFrame:string) (table:PeptideEvidence) =
+                table.FKFrame <- fkFrame
+                table
+
+            ///Replaces isdecoy of existing object with new one.
             static member addIsDecoy
                 (isDecoy:bool) (table:PeptideEvidence) =
                 table.IsDecoy <- Nullable(isDecoy)
                 table
 
-            ///Replaces translationtable of existing object with new translationtable.
+            ///Replaces translationtable of existing object with new one.
             static member addTranslationTable
                 (translationTable:TranslationTable) (table:PeptideEvidence) =
                 table.TranslationTable <- translationTable
@@ -7901,7 +7910,7 @@ module InsertStatements =
             static member private hasEqualFieldValues (item1:PeptideEvidence) (item2:PeptideEvidence) =
                item1.FKPeptide=item2.FKPeptide && item1.FKDBSequence=item2.FKDBSequence &&
                item1.Name=item2.Name && item1.Start=item2.Start && item1.End=item2.End &&
-               item1.Pre=item2.Pre && item1.Post=item2.Post && item1.Frame=item2.Frame &&
+               item1.Pre=item2.Pre && item1.Post=item2.Post && item1.FKFrame=item2.FKFrame &&
                item1.IsDecoy=item2.IsDecoy && item1.TranslationTable=item2.TranslationTable && 
                matchCVParamBases 
                 (item1.Details |> Seq.map (fun item -> item :> CVParamBase) |> List) 
@@ -7955,6 +7964,7 @@ module InsertStatements =
                     ?spectrumIdentificationResult   : SpectrumIdentificationResult,
                     ?fkSpectrumIdentificationResult : string,
                     ?fkPeptideHypothesis            : string,
+                    ?fkMzIdentMLDocuemnt            : string,
                     ?details                        : seq<SpectrumIdentificationItemParam>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
@@ -7971,6 +7981,7 @@ module InsertStatements =
                 let spectrumIdentificationResult'   = defaultArg spectrumIdentificationResult Unchecked.defaultof<SpectrumIdentificationResult>
                 let fkSpectrumIdentificationResult' = defaultArg fkSpectrumIdentificationResult Unchecked.defaultof<string>
                 let fkPeptideHypothesis'            = defaultArg fkPeptideHypothesis Unchecked.defaultof<string>
+                let fkMzIdentMLDocuemnt'            = defaultArg fkMzIdentMLDocuemnt Unchecked.defaultof<string>
                 let details'                        = convertOptionToList details
                     
                 new SpectrumIdentificationItem(
@@ -7993,6 +8004,7 @@ module InsertStatements =
                                                spectrumIdentificationResult',
                                                fkSpectrumIdentificationResult',
                                                fkPeptideHypothesis',
+                                               fkMzIdentMLDocuemnt',
                                                details', 
                                                Nullable(DateTime.Now)
                                               )
@@ -8079,6 +8091,12 @@ module InsertStatements =
             static member addFKPeptideHypothesis
                 (fkPeptideHypothesis:string) (table:SpectrumIdentificationItem) =
                 table.FKPeptideHypothesis <- fkPeptideHypothesis
+                table
+
+            ///Replaces fkMzIdentMLDocument of existing object with new one.
+            static member addFKMzIdentMLDocument
+                (fkMzIdentMLDocument:string) (table:SpectrumIdentificationItem) =
+                table.FKMzIdentMLDocument <- fkMzIdentMLDocument
                 table
 
             ///Adds a spectrumidentificationparam to an existing spectrumidentification-object.
@@ -10166,7 +10184,8 @@ module InsertStatements =
                     ?proteinDetections              : seq<ProteinDetection>,
                     ?proteinDetectionProtocol       : ProteinDetectionProtocol,
                     ?fkProteinDetectionProtocol     : string,
-                    ?biblioGraphicReferences        : seq<BiblioGraphicReference>
+                    ?biblioGraphicReferences        : seq<BiblioGraphicReference>,
+                    ?spectrumIdentificationItems    : seq<SpectrumIdentificationItem>
                 ) =
                 let id'                             = defaultArg id (System.Guid.NewGuid().ToString())
                 let name'                           = defaultArg name Unchecked.defaultof<string>
@@ -10189,6 +10208,8 @@ module InsertStatements =
                 let analysisData'                   = defaultArg analysisData Unchecked.defaultof<AnalysisData>
                 let fkAnalysisData'                 = defaultArg fkAnalysisData Unchecked.defaultof<string>
                 let biblioGraphicReferences'        = convertOptionToList biblioGraphicReferences
+                let spectrumIdentificationItems'    = convertOptionToList spectrumIdentificationItems
+
                 new MzIdentMLDocument(
                                       id', 
                                       name',
@@ -10211,6 +10232,7 @@ module InsertStatements =
                                       analysisData',
                                       fkAnalysisData',
                                       biblioGraphicReferences',
+                                      spectrumIdentificationItems',
                                       Nullable(DateTime.Now)
                                      )
                     
@@ -10406,6 +10428,18 @@ module InsertStatements =
                 table.BiblioGraphicReferences <- addCollectionToList table.BiblioGraphicReferences biblioGraphicReferences
                 table
 
+            ///Adds a spectrumIdentificationItem to an existing mzidentmldocument-object.
+            static member addSpectrumIdentificationitem
+                (spectrumIdentificationItem:SpectrumIdentificationItem) (table:MzIdentMLDocument) =
+                table.SpectrumIdentificationItems <- addToList table.SpectrumIdentificationItems spectrumIdentificationItem
+                table
+
+            ///Adds a collection of spectrumIdentificationItems to an existing mzidentmldocument-object.
+            static member addSpectrumIdentificationitems
+                (spectrumIdentificationItems:seq<SpectrumIdentificationItem>) (table:MzIdentMLDocument) =
+                table.SpectrumIdentificationItems <- addCollectionToList table.SpectrumIdentificationItems spectrumIdentificationItems
+                table
+
             ///Tries to find a mzIdentMLDocument-object in the context and database, based on its primary-key(ID).
             static member tryFindByID (dbContext:MzIdentML) (id:string) =
                 query {
@@ -10413,10 +10447,11 @@ module InsertStatements =
                            if i.ID=id
                               then select (i, i.Inputs, i.AnalysisSoftwareList, i.Providers, i.Persons, i.Organizations, i.Samples,
                                            i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetections,
-                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences,
+                                           i.SpectrumIdentificationItems
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
@@ -10425,10 +10460,11 @@ module InsertStatements =
                                        if i.ID=id
                                           then select (i, i.Inputs, i.AnalysisSoftwareList, i.Providers, i.Persons, i.Organizations, i.Samples,
                                                        i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetections,
-                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences,
+                                                       i.SpectrumIdentificationItems
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                             then None
                                                             else Some (mzIdentMLDocument.Single())
@@ -10443,10 +10479,11 @@ module InsertStatements =
                            if i.Name=name
                               then select (i, i.Inputs, i.AnalysisSoftwareList, i.Providers, i.Persons, i.Organizations, i.Samples,
                                            i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetections,
-                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                           i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences,
+                                           i.SpectrumIdentificationItems
                                           )
                       }
-                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                 |> (fun mzIdentMLDocument -> 
                     if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                         then 
@@ -10455,10 +10492,11 @@ module InsertStatements =
                                        if i.Name=name
                                           then select (i, i.Inputs, i.AnalysisSoftwareList, i.Providers, i.Persons, i.Organizations, i.Samples,
                                                        i.DBSequences, i.Peptides, i.PeptideEvidences, i.SpectrumIdentifications, i.ProteinDetections,
-                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences
+                                                       i.SpectrumIdentificationProtocols, i.ProteinDetectionProtocol, i.AnalysisData, i.BiblioGraphicReferences,
+                                                       i.SpectrumIdentificationItems
                                                       )
                                   }
-                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
+                            |> Seq.map (fun (mzIdentMLDocument, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> mzIdentMLDocument)
                             |> (fun mzIdentMLDocument -> if (Seq.exists (fun mzIdentMLDocument' -> mzIdentMLDocument' <> null) mzIdentMLDocument) = false
                                                              then None
                                                              else Some mzIdentMLDocument
@@ -10474,7 +10512,8 @@ module InsertStatements =
                item1.PeptideEvidences=item2.PeptideEvidences && item1.SpectrumIdentifications=item2.SpectrumIdentifications &&
                item1.ProteinDetections=item2.ProteinDetections && item1.SpectrumIdentificationProtocols=item2.SpectrumIdentificationProtocols &&
                item1.FKProteinDetectionProtocol=item2.FKProteinDetectionProtocol && item1.FKInputs=item2.FKInputs && 
-               item1.FKAnalysisData=item2.FKAnalysisData && item1.BiblioGraphicReferences=item2.BiblioGraphicReferences
+               item1.FKAnalysisData=item2.FKAnalysisData && item1.BiblioGraphicReferences=item2.BiblioGraphicReferences &&
+               item1.SpectrumIdentificationItems=item2.SpectrumIdentificationItems
 
             ///First checks if any object with same field-values (except primary key) exists within the context or database. 
             ///If no entry exists, a new object is added to the context and otherwise does nothing.

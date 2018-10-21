@@ -1872,7 +1872,7 @@ module DataModel =
     type [<AllowNullLiteral>]
         PeptideEvidence (id:string, name:string, dbSequence:DBSequence, fkDBSequence:string, 
                          peptide:Peptide, fkPeptide:string, start:Nullable<int>, ends:Nullable<int>, 
-                         pre:string, post:string, frame:Frame, isDecoy:Nullable<bool>, 
+                         pre:string, post:string, frame:Frame, fkFrame:string, isDecoy:Nullable<bool>, 
                          translationTable:TranslationTable, fkTranslationTable:string, 
                          fkSpectrumIdentificationItem:string, fkMzIdentMLDocument:string, 
                          details:List<PeptideEvidenceParam>, rowVersion:Nullable<DateTime>
@@ -1892,6 +1892,7 @@ module DataModel =
             let mutable pre'                            = pre
             let mutable post'                           = post
             let mutable frame'                          = frame
+            let mutable fkFrame'                        = fkFrame
             let mutable isDecoy'                        = isDecoy
             //Formerly TranslationTable_Ref
             let mutable translationTable'               = translationTable
@@ -1902,7 +1903,7 @@ module DataModel =
             let mutable details'                        = details
             let mutable rowVersion'                     = rowVersion
 
-            new() = PeptideEvidence(null, null, null, null, null, null, Nullable(), Nullable(), null, null, null,
+            new() = PeptideEvidence(null, null, null, null, null, null, Nullable(), Nullable(), null, null, null, null,
                                     Nullable(), null, null, null, null, null, Nullable()
                                    )
 
@@ -1919,6 +1920,8 @@ module DataModel =
             member this.Pre with get() = pre' and set(value) = pre' <- value
             member this.Post with get() = post' and set(value) = post' <- value
             member this.Frame with get() = frame' and set(value) = frame' <- value
+            [<ForeignKey("Frame")>]
+            member this.FKFrame with get() = fkFrame' and set(value) = fkFrame' <- value
             member this.IsDecoy with get() = isDecoy' and set(value) = isDecoy' <- value
             member this.TranslationTable with get() = translationTable' and set(value) = translationTable' <- value
             [<ForeignKey("TranslationTable")>]
@@ -1939,7 +1942,7 @@ module DataModel =
                                     calculatedMassToCharge:Nullable<float>, calculatedPI:Nullable<float>, 
                                     spectrumIdentificationResult:SpectrumIdentificationResult,
                                     fkSpectrumIdentificationResult:string,
-                                    fkPeptideHypothesis:string,
+                                    fkPeptideHypothesis:string, fkMzIdentMLDocument:string,
                                     details:List<SpectrumIdentificationItemParam>, 
                                     rowVersion:Nullable<DateTime>
                                    ) =
@@ -1963,12 +1966,13 @@ module DataModel =
             let mutable spectrumIdentificationResult'   = spectrumIdentificationResult
             let mutable fkSpectrumIdentificationResult' = fkSpectrumIdentificationResult
             let mutable fkPeptideHypothesis'            = fkPeptideHypothesis
+            let mutable fkMzIdentMLDocument'            = fkMzIdentMLDocument
             let mutable details'                        = details
             let mutable rowVersion'                     = rowVersion
 
             new() = SpectrumIdentificationItem(null, null, null, null, null, null, Nullable(), Nullable(), null, null,
                                                null, null, Nullable(), Nullable(), Nullable(), Nullable(), null,
-                                               null, null, null, Nullable()
+                                               null, null, null, null, Nullable()
                                               )
 
             member this.ID with get() = id' and set(value) = id' <- value
@@ -1996,6 +2000,7 @@ module DataModel =
             [<ForeignKey("SpectrumIdentificationResult")>]
             member this.FKSpectrumIdentificationResult with get() = fkSpectrumIdentificationResult' and set(value) = fkSpectrumIdentificationResult' <- value
             member this.FKPeptideHypothesis with get() = fkPeptideHypothesis' and set(value) = fkPeptideHypothesis' <- value
+            member this.FKMzIdentMLDocument with get() = fkMzIdentMLDocument' and set(value) = fkMzIdentMLDocument' <- value
             [<ForeignKey("FKSpectrumIdentificationItem")>]
             member this.Details with get() = details' and set(value) = details' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
@@ -2438,32 +2443,34 @@ module DataModel =
                           analysisData:AnalysisData,
                           fkAnalysisData:string,
                           biblioGraphicReferences:List<BiblioGraphicReference>,
+                          spectrumIdentificationItems:List<SpectrumIdentificationItem>,
                           rowVersion:Nullable<DateTime>
                          ) =
-            let mutable id'                              = id
-            let mutable name'                            = name
-            let mutable version'                         = version
-            let mutable analysisSoftwares'               = analysisSoftwares
-            let mutable providers'                       = providers
-            let mutable organizations'                   = organizations
-            let mutable persons'                         = persons
-            let mutable samples'                         = samples
-            let mutable dbSequences'                     = dbSequences
-            let mutable peptides'                        = peptides
-            let mutable peptideEvidences'                = peptideEvidences
-            let mutable spectrumIdentifications'         = spectrumIdentifications
-            let mutable proteinDetections'               = proteinDetections
-            let mutable spectrumIdentificationProtocols' = spectrumIdentificationProtocols
-            let mutable proteinDetectionProtocol'        = proteinDetectionProtocol
-            let mutable fkProteinDetectionProtocol'      = fkProteinDetectionProtocol
-            let mutable inputs'                          = inputs
-            let mutable fkInputs'                        = fkInputs
-            let mutable analysisData'                    = analysisData
-            let mutable fkAnalysisData'                  = fkAnalysisData
-            let mutable biblioGraphicReferences'         = biblioGraphicReferences
-            let mutable rowVersion'                      = rowVersion
+            let mutable id'                                 = id
+            let mutable name'                               = name
+            let mutable version'                            = version
+            let mutable analysisSoftwares'                  = analysisSoftwares
+            let mutable providers'                          = providers
+            let mutable organizations'                      = organizations
+            let mutable persons'                            = persons
+            let mutable samples'                            = samples
+            let mutable dbSequences'                        = dbSequences
+            let mutable peptides'                           = peptides
+            let mutable peptideEvidences'                   = peptideEvidences
+            let mutable spectrumIdentifications'            = spectrumIdentifications
+            let mutable proteinDetections'                  = proteinDetections
+            let mutable spectrumIdentificationProtocols'    = spectrumIdentificationProtocols
+            let mutable proteinDetectionProtocol'           = proteinDetectionProtocol
+            let mutable fkProteinDetectionProtocol'         = fkProteinDetectionProtocol
+            let mutable inputs'                             = inputs
+            let mutable fkInputs'                           = fkInputs
+            let mutable analysisData'                       = analysisData
+            let mutable fkAnalysisData'                     = fkAnalysisData
+            let mutable biblioGraphicReferences'            = biblioGraphicReferences
+            let mutable spectrumIdentificationItems'        = spectrumIdentificationItems
+            let mutable rowVersion'                         = rowVersion
 
-            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null, null, null, null, Nullable())
+            new() = MzIdentMLDocument(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Nullable())
 
             [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>]
             member this.ID with get() = id' and set(value) = id' <- value
@@ -2514,6 +2521,8 @@ module DataModel =
             //
             [<ForeignKey("FKMzIdentMLDocument")>]
             member this.BiblioGraphicReferences with get() = biblioGraphicReferences' and set(value) = biblioGraphicReferences' <- value
+            [<ForeignKey("FKMzIdentMLDocument")>]
+            member this.SpectrumIdentificationItems with get() = spectrumIdentificationItems' and set(value) = spectrumIdentificationItems' <- value
             member this.RowVersion with get() = rowVersion' and set(value) = rowVersion' <- value
     
 
